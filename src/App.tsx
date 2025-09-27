@@ -1,15 +1,19 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { IRefPhaserGame, PhaserGame } from './PhaserGame';
 import { MainMenu } from './game/scenes/MainMenu';
+import { useGameStore } from './gameStore';
 
 function App()
 {
-    // The sprite can only be moved in the MainMenu Scene
-    const [canMoveSprite, setCanMoveSprite] = useState(true);
-
     //  References to the PhaserGame component (game and scene are exposed)
     const phaserRef = useRef<IRefPhaserGame | null>(null);
-    const [spritePosition, setSpritePosition] = useState({ x: 0, y: 0 });
+    
+    // Use Zustand store
+    const { currentScene, spritePositions, updateSpritePosition, player } = useGameStore();
+    
+    // The sprite can only be moved in the MainMenu Scene
+    const canMoveSprite = currentScene !== 'MainMenu';
+    const spritePosition = spritePositions.logo || { x: 0, y: 0 };
 
     const changeScene = () => {
 
@@ -35,9 +39,7 @@ function App()
             {
                 // Get the update logo position
                 scene.moveLogo(({ x, y }) => {
-
-                    setSpritePosition({ x, y });
-
+                    updateSpritePosition('logo', x, y);
                 });
             }
         }
@@ -74,15 +76,14 @@ function App()
     }
 
     // Event emitted from the PhaserGame component
-    const currentScene = (scene: Phaser.Scene) => {
-
-        setCanMoveSprite(scene.scene.key !== 'MainMenu');
-        
+    const onSceneReady = (scene: Phaser.Scene) => {
+        // Store will be updated automatically via EventBus
+        console.log('Scene ready:', scene.scene.key);
     }
 
     return (
         <div id="app">
-            <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
+            <PhaserGame ref={phaserRef} currentActiveScene={onSceneReady} />
             <div>
                 <div>
                     <button className="button" onClick={changeScene}>Change Scene</button>
@@ -90,8 +91,10 @@ function App()
                 <div>
                     <button disabled={canMoveSprite} className="button" onClick={moveSprite}>Toggle Movement</button>
                 </div>
-                <div className="spritePosition">Sprite Position:
-                    <pre>{`{\n  x: ${spritePosition.x}\n  y: ${spritePosition.y}\n}`}</pre>
+                <div className="spritePosition">
+                    <div>Current Scene: <strong>{currentScene}</strong></div>
+                    <div>Player Level: {player.level} | Experience: {player.experience}</div>
+                    <div>Logo Position: x: {spritePosition.x}, y: {spritePosition.y}</div>
                 </div>
                 <div>
                     <button className="button" onClick={addSprite}>Add New Sprite</button>
