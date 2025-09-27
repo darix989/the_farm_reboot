@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { IRefPhaserGame, PhaserGame } from './PhaserGame';
 import { MainMenu } from './game/scenes/MainMenu';
 import { useGameStore } from './gameStore';
+import './index.css';
 
 function App()
 {
