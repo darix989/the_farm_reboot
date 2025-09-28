@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { EventBus } from './game/EventBus';
+import { EventBus } from '../phaser/EventBus';
 
 // Simple game state interface
 interface GameState {

@@ -49,10 +49,10 @@ We have provided a default project structure to get you started. This is as foll
 | `src/PhaserGame.tsx`          | The React component that initializes the Phaser Game and acts as a bridge between React and Phaser. |
 | `src/vite-env.d.ts`           | Global TypeScript declarations, providing type information.                |
 | `src/App.tsx`                 | The main React component.                                                  |
-| `src/game/EventBus.ts`        | A simple event bus to communicate between React and Phaser.                |
+| `src/phaser/EventBus.ts`        | A simple event bus to communicate between React and Phaser.                |
 | `src/game`                    | Contains the game source code.                                             |
-| `src/game/main.tsx`           | The main **game** entry point. This contains the game configuration and starts the game. |
-| `src/game/scenes/`            | The folder where Phaser Scenes are located.                                |
+| `src/phaser/main.tsx`           | The main **game** entry point. This contains the game configuration and starts the game. |
+| `src/phaser/scenes/`            | The folder where Phaser Scenes are located.                                |
 | `public/style.css`            | Some simple CSS rules to help with page layout.                            |
 | `public/assets`               | Contains the static assets used by the game.                               |
 
@@ -115,7 +115,7 @@ Here's an example of how to access Phaser data for use in a React Component:
 
 ```ts
 import { useRef } from 'react';
-import { IRefPhaserGame } from "./game/PhaserGame";
+import { IRefPhaserGame } from "./phaser/PhaserGame";
 
 // In a parent component
 const ReactComponent = () => {

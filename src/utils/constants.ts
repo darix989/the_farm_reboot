@@ -1,0 +1,1 @@
+export const PHASER_PARENT_ID = "phaser-parent";

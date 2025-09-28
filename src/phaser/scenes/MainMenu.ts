@@ -1,7 +1,7 @@
 import { GameObjects, Scene } from 'phaser';
 
 import { EventBus } from '../EventBus';
-import { getGameState } from '../../gameStore';
+import { getGameState } from '../../store/gameStore';
 
 export class MainMenu extends Scene
 {

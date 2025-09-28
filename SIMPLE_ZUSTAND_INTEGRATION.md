@@ -13,7 +13,7 @@
 - ✅ Minimal changes to existing code
 - ✅ Real-time UI updates
 
-### 3. **Phaser Scene Connection** (`src/game/scenes/MainMenu.ts`)
+### 3. **Phaser Scene Connection** (`src/phaser/scenes/MainMenu.ts`)
 - ✅ Direct store access via `getGameState()`
 - ✅ Example: Add experience when scene loads
 
