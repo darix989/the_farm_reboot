@@ -15,10 +15,14 @@ export const ReactRoot: React.FC<StatsUIProps> = ({ children }) => {
   useEffect(() => {
     const phaserParent = document.getElementById(PHASER_PARENT_ID);
     const copySize = () => {
+      console.log("copySize");
       window.setTimeout(() => {
         if (phaserParent) {
           const phaserCanvas = phaserParent.getElementsByTagName("canvas")[0];
+          console.log("phaserCanvas", phaserCanvas);
           if (phaserCanvas && uiRootRef.current) {
+            // window.dario = phaserCanvas;
+            console.log("copySize", phaserCanvas.style.marginLeft, phaserCanvas.style.marginTop, phaserCanvas.style.height, phaserCanvas.style.width);
             setRootStyle((prev) => ({
               ...prev,
               marginLeft: phaserCanvas.style.marginLeft,
@@ -37,9 +41,10 @@ export const ReactRoot: React.FC<StatsUIProps> = ({ children }) => {
     }
   }, []);
 
-//   position: absolute;
-//   z-index: 1;
-  return <div ref={uiRootRef} style={rootStyle}>{children}</div>;
+  console.log("rootStyle", rootStyle);
+
+  return <div ref={uiRootRef} className="absolute z-[1]" style={{...rootStyle}}>{children}</div>;
+//   return <div ref={uiRootRef} className="absolute z-[1]" style={{...rootStyle, backgroundColor: '#ff69b4'}}>{children}</div>;
 };
 
 
