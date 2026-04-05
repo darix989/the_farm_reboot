@@ -41,55 +41,58 @@ Once the server is running you can edit any of the files in the `src` folder. Vi
 
 We have provided a default project structure to get you started. This is as follows:
 
-| Path                          | Description                                                                 |
-|-------------------------------|-----------------------------------------------------------------------------|
-| `index.html`                  | A basic HTML page to contain the game.                                     |
-| `src`                         | Contains the React client source code.                                     |
-| `src/main.tsx`                | The main **React** entry point. This bootstraps the React application.      |
-| `src/PhaserGame.tsx`          | The React component that initializes the Phaser Game and acts as a bridge between React and Phaser. |
-| `src/vite-env.d.ts`           | Global TypeScript declarations, providing type information.                |
-| `src/App.tsx`                 | The main React component.                                                  |
-| `src/phaser/EventBus.ts`        | A simple event bus to communicate between React and Phaser.                |
-| `src/game`                    | Contains the game source code.                                             |
-| `src/phaser/main.tsx`           | The main **game** entry point. This contains the game configuration and starts the game. |
-| `src/phaser/scenes/`            | The folder where Phaser Scenes are located.                                |
-| `public/style.css`            | Some simple CSS rules to help with page layout.                            |
-| `public/assets`               | Contains the static assets used by the game.                               |
+| Path | Description |
+|------|-------------|
+| `index.html` | A basic HTML page to contain the game. |
+| `src/` | Application source (React UI, Phaser game, shared state). |
+| `src/main.tsx` | The main **React** entry point. This bootstraps the React application. |
+| `src/App.tsx` | Top-level layout: mounts `PhaserGame` and `ReactApp`. |
+| `src/phaser/PhaserGame.tsx` | Creates and destroys the Phaser `Game` instance; syncs with Zustand and `EventBus`. |
+| `src/phaser/main.ts` | Phaser **game** config, scale, and scene registration. |
+| `src/phaser/EventBus.ts` | Shared `EventEmitter` for React ↔ Phaser messages. |
+| `src/phaser/scenes/` | Phaser scene classes (Boot, Preloader, MainMenu, Game, Trial, GameOver, …). |
+| `src/react/` | React overlay UI (`ReactApp`, scene-specific screens, `ReactRoot`, hooks). |
+| `src/react/index.css` | Global styles (Tailwind entry). |
+| `src/store/gameStore.ts` | Zustand store; listens to `EventBus` for scene and game lifecycle. |
+| `src/utils/` | Shared helpers (`constants.ts`, `gameManager.ts`). |
+| `src/vite-env.d.ts` | Global TypeScript declarations for Vite. |
+| `vite/config.dev.mjs` / `vite/config.prod.mjs` | Vite configuration (React, Tailwind, production chunking). |
+| `public/assets` | Optional static assets for Phaser loader URLs such as `assets/...` (create if needed). |
 
 ## React Bridge
 
-The `PhaserGame.tsx` component is the bridge between React and Phaser. It initializes the Phaser game and passes events between the two.
+The `src/phaser/PhaserGame.tsx` component is the bridge between React and Phaser. It initializes the Phaser game and coordinates lifecycle with **Zustand** (`src/store/gameStore.ts`) and the **EventBus**.
 
-To communicate between React and Phaser, you can use the **EventBus.js** file. This is a simple event bus that allows you to emit and listen for events from both React and Phaser.
+To communicate between React and Phaser, use **`src/phaser/EventBus.ts`**. It is a simple event bus that allows you to emit and listen for events from both React and Phaser.
 
-```js
-// In React
-import { EventBus } from './EventBus';
+```ts
+// In React (e.g. from a file under src/react/)
+import { EventBus } from '../phaser/EventBus';
 
-// Emit an event
 EventBus.emit('event-name', data);
 
-// In Phaser
-// Listen for an event
+// In Phaser (e.g. in a Scene under src/phaser/scenes/)
+import { EventBus } from '../EventBus';
+
 EventBus.on('event-name', (data) => {
     // Do something with the data
 });
 ```
 
-In addition to this, the `PhaserGame` component exposes the Phaser game instance along with the most recently active Phaser Scene using React forwardRef.
-
-Once exposed, you can access them like any regular react reference.
+The Phaser `Game` instance and the current scene are also available through **`useGameStore`** in React, or **`GameManager`** / hooks in `src/react/hooks/useGame.ts` for imperative access.
 
 ## Phaser Scene Handling
 
 In Phaser, the Scene is the lifeblood of your game. It is where you sprites, game logic and all of the Phaser systems live. You can also have multiple scenes running at the same time. This template provides a way to obtain the current active scene from React.
 
-You can get the current Phaser Scene from the component event `"current-active-scene"`. In order to do this, you need to emit the event `"current-scene-ready"` from the Phaser Scene class. This event should be emitted when the scene is ready to be used. You can see this done in all of the Scenes in our template.
+React receives the active scene via the Zustand store when a scene emits **`current-scene-ready`** on the `EventBus` (see `src/store/gameStore.ts`). Emit that event from the Phaser Scene class when the scene is ready for the UI to use. You can see this pattern in the scenes under `src/phaser/scenes/`.
 
 **Important**: When you add a new Scene to your game, make sure you expose to React by emitting the `"current-scene-ready"` event via the `EventBus`, like this:
 
 
 ```ts
+import { EventBus } from '../EventBus';
+
 class MyScene extends Phaser.Scene
 {
     constructor ()
@@ -101,7 +104,7 @@ class MyScene extends Phaser.Scene
     {
         // Your Game Objects and logic here
 
-        // At the end of create method:
+        // When React should treat this scene as active:
         EventBus.emit('current-scene-ready', this);
     }
 }
@@ -109,39 +112,24 @@ class MyScene extends Phaser.Scene
 
 You don't have to emit this event if you don't need to access the specific scene from React. Also, you don't have to emit it at the end of `create`, you can emit it at any point. For example, should your Scene be waiting for a network request or API call to complete, it could emit the event once that data is ready.
 
-### React Component Example
+### React component example
 
-Here's an example of how to access Phaser data for use in a React Component:
+Read reactive game state from the Zustand store (updated when scenes emit `current-scene-ready` on the `EventBus`):
 
 ```ts
-import { useRef } from 'react';
-import { IRefPhaserGame } from "./phaser/PhaserGame";
+import { useGameStore } from '../store/gameStore';
 
-// In a parent component
 const ReactComponent = () => {
+    const game = useGameStore((s) => s.game);
+    const currentScene = useGameStore((s) => s.currentSceneInstance);
+    const sceneKey = useGameStore((s) => s.currentScene);
 
-    const phaserRef = useRef<IRefPhaserGame>(); // you can access to this ref from phaserRef.current
-
-    const onCurrentActiveScene = (scene: Phaser.Scene) => {
-    
-        // This is invoked
-
-    }
-
-    return (
-        ...
-        <PhaserGame ref={phaserRef} currentActiveScene={onCurrentActiveScene} />
-        ...
-    );
-
-}
+    // Use game / currentScene / sceneKey as needed
+    return null;
+};
 ```
 
-In the code above, you can get a reference to the current Phaser Game instance and the current Scene by creating a reference with `useRef()` and assign to PhaserGame component.
-
-From this state reference, the game instance is available via `phaserRef.current.game` and the most recently active Scene via `phaserRef.current.scene`.
-
-The `onCurrentActiveScene` callback will also be invoked whenever the the Phaser Scene changes, as long as you emit the event via the EventBus, as outlined above.
+For helpers such as switching scenes or waiting until the game exists, see `src/utils/gameManager.ts` and `src/react/hooks/useGame.ts`.
 
 ## Handling Assets
 
@@ -212,8 +200,8 @@ Before:
 
 ```json
 "scripts": {
-    "dev": "node log.js dev & dev-template-script",
-    "build": "node log.js build & build-template-script"
+    "dev": "node log.js dev & vite --config vite/config.dev.mjs",
+    "build": "node log.js build & vite build --config vite/config.prod.mjs"
 },
 ```
 
@@ -221,8 +209,8 @@ After:
 
 ```json
 "scripts": {
-    "dev": "dev-template-script",
-    "build": "build-template-script"
+    "dev": "vite --config vite/config.dev.mjs",
+    "build": "vite build --config vite/config.prod.mjs"
 },
 ```
 
