@@ -12,16 +12,55 @@
   }
 
   #app {
+    position: relative;
     width: 100%;
     height: 100vh;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }
 
 @layer components {
+  /* Trial UI: title strips — explicit padding so labels aren’t flush left (Tailwind pl-* can fail to apply in some v4 setups). */
+  .trial-area-title {
+    box-sizing: border-box;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+  }
+
+  .trial-area-title h2 {
+    margin: 0;
+  }
+
+  /* Trial UI: wizard instruction text — left inset; stays inside wizard column (no bleed into Interactive) */
+  .trial-wizard-body-wrap {
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    max-width: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  /* Borderless wizard copy block; constrains width for huge type / long strings */
+  .trial-wizard-main-text {
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: none;
+    box-sizing: border-box;
+    flex: 1 1 0%;
+    margin: 0;
+    max-width: 100%;
+    min-height: 0;
+    min-width: 0;
+    outline: none;
+    overflow-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 1rem;
+    word-break: break-word;
+  }
+
   .spritePosition {
     margin: 10px 0 0 10px;
     font-size: 0.8em;

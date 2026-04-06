@@ -6,7 +6,9 @@ function App()
     return (
         <div id="app">
             <PhaserGame />
-            <ReactApp />
+            <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center">
+                <ReactApp />
+            </div>
         </div>
     )
 }

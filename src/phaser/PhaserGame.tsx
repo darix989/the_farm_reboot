@@ -45,7 +45,10 @@ export const PhaserGame = function PhaserGame()
     // No need for additional useEffect here since the store listeners handle everything
 
     return (
-        <div id={PHASER_PARENT_ID}></div>
+        <div
+            id={PHASER_PARENT_ID}
+            className="absolute inset-0 flex items-center justify-center"
+        />
     );
 
 };

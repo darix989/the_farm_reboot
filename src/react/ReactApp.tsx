@@ -1,4 +1,5 @@
 import React from 'react';
+import './index.css';
 import BoilerPlateUI from './BoilerPlateUI';
 import MainMenuUI from './MainMenuUI';
 import TrialUI from './TrialUI';
@@ -12,7 +13,7 @@ const ReactApp: React.FC = () => {
     if (!isGameReady) {
         return (
             <ReactRoot>
-                <div className="loading-container">
+                <div className="loading-container pointer-events-auto">
                     <h2>Loading Game...</h2>
                 </div>
             </ReactRoot>

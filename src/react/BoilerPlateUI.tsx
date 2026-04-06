@@ -69,7 +69,7 @@ function App()
     // Show loading state if game is not ready
     if (!isReady) {
         return (
-            <div>
+            <div className="pointer-events-auto">
                 <div className="spritePosition">
                     <div>Game Status: <strong>Loading...</strong></div>
                 </div>
@@ -78,7 +78,7 @@ function App()
     }
 
     return (
-        <div>
+        <div className="pointer-events-auto">
             <div>
                 <button className="button" onClick={changeScene}>Change Scene</button>
             </div>
