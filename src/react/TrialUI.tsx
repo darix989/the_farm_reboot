@@ -1,9 +1,13 @@
 import React from "react";
+import type { DebateScenarioJson } from "../types/debateEntities";
+import sampleDebateJson from "../data/debates/sample-debate.json";
 import { Trial } from "../phaser/scenes/Trial";
 import { GameManager } from "../utils/gameManager";
 import TrialLayout from "./trial/TrialLayout";
 import type { EvidenceCategory } from "./trial/useTrialRoundWorkflow";
-import { useTrialRoundWorkflow } from "./trial/useTrialRoundWorkflow";
+import { statementTitle, useTrialRoundWorkflow } from "./trial/useTrialRoundWorkflow";
+
+const sampleDebate = sampleDebateJson as unknown as DebateScenarioJson;
 
 const sectionBox =
     "rounded-lg border border-white/25 bg-black/30 p-4 md:p-5 ring-1 ring-white/5";
@@ -14,7 +18,7 @@ const btnClass =
 const btnRowClass = `${btnClass} w-full`;
 
 const TrialUI: React.FC = () => {
-    const wf = useTrialRoundWorkflow();
+    const wf = useTrialRoundWorkflow(sampleDebate);
 
     const handleGameOver = () => {
         const scene = GameManager.getCurrentScene() as Trial;
@@ -25,14 +29,114 @@ const TrialUI: React.FC = () => {
         }
     };
 
+    const opponentOpeningById = (id: string | null) =>
+        id ? wf.scenario.opponentOpening.find((o) => o.id === id) : undefined;
+
+    const sentenceListClass =
+        "mt-2 list-inside list-decimal space-y-2 text-white/85 [list-style-position:outside] pl-1";
+
     const feedback = (
-        <div className="flex h-full min-h-0 flex-col gap-4 overflow-y-auto">
+        <div className="flex flex-col gap-4">
             <div className="trial-area-title shrink-0 rounded-lg border border-white/25 bg-black/35">
                 <h2 className="text-4xl font-semibold uppercase tracking-wide text-cyan-400/90">
                     Feedback
                 </h2>
             </div>
-            {wf.roundKind && (
+            {wf.scenario.introduction && (
+                <div className={`${sectionBox} text-[1.875rem] leading-snug text-white/80`}>
+                    <p className="text-white/50">Introduction</p>
+                    <p className="mt-2 text-white/90">{wf.scenario.introduction}</p>
+                </div>
+            )}
+            {wf.gamePhase === "assembly" && (
+                <div className={sectionBox}>
+                    <p className="text-[2.125rem] leading-snug text-white/85">
+                        <span className="text-white/50">Assembly round </span>
+                        <span className="text-white/90">
+                            {wf.assemblyRoundIndex + 1} / {wf.assemblyRoundCount}
+                        </span>
+                    </p>
+                </div>
+            )}
+            {wf.gamePhase === "constructive_opponent" &&
+                wf.constructiveStep.kind === "choose_player_constructive" &&
+                wf.scenario.playerSide === "opposition" &&
+                wf.randomOpponentOpeningId && (
+                    <div className={`${sectionBox} text-[1.875rem] leading-snug`}>
+                        <p className="text-white/50">
+                            1. Proposition opening (drawn first)
+                        </p>
+                        <ol className={sentenceListClass}>
+                            {opponentOpeningById(
+                                wf.randomOpponentOpeningId,
+                            )?.sentences.map((s) => (
+                                <li key={s.id} className="pl-1">
+                                    {s.text}
+                                </li>
+                            ))}
+                        </ol>
+                        <p className="mt-4 text-[1.625rem] leading-snug text-white/45">
+                            You will respond with your opposition constructive
+                            next.
+                        </p>
+                    </div>
+                )}
+            {wf.chosenPlayerConstructive && wf.chosenOpponentOpeningId && (
+                <div className={`${sectionBox} text-[1.875rem] leading-snug`}>
+                    {wf.scenario.playerSide === "proposition" ? (
+                        <>
+                            <p className="text-white/50">
+                                1. Your constructive (proposition)
+                            </p>
+                            <ol className={sentenceListClass}>
+                                {wf.chosenPlayerConstructive.sentences.map((s) => (
+                                    <li key={s.id} className="pl-1">
+                                        {s.text}
+                                    </li>
+                                ))}
+                            </ol>
+                            <p className="mt-6 text-white/50">
+                                2. Opposition opening
+                            </p>
+                            <ol className={sentenceListClass}>
+                                {opponentOpeningById(
+                                    wf.chosenOpponentOpeningId,
+                                )?.sentences.map((s) => (
+                                    <li key={s.id} className="pl-1">
+                                        {s.text}
+                                    </li>
+                                ))}
+                            </ol>
+                        </>
+                    ) : (
+                        <>
+                            <p className="text-white/50">
+                                1. Proposition opening
+                            </p>
+                            <ol className={sentenceListClass}>
+                                {opponentOpeningById(
+                                    wf.chosenOpponentOpeningId,
+                                )?.sentences.map((s) => (
+                                    <li key={s.id} className="pl-1">
+                                        {s.text}
+                                    </li>
+                                ))}
+                            </ol>
+                            <p className="mt-6 text-white/50">
+                                2. Your constructive (opposition)
+                            </p>
+                            <ol className={sentenceListClass}>
+                                {wf.chosenPlayerConstructive.sentences.map((s) => (
+                                    <li key={s.id} className="pl-1">
+                                        {s.text}
+                                    </li>
+                                ))}
+                            </ol>
+                        </>
+                    )}
+                </div>
+            )}
+            {wf.roundKind && wf.gamePhase === "assembly" && (
                 <div className={sectionBox}>
                     <p className="text-[2.125rem] leading-snug text-white/85">
                         <span className="text-white/50">Round: </span>
@@ -60,12 +164,17 @@ const TrialUI: React.FC = () => {
             )}
             {wf.roundComplete && wf.finalChoice && (
                 <div
-                    className={`${sectionBox} mt-auto text-[2.125rem] leading-snug ring-cyan-500/20`}
+                    className={`${sectionBox} shrink-0 text-[2.125rem] leading-snug ring-cyan-500/20`}
                 >
                     <p className="text-white/50">Final choice</p>
                     <p className="text-white/90">
                         {wf.finalChoice.sentences[0]?.text ?? wf.finalChoice.id}
                     </p>
+                    {wf.finalAssembledChoice != null && (
+                        <p className="mt-3 border-t border-white/10 pt-3 text-[1.875rem] text-white/60">
+                            Impact: {wf.finalAssembledChoice.impact}
+                        </p>
+                    )}
                 </div>
             )}
         </div>
@@ -86,7 +195,7 @@ const TrialUI: React.FC = () => {
         </div>
     );
 
-    const renderInteractive = () => {
+    const renderAssemblyInteractive = () => {
         const { step } = wf;
 
         switch (step.kind) {
@@ -142,7 +251,7 @@ const TrialUI: React.FC = () => {
                         {wf.statementsForSide(step.side).map((st) => (
                             <ChoiceButton
                                 key={st.id}
-                                label={wf.statementTitle(st)}
+                                label={statementTitle(st)}
                                 onClick={() =>
                                     wf.dispatch({
                                         type: "select_target_statement",
@@ -235,7 +344,7 @@ const TrialUI: React.FC = () => {
                         {wf.statementsForSide(step.side).map((st) => (
                             <ChoiceButton
                                 key={st.id}
-                                label={wf.statementTitle(st)}
+                                label={statementTitle(st)}
                                 onClick={() =>
                                     wf.dispatch({
                                         type: "select_evidence_statement",
@@ -326,7 +435,7 @@ const TrialUI: React.FC = () => {
                         {wf.finalOptions.map((st) => (
                             <ChoiceButton
                                 key={st.id}
-                                label={wf.statementTitle(st)}
+                                label={statementTitle(st)}
                                 onClick={() =>
                                     wf.dispatch({
                                         type: "select_final",
@@ -339,19 +448,87 @@ const TrialUI: React.FC = () => {
                 );
             case "round_complete":
                 return (
-                    <div
-                        className={`${sectionBox} text-[2.625rem] leading-snug text-white/80`}
-                    >
-                        <p>
-                            You have finished this round draft. Use the main
-                            menu flow to run another trial, or continue in
-                            Phaser.
-                        </p>
+                    <div className="flex flex-col gap-6">
+                        <div
+                            className={`${sectionBox} text-[2.125rem] leading-snug text-white/80`}
+                        >
+                            <p>
+                                {wf.hasMoreAssemblyRoundsAfterComplete
+                                    ? "This assembly round is complete."
+                                    : "This was the last assembly round."}
+                            </p>
+                        </div>
+                        <ChoiceButton
+                            label={
+                                wf.hasMoreAssemblyRoundsAfterComplete
+                                    ? "Next assembly round"
+                                    : "Finish debate"
+                            }
+                            onClick={() =>
+                                wf.dispatch({
+                                    type: "continue_after_round_complete",
+                                })
+                            }
+                        />
                     </div>
                 );
             default:
                 return null;
         }
+    };
+
+    const renderInteractive = () => {
+        if (wf.gamePhase === "constructive_opponent") {
+            if (wf.constructiveStep.kind === "choose_player_constructive") {
+                return (
+                    <div className="flex flex-col gap-6 overflow-y-auto">
+                        {wf.playerConstructiveChoices.map((p) => (
+                            <ChoiceButton
+                                key={p.id}
+                                label={statementTitle(p)}
+                                onClick={() =>
+                                    wf.dispatch({
+                                        type: "select_player_constructive",
+                                        statementId: p.id,
+                                    })
+                                }
+                            />
+                        ))}
+                    </div>
+                );
+            }
+            return (
+                <div className="flex flex-col gap-6">
+                    <div
+                        className={`${sectionBox} text-[2.125rem] leading-snug text-white/75`}
+                    >
+                        <p>
+                            Opponent and your constructive lines are shown in
+                            Feedback. Continue when you are ready to assemble
+                            your next statement.
+                        </p>
+                    </div>
+                    <ChoiceButton
+                        label="Continue to assembly"
+                        onClick={() =>
+                            wf.dispatch({ type: "continue_after_constructive" })
+                        }
+                    />
+                </div>
+            );
+        }
+
+        if (wf.gamePhase === "debate_complete") {
+            return (
+                <div
+                    className={`${sectionBox} text-[2.625rem] leading-snug text-white/85`}
+                >
+                    <p>The debate is finished.</p>
+                </div>
+            );
+        }
+
+        return renderAssemblyInteractive();
     };
 
     const interactive = (

@@ -156,6 +156,11 @@ export interface DebateScenarioJson {
     logicalFallacies: LogicalFallacy[];
     facts: Fact[];
     assembledStatements: AssembledStatement[];
+    /**
+     * Each entry lists `assembledStatements` ids allowed as finals that assembly round.
+     * If omitted, one round is implied: all assembled statements in a single round.
+     */
+    playerAssemblyRounds?: readonly (readonly string[])[];
 }
 
 /** First speech: three ready options; quality TBD per character. */

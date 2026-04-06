@@ -1,12 +1,20 @@
-import { useCallback, useMemo, useReducer } from 'react';
-import type { Evidence, Fact, Side, Statement, Target } from '../../types/debateEntities';
-import {
-  PLACEHOLDER_FACTS,
-  PLACEHOLDER_FINAL_OPTIONS,
-  PLACEHOLDER_LOGICAL_FALLACIES,
-  PLACEHOLDER_OPPOSITION_PAST,
-  PLACEHOLDER_PROPOSITION_PAST,
-} from './placeholderDebate';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import type {
+  AssembledStatement,
+  DebateScenarioJson,
+  Evidence,
+  Fact,
+  PlayerOpeningStatement,
+  Side,
+  Statement,
+  Target,
+} from '../../types/debateEntities';
+
+export type GamePhase = 'constructive_opponent' | 'assembly' | 'debate_complete';
+
+export type ConstructiveStep =
+  | { kind: 'choose_player_constructive' }
+  | { kind: 'constructive_summary' };
 
 export type RoundKind = 'crossfire' | 'rebuttal';
 
@@ -35,38 +43,86 @@ export interface WorkflowCore {
   finalChoiceId: string | null;
 }
 
-interface WorkflowState extends WorkflowCore {
-  past: WorkflowCore[];
+export interface WorkflowSnapshot {
+  gamePhase: GamePhase;
+  constructiveStep: ConstructiveStep;
+  /** Opposition flow: opponent opening fixed by RNG before the player picks a constructive. */
+  randomOpponentOpeningId: string | null;
+  chosenOpponentOpeningId: string | null;
+  chosenPlayerConstructive: PlayerOpeningStatement | null;
+  assemblyRoundIndex: number;
+  assembly: WorkflowCore;
 }
 
-function statementsForSide(side: Side): Statement[] {
-  return side === 'proposition' ? PLACEHOLDER_PROPOSITION_PAST : PLACEHOLDER_OPPOSITION_PAST;
+interface WorkflowState extends WorkflowSnapshot {
+  past: WorkflowSnapshot[];
 }
 
-function getStatement(side: Side, statementId: string): Statement | undefined {
-  return statementsForSide(side).find((s) => s.id === statementId);
+export function assemblyRoundIdGroups(scenario: DebateScenarioJson): readonly (readonly string[])[] {
+  if (scenario.playerAssemblyRounds && scenario.playerAssemblyRounds.length > 0) {
+    return scenario.playerAssemblyRounds;
+  }
+  return [scenario.assembledStatements.map((a) => a.id)];
 }
 
-function getFact(factId: string): Fact | undefined {
-  return PLACEHOLDER_FACTS.find((f) => f.id === factId);
+export function assembledToStatement(a: AssembledStatement): Statement {
+  return {
+    id: a.id,
+    speakerId: 'player',
+    sentences: a.sentences.map((s) => ({ ...s })),
+  };
+}
+
+function finalsForRound(scenario: DebateScenarioJson, assemblyRoundIndex: number): Statement[] {
+  const groups = assemblyRoundIdGroups(scenario);
+  const ids = new Set(groups[assemblyRoundIndex] ?? []);
+  return scenario.assembledStatements.filter((a) => ids.has(a.id)).map(assembledToStatement);
+}
+
+function statementsForSide(
+  scenario: DebateScenarioJson,
+  chosenPlayerConstructive: PlayerOpeningStatement | null,
+  side: Side,
+): Statement[] {
+  if (side === 'opposition') {
+    return [...scenario.opponentOpening];
+  }
+  if (!chosenPlayerConstructive) return [];
+  return [chosenPlayerConstructive];
+}
+
+function getStatement(
+  scenario: DebateScenarioJson,
+  chosen: PlayerOpeningStatement | null,
+  side: Side,
+  statementId: string,
+): Statement | undefined {
+  return statementsForSide(scenario, chosen, side).find((s) => s.id === statementId);
+}
+
+function getFact(scenario: DebateScenarioJson, factId: string): Fact | undefined {
+  return scenario.facts.find((f) => f.id === factId);
 }
 
 function cloneCore(core: WorkflowCore): WorkflowCore {
   return JSON.parse(JSON.stringify(core)) as WorkflowCore;
 }
 
-function snapshotWorkflow(state: WorkflowState): WorkflowCore {
-  return cloneCore({
-    step: state.step,
-    roundKind: state.roundKind,
-    target: state.target,
-    evidences: state.evidences,
-    roundComplete: state.roundComplete,
-    finalChoiceId: state.finalChoiceId,
-  });
+function snapshotState(state: WorkflowState): WorkflowSnapshot {
+  return {
+    gamePhase: state.gamePhase,
+    constructiveStep: state.constructiveStep,
+    randomOpponentOpeningId: state.randomOpponentOpeningId,
+    chosenOpponentOpeningId: state.chosenOpponentOpeningId,
+    chosenPlayerConstructive: state.chosenPlayerConstructive
+      ? (JSON.parse(JSON.stringify(state.chosenPlayerConstructive)) as PlayerOpeningStatement)
+      : null,
+    assemblyRoundIndex: state.assemblyRoundIndex,
+    assembly: cloneCore(state.assembly),
+  };
 }
 
-function initialCore(): WorkflowCore {
+function initialAssemblyCore(): WorkflowCore {
   return {
     step: { kind: 'round_kind' },
     roundKind: null,
@@ -77,12 +133,31 @@ function initialCore(): WorkflowCore {
   };
 }
 
-const initialState: WorkflowState = {
-  ...initialCore(),
-  past: [],
-};
+function pickRandomOpponentOpeningId(scenario: DebateScenarioJson): string {
+  const openings = scenario.opponentOpening;
+  const i = Math.floor(Math.random() * openings.length);
+  return openings[i]!.id;
+}
+
+function createInitialWorkflowState(scenario: DebateScenarioJson): WorkflowState {
+  const randomOpp =
+    scenario.playerSide === 'opposition' ? pickRandomOpponentOpeningId(scenario) : null;
+  return {
+    gamePhase: 'constructive_opponent',
+    constructiveStep: { kind: 'choose_player_constructive' },
+    randomOpponentOpeningId: randomOpp,
+    chosenOpponentOpeningId: null,
+    chosenPlayerConstructive: null,
+    assemblyRoundIndex: 0,
+    assembly: initialAssemblyCore(),
+    past: [],
+  };
+}
 
 type Action =
+  | { type: 'select_player_constructive'; statementId: string }
+  | { type: 'continue_after_constructive' }
+  | { type: 'continue_after_round_complete' }
   | { type: 'select_round'; value: RoundKind }
   | { type: 'select_target_side'; side: Side }
   | { type: 'select_target_statement'; statementId: string }
@@ -97,51 +172,135 @@ type Action =
   | { type: 'select_final'; statementId: string }
   | { type: 'undo' };
 
-function pushHistory(state: WorkflowState): WorkflowState['past'] {
-  return [...state.past, snapshotWorkflow(state)];
+function pushHistory(state: WorkflowState): WorkflowSnapshot[] {
+  return [...state.past, snapshotState(state)];
 }
 
-function reducer(state: WorkflowState, action: Action): WorkflowState {
+function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateScenarioJson): WorkflowState {
   if (action.type === 'undo') {
     if (state.past.length === 0) return state;
     const restored = state.past[state.past.length - 1];
-    return { ...cloneCore(restored), past: state.past.slice(0, -1) };
+    return {
+      ...restored,
+      chosenPlayerConstructive: restored.chosenPlayerConstructive
+        ? (JSON.parse(JSON.stringify(restored.chosenPlayerConstructive)) as PlayerOpeningStatement)
+        : null,
+      past: state.past.slice(0, -1),
+    };
   }
 
+  if (state.gamePhase === 'constructive_opponent') {
+    switch (action.type) {
+      case 'select_player_constructive': {
+        if (state.constructiveStep.kind !== 'choose_player_constructive') return state;
+        const pc = scenario.playerConstructiveOpenings.find((p) => p.id === action.statementId);
+        if (!pc || !pc.triggerOpeningStatementId) return state;
+        const oppId = scenario.opponentOpening.find((o) => o.id === pc.triggerOpeningStatementId)?.id;
+        if (!oppId) return state;
+
+        if (scenario.playerSide === 'proposition') {
+          return {
+            ...state,
+            past: pushHistory(state),
+            chosenOpponentOpeningId: oppId,
+            chosenPlayerConstructive: JSON.parse(JSON.stringify(pc)) as PlayerOpeningStatement,
+            constructiveStep: { kind: 'constructive_summary' },
+          };
+        }
+
+        if (state.randomOpponentOpeningId !== oppId) return state;
+        return {
+          ...state,
+          past: pushHistory(state),
+          chosenOpponentOpeningId: state.randomOpponentOpeningId,
+          chosenPlayerConstructive: JSON.parse(JSON.stringify(pc)) as PlayerOpeningStatement,
+          constructiveStep: { kind: 'constructive_summary' },
+        };
+      }
+      case 'continue_after_constructive': {
+        if (state.constructiveStep.kind !== 'constructive_summary' || !state.chosenPlayerConstructive) {
+          return state;
+        }
+        return {
+          ...state,
+          past: pushHistory(state),
+          gamePhase: 'assembly',
+          assembly: initialAssemblyCore(),
+        };
+      }
+      default:
+        return state;
+    }
+  }
+
+  if (state.gamePhase === 'debate_complete') {
+    return state;
+  }
+
+  // assembly phase
+  const a = state.assembly;
+  const chosen = state.chosenPlayerConstructive;
+
   switch (action.type) {
-    case 'select_round': {
-      if (state.step.kind !== 'round_kind') return state;
+    case 'continue_after_round_complete': {
+      if (a.step.kind !== 'round_complete') return state;
+      const n = assemblyRoundIdGroups(scenario).length;
+      if (state.assemblyRoundIndex + 1 < n) {
+        return {
+          ...state,
+          past: [],
+          assemblyRoundIndex: state.assemblyRoundIndex + 1,
+          assembly: initialAssemblyCore(),
+        };
+      }
       return {
         ...state,
         past: pushHistory(state),
-        roundKind: action.value,
-        step: { kind: 'target_side' },
+        gamePhase: 'debate_complete',
+      };
+    }
+    case 'select_round': {
+      if (a.step.kind !== 'round_kind') return state;
+      return {
+        ...state,
+        past: pushHistory(state),
+        assembly: {
+          ...a,
+          roundKind: action.value,
+          step: { kind: 'target_side' },
+        },
       };
     }
     case 'select_target_side': {
-      if (state.step.kind !== 'target_side') return state;
+      if (a.step.kind !== 'target_side') return state;
       return {
         ...state,
         past: pushHistory(state),
-        step: { kind: 'target_statements', side: action.side },
+        assembly: {
+          ...a,
+          step: { kind: 'target_statements', side: action.side },
+        },
       };
     }
     case 'select_target_statement': {
-      if (state.step.kind !== 'target_statements') return state;
-      if (!getStatement(state.step.side, action.statementId)) return state;
+      if (a.step.kind !== 'target_statements') return state;
+      if (!getStatement(scenario, chosen, a.step.side, action.statementId)) return state;
       return {
         ...state,
         past: pushHistory(state),
-        step: {
-          kind: 'target_sentences',
-          side: state.step.side,
-          statementId: action.statementId,
+        assembly: {
+          ...a,
+          step: {
+            kind: 'target_sentences',
+            side: a.step.side,
+            statementId: action.statementId,
+          },
         },
       };
     }
     case 'select_target_sentence': {
-      if (state.step.kind !== 'target_sentences') return state;
-      const st = getStatement(state.step.side, state.step.statementId);
+      if (a.step.kind !== 'target_sentences') return state;
+      const st = getStatement(scenario, chosen, a.step.side, a.step.statementId);
       if (!st || !st.sentences.some((s) => s.id === action.sentenceId)) return state;
       const newTarget: Target = {
         type: 'sentence',
@@ -151,56 +310,74 @@ function reducer(state: WorkflowState, action: Action): WorkflowState {
       return {
         ...state,
         past: pushHistory(state),
-        target: newTarget,
-        step: { kind: 'evidence_category' },
+        assembly: {
+          ...a,
+          target: newTarget,
+          step: { kind: 'evidence_category' },
+        },
       };
     }
     case 'select_evidence_category': {
-      if (state.step.kind !== 'evidence_category') return state;
+      if (a.step.kind !== 'evidence_category') return state;
       const past = pushHistory(state);
       switch (action.category) {
         case 'proposition':
           return {
             ...state,
             past,
-            step: { kind: 'evidence_statements', side: 'proposition' },
+            assembly: {
+              ...a,
+              step: { kind: 'evidence_statements', side: 'proposition' },
+            },
           };
         case 'opposition':
           return {
             ...state,
             past,
-            step: { kind: 'evidence_statements', side: 'opposition' },
+            assembly: {
+              ...a,
+              step: { kind: 'evidence_statements', side: 'opposition' },
+            },
           };
         case 'facts':
           return {
             ...state,
             past,
-            step: { kind: 'evidence_facts' },
+            assembly: {
+              ...a,
+              step: { kind: 'evidence_facts' },
+            },
           };
         case 'logical_fallacies':
           return {
             ...state,
             past,
-            step: { kind: 'evidence_fallacies' },
+            assembly: {
+              ...a,
+              step: { kind: 'evidence_fallacies' },
+            },
           };
       }
     }
     case 'select_evidence_statement': {
-      if (state.step.kind !== 'evidence_statements') return state;
-      if (!getStatement(state.step.side, action.statementId)) return state;
+      if (a.step.kind !== 'evidence_statements') return state;
+      if (!getStatement(scenario, chosen, a.step.side, action.statementId)) return state;
       return {
         ...state,
         past: pushHistory(state),
-        step: {
-          kind: 'evidence_sentences',
-          side: state.step.side,
-          statementId: action.statementId,
+        assembly: {
+          ...a,
+          step: {
+            kind: 'evidence_sentences',
+            side: a.step.side,
+            statementId: action.statementId,
+          },
         },
       };
     }
     case 'select_evidence_sentence': {
-      if (state.step.kind !== 'evidence_sentences') return state;
-      const st = getStatement(state.step.side, state.step.statementId);
+      if (a.step.kind !== 'evidence_sentences') return state;
+      const st = getStatement(scenario, chosen, a.step.side, a.step.statementId);
       if (!st || !st.sentences.some((s) => s.id === action.sentenceId)) return state;
       const ev: Evidence = {
         type: 'sentence',
@@ -210,22 +387,28 @@ function reducer(state: WorkflowState, action: Action): WorkflowState {
       return {
         ...state,
         past: pushHistory(state),
-        evidences: [...state.evidences, ev],
-        step: { kind: 'evidence_category' },
+        assembly: {
+          ...a,
+          evidences: [...a.evidences, ev],
+          step: { kind: 'evidence_category' },
+        },
       };
     }
     case 'select_evidence_fact': {
-      if (state.step.kind !== 'evidence_facts') return state;
-      if (!getFact(action.factId)) return state;
+      if (a.step.kind !== 'evidence_facts') return state;
+      if (!getFact(scenario, action.factId)) return state;
       return {
         ...state,
         past: pushHistory(state),
-        step: { kind: 'evidence_fact_sentences', factId: action.factId },
+        assembly: {
+          ...a,
+          step: { kind: 'evidence_fact_sentences', factId: action.factId },
+        },
       };
     }
     case 'select_evidence_fact_sentence': {
-      if (state.step.kind !== 'evidence_fact_sentences') return state;
-      const fact = getFact(state.step.factId);
+      if (a.step.kind !== 'evidence_fact_sentences') return state;
+      const fact = getFact(scenario, a.step.factId);
       if (!fact || !fact.sentences.some((s) => s.id === action.sentenceId)) return state;
       const ev: Evidence = {
         type: 'sentence',
@@ -235,13 +418,16 @@ function reducer(state: WorkflowState, action: Action): WorkflowState {
       return {
         ...state,
         past: pushHistory(state),
-        evidences: [...state.evidences, ev],
-        step: { kind: 'evidence_category' },
+        assembly: {
+          ...a,
+          evidences: [...a.evidences, ev],
+          step: { kind: 'evidence_category' },
+        },
       };
     }
     case 'select_evidence_fallacy': {
-      if (state.step.kind !== 'evidence_fallacies') return state;
-      if (!PLACEHOLDER_LOGICAL_FALLACIES.some((f) => f.id === action.fallacyId)) return state;
+      if (a.step.kind !== 'evidence_fallacies') return state;
+      if (!scenario.logicalFallacies.some((f) => f.id === action.fallacyId)) return state;
       const ev: Evidence = {
         type: 'logical_fallacy',
         logicalFallacyId: action.fallacyId,
@@ -249,27 +435,37 @@ function reducer(state: WorkflowState, action: Action): WorkflowState {
       return {
         ...state,
         past: pushHistory(state),
-        evidences: [...state.evidences, ev],
-        step: { kind: 'evidence_category' },
+        assembly: {
+          ...a,
+          evidences: [...a.evidences, ev],
+          step: { kind: 'evidence_category' },
+        },
       };
     }
     case 'submit_evidences': {
-      if (state.step.kind !== 'evidence_category' || state.evidences.length < 1) return state;
+      if (a.step.kind !== 'evidence_category' || a.evidences.length < 1) return state;
       return {
         ...state,
         past: pushHistory(state),
-        step: { kind: 'final_statements' },
+        assembly: {
+          ...a,
+          step: { kind: 'final_statements' },
+        },
       };
     }
     case 'select_final': {
-      if (state.step.kind !== 'final_statements') return state;
-      if (!PLACEHOLDER_FINAL_OPTIONS.some((s) => s.id === action.statementId)) return state;
+      if (a.step.kind !== 'final_statements') return state;
+      const finals = finalsForRound(scenario, state.assemblyRoundIndex);
+      if (!finals.some((s) => s.id === action.statementId)) return state;
       return {
         ...state,
         past: pushHistory(state),
-        finalChoiceId: action.statementId,
-        step: { kind: 'round_complete' },
-        roundComplete: true,
+        assembly: {
+          ...a,
+          finalChoiceId: action.statementId,
+          step: { kind: 'round_complete' },
+          roundComplete: true,
+        },
       };
     }
     default:
@@ -277,15 +473,20 @@ function reducer(state: WorkflowState, action: Action): WorkflowState {
   }
 }
 
-function sentenceLabel(sourceId: string, sentenceId: string): string {
+function sentenceLabel(
+  scenario: DebateScenarioJson,
+  chosen: PlayerOpeningStatement | null,
+  sourceId: string,
+  sentenceId: string,
+): string {
   for (const side of ['proposition', 'opposition'] as const) {
-    const st = getStatement(side, sourceId);
+    const st = getStatement(scenario, chosen, side, sourceId);
     if (st) {
       const sent = st.sentences.find((s) => s.id === sentenceId);
       if (sent) return sent.text;
     }
   }
-  for (const fact of PLACEHOLDER_FACTS) {
+  for (const fact of scenario.facts) {
     if (fact.id === sourceId) {
       const sent = fact.sentences.find((s) => s.id === sentenceId);
       if (sent) return sent.text;
@@ -294,30 +495,56 @@ function sentenceLabel(sourceId: string, sentenceId: string): string {
   return sentenceId;
 }
 
-function statementTitle(st: Statement): string {
+export function statementTitle(st: Statement): string {
   const first = st.sentences[0]?.text ?? st.id;
   return first.length > 80 ? `${first.slice(0, 77)}…` : first;
 }
 
-export function useTrialRoundWorkflow() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
+  const scenarioRef = useRef(scenario);
+  scenarioRef.current = scenario;
+
+  const [state, setState] = useState<WorkflowState>(() => createInitialWorkflowState(scenario));
+
+  const dispatch = useCallback((action: Action) => {
+    setState((prev) => reduceWorkflow(prev, action, scenarioRef.current));
+  }, []);
 
   const canUndo = state.past.length > 0;
 
+  const assemblyRoundCount = assemblyRoundIdGroups(scenario).length;
+  const hasMoreAssemblyRoundsAfterComplete =
+    state.gamePhase === 'assembly' &&
+    state.assembly.step.kind === 'round_complete' &&
+    state.assemblyRoundIndex + 1 < assemblyRoundCount;
+
   const wizardMessage = useMemo(() => {
-    switch (state.step.kind) {
+    if (state.gamePhase === 'constructive_opponent') {
+      if (state.constructiveStep.kind === 'choose_player_constructive') {
+        if (scenario.playerSide === 'proposition') {
+          return 'Choose your constructive opening. The matching opponent line will be set for this debate.';
+        }
+        return "Your opponent's opening was drawn at random (see Feedback). Choose your constructive response.";
+      }
+      return 'Review both opening lines. Continue when ready for the assembly round.';
+    }
+    if (state.gamePhase === 'debate_complete') {
+      return 'Debate complete.';
+    }
+    const step = state.assembly.step;
+    switch (step.kind) {
       case 'round_kind':
         return 'Select Crossfire or Rebuttal for this round.';
       case 'target_side':
         return 'Choose a target side: Proposition or Opposition.';
       case 'target_statements':
-        return `Pick a statement from the ${state.step.side} side.`;
+        return `Pick a statement from the ${step.side} side.`;
       case 'target_sentences':
         return 'Select the sentence you are targeting.';
       case 'evidence_category':
         return 'Select one or more evidences. Pick a category, then complete a selection. Submit when done.';
       case 'evidence_statements':
-        return `Choose a ${state.step.side} statement to cite as evidence.`;
+        return `Choose a ${step.side} statement to cite as evidence.`;
       case 'evidence_sentences':
         return 'Pick the sentence that supports your evidence.';
       case 'evidence_facts':
@@ -329,60 +556,117 @@ export function useTrialRoundWorkflow() {
       case 'final_statements':
         return 'Choose one closing statement to end the round.';
       case 'round_complete':
-        return 'Round complete.';
+        return hasMoreAssemblyRoundsAfterComplete
+          ? 'Round complete. Continue to the next assembly round.'
+          : 'Round complete. Continue to finish the debate.';
       default:
         return '';
     }
-  }, [state.step]);
+  }, [
+    state.gamePhase,
+    state.constructiveStep,
+    state.assembly.step,
+    hasMoreAssemblyRoundsAfterComplete,
+    scenario.playerSide,
+  ]);
+
+  const playerConstructiveChoices = useMemo((): PlayerOpeningStatement[] => {
+    if (scenario.playerSide === 'opposition' && state.randomOpponentOpeningId) {
+      return scenario.playerConstructiveOpenings.filter(
+        (p) => p.triggerOpeningStatementId === state.randomOpponentOpeningId,
+      );
+    }
+    return [...scenario.playerConstructiveOpenings];
+  }, [scenario.playerConstructiveOpenings, scenario.playerSide, state.randomOpponentOpeningId]);
 
   const targetSummary = useMemo(() => {
-    if (!state.target || state.target.type !== 'sentence') return null;
-    return sentenceLabel(state.target.sourceId, state.target.sentenceId);
-  }, [state.target]);
+    const t = state.assembly.target;
+    if (!t || t.type !== 'sentence') return null;
+    return sentenceLabel(scenario, state.chosenPlayerConstructive, t.sourceId, t.sentenceId);
+  }, [state.assembly.target, scenario, state.chosenPlayerConstructive]);
 
   const evidenceSummaries = useMemo(() => {
-    return state.evidences.map((ev, i) => {
+    return state.assembly.evidences.map((ev, i) => {
       if (ev.type === 'logical_fallacy') {
-        const f = PLACEHOLDER_LOGICAL_FALLACIES.find((x) => x.id === ev.logicalFallacyId);
+        const f = scenario.logicalFallacies.find((x) => x.id === ev.logicalFallacyId);
         return { key: `${i}-${ev.logicalFallacyId}`, text: f?.label ?? ev.logicalFallacyId };
       }
       return {
         key: `${i}-${ev.sourceId}-${ev.sentenceId}`,
-        text: sentenceLabel(ev.sourceId, ev.sentenceId),
+        text: sentenceLabel(scenario, state.chosenPlayerConstructive, ev.sourceId, ev.sentenceId),
       };
     });
-  }, [state.evidences]);
+  }, [state.assembly.evidences, scenario, state.chosenPlayerConstructive]);
 
   const finalChoice = useMemo((): Statement | null => {
-    if (!state.finalChoiceId) return null;
-    return PLACEHOLDER_FINAL_OPTIONS.find((s) => s.id === state.finalChoiceId) ?? null;
-  }, [state.finalChoiceId]);
+    const id = state.assembly.finalChoiceId;
+    if (!id) return null;
+    const assembled = scenario.assembledStatements.find((x) => x.id === id);
+    return assembled ? assembledToStatement(assembled) : null;
+  }, [state.assembly.finalChoiceId, scenario.assembledStatements]);
+
+  const finalAssembledChoice = useMemo((): AssembledStatement | null => {
+    const id = state.assembly.finalChoiceId;
+    if (!id) return null;
+    return scenario.assembledStatements.find((x) => x.id === id) ?? null;
+  }, [state.assembly.finalChoiceId, scenario.assembledStatements]);
+
+  const finalOptions = useMemo(
+    () => finalsForRound(scenario, state.assemblyRoundIndex),
+    [scenario, state.assemblyRoundIndex],
+  );
 
   const canSubmitEvidences =
-    state.step.kind === 'evidence_category' && state.evidences.length >= 1;
+    state.gamePhase === 'assembly' &&
+    state.assembly.step.kind === 'evidence_category' &&
+    state.assembly.evidences.length >= 1;
 
-  const undo = useCallback(() => dispatch({ type: 'undo' }), []);
+  const undo = useCallback(() => dispatch({ type: 'undo' }), [dispatch]);
+
+  const statementsForSideCb = useCallback(
+    (side: Side) => statementsForSide(scenario, state.chosenPlayerConstructive, side),
+    [scenario, state.chosenPlayerConstructive],
+  );
+
+  const getStatementCb = useCallback(
+    (side: Side, statementId: string) => getStatement(scenario, state.chosenPlayerConstructive, side, statementId),
+    [scenario, state.chosenPlayerConstructive],
+  );
+
+  const getFactCb = useCallback((factId: string) => getFact(scenario, factId), [scenario]);
 
   return {
-    step: state.step,
-    roundKind: state.roundKind,
-    target: state.target,
+    scenario,
+    gamePhase: state.gamePhase,
+    constructiveStep: state.constructiveStep,
+    randomOpponentOpeningId: state.randomOpponentOpeningId,
+    playerConstructiveChoices,
+    chosenOpponentOpeningId: state.chosenOpponentOpeningId,
+    chosenPlayerConstructive: state.chosenPlayerConstructive,
+    assemblyRoundIndex: state.assemblyRoundIndex,
+    assemblyRoundCount,
+    isDebateComplete: state.gamePhase === 'debate_complete',
+    hasMoreAssemblyRoundsAfterComplete,
+    step: state.assembly.step,
+    roundKind: state.assembly.roundKind,
+    target: state.assembly.target,
     targetSummary,
-    evidences: state.evidences,
+    evidences: state.assembly.evidences,
     evidenceSummaries,
-    roundComplete: state.roundComplete,
+    roundComplete: state.assembly.roundComplete,
     finalChoice,
+    finalAssembledChoice,
     wizardMessage,
     canUndo,
     undo,
     canSubmitEvidences,
     dispatch,
-    statementsForSide,
-    getStatement,
-    getFact,
-    logicalFallacies: PLACEHOLDER_LOGICAL_FALLACIES,
-    facts: PLACEHOLDER_FACTS,
-    finalOptions: PLACEHOLDER_FINAL_OPTIONS,
+    statementsForSide: statementsForSideCb,
+    getStatement: getStatementCb,
+    getFact: getFactCb,
+    logicalFallacies: scenario.logicalFallacies,
+    facts: scenario.facts,
+    finalOptions,
     statementTitle,
   };
 }
