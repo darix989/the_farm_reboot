@@ -50,6 +50,10 @@ export interface WorkflowSnapshot {
   randomOpponentOpeningId: string | null;
   chosenOpponentOpeningId: string | null;
   chosenPlayerConstructive: PlayerOpeningStatement | null;
+  /** Statements on the player’s debate side that have occurred this game (constructive + past finals). */
+  playerStatementHistory: Statement[];
+  /** Opponent statements that have occurred (used opening + scripted rebuttals as rounds advance). */
+  opponentStatementHistory: Statement[];
   assemblyRoundIndex: number;
   assembly: WorkflowCore;
 }
@@ -79,25 +83,60 @@ function finalsForRound(scenario: DebateScenarioJson, assemblyRoundIndex: number
   return scenario.assembledStatements.filter((a) => ids.has(a.id)).map(assembledToStatement);
 }
 
-function statementsForSide(
-  scenario: DebateScenarioJson,
-  chosenPlayerConstructive: PlayerOpeningStatement | null,
-  side: Side,
-): Statement[] {
-  if (side === 'opposition') {
-    return [...scenario.opponentOpening];
-  }
-  if (!chosenPlayerConstructive) return [];
-  return [chosenPlayerConstructive];
+interface StatementPools {
+  player: Statement[];
+  opponent: Statement[];
 }
 
-function getStatement(
-  scenario: DebateScenarioJson,
-  chosen: PlayerOpeningStatement | null,
+function statementsForSideFromPools(pools: StatementPools, side: Side): Statement[] {
+  return side === 'opposition' ? pools.opponent : pools.player;
+}
+
+function getStatementFromPools(
+  pools: StatementPools,
   side: Side,
   statementId: string,
 ): Statement | undefined {
-  return statementsForSide(scenario, chosen, side).find((s) => s.id === statementId);
+  return statementsForSideFromPools(pools, side).find((s) => s.id === statementId);
+}
+
+function poolsFromState(state: WorkflowState): StatementPools {
+  return {
+    player: state.playerStatementHistory,
+    opponent: state.opponentStatementHistory,
+  };
+}
+
+function cloneStatementList(list: Statement[]): Statement[] {
+  return JSON.parse(JSON.stringify(list)) as Statement[];
+}
+
+/** After a completed assembly round: append player final + optional opponent rebuttal for this round index. */
+function appendRoundStatementHistory(
+  state: WorkflowState,
+  scenario: DebateScenarioJson,
+): Pick<WorkflowState, 'playerStatementHistory' | 'opponentStatementHistory'> {
+  const id = state.assembly.finalChoiceId;
+  if (!id) {
+    return {
+      playerStatementHistory: state.playerStatementHistory,
+      opponentStatementHistory: state.opponentStatementHistory,
+    };
+  }
+  const assembled = scenario.assembledStatements.find((x) => x.id === id);
+  if (!assembled) {
+    return {
+      playerStatementHistory: state.playerStatementHistory,
+      opponentStatementHistory: state.opponentStatementHistory,
+    };
+  }
+  const playerStatementHistory = [...state.playerStatementHistory, assembledToStatement(assembled)];
+  const rebuttal = scenario.oppositionRebuttalStatements?.[state.assemblyRoundIndex];
+  const opponentStatementHistory =
+    rebuttal != null
+      ? [...state.opponentStatementHistory, JSON.parse(JSON.stringify(rebuttal)) as Statement]
+      : state.opponentStatementHistory;
+  return { playerStatementHistory, opponentStatementHistory };
 }
 
 function getFact(scenario: DebateScenarioJson, factId: string): Fact | undefined {
@@ -117,6 +156,8 @@ function snapshotState(state: WorkflowState): WorkflowSnapshot {
     chosenPlayerConstructive: state.chosenPlayerConstructive
       ? (JSON.parse(JSON.stringify(state.chosenPlayerConstructive)) as PlayerOpeningStatement)
       : null,
+    playerStatementHistory: cloneStatementList(state.playerStatementHistory),
+    opponentStatementHistory: cloneStatementList(state.opponentStatementHistory),
     assemblyRoundIndex: state.assemblyRoundIndex,
     assembly: cloneCore(state.assembly),
   };
@@ -148,6 +189,8 @@ function createInitialWorkflowState(scenario: DebateScenarioJson): WorkflowState
     randomOpponentOpeningId: randomOpp,
     chosenOpponentOpeningId: null,
     chosenPlayerConstructive: null,
+    playerStatementHistory: [],
+    opponentStatementHistory: [],
     assemblyRoundIndex: 0,
     assembly: initialAssemblyCore(),
     past: [],
@@ -185,6 +228,8 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
       chosenPlayerConstructive: restored.chosenPlayerConstructive
         ? (JSON.parse(JSON.stringify(restored.chosenPlayerConstructive)) as PlayerOpeningStatement)
         : null,
+      playerStatementHistory: cloneStatementList(restored.playerStatementHistory),
+      opponentStatementHistory: cloneStatementList(restored.opponentStatementHistory),
       past: state.past.slice(0, -1),
     };
   }
@@ -221,10 +266,20 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
         if (state.constructiveStep.kind !== 'constructive_summary' || !state.chosenPlayerConstructive) {
           return state;
         }
+        const oppOpening = scenario.opponentOpening.find((o) => o.id === state.chosenOpponentOpeningId);
+        if (!oppOpening) return state;
+        const playerStatementHistory: Statement[] = [
+          JSON.parse(JSON.stringify(state.chosenPlayerConstructive)) as PlayerOpeningStatement,
+        ];
+        const opponentStatementHistory: Statement[] = [
+          JSON.parse(JSON.stringify(oppOpening)) as Statement,
+        ];
         return {
           ...state,
           past: pushHistory(state),
           gamePhase: 'assembly',
+          playerStatementHistory,
+          opponentStatementHistory,
           assembly: initialAssemblyCore(),
         };
       }
@@ -239,16 +294,22 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
 
   // assembly phase
   const a = state.assembly;
-  const chosen = state.chosenPlayerConstructive;
+  const pools = poolsFromState(state);
 
   switch (action.type) {
     case 'continue_after_round_complete': {
       if (a.step.kind !== 'round_complete') return state;
+      const { playerStatementHistory, opponentStatementHistory } = appendRoundStatementHistory(
+        state,
+        scenario,
+      );
       const n = assemblyRoundIdGroups(scenario).length;
       if (state.assemblyRoundIndex + 1 < n) {
         return {
           ...state,
           past: [],
+          playerStatementHistory,
+          opponentStatementHistory,
           assemblyRoundIndex: state.assemblyRoundIndex + 1,
           assembly: initialAssemblyCore(),
         };
@@ -256,6 +317,8 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
       return {
         ...state,
         past: pushHistory(state),
+        playerStatementHistory,
+        opponentStatementHistory,
         gamePhase: 'debate_complete',
       };
     }
@@ -284,7 +347,7 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
     }
     case 'select_target_statement': {
       if (a.step.kind !== 'target_statements') return state;
-      if (!getStatement(scenario, chosen, a.step.side, action.statementId)) return state;
+      if (!getStatementFromPools(pools, a.step.side, action.statementId)) return state;
       return {
         ...state,
         past: pushHistory(state),
@@ -300,7 +363,7 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
     }
     case 'select_target_sentence': {
       if (a.step.kind !== 'target_sentences') return state;
-      const st = getStatement(scenario, chosen, a.step.side, a.step.statementId);
+      const st = getStatementFromPools(pools, a.step.side, a.step.statementId);
       if (!st || !st.sentences.some((s) => s.id === action.sentenceId)) return state;
       const newTarget: Target = {
         type: 'sentence',
@@ -361,7 +424,7 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
     }
     case 'select_evidence_statement': {
       if (a.step.kind !== 'evidence_statements') return state;
-      if (!getStatement(scenario, chosen, a.step.side, action.statementId)) return state;
+      if (!getStatementFromPools(pools, a.step.side, action.statementId)) return state;
       return {
         ...state,
         past: pushHistory(state),
@@ -377,7 +440,7 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
     }
     case 'select_evidence_sentence': {
       if (a.step.kind !== 'evidence_sentences') return state;
-      const st = getStatement(scenario, chosen, a.step.side, a.step.statementId);
+      const st = getStatementFromPools(pools, a.step.side, a.step.statementId);
       if (!st || !st.sentences.some((s) => s.id === action.sentenceId)) return state;
       const ev: Evidence = {
         type: 'sentence',
@@ -475,12 +538,12 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
 
 function sentenceLabel(
   scenario: DebateScenarioJson,
-  chosen: PlayerOpeningStatement | null,
+  pools: StatementPools,
   sourceId: string,
   sentenceId: string,
 ): string {
   for (const side of ['proposition', 'opposition'] as const) {
-    const st = getStatement(scenario, chosen, side, sourceId);
+    const st = getStatementFromPools(pools, side, sourceId);
     if (st) {
       const sent = st.sentences.find((s) => s.id === sentenceId);
       if (sent) return sent.text;
@@ -579,11 +642,19 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     return [...scenario.playerConstructiveOpenings];
   }, [scenario.playerConstructiveOpenings, scenario.playerSide, state.randomOpponentOpeningId]);
 
+  const statementPools = useMemo(
+    (): StatementPools => ({
+      player: state.playerStatementHistory,
+      opponent: state.opponentStatementHistory,
+    }),
+    [state.playerStatementHistory, state.opponentStatementHistory],
+  );
+
   const targetSummary = useMemo(() => {
     const t = state.assembly.target;
     if (!t || t.type !== 'sentence') return null;
-    return sentenceLabel(scenario, state.chosenPlayerConstructive, t.sourceId, t.sentenceId);
-  }, [state.assembly.target, scenario, state.chosenPlayerConstructive]);
+    return sentenceLabel(scenario, statementPools, t.sourceId, t.sentenceId);
+  }, [state.assembly.target, scenario, statementPools]);
 
   const evidenceSummaries = useMemo(() => {
     return state.assembly.evidences.map((ev, i) => {
@@ -593,10 +664,10 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
       }
       return {
         key: `${i}-${ev.sourceId}-${ev.sentenceId}`,
-        text: sentenceLabel(scenario, state.chosenPlayerConstructive, ev.sourceId, ev.sentenceId),
+        text: sentenceLabel(scenario, statementPools, ev.sourceId, ev.sentenceId),
       };
     });
-  }, [state.assembly.evidences, scenario, state.chosenPlayerConstructive]);
+  }, [state.assembly.evidences, scenario, statementPools]);
 
   const finalChoice = useMemo((): Statement | null => {
     const id = state.assembly.finalChoiceId;
@@ -624,13 +695,13 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
   const undo = useCallback(() => dispatch({ type: 'undo' }), [dispatch]);
 
   const statementsForSideCb = useCallback(
-    (side: Side) => statementsForSide(scenario, state.chosenPlayerConstructive, side),
-    [scenario, state.chosenPlayerConstructive],
+    (side: Side) => statementsForSideFromPools(statementPools, side),
+    [statementPools],
   );
 
   const getStatementCb = useCallback(
-    (side: Side, statementId: string) => getStatement(scenario, state.chosenPlayerConstructive, side, statementId),
-    [scenario, state.chosenPlayerConstructive],
+    (side: Side, statementId: string) => getStatementFromPools(statementPools, side, statementId),
+    [statementPools],
   );
 
   const getFactCb = useCallback((factId: string) => getFact(scenario, factId), [scenario]);
@@ -643,6 +714,8 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     playerConstructiveChoices,
     chosenOpponentOpeningId: state.chosenOpponentOpeningId,
     chosenPlayerConstructive: state.chosenPlayerConstructive,
+    playerStatementHistory: state.playerStatementHistory,
+    opponentStatementHistory: state.opponentStatementHistory,
     assemblyRoundIndex: state.assemblyRoundIndex,
     assemblyRoundCount,
     isDebateComplete: state.gamePhase === 'debate_complete',

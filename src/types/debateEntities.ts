@@ -157,6 +157,11 @@ export interface DebateScenarioJson {
     facts: Fact[];
     assembledStatements: AssembledStatement[];
     /**
+     * Opponent lines spoken after each player assembly round, in order.
+     * Index `i` is revealed when moving to assembly round `i + 1` (after round `i` completes).
+     */
+    oppositionRebuttalStatements?: Statement[];
+    /**
      * Each entry lists `assembledStatements` ids allowed as finals that assembly round.
      * If omitted, one round is implied: all assembled statements in a single round.
      */
