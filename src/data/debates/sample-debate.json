@@ -1,226 +1,266 @@
 {
-  "id": "debate-pilot-policy",
-  "introduction": "The jury must decide whether a phased public policy pilot should expand nationwide, given disputed costs and benefits.",
-  "playerSide": "proposition",
-  "opponentOpening": {
-    "id": "stmt-opp-opening",
-    "speakerId": "speaker-opposition",
-    "role": "negative",
-    "sentences": [
-      {
-        "id": "s-oo-1",
-        "text": "The opposition rejects the claim of net benefit; the pilot’s gains are anecdotal, not proven at scale.",
-        "logicalFallacies": []
-      },
-      {
-        "id": "s-oo-2",
-        "text": "Costs are understated and risks to vulnerable groups are being brushed aside for political convenience.",
-        "logicalFallacies": []
-      }
+    "id": "debate-pilot-policy",
+    "introduction": "The jury must decide whether a phased public policy pilot should expand nationwide, given disputed costs and benefits.",
+    "playerSide": "proposition",
+    "opponentOpening": [
+        {
+            "id": "stmt-opp-opening-1",
+            "speakerId": "speaker-opposition",
+            "role": "negative",
+            "sentences": [
+                {
+                    "id": "s-oo1-1",
+                    "text": "The opposition rejects the claim of net benefit; the pilot’s gains are anecdotal, not proven at scale.",
+                    "logicalFallacies": []
+                },
+                {
+                    "id": "s-oo1-2",
+                    "text": "Costs are understated and risks to vulnerable groups are being brushed aside for political convenience.",
+                    "logicalFallacies": []
+                }
+            ]
+        },
+        {
+            "id": "stmt-opp-opening-2",
+            "speakerId": "speaker-opposition",
+            "role": "negative",
+            "sentences": [
+                {
+                    "id": "s-oo2-1",
+                    "text": "We dispute that the pilot demonstrates a durable upside; short-term signals are being mistaken for nationwide proof.",
+                    "logicalFallacies": []
+                },
+                {
+                    "id": "s-oo2-2",
+                    "text": "The fiscal picture is rosier on paper than in practice, and the burden would fall hardest on those least able to absorb a misstep.",
+                    "logicalFallacies": []
+                }
+            ]
+        },
+        {
+            "id": "stmt-opp-opening-3",
+            "speakerId": "speaker-opposition",
+            "role": "negative",
+            "sentences": [
+                {
+                    "id": "s-oo3-1",
+                    "text": "Net benefit has not been established; selective success stories cannot substitute for evidence that holds under full rollout.",
+                    "logicalFallacies": []
+                },
+                {
+                    "id": "s-oo3-2",
+                    "text": "Downstream costs and harms to at-risk populations are minimized while the timetable is driven by optics, not careful review.",
+                    "logicalFallacies": []
+                }
+            ]
+        }
+    ],
+    "playerConstructiveOpenings": [
+        {
+            "id": "stmt-pc-a",
+            "triggerOpeningStatementId": "stmt-opp-opening-1",
+            "speakerId": "speaker-proposition",
+            "role": "affirmative",
+            "sentences": [
+                {
+                    "id": "s-pca-1",
+                    "text": "We affirm the policy improves outcomes for the majority when implemented with the safeguards we outline.",
+                    "logicalFallacies": []
+                }
+            ]
+        },
+        {
+            "id": "stmt-pc-b",
+            "triggerOpeningStatementId": "stmt-opp-opening-2",
+            "speakerId": "speaker-proposition",
+            "role": "affirmative",
+            "sentences": [
+                {
+                    "id": "s-pcb-1",
+                    "text": "The pilot was voluntary, well-monitored, and showed measurable gains in participation and stability.",
+                    "logicalFallacies": []
+                },
+                {
+                    "id": "s-pcb-2",
+                    "text": "Expansion is the responsible next step, with funding tied to independent review milestones.",
+                    "logicalFallacies": []
+                }
+            ]
+        },
+        {
+            "id": "stmt-pc-c",
+            "triggerOpeningStatementId": "stmt-opp-opening-3",
+            "speakerId": "speaker-proposition",
+            "role": "affirmative",
+            "sentences": [
+                {
+                    "id": "s-pcc-1",
+                    "text": "Opponents ignore twelve thousand households of evidence and independent fiscal review.",
+                    "logicalFallacies": []
+                },
+                {
+                    "id": "s-pcc-2",
+                    "text": "We propose phased rollout, strict eligibility audits, and a public dashboard so harm is visible early.",
+                    "logicalFallacies": []
+                },
+                {
+                    "id": "s-pcc-3",
+                    "text": "Rejecting expansion now would strand proven gains and surrender leadership on a solvable problem.",
+                    "logicalFallacies": []
+                }
+            ]
+        }
+    ],
+    "logicalFallacies": [
+        {
+            "id": "fallacy-strawman",
+            "label": "Straw man",
+            "description": "Misrepresenting an argument to make it easier to attack."
+        },
+        {
+            "id": "fallacy-ad-hominem",
+            "label": "Ad hominem",
+            "description": "Attacking the person instead of the argument."
+        },
+        {
+            "id": "fallacy-false-dilemma",
+            "label": "False dilemma",
+            "description": "Presenting only two options when more exist."
+        }
+    ],
+    "facts": [
+        {
+            "id": "fact-1",
+            "speakerId": "moderator",
+            "sentences": [
+                {
+                    "id": "fs-1-1",
+                    "text": "Participation in the pilot was voluntary.",
+                    "logicalFallacies": []
+                },
+                {
+                    "id": "fs-1-2",
+                    "text": "Sample size was twelve thousand households.",
+                    "logicalFallacies": []
+                }
+            ]
+        },
+        {
+            "id": "fact-2",
+            "speakerId": "moderator",
+            "sentences": [
+                {
+                    "id": "fs-2-1",
+                    "text": "The interim report was published in March.",
+                    "logicalFallacies": []
+                }
+            ]
+        }
+    ],
+    "assembledStatements": [
+        {
+            "id": "assembled-rebuttal-weak",
+            "target": {
+                "type": "sentence",
+                "sourceId": "stmt-opp-opening-1",
+                "sentenceId": "s-oo1-1"
+            },
+            "evidences": [
+                {
+                    "type": "sentence",
+                    "sourceId": "fact-1",
+                    "sentenceId": "fs-1-2"
+                },
+                {
+                    "type": "logical_fallacy",
+                    "logicalFallacyId": "fallacy-strawman"
+                }
+            ],
+            "sentences": [
+                {
+                    "id": "as-w-1",
+                    "text": "My opponent’s dismissal ignores the scale of the pilot; calling twelve thousand households “anecdotal” misstates what we measured.",
+                    "logicalFallacies": []
+                }
+            ],
+            "impact": 8
+        },
+        {
+            "id": "assembled-rebuttal-solid",
+            "target": {
+                "type": "sentence",
+                "sourceId": "stmt-opp-opening-1",
+                "sentenceId": "s-oo1-1"
+            },
+            "evidences": [
+                {
+                    "type": "sentence",
+                    "sourceId": "fact-1",
+                    "sentenceId": "fs-1-2"
+                },
+                {
+                    "type": "logical_fallacy",
+                    "logicalFallacyId": "fallacy-strawman"
+                }
+            ],
+            "sentences": [
+                {
+                    "id": "as-s-1",
+                    "text": "The opposition frames our evidence as anecdotal, but the pilot covered twelve thousand voluntary households—hardly a stray sample.",
+                    "logicalFallacies": []
+                },
+                {
+                    "id": "as-s-2",
+                    "text": "That is a straw man: we claim phased, audited expansion, not blind faith in a single headline number.",
+                    "logicalFallacies": [
+                        {
+                            "id": "fallacy-strawman",
+                            "label": "Straw man",
+                            "description": "Misrepresenting an argument to make it easier to attack."
+                        }
+                    ]
+                }
+            ],
+            "impact": 22
+        },
+        {
+            "id": "assembled-rebuttal-strong",
+            "target": {
+                "type": "sentence",
+                "sourceId": "stmt-opp-opening-1",
+                "sentenceId": "s-oo1-1"
+            },
+            "evidences": [
+                {
+                    "type": "sentence",
+                    "sourceId": "fact-1",
+                    "sentenceId": "fs-1-2"
+                },
+                {
+                    "type": "logical_fallacy",
+                    "logicalFallacyId": "fallacy-strawman"
+                }
+            ],
+            "sentences": [
+                {
+                    "id": "as-st-1",
+                    "text": "Twelve thousand voluntary participants are not anecdotes; they are the core dataset the March report summarizes.",
+                    "logicalFallacies": []
+                },
+                {
+                    "id": "as-st-2",
+                    "text": "To label that scale “unproven” while refusing comparable evidence on harm is a straw man—and it avoids the actual rollout safeguards we propose.",
+                    "logicalFallacies": [
+                        {
+                            "id": "fallacy-strawman",
+                            "label": "Straw man",
+                            "description": "Misrepresenting an argument to make it easier to attack."
+                        }
+                    ]
+                }
+            ],
+            "impact": 38
+        }
     ]
-  },
-  "playerConstructiveOpenings": [
-    {
-      "id": "stmt-pc-a",
-      "speakerId": "speaker-proposition",
-      "role": "affirmative",
-      "sentences": [
-        {
-          "id": "s-pca-1",
-          "text": "We affirm the policy improves outcomes for the majority when implemented with the safeguards we outline.",
-          "logicalFallacies": []
-        }
-      ]
-    },
-    {
-      "id": "stmt-pc-b",
-      "speakerId": "speaker-proposition",
-      "role": "affirmative",
-      "sentences": [
-        {
-          "id": "s-pcb-1",
-          "text": "The pilot was voluntary, well-monitored, and showed measurable gains in participation and stability.",
-          "logicalFallacies": []
-        },
-        {
-          "id": "s-pcb-2",
-          "text": "Expansion is the responsible next step, with funding tied to independent review milestones.",
-          "logicalFallacies": []
-        }
-      ]
-    },
-    {
-      "id": "stmt-pc-c",
-      "speakerId": "speaker-proposition",
-      "role": "affirmative",
-      "sentences": [
-        {
-          "id": "s-pcc-1",
-          "text": "Opponents ignore twelve thousand households of evidence and independent fiscal review.",
-          "logicalFallacies": []
-        },
-        {
-          "id": "s-pcc-2",
-          "text": "We propose phased rollout, strict eligibility audits, and a public dashboard so harm is visible early.",
-          "logicalFallacies": []
-        },
-        {
-          "id": "s-pcc-3",
-          "text": "Rejecting expansion now would strand proven gains and surrender leadership on a solvable problem.",
-          "logicalFallacies": []
-        }
-      ]
-    }
-  ],
-  "logicalFallacies": [
-    {
-      "id": "fallacy-strawman",
-      "label": "Straw man",
-      "description": "Misrepresenting an argument to make it easier to attack."
-    },
-    {
-      "id": "fallacy-ad-hominem",
-      "label": "Ad hominem",
-      "description": "Attacking the person instead of the argument."
-    },
-    {
-      "id": "fallacy-false-dilemma",
-      "label": "False dilemma",
-      "description": "Presenting only two options when more exist."
-    }
-  ],
-  "facts": [
-    {
-      "id": "fact-1",
-      "speakerId": "moderator",
-      "sentences": [
-        {
-          "id": "fs-1-1",
-          "text": "Participation in the pilot was voluntary.",
-          "logicalFallacies": []
-        },
-        {
-          "id": "fs-1-2",
-          "text": "Sample size was twelve thousand households.",
-          "logicalFallacies": []
-        }
-      ]
-    },
-    {
-      "id": "fact-2",
-      "speakerId": "moderator",
-      "sentences": [
-        {
-          "id": "fs-2-1",
-          "text": "The interim report was published in March.",
-          "logicalFallacies": []
-        }
-      ]
-    }
-  ],
-  "assembledStatements": [
-    {
-      "id": "assembled-rebuttal-weak",
-      "target": {
-        "type": "sentence",
-        "sourceId": "stmt-opp-opening",
-        "sentenceId": "s-oo-1"
-      },
-      "evidences": [
-        {
-          "type": "sentence",
-          "sourceId": "fact-1",
-          "sentenceId": "fs-1-2"
-        },
-        {
-          "type": "logical_fallacy",
-          "logicalFallacyId": "fallacy-strawman"
-        }
-      ],
-      "sentences": [
-        {
-          "id": "as-w-1",
-          "text": "My opponent’s dismissal ignores the scale of the pilot; calling twelve thousand households “anecdotal” misstates what we measured.",
-          "logicalFallacies": []
-        }
-      ],
-      "impact": 8
-    },
-    {
-      "id": "assembled-rebuttal-solid",
-      "target": {
-        "type": "sentence",
-        "sourceId": "stmt-opp-opening",
-        "sentenceId": "s-oo-1"
-      },
-      "evidences": [
-        {
-          "type": "sentence",
-          "sourceId": "fact-1",
-          "sentenceId": "fs-1-2"
-        },
-        {
-          "type": "logical_fallacy",
-          "logicalFallacyId": "fallacy-strawman"
-        }
-      ],
-      "sentences": [
-        {
-          "id": "as-s-1",
-          "text": "The opposition frames our evidence as anecdotal, but the pilot covered twelve thousand voluntary households—hardly a stray sample.",
-          "logicalFallacies": []
-        },
-        {
-          "id": "as-s-2",
-          "text": "That is a straw man: we claim phased, audited expansion, not blind faith in a single headline number.",
-          "logicalFallacies": [
-            {
-              "id": "fallacy-strawman",
-              "label": "Straw man",
-              "description": "Misrepresenting an argument to make it easier to attack."
-            }
-          ]
-        }
-      ],
-      "impact": 22
-    },
-    {
-      "id": "assembled-rebuttal-strong",
-      "target": {
-        "type": "sentence",
-        "sourceId": "stmt-opp-opening",
-        "sentenceId": "s-oo-1"
-      },
-      "evidences": [
-        {
-          "type": "sentence",
-          "sourceId": "fact-1",
-          "sentenceId": "fs-1-2"
-        },
-        {
-          "type": "logical_fallacy",
-          "logicalFallacyId": "fallacy-strawman"
-        }
-      ],
-      "sentences": [
-        {
-          "id": "as-st-1",
-          "text": "Twelve thousand voluntary participants are not anecdotes; they are the core dataset the March report summarizes.",
-          "logicalFallacies": []
-        },
-        {
-          "id": "as-st-2",
-          "text": "To label that scale “unproven” while refusing comparable evidence on harm is a straw man—and it avoids the actual rollout safeguards we propose.",
-          "logicalFallacies": [
-            {
-              "id": "fallacy-strawman",
-              "label": "Straw man",
-              "description": "Misrepresenting an argument to make it easier to attack."
-            }
-          ]
-        }
-      ],
-      "impact": 38
-    }
-  ]
 }
+

@@ -3,97 +3,101 @@
  */
 
 /** Always exactly two sides in a debate. */
-export type Side = 'proposition' | 'opposition';
+export type Side = "proposition" | "opposition";
 
 /** Player represents one of these; maps to opening roles. */
-export type OpeningStatementRole = 'affirmative' | 'negative';
+export type OpeningStatementRole = "affirmative" | "negative";
 
 export interface LogicalFallacy {
-  id: string;
-  label: string;
-  description: string;
+    id: string;
+    label: string;
+    description: string;
 }
 
 export interface Sentence {
-  id: string;
-  text: string;
-  logicalFallacies: LogicalFallacy[];
+    id: string;
+    text: string;
+    logicalFallacies: LogicalFallacy[];
 }
 
 export interface Statement {
-  id: string;
-  speakerId: string;
-  sentences: Sentence[];
+    id: string;
+    speakerId: string;
+    sentences: Sentence[];
 }
 
 /** Same shape as Statement; role distinguishes proposition vs opposition opening. */
 export interface OpeningStatement extends Statement {
-  role: OpeningStatementRole;
+    role: OpeningStatementRole;
+}
+
+export interface PlayerOpeningStatement extends OpeningStatement {
+    triggerOpeningStatementId?: string;
 }
 
 /**
  * Like a statement, but sentences must not carry logical fallacies (objective facts).
  */
 export interface FactSentence {
-  id: string;
-  text: string;
-  logicalFallacies: readonly [];
+    id: string;
+    text: string;
+    logicalFallacies: readonly [];
 }
 
 export interface Fact {
-  id: string;
-  speakerId: string;
-  sentences: FactSentence[];
+    id: string;
+    speakerId: string;
+    sentences: FactSentence[];
 }
 
 export interface WinningConditions {
-  /** Percentages sum to 100; both start at 50. */
-  propositionWinPercent: number;
-  oppositionWinPercent: number;
+    /** Percentages sum to 100; both start at 50. */
+    propositionWinPercent: number;
+    oppositionWinPercent: number;
 }
 
 export interface ConstructiveRound {
-  kind: 'constructive';
-  activeSide: Side;
+    kind: "constructive";
+    activeSide: Side;
 }
 
 export interface CrossfireRound {
-  kind: 'crossfire';
-  activeSide: Side;
-  /** Present when the other side may react in crossfire. */
-  reactiveSide?: Side;
+    kind: "crossfire";
+    activeSide: Side;
+    /** Present when the other side may react in crossfire. */
+    reactiveSide?: Side;
 }
 
 export interface RebuttalRound {
-  kind: 'rebuttal';
-  activeSide: Side;
+    kind: "rebuttal";
+    activeSide: Side;
 }
 
 export type Round = ConstructiveRound | CrossfireRound | RebuttalRound;
 
 /** Reference to a sentence from any statement-like source (opening, rebuttal, fact). */
 export interface SentenceTargetRef {
-  type: 'sentence';
-  sourceId: string;
-  sentenceId: string;
+    type: "sentence";
+    sourceId: string;
+    sentenceId: string;
 }
 
 export interface SideTargetRef {
-  type: 'side';
-  side: Side;
+    type: "side";
+    side: Side;
 }
 
 export type Target = SentenceTargetRef | SideTargetRef;
 
 export interface EvidenceSentenceRef {
-  type: 'sentence';
-  sourceId: string;
-  sentenceId: string;
+    type: "sentence";
+    sourceId: string;
+    sentenceId: string;
 }
 
 export interface EvidenceLogicalFallacyRef {
-  type: 'logical_fallacy';
-  logicalFallacyId: string;
+    type: "logical_fallacy";
+    logicalFallacyId: string;
 }
 
 export type Evidence = EvidenceSentenceRef | EvidenceLogicalFallacyRef;
@@ -106,28 +110,28 @@ export type NonEmptyEvidenceList = readonly [Evidence, ...Evidence[]];
  * `impact` is a score delta for jury / win conditions; keep in [-50, 50].
  */
 export interface AssembledStatement {
-  id: string;
-  sentences: Sentence[];
-  target: Target;
-  evidences: NonEmptyEvidenceList;
-  /** Integer delta in [-50, 50]. */
-  impact: number;
+    id: string;
+    sentences: Sentence[];
+    target: Target;
+    evidences: NonEmptyEvidenceList;
+    /** Integer delta in [-50, 50]. */
+    impact: number;
 }
 
-export type JuryVerdict = 'proposition_accepted' | 'proposition_rejected';
+export type JuryVerdict = "proposition_accepted" | "proposition_rejected";
 
 export interface Debate {
-  id: string;
-  /** Brief summary of what the debate is about. */
-  introduction: string;
-  playerSide: Side;
-  propositionOpening: OpeningStatement;
-  oppositionOpening: OpeningStatement;
-  rounds: Round[];
-  /** Statement produced at the end of each round, keyed by round id or index as you prefer. */
-  statementsByRoundKey?: Record<string, Statement>;
-  winningConditions: WinningConditions;
-  juryVerdict?: JuryVerdict;
+    id: string;
+    /** Brief summary of what the debate is about. */
+    introduction: string;
+    playerSide: Side;
+    propositionOpening: OpeningStatement;
+    oppositionOpening: OpeningStatement;
+    rounds: Round[];
+    /** Statement produced at the end of each round, keyed by round id or index as you prefer. */
+    statementsByRoundKey?: Record<string, Statement>;
+    winningConditions: WinningConditions;
+    juryVerdict?: JuryVerdict;
 }
 
 /**
@@ -135,42 +139,47 @@ export interface Debate {
  * `opponentOpening` is the non-player side; `playerConstructiveOpenings` are the three first-speech options.
  */
 export interface DebateScenarioJson {
-  id: string;
-  /** Brief summary of what the debate is about. */
-  introduction?: string;
-  playerSide: Side;
-  opponentOpening: OpeningStatement;
-  playerConstructiveOpenings: readonly [
-    OpeningStatement,
-    OpeningStatement,
-    OpeningStatement,
-  ];
-  logicalFallacies: LogicalFallacy[];
-  facts: Fact[];
-  assembledStatements: AssembledStatement[];
+    id: string;
+    /** Brief summary of what the debate is about. */
+    introduction?: string;
+    playerSide: Side;
+    opponentOpening: readonly [
+        OpeningStatement,
+        OpeningStatement,
+        OpeningStatement,
+    ];
+    playerConstructiveOpenings: readonly [
+        PlayerOpeningStatement,
+        PlayerOpeningStatement,
+        PlayerOpeningStatement,
+    ];
+    logicalFallacies: LogicalFallacy[];
+    facts: Fact[];
+    assembledStatements: AssembledStatement[];
 }
 
 /** First speech: three ready options; quality TBD per character. */
 export interface AssemblingConstructive {
-  kind: 'assembling_constructive';
-  optionStatements: readonly [Statement, Statement, Statement];
+    kind: "assembling_constructive";
+    optionStatements: readonly [Statement, Statement, Statement];
 }
 
 /** Select a target, then up to three evidences. */
 export interface AssemblingRebuttal {
-  kind: 'assembling_rebuttal';
-  target: Target | null;
-  evidences: Evidence[];
+    kind: "assembling_rebuttal";
+    target: Target | null;
+    evidences: Evidence[];
 }
 
 /** Select a target, then up to three evidences. */
 export interface AssemblingCrossfire {
-  kind: 'assembling_crossfire';
-  target: Target | null;
-  evidences: Evidence[];
+    kind: "assembling_crossfire";
+    target: Target | null;
+    evidences: Evidence[];
 }
 
 export type AssemblingPhase =
-  | AssemblingConstructive
-  | AssemblingRebuttal
-  | AssemblingCrossfire;
+    | AssemblingConstructive
+    | AssemblingRebuttal
+    | AssemblingCrossfire;
+
