@@ -429,6 +429,29 @@ const TrialUI: React.FC = () => {
                         ))}
                     </div>
                 );
+            case "evidence_fallacy_use_to":
+                return (
+                    <div className="flex flex-col gap-6 overflow-y-auto">
+                        <ChoiceButton
+                            label="Apply — use this fallacy to frame how the argument works"
+                            onClick={() =>
+                                wf.dispatch({
+                                    type: "select_fallacy_use_to",
+                                    useTo: "apply",
+                                })
+                            }
+                        />
+                        <ChoiceButton
+                            label="Spot — call out this fallacy in the other side’s material"
+                            onClick={() =>
+                                wf.dispatch({
+                                    type: "select_fallacy_use_to",
+                                    useTo: "spot",
+                                })
+                            }
+                        />
+                    </div>
+                );
             case "final_statements":
                 return (
                     <div className="flex flex-col gap-6 overflow-y-auto">

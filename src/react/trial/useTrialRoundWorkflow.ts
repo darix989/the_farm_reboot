@@ -4,6 +4,7 @@ import type {
   DebateScenarioJson,
   Evidence,
   Fact,
+  LogicalFallacyUseTo,
   PlayerOpeningStatement,
   Side,
   Statement,
@@ -31,6 +32,7 @@ export type Step =
   | { kind: 'evidence_facts' }
   | { kind: 'evidence_fact_sentences'; factId: string }
   | { kind: 'evidence_fallacies' }
+  | { kind: 'evidence_fallacy_use_to'; fallacyId: string }
   | { kind: 'final_statements' }
   | { kind: 'round_complete' };
 
@@ -211,6 +213,7 @@ type Action =
   | { type: 'select_evidence_fact'; factId: string }
   | { type: 'select_evidence_fact_sentence'; sentenceId: string }
   | { type: 'select_evidence_fallacy'; fallacyId: string }
+  | { type: 'select_fallacy_use_to'; useTo: LogicalFallacyUseTo }
   | { type: 'submit_evidences' }
   | { type: 'select_final'; statementId: string }
   | { type: 'undo' };
@@ -420,6 +423,8 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
               step: { kind: 'evidence_fallacies' },
             },
           };
+        default:
+          return state;
       }
     }
     case 'select_evidence_statement': {
@@ -491,9 +496,23 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
     case 'select_evidence_fallacy': {
       if (a.step.kind !== 'evidence_fallacies') return state;
       if (!scenario.logicalFallacies.some((f) => f.id === action.fallacyId)) return state;
+      return {
+        ...state,
+        past: pushHistory(state),
+        assembly: {
+          ...a,
+          step: { kind: 'evidence_fallacy_use_to', fallacyId: action.fallacyId },
+        },
+      };
+    }
+    case 'select_fallacy_use_to': {
+      if (a.step.kind !== 'evidence_fallacy_use_to') return state;
+      const { fallacyId } = a.step;
+      if (!scenario.logicalFallacies.some((f) => f.id === fallacyId)) return state;
       const ev: Evidence = {
         type: 'logical_fallacy',
-        logicalFallacyId: action.fallacyId,
+        logicalFallacyId: fallacyId,
+        useTo: action.useTo,
       };
       return {
         ...state,
@@ -616,6 +635,8 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
         return 'Select a sentence from this fact.';
       case 'evidence_fallacies':
         return 'Select a logical fallacy as evidence.';
+      case 'evidence_fallacy_use_to':
+        return 'Choose how you are using this fallacy: Apply or Spot.';
       case 'final_statements':
         return 'Choose one closing statement to end the round.';
       case 'round_complete':
@@ -660,7 +681,11 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     return state.assembly.evidences.map((ev, i) => {
       if (ev.type === 'logical_fallacy') {
         const f = scenario.logicalFallacies.find((x) => x.id === ev.logicalFallacyId);
-        return { key: `${i}-${ev.logicalFallacyId}`, text: f?.label ?? ev.logicalFallacyId };
+        const label = f?.label ?? ev.logicalFallacyId;
+        return {
+          key: `${i}-${ev.logicalFallacyId}-${ev.useTo}`,
+          text: `${label} (${ev.useTo})`,
+        };
       }
       return {
         key: `${i}-${ev.sourceId}-${ev.sentenceId}`,

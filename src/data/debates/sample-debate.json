@@ -173,7 +173,8 @@
                 },
                 {
                     "type": "logical_fallacy",
-                    "logicalFallacyId": "fallacy-strawman"
+                    "logicalFallacyId": "fallacy-strawman",
+                    "useTo": "spot"
                 }
             ],
             "sentences": [
@@ -200,7 +201,8 @@
                 },
                 {
                     "type": "logical_fallacy",
-                    "logicalFallacyId": "fallacy-strawman"
+                    "logicalFallacyId": "fallacy-strawman",
+                    "useTo": "spot"
                 }
             ],
             "sentences": [
@@ -238,7 +240,8 @@
                 },
                 {
                     "type": "logical_fallacy",
-                    "logicalFallacyId": "fallacy-strawman"
+                    "logicalFallacyId": "fallacy-strawman",
+                    "useTo": "apply"
                 }
             ],
             "sentences": [

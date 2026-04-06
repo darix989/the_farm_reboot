@@ -95,9 +95,13 @@ export interface EvidenceSentenceRef {
     sentenceId: string;
 }
 
+/** Whether the fallacy is used to flag the opponent’s error or to characterize how an argument operates. */
+export type LogicalFallacyUseTo = "apply" | "spot";
+
 export interface EvidenceLogicalFallacyRef {
     type: "logical_fallacy";
     logicalFallacyId: string;
+    useTo: LogicalFallacyUseTo;
 }
 
 export type Evidence = EvidenceSentenceRef | EvidenceLogicalFallacyRef;
