@@ -98,6 +98,22 @@ export interface EvidenceLogicalFallacyRef {
 
 export type Evidence = EvidenceSentenceRef | EvidenceLogicalFallacyRef;
 
+/** At least one evidence item (rebuttal/crossfire assembly allows up to three). */
+export type NonEmptyEvidenceList = readonly [Evidence, ...Evidence[]];
+
+/**
+ * One end-of-round option: composed lines shown after the player picks target + evidences.
+ * `impact` is a score delta for jury / win conditions; keep in [-50, 50].
+ */
+export interface AssembledStatement {
+  id: string;
+  sentences: Sentence[];
+  target: Target;
+  evidences: NonEmptyEvidenceList;
+  /** Integer delta in [-50, 50]. */
+  impact: number;
+}
+
 export type JuryVerdict = 'proposition_accepted' | 'proposition_rejected';
 
 export interface Debate {
@@ -112,6 +128,26 @@ export interface Debate {
   statementsByRoundKey?: Record<string, Statement>;
   winningConditions: WinningConditions;
   juryVerdict?: JuryVerdict;
+}
+
+/**
+ * Authoring shape for a single-player debate scenario (JSON).
+ * `opponentOpening` is the non-player side; `playerConstructiveOpenings` are the three first-speech options.
+ */
+export interface DebateScenarioJson {
+  id: string;
+  /** Brief summary of what the debate is about. */
+  introduction?: string;
+  playerSide: Side;
+  opponentOpening: OpeningStatement;
+  playerConstructiveOpenings: readonly [
+    OpeningStatement,
+    OpeningStatement,
+    OpeningStatement,
+  ];
+  logicalFallacies: LogicalFallacy[];
+  facts: Fact[];
+  assembledStatements: AssembledStatement[];
 }
 
 /** First speech: three ready options; quality TBD per character. */
