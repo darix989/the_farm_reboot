@@ -1,8 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import type { DebateScenarioJson } from "../types/debateEntities";
 import sampleDebateJson from "../data/debates/sample-debate.json";
-import { Trial } from "../phaser/scenes/Trial";
-import { GameManager } from "../utils/gameManager";
 import TrialLayout from "./trial/TrialLayout";
 import type { EvidenceCategory } from "./trial/useTrialRoundWorkflow";
 import { statementTitle, useTrialRoundWorkflow } from "./trial/useTrialRoundWorkflow";
@@ -13,21 +11,80 @@ const sectionBox =
     "rounded-lg border border-white/25 bg-black/30 p-4 md:p-5 ring-1 ring-white/5";
 
 const btnClass =
-    "rounded-lg border-2 border-white/35 bg-black/45 px-9 py-6 text-left text-[2.625rem] leading-snug text-white/90 shadow-sm transition-colors hover:border-cyan-500/70 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/35 disabled:hover:text-white/90";
+    "rounded-lg border-2 border-white/35 bg-black/45 px-9 py-6 text-left text-[1.96875rem] leading-snug text-white/90 shadow-sm transition-colors hover:border-cyan-500/70 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/35 disabled:hover:text-white/90";
 
 const btnRowClass = `${btnClass} w-full`;
+
+/** Footer actions: equal slots in a centered row with gaps. */
+const btnFooterActionClass =
+    "box-border flex min-h-[5.5rem] w-full min-w-0 items-center justify-center whitespace-normal rounded-lg border-2 border-white/35 bg-black/45 px-2 py-3 text-center text-[clamp(0.9375rem,1.35vw,1.375rem)] font-medium leading-snug text-white/90 shadow-sm transition-colors hover:border-cyan-500/70 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/35 disabled:hover:text-white/90 sm:px-3 sm:py-4 sm:text-[clamp(1rem,1.5vw,1.625rem)]";
+
+const interactiveScrollClass =
+    "min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1 [scrollbar-gutter:stable]";
 
 const TrialUI: React.FC = () => {
     const wf = useTrialRoundWorkflow(sampleDebate);
 
-    const handleGameOver = () => {
-        const scene = GameManager.getCurrentScene() as Trial;
-        if (scene?.gameOver) {
-            scene.gameOver();
-        } else if (scene) {
-            scene.scene.start("GameOver");
+    const interactiveFooter = useMemo(() => {
+        const canStepBack =
+            wf.canUndo ||
+            wf.canUndoConstructiveSummary ||
+            wf.canUndoFinalStatementConfirm;
+
+        let submitLabel = "Submit";
+        let submitDisabled = true;
+        let onSubmit: (() => void) | undefined;
+
+        if (wf.gamePhase === "assembly" && wf.step.kind === "evidence_category") {
+            submitLabel = "Submit evidences";
+            submitDisabled = !wf.canSubmitEvidences;
+            onSubmit = () => wf.dispatch({ type: "submit_evidences" });
+        } else if (
+            wf.gamePhase === "assembly" &&
+            wf.step.kind === "final_statement_confirm" &&
+            wf.finalChoice
+        ) {
+            submitLabel = "Submit closing statement";
+            submitDisabled = false;
+            onSubmit = () => wf.dispatch({ type: "submit_final_closing" });
+        } else if (
+            wf.gamePhase === "constructive_opponent" &&
+            wf.constructiveStep.kind === "constructive_summary"
+        ) {
+            submitLabel = "Submit";
+            submitDisabled = false;
+            onSubmit = () =>
+                wf.dispatch({ type: "continue_after_constructive" });
+        } else if (
+            wf.gamePhase === "assembly" &&
+            wf.step.kind === "round_complete"
+        ) {
+            submitLabel = wf.hasMoreAssemblyRoundsAfterComplete
+                ? "Next assembly round"
+                : "Finish debate";
+            submitDisabled = false;
+            onSubmit = () =>
+                wf.dispatch({ type: "continue_after_round_complete" });
         }
-    };
+
+        return {
+            canStepBack,
+            submitLabel,
+            submitDisabled,
+            onSubmit,
+        };
+    }, [
+        wf.gamePhase,
+        wf.constructiveStep,
+        wf.step,
+        wf.finalChoice,
+        wf.canSubmitEvidences,
+        wf.hasMoreAssemblyRoundsAfterComplete,
+        wf.canUndo,
+        wf.canUndoConstructiveSummary,
+        wf.canUndoFinalStatementConfirm,
+        wf.dispatch,
+    ]);
 
     const opponentOpeningById = (id: string | null) =>
         id ? wf.scenario.opponentOpening.find((o) => o.id === id) : undefined;
@@ -162,14 +219,18 @@ const TrialUI: React.FC = () => {
                     </ul>
                 </div>
             )}
-            {wf.roundComplete && wf.finalChoice && (
+            {wf.finalChoice && (
                 <div
                     className={`${sectionBox} shrink-0 text-[2.125rem] leading-snug ring-cyan-500/20`}
                 >
-                    <p className="text-white/50">Final choice</p>
-                    <p className="text-white/90">
-                        {wf.finalChoice.sentences[0]?.text ?? wf.finalChoice.id}
-                    </p>
+                    <p className="text-white/50">Closing statement</p>
+                    <ol className={sentenceListClass}>
+                        {wf.finalChoice.sentences.map((s) => (
+                            <li key={s.id} className="pl-1">
+                                {s.text}
+                            </li>
+                        ))}
+                    </ol>
                     {wf.finalAssembledChoice != null && (
                         <p className="mt-3 border-t border-white/10 pt-3 text-[1.875rem] text-white/60">
                             Impact: {wf.finalAssembledChoice.impact}
@@ -188,7 +249,7 @@ const TrialUI: React.FC = () => {
                 </h2>
             </div>
             <div className="trial-wizard-body-wrap">
-                <p className="trial-wizard-main-text text-[2.625rem] leading-relaxed text-white/85">
+                <p className="trial-wizard-main-text text-[1.96875rem] leading-relaxed text-white/85">
                     {wf.wizardMessage}
                 </p>
             </div>
@@ -247,7 +308,7 @@ const TrialUI: React.FC = () => {
                 );
             case "target_statements":
                 return (
-                    <div className="flex flex-col gap-6 overflow-y-auto">
+                    <div className="flex flex-col gap-6">
                         {wf.statementsForSide(step.side).map((st) => (
                             <ChoiceButton
                                 key={st.id}
@@ -266,7 +327,7 @@ const TrialUI: React.FC = () => {
                 const st = wf.getStatement(step.side, step.statementId);
                 if (!st) return null;
                 return (
-                    <div className="flex flex-col gap-6 overflow-y-auto">
+                    <div className="flex flex-col gap-6">
                         {st.sentences.map((s) => (
                             <ChoiceButton
                                 key={s.id}
@@ -284,63 +345,51 @@ const TrialUI: React.FC = () => {
             }
             case "evidence_category":
                 return (
-                    <div className="flex min-h-0 flex-1 flex-col gap-9">
-                        <div className="flex flex-col gap-6 overflow-y-auto">
-                            <ChoiceButton
-                                label="Proposition"
-                                onClick={() =>
-                                    wf.dispatch({
-                                        type: "select_evidence_category",
-                                        category:
-                                            "proposition" as EvidenceCategory,
-                                    })
-                                }
-                            />
-                            <ChoiceButton
-                                label="Opposition"
-                                onClick={() =>
-                                    wf.dispatch({
-                                        type: "select_evidence_category",
-                                        category:
-                                            "opposition" as EvidenceCategory,
-                                    })
-                                }
-                            />
-                            <ChoiceButton
-                                label="Facts"
-                                onClick={() =>
-                                    wf.dispatch({
-                                        type: "select_evidence_category",
-                                        category: "facts" as EvidenceCategory,
-                                    })
-                                }
-                            />
-                            <ChoiceButton
-                                label="Logical fallacies"
-                                onClick={() =>
-                                    wf.dispatch({
-                                        type: "select_evidence_category",
-                                        category:
-                                            "logical_fallacies" as EvidenceCategory,
-                                    })
-                                }
-                            />
-                        </div>
-                        <button
-                            type="button"
-                            disabled={!wf.canSubmitEvidences}
-                            className={btnRowClass}
+                    <div className="flex flex-col gap-6">
+                        <ChoiceButton
+                            label="Proposition"
                             onClick={() =>
-                                wf.dispatch({ type: "submit_evidences" })
+                                wf.dispatch({
+                                    type: "select_evidence_category",
+                                    category:
+                                        "proposition" as EvidenceCategory,
+                                })
                             }
-                        >
-                            Submit evidences
-                        </button>
+                        />
+                        <ChoiceButton
+                            label="Opposition"
+                            onClick={() =>
+                                wf.dispatch({
+                                    type: "select_evidence_category",
+                                    category:
+                                        "opposition" as EvidenceCategory,
+                                })
+                            }
+                        />
+                        <ChoiceButton
+                            label="Facts"
+                            onClick={() =>
+                                wf.dispatch({
+                                    type: "select_evidence_category",
+                                    category: "facts" as EvidenceCategory,
+                                })
+                            }
+                        />
+                        <ChoiceButton
+                            label="Logical fallacies"
+                            onClick={() =>
+                                wf.dispatch({
+                                    type: "select_evidence_category",
+                                    category:
+                                        "logical_fallacies" as EvidenceCategory,
+                                })
+                            }
+                        />
                     </div>
                 );
             case "evidence_statements":
                 return (
-                    <div className="flex flex-col gap-6 overflow-y-auto">
+                    <div className="flex flex-col gap-6">
                         {wf.statementsForSide(step.side).map((st) => (
                             <ChoiceButton
                                 key={st.id}
@@ -359,7 +408,7 @@ const TrialUI: React.FC = () => {
                 const st = wf.getStatement(step.side, step.statementId);
                 if (!st) return null;
                 return (
-                    <div className="flex flex-col gap-6 overflow-y-auto">
+                    <div className="flex flex-col gap-6">
                         {st.sentences.map((s) => (
                             <ChoiceButton
                                 key={s.id}
@@ -377,7 +426,7 @@ const TrialUI: React.FC = () => {
             }
             case "evidence_facts":
                 return (
-                    <div className="flex flex-col gap-6 overflow-y-auto">
+                    <div className="flex flex-col gap-6">
                         {wf.facts.map((fact) => (
                             <ChoiceButton
                                 key={fact.id}
@@ -396,7 +445,7 @@ const TrialUI: React.FC = () => {
                 const fact = wf.getFact(step.factId);
                 if (!fact) return null;
                 return (
-                    <div className="flex flex-col gap-6 overflow-y-auto">
+                    <div className="flex flex-col gap-6">
                         {fact.sentences.map((s) => (
                             <ChoiceButton
                                 key={s.id}
@@ -414,7 +463,7 @@ const TrialUI: React.FC = () => {
             }
             case "evidence_fallacies":
                 return (
-                    <div className="flex flex-col gap-6 overflow-y-auto">
+                    <div className="flex flex-col gap-6">
                         {wf.logicalFallacies.map((f) => (
                             <ChoiceButton
                                 key={f.id}
@@ -431,7 +480,7 @@ const TrialUI: React.FC = () => {
                 );
             case "evidence_fallacy_use_to":
                 return (
-                    <div className="flex flex-col gap-6 overflow-y-auto">
+                    <div className="flex flex-col gap-6">
                         <ChoiceButton
                             label="Apply — use this fallacy to frame how the argument works"
                             onClick={() =>
@@ -454,7 +503,7 @@ const TrialUI: React.FC = () => {
                 );
             case "final_statements":
                 return (
-                    <div className="flex flex-col gap-6 overflow-y-auto">
+                    <div className="flex flex-col gap-6">
                         {wf.finalOptions.map((st) => (
                             <ChoiceButton
                                 key={st.id}
@@ -469,6 +518,32 @@ const TrialUI: React.FC = () => {
                         ))}
                     </div>
                 );
+            case "final_statement_confirm": {
+                const closing = wf.finalChoice;
+                if (!closing) return null;
+                return (
+                    <div className="flex flex-col gap-6">
+                        <div
+                            className={`${sectionBox} text-[2.125rem] leading-snug text-white/85`}
+                        >
+                            <p className="text-white/50">
+                                Your closing statement (full text)
+                            </p>
+                            <ol className={sentenceListClass}>
+                                {closing.sentences.map((s) => (
+                                    <li key={s.id} className="pl-1">
+                                        {s.text}
+                                    </li>
+                                ))}
+                            </ol>
+                            <p className="mt-6 border-t border-white/10 pt-4 text-[1.625rem] leading-snug text-white/45">
+                                Feedback shows the same text. Submit locks in
+                                this closing and cannot be undone.
+                            </p>
+                        </div>
+                    </div>
+                );
+            }
             case "round_complete":
                 return (
                     <div className="flex flex-col gap-6">
@@ -481,18 +556,6 @@ const TrialUI: React.FC = () => {
                                     : "This was the last assembly round."}
                             </p>
                         </div>
-                        <ChoiceButton
-                            label={
-                                wf.hasMoreAssemblyRoundsAfterComplete
-                                    ? "Next assembly round"
-                                    : "Finish debate"
-                            }
-                            onClick={() =>
-                                wf.dispatch({
-                                    type: "continue_after_round_complete",
-                                })
-                            }
-                        />
                     </div>
                 );
             default:
@@ -504,7 +567,7 @@ const TrialUI: React.FC = () => {
         if (wf.gamePhase === "constructive_opponent") {
             if (wf.constructiveStep.kind === "choose_player_constructive") {
                 return (
-                    <div className="flex flex-col gap-6 overflow-y-auto">
+                    <div className="flex flex-col gap-6">
                         {wf.playerConstructiveChoices.map((p) => (
                             <ChoiceButton
                                 key={p.id}
@@ -542,24 +605,6 @@ const TrialUI: React.FC = () => {
                             in your opening and cannot be undone.
                         </p>
                     </div>
-                    <div className="flex flex-col gap-6">
-                        <button
-                            type="button"
-                            className={btnRowClass}
-                            disabled={!wf.canUndoConstructiveSummary}
-                            onClick={wf.undo}
-                        >
-                            Back — choose a different opening
-                        </button>
-                        <ChoiceButton
-                            label="Submit opening and continue to assembly"
-                            onClick={() =>
-                                wf.dispatch({
-                                    type: "continue_after_constructive",
-                                })
-                            }
-                        />
-                    </div>
                 </div>
             );
         }
@@ -567,7 +612,7 @@ const TrialUI: React.FC = () => {
         if (wf.gamePhase === "debate_complete") {
             return (
                 <div
-                    className={`${sectionBox} text-[2.625rem] leading-snug text-white/85`}
+                    className={`${sectionBox} text-[1.96875rem] leading-snug text-white/85`}
                 >
                     <p>The debate is finished.</p>
                 </div>
@@ -585,28 +630,36 @@ const TrialUI: React.FC = () => {
                 </h2>
             </div>
             <div
-                className={`${sectionBox} min-h-0 flex-1 overflow-hidden p-3 md:p-4`}
+                className={`${sectionBox} flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden p-3 md:p-4`}
             >
-                <div className="flex h-full min-h-0 flex-col overflow-y-auto overscroll-contain pr-1">
-                    {renderInteractive()}
+                <div className={`flex min-h-0 min-w-0 flex-1 flex-col gap-4`}>
+                    <div className={interactiveScrollClass}>
+                        {renderInteractive()}
+                    </div>
+                    <div className="flex w-full min-w-0 shrink-0 justify-center border-t border-white/15 pt-4">
+                        <div className="grid w-full max-w-4xl grid-cols-2 items-stretch gap-4 px-2 sm:gap-6 sm:px-4 md:gap-8">
+                            <button
+                                type="button"
+                                className={btnFooterActionClass}
+                                disabled={!interactiveFooter.canStepBack}
+                                onClick={wf.undo}
+                            >
+                                Back
+                            </button>
+                            <button
+                                type="button"
+                                className={btnFooterActionClass}
+                                disabled={
+                                    interactiveFooter.submitDisabled ||
+                                    !interactiveFooter.onSubmit
+                                }
+                                onClick={() => interactiveFooter.onSubmit?.()}
+                            >
+                                {interactiveFooter.submitLabel}
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div className={`${sectionBox} flex shrink-0 flex-col gap-5`}>
-                <button
-                    type="button"
-                    className={btnRowClass}
-                    disabled={!wf.canUndo}
-                    onClick={wf.undo}
-                >
-                    Undo
-                </button>
-                <button
-                    type="button"
-                    className={btnRowClass}
-                    onClick={handleGameOver}
-                >
-                    Game over (dev)
-                </button>
             </div>
         </div>
     );

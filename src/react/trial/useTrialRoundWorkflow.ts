@@ -34,6 +34,7 @@ export type Step =
   | { kind: 'evidence_fallacies' }
   | { kind: 'evidence_fallacy_use_to'; fallacyId: string }
   | { kind: 'final_statements' }
+  | { kind: 'final_statement_confirm' }
   | { kind: 'round_complete' };
 
 export interface WorkflowCore {
@@ -216,6 +217,7 @@ type Action =
   | { type: 'select_fallacy_use_to'; useTo: LogicalFallacyUseTo }
   | { type: 'submit_evidences' }
   | { type: 'select_final'; statementId: string }
+  | { type: 'submit_final_closing' }
   | { type: 'undo' };
 
 function pushHistory(state: WorkflowState): WorkflowSnapshot[] {
@@ -545,6 +547,18 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
         assembly: {
           ...a,
           finalChoiceId: action.statementId,
+          step: { kind: 'final_statement_confirm' },
+          roundComplete: false,
+        },
+      };
+    }
+    case 'submit_final_closing': {
+      if (a.step.kind !== 'final_statement_confirm' || !a.finalChoiceId) return state;
+      return {
+        ...state,
+        past: pushHistory(state),
+        assembly: {
+          ...a,
           step: { kind: 'round_complete' },
           roundComplete: true,
         },
@@ -595,8 +609,17 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
   const isConstructiveSummary =
     state.gamePhase === 'constructive_opponent' &&
     state.constructiveStep.kind === 'constructive_summary';
+  const isFinalStatementConfirm =
+    state.gamePhase === 'assembly' && state.assembly.step.kind === 'final_statement_confirm';
+  const isAssemblyRoundCompleteUi =
+    state.gamePhase === 'assembly' && state.assembly.step.kind === 'round_complete';
   const canUndoConstructiveSummary = isConstructiveSummary && state.past.length > 0;
-  const canUndo = state.past.length > 0 && !isConstructiveSummary;
+  const canUndoFinalStatementConfirm = isFinalStatementConfirm && state.past.length > 0;
+  const canUndo =
+    state.past.length > 0 &&
+    !isConstructiveSummary &&
+    !isFinalStatementConfirm &&
+    !isAssemblyRoundCompleteUi;
 
   const assemblyRoundCount = assemblyRoundIdGroups(scenario).length;
   const hasMoreAssemblyRoundsAfterComplete =
@@ -643,6 +666,8 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
         return 'Choose how you are using this fallacy: Apply or Spot.';
       case 'final_statements':
         return 'Choose one closing statement to end the round.';
+      case 'final_statement_confirm':
+        return 'Review your closing statement below. Go back to change it, or submit to lock it in. Submitting cannot be undone.';
       case 'round_complete':
         return hasMoreAssemblyRoundsAfterComplete
           ? 'Round complete. Continue to the next assembly round.'
@@ -761,6 +786,7 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     wizardMessage,
     canUndo,
     canUndoConstructiveSummary,
+    canUndoFinalStatementConfirm,
     undo,
     canSubmitEvidences,
     dispatch,
