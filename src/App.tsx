@@ -1,7 +1,13 @@
 import { useLayoutEffect, useRef } from 'react';
 import { PhaserGame } from './phaser/PhaserGame';
 import ReactApp from './react/ReactApp';
-import { STAGE_DESIGN_WIDTH, STAGE_REM_BASE_PX } from './utils/constants';
+import {
+    STAGE_DESIGN_WIDTH,
+    STAGE_REM_BASE_PX,
+    STAGE_REM_MAX_PX,
+    STAGE_REM_MIN_PX,
+    STAGE_REM_SCALE_POWER,
+} from './utils/constants';
 
 function App()
 {
@@ -13,8 +19,13 @@ function App()
 
         const applyRootRem = () => {
             const w = el.getBoundingClientRect().width;
-            const scaled = (w / STAGE_DESIGN_WIDTH) * STAGE_REM_BASE_PX;
-            const clamped = Math.max(9, Math.min(28, scaled));
+            const ratio = w / STAGE_DESIGN_WIDTH;
+            const scaled =
+                STAGE_REM_BASE_PX * Math.pow(ratio, STAGE_REM_SCALE_POWER);
+            const clamped = Math.max(
+                STAGE_REM_MIN_PX,
+                Math.min(STAGE_REM_MAX_PX, scaled),
+            );
             document.documentElement.style.fontSize = `${clamped}px`;
         };
 
