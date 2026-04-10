@@ -76,6 +76,7 @@ export function assembledToStatement(a: AssembledStatement): Statement {
   return {
     id: a.id,
     speakerId: 'player',
+    type: a.type,
     sentences: a.sentences.map((s) => ({ ...s })),
   };
 }

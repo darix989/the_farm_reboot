@@ -20,10 +20,17 @@ export interface Sentence {
     logicalFallacies: LogicalFallacy[];
 }
 
+export type StatementType =
+    | "opening_constructive"
+    | "rebuttal"
+    | "crossfire"
+    | "closing_constructive";
+
 export interface Statement {
     id: string;
     speakerId: string;
     sentences: Sentence[];
+    type: StatementType;
 }
 
 /** Same shape as Statement; role distinguishes proposition vs opposition opening. */
@@ -115,6 +122,7 @@ export type NonEmptyEvidenceList = readonly [Evidence, ...Evidence[]];
  */
 export interface AssembledStatement {
     id: string;
+    type: StatementType;
     sentences: Sentence[];
     target: Target;
     evidences: NonEmptyEvidenceList;
@@ -173,9 +181,16 @@ export interface DebateScenarioJson {
 }
 
 /** First speech: three ready options; quality TBD per character. */
-export interface AssemblingConstructive {
+export interface AssemblingOpeningConstructive {
     kind: "assembling_constructive";
     optionStatements: readonly [Statement, Statement, Statement];
+    type: "opening_constructive";
+}
+
+export interface AssemblingClosingConstructive {
+    kind: "assembling_closing_constructive";
+    optionStatements: readonly [Statement, Statement, Statement];
+    type: "closing_constructive";
 }
 
 /** Select a target, then up to three evidences. */
@@ -183,6 +198,7 @@ export interface AssemblingRebuttal {
     kind: "assembling_rebuttal";
     target: Target | null;
     evidences: Evidence[];
+    type: "rebuttal";
 }
 
 /** Select a target, then up to three evidences. */
@@ -190,10 +206,12 @@ export interface AssemblingCrossfire {
     kind: "assembling_crossfire";
     target: Target | null;
     evidences: Evidence[];
+    type: "crossfire";
 }
 
 export type AssemblingPhase =
-    | AssemblingConstructive
+    | AssemblingOpeningConstructive
+    | AssemblingClosingConstructive
     | AssemblingRebuttal
     | AssemblingCrossfire;
 
