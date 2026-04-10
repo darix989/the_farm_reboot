@@ -159,14 +159,14 @@ export interface DebateScenarioJson {
     ];
     logicalFallacies: LogicalFallacy[];
     facts: Fact[];
-    assembledStatements: AssembledStatement[];
+    playerAssembledStatements: AssembledStatement[];
     /**
      * Opponent lines spoken after each player assembly round, in order.
      * Index `i` is revealed when moving to assembly round `i + 1` (after round `i` completes).
      */
-    oppositionRebuttalStatements?: Statement[];
+    otherSideRebuttalStatements?: Statement[];
     /**
-     * Each entry lists `assembledStatements` ids allowed as finals that assembly round.
+     * Each entry lists `playerAssembledStatements` ids allowed as finals that assembly round.
      * If omitted, one round is implied: all assembled statements in a single round.
      */
     playerAssemblyRounds?: readonly (readonly string[])[];

@@ -157,7 +157,7 @@
             ]
         }
     ],
-    "assembledStatements": [
+    "playerAssembledStatements": [
         {
             "id": "assembled-rebuttal-weak",
             "target": {

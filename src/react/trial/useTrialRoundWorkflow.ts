@@ -69,7 +69,7 @@ export function assemblyRoundIdGroups(scenario: DebateScenarioJson): readonly (r
   if (scenario.playerAssemblyRounds && scenario.playerAssemblyRounds.length > 0) {
     return scenario.playerAssemblyRounds;
   }
-  return [scenario.assembledStatements.map((a) => a.id)];
+  return [scenario.playerAssembledStatements.map((a) => a.id)];
 }
 
 export function assembledToStatement(a: AssembledStatement): Statement {
@@ -83,7 +83,7 @@ export function assembledToStatement(a: AssembledStatement): Statement {
 function finalsForRound(scenario: DebateScenarioJson, assemblyRoundIndex: number): Statement[] {
   const groups = assemblyRoundIdGroups(scenario);
   const ids = new Set(groups[assemblyRoundIndex] ?? []);
-  return scenario.assembledStatements.filter((a) => ids.has(a.id)).map(assembledToStatement);
+  return scenario.playerAssembledStatements.filter((a) => ids.has(a.id)).map(assembledToStatement);
 }
 
 interface StatementPools {
@@ -126,7 +126,7 @@ function appendRoundStatementHistory(
       opponentStatementHistory: state.opponentStatementHistory,
     };
   }
-  const assembled = scenario.assembledStatements.find((x) => x.id === id);
+  const assembled = scenario.playerAssembledStatements.find((x) => x.id === id);
   if (!assembled) {
     return {
       playerStatementHistory: state.playerStatementHistory,
@@ -134,7 +134,7 @@ function appendRoundStatementHistory(
     };
   }
   const playerStatementHistory = [...state.playerStatementHistory, assembledToStatement(assembled)];
-  const rebuttal = scenario.oppositionRebuttalStatements?.[state.assemblyRoundIndex];
+  const rebuttal = scenario.otherSideRebuttalStatements?.[state.assemblyRoundIndex];
   const opponentStatementHistory =
     rebuttal != null
       ? [...state.opponentStatementHistory, JSON.parse(JSON.stringify(rebuttal)) as Statement]
@@ -726,15 +726,15 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
   const finalChoice = useMemo((): Statement | null => {
     const id = state.assembly.finalChoiceId;
     if (!id) return null;
-    const assembled = scenario.assembledStatements.find((x) => x.id === id);
+    const assembled = scenario.playerAssembledStatements.find((x) => x.id === id);
     return assembled ? assembledToStatement(assembled) : null;
-  }, [state.assembly.finalChoiceId, scenario.assembledStatements]);
+  }, [state.assembly.finalChoiceId, scenario.playerAssembledStatements]);
 
   const finalAssembledChoice = useMemo((): AssembledStatement | null => {
     const id = state.assembly.finalChoiceId;
     if (!id) return null;
-    return scenario.assembledStatements.find((x) => x.id === id) ?? null;
-  }, [state.assembly.finalChoiceId, scenario.assembledStatements]);
+    return scenario.playerAssembledStatements.find((x) => x.id === id) ?? null;
+  }, [state.assembly.finalChoiceId, scenario.playerAssembledStatements]);
 
   const finalOptions = useMemo(
     () => finalsForRound(scenario, state.assemblyRoundIndex),
