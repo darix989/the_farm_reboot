@@ -108,6 +108,12 @@ const TrialUI: React.FC = () => {
         wf.gamePhase === "assembly" &&
         (wf.targetSummary != null || wf.evidences.length > 0);
 
+    /** Wizard recap: same target/evidence preview until the closing statement is submitted (round_complete). */
+    const showWizardAssemblyRecap =
+        wf.gamePhase === "assembly" &&
+        wf.step.kind !== "round_complete" &&
+        (wf.targetSummary != null || wf.evidences.length > 0);
+
     const renderAssemblyPreview = (bodyTextClass: string) => (
         <>
             {wf.targetSummary && (
@@ -282,11 +288,12 @@ const TrialUI: React.FC = () => {
             </div>
             {/* Recap — 60%, scrollable */}
             <div className="box-border flex h-[60%] max-h-[60%] min-h-0 w-full flex-col overflow-hidden">
-                {isAssemblyEvidenceDraftPhase &&
-                (wf.targetSummary != null || wf.evidences.length > 0) ? (
+                {showWizardAssemblyRecap ? (
                     <div className="h-full min-h-0 overflow-y-auto overscroll-contain px-2 py-3 [scrollbar-gutter:stable] md:px-3">
                         <p className="mb-2 shrink-0 text-[1.125rem] font-medium uppercase tracking-wide text-white/45">
-                            Your assembly (draft)
+                            {isAssemblyEvidenceDraftPhase
+                                ? "Your assembly (draft)"
+                                : "Your assembly"}
                         </p>
                         <div className="flex flex-col gap-3">
                             {renderAssemblyPreview(
