@@ -520,23 +520,46 @@ const TrialUI: React.FC = () => {
                     </div>
                 );
             }
+            const opening = wf.chosenPlayerConstructive;
+            if (!opening) return null;
             return (
                 <div className="flex flex-col gap-6">
                     <div
-                        className={`${sectionBox} text-[2.125rem] leading-snug text-white/75`}
+                        className={`${sectionBox} text-[2.125rem] leading-snug text-white/85`}
                     >
-                        <p>
-                            Opponent and your constructive lines are shown in
-                            Feedback. Continue when you are ready to assemble
-                            your next statement.
+                        <p className="text-white/50">
+                            Your opening (full statement)
+                        </p>
+                        <ol className={sentenceListClass}>
+                            {opening.sentences.map((s) => (
+                                <li key={s.id} className="pl-1">
+                                    {s.text}
+                                </li>
+                            ))}
+                        </ol>
+                        <p className="mt-6 border-t border-white/10 pt-4 text-[1.625rem] leading-snug text-white/45">
+                            The opposition response is in Feedback. Submit locks
+                            in your opening and cannot be undone.
                         </p>
                     </div>
-                    <ChoiceButton
-                        label="Continue to assembly"
-                        onClick={() =>
-                            wf.dispatch({ type: "continue_after_constructive" })
-                        }
-                    />
+                    <div className="flex flex-col gap-6">
+                        <button
+                            type="button"
+                            className={btnRowClass}
+                            disabled={!wf.canUndoConstructiveSummary}
+                            onClick={wf.undo}
+                        >
+                            Back — choose a different opening
+                        </button>
+                        <ChoiceButton
+                            label="Submit opening and continue to assembly"
+                            onClick={() =>
+                                wf.dispatch({
+                                    type: "continue_after_constructive",
+                                })
+                            }
+                        />
+                    </div>
                 </div>
             );
         }

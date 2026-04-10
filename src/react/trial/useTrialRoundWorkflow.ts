@@ -279,7 +279,7 @@ function reduceWorkflow(state: WorkflowState, action: Action, scenario: DebateSc
         ];
         return {
           ...state,
-          past: pushHistory(state),
+          past: [],
           gamePhase: 'assembly',
           playerStatementHistory,
           opponentStatementHistory,
@@ -592,7 +592,11 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     setState((prev) => reduceWorkflow(prev, action, scenarioRef.current));
   }, []);
 
-  const canUndo = state.past.length > 0;
+  const isConstructiveSummary =
+    state.gamePhase === 'constructive_opponent' &&
+    state.constructiveStep.kind === 'constructive_summary';
+  const canUndoConstructiveSummary = isConstructiveSummary && state.past.length > 0;
+  const canUndo = state.past.length > 0 && !isConstructiveSummary;
 
   const assemblyRoundCount = assemblyRoundIdGroups(scenario).length;
   const hasMoreAssemblyRoundsAfterComplete =
@@ -604,11 +608,11 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     if (state.gamePhase === 'constructive_opponent') {
       if (state.constructiveStep.kind === 'choose_player_constructive') {
         if (scenario.playerSide === 'proposition') {
-          return 'Choose your constructive opening. The matching opponent line will be set for this debate.';
+          return 'Choose your constructive opening. After this, your opponent will respond with their constructive.';
         }
         return "Your opponent's opening was drawn at random (see Feedback). Choose your constructive response.";
       }
-      return 'Review both opening lines. Continue when ready for the assembly round.';
+      return 'Review your full opening below. Go back to change it, or submit to lock it in and continue. Submitting cannot be undone.';
     }
     if (state.gamePhase === 'debate_complete') {
       return 'Debate complete.';
@@ -756,6 +760,7 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     finalAssembledChoice,
     wizardMessage,
     canUndo,
+    canUndoConstructiveSummary,
     undo,
     canSubmitEvidences,
     dispatch,
