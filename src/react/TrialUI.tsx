@@ -92,6 +92,45 @@ const TrialUI: React.FC = () => {
     const sentenceListClass =
         "mt-2 list-inside list-decimal space-y-2 text-white/85 [list-style-position:outside] pl-1";
 
+    /** Target + evidences are still being picked; preview lives in the wizard until evidences are submitted. */
+    const isAssemblyEvidenceDraftPhase =
+        wf.gamePhase === "assembly" &&
+        (wf.step.kind === "evidence_category" ||
+            wf.step.kind === "evidence_statements" ||
+            wf.step.kind === "evidence_sentences" ||
+            wf.step.kind === "evidence_facts" ||
+            wf.step.kind === "evidence_fact_sentences" ||
+            wf.step.kind === "evidence_fallacies" ||
+            wf.step.kind === "evidence_fallacy_use_to");
+
+    const showAssemblyPreviewInFeedback =
+        !isAssemblyEvidenceDraftPhase &&
+        wf.gamePhase === "assembly" &&
+        (wf.targetSummary != null || wf.evidences.length > 0);
+
+    const renderAssemblyPreview = (bodyTextClass: string) => (
+        <>
+            {wf.targetSummary && (
+                <div className={`${sectionBox} ${bodyTextClass} leading-snug`}>
+                    <p className="text-white/50">Target</p>
+                    <p className="text-white/90">{wf.targetSummary}</p>
+                </div>
+            )}
+            {wf.evidences.length > 0 && (
+                <div className={`${sectionBox} ${bodyTextClass} leading-snug`}>
+                    <p className="text-white/50">
+                        Evidence ({wf.evidences.length})
+                    </p>
+                    <ul className="mt-3 list-inside list-disc space-y-2.5 border-t border-white/10 pt-3 text-white/85">
+                        {wf.evidenceSummaries.map((e) => (
+                            <li key={e.key}>{e.text}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </>
+    );
+
     const feedback = (
         <div className="flex flex-col gap-4">
             <div className="trial-area-title shrink-0 rounded-lg border border-white/25 bg-black/35">
@@ -201,24 +240,8 @@ const TrialUI: React.FC = () => {
                     </p>
                 </div>
             )}
-            {wf.targetSummary && (
-                <div className={`${sectionBox} text-[2.125rem] leading-snug`}>
-                    <p className="text-white/50">Target</p>
-                    <p className="text-white/90">{wf.targetSummary}</p>
-                </div>
-            )}
-            {wf.evidences.length > 0 && (
-                <div className={`${sectionBox} text-[2.125rem] leading-snug`}>
-                    <p className="text-white/50">
-                        Evidence ({wf.evidences.length})
-                    </p>
-                    <ul className="mt-3 list-inside list-disc space-y-2.5 border-t border-white/10 pt-3 text-white/85">
-                        {wf.evidenceSummaries.map((e) => (
-                            <li key={e.key}>{e.text}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+            {showAssemblyPreviewInFeedback &&
+                renderAssemblyPreview("text-[2.125rem]")}
             {wf.finalChoice && (
                 <div
                     className={`${sectionBox} shrink-0 text-[2.125rem] leading-snug ring-cyan-500/20`}
@@ -242,16 +265,39 @@ const TrialUI: React.FC = () => {
     );
 
     const wizard = (
-        <div className="flex h-full max-w-full min-h-0 min-w-0 w-full flex-col gap-4 overflow-hidden">
-            <div className="trial-area-title shrink-0 rounded-lg border border-white/25 bg-black/35">
+        <div className="box-border flex h-full max-w-full min-h-0 min-w-0 w-full flex-col gap-0 overflow-hidden">
+            <div className="trial-area-title box-border flex h-[10%] max-h-[10%] min-h-0 shrink-0 flex-col justify-center overflow-hidden rounded-lg border border-white/25 bg-black/35">
                 <h2 className="text-4xl font-semibold uppercase tracking-wide text-cyan-400/90">
                     Wizard
                 </h2>
             </div>
-            <div className="trial-wizard-body-wrap">
-                <p className="trial-wizard-main-text text-[1.96875rem] leading-relaxed text-white/85">
-                    {wf.wizardMessage}
-                </p>
+            {/*
+              Grid (not flex + h-1/2): equal 45%/45% of column inside this 90% band; minmax(0,1fr) keeps
+              rows from growing past half when instruction text is long, so the bottom draft area is not squeezed.
+            */}
+            <div className="box-border grid h-[90%] max-h-[90%] min-h-0 min-w-0 shrink-0 grid-cols-1 overflow-hidden rounded-md border border-white/10 [grid-template-rows:minmax(0,1fr)_minmax(0,1fr)]">
+                <div className="flex min-h-0 min-w-0 flex-col overflow-hidden border-b border-white/15">
+                    <div className="trial-wizard-body-wrap h-full min-h-0">
+                        <p className="trial-wizard-main-text text-[1.96875rem] leading-relaxed text-white/85">
+                            {wf.wizardMessage}
+                        </p>
+                    </div>
+                </div>
+                <div className="flex min-h-0 min-w-0 flex-col overflow-hidden">
+                    {isAssemblyEvidenceDraftPhase &&
+                    (wf.targetSummary != null || wf.evidences.length > 0) ? (
+                        <div className="h-full min-h-0 overflow-y-auto overscroll-contain px-2 py-3 [scrollbar-gutter:stable] md:px-3">
+                            <p className="mb-2 shrink-0 text-[1.125rem] font-medium uppercase tracking-wide text-white/45">
+                                Your assembly (draft)
+                            </p>
+                            <div className="flex flex-col gap-3">
+                                {renderAssemblyPreview(
+                                    "text-[clamp(1rem,2.8vw,1.5rem)]",
+                                )}
+                            </div>
+                        </div>
+                    ) : null}
+                </div>
             </div>
         </div>
     );
