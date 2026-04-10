@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer base {
+  /* `font-size` on `html` is set from `App` from the 16:9 stage width so `rem` (Tailwind) tracks resolution. */
   html,
   body,
   #root {

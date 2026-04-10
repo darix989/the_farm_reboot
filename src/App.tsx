@@ -1,8 +1,32 @@
+import { useLayoutEffect, useRef } from 'react';
 import { PhaserGame } from './phaser/PhaserGame';
 import ReactApp from './react/ReactApp';
+import { STAGE_DESIGN_WIDTH, STAGE_REM_BASE_PX } from './utils/constants';
 
 function App()
 {
+    const stageRef = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+        const el = stageRef.current;
+        if (!el) return;
+
+        const applyRootRem = () => {
+            const w = el.getBoundingClientRect().width;
+            const scaled = (w / STAGE_DESIGN_WIDTH) * STAGE_REM_BASE_PX;
+            const clamped = Math.max(9, Math.min(28, scaled));
+            document.documentElement.style.fontSize = `${clamped}px`;
+        };
+
+        applyRootRem();
+        const ro = new ResizeObserver(applyRootRem);
+        ro.observe(el);
+        return () => {
+            ro.disconnect();
+            document.documentElement.style.removeProperty('font-size');
+        };
+    }, []);
+
     return (
         <div id="app">
             {/*
@@ -10,6 +34,7 @@ function App()
               Phaser + React overlay both use this rectangle as their coordinate space.
             */}
             <div
+                ref={stageRef}
                 id="app-stage-16x9"
                 className="relative box-border overflow-hidden [height:min(100vh,calc(100vw*9/16))] [width:min(100vw,calc(100vh*16/9))]"
             >
