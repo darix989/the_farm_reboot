@@ -134,7 +134,7 @@
                     "sentences": [
                         {
                             "id": "s-r2a-1",
-                            "text": "If we let owls watch our corn today, they'll be watching our nests tomorrow and eventually deciding which of us is allowed to breathe!",
+                            "text": "If we let owls watch our corn today, they'll be watching our nests tomorrow.",
                             "logicalFallacies": [
                                 {
                                     "id": "fallacy-slippery-slope",
@@ -142,6 +142,22 @@
                                     "description": "Claiming a small step will inevitably lead to extreme consequences without evidence."
                                 }
                             ]
+                        },
+                        {
+                            "id": "s-r2a-2",
+                            "text": "And once they know our nests, they'll decide our schedules, and once they decide our schedules, they'll decide which of us is allowed to breathe.",
+                            "logicalFallacies": [
+                                {
+                                    "id": "fallacy-slippery-slope",
+                                    "label": "Slippery Slope",
+                                    "description": "Claiming a small step will inevitably lead to extreme consequences without evidence."
+                                }
+                            ]
+                        },
+                        {
+                            "id": "s-r2a-3",
+                            "text": "We must reject this Act before the first talon touches the rafter, or we will have no farm left to protect.",
+                            "logicalFallacies": []
                         }
                     ]
                 },
@@ -152,7 +168,17 @@
                     "sentences": [
                         {
                             "id": "s-r2b-1",
-                            "text": "I think the silo is actually quite old and the wood is rotting, so maybe we should just talk about the wood instead.",
+                            "text": "I think the silo is actually quite old and the wood is rotting.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r2b-2",
+                            "text": "We should probably just talk about repairing the wood before we discuss anything else.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r2b-3",
+                            "text": "Once the silo structure is addressed, perhaps then we can revisit the question of security.",
                             "logicalFallacies": []
                         }
                     ]
@@ -174,7 +200,17 @@
                         },
                         {
                             "id": "s-r2c-3",
+                            "text": "The moment an animal must whisper to feel safe in its own home, the barn has already become a prison.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r2c-4",
                             "text": "Privacy is not a shield for thieves; it is the right of every free animal.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r2c-5",
+                            "text": "The Opposition stands for a farm where we solve problems together, not one where we surveil each other into submission.",
                             "logicalFallacies": []
                         }
                     ]

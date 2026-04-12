@@ -19,9 +19,6 @@ const btnRowClass =
 const btnFooterActionClass =
     "box-border flex min-h-[5.5rem] w-full min-w-0 items-center justify-center whitespace-normal rounded-lg border-2 border-white/35 bg-black/45 px-2 py-3 text-center text-[clamp(0.9375rem,1.35vw,1.375rem)] font-medium leading-snug text-white/90 shadow-sm transition-colors hover:border-cyan-500/70 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/35 disabled:hover:text-white/90 sm:px-3 sm:py-4 sm:text-[clamp(1rem,1.5vw,1.625rem)]";
 
-const sentenceListClass =
-    "mt-2 list-inside list-decimal space-y-2 text-white/85 [list-style-position:outside] pl-1";
-
 const interactiveScrollClass =
     "min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1 [scrollbar-gutter:stable]";
 
@@ -193,15 +190,11 @@ const TrialUI: React.FC = () => {
                         wf.currentPlayerRound?.opponentPrompt && (
                             <div className={`${sectionBox} mt-4 text-[1.75rem] leading-snug`}>
                                 <p className="text-white/45">Barnaby asks:</p>
-                                <ol className={sentenceListClass}>
-                                    {wf.currentPlayerRound.opponentPrompt.sentences.map(
-                                        (s) => (
-                                            <li key={s.id} className="pl-1">
-                                                {s.text}
-                                            </li>
-                                        ),
-                                    )}
-                                </ol>
+                                <p className="mt-2 text-white/85">
+                                    {wf.currentPlayerRound.opponentPrompt.sentences
+                                        .map((s) => s.text)
+                                        .join(" ")}
+                                </p>
                             </div>
                         )}
 
@@ -209,13 +202,9 @@ const TrialUI: React.FC = () => {
                     {wf.gamePhase === "player_confirming" && wf.selectedOption && (
                         <div className={`${sectionBox} mt-4 text-[1.75rem] leading-snug`}>
                             <p className="text-white/45">Your statement</p>
-                            <ol className={sentenceListClass}>
-                                {wf.selectedOption.sentences.map((s) => (
-                                    <li key={s.id} className="pl-1">
-                                        {s.text}
-                                    </li>
-                                ))}
-                            </ol>
+                            <p className="mt-2 text-white/85">
+                                {wf.selectedOption.sentences.map((s) => s.text).join(" ")}
+                            </p>
                         </div>
                     )}
 
@@ -224,15 +213,11 @@ const TrialUI: React.FC = () => {
                         wf.activeOpponentResponse && (
                             <div className={`${sectionBox} mt-4 text-[1.75rem] leading-snug`}>
                                 <p className="text-white/45">Barnaby responds:</p>
-                                <ol className={sentenceListClass}>
-                                    {wf.activeOpponentResponse.statement.sentences.map(
-                                        (s) => (
-                                            <li key={s.id} className="pl-1">
-                                                {s.text}
-                                            </li>
-                                        ),
-                                    )}
-                                </ol>
+                                <p className="mt-2 text-white/85">
+                                    {wf.activeOpponentResponse.statement.sentences
+                                        .map((s) => s.text)
+                                        .join(" ")}
+                                </p>
                             </div>
                         )}
                 </div>
@@ -256,13 +241,9 @@ const TrialUI: React.FC = () => {
                                 {npc.speakerId === "barnaby" ? "Barnaby" : npc.speakerId}{" "}
                                 speaks:
                             </p>
-                            <ol className={sentenceListClass}>
-                                {npc.statement.sentences.map((s) => (
-                                    <li key={s.id} className="pl-1">
-                                        {s.text}
-                                    </li>
-                                ))}
-                            </ol>
+                            <p className="mt-2 text-white/85">
+                                {npc.statement.sentences.map((s) => s.text).join(" ")}
+                            </p>
                         </div>
                     </div>
                 );
@@ -276,7 +257,7 @@ const TrialUI: React.FC = () => {
                         {playerRound.options.map((opt, idx) => (
                             <ChoiceButton
                                 key={opt.id}
-                                label={`${String.fromCharCode(65 + idx)}. ${opt.sentences[0]?.text ?? opt.id}`}
+                                label={`${String.fromCharCode(65 + idx)}. ${opt.sentences.map((s) => s.text).join(" ")}`}
                                 onClick={() =>
                                     wf.dispatch({
                                         type: "select_option",
@@ -295,13 +276,9 @@ const TrialUI: React.FC = () => {
                 return (
                     <div className={`${sectionBox} text-[2.125rem] leading-snug text-white/85`}>
                         <p className="text-white/50">Your choice (full text)</p>
-                        <ol className={sentenceListClass}>
-                            {opt.sentences.map((s) => (
-                                <li key={s.id} className="pl-1">
-                                    {s.text}
-                                </li>
-                            ))}
-                        </ol>
+                        <p className="mt-2 text-white/85">
+                            {opt.sentences.map((s) => s.text).join(" ")}
+                        </p>
                         <p className="mt-6 border-t border-white/10 pt-4 text-[1.625rem] leading-snug text-white/45">
                             Go back to change your selection, or confirm to lock it
                             in. Confirming cannot be undone.
@@ -316,13 +293,9 @@ const TrialUI: React.FC = () => {
                 return (
                     <div className={`${sectionBox} text-[1.875rem] leading-snug`}>
                         <p className="text-white/45">Barnaby's response:</p>
-                        <ol className={sentenceListClass}>
-                            {response.statement.sentences.map((s) => (
-                                <li key={s.id} className="pl-1">
-                                    {s.text}
-                                </li>
-                            ))}
-                        </ol>
+                        <p className="mt-2 text-white/85">
+                            {response.statement.sentences.map((s) => s.text).join(" ")}
+                        </p>
                     </div>
                 );
             }
