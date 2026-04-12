@@ -14,7 +14,7 @@ const sectionBox =
     "rounded-lg border border-white/25 bg-black/30 p-4 md:p-5 ring-1 ring-white/5";
 
 const btnRowClass =
-    "w-full rounded-lg border-2 border-white/35 bg-black/45 px-9 py-6 text-left text-[1.96875rem] leading-snug text-white/90 shadow-sm transition-colors hover:border-cyan-500/70 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/35 disabled:hover:text-white/90";
+    "w-full min-w-0 max-w-full overflow-hidden rounded-lg border-2 border-white/35 bg-black/45 px-9 py-6 text-left text-[1.96875rem] leading-snug text-white/90 shadow-sm transition-colors hover:border-cyan-500/70 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/35 disabled:hover:text-white/90";
 
 const btnFooterActionClass =
     "box-border flex min-h-[5.5rem] w-full min-w-0 items-center justify-center whitespace-normal rounded-lg border-2 border-white/35 bg-black/45 px-2 py-3 text-center text-[clamp(0.9375rem,1.35vw,1.375rem)] font-medium leading-snug text-white/90 shadow-sm transition-colors hover:border-cyan-500/70 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/35 disabled:hover:text-white/90 sm:px-3 sm:py-4 sm:text-[clamp(1rem,1.5vw,1.625rem)]";
@@ -390,7 +390,7 @@ function ChoiceButton({
 }) {
     return (
         <button type="button" className={btnRowClass} onClick={onClick}>
-            {label}
+            <span className="block min-w-0 truncate">{label}</span>
         </button>
     );
 }
