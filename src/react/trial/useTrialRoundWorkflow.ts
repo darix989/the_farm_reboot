@@ -276,10 +276,11 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     );
   }, [state.gamePhase, currentPlayerRound, state.selectedOptionId]);
 
+  // Back is only meaningful in player_confirming: the previous snapshot is always
+  // player_choosing for the same round, so undo can never jump to a different round.
   const canUndo =
-    state.past.length > 0 &&
-    state.gamePhase !== 'debate_complete' &&
-    state.gamePhase !== 'npc_speaking';
+    state.gamePhase === 'player_confirming' &&
+    state.past.length > 0;
 
   const wizardMessage = useMemo((): string => {
     if (state.gamePhase === 'debate_complete') return 'The debate is finished.';

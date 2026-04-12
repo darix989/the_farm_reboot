@@ -315,7 +315,7 @@ const TrialUI: React.FC = () => {
                         <button
                             type="button"
                             className={btnFooterActionClass}
-                            disabled={!interactiveFooter.canStepBack}
+                            disabled={!wf.canUndo}
                             onClick={wf.undo}
                         >
                             Back
