@@ -19,8 +19,9 @@ const btnRowClass =
 const btnFooterActionClass =
     "box-border flex min-h-[5.5rem] w-full min-w-0 items-center justify-center whitespace-normal rounded-lg border-2 border-white/35 bg-black/45 px-2 py-3 text-center text-[clamp(0.9375rem,1.35vw,1.375rem)] font-medium leading-snug text-white/90 shadow-sm transition-colors hover:border-cyan-500/70 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/35 disabled:hover:text-white/90 sm:px-3 sm:py-4 sm:text-[clamp(1rem,1.5vw,1.625rem)]";
 
+/** Scroll container for the interactive content area above the footer. */
 const interactiveScrollClass =
-    "min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1 [scrollbar-gutter:stable]";
+    "flex-1 min-h-0 overflow-y-auto overscroll-contain pr-1 [scrollbar-gutter:stable]";
 
 // ---------------------------------------------------------------------------
 // Component
@@ -60,12 +61,13 @@ const TrialUI: React.FC = () => {
     // -----------------------------------------------------------------------
 
     const feedback = (
-        <div className="flex flex-col gap-4">
-            <div className="trial-area-title shrink-0 rounded-lg border border-white/25 bg-black/35">
+        <div className="flex h-full min-h-0 flex-col gap-4">
+            <div className="trial-area-title flex h-[5vh] shrink-0 items-center overflow-hidden rounded-lg border border-white/25 bg-black/35">
                 <h2 className="text-4xl font-semibold uppercase tracking-wide text-cyan-400/90">
                     Feedback
                 </h2>
             </div>
+            <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain">
 
             {wf.scenario.introduction && (
                 <div className={`${sectionBox} text-[1.875rem] leading-snug text-white/80`}>
@@ -165,6 +167,7 @@ const TrialUI: React.FC = () => {
                     })}
                 </div>
             )}
+            </div>
         </div>
     );
 
@@ -173,54 +176,16 @@ const TrialUI: React.FC = () => {
     // -----------------------------------------------------------------------
 
     const wizard = (
-        <div className="box-border flex h-full max-w-full min-h-0 min-w-0 w-full flex-col overflow-hidden">
-            <div className="trial-area-title box-border flex h-[10%] max-h-[10%] min-h-0 shrink-0 flex-col justify-center overflow-hidden rounded-lg border border-white/25 bg-black/35">
+        <div className="flex h-full min-h-0 w-full flex-col gap-4">
+            <div className="trial-area-title flex h-[5vh] shrink-0 items-center overflow-hidden rounded-lg border border-white/25 bg-black/35">
                 <h2 className="text-4xl font-semibold uppercase tracking-wide text-cyan-400/90">
                     Wizard
                 </h2>
             </div>
-            <div className="box-border flex h-[90%] max-h-[90%] min-h-0 w-full flex-col overflow-hidden">
-                <div className="trial-wizard-body-wrap h-full min-h-0 overflow-y-auto overscroll-contain px-2 py-3 [scrollbar-gutter:stable] md:px-3">
-                    <p className="trial-wizard-main-text text-[1.96875rem] leading-relaxed text-white/85">
-                        {wf.wizardMessage}
-                    </p>
-
-                    {/* Show opponent prompt in wizard when it exists */}
-                    {wf.gamePhase === "player_choosing" &&
-                        wf.currentPlayerRound?.opponentPrompt && (
-                            <div className={`${sectionBox} mt-4 text-[1.75rem] leading-snug`}>
-                                <p className="text-white/45">Barnaby asks:</p>
-                                <p className="mt-2 text-white/85">
-                                    {wf.currentPlayerRound.opponentPrompt.sentences
-                                        .map((s) => s.text)
-                                        .join(" ")}
-                                </p>
-                            </div>
-                        )}
-
-                    {/* Show chosen option full text in confirming phase */}
-                    {wf.gamePhase === "player_confirming" && wf.selectedOption && (
-                        <div className={`${sectionBox} mt-4 text-[1.75rem] leading-snug`}>
-                            <p className="text-white/45">Your statement</p>
-                            <p className="mt-2 text-white/85">
-                                {wf.selectedOption.sentences.map((s) => s.text).join(" ")}
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Show NPC response in npc_responding phase */}
-                    {wf.gamePhase === "npc_responding" &&
-                        wf.activeOpponentResponse && (
-                            <div className={`${sectionBox} mt-4 text-[1.75rem] leading-snug`}>
-                                <p className="text-white/45">Barnaby responds:</p>
-                                <p className="mt-2 text-white/85">
-                                    {wf.activeOpponentResponse.statement.sentences
-                                        .map((s) => s.text)
-                                        .join(" ")}
-                                </p>
-                            </div>
-                        )}
-                </div>
+            <div className="trial-wizard-body-wrap min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-3 [scrollbar-gutter:stable] md:px-3">
+                <p className="trial-wizard-main-text text-[1.96875rem] leading-relaxed text-white/85">
+                    {wf.wizardMessage}
+                </p>
             </div>
         </div>
     );
@@ -329,41 +294,43 @@ const TrialUI: React.FC = () => {
     };
 
     const interactive = (
-        <div className="flex h-full min-h-0 flex-col gap-4">
-            <div className="trial-area-title shrink-0 rounded-lg border border-white/25 bg-black/35">
+        <div className="flex flex-1 min-h-0 flex-col">
+            {/* Title — fixed height, never participates in flex growth */}
+            <div className="trial-area-title shrink-0 flex items-center overflow-hidden rounded-lg border border-white/25 bg-black/35">
                 <h2 className="text-4xl font-semibold uppercase tracking-wide text-cyan-400/90">
                     Interactive
                 </h2>
             </div>
-            <div
-                className={`${sectionBox} flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden p-3 md:p-4`}
-            >
-                <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4">
-                    <div className={interactiveScrollClass}>
-                        {renderInteractive()}
-                    </div>
-                    <div className="flex w-full min-w-0 shrink-0 justify-center border-t border-white/15 pt-4">
-                        <div className="grid w-full max-w-4xl grid-cols-2 items-stretch gap-4 px-2 sm:gap-6 sm:px-4 md:gap-8">
-                            <button
-                                type="button"
-                                className={btnFooterActionClass}
-                                disabled={!wf.canUndo}
-                                onClick={wf.undo}
-                            >
-                                Back
-                            </button>
-                            <button
-                                type="button"
-                                className={btnFooterActionClass}
-                                disabled={
-                                    interactiveFooter.submitDisabled ||
-                                    !interactiveFooter.onSubmit
-                                }
-                                onClick={() => interactiveFooter.onSubmit?.()}
-                            >
-                                {interactiveFooter.submitLabel}
-                            </button>
-                        </div>
+
+            {/* Body: fills remaining height, clips overflow so children cannot escape */}
+            <div className="mt-4 flex min-h-0 flex-1 flex-col overflow-hidden">
+                {/* Scroll area: grows to fill, scrolls when content is taller */}
+                <div className={interactiveScrollClass}>
+                    {renderInteractive()}
+                </div>
+
+                {/* Footer: always visible — shrink-0 prevents compression */}
+                <div className="shrink-0 flex w-full items-center justify-center border-t border-white/15 pt-4">
+                    <div className="grid w-full max-w-4xl grid-cols-2 items-stretch gap-4 px-2 sm:gap-6 sm:px-4 md:gap-8">
+                        <button
+                            type="button"
+                            className={btnFooterActionClass}
+                            disabled={!interactiveFooter.canStepBack}
+                            onClick={wf.undo}
+                        >
+                            Back
+                        </button>
+                        <button
+                            type="button"
+                            className={btnFooterActionClass}
+                            disabled={
+                                interactiveFooter.submitDisabled ||
+                                !interactiveFooter.onSubmit
+                            }
+                            onClick={() => interactiveFooter.onSubmit?.()}
+                        >
+                            {interactiveFooter.submitLabel}
+                        </button>
                     </div>
                 </div>
             </div>

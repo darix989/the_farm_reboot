@@ -31,7 +31,7 @@ const TrialLayout: React.FC<TrialLayoutProps> = ({ feedback, wizard, interactive
         className="col-span-3 row-start-1 box-border flex h-full min-h-0 min-w-0 flex-col rounded-lg border-2 border-white/35 p-5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] pointer-events-auto md:p-6"
         style={{ backgroundColor: TRIAL_PANEL_BG }}
       >
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overscroll-contain rounded-md border border-white/20 bg-black/25 p-4 md:p-5">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-md border border-white/20 bg-black/25 p-4 md:p-5">
           {feedback}
         </div>
       </div>
@@ -51,7 +51,7 @@ const TrialLayout: React.FC<TrialLayoutProps> = ({ feedback, wizard, interactive
         className="col-span-4 row-start-2 box-border flex h-full min-h-0 min-w-0 flex-col rounded-lg border-2 border-white/35 p-5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] pointer-events-auto md:p-6"
         style={{ backgroundColor: TRIAL_PANEL_BG }}
       >
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col rounded-md border border-white/20 bg-black/25 p-4 md:p-5">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-md border border-white/20 bg-black/25 p-4 md:p-5">
           {interactive}
         </div>
       </div>
