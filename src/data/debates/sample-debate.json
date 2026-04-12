@@ -1,269 +1,732 @@
 {
-    "id": "debate-pilot-policy",
-    "introduction": "The jury must decide whether a phased public policy pilot should expand nationwide, given disputed costs and benefits.",
-    "playerSide": "proposition",
-    "opponentOpening": [
-        {
-            "id": "stmt-opp-opening-1",
-            "speakerId": "speaker-opposition",
-            "role": "negative",
-            "sentences": [
-                {
-                    "id": "s-oo1-1",
-                    "text": "The opposition rejects the claim of net benefit; the pilot’s gains are anecdotal, not proven at scale.",
-                    "logicalFallacies": []
-                },
-                {
-                    "id": "s-oo1-2",
-                    "text": "Costs are understated and risks to vulnerable groups are being brushed aside for political convenience.",
-                    "logicalFallacies": []
-                }
-            ]
-        },
-        {
-            "id": "stmt-opp-opening-2",
-            "speakerId": "speaker-opposition",
-            "role": "negative",
-            "sentences": [
-                {
-                    "id": "s-oo2-1",
-                    "text": "We dispute that the pilot demonstrates a durable upside; short-term signals are being mistaken for nationwide proof.",
-                    "logicalFallacies": []
-                },
-                {
-                    "id": "s-oo2-2",
-                    "text": "The fiscal picture is rosier on paper than in practice, and the burden would fall hardest on those least able to absorb a misstep.",
-                    "logicalFallacies": []
-                }
-            ]
-        },
-        {
-            "id": "stmt-opp-opening-3",
-            "speakerId": "speaker-opposition",
-            "role": "negative",
-            "sentences": [
-                {
-                    "id": "s-oo3-1",
-                    "text": "Net benefit has not been established; selective success stories cannot substitute for evidence that holds under full rollout.",
-                    "logicalFallacies": []
-                },
-                {
-                    "id": "s-oo3-2",
-                    "text": "Downstream costs and harms to at-risk populations are minimized while the timetable is driven by optics, not careful review.",
-                    "logicalFallacies": []
-                }
-            ]
-        }
-    ],
-    "playerConstructiveOpenings": [
-        {
-            "id": "stmt-pc-a",
-            "triggerOpeningStatementId": "stmt-opp-opening-1",
-            "speakerId": "speaker-proposition",
-            "role": "affirmative",
-            "sentences": [
-                {
-                    "id": "s-pca-1",
-                    "text": "We affirm the policy improves outcomes for the majority when implemented with the safeguards we outline.",
-                    "logicalFallacies": []
-                }
-            ]
-        },
-        {
-            "id": "stmt-pc-b",
-            "triggerOpeningStatementId": "stmt-opp-opening-2",
-            "speakerId": "speaker-proposition",
-            "role": "affirmative",
-            "sentences": [
-                {
-                    "id": "s-pcb-1",
-                    "text": "The pilot was voluntary, well-monitored, and showed measurable gains in participation and stability.",
-                    "logicalFallacies": []
-                },
-                {
-                    "id": "s-pcb-2",
-                    "text": "Expansion is the responsible next step, with funding tied to independent review milestones.",
-                    "logicalFallacies": []
-                }
-            ]
-        },
-        {
-            "id": "stmt-pc-c",
-            "triggerOpeningStatementId": "stmt-opp-opening-3",
-            "speakerId": "speaker-proposition",
-            "role": "affirmative",
-            "sentences": [
-                {
-                    "id": "s-pcc-1",
-                    "text": "Opponents ignore twelve thousand households of evidence and independent fiscal review.",
-                    "logicalFallacies": []
-                },
-                {
-                    "id": "s-pcc-2",
-                    "text": "We propose phased rollout, strict eligibility audits, and a public dashboard so harm is visible early.",
-                    "logicalFallacies": []
-                },
-                {
-                    "id": "s-pcc-3",
-                    "text": "Rejecting expansion now would strand proven gains and surrender leadership on a solvable problem.",
-                    "logicalFallacies": []
-                }
-            ]
-        }
-    ],
+    "id": "debate-owl-eye-act",
+    "introduction": "The animals of Green Meadows Farm must decide whether to pass the Owl-Eye Surveillance Act, which would place owls throughout the barn to watch for grain theft. Play as Pip the Field Mouse (Opposition) and defeat Barnaby the Border Collie's (Proposition) surveillance proposal.",
+    "playerSide": "opposition",
     "logicalFallacies": [
         {
-            "id": "fallacy-strawman",
-            "label": "Straw man",
-            "description": "Misrepresenting an argument to make it easier to attack."
+            "id": "fallacy-false-dilemma",
+            "label": "False Dilemma",
+            "description": "Presenting only two options when more alternatives exist."
+        },
+        {
+            "id": "fallacy-nothing-to-hide",
+            "label": "Nothing to Hide",
+            "description": "Implying that privacy is only needed by those committing wrongdoing."
+        },
+        {
+            "id": "fallacy-slippery-slope",
+            "label": "Slippery Slope",
+            "description": "Claiming a small step will inevitably lead to extreme consequences without evidence."
         },
         {
             "id": "fallacy-ad-hominem",
-            "label": "Ad hominem",
-            "description": "Attacking the person instead of the argument."
+            "label": "Ad Hominem",
+            "description": "Attacking the person making the argument rather than the argument itself."
         },
         {
-            "id": "fallacy-false-dilemma",
-            "label": "False dilemma",
-            "description": "Presenting only two options when more exist."
+            "id": "fallacy-loaded-question",
+            "label": "Loaded Question",
+            "description": "Asking a question that contains a built-in, unjustified assumption."
+        },
+        {
+            "id": "fallacy-straw-man",
+            "label": "Straw Man",
+            "description": "Misrepresenting an opponent's argument to make it easier to attack."
+        },
+        {
+            "id": "fallacy-appeal-to-pity",
+            "label": "Appeal to Pity",
+            "description": "Manipulating emotions by invoking sympathy rather than making a logical argument."
+        },
+        {
+            "id": "fallacy-special-pleading",
+            "label": "Special Pleading",
+            "description": "Applying standards or exceptions to oneself that one does not accept when applied to others."
+        },
+        {
+            "id": "fallacy-appeal-to-popularity",
+            "label": "Appeal to Popularity",
+            "description": "Claiming something is correct because many others believe or do it."
+        },
+        {
+            "id": "fallacy-weak-analogy",
+            "label": "Weak Analogy",
+            "description": "Drawing a comparison between two things that are not sufficiently alike."
+        },
+        {
+            "id": "fallacy-hasty-generalization",
+            "label": "Hasty Generalization",
+            "description": "Drawing a broad conclusion from too small or unrepresentative a sample."
+        },
+        {
+            "id": "fallacy-glittering-generalities",
+            "label": "Glittering Generalities",
+            "description": "Using vague, emotionally appealing words to make a proposal sound virtuous without substance."
+        },
+        {
+            "id": "fallacy-appeal-to-fear",
+            "label": "Appeal to Fear",
+            "description": "Using exaggerated threats or frightening scenarios to manipulate a decision."
         }
     ],
-    "facts": [
+    "rounds": [
         {
-            "id": "fact-1",
-            "speakerId": "moderator",
-            "sentences": [
+            "kind": "npc",
+            "id": "round-1",
+            "roundNumber": 1,
+            "type": "opening_constructive",
+            "speakerId": "barnaby",
+            "statement": {
+                "id": "stmt-r1-barnaby",
+                "speakerId": "barnaby",
+                "type": "opening_constructive",
+                "sentences": [
+                    {
+                        "id": "s-r1-1",
+                        "text": "Friends, our communal grain is vanishing, and with it, our survival.",
+                        "logicalFallacies": []
+                    },
+                    {
+                        "id": "s-r1-2",
+                        "text": "The Owl-Eye Act provides 24/7 neutral oversight to stop the thieves immediately.",
+                        "logicalFallacies": []
+                    },
+                    {
+                        "id": "s-r1-3",
+                        "text": "If you are doing nothing wrong, you have nothing to fear from these silent guardians.",
+                        "logicalFallacies": [
+                            {
+                                "id": "fallacy-nothing-to-hide",
+                                "label": "Nothing to Hide",
+                                "description": "Implying that privacy is only needed by those committing wrongdoing."
+                            }
+                        ]
+                    },
+                    {
+                        "id": "s-r1-4",
+                        "text": "We must choose the safety of a full silo or the slow starvation of a lawless winter.",
+                        "logicalFallacies": [
+                            {
+                                "id": "fallacy-false-dilemma",
+                                "label": "False Dilemma",
+                                "description": "Presenting only two options when more alternatives exist."
+                            }
+                        ]
+                    },
+                    {
+                        "id": "s-r1-5",
+                        "text": "Let us bring accountability to the barn so we can all sleep in peace.",
+                        "logicalFallacies": []
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "player",
+            "id": "round-2",
+            "roundNumber": 2,
+            "type": "opening_constructive",
+            "options": [
                 {
-                    "id": "fs-1-1",
-                    "text": "Participation in the pilot was voluntary.",
-                    "logicalFallacies": []
+                    "id": "r2-opt-a",
+                    "quality": "logical_fallacy",
+                    "impact": -12,
+                    "sentences": [
+                        {
+                            "id": "s-r2a-1",
+                            "text": "If we let owls watch our corn today, they'll be watching our nests tomorrow and eventually deciding which of us is allowed to breathe!",
+                            "logicalFallacies": [
+                                {
+                                    "id": "fallacy-slippery-slope",
+                                    "label": "Slippery Slope",
+                                    "description": "Claiming a small step will inevitably lead to extreme consequences without evidence."
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
-                    "id": "fs-1-2",
-                    "text": "Sample size was twelve thousand households.",
-                    "logicalFallacies": []
+                    "id": "r2-opt-b",
+                    "quality": "ineffective",
+                    "impact": 0,
+                    "sentences": [
+                        {
+                            "id": "s-r2b-1",
+                            "text": "I think the silo is actually quite old and the wood is rotting, so maybe we should just talk about the wood instead.",
+                            "logicalFallacies": []
+                        }
+                    ]
+                },
+                {
+                    "id": "r2-opt-c",
+                    "quality": "effective",
+                    "impact": 20,
+                    "sentences": [
+                        {
+                            "id": "s-r2c-1",
+                            "text": "True safety comes from community trust, not from placing natural predators in our sleeping quarters.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r2c-2",
+                            "text": "We cannot protect our grain by making our neighbors live in fear of the rafters.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r2c-3",
+                            "text": "Privacy is not a shield for thieves; it is the right of every free animal.",
+                            "logicalFallacies": []
+                        }
+                    ]
                 }
             ]
         },
         {
-            "id": "fact-2",
-            "speakerId": "moderator",
-            "sentences": [
+            "kind": "player",
+            "id": "round-3",
+            "roundNumber": 3,
+            "type": "crossfire",
+            "options": [
                 {
-                    "id": "fs-2-1",
-                    "text": "The interim report was published in March.",
-                    "logicalFallacies": []
+                    "id": "r3-opt-a",
+                    "quality": "logical_fallacy",
+                    "impact": -10,
+                    "sentences": [
+                        {
+                            "id": "s-r3a-1",
+                            "text": "Barnaby, why do you hate the small animals of this farm so much that you want to see us terrified?",
+                            "logicalFallacies": [
+                                {
+                                    "id": "fallacy-loaded-question",
+                                    "label": "Loaded Question",
+                                    "description": "Asking a question that contains a built-in, unjustified assumption."
+                                },
+                                {
+                                    "id": "fallacy-ad-hominem",
+                                    "label": "Ad Hominem",
+                                    "description": "Attacking the person making the argument rather than the argument itself."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "r3-opt-b",
+                    "quality": "ineffective",
+                    "impact": 0,
+                    "sentences": [
+                        {
+                            "id": "s-r3b-1",
+                            "text": "Do the owls need to be paid in extra grain, or do they work for free?",
+                            "logicalFallacies": []
+                        }
+                    ]
+                },
+                {
+                    "id": "r3-opt-c",
+                    "quality": "effective",
+                    "impact": 18,
+                    "sentences": [
+                        {
+                            "id": "s-r3c-1",
+                            "text": "You claim it's 'surveillance or starvation,' but why haven't we considered non-threatening options, like fixing the broken silo floorboards first?",
+                            "logicalFallacies": []
+                        }
+                    ]
+                }
+            ],
+            "opponentResponses": [
+                {
+                    "forOptionId": "r3-opt-a",
+                    "statement": {
+                        "id": "stmt-r3-resp-a",
+                        "speakerId": "barnaby",
+                        "type": "crossfire",
+                        "sentences": [
+                            {
+                                "id": "s-r3ra-1",
+                                "text": "I don't hate anyone. I'm the only one trying to protect this farm. Personal attacks won't fill the grain bin, Pip.",
+                                "logicalFallacies": []
+                            }
+                        ]
+                    }
+                },
+                {
+                    "forOptionId": "r3-opt-b",
+                    "statement": {
+                        "id": "stmt-r3-resp-b",
+                        "speakerId": "barnaby",
+                        "type": "crossfire",
+                        "sentences": [
+                            {
+                                "id": "s-r3rb-1",
+                                "text": "The owls serve out of duty to the farm. Grain compensation is a minor logistical detail — it does not change the urgency of the crisis.",
+                                "logicalFallacies": []
+                            }
+                        ]
+                    }
+                },
+                {
+                    "forOptionId": "r3-opt-c",
+                    "statement": {
+                        "id": "stmt-r3-resp-c",
+                        "speakerId": "barnaby",
+                        "type": "crossfire",
+                        "sentences": [
+                            {
+                                "id": "s-r3rc-1",
+                                "text": "Floorboards take weeks to fix, Pip. We need a solution tonight before another bushel vanishes into the night.",
+                                "logicalFallacies": []
+                            }
+                        ]
+                    }
                 }
             ]
-        }
-    ],
-    "playerAssembledStatements": [
-        {
-            "id": "assembled-rebuttal-weak",
-            "target": {
-                "type": "sentence",
-                "sourceId": "stmt-opp-opening-1",
-                "sentenceId": "s-oo1-1"
-            },
-            "evidences": [
-                {
-                    "type": "sentence",
-                    "sourceId": "fact-1",
-                    "sentenceId": "fs-1-2"
-                },
-                {
-                    "type": "logical_fallacy",
-                    "logicalFallacyId": "fallacy-strawman",
-                    "useTo": "spot"
-                }
-            ],
-            "sentences": [
-                {
-                    "id": "as-w-1",
-                    "text": "My opponent’s dismissal ignores the scale of the pilot; calling twelve thousand households “anecdotal” misstates what we measured.",
-                    "logicalFallacies": []
-                }
-            ],
-            "impact": 8
         },
         {
-            "id": "assembled-rebuttal-solid",
-            "target": {
-                "type": "sentence",
-                "sourceId": "stmt-opp-opening-1",
-                "sentenceId": "s-oo1-1"
+            "kind": "player",
+            "id": "round-4",
+            "roundNumber": 4,
+            "type": "crossfire",
+            "opponentPrompt": {
+                "id": "stmt-r4-barnaby-question",
+                "speakerId": "barnaby",
+                "type": "crossfire",
+                "sentences": [
+                    {
+                        "id": "s-r4q-1",
+                        "text": "Pip, is the 'privacy' of a few mice more important than the survival of a hungry lamb who finds the grain bin empty?",
+                        "logicalFallacies": [
+                            {
+                                "id": "fallacy-appeal-to-pity",
+                                "label": "Appeal to Pity",
+                                "description": "Manipulating emotions by invoking sympathy rather than making a logical argument."
+                            }
+                        ]
+                    }
+                ]
             },
-            "evidences": [
+            "options": [
                 {
-                    "type": "sentence",
-                    "sourceId": "fact-1",
-                    "sentenceId": "fs-1-2"
-                },
-                {
-                    "type": "logical_fallacy",
-                    "logicalFallacyId": "fallacy-strawman",
-                    "useTo": "spot"
-                }
-            ],
-            "sentences": [
-                {
-                    "id": "as-s-1",
-                    "text": "The opposition frames our evidence as anecdotal, but the pilot covered twelve thousand voluntary households—hardly a stray sample.",
-                    "logicalFallacies": []
-                },
-                {
-                    "id": "as-s-2",
-                    "text": "That is a straw man: we claim phased, audited expansion, not blind faith in a single headline number.",
-                    "logicalFallacies": [
+                    "id": "r4-opt-a",
+                    "quality": "logical_fallacy",
+                    "impact": -10,
+                    "sentences": [
                         {
-                            "id": "fallacy-strawman",
-                            "label": "Straw man",
-                            "description": "Misrepresenting an argument to make it easier to attack."
+                            "id": "s-r4a-1",
+                            "text": "Lambs can eat grass, so they don't even need the corn as much as we do!",
+                            "logicalFallacies": [
+                                {
+                                    "id": "fallacy-special-pleading",
+                                    "label": "Special Pleading",
+                                    "description": "Applying standards or exceptions to oneself that one does not accept when applied to others."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "r4-opt-b",
+                    "quality": "ineffective",
+                    "impact": 0,
+                    "sentences": [
+                        {
+                            "id": "s-r4b-1",
+                            "text": "The lamb should probably just learn to wake up earlier to get the grain first.",
+                            "logicalFallacies": []
+                        }
+                    ]
+                },
+                {
+                    "id": "r4-opt-c",
+                    "quality": "effective",
+                    "impact": 18,
+                    "sentences": [
+                        {
+                            "id": "s-r4c-1",
+                            "text": "We don't fix a tragedy by creating a climate of fear for everyone.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r4c-2",
+                            "text": "We protect the lamb by securing the bin's infrastructure, not by spying on the neighbors.",
+                            "logicalFallacies": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "kind": "npc",
+            "id": "round-5",
+            "roundNumber": 5,
+            "type": "rebuttal",
+            "speakerId": "barnaby",
+            "statement": {
+                "id": "stmt-r5-barnaby",
+                "speakerId": "barnaby",
+                "type": "rebuttal",
+                "sentences": [
+                    {
+                        "id": "s-r5-1",
+                        "text": "The Opposition wants to spend months 'fixing floors' while the thief continues to feast.",
+                        "logicalFallacies": [
+                            {
+                                "id": "fallacy-straw-man",
+                                "label": "Straw Man",
+                                "description": "Misrepresenting an opponent's argument to make it easier to attack."
+                            }
+                        ]
+                    },
+                    {
+                        "id": "s-r5-2",
+                        "text": "Pip's plan is basically an invitation for every thief on the farm to keep stealing until the wood is dry.",
+                        "logicalFallacies": [
+                            {
+                                "id": "fallacy-straw-man",
+                                "label": "Straw Man",
+                                "description": "Misrepresenting an opponent's argument to make it easier to attack."
+                            }
+                        ]
+                    },
+                    {
+                        "id": "s-r5-3",
+                        "text": "He values a thief's privacy over the farm's survival.",
+                        "logicalFallacies": []
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "player",
+            "id": "round-6",
+            "roundNumber": 6,
+            "type": "rebuttal",
+            "options": [
+                {
+                    "id": "r6-opt-a",
+                    "quality": "logical_fallacy",
+                    "impact": -15,
+                    "sentences": [
+                        {
+                            "id": "s-r6a-1",
+                            "text": "You only say that because you're a dog and dogs love to bark at things they don't understand!",
+                            "logicalFallacies": [
+                                {
+                                    "id": "fallacy-ad-hominem",
+                                    "label": "Ad Hominem",
+                                    "description": "Attacking the person making the argument rather than the argument itself."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "r6-opt-b",
+                    "quality": "ineffective",
+                    "impact": 0,
+                    "sentences": [
+                        {
+                            "id": "s-r6b-1",
+                            "text": "Actually, fixing a floor only takes three days if we have enough squirrels helping, so your timeline is wrong.",
+                            "logicalFallacies": []
+                        }
+                    ]
+                },
+                {
+                    "id": "r6-opt-c",
+                    "quality": "effective",
+                    "impact": 22,
+                    "sentences": [
+                        {
+                            "id": "s-r6c-1",
+                            "text": "I am not defending thieves; I am defending our autonomy.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r6c-2",
+                            "text": "You are attacking a version of my argument I never made to avoid discussing the dangers of your own plan.",
+                            "logicalFallacies": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "kind": "player",
+            "id": "round-7",
+            "roundNumber": 7,
+            "type": "crossfire",
+            "opponentPrompt": {
+                "id": "stmt-r7-barnaby-question",
+                "speakerId": "barnaby",
+                "type": "crossfire",
+                "sentences": [
+                    {
+                        "id": "s-r7q-1",
+                        "text": "Every neighboring farm uses Owl-watchers. Are you saying they are all wrong and you, a tiny mouse, are the only one who is right?",
+                        "logicalFallacies": [
+                            {
+                                "id": "fallacy-appeal-to-popularity",
+                                "label": "Appeal to Popularity",
+                                "description": "Claiming something is correct because many others believe or do it."
+                            }
+                        ]
+                    }
+                ]
+            },
+            "options": [
+                {
+                    "id": "r7-opt-a",
+                    "quality": "logical_fallacy",
+                    "impact": -10,
+                    "sentences": [
+                        {
+                            "id": "s-r7a-1",
+                            "text": "Just because everyone else is jumping off a cliff doesn't mean we should too!",
+                            "logicalFallacies": [
+                                {
+                                    "id": "fallacy-weak-analogy",
+                                    "label": "Weak Analogy",
+                                    "description": "Drawing a comparison between two things that are not sufficiently alike."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "r7-opt-b",
+                    "quality": "ineffective",
+                    "impact": 0,
+                    "sentences": [
+                        {
+                            "id": "s-r7b-1",
+                            "text": "Neighboring farms have different types of owls, so it's not the same thing at all.",
+                            "logicalFallacies": []
+                        }
+                    ]
+                },
+                {
+                    "id": "r7-opt-c",
+                    "quality": "effective",
+                    "impact": 18,
+                    "sentences": [
+                        {
+                            "id": "s-r7c-1",
+                            "text": "Those farms are run by humans who keep animals in cages.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r7c-2",
+                            "text": "We are a free farm; we shouldn't copy the tactics of our former masters just because they are common.",
+                            "logicalFallacies": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "kind": "player",
+            "id": "round-8",
+            "roundNumber": 8,
+            "type": "crossfire",
+            "options": [
+                {
+                    "id": "r8-opt-a",
+                    "quality": "logical_fallacy",
+                    "impact": -10,
+                    "sentences": [
+                        {
+                            "id": "s-r8a-1",
+                            "text": "Once you get power, you'll never give it up because all dogs are power-hungry, right?",
+                            "logicalFallacies": [
+                                {
+                                    "id": "fallacy-hasty-generalization",
+                                    "label": "Hasty Generalization",
+                                    "description": "Drawing a broad conclusion from too small or unrepresentative a sample."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "r8-opt-b",
+                    "quality": "ineffective",
+                    "impact": 0,
+                    "sentences": [
+                        {
+                            "id": "s-r8b-1",
+                            "text": "Will the owls be allowed to hoot at night, or do they have to stay quiet?",
+                            "logicalFallacies": []
+                        }
+                    ]
+                },
+                {
+                    "id": "r8-opt-c",
+                    "quality": "effective",
+                    "impact": 20,
+                    "sentences": [
+                        {
+                            "id": "s-r8c-1",
+                            "text": "If the grain loss stops, is there a specific date when the owls will be removed, or is this a permanent change to our way of life?",
+                            "logicalFallacies": []
                         }
                     ]
                 }
             ],
-            "impact": 22
+            "opponentResponses": [
+                {
+                    "forOptionId": "r8-opt-a",
+                    "statement": {
+                        "id": "stmt-r8-resp-a",
+                        "speakerId": "barnaby",
+                        "type": "crossfire",
+                        "sentences": [
+                            {
+                                "id": "s-r8ra-1",
+                                "text": "Generalizing about all dogs is beneath you, Pip. I serve this farm out of loyalty, not ambition.",
+                                "logicalFallacies": []
+                            }
+                        ]
+                    }
+                },
+                {
+                    "forOptionId": "r8-opt-b",
+                    "statement": {
+                        "id": "stmt-r8-resp-b",
+                        "speakerId": "barnaby",
+                        "type": "crossfire",
+                        "sentences": [
+                            {
+                                "id": "s-r8rb-1",
+                                "text": "The owls will operate quietly as needed. Noise management is a practical matter for the implementation committee.",
+                                "logicalFallacies": []
+                            }
+                        ]
+                    }
+                },
+                {
+                    "forOptionId": "r8-opt-c",
+                    "statement": {
+                        "id": "stmt-r8-resp-c",
+                        "speakerId": "barnaby",
+                        "type": "crossfire",
+                        "sentences": [
+                            {
+                                "id": "s-r8rc-1",
+                                "text": "Safety is a constant duty. We will keep the owls as long as a threat exists — which, as we see, is every night.",
+                                "logicalFallacies": []
+                            }
+                        ]
+                    }
+                }
+            ]
         },
         {
-            "id": "assembled-rebuttal-strong",
-            "target": {
-                "type": "sentence",
-                "sourceId": "stmt-opp-opening-1",
-                "sentenceId": "s-oo1-1"
-            },
-            "evidences": [
+            "kind": "npc",
+            "id": "round-9",
+            "roundNumber": 9,
+            "type": "closing_constructive",
+            "speakerId": "barnaby",
+            "statement": {
+                "id": "stmt-r9-barnaby",
+                "speakerId": "barnaby",
+                "type": "closing_constructive",
+                "sentences": [
+                    {
+                        "id": "s-r9-1",
+                        "text": "This is a simple choice between the light of truth and the darkness of theft.",
+                        "logicalFallacies": [
+                            {
+                                "id": "fallacy-glittering-generalities",
+                                "label": "Glittering Generalities",
+                                "description": "Using vague, emotionally appealing words to make a proposal sound virtuous without substance."
+                            }
+                        ]
+                    },
+                    {
+                        "id": "s-r9-2",
+                        "text": "Support the Owl-Eye Act to ensure that every animal — big or small — has a full belly and a safe winter.",
+                        "logicalFallacies": []
+                    },
+                    {
+                        "id": "s-r9-3",
+                        "text": "We are choosing accountability over chaos.",
+                        "logicalFallacies": [
+                            {
+                                "id": "fallacy-glittering-generalities",
+                                "label": "Glittering Generalities",
+                                "description": "Using vague, emotionally appealing words to make a proposal sound virtuous without substance."
+                            }
+                        ]
+                    },
+                    {
+                        "id": "s-r9-4",
+                        "text": "Vote for the eyes in the rafters to protect the food in our troughs.",
+                        "logicalFallacies": []
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "player",
+            "id": "round-10",
+            "roundNumber": 10,
+            "type": "closing_constructive",
+            "options": [
                 {
-                    "type": "sentence",
-                    "sourceId": "fact-1",
-                    "sentenceId": "fs-1-2"
-                },
-                {
-                    "type": "logical_fallacy",
-                    "logicalFallacyId": "fallacy-strawman",
-                    "useTo": "apply"
-                }
-            ],
-            "sentences": [
-                {
-                    "id": "as-st-1",
-                    "text": "Twelve thousand voluntary participants are not anecdotes; they are the core dataset the March report summarizes.",
-                    "logicalFallacies": []
-                },
-                {
-                    "id": "as-st-2",
-                    "text": "To label that scale “unproven” while refusing comparable evidence on harm is a straw man—and it avoids the actual rollout safeguards we propose.",
-                    "logicalFallacies": [
+                    "id": "r10-opt-a",
+                    "quality": "logical_fallacy",
+                    "impact": -15,
+                    "sentences": [
                         {
-                            "id": "fallacy-strawman",
-                            "label": "Straw man",
-                            "description": "Misrepresenting an argument to make it easier to attack."
+                            "id": "s-r10a-1",
+                            "text": "If you vote for Barnaby, you are basically voting to be eaten by owls by next Tuesday!",
+                            "logicalFallacies": [
+                                {
+                                    "id": "fallacy-appeal-to-fear",
+                                    "label": "Appeal to Fear",
+                                    "description": "Using exaggerated threats or frightening scenarios to manipulate a decision."
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": "r10-opt-b",
+                    "quality": "ineffective",
+                    "impact": 0,
+                    "sentences": [
+                        {
+                            "id": "s-r10b-1",
+                            "text": "In conclusion, we should probably just have a committee to look at the grain every two weeks instead.",
+                            "logicalFallacies": []
+                        }
+                    ]
+                },
+                {
+                    "id": "r10-opt-c",
+                    "quality": "effective",
+                    "impact": 25,
+                    "sentences": [
+                        {
+                            "id": "s-r10c-1",
+                            "text": "A barn where you are always watched is a cage, not a home.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r10c-2",
+                            "text": "Let us solve our problems through community effort and better infrastructure, not by surrendering our freedom to the rafters.",
+                            "logicalFallacies": []
+                        },
+                        {
+                            "id": "s-r10c-3",
+                            "text": "Vote for trust, not talons.",
+                            "logicalFallacies": []
                         }
                     ]
                 }
-            ],
-            "impact": 38
+            ]
         }
     ]
 }
-

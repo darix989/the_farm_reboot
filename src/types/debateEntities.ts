@@ -1,12 +1,9 @@
 /**
- * Domain entities for the dialogue / debate game (see plan_001.md).
+ * Domain entities for the dialogue / debate game (see plan_002.md).
  */
 
 /** Always exactly two sides in a debate. */
 export type Side = "proposition" | "opposition";
-
-/** Player represents one of these; maps to opening roles. */
-export type OpeningStatementRole = "affirmative" | "negative";
 
 export interface LogicalFallacy {
     id: string;
@@ -33,185 +30,103 @@ export interface Statement {
     type: StatementType;
 }
 
-/** Same shape as Statement; role distinguishes proposition vs opposition opening. */
-export interface OpeningStatement extends Statement {
-    role: OpeningStatementRole;
-}
+export type JuryVerdict = "proposition_accepted" | "proposition_rejected";
 
-export interface PlayerOpeningStatement extends OpeningStatement {
-    triggerOpeningStatementId?: string;
-}
+// ---------------------------------------------------------------------------
+// Player options
+// ---------------------------------------------------------------------------
 
-/**
- * Like a statement, but sentences must not carry logical fallacies (objective facts).
- */
-export interface FactSentence {
-    id: string;
-    text: string;
-    logicalFallacies: readonly [];
-}
-
-export interface Fact {
-    id: string;
-    speakerId: string;
-    sentences: FactSentence[];
-}
-
-export interface WinningConditions {
-    /** Percentages sum to 100; both start at 50. */
-    propositionWinPercent: number;
-    oppositionWinPercent: number;
-}
-
-export interface ConstructiveRound {
-    kind: "constructive";
-    activeSide: Side;
-}
-
-export interface CrossfireRound {
-    kind: "crossfire";
-    activeSide: Side;
-    /** Present when the other side may react in crossfire. */
-    reactiveSide?: Side;
-}
-
-export interface RebuttalRound {
-    kind: "rebuttal";
-    activeSide: Side;
-}
-
-export type Round = ConstructiveRound | CrossfireRound | RebuttalRound;
-
-/** Reference to a sentence from any statement-like source (opening, rebuttal, fact). */
-export interface SentenceTargetRef {
-    type: "sentence";
-    sourceId: string;
-    sentenceId: string;
-}
-
-export interface SideTargetRef {
-    type: "side";
-    side: Side;
-}
-
-export type Target = SentenceTargetRef | SideTargetRef;
-
-export interface EvidenceSentenceRef {
-    type: "sentence";
-    sourceId: string;
-    sentenceId: string;
-}
-
-/** Whether the fallacy is used to flag the opponent’s error or to characterize how an argument operates. */
-export type LogicalFallacyUseTo = "apply" | "spot";
-
-export interface EvidenceLogicalFallacyRef {
-    type: "logical_fallacy";
-    logicalFallacyId: string;
-    useTo: LogicalFallacyUseTo;
-}
-
-export type Evidence = EvidenceSentenceRef | EvidenceLogicalFallacyRef;
-
-/** At least one evidence item (rebuttal/crossfire assembly allows up to three). */
-export type NonEmptyEvidenceList = readonly [Evidence, ...Evidence[]];
+export type OptionQuality = "logical_fallacy" | "ineffective" | "effective";
 
 /**
- * One end-of-round option: composed lines shown after the player picks target + evidences.
- * `impact` is a score delta for jury / win conditions; keep in [-50, 50].
+ * One of the three pre-authored choices offered to the player in a player round.
+ * `impact` is a score delta; keep in [-50, 50].
  */
-export interface AssembledStatement {
+export interface PlayerOption {
     id: string;
-    type: StatementType;
+    quality: OptionQuality;
     sentences: Sentence[];
-    target: Target;
-    evidences: NonEmptyEvidenceList;
-    /** Integer delta in [-50, 50]. */
+    /** Integer delta in [-50, 50]. Negative for fallacy, ~0 for ineffective, positive for effective. */
     impact: number;
 }
 
-export type JuryVerdict = "proposition_accepted" | "proposition_rejected";
+// ---------------------------------------------------------------------------
+// Round entries
+// ---------------------------------------------------------------------------
 
-export interface Debate {
+/** A round where the NPC (opponent) speaks; the player only reads and continues. */
+export interface NpcRoundEntry {
+    kind: "npc";
     id: string;
-    /** Brief summary of what the debate is about. */
-    introduction: string;
-    playerSide: Side;
-    propositionOpening: OpeningStatement;
-    oppositionOpening: OpeningStatement;
-    rounds: Round[];
-    /** Statement produced at the end of each round, keyed by round id or index as you prefer. */
-    statementsByRoundKey?: Record<string, Statement>;
-    winningConditions: WinningConditions;
-    juryVerdict?: JuryVerdict;
+    roundNumber: number;
+    type: StatementType;
+    speakerId: string;
+    statement: Statement;
+}
+
+/** Links one NPC response to the player option that triggered it. */
+export interface OpponentResponse {
+    /** Id of the PlayerOption that triggers this response. */
+    forOptionId: string;
+    statement: Statement;
 }
 
 /**
- * Authoring shape for a single-player debate scenario (JSON).
- * `opponentOpening` is the non-player side; `playerConstructiveOpenings` are the three first-speech options.
+ * A round where the player picks from 3 pre-authored options.
+ *
+ * Two sub-patterns:
+ *  - Player raises question (crossfire): `opponentResponses` holds the NPC reply
+ *    for each option (matched by `forOptionId`).
+ *  - NPC raises question (crossfire) or NPC rebuttal/constructive: `opponentPrompt`
+ *    holds the NPC's opening statement before the player responds; no `opponentResponses`.
+ */
+export interface PlayerRoundEntry {
+    kind: "player";
+    id: string;
+    roundNumber: number;
+    type: StatementType;
+    /** NPC speaks first (e.g. Barnaby raises a crossfire question) before the player responds. */
+    opponentPrompt?: Statement;
+    options: readonly [PlayerOption, PlayerOption, PlayerOption];
+    /**
+     * One NPC response per player option (exactly 3 elements, each with `forOptionId`
+     * matching the corresponding PlayerOption id). Present only when the NPC replies
+     * to each of the player's possible questions (player raises crossfire).
+     */
+    opponentResponses?: readonly [OpponentResponse, OpponentResponse, OpponentResponse];
+}
+
+export type RoundEntry = NpcRoundEntry | PlayerRoundEntry;
+
+// ---------------------------------------------------------------------------
+// Scenario JSON authoring shape
+// ---------------------------------------------------------------------------
+
+/**
+ * Authoring shape for a single-player debate scenario loaded from JSON.
+ * `rounds` defines the full sequential flow (NPC and player turns in order).
  */
 export interface DebateScenarioJson {
     id: string;
     /** Brief summary of what the debate is about. */
     introduction?: string;
     playerSide: Side;
-    opponentOpening: readonly [
-        OpeningStatement,
-        OpeningStatement,
-        OpeningStatement,
-    ];
-    playerConstructiveOpenings: readonly [
-        PlayerOpeningStatement,
-        PlayerOpeningStatement,
-        PlayerOpeningStatement,
-    ];
     logicalFallacies: LogicalFallacy[];
-    facts: Fact[];
-    playerAssembledStatements: AssembledStatement[];
-    /**
-     * Opponent lines spoken after each player assembly round, in order.
-     * Index `i` is revealed when moving to assembly round `i + 1` (after round `i` completes).
-     */
-    otherSideRebuttalStatements?: Statement[];
-    /**
-     * Each entry lists `playerAssembledStatements` ids allowed as finals that assembly round.
-     * If omitted, one round is implied: all assembled statements in a single round.
-     */
-    playerAssemblyRounds?: readonly (readonly string[])[];
+    rounds: RoundEntry[];
 }
 
-/** First speech: three ready options; quality TBD per character. */
-export interface AssemblingOpeningConstructive {
-    kind: "assembling_constructive";
-    optionStatements: readonly [Statement, Statement, Statement];
-    type: "opening_constructive";
+// ---------------------------------------------------------------------------
+// Assembling phase (UI state during a player round)
+// ---------------------------------------------------------------------------
+
+/**
+ * All player rounds use the same interaction pattern: pick one of three options.
+ * Replaces the old per-kind assembling types.
+ */
+export interface AssemblingPlayerRound {
+    kind: "assembling_player_round";
+    roundType: StatementType;
+    options: readonly [PlayerOption, PlayerOption, PlayerOption];
 }
 
-export interface AssemblingClosingConstructive {
-    kind: "assembling_closing_constructive";
-    optionStatements: readonly [Statement, Statement, Statement];
-    type: "closing_constructive";
-}
-
-/** Select a target, then up to three evidences. */
-export interface AssemblingRebuttal {
-    kind: "assembling_rebuttal";
-    target: Target | null;
-    evidences: Evidence[];
-    type: "rebuttal";
-}
-
-/** Select a target, then up to three evidences. */
-export interface AssemblingCrossfire {
-    kind: "assembling_crossfire";
-    target: Target | null;
-    evidences: Evidence[];
-    type: "crossfire";
-}
-
-export type AssemblingPhase =
-    | AssemblingOpeningConstructive
-    | AssemblingClosingConstructive
-    | AssemblingRebuttal
-    | AssemblingCrossfire;
-
+export type AssemblingPhase = AssemblingPlayerRound;
