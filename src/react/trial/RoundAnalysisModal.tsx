@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import type {
     LogicalFallacy,
     NpcRoundEntry,
@@ -9,6 +9,7 @@ import type {
 
 import magnifyingIcon from "../../static/icons/magnifying.svg";
 import fallacyPlaceholder from "../../static/icons/fallacy_placeholder.svg";
+import { useScrollFade, scrollFadeMask } from "./useScrollFade";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -379,6 +380,8 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
     onClose,
 }) => {
     const isNpc = target.kind === "npc";
+    const modalScrollRef = useRef<HTMLDivElement>(null);
+    const modalFade = useScrollFade(modalScrollRef);
     const roundNumber = isNpc ? target.round.roundNumber : target.round.roundNumber;
     const statType = isNpc ? target.round.type : target.round.type;
 
@@ -428,7 +431,11 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                 </div>
 
                 {/* Body */}
-                <div className="trial-modal-content">
+                <div
+                    className="trial-modal-content"
+                    ref={modalScrollRef}
+                    style={{ maskImage: scrollFadeMask(modalFade), WebkitMaskImage: scrollFadeMask(modalFade) }}
+                >
                     {isNpc ? (
                         <NpcRoundAnalysis
                             round={target.round}
