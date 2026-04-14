@@ -206,21 +206,20 @@ function NpcRoundAnalysis({
                         s.logicalFallacies.length > 0;
 
                     return (
-                        <div
+                        <button
                             key={s.id}
+                            type="button"
                             className={[
                                 "trial-sentence-card",
                                 isSelected ? "selected" : "",
-                                hasGuessed && !canGuess ? "static" : canGuess ? "clickable" : "",
+                                canGuess && !hasGuessed ? "clickable" : "static",
                                 revealFallacy ? "has-fallacy-revealed" : "",
                             ]
                                 .filter(Boolean)
                                 .join(" ")}
-                            onClick={() => handleSentenceClick(s)}
-                            role={canGuess && !hasGuessed ? "button" : undefined}
-                            tabIndex={canGuess && !hasGuessed ? 0 : undefined}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter" || e.key === " ") handleSentenceClick(s);
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleSentenceClick(s);
                             }}
                         >
                             <p className="trial-sentence-text">{s.text}</p>
@@ -231,7 +230,7 @@ function NpcRoundAnalysis({
                                         {f.label}
                                     </span>
                                 ))}
-                        </div>
+                        </button>
                     );
                 })}
             </div>
@@ -390,7 +389,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                 if (e.target === e.currentTarget) onClose();
             }}
         >
-            <div className="trial-modal-box" role="dialog" aria-modal="true">
+            <div className="trial-modal-box" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
                 {/* Header */}
                 <div className="trial-modal-header">
                     <div className="trial-modal-header-left">

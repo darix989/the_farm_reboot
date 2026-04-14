@@ -708,6 +708,7 @@ body {
   background: rgba(0, 0, 0, 0.70);
   backdrop-filter: blur(4px);
   padding: 1.5rem;
+  pointer-events: auto;
 }
 
 .trial-modal-box {
@@ -845,11 +846,23 @@ body {
 }
 
 .trial-sentence-card {
+  width: 100%;
   border-radius: 0.5rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(0, 0, 0, 0.28);
   padding: 0.875rem 1rem;
-  transition: border-color 0.15s ease-in-out, background 0.15s ease-in-out;
+  text-align: left;
+  transition: border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.trial-sentence-card.static {
+  cursor: default;
+}
+
+.trial-sentence-card.static:disabled {
+  opacity: 1;
+  cursor: default;
 }
 
 .trial-sentence-card.clickable {
@@ -857,14 +870,15 @@ body {
 }
 
 .trial-sentence-card.clickable:hover {
-  border-color: rgba(6, 182, 212, 0.50);
-  background: rgba(6, 182, 212, 0.06);
+  border-color: rgba(6, 182, 212, 0.70);
+  color: #a5f3fc;
 }
 
 .trial-sentence-card.selected {
   border-color: rgba(6, 182, 212, 0.80);
   background: rgba(6, 182, 212, 0.10);
   box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.30);
+  color: #a5f3fc;
 }
 
 .trial-sentence-card.has-fallacy-revealed {
@@ -875,7 +889,7 @@ body {
 .trial-sentence-text {
   font-size: 1.625rem;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.85);
+  color: inherit;
   margin: 0;
 }
 
