@@ -7,23 +7,6 @@ import { useTrialRoundWorkflow } from "./trial/useTrialRoundWorkflow";
 const sampleDebate = sampleDebateJson as unknown as DebateScenarioJson;
 
 // ---------------------------------------------------------------------------
-// Shared style tokens
-// ---------------------------------------------------------------------------
-
-const sectionBox =
-    "rounded-lg border border-white/25 bg-black/30 p-4 md:p-5 ring-1 ring-white/5";
-
-const btnRowClass =
-    "w-full min-w-0 max-w-full overflow-hidden rounded-lg border-2 border-white/35 bg-black/45 px-9 py-6 text-left text-[1.96875rem] leading-snug text-white/90 shadow-sm transition-colors hover:border-cyan-500/70 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/35 disabled:hover:text-white/90";
-
-const btnFooterActionClass =
-    "box-border flex min-h-[5.5rem] w-full min-w-0 items-center justify-center whitespace-normal rounded-lg border-2 border-white/35 bg-black/45 px-2 py-3 text-center text-[clamp(0.9375rem,1.35vw,1.375rem)] font-medium leading-snug text-white/90 shadow-sm transition-colors hover:border-cyan-500/70 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-white/35 disabled:hover:text-white/90 sm:px-3 sm:py-4 sm:text-[clamp(1rem,1.5vw,1.625rem)]";
-
-/** Scroll container for the interactive content area above the footer. */
-const interactiveScrollClass =
-    "flex-1 min-h-0 overflow-y-auto overscroll-contain pr-1 [scrollbar-gutter:stable]";
-
-// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
@@ -61,30 +44,28 @@ const TrialUI: React.FC = () => {
     // -----------------------------------------------------------------------
 
     const feedback = (
-        <div className="flex h-full min-h-0 flex-col gap-4">
-            <div className="trial-area-title flex h-[5vh] shrink-0 items-center overflow-hidden rounded-lg border border-white/25 bg-black/35">
-                <h2 className="text-4xl font-semibold uppercase tracking-wide text-cyan-400/90">
-                    Feedback
-                </h2>
+        <div className="trial-panel-content">
+            <div className="trial-area-title">
+                <h2 className="trial-panel-heading">Feedback</h2>
             </div>
-            <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain">
+            <div className="trial-feedback-scroll">
 
             {wf.scenario.introduction && (
-                <div className={`${sectionBox} text-[1.875rem] leading-snug text-white/80`}>
-                    <p className="text-white/50">Introduction</p>
-                    <p className="mt-2 text-white/90">{wf.scenario.introduction}</p>
+                <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.80)' }}>
+                    <p style={{ color: 'rgba(255,255,255,0.50)' }}>Introduction</p>
+                    <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.90)' }}>{wf.scenario.introduction}</p>
                 </div>
             )}
 
             {/* Round counter */}
             {wf.gamePhase !== "debate_complete" && wf.currentRound && (
-                <div className={sectionBox}>
-                    <p className="text-[2.125rem] leading-snug text-white/85">
-                        <span className="text-white/50">Round </span>
-                        <span className="text-white/90">
+                <div className="trial-section-box">
+                    <p style={{ fontSize: '2.125rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
+                        <span style={{ color: 'rgba(255,255,255,0.50)' }}>Round </span>
+                        <span style={{ color: 'rgba(255,255,255,0.90)' }}>
                             {wf.currentRound.roundNumber} / {wf.totalRounds}
                         </span>
-                        <span className="ml-4 capitalize text-white/50 text-[1.625rem]">
+                        <span style={{ marginLeft: '1rem', textTransform: 'capitalize', color: 'rgba(255,255,255,0.50)', fontSize: '1.625rem' }}>
                             {wf.currentRound.type.replace(/_/g, " ")}
                         </span>
                     </p>
@@ -92,22 +73,22 @@ const TrialUI: React.FC = () => {
             )}
 
             {/* Score */}
-            <div className={sectionBox}>
-                <p className="text-[2.125rem] leading-snug text-white/85">
-                    <span className="text-white/50">Score </span>
+            <div className="trial-section-box">
+                <p style={{ fontSize: '2.125rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
+                    <span style={{ color: 'rgba(255,255,255,0.50)' }}>Score </span>
                     <span
-                        className={
-                            wf.totalScore > 0
-                                ? "text-cyan-300"
+                        style={{
+                            color: wf.totalScore > 0
+                                ? '#67e8f9'
                                 : wf.totalScore < 0
-                                  ? "text-red-400"
-                                  : "text-white/90"
-                        }
+                                  ? '#f87171'
+                                  : 'rgba(255,255,255,0.90)',
+                        }}
                     >
                         {wf.totalScore > 0 ? "+" : ""}
                         {wf.totalScore}
                     </span>
-                    <span className="ml-3 text-[1.375rem] text-white/35">
+                    <span style={{ marginLeft: '0.75rem', fontSize: '1.375rem', color: 'rgba(255,255,255,0.35)' }}>
                         / {wf.maxPossibleScore}
                     </span>
                 </p>
@@ -115,8 +96,8 @@ const TrialUI: React.FC = () => {
 
             {/* History of completed player rounds */}
             {wf.completedRounds.length > 0 && (
-                <div className={`${sectionBox} flex flex-col gap-3`}>
-                    <p className="text-white/50">Your choices</p>
+                <div className="trial-section-box" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <p style={{ color: 'rgba(255,255,255,0.50)' }}>Your choices</p>
                     {wf.completedRounds.map((cr) => {
                         const round = wf.scenario.rounds.find(
                             (r) => r.id === cr.roundId,
@@ -127,18 +108,18 @@ const TrialUI: React.FC = () => {
                         return (
                             <div
                                 key={cr.roundId}
-                                className="border-t border-white/10 pt-3 text-[1.625rem] leading-snug"
+                                className="trial-history-entry"
                             >
-                                <p className="text-white/45">
+                                <p style={{ color: 'rgba(255,255,255,0.45)' }}>
                                     Round {cr.roundNumber} —{" "}
                                     <span
-                                        className={
-                                            opt.quality === "effective"
-                                                ? "text-cyan-400"
+                                        style={{
+                                            color: opt.quality === "effective"
+                                                ? '#22d3ee'
                                                 : opt.quality === "logical_fallacy"
-                                                  ? "text-red-400"
-                                                  : "text-white/50"
-                                        }
+                                                  ? '#f87171'
+                                                  : 'rgba(255,255,255,0.50)',
+                                        }}
                                     >
                                         {opt.quality === "effective"
                                             ? "Effective"
@@ -147,19 +128,19 @@ const TrialUI: React.FC = () => {
                                               : "Ineffective"}
                                     </span>{" "}
                                     <span
-                                        className={
-                                            cr.impact > 0
-                                                ? "text-cyan-300"
+                                        style={{
+                                            color: cr.impact > 0
+                                                ? '#67e8f9'
                                                 : cr.impact < 0
-                                                  ? "text-red-400"
-                                                  : "text-white/40"
-                                        }
+                                                  ? '#f87171'
+                                                  : 'rgba(255,255,255,0.40)',
+                                        }}
                                     >
                                         ({cr.impact > 0 ? "+" : ""}
                                         {cr.impact})
                                     </span>
                                 </p>
-                                <p className="mt-1 text-white/75">
+                                <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>
                                     {opt.sentences[0]?.text ?? ""}
                                 </p>
                             </div>
@@ -176,14 +157,12 @@ const TrialUI: React.FC = () => {
     // -----------------------------------------------------------------------
 
     const wizard = (
-        <div className="flex h-full min-h-0 w-full flex-col gap-4">
-            <div className="trial-area-title flex h-[5vh] shrink-0 items-center overflow-hidden rounded-lg border border-white/25 bg-black/35">
-                <h2 className="text-4xl font-semibold uppercase tracking-wide text-cyan-400/90">
-                    Wizard
-                </h2>
+        <div style={{ display: 'flex', height: '100%', minHeight: 0, width: '100%', flexDirection: 'column', gap: '1rem' }}>
+            <div className="trial-area-title">
+                <h2 className="trial-panel-heading">Wizard</h2>
             </div>
-            <div className="trial-wizard-body-wrap min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-3 [scrollbar-gutter:stable] md:px-3">
-                <p className="trial-wizard-main-text text-[1.96875rem] leading-relaxed text-white/85">
+            <div className="trial-wizard-body-wrap">
+                <p className="trial-wizard-main-text">
                     {wf.wizardMessage}
                 </p>
             </div>
@@ -200,13 +179,13 @@ const TrialUI: React.FC = () => {
                 const npc = wf.currentNpcRound;
                 if (!npc) return null;
                 return (
-                    <div className="flex flex-col gap-4">
-                        <div className={`${sectionBox} text-[1.875rem] leading-snug`}>
-                            <p className="text-white/45">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
+                            <p style={{ color: 'rgba(255,255,255,0.45)' }}>
                                 {npc.speakerId === "barnaby" ? "Barnaby" : npc.speakerId}{" "}
                                 speaks:
                             </p>
-                            <p className="mt-2 text-white/85">
+                            <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
                                 {npc.statement.sentences.map((s) => s.text).join(" ")}
                             </p>
                         </div>
@@ -218,7 +197,7 @@ const TrialUI: React.FC = () => {
                 const playerRound = wf.currentPlayerRound;
                 if (!playerRound) return null;
                 return (
-                    <div className="flex flex-col gap-6">
+                    <div className="trial-choices">
                         {playerRound.options.map((opt, idx) => (
                             <ChoiceButton
                                 key={opt.id}
@@ -239,12 +218,12 @@ const TrialUI: React.FC = () => {
                 const opt = wf.selectedOption;
                 if (!opt) return null;
                 return (
-                    <div className={`${sectionBox} text-[2.125rem] leading-snug text-white/85`}>
-                        <p className="text-white/50">Your choice (full text)</p>
-                        <p className="mt-2 text-white/85">
+                    <div className="trial-section-box" style={{ fontSize: '2.125rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
+                        <p style={{ color: 'rgba(255,255,255,0.50)' }}>Your choice (full text)</p>
+                        <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
                             {opt.sentences.map((s) => s.text).join(" ")}
                         </p>
-                        <p className="mt-6 border-t border-white/10 pt-4 text-[1.625rem] leading-snug text-white/45">
+                        <p style={{ marginTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.10)', paddingTop: '1rem', fontSize: '1.625rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.45)' }}>
                             Go back to change your selection, or confirm to lock it
                             in. Confirming cannot be undone.
                         </p>
@@ -256,9 +235,9 @@ const TrialUI: React.FC = () => {
                 const response = wf.activeOpponentResponse;
                 if (!response) return null;
                 return (
-                    <div className={`${sectionBox} text-[1.875rem] leading-snug`}>
-                        <p className="text-white/45">Barnaby's response:</p>
-                        <p className="mt-2 text-white/85">
+                    <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
+                        <p style={{ color: 'rgba(255,255,255,0.45)' }}>Barnaby's response:</p>
+                        <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
                             {response.statement.sentences.map((s) => s.text).join(" ")}
                         </p>
                     </div>
@@ -267,18 +246,18 @@ const TrialUI: React.FC = () => {
 
             case "debate_complete":
                 return (
-                    <div className={`${sectionBox} text-[1.96875rem] leading-snug text-white/85`}>
+                    <div className="trial-section-box" style={{ fontSize: '1.96875rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
                         <p>The debate is finished.</p>
-                        <p className="mt-4 text-[1.625rem] text-white/50">
+                        <p style={{ marginTop: '1rem', fontSize: '1.625rem', color: 'rgba(255,255,255,0.50)' }}>
                             Final score:{" "}
                             <span
-                                className={
-                                    wf.totalScore > 0
-                                        ? "text-cyan-300"
+                                style={{
+                                    color: wf.totalScore > 0
+                                        ? '#67e8f9'
                                         : wf.totalScore < 0
-                                          ? "text-red-400"
-                                          : "text-white/70"
-                                }
+                                          ? '#f87171'
+                                          : 'rgba(255,255,255,0.70)',
+                                }}
                             >
                                 {wf.totalScore > 0 ? "+" : ""}
                                 {wf.totalScore}
@@ -294,27 +273,25 @@ const TrialUI: React.FC = () => {
     };
 
     const interactive = (
-        <div className="flex flex-1 min-h-0 flex-col">
+        <div className="trial-interactive-body">
             {/* Title — fixed height, never participates in flex growth */}
-            <div className="trial-area-title shrink-0 flex items-center overflow-hidden rounded-lg border border-white/25 bg-black/35">
-                <h2 className="text-4xl font-semibold uppercase tracking-wide text-cyan-400/90">
-                    Interactive
-                </h2>
+            <div className="trial-area-title">
+                <h2 className="trial-panel-heading">Interactive</h2>
             </div>
 
             {/* Body: fills remaining height, clips overflow so children cannot escape */}
-            <div className="mt-4 flex min-h-0 flex-1 flex-col overflow-hidden">
+            <div className="trial-interactive-scroll-wrap">
                 {/* Scroll area: grows to fill, scrolls when content is taller */}
-                <div className={interactiveScrollClass}>
+                <div className="trial-scroll-area">
                     {renderInteractive()}
                 </div>
 
-                {/* Footer: always visible — shrink-0 prevents compression */}
-                <div className="shrink-0 flex w-full items-center justify-center border-t border-white/15 pt-4">
-                    <div className="grid w-full max-w-4xl grid-cols-2 items-stretch gap-4 px-2 sm:gap-6 sm:px-4 md:gap-8">
+                {/* Footer: always visible */}
+                <div className="trial-interactive-footer">
+                    <div className="trial-footer-grid">
                         <button
                             type="button"
-                            className={btnFooterActionClass}
+                            className="trial-footer-btn"
                             disabled={!wf.canUndo}
                             onClick={wf.undo}
                         >
@@ -322,7 +299,7 @@ const TrialUI: React.FC = () => {
                         </button>
                         <button
                             type="button"
-                            className={btnFooterActionClass}
+                            className="trial-footer-btn"
                             disabled={
                                 interactiveFooter.submitDisabled ||
                                 !interactiveFooter.onSubmit
@@ -338,7 +315,7 @@ const TrialUI: React.FC = () => {
     );
 
     return (
-        <div className="h-full min-h-0 w-full">
+        <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
             <TrialLayout
                 feedback={feedback}
                 wizard={wizard}
@@ -356,8 +333,8 @@ function ChoiceButton({
     onClick: () => void;
 }) {
     return (
-        <button type="button" className={btnRowClass} onClick={onClick}>
-            <span className="block min-w-0 truncate">{label}</span>
+        <button type="button" className="trial-choice-btn" onClick={onClick}>
+            <span className="trial-choice-btn-inner">{label}</span>
         </button>
     );
 }

@@ -13,7 +13,7 @@ const ReactApp: React.FC = () => {
     if (!isGameReady) {
         return (
             <ReactRoot>
-                <div className="loading-container pointer-events-auto">
+                <div className="loading-container">
                     <h2>Loading Game...</h2>
                 </div>
             </ReactRoot>

@@ -37,13 +37,13 @@ export const ReactRoot: React.FC<StatsUIProps> = ({ children }) => {
   return (
     <div
       ref={uiRootRef}
-      className="relative z-[1] flex h-full min-h-0 min-w-0 w-full max-w-full flex-col"
+      className="react-root"
       style={{ ...rootStyle }}
     >
       {children}
     </div>
   );
-//   return <div ref={uiRootRef} className="absolute z-[1]" style={{...rootStyle, backgroundColor: '#ff69b4'}}>{children}</div>;
+//   return <div ref={uiRootRef} style={{position:'absolute',zIndex:1,...rootStyle,backgroundColor:'#ff69b4'}}>{children}</div>;
 };
 
 

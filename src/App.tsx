@@ -47,10 +47,9 @@ function App()
             <div
                 ref={stageRef}
                 id="app-stage-16x9"
-                className="relative box-border overflow-hidden [height:min(100vh,calc(100vw*9/16))] [width:min(100vw,calc(100vh*16/9))]"
             >
                 <PhaserGame />
-                <div className="pointer-events-none absolute inset-0 z-[1] flex min-h-0 min-w-0">
+                <div className="react-ui-overlay">
                     <ReactApp />
                 </div>
             </div>

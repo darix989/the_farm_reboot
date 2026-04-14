@@ -47,7 +47,7 @@ export const PhaserGame = function PhaserGame()
     return (
         <div
             id={PHASER_PARENT_ID}
-            className="absolute inset-0 flex items-center justify-center"
+            className="phaser-container"
         />
     );
 
