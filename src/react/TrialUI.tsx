@@ -247,6 +247,33 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                         );
                         return (
                             <React.Fragment key={round.id}>
+                                {round.opponentPrompt && (
+                                    <div className="trial-history-entry">
+                                        <p style={{ color: 'rgba(255,255,255,0.45)' }}>
+                                            Round {round.roundNumber} — {getSpeakerName(debate, round.opponentPrompt.speakerId)}'s question
+                                        </p>
+                                        <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>
+                                            {round.opponentPrompt.sentences.map((s) => s.text).join(" ")}
+                                        </p>
+                                        <button
+                                            type="button"
+                                            className={[
+                                                "trial-analyze-btn",
+                                                getNpcGuessState(round.opponentPrompt.id) ?? "",
+                                            ].filter(Boolean).join(" ")}
+                                            title="Analyze this question"
+                                            onClick={() =>
+                                                setAnalysisTarget({
+                                                    kind: "opponent_prompt",
+                                                    statement: round.opponentPrompt!,
+                                                    playerRound: round,
+                                                })
+                                            }
+                                        >
+                                            <img src={magnifyingIcon} alt="Analyze" />
+                                        </button>
+                                    </div>
+                                )}
                                 <div className="trial-history-entry">
                                     <p style={{ color: 'rgba(255,255,255,0.45)' }}>
                                         Round {cr.roundNumber} — You —{" "}
@@ -326,6 +353,40 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                             </React.Fragment>
                         );
                     })}
+                </div>
+            )}
+
+            {/* Live crossfire question — shown in the feedback panel as soon as the round starts */}
+            {wf.currentPlayerRound?.opponentPrompt &&
+             (wf.gamePhase === "player_choosing" ||
+              wf.gamePhase === "player_confirming" ||
+              wf.gamePhase === "npc_responding") && (
+                <div className="trial-section-box" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <div className="trial-history-entry">
+                        <p style={{ color: 'rgba(255,255,255,0.45)' }}>
+                            Round {wf.currentPlayerRound.roundNumber} — {getSpeakerName(debate, wf.currentPlayerRound.opponentPrompt.speakerId)}'s question
+                        </p>
+                        <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>
+                            {wf.currentPlayerRound.opponentPrompt.sentences.map((s) => s.text).join(" ")}
+                        </p>
+                        <button
+                            type="button"
+                            className={[
+                                "trial-analyze-btn",
+                                getNpcGuessState(wf.currentPlayerRound.opponentPrompt.id) ?? "",
+                            ].filter(Boolean).join(" ")}
+                            title="Analyze this question"
+                            onClick={() =>
+                                setAnalysisTarget({
+                                    kind: "opponent_prompt",
+                                    statement: wf.currentPlayerRound!.opponentPrompt!,
+                                    playerRound: wf.currentPlayerRound!,
+                                })
+                            }
+                        >
+                            <img src={magnifyingIcon} alt="Analyze" />
+                        </button>
+                    </div>
                 </div>
             )}
             </div>
