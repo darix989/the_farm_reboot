@@ -4,7 +4,7 @@ This document summarizes how **the_farm_reboot** is structured, how React and Ph
 
 ## What this project is
 
-- A **browser game shell** built from the [Phaser React TypeScript + Vite template](https://github.com/phaserjs/template-react-ts), extended with **Zustand**, **Tailwind CSS v4**, and scene-specific React overlays (`MainMenu`, `Trial`, etc.).
+- A **browser game shell** built from the [Phaser React TypeScript + Vite template](https://github.com/phaserjs/template-react-ts), extended with **Zustand** and scene-specific React overlays (`MainMenu`, `Trial`, etc.).
 - `package.json` still names the package `template-react-ts` and points at the upstream template metadata; the working tree is the reboot project under `the_farm_reboot`.
 
 ## Tech stack
@@ -16,7 +16,7 @@ This document summarizes how **the_farm_reboot** is structured, how React and Ph
 | Bundler | Vite 6 (`vite/config.dev.mjs`, `vite/config.prod.mjs`) |
 | Language | TypeScript 5.7 (strict, `noUnusedLocals` / `noUnusedParameters`) |
 | Global UI state | Zustand (`src/store/gameStore.ts`) |
-| Styling | Tailwind 4 via `@tailwindcss/vite` + `src/react/index.css` |
+| Styling | Plain CSS (`src/react/index.css`) — Tailwind has been removed |
 | Lint | ESLint 9 + TypeScript ESLint (`.eslintrc.cjs`) |
 
 ## How to run and build
@@ -40,15 +40,24 @@ See also the root **README.md** for commands, structure, and the React–Phaser 
 src/
   main.tsx              # React bootstrap
   App.tsx               # PhaserGame + ReactApp siblings
+  types/
+    debateEntities.ts   # DebateScenarioJson and all debate domain types
   phaser/
     PhaserGame.tsx      # Creates/destroys Phaser Game, wires Zustand + EventBus
     main.ts             # Game config, scene list, scale (1920×1080 FIT)
     EventBus.ts         # Phaser.Events.EventEmitter singleton
     scenes/             # Boot, Preloader, MainMenu, Game, Trial, GameOver
   react/
+    AGENT.md            # React-layer guide (TrialUI, debate workflow)
     ReactApp.tsx        # Scene-based UI switch; loading gate on isGameReady
     ReactRoot.tsx       # Overlay aligned to Phaser canvas (resize sync)
+    MainMenuUI.tsx      # Overlay rendered while the MainMenu scene is active
+    TrialUI.tsx         # Debate/trial overlay (rounds, player choices, score)
+    BoilerPlateUI.tsx   # Fallback overlay for unmapped scenes
     hooks/useGame.ts    # Hooks around GameManager + store
+    trial/
+      TrialLayout.tsx           # Three-column layout (Feedback | Wizard | Interactive)
+      useTrialRoundWorkflow.ts  # Reducer hook driving the debate state machine
   store/gameStore.ts    # Zustand + EventBus listeners (current scene, game ref)
   utils/
     constants.ts        # PHASER_PARENT_ID = "phaser-parent"
@@ -77,9 +86,18 @@ Defined in `src/phaser/main.ts`: **Boot** → **Preloader** → **MainMenu** →
 
 Default `npm run dev` / `build` run `log.js`, which performs an anonymous GET to `gryzor.co` with template/package metadata (see README). Use `*-nolog` scripts or remove the hook if that must be avoided in CI or sensitive environments.
 
+## Debate / Trial system
+
+The Trial scene uses a turn-based debate loop driven entirely by React state (no Phaser logic):
+
+- All debate content is declared in a **`DebateScenarioJson`** value (see `src/types/debateEntities.ts`).
+- The `TrialUI` overlay (see `src/react/AGENT.md`) reads this value and drives the full interaction.
+- The game state machine lives in `src/react/trial/useTrialRoundWorkflow.ts`.
+
 ## Extra docs in repo
 
 - `PHASER_ZUSTAND_INTEGRATION.md`, `SIMPLE_ZUSTAND_INTEGRATION.md` — integration notes (may overlap with this file).
+- `src/react/AGENT.md` — detailed guide to the React overlay layer and the Trial/debate workflow.
 
 ## Quick checklist for changes
 
@@ -87,3 +105,4 @@ Default `npm run dev` / `build` run `log.js`, which performs an anonymous GET to
 - New **scene or game logic** → `src/phaser/scenes/` (and register in `main.ts`).
 - **Cross-layer signals** → `EventBus` + optional `gameStore` actions.
 - Keep **`PHASER_PARENT_ID`** in sync between the Phaser parent div and `ReactRoot` layout logic.
+- New **debate content** → author a `DebateScenarioJson` object and pass it to `TrialUI` as the `debate` prop; no code changes required.
