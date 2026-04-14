@@ -58,6 +58,8 @@ src/
     trial/
       TrialLayout.tsx           # Three-column layout (Feedback | Wizard | Interactive)
       useTrialRoundWorkflow.ts  # Reducer hook driving the debate state machine
+      RoundAnalysisModal.tsx    # Modal overlay for per-round fallacy analysis / player review
+      useScrollFade.ts          # Hook: tracks scroll edges to drive animated fade overlays
   store/gameStore.ts    # Zustand + EventBus listeners (current scene, game ref)
   utils/
     constants.ts        # PHASER_PARENT_ID = "phaser-parent"
@@ -93,6 +95,8 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 - All debate content is declared in a **`DebateScenarioJson`** value (see `src/types/debateEntities.ts`).
 - The `TrialUI` overlay (see `src/react/AGENT.md`) reads this value and drives the full interaction.
 - The game state machine lives in `src/react/trial/useTrialRoundWorkflow.ts`.
+- A **Round Analysis Modal** (`src/react/trial/RoundAnalysisModal.tsx`) lets the player inspect any completed round: guess logical fallacies in NPC statements (one guess per player turn), or review why their own choice was effective/flawed.
+- **⚠️ Pointer-events gotcha:** `.react-ui-overlay` has `pointer-events: none` which inherits to all descendants. Any new interactive element outside an existing panel (modal, tooltip, etc.) **must** set `pointer-events: auto` on its root — otherwise clicks and hover silently fall through to the Phaser canvas.
 
 ## Extra docs in repo
 
