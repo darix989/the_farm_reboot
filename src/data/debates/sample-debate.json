@@ -135,6 +135,7 @@
                     "id": "r2-opt-a",
                     "quality": "logical_fallacy",
                     "impact": -12,
+                    "reason": "This is a Slippery Slope fallacy. It jumps from a reasonable concern about surveillance to the extreme conclusion that owls will control every aspect of life, without providing any evidence for those intermediate steps. Each escalation is treated as inevitable when it is not.",
                     "sentences": [
                         {
                             "id": "s-r2a-1",
@@ -169,6 +170,7 @@
                     "id": "r2-opt-b",
                     "quality": "ineffective",
                     "impact": 0,
+                    "reason": "This response sidesteps the surveillance debate entirely by raising an unrelated infrastructure concern. While silo maintenance may be valid, bringing it up without connecting it to the argument at hand fails to counter Barnaby's proposal or advance the Opposition's case.",
                     "sentences": [
                         {
                             "id": "s-r2b-1",
@@ -191,6 +193,7 @@
                     "id": "r2-opt-c",
                     "quality": "effective",
                     "impact": 20,
+                    "reason": "This is the strongest opening rebuttal. It reframes the entire debate around the core value of community trust versus fear-based control, directly contradicts Barnaby's 'nothing to hide' framing, and closes with a memorable principle ('Privacy is not a shield for thieves') that pre-empts future attacks.",
                     "sentences": [
                         {
                             "id": "s-r2c-1",
@@ -231,6 +234,7 @@
                     "id": "r3-opt-a",
                     "quality": "logical_fallacy",
                     "impact": -10,
+                    "reason": "This question combines a Loaded Question (it presupposes Barnaby 'hates small animals') with an Ad Hominem attack (targeting his character rather than his argument). Instead of challenging the surveillance proposal on its merits, it attacks Barnaby personally and poisons the debate.",
                     "sentences": [
                         {
                             "id": "s-r3a-1",
@@ -254,6 +258,7 @@
                     "id": "r3-opt-b",
                     "quality": "ineffective",
                     "impact": 0,
+                    "reason": "Asking about owl compensation is a minor logistical detail that does nothing to challenge the Act itself. It shifts attention away from the core privacy and freedom concerns, and Barnaby can dismiss it easily as a practical matter, leaving the Opposition's argument weakened.",
                     "sentences": [
                         {
                             "id": "s-r3b-1",
@@ -266,6 +271,7 @@
                     "id": "r3-opt-c",
                     "quality": "effective",
                     "impact": 18,
+                    "reason": "This directly exposes Barnaby's False Dilemma by naming it ('surveillance or starvation') and immediately offering a concrete alternative (fixing the silo). It forces Barnaby to defend his framing, demonstrates the Opposition has practical solutions, and keeps the debate grounded in evidence.",
                     "sentences": [
                         {
                             "id": "s-r3c-1",
@@ -351,6 +357,7 @@
                     "id": "r4-opt-a",
                     "quality": "logical_fallacy",
                     "impact": -10,
+                    "reason": "This is Special Pleading. It argues that lambs deserve less protection because they have an alternative food source, applying a double standard that conveniently exempts mice from the same logic. The jury will notice the self-serving reasoning and it undermines the Opposition's credibility.",
                     "sentences": [
                         {
                             "id": "s-r4a-1",
@@ -369,6 +376,7 @@
                     "id": "r4-opt-b",
                     "quality": "ineffective",
                     "impact": 0,
+                    "reason": "This response dismisses Barnaby's emotional appeal with a flippant suggestion that will likely offend the jury rather than persuade them. It doesn't engage with the real question (collective food security vs. privacy) and comes across as indifferent to the wellbeing of other animals.",
                     "sentences": [
                         {
                             "id": "s-r4b-1",
@@ -381,6 +389,7 @@
                     "id": "r4-opt-c",
                     "quality": "effective",
                     "impact": 18,
+                    "reason": "This response accepts the emotional premise (the lamb's wellbeing matters) and then redirects it — protecting everyone means fixing the infrastructure, not surveilling the neighbors. It counters Barnaby's Appeal to Pity without dismissing it, showing empathy while staying on message.",
                     "sentences": [
                         {
                             "id": "s-r4c-1",
@@ -447,6 +456,7 @@
                     "id": "r6-opt-a",
                     "quality": "logical_fallacy",
                     "impact": -15,
+                    "reason": "This is a pure Ad Hominem attack — insulting Barnaby's species instead of refuting his straw-man rebuttal. Not only does it abandon the argument entirely, it lowers the tone of the debate and hands Barnaby the moral high ground, making the jury less sympathetic to the Opposition.",
                     "sentences": [
                         {
                             "id": "s-r6a-1",
@@ -465,6 +475,7 @@
                     "id": "r6-opt-b",
                     "quality": "ineffective",
                     "impact": 0,
+                    "reason": "Disputing the timeline is a factual detail that misses the point. Barnaby's rebuttal distorted the Opposition's position; the correct response is to name that distortion. Arguing about how long repairs take concedes that repairs are the only plan and fails to call out the Straw Man.",
                     "sentences": [
                         {
                             "id": "s-r6b-1",
@@ -477,6 +488,7 @@
                     "id": "r6-opt-c",
                     "quality": "effective",
                     "impact": 22,
+                    "reason": "This is the ideal rebuttal to a Straw Man. It first corrects the record on what the Opposition actually argued, then explicitly names what Barnaby did ('attacking a version of my argument I never made'), and pivots back to the real issue (autonomy vs. surveillance). Naming the fallacy is persuasive and educational for the jury.",
                     "sentences": [
                         {
                             "id": "s-r6c-1",
@@ -520,6 +532,7 @@
                     "id": "r7-opt-a",
                     "quality": "logical_fallacy",
                     "impact": -10,
+                    "reason": "This uses a Weak Analogy. Comparing farm surveillance policy to 'jumping off a cliff' is rhetorically vivid but logically hollow — the situations are not comparable. The jury will notice the exaggeration and it undermines the credibility of the Opposition's argument against Barnaby's Appeal to Popularity.",
                     "sentences": [
                         {
                             "id": "s-r7a-1",
@@ -538,6 +551,7 @@
                     "id": "r7-opt-b",
                     "quality": "ineffective",
                     "impact": 0,
+                    "reason": "Pointing out that neighboring farms use different owl species is too narrow a rebuttal. It raises a technical distinction that the jury may not find relevant, and it doesn't address why popularity alone is not a sound reason to adopt a policy — the real flaw in Barnaby's question.",
                     "sentences": [
                         {
                             "id": "s-r7b-1",
@@ -550,6 +564,7 @@
                     "id": "r7-opt-c",
                     "quality": "effective",
                     "impact": 18,
+                    "reason": "This answer counters the Appeal to Popularity by challenging the moral authority of the comparison — human-run farms represent oppression, not a model to emulate. It frames the farm's identity as fundamentally different and elevates the debate to a question of values, which resonates strongly with an animal jury.",
                     "sentences": [
                         {
                             "id": "s-r7c-1",
@@ -575,6 +590,7 @@
                     "id": "r8-opt-a",
                     "quality": "logical_fallacy",
                     "impact": -10,
+                    "reason": "This is a Hasty Generalization — concluding that all dogs are power-hungry based on no evidence. The intended crossfire question should probe the accountability gap in Barnaby's proposal; instead it launches an unfair species-wide insult that will alienate any dog-sympathetic jury member.",
                     "sentences": [
                         {
                             "id": "s-r8a-1",
@@ -593,6 +609,7 @@
                     "id": "r8-opt-b",
                     "quality": "ineffective",
                     "impact": 0,
+                    "reason": "Asking about owl noise is a minor procedural detail with no strategic value. It doesn't challenge Barnaby's proposal, expose weaknesses in the Act, or build the Opposition's case. Barnaby can easily deflect it and the jury will be left uninformed about the real issues at stake.",
                     "sentences": [
                         {
                             "id": "s-r8b-1",
@@ -605,6 +622,7 @@
                     "id": "r8-opt-c",
                     "quality": "effective",
                     "impact": 20,
+                    "reason": "This is a laser-focused accountability question that exposes the permanent nature of the Act. By asking for a specific removal date, Pip forces Barnaby to either admit there is no exit plan (revealing a permanent surveillance state) or make a commitment he cannot keep. Either answer damages the Proposition's case.",
                     "sentences": [
                         {
                             "id": "s-r8c-1",
@@ -718,6 +736,7 @@
                     "id": "r10-opt-a",
                     "quality": "logical_fallacy",
                     "impact": -15,
+                    "reason": "This is a textbook Appeal to Fear. The claim that voting for Barnaby means 'being eaten by owls by next Tuesday' is a wildly exaggerated threat designed to frighten rather than persuade. In a closing statement it is especially damaging — the jury expects principled arguments, not scare tactics, and this undermines all of Pip's credibility.",
                     "sentences": [
                         {
                             "id": "s-r10a-1",
@@ -736,6 +755,7 @@
                     "id": "r10-opt-b",
                     "quality": "ineffective",
                     "impact": 0,
+                    "reason": "A bi-weekly committee is a real alternative, but proposing it vaguely at the very end without developing it earlier in the debate lands as an afterthought. The jury has no reason to prefer this unarticulated plan over the more dramatic (if flawed) certainty of Barnaby's owls.",
                     "sentences": [
                         {
                             "id": "s-r10b-1",
@@ -748,6 +768,7 @@
                     "id": "r10-opt-c",
                     "quality": "effective",
                     "impact": 25,
+                    "reason": "This closing perfectly synthesizes the Opposition's entire case into three memorable sentences. It reframes the choice as freedom vs. captivity ('a barn where you are always watched is a cage'), offers a positive alternative (community effort + infrastructure), and ends on a punchy slogan ('Vote for trust, not talons') that the jury will remember when they deliberate.",
                     "sentences": [
                         {
                             "id": "s-r10c-1",

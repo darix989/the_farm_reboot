@@ -48,6 +48,8 @@ export interface PlayerOption {
     sentences: Sentence[];
     /** Integer delta in [-50, 50]. Negative for fallacy, ~0 for ineffective, positive for effective. */
     impact: number;
+    /** Explanation of why this option is effective, ineffective, or a logical fallacy. */
+    reason?: string;
 }
 
 // ---------------------------------------------------------------------------

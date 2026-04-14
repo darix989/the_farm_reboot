@@ -1,7 +1,13 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import type { DebateScenarioJson } from "../types/debateEntities";
 import TrialLayout from "./trial/TrialLayout";
 import { useTrialRoundWorkflow } from "./trial/useTrialRoundWorkflow";
+import RoundAnalysisModal, {
+    type AnalysisTarget,
+    type GuessRecord,
+} from "./trial/RoundAnalysisModal";
+
+import magnifyingIcon from "../static/icons/magnifying.svg";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -23,7 +29,61 @@ interface TrialUIProps {
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     const wf = useTrialRoundWorkflow(debate);
 
+    // -----------------------------------------------------------------------
+    // Modal state
+    // -----------------------------------------------------------------------
+    const [analysisTarget, setAnalysisTarget] = useState<AnalysisTarget | null>(null);
+    // Maps player round number → GuessRecord (one guess per player round)
+    const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, GuessRecord>>(new Map());
+
+    // The current player round number (only defined during player_choosing / player_confirming)
+    const currentPlayerRoundNumber = useMemo(() => {
+        if (
+            wf.gamePhase === "player_choosing" ||
+            wf.gamePhase === "player_confirming"
+        ) {
+            return wf.currentRound?.roundNumber ?? null;
+        }
+        return null;
+    }, [wf.gamePhase, wf.currentRound]);
+
+    const canGuess =
+        currentPlayerRoundNumber !== null &&
+        !fallacyGuesses.has(currentPlayerRoundNumber);
+
+    // Guess for the currently open modal (if it's an NPC round)
+    const activeGuess = useMemo((): GuessRecord | null => {
+        if (!analysisTarget || analysisTarget.kind !== "npc") return null;
+        // Find which player-round-number this NPC round's guess was recorded under
+        for (const [, record] of fallacyGuesses) {
+            if (record.npcRoundId === analysisTarget.round.id) return record;
+        }
+        return null;
+    }, [analysisTarget, fallacyGuesses]);
+
+    const handleGuess = (sentenceId: string, fallacyId: string) => {
+        if (!analysisTarget || analysisTarget.kind !== "npc") return;
+        if (currentPlayerRoundNumber === null) return;
+
+        const sentence = analysisTarget.round.statement.sentences.find(
+            (s) => s.id === sentenceId,
+        );
+        if (!sentence) return;
+
+        const correct = sentence.logicalFallacies.some((f) => f.id === fallacyId);
+        const record: GuessRecord = {
+            npcRoundId: analysisTarget.round.id,
+            sentenceId,
+            fallacyId,
+            correct,
+            actualFallacies: sentence.logicalFallacies,
+        };
+        setFallacyGuesses((prev) => new Map(prev).set(currentPlayerRoundNumber, record));
+    };
+
+    // -----------------------------------------------------------------------
     // Footer action state derived from game phase
+    // -----------------------------------------------------------------------
     const interactiveFooter = useMemo(() => {
         let submitLabel = "Continue";
         let submitDisabled = true;
@@ -118,6 +178,16 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                     <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>
                                         {round.statement.sentences.map((s) => s.text).join(" ")}
                                     </p>
+                                    <button
+                                        type="button"
+                                        className="trial-analyze-btn"
+                                        title="Analyze this round"
+                                        onClick={() =>
+                                            setAnalysisTarget({ kind: "npc", round })
+                                        }
+                                    >
+                                        <img src={magnifyingIcon} alt="Analyze" />
+                                    </button>
                                 </div>
                             );
                         }
@@ -166,6 +236,20 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                     <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>
                                         {opt.sentences[0]?.text ?? ""}
                                     </p>
+                                    <button
+                                        type="button"
+                                        className="trial-analyze-btn"
+                                        title="Analyze this round"
+                                        onClick={() =>
+                                            setAnalysisTarget({
+                                                kind: "player",
+                                                round,
+                                                chosenOption: opt,
+                                            })
+                                        }
+                                    >
+                                        <img src={magnifyingIcon} alt="Analyze" />
+                                    </button>
                                 </div>
                                 {response && (
                                     <div className="trial-history-entry">
@@ -348,6 +432,12 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         </div>
     );
 
+    // Resolve speaker name for the current modal target
+    const modalSpeakerName = useMemo(() => {
+        if (!analysisTarget || analysisTarget.kind !== "npc") return "";
+        return getSpeakerName(debate, analysisTarget.round.speakerId);
+    }, [analysisTarget, debate]);
+
     return (
         <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
             <TrialLayout
@@ -355,6 +445,17 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 wizard={wizard}
                 interactive={interactive}
             />
+            {analysisTarget && (
+                <RoundAnalysisModal
+                    target={analysisTarget}
+                    allFallacies={debate.logicalFallacies}
+                    speakerName={modalSpeakerName}
+                    canGuess={canGuess}
+                    existingGuess={activeGuess}
+                    onGuess={handleGuess}
+                    onClose={() => setAnalysisTarget(null)}
+                />
+            )}
         </div>
     );
 };
