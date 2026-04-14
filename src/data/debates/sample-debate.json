@@ -322,7 +322,13 @@
                             {
                                 "id": "s-r3rc-1",
                                 "text": "Floorboards take weeks to fix, Pip. We need a solution tonight before another bushel vanishes into the night.",
-                                "logicalFallacies": []
+                                "logicalFallacies": [
+                                    {
+                                        "id": "fallacy-appeal-to-fear",
+                                        "label": "Appeal to Fear",
+                                        "description": "Using exaggerated threats or frightening scenarios to manipulate a decision."
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -673,7 +679,13 @@
                             {
                                 "id": "s-r8rc-1",
                                 "text": "Safety is a constant duty. We will keep the owls as long as a threat exists — which, as we see, is every night.",
-                                "logicalFallacies": []
+                                "logicalFallacies": [
+                                    {
+                                        "id": "fallacy-hasty-generalization",
+                                        "label": "Hasty Generalization",
+                                        "description": "Drawing a broad conclusion from too small or unrepresentative a sample."
+                                    }
+                                ]
                             }
                         ]
                     }

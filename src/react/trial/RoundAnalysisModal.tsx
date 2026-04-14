@@ -5,6 +5,7 @@ import type {
     PlayerOption,
     PlayerRoundEntry,
     Sentence,
+    Statement,
 } from "../../types/debateEntities";
 
 import magnifyingIcon from "../../static/icons/magnifying.svg";
@@ -26,7 +27,9 @@ export interface GuessRecord {
 
 export type AnalysisTarget =
     | { kind: "npc"; round: NpcRoundEntry }
-    | { kind: "player"; round: PlayerRoundEntry; chosenOption: PlayerOption };
+    | { kind: "player"; round: PlayerRoundEntry; chosenOption: PlayerOption }
+    | { kind: "opponent_prompt"; statement: Statement; playerRound: PlayerRoundEntry }
+    | { kind: "opponent_response"; statement: Statement; playerRound: PlayerRoundEntry };
 
 interface RoundAnalysisModalProps {
     target: AnalysisTarget;
@@ -144,13 +147,13 @@ function GuessResultBanner({ guess }: { guess: GuessRecord }) {
 // ---------------------------------------------------------------------------
 
 function NpcRoundAnalysis({
-    round,
+    statement,
     allFallacies,
     canGuess,
     existingGuess,
     onGuess,
 }: {
-    round: NpcRoundEntry;
+    statement: Statement;
     allFallacies: LogicalFallacy[];
     canGuess: boolean;
     existingGuess: GuessRecord | null;
@@ -197,7 +200,7 @@ function NpcRoundAnalysis({
 
             {/* Sentence list */}
             <div className="trial-sentence-list">
-                {round.statement.sentences.map((s) => {
+                {statement.sentences.map((s) => {
                     const isSelected = selectedSentenceId === s.id;
                     const isGuessedSentence = existingGuess?.sentenceId === s.id;
                     const revealFallacy =
@@ -379,11 +382,27 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
     onGuess,
     onClose,
 }) => {
-    const isNpc = target.kind === "npc";
     const modalScrollRef = useRef<HTMLDivElement>(null);
     const modalFade = useScrollFade(modalScrollRef);
-    const roundNumber = isNpc ? target.round.roundNumber : target.round.roundNumber;
-    const statType = isNpc ? target.round.type : target.round.type;
+
+    const roundNumber =
+        target.kind === "opponent_prompt" || target.kind === "opponent_response"
+            ? target.playerRound.roundNumber
+            : target.round.roundNumber;
+
+    const statType =
+        target.kind === "npc"
+            ? target.round.type
+            : target.kind === "opponent_prompt" || target.kind === "opponent_response"
+              ? target.statement.type
+              : target.round.type;
+
+    const titleSuffix =
+        target.kind === "opponent_prompt"
+            ? `${speakerName}'s question`
+            : target.kind === "opponent_response"
+              ? `${speakerName}'s response`
+              : speakerName;
 
     return (
         <div
@@ -400,11 +419,11 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                         <div>
                             <p className="trial-modal-title">
                                 Round {roundNumber} —{" "}
-                                {isNpc ? speakerName : "You"}
+                                {target.kind === "player" ? "You" : titleSuffix}
                             </p>
                             <p className="trial-modal-subtitle">
                                 {statementTypeLabel(statType)}
-                                {!isNpc && (
+                                {target.kind === "player" && (
                                     <>
                                         {" "}
                                         <span
@@ -434,18 +453,22 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                 <div className="trial-scroll-fade-wrap">
                     <div className="scroll-fade-overlay top modal" style={{ opacity: modalFade.top ? 1 : 0 }} />
                     <div className="trial-modal-content" ref={modalScrollRef}>
-                    {isNpc ? (
-                        <NpcRoundAnalysis
-                            round={target.round}
-                            allFallacies={allFallacies}
-                            canGuess={canGuess}
-                            existingGuess={existingGuess}
-                            onGuess={onGuess}
-                        />
-                    ) : (
-                        <PlayerRoundAnalysis option={target.chosenOption} />
-                    )}
-                </div>
+                        {target.kind === "player" ? (
+                            <PlayerRoundAnalysis option={target.chosenOption} />
+                        ) : (
+                            <NpcRoundAnalysis
+                                statement={
+                                    target.kind === "npc"
+                                        ? target.round.statement
+                                        : target.statement
+                                }
+                                allFallacies={allFallacies}
+                                canGuess={canGuess}
+                                existingGuess={existingGuess}
+                                onGuess={onGuess}
+                            />
+                        )}
+                    </div>
                     <div className="scroll-fade-overlay bottom modal" style={{ opacity: modalFade.bottom ? 1 : 0 }} />
                 </div>
             </div>

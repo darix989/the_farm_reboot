@@ -51,11 +51,13 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     // Maps player round number → GuessRecord (one guess per player round)
     const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, GuessRecord>>(new Map());
 
-    // The current player round number (only defined during player_choosing / player_confirming)
+    // The current player round number (defined while the player can still act on a round:
+    // choosing, confirming, or reading the NPC's response to their choice)
     const currentPlayerRoundNumber = useMemo(() => {
         if (
             wf.gamePhase === "player_choosing" ||
-            wf.gamePhase === "player_confirming"
+            wf.gamePhase === "player_confirming" ||
+            wf.gamePhase === "npc_responding"
         ) {
             return wf.currentRound?.roundNumber ?? null;
         }
@@ -78,28 +80,38 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         return hasWrong ? "wrong" : null;
     };
 
-    // Guess for the currently open modal (if it's an NPC round)
+    // Guess for the currently open modal (if it's an NPC round or opponent_prompt)
     const activeGuess = useMemo((): GuessRecord | null => {
-        if (!analysisTarget || analysisTarget.kind !== "npc") return null;
-        // Find which player-round-number this NPC round's guess was recorded under
+        if (!analysisTarget || analysisTarget.kind === "player") return null;
+        const targetId =
+            analysisTarget.kind === "npc"
+                ? analysisTarget.round.id
+                : analysisTarget.statement.id;
         for (const [, record] of fallacyGuesses) {
-            if (record.npcRoundId === analysisTarget.round.id) return record;
+            if (record.npcRoundId === targetId) return record;
         }
         return null;
     }, [analysisTarget, fallacyGuesses]);
 
     const handleGuess = (sentenceId: string, fallacyId: string) => {
-        if (!analysisTarget || analysisTarget.kind !== "npc") return;
+        if (!analysisTarget || analysisTarget.kind === "player") return;
         if (currentPlayerRoundNumber === null) return;
 
-        const sentence = analysisTarget.round.statement.sentences.find(
-            (s) => s.id === sentenceId,
-        );
+        const sentences =
+            analysisTarget.kind === "npc"
+                ? analysisTarget.round.statement.sentences
+                : analysisTarget.statement.sentences;
+        const targetId =
+            analysisTarget.kind === "npc"
+                ? analysisTarget.round.id
+                : analysisTarget.statement.id;
+
+        const sentence = sentences.find((s) => s.id === sentenceId);
         if (!sentence) return;
 
         const correct = sentence.logicalFallacies.some((f) => f.id === fallacyId);
         const record: GuessRecord = {
-            npcRoundId: analysisTarget.round.id,
+            npcRoundId: targetId,
             sentenceId,
             fallacyId,
             correct,
@@ -292,6 +304,23 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                         <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>
                                             {response.statement.sentences.map((s) => s.text).join(" ")}
                                         </p>
+                                        <button
+                                            type="button"
+                                            className={[
+                                                "trial-analyze-btn",
+                                                getNpcGuessState(response.statement.id) ?? "",
+                                            ].filter(Boolean).join(" ")}
+                                            title="Analyze this response"
+                                            onClick={() =>
+                                                setAnalysisTarget({
+                                                    kind: "opponent_response",
+                                                    statement: response.statement,
+                                                    playerRound: round,
+                                                })
+                                            }
+                                        >
+                                            <img src={magnifyingIcon} alt="Analyze" />
+                                        </button>
                                     </div>
                                 )}
                             </React.Fragment>
@@ -349,20 +378,63 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             case "player_choosing": {
                 const playerRound = wf.currentPlayerRound;
                 if (!playerRound) return null;
+
+                // Determine analyze-button state for the opponentPrompt
+                let promptGuessState: "correct" | "wrong" | null = null;
+                if (playerRound.opponentPrompt) {
+                    const record = fallacyGuesses.get(playerRound.roundNumber);
+                    if (record && record.npcRoundId === playerRound.opponentPrompt.id) {
+                        promptGuessState = record.correct ? "correct" : "wrong";
+                    }
+                }
+
                 return (
-                    <div className="trial-choices">
-                        {playerRound.options.map((opt, idx) => (
-                            <ChoiceButton
-                                key={opt.id}
-                                label={`${String.fromCharCode(65 + idx)}. ${opt.sentences.map((s) => s.text).join(" ")}`}
-                                onClick={() =>
-                                    wf.dispatch({
-                                        type: "select_option",
-                                        optionId: opt.id,
-                                    })
-                                }
-                            />
-                        ))}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        {playerRound.opponentPrompt && (
+                            <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem' }}>
+                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                        <p style={{ color: 'rgba(255,255,255,0.45)' }}>
+                                            {getSpeakerName(debate, playerRound.opponentPrompt.speakerId)}'s question:
+                                        </p>
+                                        <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
+                                            {playerRound.opponentPrompt.sentences.map((s) => s.text).join(" ")}
+                                        </p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className={[
+                                            "trial-analyze-btn",
+                                            promptGuessState ?? "",
+                                        ].filter(Boolean).join(" ")}
+                                        title="Analyze this statement"
+                                        onClick={() =>
+                                            setAnalysisTarget({
+                                                kind: "opponent_prompt",
+                                                statement: playerRound.opponentPrompt!,
+                                                playerRound,
+                                            })
+                                        }
+                                    >
+                                        <img src={magnifyingIcon} alt="Analyze" />
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                        <div className="trial-choices">
+                            {playerRound.options.map((opt, idx) => (
+                                <ChoiceButton
+                                    key={opt.id}
+                                    label={`${String.fromCharCode(65 + idx)}. ${opt.sentences.map((s) => s.text).join(" ")}`}
+                                    onClick={() =>
+                                        wf.dispatch({
+                                            type: "select_option",
+                                            optionId: opt.id,
+                                        })
+                                    }
+                                />
+                            ))}
+                        </div>
                     </div>
                 );
             }
@@ -386,13 +458,38 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
             case "npc_responding": {
                 const response = wf.activeOpponentResponse;
-                if (!response) return null;
+                const playerRound = wf.currentPlayerRound;
+                if (!response || !playerRound) return null;
+                const responseGuessState = getNpcGuessState(response.statement.id);
                 return (
                     <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
-                        <p style={{ color: 'rgba(255,255,255,0.45)' }}>{getSpeakerName(debate, response.statement.speakerId)}'s response:</p>
-                        <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
-                            {response.statement.sentences.map((s) => s.text).join(" ")}
-                        </p>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem' }}>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                                <p style={{ color: 'rgba(255,255,255,0.45)' }}>
+                                    {getSpeakerName(debate, response.statement.speakerId)}'s response:
+                                </p>
+                                <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
+                                    {response.statement.sentences.map((s) => s.text).join(" ")}
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                className={[
+                                    "trial-analyze-btn",
+                                    responseGuessState ?? "",
+                                ].filter(Boolean).join(" ")}
+                                title="Analyze this response"
+                                onClick={() =>
+                                    setAnalysisTarget({
+                                        kind: "opponent_response",
+                                        statement: response.statement,
+                                        playerRound,
+                                    })
+                                }
+                            >
+                                <img src={magnifyingIcon} alt="Analyze" />
+                            </button>
+                        </div>
                     </div>
                 );
             }
@@ -473,8 +570,12 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
     // Resolve speaker name for the current modal target
     const modalSpeakerName = useMemo(() => {
-        if (!analysisTarget || analysisTarget.kind !== "npc") return "";
-        return getSpeakerName(debate, analysisTarget.round.speakerId);
+        if (!analysisTarget) return "";
+        if (analysisTarget.kind === "npc")
+            return getSpeakerName(debate, analysisTarget.round.speakerId);
+        if (analysisTarget.kind === "opponent_prompt" || analysisTarget.kind === "opponent_response")
+            return getSpeakerName(debate, analysisTarget.statement.speakerId);
+        return "";
     }, [analysisTarget, debate]);
 
     return (
