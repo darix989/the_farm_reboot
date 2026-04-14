@@ -412,7 +412,11 @@ body {
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 0.75rem 0.5rem;
-  scrollbar-gutter: stable;
+  scrollbar-width: none;
+}
+
+.trial-wizard-body-wrap::-webkit-scrollbar {
+  display: none;
 }
 
 @media (min-width: 768px) {
@@ -550,7 +554,11 @@ body {
   overflow-y: auto;
   overscroll-behavior: contain;
   padding-right: 0.25rem;
-  scrollbar-gutter: stable;
+  scrollbar-width: none;
+}
+
+.trial-scroll-area::-webkit-scrollbar {
+  display: none;
 }
 
 .trial-feedback-scroll {
@@ -561,6 +569,11 @@ body {
   gap: 1rem;
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.trial-feedback-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 /* =========================================================================
@@ -831,7 +844,11 @@ body {
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 1.5rem;
-  scrollbar-gutter: stable;
+  scrollbar-width: none;
+}
+
+.trial-modal-content::-webkit-scrollbar {
+  display: none;
 }
 
 /* =========================================================================

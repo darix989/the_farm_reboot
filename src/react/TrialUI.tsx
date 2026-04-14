@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { DebateScenarioJson } from "../types/debateEntities";
 import TrialLayout from "./trial/TrialLayout";
 import { useTrialRoundWorkflow } from "./trial/useTrialRoundWorkflow";
@@ -28,6 +28,16 @@ interface TrialUIProps {
 
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     const wf = useTrialRoundWorkflow(debate);
+
+    // -----------------------------------------------------------------------
+    // Feedback auto-scroll
+    // -----------------------------------------------------------------------
+    const feedbackScrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const el = feedbackScrollRef.current;
+        if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+    }, [wf.currentRoundIndex]);
 
     // -----------------------------------------------------------------------
     // Modal state
@@ -130,7 +140,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             <div className="trial-area-title">
                 <h2 className="trial-panel-heading">Feedback</h2>
             </div>
-            <div className="trial-feedback-scroll">
+            <div className="trial-feedback-scroll" ref={feedbackScrollRef}>
 
             {wf.scenario.introduction && (
                 <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.80)' }}>
