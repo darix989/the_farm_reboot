@@ -694,6 +694,36 @@ body {
   opacity: 1;
 }
 
+.trial-analyze-btn.correct {
+  border-color: rgba(34, 197, 94, 0.70);
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.trial-analyze-btn.correct img {
+  opacity: 1;
+  filter: invert(1) sepia(1) saturate(3) hue-rotate(90deg);
+}
+
+.trial-analyze-btn.correct:hover {
+  border-color: rgba(34, 197, 94, 0.90);
+  background: rgba(34, 197, 94, 0.25);
+}
+
+.trial-analyze-btn.wrong {
+  border-color: rgba(248, 113, 113, 0.70);
+  background: rgba(248, 113, 113, 0.15);
+}
+
+.trial-analyze-btn.wrong img {
+  opacity: 1;
+  filter: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
+}
+
+.trial-analyze-btn.wrong:hover {
+  border-color: rgba(248, 113, 113, 0.90);
+  background: rgba(248, 113, 113, 0.25);
+}
+
 /* =========================================================================
    Trial UI — modal overlay & box
    ========================================================================= */

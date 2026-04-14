@@ -51,6 +51,18 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         currentPlayerRoundNumber !== null &&
         !fallacyGuesses.has(currentPlayerRoundNumber);
 
+    // Returns the overall result of guesses for a given NPC round across all player rounds.
+    // 'correct' if any guess was right (correct beats wrong), 'wrong' if only wrong guesses, null if none.
+    const getNpcGuessState = (npcRoundId: string): "correct" | "wrong" | null => {
+        let hasWrong = false;
+        for (const record of fallacyGuesses.values()) {
+            if (record.npcRoundId !== npcRoundId) continue;
+            if (record.correct) return "correct";
+            hasWrong = true;
+        }
+        return hasWrong ? "wrong" : null;
+    };
+
     // Guess for the currently open modal (if it's an NPC round)
     const activeGuess = useMemo((): GuessRecord | null => {
         if (!analysisTarget || analysisTarget.kind !== "npc") return null;
@@ -170,6 +182,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                     <p style={{ color: 'rgba(255,255,255,0.50)' }}>History</p>
                     {wf.scenario.rounds.slice(0, wf.currentRoundIndex).map((round) => {
                         if (round.kind === "npc") {
+                            const guessState = getNpcGuessState(round.id);
                             return (
                                 <div key={round.id} className="trial-history-entry">
                                     <p style={{ color: 'rgba(255,255,255,0.45)' }}>
@@ -180,7 +193,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                     </p>
                                     <button
                                         type="button"
-                                        className="trial-analyze-btn"
+                                        className={[
+                                            "trial-analyze-btn",
+                                            guessState ?? "",
+                                        ].filter(Boolean).join(" ")}
                                         title="Analyze this round"
                                         onClick={() =>
                                             setAnalysisTarget({ kind: "npc", round })
