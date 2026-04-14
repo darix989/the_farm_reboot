@@ -6,7 +6,7 @@ import RoundAnalysisModal, {
     type AnalysisTarget,
     type GuessRecord,
 } from "./trial/RoundAnalysisModal";
-import { useScrollFade, scrollFadeMask } from "./trial/useScrollFade";
+import { useScrollFade } from "./trial/useScrollFade";
 
 import magnifyingIcon from "../static/icons/magnifying.svg";
 
@@ -145,11 +145,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             <div className="trial-area-title">
                 <h2 className="trial-panel-heading">Feedback</h2>
             </div>
-            <div
-                className="trial-feedback-scroll"
-                ref={feedbackScrollRef}
-                style={{ maskImage: scrollFadeMask(feedbackFade), WebkitMaskImage: scrollFadeMask(feedbackFade) }}
-            >
+            <div className="trial-scroll-fade-wrap">
+                <div className="scroll-fade-overlay top" style={{ opacity: feedbackFade.top ? 1 : 0 }} />
+                <div className="trial-feedback-scroll" ref={feedbackScrollRef}>
 
             {wf.scenario.introduction && (
                 <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.80)' }}>
@@ -302,6 +300,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 </div>
             )}
             </div>
+                <div className="scroll-fade-overlay bottom" style={{ opacity: feedbackFade.bottom ? 1 : 0 }} />
+            </div>
         </div>
     );
 
@@ -435,12 +435,12 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             {/* Body: fills remaining height, clips overflow so children cannot escape */}
             <div className="trial-interactive-scroll-wrap">
                 {/* Scroll area: grows to fill, scrolls when content is taller */}
-                <div
-                    className="trial-scroll-area"
-                    ref={interactiveScrollRef}
-                    style={{ maskImage: scrollFadeMask(interactiveFade), WebkitMaskImage: scrollFadeMask(interactiveFade) }}
-                >
-                    {renderInteractive()}
+                <div className="trial-scroll-fade-wrap">
+                    <div className="scroll-fade-overlay top" style={{ opacity: interactiveFade.top ? 1 : 0 }} />
+                    <div className="trial-scroll-area" ref={interactiveScrollRef}>
+                        {renderInteractive()}
+                    </div>
+                    <div className="scroll-fade-overlay bottom" style={{ opacity: interactiveFade.bottom ? 1 : 0 }} />
                 </div>
 
                 {/* Footer: always visible */}

@@ -9,7 +9,7 @@ import type {
 
 import magnifyingIcon from "../../static/icons/magnifying.svg";
 import fallacyPlaceholder from "../../static/icons/fallacy_placeholder.svg";
-import { useScrollFade, scrollFadeMask } from "./useScrollFade";
+import { useScrollFade } from "./useScrollFade";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -431,11 +431,9 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                 </div>
 
                 {/* Body */}
-                <div
-                    className="trial-modal-content"
-                    ref={modalScrollRef}
-                    style={{ maskImage: scrollFadeMask(modalFade), WebkitMaskImage: scrollFadeMask(modalFade) }}
-                >
+                <div className="trial-scroll-fade-wrap">
+                    <div className="scroll-fade-overlay top modal" style={{ opacity: modalFade.top ? 1 : 0 }} />
+                    <div className="trial-modal-content" ref={modalScrollRef}>
                     {isNpc ? (
                         <NpcRoundAnalysis
                             round={target.round}
@@ -447,6 +445,8 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                     ) : (
                         <PlayerRoundAnalysis option={target.chosenOption} />
                     )}
+                </div>
+                    <div className="scroll-fade-overlay bottom modal" style={{ opacity: modalFade.bottom ? 1 : 0 }} />
                 </div>
             </div>
         </div>

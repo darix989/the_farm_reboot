@@ -8,7 +8,7 @@ export interface ScrollFadeState {
 
 /**
  * Tracks whether a scrollable container has hidden content above/below.
- * Returns { top, bottom } booleans that can drive a CSS mask-image.
+ * Returns { top, bottom } booleans — drive overlay opacity to animate scroll hints.
  */
 export function useScrollFade(
     ref: React.RefObject<HTMLDivElement | null>,
@@ -38,16 +38,4 @@ export function useScrollFade(
     }, [ref]);
 
     return fade;
-}
-
-const FADE = "2.5rem";
-
-/** Returns a CSS mask-image value based on which edges have hidden content. */
-export function scrollFadeMask(fade: ScrollFadeState): string | undefined {
-    if (!fade.top && !fade.bottom) return undefined;
-    if (fade.top && fade.bottom)
-        return `linear-gradient(to bottom, transparent 0%, black ${FADE}, black calc(100% - ${FADE}), transparent 100%)`;
-    if (fade.top)
-        return `linear-gradient(to bottom, transparent 0%, black ${FADE})`;
-    return `linear-gradient(to bottom, black calc(100% - ${FADE}), transparent 100%)`;
 }
