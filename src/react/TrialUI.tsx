@@ -104,56 +104,80 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 </p>
             </div>
 
-            {/* History of completed player rounds */}
-            {wf.completedRounds.length > 0 && (
+            {/* Full debate history — all rounds that have been fully passed */}
+            {wf.currentRoundIndex > 0 && (
                 <div className="trial-section-box" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <p style={{ color: 'rgba(255,255,255,0.50)' }}>Your choices</p>
-                    {wf.completedRounds.map((cr) => {
-                        const round = wf.scenario.rounds.find(
-                            (r) => r.id === cr.roundId,
-                        );
-                        if (!round || round.kind !== "player") return null;
+                    <p style={{ color: 'rgba(255,255,255,0.50)' }}>History</p>
+                    {wf.scenario.rounds.slice(0, wf.currentRoundIndex).map((round) => {
+                        if (round.kind === "npc") {
+                            return (
+                                <div key={round.id} className="trial-history-entry">
+                                    <p style={{ color: 'rgba(255,255,255,0.45)' }}>
+                                        Round {round.roundNumber} — {getSpeakerName(debate, round.speakerId)}
+                                    </p>
+                                    <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>
+                                        {round.statement.sentences.map((s) => s.text).join(" ")}
+                                    </p>
+                                </div>
+                            );
+                        }
+
+                        // player round
+                        const cr = wf.completedRounds.find((c) => c.roundId === round.id);
+                        if (!cr) return null;
                         const opt = round.options.find((o) => o.id === cr.optionId);
                         if (!opt) return null;
+                        const response = round.opponentResponses?.find(
+                            (r) => r.forOptionId === cr.optionId,
+                        );
                         return (
-                            <div
-                                key={cr.roundId}
-                                className="trial-history-entry"
-                            >
-                                <p style={{ color: 'rgba(255,255,255,0.45)' }}>
-                                    Round {cr.roundNumber} —{" "}
-                                    <span
-                                        style={{
-                                            color: opt.quality === "effective"
-                                                ? '#22d3ee'
+                            <React.Fragment key={round.id}>
+                                <div className="trial-history-entry">
+                                    <p style={{ color: 'rgba(255,255,255,0.45)' }}>
+                                        Round {cr.roundNumber} — You —{" "}
+                                        <span
+                                            style={{
+                                                color: opt.quality === "effective"
+                                                    ? '#22d3ee'
+                                                    : opt.quality === "logical_fallacy"
+                                                      ? '#f87171'
+                                                      : 'rgba(255,255,255,0.50)',
+                                            }}
+                                        >
+                                            {opt.quality === "effective"
+                                                ? "Effective"
                                                 : opt.quality === "logical_fallacy"
-                                                  ? '#f87171'
-                                                  : 'rgba(255,255,255,0.50)',
-                                        }}
-                                    >
-                                        {opt.quality === "effective"
-                                            ? "Effective"
-                                            : opt.quality === "logical_fallacy"
-                                              ? "Logical fallacy"
-                                              : "Ineffective"}
-                                    </span>{" "}
-                                    <span
-                                        style={{
-                                            color: cr.impact > 0
-                                                ? '#67e8f9'
-                                                : cr.impact < 0
-                                                  ? '#f87171'
-                                                  : 'rgba(255,255,255,0.40)',
-                                        }}
-                                    >
-                                        ({cr.impact > 0 ? "+" : ""}
-                                        {cr.impact})
-                                    </span>
-                                </p>
-                                <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>
-                                    {opt.sentences[0]?.text ?? ""}
-                                </p>
-                            </div>
+                                                  ? "Logical fallacy"
+                                                  : "Ineffective"}
+                                        </span>{" "}
+                                        <span
+                                            style={{
+                                                color: cr.impact > 0
+                                                    ? '#67e8f9'
+                                                    : cr.impact < 0
+                                                      ? '#f87171'
+                                                      : 'rgba(255,255,255,0.40)',
+                                            }}
+                                        >
+                                            ({cr.impact > 0 ? "+" : ""}
+                                            {cr.impact})
+                                        </span>
+                                    </p>
+                                    <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>
+                                        {opt.sentences[0]?.text ?? ""}
+                                    </p>
+                                </div>
+                                {response && (
+                                    <div className="trial-history-entry">
+                                        <p style={{ color: 'rgba(255,255,255,0.45)' }}>
+                                            Round {cr.roundNumber} — {getSpeakerName(debate, response.statement.speakerId)} responds
+                                        </p>
+                                        <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>
+                                            {response.statement.sentences.map((s) => s.text).join(" ")}
+                                        </p>
+                                    </div>
+                                )}
+                            </React.Fragment>
                         );
                     })}
                 </div>
