@@ -1,17 +1,27 @@
 import React, { useMemo } from "react";
 import type { DebateScenarioJson } from "../types/debateEntities";
-import sampleDebateJson from "../data/debates/sample-debate.json";
 import TrialLayout from "./trial/TrialLayout";
 import { useTrialRoundWorkflow } from "./trial/useTrialRoundWorkflow";
 
-const sampleDebate = sampleDebateJson as unknown as DebateScenarioJson;
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function getSpeakerName(debate: DebateScenarioJson, speakerId: string): string {
+    return debate.characters?.[speakerId] ??
+        (speakerId.charAt(0).toUpperCase() + speakerId.slice(1));
+}
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-const TrialUI: React.FC = () => {
-    const wf = useTrialRoundWorkflow(sampleDebate);
+interface TrialUIProps {
+    debate: DebateScenarioJson;
+}
+
+const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
+    const wf = useTrialRoundWorkflow(debate);
 
     // Footer action state derived from game phase
     const interactiveFooter = useMemo(() => {
@@ -182,7 +192,7 @@ const TrialUI: React.FC = () => {
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
                             <p style={{ color: 'rgba(255,255,255,0.45)' }}>
-                                {npc.speakerId === "barnaby" ? "Barnaby" : npc.speakerId}{" "}
+                                {getSpeakerName(debate, npc.speakerId)}{" "}
                                 speaks:
                             </p>
                             <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
@@ -236,7 +246,7 @@ const TrialUI: React.FC = () => {
                 if (!response) return null;
                 return (
                     <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
-                        <p style={{ color: 'rgba(255,255,255,0.45)' }}>Barnaby's response:</p>
+                        <p style={{ color: 'rgba(255,255,255,0.45)' }}>{getSpeakerName(debate, response.statement.speakerId)}'s response:</p>
                         <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
                             {response.statement.sentences.map((s) => s.text).join(" ")}
                         </p>

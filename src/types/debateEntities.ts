@@ -85,7 +85,7 @@ export interface PlayerRoundEntry {
     id: string;
     roundNumber: number;
     type: StatementType;
-    /** NPC speaks first (e.g. Barnaby raises a crossfire question) before the player responds. */
+    /** NPC speaks first (crossfire question) before the player responds. */
     opponentPrompt?: Statement;
     options: readonly [PlayerOption, PlayerOption, PlayerOption];
     /**
@@ -111,6 +111,8 @@ export interface DebateScenarioJson {
     /** Brief summary of what the debate is about. */
     introduction?: string;
     playerSide: Side;
+    /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
+    characters?: Record<string, string>;
     logicalFallacies: LogicalFallacy[];
     rounds: RoundEntry[];
 }

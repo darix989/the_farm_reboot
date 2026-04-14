@@ -5,6 +5,10 @@ import MainMenuUI from './MainMenuUI';
 import TrialUI from './TrialUI';
 import ReactRoot from './ReactRoot';
 import { useGameStore } from '../store/gameStore';
+import type { DebateScenarioJson } from '../types/debateEntities';
+import sampleDebateJson from '../data/debates/sample-debate.json';
+
+const sampleDebate = sampleDebateJson as unknown as DebateScenarioJson;
 
 const ReactApp: React.FC = () => {
     const { currentScene, isGameReady } = useGameStore();
@@ -26,7 +30,7 @@ const ReactApp: React.FC = () => {
             case 'MainMenu':
                 return <MainMenuUI />;
             case 'Trial':
-                return <TrialUI />;
+                return <TrialUI debate={sampleDebate} />;
             case 'Game':
             case 'GameOver':
             case 'Boot':

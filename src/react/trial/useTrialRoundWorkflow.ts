@@ -282,6 +282,12 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     state.gamePhase === 'player_confirming' &&
     state.past.length > 0;
 
+  const opponentName = useMemo(() => {
+    const npcRound = scenario.rounds.find(r => r.kind === 'npc') as NpcRoundEntry | undefined;
+    const id = npcRound?.speakerId ?? 'opponent';
+    return scenario.characters?.[id] ?? (id.charAt(0).toUpperCase() + id.slice(1));
+  }, [scenario]);
+
   const wizardMessage = useMemo((): string => {
     if (state.gamePhase === 'debate_complete') return 'The debate is finished.';
     if (!currentRound) return '';
@@ -290,20 +296,20 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
 
     switch (state.gamePhase) {
       case 'npc_speaking':
-        return `${roundLabel}. Read Barnaby's statement, then click Continue.`;
+        return `${roundLabel}. Read ${opponentName}'s statement, then click Continue.`;
       case 'player_choosing':
         if (currentPlayerRound?.opponentPrompt) {
-          return `${roundLabel}. Barnaby has asked a question. Choose your response.`;
+          return `${roundLabel}. ${opponentName} has asked a question. Choose your response.`;
         }
         return `${roundLabel}. Choose your statement.`;
       case 'player_confirming':
         return 'Review your choice below. Go back to change it, or confirm to lock it in.';
       case 'npc_responding':
-        return 'Barnaby responds to your statement. Read it, then continue.';
+        return `${opponentName} responds to your statement. Read it, then continue.`;
       default:
         return '';
     }
-  }, [state.gamePhase, currentRound, currentPlayerRound]);
+  }, [state.gamePhase, currentRound, currentPlayerRound, opponentName]);
 
   const totalRounds = scenario.rounds.length;
   const playerRounds = scenario.rounds.filter((r) => r.kind === 'player');
