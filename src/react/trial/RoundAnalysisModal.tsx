@@ -15,6 +15,7 @@ import ScrollFadeContainer from './components/ScrollFadeContainer';
 import { qualityColor, qualityLabel, statementTypeLabel } from './utils/trialHelpers';
 import styles from './RoundAnalysisModal.module.scss';
 import shared from './trialShared.module.scss';
+import { uiFont } from '../uiFont';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -454,13 +455,17 @@ function PlayerRoundAnalysis({ option }: { option: PlayerOption }) {
     <div className={styles.trialAnalysisBody}>
       <div className={shared.trialSectionBox} style={{ marginBottom: '1rem' }}>
         <p
-          style={{ fontSize: '1.289rem', color: 'rgba(255,255,255,0.50)', marginBottom: '0.5rem' }}
+          style={{
+            fontSize: uiFont.subtitle,
+            color: 'rgba(255,255,255,0.50)',
+            marginBottom: '0.5rem',
+          }}
         >
           Assessment
         </p>
         <p
           style={{
-            fontSize: '1.758rem',
+            fontSize: uiFont.section,
             fontWeight: 600,
             color: qualityColor(option.quality),
           }}
@@ -469,7 +474,7 @@ function PlayerRoundAnalysis({ option }: { option: PlayerOption }) {
           <span
             style={{
               marginLeft: '0.75rem',
-              fontSize: '1.289rem',
+              fontSize: uiFont.subtitle,
               fontWeight: 400,
               color:
                 option.impact > 0
@@ -487,7 +492,7 @@ function PlayerRoundAnalysis({ option }: { option: PlayerOption }) {
           <p
             style={{
               marginTop: '0.75rem',
-              fontSize: '1.523rem',
+              fontSize: uiFont.bodyLg,
               lineHeight: 1.5,
               color: 'rgba(255,255,255,0.75)',
             }}

@@ -25,7 +25,7 @@
 }
 
 .menuTitle {
-  font-size: 2.35em;
+  font-size: var(--ui-font-display);
   margin-bottom: 30px;
   color: #0ec3c9;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
@@ -41,7 +41,7 @@
 .menuButton {
   width: 200px;
   padding: 15px 20px;
-  font-size: 1.03em;
+  font-size: var(--ui-font-subtitle);
   font-weight: bold;
   background: linear-gradient(45deg, #000000, #1a1a1a);
   color: rgba(255, 255, 255, 0.9);
@@ -67,7 +67,7 @@
 }
 
 .sceneInfo {
-  font-size: 0.84em;
+  font-size: var(--ui-font-caption);
   color: rgba(255, 255, 255, 0.6);
   margin-top: 15px;
 }

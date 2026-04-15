@@ -15,6 +15,7 @@ import AnalyzeButton from './components/AnalyzeButton';
 import { getSpeakerName, statementText, scoreColor } from './utils/trialHelpers';
 import styles from './TrialUI.module.scss';
 import shared from './trialShared.module.scss';
+import { uiFont } from '../uiFont';
 
 interface InteractiveFooter {
   submitLabel: string;
@@ -122,7 +123,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         return (
           <div
             className={shared.trialSectionBox}
-            style={{ fontSize: '1.992rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
+            style={{ fontSize: uiFont.lead, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
           >
             <p style={{ color: 'rgba(255,255,255,0.50)' }}>Your choice (full text)</p>
             <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
@@ -133,7 +134,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 marginTop: '1.5rem',
                 borderTop: '1px solid rgba(255,255,255,0.10)',
                 paddingTop: '1rem',
-                fontSize: '1.523rem',
+                fontSize: uiFont.bodyLg,
                 lineHeight: 1.375,
                 color: 'rgba(255,255,255,0.45)',
               }}
@@ -174,10 +175,16 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         return (
           <div
             className={shared.trialSectionBox}
-            style={{ fontSize: '1.8457rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
+            style={{ fontSize: uiFont.title, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
           >
             <p>The debate is finished.</p>
-            <p style={{ marginTop: '1rem', fontSize: '1.523rem', color: 'rgba(255,255,255,0.50)' }}>
+            <p
+              style={{
+                marginTop: '1rem',
+                fontSize: uiFont.bodyLg,
+                color: 'rgba(255,255,255,0.50)',
+              }}
+            >
               Final score:{' '}
               <span style={{ color: scoreColor(wf.totalScore) }}>
                 {wf.totalScore > 0 ? '+' : ''}
