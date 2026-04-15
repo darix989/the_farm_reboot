@@ -9,8 +9,7 @@
   "logicalFallacies": [
     {
       "id": "false-dilemma",
-      "label": "False Dilemma",
-      "description": "Presenting only two options when more alternatives exist."
+      "explanation": "TBD"
     }
   ],
   "rounds": [
@@ -36,8 +35,7 @@
             "logicalFallacies": [
               {
                 "id": "false-dilemma",
-                "label": "False Dilemma",
-                "description": "Presenting only two options when more alternatives exist."
+                "explanation": "TBD"
               }
             ]
           },
@@ -47,8 +45,7 @@
             "logicalFallacies": [
               {
                 "id": "false-dilemma",
-                "label": "False Dilemma",
-                "description": "Presenting only two options when more alternatives exist."
+                "explanation": "TBD"
               }
             ]
           }
@@ -73,8 +70,7 @@
               "logicalFallacies": [
                 {
                   "id": "false-dilemma",
-                  "label": "False Dilemma",
-                  "description": "Presenting only two options when more alternatives exist."
+                  "explanation": "TBD"
                 }
               ]
             }
@@ -131,8 +127,7 @@
               "logicalFallacies": [
                 {
                   "id": "false-dilemma",
-                  "label": "False Dilemma",
-                  "description": "Presenting only two options when more alternatives exist."
+                  "explanation": "TBD"
                 }
               ]
             }
@@ -209,8 +204,7 @@
                 "logicalFallacies": [
                   {
                     "id": "false-dilemma",
-                    "label": "False Dilemma",
-                    "description": "Presenting only two options when more alternatives exist."
+                    "explanation": "TBD"
                   }
                 ]
               }
@@ -235,8 +229,7 @@
             "logicalFallacies": [
               {
                 "id": "false-dilemma",
-                "label": "False Dilemma",
-                "description": "Presenting only two options when more alternatives exist."
+                "explanation": "TBD"
               }
             ]
           }
@@ -255,8 +248,7 @@
               "logicalFallacies": [
                 {
                   "id": "false-dilemma",
-                  "label": "False Dilemma",
-                  "description": "Presenting only two options when more alternatives exist."
+                  "explanation": "TBD"
                 }
               ]
             }
@@ -317,8 +309,7 @@
             "logicalFallacies": [
               {
                 "id": "false-dilemma",
-                "label": "False Dilemma",
-                "description": "Presenting only two options when more alternatives exist."
+                "explanation": "TBD"
               }
             ]
           }
@@ -343,8 +334,7 @@
               "logicalFallacies": [
                 {
                   "id": "false-dilemma",
-                  "label": "False Dilemma",
-                  "description": "Presenting only two options when more alternatives exist."
+                  "explanation": "TBD"
                 }
               ]
             }
@@ -399,8 +389,7 @@
             "logicalFallacies": [
               {
                 "id": "false-dilemma",
-                "label": "False Dilemma",
-                "description": "Presenting only two options when more alternatives exist."
+                "explanation": "TBD"
               }
             ]
           }
@@ -419,8 +408,7 @@
               "logicalFallacies": [
                 {
                   "id": "false-dilemma",
-                  "label": "False Dilemma",
-                  "description": "Presenting only two options when more alternatives exist."
+                  "explanation": "TBD"
                 }
               ]
             }
@@ -472,8 +460,7 @@
               "logicalFallacies": [
                 {
                   "id": "false-dilemma",
-                  "label": "False Dilemma",
-                  "description": "Presenting only two options when more alternatives exist."
+                  "explanation": "TBD"
                 }
               ]
             }
@@ -550,8 +537,7 @@
                 "logicalFallacies": [
                   {
                     "id": "false-dilemma",
-                    "label": "False Dilemma",
-                    "description": "Presenting only two options when more alternatives exist."
+                    "explanation": "TBD"
                   }
                 ]
               }
@@ -582,8 +568,7 @@
             "logicalFallacies": [
               {
                 "id": "false-dilemma",
-                "label": "False Dilemma",
-                "description": "Presenting only two options when more alternatives exist."
+                "explanation": "TBD"
               }
             ]
           },
@@ -593,8 +578,7 @@
             "logicalFallacies": [
               {
                 "id": "false-dilemma",
-                "label": "False Dilemma",
-                "description": "Presenting only two options when more alternatives exist."
+                "explanation": "TBD"
               }
             ]
           }
@@ -619,8 +603,7 @@
               "logicalFallacies": [
                 {
                   "id": "false-dilemma",
-                  "label": "False Dilemma",
-                  "description": "Presenting only two options when more alternatives exist."
+                  "explanation": "TBD"
                 }
               ]
             }

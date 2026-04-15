@@ -27,10 +27,15 @@ export interface LogicalFallacy {
   description: string;
 }
 
+export interface LogicalFallacyScenario {
+  id: LogicalFallacyId;
+  explanation: string;
+}
+
 export interface Sentence {
   id: string;
   text: string;
-  logicalFallacies: LogicalFallacy[];
+  logicalFallacies: LogicalFallacyScenario[];
 }
 
 export type StatementType =
@@ -139,7 +144,7 @@ export interface DebateScenarioJson {
   playerSide: Side;
   /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
   characters?: Record<string, string>;
-  logicalFallacies: LogicalFallacy[];
+  logicalFallacies: LogicalFallacyScenario[];
   rounds: RoundEntry[];
 }
 
