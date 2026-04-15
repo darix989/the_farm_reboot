@@ -1,0 +1,73 @@
+/* =========================================================================
+   Main Menu UI
+   ========================================================================= */
+
+.mainMenuUi {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.menuContainer {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  pointer-events: all;
+  backdrop-filter: blur(5px);
+}
+
+.menuTitle {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #0ec3c9;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.menuButton {
+  width: 200px;
+  padding: 15px 20px;
+  font-size: 1.1em;
+  font-weight: bold;
+  background: linear-gradient(45deg, #000000, #1a1a1a);
+  color: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  &:hover {
+    border-color: #0ec3c9;
+    color: #0ec3c9;
+    box-shadow: 0 0 15px rgba(14, 195, 201, 0.3);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background: #0ec3c9;
+    color: #000000;
+    transform: translateY(0);
+  }
+}
+
+.sceneInfo {
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 15px;
+}

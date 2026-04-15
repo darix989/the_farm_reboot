@@ -1,4 +1,6 @@
 import React from 'react';
+import cn from 'classnames';
+import styles from './TrialLayout.module.scss';
 
 /** Solid dark gray so panels read clearly over the Phaser canvas. */
 const TRIAL_PANEL_BG = '#3a3a3a';
@@ -19,39 +21,39 @@ export interface TrialLayoutProps {
  */
 const TrialLayout: React.FC<TrialLayoutProps> = ({ feedback, wizard, interactive }) => {
   return (
-    <div className="trial-layout-grid">
+    <div className={styles.trialLayoutGrid}>
       {/* Top-left quarter: game hole (cols 1–3 = 50% width, row 1 = top 50% height) */}
       <div
-        className="trial-game-hole"
+        className={styles.trialGameHole}
         aria-hidden
       />
 
       {/* Feedback: top row, right 50% (cols 4–6) */}
       <div
-        className="trial-panel trial-feedback-panel"
+        className={cn(styles.trialPanel, styles.trialFeedbackPanel)}
         style={{ backgroundColor: TRIAL_PANEL_BG }}
       >
-        <div className="trial-panel-inner">
+        <div className={styles.trialPanelInner}>
           {feedback}
         </div>
       </div>
 
       {/* Wizard: bottom row, left third (cols 1–2 of 6) */}
       <div
-        className="trial-panel trial-wizard-panel"
+        className={cn(styles.trialPanel, styles.trialWizardPanel)}
         style={{ backgroundColor: TRIAL_PANEL_BG }}
       >
-        <div className="trial-panel-inner">
+        <div className={styles.trialPanelInner}>
           {wizard}
         </div>
       </div>
 
       {/* Interactive: bottom row, right two-thirds (cols 3–6 of 6) */}
       <div
-        className="trial-panel trial-interactive-panel"
+        className={cn(styles.trialPanel, styles.trialInteractivePanel)}
         style={{ backgroundColor: TRIAL_PANEL_BG }}
       >
-        <div className="trial-panel-inner">
+        <div className={styles.trialPanelInner}>
           {interactive}
         </div>
       </div>

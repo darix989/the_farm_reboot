@@ -1,12 +1,12 @@
 import React from 'react';
 import { useGameStore } from '../store/gameStore';
 import { GameManager } from '../utils/gameManager';
+import styles from './MainMenuUI.module.scss';
 
 const MainMenuUI: React.FC = () => {
     const { currentScene } = useGameStore();
 
     const startTrial = () => {
-        // Get current scene and switch to Trial
         const scene = GameManager.getCurrentScene();
         if (scene) {
             scene.scene.start('Trial');
@@ -29,30 +29,30 @@ const MainMenuUI: React.FC = () => {
     };
 
     return (
-        <div className="main-menu-ui">
-            <div className="menu-container">
-                <h1 className="menu-title">Main Menu</h1>
-                <div className="button-container">
-                    <button 
-                        className="menu-button button-1" 
+        <div className={styles.mainMenuUi}>
+            <div className={styles.menuContainer}>
+                <h1 className={styles.menuTitle}>Main Menu</h1>
+                <div className={styles.buttonContainer}>
+                    <button
+                        className={styles.menuButton}
                         onClick={handleButton1}
                     >
                         Start Adventure
                     </button>
-                    <button 
-                        className="menu-button button-2" 
+                    <button
+                        className={styles.menuButton}
                         onClick={handleButton2}
                     >
                         Quick Play
                     </button>
-                    <button 
-                        className="menu-button button-3" 
+                    <button
+                        className={styles.menuButton}
                         onClick={handleButton3}
                     >
                         Challenge Mode
                     </button>
                 </div>
-                <div className="scene-info">
+                <div className={styles.sceneInfo}>
                     Current Scene: <strong>{currentScene}</strong>
                 </div>
             </div>

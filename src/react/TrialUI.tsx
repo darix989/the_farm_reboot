@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import cn from "classnames";
 import type { DebateScenarioJson } from "../types/debateEntities";
 import TrialLayout from "./trial/TrialLayout";
 import { useTrialRoundWorkflow } from "./trial/useTrialRoundWorkflow";
@@ -10,6 +11,8 @@ import RoundAnalysisModal, {
 import { useScrollFade } from "./trial/useScrollFade";
 
 import magnifyingIcon from "../static/icons/magnifying.svg";
+import styles from "./trial/TrialUI.module.scss";
+import shared from "./trial/trialShared.module.scss";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -177,16 +180,16 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     // -----------------------------------------------------------------------
 
     const feedback = (
-        <div className="trial-panel-content">
-            <div className="trial-area-title">
-                <h2 className="trial-panel-heading">Feedback</h2>
+        <div className={styles.trialPanelContent}>
+            <div className={styles.trialAreaTitle}>
+                <h2 className={styles.trialPanelHeading}>Feedback</h2>
             </div>
-            <div className="trial-scroll-fade-wrap">
-                <div className="scroll-fade-overlay top" style={{ opacity: feedbackFade.top ? 1 : 0 }} />
-                <div className="trial-feedback-scroll" ref={feedbackScrollRef}>
+            <div className={shared.trialScrollFadeWrap}>
+                <div className={cn(shared.scrollFadeOverlay, shared.fadeTop)} style={{ opacity: feedbackFade.top ? 1 : 0 }} />
+                <div className={styles.trialFeedbackScroll} ref={feedbackScrollRef}>
 
             {wf.scenario.introduction && (
-                <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.80)' }}>
+                <div className={shared.trialSectionBox} style={{ fontSize: '1.875rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.80)' }}>
                     <p style={{ color: 'rgba(255,255,255,0.50)' }}>Introduction</p>
                     <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.90)' }}>{wf.scenario.introduction}</p>
                 </div>
@@ -194,7 +197,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
             {/* Round counter */}
             {wf.gamePhase !== "debate_complete" && wf.currentRound && (
-                <div className="trial-section-box">
+                <div className={shared.trialSectionBox}>
                     <p style={{ fontSize: '2.125rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
                         <span style={{ color: 'rgba(255,255,255,0.50)' }}>Round </span>
                         <span style={{ color: 'rgba(255,255,255,0.90)' }}>
@@ -208,7 +211,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             )}
 
             {/* Score */}
-            <div className="trial-section-box">
+            <div className={shared.trialSectionBox}>
                 <p style={{ fontSize: '2.125rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
                     <span style={{ color: 'rgba(255,255,255,0.50)' }}>Score </span>
                     <span
@@ -231,13 +234,13 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
             {/* Full debate history — all rounds that have been fully passed */}
             {wf.currentRoundIndex > 0 && (
-                <div className="trial-section-box" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div className={shared.trialSectionBox} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     <p style={{ color: 'rgba(255,255,255,0.50)' }}>History</p>
                     {wf.scenario.rounds.slice(0, wf.currentRoundIndex).map((round) => {
                         if (round.kind === "npc") {
                             const guessState = getNpcGuessState(round.id);
                             return (
-                                <div key={round.id} className="trial-history-entry">
+                                <div key={round.id} className={styles.trialHistoryEntry}>
                                     <p style={{ color: 'rgba(255,255,255,0.45)' }}>
                                         Round {round.roundNumber} — {getSpeakerName(debate, round.speakerId)}
                                     </p>
@@ -246,10 +249,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                     </p>
                                     <button
                                         type="button"
-                                        className={[
-                                            "trial-analyze-btn",
-                                            guessState ?? "",
-                                        ].filter(Boolean).join(" ")}
+                                        className={cn(styles.trialAnalyzeBtn, {
+                                            [styles.correct]: guessState === "correct",
+                                            [styles.wrong]: guessState === "wrong",
+                                        })}
                                         title="Analyze this round"
                                         onClick={() =>
                                             setAnalysisTarget({ kind: "npc", round })
@@ -272,7 +275,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                         return (
                             <React.Fragment key={round.id}>
                                 {round.opponentPrompt && (
-                                    <div className="trial-history-entry">
+                                    <div className={styles.trialHistoryEntry}>
                                         <p style={{ color: 'rgba(255,255,255,0.45)' }}>
                                             Round {round.roundNumber} — {getSpeakerName(debate, round.opponentPrompt.speakerId)}'s question
                                         </p>
@@ -281,10 +284,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                         </p>
                                         <button
                                             type="button"
-                                            className={[
-                                                "trial-analyze-btn",
-                                                getNpcGuessState(round.opponentPrompt.id) ?? "",
-                                            ].filter(Boolean).join(" ")}
+                                            className={cn(styles.trialAnalyzeBtn, {
+                                                [styles.correct]: getNpcGuessState(round.opponentPrompt.id) === "correct",
+                                                [styles.wrong]: getNpcGuessState(round.opponentPrompt.id) === "wrong",
+                                            })}
                                             title="Analyze this question"
                                             onClick={() =>
                                                 setAnalysisTarget({
@@ -298,7 +301,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                         </button>
                                     </div>
                                 )}
-                                <div className="trial-history-entry">
+                                <div className={styles.trialHistoryEntry}>
                                     <p style={{ color: 'rgba(255,255,255,0.45)' }}>
                                         Round {cr.roundNumber} — You —{" "}
                                         <span
@@ -334,7 +337,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                     </p>
                                     <button
                                         type="button"
-                                        className="trial-analyze-btn"
+                                        className={styles.trialAnalyzeBtn}
                                         title="Analyze this round"
                                         onClick={() =>
                                             setAnalysisTarget({
@@ -348,7 +351,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                     </button>
                                 </div>
                                 {response && (
-                                    <div className="trial-history-entry">
+                                    <div className={styles.trialHistoryEntry}>
                                         <p style={{ color: 'rgba(255,255,255,0.45)' }}>
                                             Round {cr.roundNumber} — {getSpeakerName(debate, response.statement.speakerId)} responds
                                         </p>
@@ -357,10 +360,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                         </p>
                                         <button
                                             type="button"
-                                            className={[
-                                                "trial-analyze-btn",
-                                                getNpcGuessState(response.statement.id) ?? "",
-                                            ].filter(Boolean).join(" ")}
+                                            className={cn(styles.trialAnalyzeBtn, {
+                                                [styles.correct]: getNpcGuessState(response.statement.id) === "correct",
+                                                [styles.wrong]: getNpcGuessState(response.statement.id) === "wrong",
+                                            })}
                                             title="Analyze this response"
                                             onClick={() =>
                                                 setAnalysisTarget({
@@ -385,8 +388,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
              (wf.gamePhase === "player_choosing" ||
               wf.gamePhase === "player_confirming" ||
               wf.gamePhase === "npc_responding") && (
-                <div className="trial-section-box" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    <div className="trial-history-entry">
+                <div className={shared.trialSectionBox} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <div className={styles.trialHistoryEntry}>
                         <p style={{ color: 'rgba(255,255,255,0.45)' }}>
                             Round {wf.currentPlayerRound.roundNumber} — {getSpeakerName(debate, wf.currentPlayerRound.opponentPrompt.speakerId)}'s question
                         </p>
@@ -395,10 +398,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                         </p>
                         <button
                             type="button"
-                            className={[
-                                "trial-analyze-btn",
-                                getNpcGuessState(wf.currentPlayerRound.opponentPrompt.id) ?? "",
-                            ].filter(Boolean).join(" ")}
+                            className={cn(styles.trialAnalyzeBtn, {
+                                [styles.correct]: getNpcGuessState(wf.currentPlayerRound.opponentPrompt.id) === "correct",
+                                [styles.wrong]: getNpcGuessState(wf.currentPlayerRound.opponentPrompt.id) === "wrong",
+                            })}
                             title="Analyze this question"
                             onClick={() =>
                                 setAnalysisTarget({
@@ -414,7 +417,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 </div>
             )}
             </div>
-                <div className="scroll-fade-overlay bottom" style={{ opacity: feedbackFade.bottom ? 1 : 0 }} />
+                <div className={cn(shared.scrollFadeOverlay, shared.fadeBottom)} style={{ opacity: feedbackFade.bottom ? 1 : 0 }} />
             </div>
         </div>
     );
@@ -425,11 +428,11 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
     const wizard = (
         <div style={{ display: 'flex', height: '100%', minHeight: 0, width: '100%', flexDirection: 'column', gap: '1rem' }}>
-            <div className="trial-area-title">
-                <h2 className="trial-panel-heading">Wizard</h2>
+            <div className={styles.trialAreaTitle}>
+                <h2 className={styles.trialPanelHeading}>Wizard</h2>
             </div>
-            <div className="trial-wizard-body-wrap">
-                <p className="trial-wizard-main-text">
+            <div className={styles.trialWizardBodyWrap}>
+                <p className={styles.trialWizardMainText}>
                     {wf.wizardMessage}
                 </p>
             </div>
@@ -447,7 +450,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 if (!npc) return null;
                 return (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
+                        <div className={shared.trialSectionBox} style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
                             <p style={{ color: 'rgba(255,255,255,0.45)' }}>
                                 {getSpeakerName(debate, npc.speakerId)}{" "}
                                 speaks:
@@ -476,7 +479,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 return (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         {playerRound.opponentPrompt && (
-                            <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
+                            <div className={shared.trialSectionBox} style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem' }}>
                                     <div style={{ flex: 1, minWidth: 0 }}>
                                         <p style={{ color: 'rgba(255,255,255,0.45)' }}>
@@ -488,10 +491,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                     </div>
                                     <button
                                         type="button"
-                                        className={[
-                                            "trial-analyze-btn",
-                                            promptGuessState ?? "",
-                                        ].filter(Boolean).join(" ")}
+                                        className={cn(styles.trialAnalyzeBtn, {
+                                            [styles.correct]: promptGuessState === "correct",
+                                            [styles.wrong]: promptGuessState === "wrong",
+                                        })}
                                         title="Analyze this statement"
                                         onClick={() =>
                                             setAnalysisTarget({
@@ -506,7 +509,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                                 </div>
                             </div>
                         )}
-                        <div className="trial-choices">
+                        <div className={styles.trialChoices}>
                             {playerRound.options.map((opt, idx) => (
                                 <ChoiceButton
                                     key={opt.id}
@@ -528,7 +531,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 const opt = wf.selectedOption;
                 if (!opt) return null;
                 return (
-                    <div className="trial-section-box" style={{ fontSize: '2.125rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
+                    <div className={shared.trialSectionBox} style={{ fontSize: '2.125rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
                         <p style={{ color: 'rgba(255,255,255,0.50)' }}>Your choice (full text)</p>
                         <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
                             {opt.sentences.map((s) => s.text).join(" ")}
@@ -547,7 +550,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 if (!response || !playerRound) return null;
                 const responseGuessState = getNpcGuessState(response.statement.id);
                 return (
-                    <div className="trial-section-box" style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
+                    <div className={shared.trialSectionBox} style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem' }}>
                             <div style={{ flex: 1, minWidth: 0 }}>
                                 <p style={{ color: 'rgba(255,255,255,0.45)' }}>
@@ -559,10 +562,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                             </div>
                             <button
                                 type="button"
-                                className={[
-                                    "trial-analyze-btn",
-                                    responseGuessState ?? "",
-                                ].filter(Boolean).join(" ")}
+                                className={cn(styles.trialAnalyzeBtn, {
+                                    [styles.correct]: responseGuessState === "correct",
+                                    [styles.wrong]: responseGuessState === "wrong",
+                                })}
                                 title="Analyze this response"
                                 onClick={() =>
                                     setAnalysisTarget({
@@ -581,7 +584,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
             case "debate_complete":
                 return (
-                    <div className="trial-section-box" style={{ fontSize: '1.96875rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
+                    <div className={shared.trialSectionBox} style={{ fontSize: '1.96875rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
                         <p>The debate is finished.</p>
                         <p style={{ marginTop: '1rem', fontSize: '1.625rem', color: 'rgba(255,255,255,0.50)' }}>
                             Final score:{" "}
@@ -608,29 +611,29 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     };
 
     const interactive = (
-        <div className="trial-interactive-body">
+        <div className={styles.trialInteractiveBody}>
             {/* Title — fixed height, never participates in flex growth */}
-            <div className="trial-area-title">
-                <h2 className="trial-panel-heading">Interactive</h2>
+            <div className={styles.trialAreaTitle}>
+                <h2 className={styles.trialPanelHeading}>Interactive</h2>
             </div>
 
             {/* Body: fills remaining height, clips overflow so children cannot escape */}
-            <div className="trial-interactive-scroll-wrap">
+            <div className={styles.trialInteractiveScrollWrap}>
                 {/* Scroll area: grows to fill, scrolls when content is taller */}
-                <div className="trial-scroll-fade-wrap">
-                    <div className="scroll-fade-overlay top" style={{ opacity: interactiveFade.top ? 1 : 0 }} />
-                    <div className="trial-scroll-area" ref={interactiveScrollRef}>
+                <div className={shared.trialScrollFadeWrap}>
+                    <div className={cn(shared.scrollFadeOverlay, shared.fadeTop)} style={{ opacity: interactiveFade.top ? 1 : 0 }} />
+                    <div className={styles.trialScrollArea} ref={interactiveScrollRef}>
                         {renderInteractive()}
                     </div>
-                    <div className="scroll-fade-overlay bottom" style={{ opacity: interactiveFade.bottom ? 1 : 0 }} />
+                    <div className={cn(shared.scrollFadeOverlay, shared.fadeBottom)} style={{ opacity: interactiveFade.bottom ? 1 : 0 }} />
                 </div>
 
                 {/* Footer: always visible */}
-                <div className="trial-interactive-footer">
-                    <div className="trial-footer-grid">
+                <div className={styles.trialInteractiveFooter}>
+                    <div className={styles.trialFooterGrid}>
                         <button
                             type="button"
-                            className="trial-footer-btn"
+                            className={shared.trialFooterBtn}
                             disabled={!wf.canUndo}
                             onClick={wf.undo}
                         >
@@ -638,7 +641,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                         </button>
                         <button
                             type="button"
-                            className="trial-footer-btn"
+                            className={shared.trialFooterBtn}
                             disabled={
                                 interactiveFooter.submitDisabled ||
                                 !interactiveFooter.onSubmit
@@ -693,8 +696,8 @@ function ChoiceButton({
     onClick: () => void;
 }) {
     return (
-        <button type="button" className="trial-choice-btn" onClick={onClick}>
-            <span className="trial-choice-btn-inner">{label}</span>
+        <button type="button" className={styles.trialChoiceBtn} onClick={onClick}>
+            <span className={styles.trialChoiceBtnInner}>{label}</span>
         </button>
     );
 }

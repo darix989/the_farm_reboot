@@ -1,0 +1,13 @@
+/* =========================================================================
+   ReactApp
+   ========================================================================= */
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: rgba(255, 255, 255, 0.87);
+  pointer-events: auto;
+}

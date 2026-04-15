@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import cn from "classnames";
 import type {
     LogicalFallacy,
     NpcRoundEntry,
@@ -11,6 +12,8 @@ import type {
 import magnifyingIcon from "../../static/icons/magnifying.svg";
 import fallacyPlaceholder from "../../static/icons/fallacy_placeholder.svg";
 import { useScrollFade } from "./useScrollFade";
+import styles from "./RoundAnalysisModal.module.scss";
+import shared from "./trialShared.module.scss";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -76,21 +79,23 @@ function FallacyPicker({
     onSelect: (id: string) => void;
 }) {
     return (
-        <div className="trial-fallacy-grid">
+        <div className={styles.trialFallacyGrid}>
             {fallacies.map((f) => (
                 <button
                     key={f.id}
                     type="button"
-                    className={`trial-fallacy-item${selectedId === f.id ? " selected" : ""}`}
+                    className={cn(styles.trialFallacyItem, {
+                        [styles.selected]: selectedId === f.id,
+                    })}
                     onClick={() => onSelect(f.id)}
                     title={f.description}
                 >
                     <img
                         src={fallacyPlaceholder}
                         alt=""
-                        className="trial-fallacy-item-icon"
+                        className={styles.trialFallacyItemIcon}
                     />
-                    <span className="trial-fallacy-item-label">{f.label}</span>
+                    <span className={styles.trialFallacyItemLabel}>{f.label}</span>
                 </button>
             ))}
         </div>
@@ -109,13 +114,16 @@ function GuessResultBanner({ guess }: { guess: GuessRecord }) {
     const pickedFallacyId = guess.fallacyId;
 
     return (
-        <div className={`trial-guess-result ${guess.correct ? "correct" : "wrong"}`}>
+        <div className={cn(styles.trialGuessResult, {
+            [styles.correct]: guess.correct,
+            [styles.wrong]: !guess.correct,
+        })}>
             {guess.correct ? (
                 <>
-                    <span className="trial-guess-result-icon">✓</span>
+                    <span className={styles.trialGuessResultIcon}>✓</span>
                     <div>
-                        <p className="trial-guess-result-headline">Correct!</p>
-                        <p className="trial-guess-result-body">
+                        <p className={styles.trialGuessResultHeadline}>Correct!</p>
+                        <p className={styles.trialGuessResultBody}>
                             {isNoFallaciesGuess
                                 ? "This statement contains no logical fallacies."
                                 : <>
@@ -129,11 +137,11 @@ function GuessResultBanner({ guess }: { guess: GuessRecord }) {
                 </>
             ) : (
                 <>
-                    <span className="trial-guess-result-icon">✗</span>
+                    <span className={styles.trialGuessResultIcon}>✗</span>
                     <div>
-                        <p className="trial-guess-result-headline">Incorrect</p>
+                        <p className={styles.trialGuessResultHeadline}>Incorrect</p>
                         {isNoFallaciesGuess ? (
-                            <p className="trial-guess-result-body">
+                            <p className={styles.trialGuessResultBody}>
                                 This statement does contain logical fallacies:{" "}
                                 {guess.actualFallacies
                                     .map((f) => <strong key={f.id}>{f.label}</strong>)
@@ -141,7 +149,7 @@ function GuessResultBanner({ guess }: { guess: GuessRecord }) {
                                 .
                             </p>
                         ) : guess.actualFallacies.length > 0 ? (
-                            <p className="trial-guess-result-body">
+                            <p className={styles.trialGuessResultBody}>
                                 That sentence contains:{" "}
                                 {guess.actualFallacies
                                     .map((f) => <strong key={f.id}>{f.label}</strong>)
@@ -149,7 +157,7 @@ function GuessResultBanner({ guess }: { guess: GuessRecord }) {
                                 .
                             </p>
                         ) : (
-                            <p className="trial-guess-result-body">
+                            <p className={styles.trialGuessResultBody}>
                                 That sentence contains no logical fallacy.
                             </p>
                         )}
@@ -213,21 +221,21 @@ function NpcRoundAnalysis({
     };
 
     return (
-        <div className="trial-analysis-body">
+        <div className={styles.trialAnalysisBody}>
             {/* Instruction / status */}
             {!hasGuessed && canGuess && (
-                <p className="trial-analysis-hint">
+                <p className={styles.trialAnalysisHint}>
                     Select a sentence you believe contains a logical fallacy, then pick one from the list — or submit "No Fallacies" if the statement is clean.
                 </p>
             )}
             {!hasGuessed && !canGuess && (
-                <p className="trial-analysis-hint disabled">
+                <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
                     Fallacy analysis is available during your turn.
                 </p>
             )}
 
             {/* Sentence list */}
-            <div className="trial-sentence-list">
+            <div className={styles.trialSentenceList}>
                 {statement.sentences.map((s) => {
                     const isSelected = selectedSentenceId === s.id;
                     const isGuessedSentence = existingGuess?.sentenceId === s.id;
@@ -243,24 +251,22 @@ function NpcRoundAnalysis({
                         <button
                             key={s.id}
                             type="button"
-                            className={[
-                                "trial-sentence-card",
-                                isSelected ? "selected" : "",
-                                canGuess && !hasGuessed ? "clickable" : "static",
-                                revealFallacy ? "has-fallacy-revealed" : "",
-                            ]
-                                .filter(Boolean)
-                                .join(" ")}
+                            className={cn(styles.trialSentenceCard, {
+                                [styles.selected]: isSelected,
+                                [styles.clickable]: canGuess && !hasGuessed,
+                                [styles.static]: !canGuess || hasGuessed,
+                                [styles.hasFallacyRevealed]: revealFallacy,
+                            })}
                             onClick={(e) => {
                                 e.stopPropagation();
                                 handleSentenceClick(s);
                             }}
                         >
-                            <p className="trial-sentence-text">{s.text}</p>
+                            <p className={styles.trialSentenceText}>{s.text}</p>
                             {revealFallacy &&
                                 s.logicalFallacies.map((f) => (
-                                    <span key={f.id} className="trial-fallacy-pill" title={f.description}>
-                                        <img src={fallacyPlaceholder} alt="" className="trial-pill-icon" />
+                                    <span key={f.id} className={styles.trialFallacyPill} title={f.description}>
+                                        <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
                                         {f.label}
                                     </span>
                                 ))}
@@ -271,17 +277,17 @@ function NpcRoundAnalysis({
 
             {/* Fallacy picker — only when a sentence is selected and we can still guess */}
             {canGuess && !hasGuessed && selectedSentenceId && (
-                <div className="trial-fallacy-picker-section">
-                    <p className="trial-analysis-hint">Choose the fallacy you think this sentence contains:</p>
+                <div className={styles.trialFallacyPickerSection}>
+                    <p className={styles.trialAnalysisHint}>Choose the fallacy you think this sentence contains:</p>
                     <FallacyPicker
                         fallacies={allFallacies}
                         selectedId={pickedFallacyId}
                         onSelect={handleFallacySelect}
                     />
-                    <div className="trial-analysis-submit-row">
+                    <div className={styles.trialAnalysisSubmitRow}>
                         <button
                             type="button"
-                            className="trial-footer-btn"
+                            className={cn(shared.trialFooterBtn, styles.submitFooterBtn)}
                             disabled={!pickedFallacyId}
                             onClick={handleSubmitGuess}
                         >
@@ -293,10 +299,10 @@ function NpcRoundAnalysis({
 
             {/* "No Fallacies" alternative — available whenever the player can still guess */}
             {canGuess && !hasGuessed && (
-                <div className="trial-no-fallacies-row">
+                <div className={styles.trialNoFallaciesRow}>
                     <button
                         type="button"
-                        className="trial-no-fallacies-btn"
+                        className={styles.trialNoFallaciesBtn}
                         onClick={handleNoFallacies}
                     >
                         No Fallacies in this statement
@@ -306,8 +312,8 @@ function NpcRoundAnalysis({
 
             {/* Read-only fallacy picker after a wrong sentence-level guess */}
             {hasGuessed && !existingGuess!.correct && !wasNoFallaciesGuess && (
-                <div className="trial-fallacy-picker-section">
-                    <p className="trial-analysis-hint disabled">Your guess (read-only):</p>
+                <div className={styles.trialFallacyPickerSection}>
+                    <p className={cn(styles.trialAnalysisHint, styles.disabled)}>Your guess (read-only):</p>
                     <FallacyPicker
                         fallacies={allFallacies}
                         selectedId={existingGuess!.fallacyId}
@@ -332,9 +338,9 @@ function PlayerRoundAnalysis({
     option: PlayerOption;
 }) {
     return (
-        <div className="trial-analysis-body">
+        <div className={styles.trialAnalysisBody}>
             {/* Quality summary */}
-            <div className="trial-section-box" style={{ marginBottom: "1rem" }}>
+            <div className={shared.trialSectionBox} style={{ marginBottom: "1rem" }}>
                 <p style={{ fontSize: "1.375rem", color: "rgba(255,255,255,0.50)", marginBottom: "0.5rem" }}>
                     Assessment
                 </p>
@@ -378,26 +384,28 @@ function PlayerRoundAnalysis({
             </div>
 
             {/* Sentences annotated */}
-            <p className="trial-analysis-hint" style={{ marginBottom: "0.5rem" }}>
+            <p className={styles.trialAnalysisHint} style={{ marginBottom: "0.5rem" }}>
                 Statement breakdown:
             </p>
-            <div className="trial-sentence-list">
+            <div className={styles.trialSentenceList}>
                 {option.sentences.map((s) => {
                     const hasFallacy = s.logicalFallacies.length > 0;
                     return (
                         <div
                             key={s.id}
-                            className={`trial-sentence-card static${hasFallacy ? " has-fallacy-revealed" : ""}`}
+                            className={cn(styles.trialSentenceCard, styles.static, {
+                                [styles.hasFallacyRevealed]: hasFallacy,
+                            })}
                         >
-                            <p className="trial-sentence-text">{s.text}</p>
+                            <p className={styles.trialSentenceText}>{s.text}</p>
                             {hasFallacy && (
                                 <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "0.5rem" }}>
                                     {s.logicalFallacies.map((f) => (
-                                        <span key={f.id} className="trial-fallacy-pill" title={f.description}>
+                                        <span key={f.id} className={styles.trialFallacyPill} title={f.description}>
                                             <img
                                                 src={fallacyPlaceholder}
                                                 alt=""
-                                                className="trial-pill-icon"
+                                                className={styles.trialPillIcon}
                                             />
                                             {f.label}
                                         </span>
@@ -425,32 +433,32 @@ function NoFallaciesConfirmDialog({
 }) {
     return (
         <div
-            className="trial-confirm-overlay"
+            className={styles.trialConfirmOverlay}
             onClick={(e) => {
                 if (e.target === e.currentTarget) onCancel();
             }}
         >
             <div
-                className="trial-confirm-box"
+                className={styles.trialConfirmBox}
                 role="dialog"
                 aria-modal="true"
                 onClick={(e) => e.stopPropagation()}
             >
-                <p className="trial-confirm-title">No Fallacies?</p>
-                <p className="trial-confirm-body">
+                <p className={styles.trialConfirmTitle}>No Fallacies?</p>
+                <p className={styles.trialConfirmBody}>
                     You're about to submit that this statement contains no logical fallacies. This cannot be undone.
                 </p>
-                <div className="trial-confirm-actions">
+                <div className={styles.trialConfirmActions}>
                     <button
                         type="button"
-                        className="trial-footer-btn"
+                        className={cn(shared.trialFooterBtn, styles.confirmFooterBtn)}
                         onClick={onCancel}
                     >
                         Cancel
                     </button>
                     <button
                         type="button"
-                        className="trial-footer-btn"
+                        className={cn(shared.trialFooterBtn, styles.confirmFooterBtn)}
                         onClick={onConfirm}
                     >
                         Confirm
@@ -504,22 +512,22 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
 
     return (
         <div
-            className="trial-modal-overlay"
+            className={styles.trialModalOverlay}
             onClick={(e) => {
                 if (e.target === e.currentTarget) onClose();
             }}
         >
-            <div className="trial-modal-box" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+            <div className={styles.trialModalBox} role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
                 {/* Header */}
-                <div className="trial-modal-header">
-                    <div className="trial-modal-header-left">
-                        <img src={magnifyingIcon} alt="" className="trial-modal-header-icon" />
+                <div className={styles.trialModalHeader}>
+                    <div className={styles.trialModalHeaderLeft}>
+                        <img src={magnifyingIcon} alt="" className={styles.trialModalHeaderIcon} />
                         <div>
-                            <p className="trial-modal-title">
+                            <p className={styles.trialModalTitle}>
                                 Round {roundNumber} —{" "}
                                 {target.kind === "player" ? "You" : titleSuffix}
                             </p>
-                            <p className="trial-modal-subtitle">
+                            <p className={styles.trialModalSubtitle}>
                                 {statementTypeLabel(statType)}
                                 {target.kind === "player" && (
                                     <>
@@ -539,7 +547,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                     </div>
                     <button
                         type="button"
-                        className="trial-modal-close-btn"
+                        className={styles.trialModalCloseBtn}
                         onClick={onClose}
                         aria-label="Close"
                     >
@@ -548,9 +556,9 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                 </div>
 
                 {/* Body */}
-                <div className="trial-scroll-fade-wrap">
-                    <div className="scroll-fade-overlay top modal" style={{ opacity: modalFade.top ? 1 : 0 }} />
-                    <div className="trial-modal-content" ref={modalScrollRef}>
+                <div className={shared.trialScrollFadeWrap}>
+                    <div className={cn(shared.scrollFadeOverlay, shared.fadeTop, shared.fadeModal)} style={{ opacity: modalFade.top ? 1 : 0 }} />
+                    <div className={styles.trialModalContent} ref={modalScrollRef}>
                         {target.kind === "player" ? (
                             <PlayerRoundAnalysis option={target.chosenOption} />
                         ) : (
@@ -568,7 +576,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                             />
                         )}
                     </div>
-                    <div className="scroll-fade-overlay bottom modal" style={{ opacity: modalFade.bottom ? 1 : 0 }} />
+                    <div className={cn(shared.scrollFadeOverlay, shared.fadeBottom, shared.fadeModal)} style={{ opacity: modalFade.bottom ? 1 : 0 }} />
                 </div>
 
                 {/* Confirmation dialog — absolute overlay inside the modal box */}
