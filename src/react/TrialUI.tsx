@@ -5,6 +5,7 @@ import { useTrialRoundWorkflow } from "./trial/useTrialRoundWorkflow";
 import RoundAnalysisModal, {
     type AnalysisTarget,
     type GuessRecord,
+    NO_FALLACIES_ID,
 } from "./trial/RoundAnalysisModal";
 import { useScrollFade } from "./trial/useScrollFade";
 
@@ -106,17 +107,40 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 ? analysisTarget.round.id
                 : analysisTarget.statement.id;
 
-        const sentence = sentences.find((s) => s.id === sentenceId);
-        if (!sentence) return;
+        let record: GuessRecord;
 
-        const correct = sentence.logicalFallacies.some((f) => f.id === fallacyId);
-        const record: GuessRecord = {
-            npcRoundId: targetId,
-            sentenceId,
-            fallacyId,
-            correct,
-            actualFallacies: sentence.logicalFallacies,
-        };
+        if (fallacyId === NO_FALLACIES_ID) {
+            // Player claims the statement has no fallacies at all.
+            // Correct iff every sentence's logicalFallacies array is empty.
+            const correct = sentences.every((s) => s.logicalFallacies.length === 0);
+            // Collect the union of all actual fallacies (deduped by id) so the
+            // result banner can list what was really there when the guess is wrong.
+            const seen = new Set<string>();
+            const allFallacies = sentences.flatMap((s) => s.logicalFallacies).filter((f) => {
+                if (seen.has(f.id)) return false;
+                seen.add(f.id);
+                return true;
+            });
+            record = {
+                npcRoundId: targetId,
+                sentenceId: "",
+                fallacyId: NO_FALLACIES_ID,
+                correct,
+                actualFallacies: allFallacies,
+            };
+        } else {
+            const sentence = sentences.find((s) => s.id === sentenceId);
+            if (!sentence) return;
+            const correct = sentence.logicalFallacies.some((f) => f.id === fallacyId);
+            record = {
+                npcRoundId: targetId,
+                sentenceId,
+                fallacyId,
+                correct,
+                actualFallacies: sentence.logicalFallacies,
+            };
+        }
+
         setFallacyGuesses((prev) => new Map(prev).set(currentPlayerRoundNumber, record));
     };
 

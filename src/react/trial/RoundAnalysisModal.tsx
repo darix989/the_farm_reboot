@@ -97,12 +97,16 @@ function FallacyPicker({
     );
 }
 
+// Sentinel value used when the player claims the statement has no fallacies at all.
+export const NO_FALLACIES_ID = "no_fallacies";
+
 // ---------------------------------------------------------------------------
 // GuessResultBanner
 // ---------------------------------------------------------------------------
 
 function GuessResultBanner({ guess }: { guess: GuessRecord }) {
-    const pickedFallacy = guess.fallacyId;
+    const isNoFallaciesGuess = guess.fallacyId === NO_FALLACIES_ID;
+    const pickedFallacyId = guess.fallacyId;
 
     return (
         <div className={`trial-guess-result ${guess.correct ? "correct" : "wrong"}`}>
@@ -112,8 +116,14 @@ function GuessResultBanner({ guess }: { guess: GuessRecord }) {
                     <div>
                         <p className="trial-guess-result-headline">Correct!</p>
                         <p className="trial-guess-result-body">
-                            That sentence does contain a <strong>{guess.actualFallacies.find((f) => f.id === pickedFallacy)?.label ?? pickedFallacy}</strong>.{" "}
-                            {guess.actualFallacies.find((f) => f.id === pickedFallacy)?.description}
+                            {isNoFallaciesGuess
+                                ? "This statement contains no logical fallacies."
+                                : <>
+                                    That sentence does contain a{" "}
+                                    <strong>{guess.actualFallacies.find((f) => f.id === pickedFallacyId)?.label ?? pickedFallacyId}</strong>.{" "}
+                                    {guess.actualFallacies.find((f) => f.id === pickedFallacyId)?.description}
+                                  </>
+                            }
                         </p>
                     </div>
                 </>
@@ -122,12 +132,20 @@ function GuessResultBanner({ guess }: { guess: GuessRecord }) {
                     <span className="trial-guess-result-icon">✗</span>
                     <div>
                         <p className="trial-guess-result-headline">Incorrect</p>
-                        {guess.actualFallacies.length > 0 ? (
+                        {isNoFallaciesGuess ? (
+                            <p className="trial-guess-result-body">
+                                This statement does contain logical fallacies:{" "}
+                                {guess.actualFallacies
+                                    .map((f) => <strong key={f.id}>{f.label}</strong>)
+                                    .reduce<React.ReactNode[]>((acc, el, i) => i === 0 ? [el] : [...acc, ", ", el], [])}
+                                .
+                            </p>
+                        ) : guess.actualFallacies.length > 0 ? (
                             <p className="trial-guess-result-body">
                                 That sentence contains:{" "}
-                                {guess.actualFallacies.map((f) => (
-                                    <strong key={f.id}>{f.label}</strong>
-                                )).reduce<React.ReactNode[]>((acc, el, i) => i === 0 ? [el] : [...acc, ", ", el], [])}
+                                {guess.actualFallacies
+                                    .map((f) => <strong key={f.id}>{f.label}</strong>)
+                                    .reduce<React.ReactNode[]>((acc, el, i) => i === 0 ? [el] : [...acc, ", ", el], [])}
                                 .
                             </p>
                         ) : (
@@ -152,21 +170,27 @@ function NpcRoundAnalysis({
     canGuess,
     existingGuess,
     onGuess,
+    onNoFallaciesRequest,
 }: {
     statement: Statement;
     allFallacies: LogicalFallacy[];
     canGuess: boolean;
     existingGuess: GuessRecord | null;
     onGuess: (sentenceId: string, fallacyId: string) => void;
+    onNoFallaciesRequest: () => void;
 }) {
+    // When the existing guess is "no fallacies" there's no sentence to pre-select.
     const [selectedSentenceId, setSelectedSentenceId] = useState<string | null>(
-        existingGuess?.sentenceId ?? null,
+        existingGuess?.sentenceId || null,
     );
     const [pickedFallacyId, setPickedFallacyId] = useState<string | null>(
-        existingGuess?.fallacyId ?? null,
+        existingGuess && existingGuess.fallacyId !== NO_FALLACIES_ID
+            ? existingGuess.fallacyId
+            : null,
     );
 
     const hasGuessed = existingGuess !== null;
+    const wasNoFallaciesGuess = existingGuess?.fallacyId === NO_FALLACIES_ID;
 
     const handleSentenceClick = (s: Sentence) => {
         if (hasGuessed || !canGuess) return;
@@ -184,12 +208,16 @@ function NpcRoundAnalysis({
         onGuess(selectedSentenceId, pickedFallacyId);
     };
 
+    const handleNoFallacies = () => {
+        onNoFallaciesRequest();
+    };
+
     return (
         <div className="trial-analysis-body">
             {/* Instruction / status */}
             {!hasGuessed && canGuess && (
                 <p className="trial-analysis-hint">
-                    Select a sentence you believe contains a logical fallacy, then pick one from the list.
+                    Select a sentence you believe contains a logical fallacy, then pick one from the list — or submit "No Fallacies" if the statement is clean.
                 </p>
             )}
             {!hasGuessed && !canGuess && (
@@ -203,11 +231,13 @@ function NpcRoundAnalysis({
                 {statement.sentences.map((s) => {
                     const isSelected = selectedSentenceId === s.id;
                     const isGuessedSentence = existingGuess?.sentenceId === s.id;
+                    // Reveal a correct sentence-level guess, OR reveal ALL fallacious
+                    // sentences when the player wrongly claimed "No Fallacies".
                     const revealFallacy =
-                        hasGuessed &&
-                        isGuessedSentence &&
-                        existingGuess!.correct &&
-                        s.logicalFallacies.length > 0;
+                        s.logicalFallacies.length > 0 && hasGuessed && (
+                            (isGuessedSentence && existingGuess!.correct) ||
+                            (wasNoFallaciesGuess && !existingGuess!.correct)
+                        );
 
                     return (
                         <button
@@ -261,8 +291,21 @@ function NpcRoundAnalysis({
                 </div>
             )}
 
-            {/* Show fallacy picker read-only after a wrong guess on a different sentence */}
-            {hasGuessed && !existingGuess!.correct && (
+            {/* "No Fallacies" alternative — available whenever the player can still guess */}
+            {canGuess && !hasGuessed && (
+                <div className="trial-no-fallacies-row">
+                    <button
+                        type="button"
+                        className="trial-no-fallacies-btn"
+                        onClick={handleNoFallacies}
+                    >
+                        No Fallacies in this statement
+                    </button>
+                </div>
+            )}
+
+            {/* Read-only fallacy picker after a wrong sentence-level guess */}
+            {hasGuessed && !existingGuess!.correct && !wasNoFallaciesGuess && (
                 <div className="trial-fallacy-picker-section">
                     <p className="trial-analysis-hint disabled">Your guess (read-only):</p>
                     <FallacyPicker
@@ -370,6 +413,55 @@ function PlayerRoundAnalysis({
 }
 
 // ---------------------------------------------------------------------------
+// No-Fallacies confirmation dialog (rendered inside the modal box)
+// ---------------------------------------------------------------------------
+
+function NoFallaciesConfirmDialog({
+    onConfirm,
+    onCancel,
+}: {
+    onConfirm: () => void;
+    onCancel: () => void;
+}) {
+    return (
+        <div
+            className="trial-confirm-overlay"
+            onClick={(e) => {
+                if (e.target === e.currentTarget) onCancel();
+            }}
+        >
+            <div
+                className="trial-confirm-box"
+                role="dialog"
+                aria-modal="true"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <p className="trial-confirm-title">No Fallacies?</p>
+                <p className="trial-confirm-body">
+                    You're about to submit that this statement contains no logical fallacies. This cannot be undone.
+                </p>
+                <div className="trial-confirm-actions">
+                    <button
+                        type="button"
+                        className="trial-footer-btn"
+                        onClick={onCancel}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        className="trial-footer-btn"
+                        onClick={onConfirm}
+                    >
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ---------------------------------------------------------------------------
 // Modal root
 // ---------------------------------------------------------------------------
 
@@ -384,6 +476,12 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
 }) => {
     const modalScrollRef = useRef<HTMLDivElement>(null);
     const modalFade = useScrollFade(modalScrollRef);
+    const [showNoFallaciesConfirm, setShowNoFallaciesConfirm] = useState(false);
+
+    const handleNoFallaciesConfirm = () => {
+        onGuess("", NO_FALLACIES_ID);
+        setShowNoFallaciesConfirm(false);
+    };
 
     const roundNumber =
         target.kind === "opponent_prompt" || target.kind === "opponent_response"
@@ -466,11 +564,20 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                                 canGuess={canGuess}
                                 existingGuess={existingGuess}
                                 onGuess={onGuess}
+                                onNoFallaciesRequest={() => setShowNoFallaciesConfirm(true)}
                             />
                         )}
                     </div>
                     <div className="scroll-fade-overlay bottom modal" style={{ opacity: modalFade.bottom ? 1 : 0 }} />
                 </div>
+
+                {/* Confirmation dialog — absolute overlay inside the modal box */}
+                {showNoFallaciesConfirm && (
+                    <NoFallaciesConfirmDialog
+                        onConfirm={handleNoFallaciesConfirm}
+                        onCancel={() => setShowNoFallaciesConfirm(false)}
+                    />
+                )}
             </div>
         </div>
     );
