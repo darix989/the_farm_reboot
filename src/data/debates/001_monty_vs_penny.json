@@ -94,7 +94,19 @@
           "quality": "effective",
           "impact": 20,
           "reason": "This is the best response because it immediately points out that there are more than two choices, which is the core way to defeat a False Dilemma.",
+          "unlockCondition": {
+            "npcRoundId": "round-1",
+            "sentenceId": "s-r1-2",
+            "fallacyId": "false-dilemma"
+          },
           "sentences": [
+            {
+              "id": "s-r2c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
             {
               "id": "s-r2c-1",
               "text": "Monty is trying to make us choose between two extremes, but those aren't our only options.",
@@ -358,7 +370,19 @@
           "quality": "effective",
           "impact": 22,
           "reason": "This explicitly names the fallacy and explains why the 'with me or against me' logic is false.",
+          "unlockCondition": {
+            "npcRoundId": "round-5",
+            "sentenceId": "s-r5-3",
+            "fallacyId": "false-dilemma"
+          },
           "sentences": [
+            {
+              "id": "s-r6c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
             {
               "id": "s-r6c-1",
               "text": "Rejecting a bad plan doesn't mean I support the flies.",
