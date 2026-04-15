@@ -62,7 +62,7 @@
 }
 
 .trialModalTitle {
-  font-size: var(--ui-font-title);
+  font-size: var(--ui-font-body);
   font-weight: 600;
   color: rgba(255, 255, 255, 0.95);
   margin: 0;
@@ -245,7 +245,7 @@
 }
 
 .trialSentenceText {
-  font-size: var(--ui-font-body-lg);
+  font-size: var(--ui-font-body);
   line-height: 1.5;
   color: inherit;
   margin: 0;
@@ -385,13 +385,13 @@
 }
 
 .trialGuessResultIcon {
-  font-size: var(--ui-font-section);
+  font-size: var(--ui-font-body);
   line-height: 1;
   flex-shrink: 0;
 }
 
 .trialGuessResultHeadline {
-  font-size: var(--ui-font-body-lg);
+  font-size: var(--ui-font-body);
   font-weight: 600;
   margin: 0 0 0.25rem;
 }
@@ -479,7 +479,7 @@
 }
 
 .trialConfirmTitle {
-  font-size: var(--ui-font-section);
+  font-size: var(--ui-font-body);
   font-weight: 600;
   color: rgba(255, 255, 255, 0.92);
 }

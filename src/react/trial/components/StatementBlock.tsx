@@ -17,7 +17,7 @@ interface StatementBlockProps {
  * Used in the interactive panel for NPC and opponent statements.
  */
 const StatementBlock: React.FC<StatementBlockProps> = ({ speakerLabel, text, analyzeButton }) => (
-  <div className={shared.trialSectionBox} style={{ fontSize: uiFont.section, lineHeight: 1.375 }}>
+  <div className={shared.trialSectionBox} style={{ fontSize: uiFont.body, lineHeight: 1.375 }}>
     <div
       style={{
         display: 'flex',

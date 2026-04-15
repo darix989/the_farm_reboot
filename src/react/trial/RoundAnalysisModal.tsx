@@ -465,7 +465,7 @@ function PlayerRoundAnalysis({ option }: { option: PlayerOption }) {
         </p>
         <p
           style={{
-            fontSize: uiFont.section,
+            fontSize: uiFont.body,
             fontWeight: 600,
             color: qualityColor(option.quality),
           }}
@@ -492,7 +492,7 @@ function PlayerRoundAnalysis({ option }: { option: PlayerOption }) {
           <p
             style={{
               marginTop: '0.75rem',
-              fontSize: uiFont.bodyLg,
+              fontSize: uiFont.body,
               lineHeight: 1.5,
               color: 'rgba(255,255,255,0.75)',
             }}

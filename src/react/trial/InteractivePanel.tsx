@@ -123,7 +123,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         return (
           <div
             className={shared.trialSectionBox}
-            style={{ fontSize: uiFont.lead, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
+            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
           >
             <p style={{ color: 'rgba(255,255,255,0.50)' }}>Your choice (full text)</p>
             <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
@@ -134,7 +134,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 marginTop: '1.5rem',
                 borderTop: '1px solid rgba(255,255,255,0.10)',
                 paddingTop: '1rem',
-                fontSize: uiFont.bodyLg,
+                fontSize: uiFont.body,
                 lineHeight: 1.375,
                 color: 'rgba(255,255,255,0.45)',
               }}
@@ -175,13 +175,13 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         return (
           <div
             className={shared.trialSectionBox}
-            style={{ fontSize: uiFont.title, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
+            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
           >
             <p>The debate is finished.</p>
             <p
               style={{
                 marginTop: '1rem',
-                fontSize: uiFont.bodyLg,
+                fontSize: uiFont.body,
                 color: 'rgba(255,255,255,0.50)',
               }}
             >

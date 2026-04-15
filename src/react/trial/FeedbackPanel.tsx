@@ -48,7 +48,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
         {wf.scenario.introduction && (
           <div
             className={shared.trialSectionBox}
-            style={{ fontSize: uiFont.section, lineHeight: 1.375, color: 'rgba(255,255,255,0.80)' }}
+            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: 'rgba(255,255,255,0.80)' }}
           >
             <p style={{ color: 'rgba(255,255,255,0.50)' }}>Introduction</p>
             <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.90)' }}>
@@ -60,7 +60,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
         {wf.gamePhase !== 'debate_complete' && wf.currentRound && (
           <div className={shared.trialSectionBox}>
             <p
-              style={{ fontSize: uiFont.lead, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
+              style={{ fontSize: uiFont.body, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
             >
               <span style={{ color: 'rgba(255,255,255,0.50)' }}>Round </span>
               <span style={{ color: 'rgba(255,255,255,0.90)' }}>
@@ -71,7 +71,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                   marginLeft: '1rem',
                   textTransform: 'capitalize',
                   color: 'rgba(255,255,255,0.50)',
-                  fontSize: uiFont.bodyLg,
+                  fontSize: uiFont.body,
                 }}
               >
                 {wf.currentRound.type.replace(/_/g, ' ')}
@@ -81,7 +81,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
         )}
 
         <div className={shared.trialSectionBox}>
-          <p style={{ fontSize: uiFont.lead, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
+          <p style={{ fontSize: uiFont.body, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
             <span style={{ color: 'rgba(255,255,255,0.50)' }}>Score </span>
             <span style={{ color: scoreColor(wf.totalScore) }}>
               {wf.totalScore > 0 ? '+' : ''}
