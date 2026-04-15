@@ -1,12 +1,13 @@
 import React from 'react';
-import { useGameStore } from '../store/gameStore';
+import { useGameStore, type DebateScenarioKey } from '../store/gameStore';
 import { GameManager } from '../utils/gameManager';
 import styles from './MainMenuUI.module.scss';
 
 const MainMenuUI: React.FC = () => {
-  const { currentScene } = useGameStore();
+  const { currentScene, setActiveDebate } = useGameStore();
 
-  const startTrial = () => {
+  const startTrial = (debateId: DebateScenarioKey) => {
+    setActiveDebate(debateId);
     const scene = GameManager.getCurrentScene();
     if (scene) {
       scene.scene.start('Trial');
@@ -18,14 +19,19 @@ const MainMenuUI: React.FC = () => {
       <div className={styles.menuContainer}>
         <h1 className={styles.menuTitle}>Main Menu</h1>
         <div className={styles.buttonContainer}>
-          <button className={styles.menuButton} onClick={startTrial}>
-            Start Adventure
+          <button
+            className={styles.menuButton}
+            type="button"
+            onClick={() => startTrial('sample-debate')}
+          >
+            Sample debate
           </button>
-          <button className={styles.menuButton} onClick={startTrial}>
-            Quick Play
-          </button>
-          <button className={styles.menuButton} onClick={startTrial}>
-            Challenge Mode
+          <button
+            className={styles.menuButton}
+            type="button"
+            onClick={() => startTrial('001_monty_vs_penny')}
+          >
+            Monty vs Penny
           </button>
         </div>
         <div className={styles.sceneInfo}>

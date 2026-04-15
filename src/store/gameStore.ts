@@ -1,24 +1,29 @@
 import { create } from 'zustand';
 import { EventBus } from '../phaser/EventBus';
 
+/** Keys map to debate JSON files under `src/data/debates/`. */
+export type DebateScenarioKey = 'sample-debate' | '001_monty_vs_penny';
+
 // Simple game state interface
 interface GameState {
   // Phaser instances
   game: Phaser.Game | null;
   currentSceneInstance: Phaser.Scene | null;
-  
+
   // Player data
   player: {
     level: number;
     experience: number;
     position: { x: number; y: number };
   };
-  
+
   // Game state
   currentScene: string;
+  /** Which debate JSON to use when `Trial` is shown. */
+  activeDebateId: DebateScenarioKey;
   isPaused: boolean;
   isGameReady: boolean;
-  
+
   // UI state
   spritePositions: Record<string, { x: number; y: number }>;
 }
@@ -29,14 +34,15 @@ interface GameStore extends GameState {
   setGame: (game: Phaser.Game | null) => void;
   setCurrentSceneInstance: (scene: Phaser.Scene | null) => void;
   setGameReady: (ready: boolean) => void;
-  
+
   // Game state actions
   setCurrentScene: (scene: string) => void;
+  setActiveDebate: (id: DebateScenarioKey) => void;
   updatePlayerPosition: (x: number, y: number) => void;
   updateSpritePosition: (id: string, x: number, y: number) => void;
   setPaused: (paused: boolean) => void;
   addExperience: (exp: number) => void;
-  
+
   // Game utility methods
   getGame: () => Phaser.Game | null;
   getCurrentScene: () => Phaser.Scene | null;
@@ -52,9 +58,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   player: {
     level: 1,
     experience: 0,
-    position: { x: 0, y: 0 }
+    position: { x: 0, y: 0 },
   },
   currentScene: 'MainMenu',
+  activeDebateId: 'sample-debate',
   isPaused: false,
   spritePositions: {},
 
@@ -65,25 +72,29 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // Game state actions
   setCurrentScene: (scene) => set({ currentScene: scene }),
-  
-  updatePlayerPosition: (x, y) => set((state) => ({
-    player: { ...state.player, position: { x, y } }
-  })),
-  
-  updateSpritePosition: (id, x, y) => set((state) => ({
-    spritePositions: { ...state.spritePositions, [id]: { x, y } }
-  })),
-  
+  setActiveDebate: (id) => set({ activeDebateId: id }),
+
+  updatePlayerPosition: (x, y) =>
+    set((state) => ({
+      player: { ...state.player, position: { x, y } },
+    })),
+
+  updateSpritePosition: (id, x, y) =>
+    set((state) => ({
+      spritePositions: { ...state.spritePositions, [id]: { x, y } },
+    })),
+
   setPaused: (paused) => set({ isPaused: paused }),
-  
-  addExperience: (exp) => set((state) => ({
-    player: { ...state.player, experience: state.player.experience + exp }
-  })),
+
+  addExperience: (exp) =>
+    set((state) => ({
+      player: { ...state.player, experience: state.player.experience + exp },
+    })),
 
   // Game utility methods
   getGame: () => get().game,
   getCurrentScene: () => get().currentSceneInstance,
-  isReady: () => get().isGameReady && !!get().game
+  isReady: () => get().isGameReady && !!get().game,
 }));
 
 // Enhanced EventBus integration - listen to Phaser events and update store
