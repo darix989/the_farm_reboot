@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import cn from 'classnames';
 import type {
   LogicalFallacy,
+  LogicalFallacyScenario,
   NpcRoundEntry,
   PlayerOption,
   PlayerRoundEntry,
@@ -49,6 +50,7 @@ export type AnalysisTarget =
 interface RoundAnalysisModalProps {
   target: AnalysisTarget;
   allFallacies: LogicalFallacy[];
+  fallacyById: Map<string, LogicalFallacy>;
   speakerName: string;
   /** True when the player has an active turn (choosing / confirming). */
   canGuess: boolean;
@@ -251,6 +253,7 @@ function uniqueFallacyIdsFromPicks(picks: { sentenceId: string; fallacyId: strin
 function NpcRoundAnalysis({
   statement,
   allFallacies,
+  fallacyById,
   canGuess,
   existingGuess,
   onGuess,
@@ -258,6 +261,7 @@ function NpcRoundAnalysis({
 }: {
   statement: Statement;
   allFallacies: LogicalFallacy[];
+  fallacyById: Map<string, LogicalFallacy>;
   canGuess: boolean;
   existingGuess: GuessRecord | null;
   onGuess: (payload: GuessPayload) => void;
@@ -379,16 +383,20 @@ function NpcRoundAnalysis({
               )}
               {revealFallacy && (
                 <div className={styles.trialPlayerPickRow}>
-                  {s.logicalFallacies.map((f, i) => (
-                    <span
-                      key={`${f.id}-${i}`}
-                      className={styles.trialFallacyPill}
-                      title={f.description}
-                    >
-                      <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
-                      {f.label}
-                    </span>
-                  ))}
+                  {s.logicalFallacies.map((f: LogicalFallacyScenario, i) => {
+                    const fallacy = fallacyById.get(f.id);
+                    if (!fallacy) return null;
+                    return (
+                      <span
+                        key={`${f.id}-${i}`}
+                        className={styles.trialFallacyPill}
+                        title={fallacy.description}
+                      >
+                        <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
+                        {fallacy.label}
+                      </span>
+                    );
+                  })}
                 </div>
               )}
             </button>
@@ -450,7 +458,13 @@ function NpcRoundAnalysis({
 // Player round analysis view
 // ---------------------------------------------------------------------------
 
-function PlayerRoundAnalysis({ option }: { option: PlayerOption }) {
+function PlayerRoundAnalysis({
+  option,
+  fallacyById,
+}: {
+  option: PlayerOption;
+  fallacyById: Map<string, LogicalFallacy>;
+}) {
   return (
     <div className={styles.trialAnalysisBody}>
       <div className={shared.trialSectionBox} style={{ marginBottom: '1rem' }}>
@@ -520,12 +534,20 @@ function PlayerRoundAnalysis({ option }: { option: PlayerOption }) {
                 <div
                   style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}
                 >
-                  {s.logicalFallacies.map((f) => (
-                    <span key={f.id} className={styles.trialFallacyPill} title={f.description}>
-                      <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
-                      {f.label}
-                    </span>
-                  ))}
+                  {s.logicalFallacies.map((f) => {
+                    const fallacy = fallacyById.get(f.id);
+                    if (!fallacy) return null;
+                    return (
+                      <span
+                        key={f.id}
+                        className={styles.trialFallacyPill}
+                        title={fallacy.description}
+                      >
+                        <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
+                        {fallacy.label}
+                      </span>
+                    );
+                  })}
                 </div>
               )}
             </div>
@@ -593,6 +615,7 @@ function NoFallaciesConfirmDialog({
 const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   target,
   allFallacies,
+  fallacyById,
   speakerName,
   canGuess,
   existingGuess,
@@ -675,11 +698,12 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
 
         <ScrollFadeContainer isModal className={styles.trialModalContent}>
           {target.kind === 'player' ? (
-            <PlayerRoundAnalysis option={target.chosenOption} />
+            <PlayerRoundAnalysis option={target.chosenOption} fallacyById={fallacyById} />
           ) : (
             <NpcRoundAnalysis
               statement={target.kind === 'npc' ? target.round.statement : target.statement}
               allFallacies={allFallacies}
+              fallacyById={fallacyById}
               canGuess={canGuess}
               existingGuess={existingGuess}
               onGuess={onGuess}

@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../types/debateEntities';
+import logicalFallaciesData from '../data/logicalFallacies.json';
 import TrialLayout from './trial/TrialLayout';
 import { useTrialRoundWorkflow } from './trial/useTrialRoundWorkflow';
 import RoundAnalysisModal, {
@@ -65,6 +66,7 @@ function computeMissedPairs(
   sentences: Sentence[],
   truth: Map<string, number>,
   guess: Map<string, number>,
+  fallacyById: Map<string, LogicalFallacy>,
 ): { sentenceId: string; fallacy: LogicalFallacy }[] {
   const missed: { sentenceId: string; fallacy: LogicalFallacy }[] = [];
   const sentenceById = new Map(sentences.map((s) => [s.id, s]));
@@ -77,8 +79,9 @@ function computeMissedPairs(
     const sentenceId = k.slice(0, sep);
     const fallacyId = k.slice(sep + 1);
     const sentence = sentenceById.get(sentenceId);
-    const f = sentence?.logicalFallacies.find((x) => x.id === fallacyId);
-    if (!f) continue;
+    const hasFallacyInSentence = sentence?.logicalFallacies.some((x) => x.id === fallacyId);
+    const f = fallacyById.get(fallacyId);
+    if (!hasFallacyInSentence || !f) continue;
     for (let i = 0; i < missedCount; i++) {
       missed.push({ sentenceId, fallacy: f });
     }
@@ -88,6 +91,11 @@ function computeMissedPairs(
 
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const wf = useTrialRoundWorkflow(debate);
+  const allFallacies = logicalFallaciesData.logicalFallacies as LogicalFallacy[];
+  const fallacyById = useMemo(
+    () => new Map(allFallacies.map((fallacy) => [fallacy.id, fallacy])),
+    [allFallacies],
+  );
 
   // -----------------------------------------------------------------------
   // Modal + fallacy-guess state
@@ -150,9 +158,11 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     if (payload.type === 'no_fallacies') {
       const correct = sentences.every((s) => s.logicalFallacies.length === 0);
       const seen = new Set<string>();
-      const allFallacies = sentences
+      const actualFallacies = sentences
         .flatMap((s) => s.logicalFallacies)
-        .filter((f) => {
+        .map((f) => fallacyById.get(f.id))
+        .filter((f): f is LogicalFallacy => {
+          if (!f) return false;
           if (seen.has(f.id)) return false;
           seen.add(f.id);
           return true;
@@ -161,7 +171,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         kind: 'no_fallacies',
         npcRoundId: targetId,
         correct,
-        actualFallacies: allFallacies,
+        actualFallacies,
       };
     } else {
       const picks = payload.picks;
@@ -169,7 +179,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
       const truth = truthMultisetFromSentences(sentences);
       const guess = guessMultisetFromPicks(picks);
-      const missedPairs = computeMissedPairs(sentences, truth, guess);
+      const missedPairs = computeMissedPairs(sentences, truth, guess, fallacyById);
 
       let outcome: 'perfect' | 'partial' | 'none';
       if (multisetsEqual(truth, guess)) {
@@ -255,7 +265,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       {analysisTarget && (
         <RoundAnalysisModal
           target={analysisTarget}
-          allFallacies={debate.logicalFallacies}
+          allFallacies={allFallacies}
+          fallacyById={fallacyById}
           speakerName={modalSpeakerName}
           canGuess={canGuess}
           existingGuess={activeGuess}
