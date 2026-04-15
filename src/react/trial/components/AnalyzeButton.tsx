@@ -5,7 +5,7 @@ import styles from '../TrialUI.module.scss';
 
 interface AnalyzeButtonProps {
   onClick: () => void;
-  guessState?: 'correct' | 'wrong' | null;
+  guessState?: 'correct' | 'partial' | 'wrong' | null;
   title?: string;
 }
 
@@ -18,6 +18,7 @@ const AnalyzeButton: React.FC<AnalyzeButtonProps> = ({
     type="button"
     className={cn(styles.trialAnalyzeBtn, {
       [styles.correct]: guessState === 'correct',
+      [styles.partial]: guessState === 'partial',
       [styles.wrong]: guessState === 'wrong',
     })}
     title={title}

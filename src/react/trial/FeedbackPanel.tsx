@@ -20,7 +20,7 @@ interface FeedbackPanelProps {
   debate: DebateScenarioJson;
   fallacyGuesses: Map<number, GuessRecord>;
   onOpenAnalysis: (target: AnalysisTarget) => void;
-  getNpcGuessState: (npcRoundId: string) => 'correct' | 'wrong' | null;
+  getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
 }
 
 const FeedbackPanel: React.FC<FeedbackPanelProps> = ({

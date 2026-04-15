@@ -2,6 +2,13 @@ import React from 'react';
 import type { DebateScenarioJson } from '../../types/debateEntities';
 import type { useTrialRoundWorkflow } from './useTrialRoundWorkflow';
 import type { AnalysisTarget, GuessRecord } from './RoundAnalysisModal';
+
+function guessStateForRecord(record: GuessRecord): 'correct' | 'partial' | 'wrong' {
+  if (record.kind === 'no_fallacies') return record.correct ? 'correct' : 'wrong';
+  if (record.outcome === 'perfect') return 'correct';
+  if (record.outcome === 'partial') return 'partial';
+  return 'wrong';
+}
 import ScrollFadeContainer from './components/ScrollFadeContainer';
 import StatementBlock from './components/StatementBlock';
 import AnalyzeButton from './components/AnalyzeButton';
@@ -21,7 +28,7 @@ interface InteractivePanelProps {
   fallacyGuesses: Map<number, GuessRecord>;
   interactiveFooter: InteractiveFooter;
   onOpenAnalysis: (target: AnalysisTarget) => void;
-  getNpcGuessState: (npcRoundId: string) => 'correct' | 'wrong' | null;
+  getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -67,11 +74,11 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         const playerRound = wf.currentPlayerRound;
         if (!playerRound) return null;
 
-        let promptGuessState: 'correct' | 'wrong' | null = null;
+        let promptGuessState: 'correct' | 'partial' | 'wrong' | null = null;
         if (playerRound.opponentPrompt) {
           const record = fallacyGuesses.get(playerRound.roundNumber);
           if (record && record.npcRoundId === playerRound.opponentPrompt.id) {
-            promptGuessState = record.correct ? 'correct' : 'wrong';
+            promptGuessState = guessStateForRecord(record);
           }
         }
 
