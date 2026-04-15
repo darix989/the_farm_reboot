@@ -8,7 +8,7 @@
   },
   "logicalFallacies": [
     {
-      "id": "fallacy-false-dilemma",
+      "id": "false-dilemma",
       "label": "False Dilemma",
       "description": "Presenting only two options when more alternatives exist."
     }
@@ -35,7 +35,7 @@
             "text": "We have only two paths forward: either the pigs eat the entire surplus today, or we dump it all in the compost and let the fruit flies take over the barn.",
             "logicalFallacies": [
               {
-                "id": "fallacy-false-dilemma",
+                "id": "false-dilemma",
                 "label": "False Dilemma",
                 "description": "Presenting only two options when more alternatives exist."
               }
@@ -46,7 +46,7 @@
             "text": "Do you want full pigs or a plague of flies? The choice is that simple.",
             "logicalFallacies": [
               {
-                "id": "fallacy-false-dilemma",
+                "id": "false-dilemma",
                 "label": "False Dilemma",
                 "description": "Presenting only two options when more alternatives exist."
               }
@@ -72,7 +72,7 @@
               "text": "Either we ignore Monty completely, or this farm will be destroyed by sunset!",
               "logicalFallacies": [
                 {
-                  "id": "fallacy-false-dilemma",
+                  "id": "false-dilemma",
                   "label": "False Dilemma",
                   "description": "Presenting only two options when more alternatives exist."
                 }
@@ -130,7 +130,7 @@
               "text": "Monty, are you a brilliant leader who will save us, or a failure who wants us to starve?",
               "logicalFallacies": [
                 {
-                  "id": "fallacy-false-dilemma",
+                  "id": "false-dilemma",
                   "label": "False Dilemma",
                   "description": "Presenting only two options when more alternatives exist."
                 }
@@ -208,7 +208,7 @@
                 "text": "Drying takes too long, and trading is uncertain. We either act now with my plan, or we fail. There is no middle ground.",
                 "logicalFallacies": [
                   {
-                    "id": "fallacy-false-dilemma",
+                    "id": "false-dilemma",
                     "label": "False Dilemma",
                     "description": "Presenting only two options when more alternatives exist."
                   }
@@ -234,7 +234,7 @@
             "text": "Penny, do you want to see the pigs well-fed, or do you want to see our beautiful barn filled with flies and rot?",
             "logicalFallacies": [
               {
-                "id": "fallacy-false-dilemma",
+                "id": "false-dilemma",
                 "label": "False Dilemma",
                 "description": "Presenting only two options when more alternatives exist."
               }
@@ -254,7 +254,7 @@
               "text": "Our barn will either be a paradise or a garbage dump, and your plan makes it a dump!",
               "logicalFallacies": [
                 {
-                  "id": "fallacy-false-dilemma",
+                  "id": "false-dilemma",
                   "label": "False Dilemma",
                   "description": "Presenting only two options when more alternatives exist."
                 }
@@ -316,7 +316,7 @@
             "text": "You either support the pigs' plan, or you support the flies. Which is it?",
             "logicalFallacies": [
               {
-                "id": "fallacy-false-dilemma",
+                "id": "false-dilemma",
                 "label": "False Dilemma",
                 "description": "Presenting only two options when more alternatives exist."
               }
@@ -342,7 +342,7 @@
               "text": "Either we do exactly what I say, or Monty will lead us all into a pit of rot!",
               "logicalFallacies": [
                 {
-                  "id": "fallacy-false-dilemma",
+                  "id": "false-dilemma",
                   "label": "False Dilemma",
                   "description": "Presenting only two options when more alternatives exist."
                 }
@@ -398,7 +398,7 @@
             "text": "If you don't let the pigs eat the apples now, aren't you just choosing to waste them?",
             "logicalFallacies": [
               {
-                "id": "fallacy-false-dilemma",
+                "id": "false-dilemma",
                 "label": "False Dilemma",
                 "description": "Presenting only two options when more alternatives exist."
               }
@@ -418,7 +418,7 @@
               "text": "Waste is either your fault or mine, and I say it's yours!",
               "logicalFallacies": [
                 {
-                  "id": "fallacy-false-dilemma",
+                  "id": "false-dilemma",
                   "label": "False Dilemma",
                   "description": "Presenting only two options when more alternatives exist."
                 }
@@ -471,7 +471,7 @@
               "text": "Monty, are you going to help us dry these apples, or are you just going to sit there and be greedy?",
               "logicalFallacies": [
                 {
-                  "id": "fallacy-false-dilemma",
+                  "id": "false-dilemma",
                   "label": "False Dilemma",
                   "description": "Presenting only two options when more alternatives exist."
                 }
@@ -549,7 +549,7 @@
                 "text": "Drying racks are complicated. It's either my simple solution or total chaos. Why take the risk?",
                 "logicalFallacies": [
                   {
-                    "id": "fallacy-false-dilemma",
+                    "id": "false-dilemma",
                     "label": "False Dilemma",
                     "description": "Presenting only two options when more alternatives exist."
                   }
@@ -581,7 +581,7 @@
             "text": "You must choose now: a feast for the pigs, or a famine for everyone else when the flies arrive.",
             "logicalFallacies": [
               {
-                "id": "fallacy-false-dilemma",
+                "id": "false-dilemma",
                 "label": "False Dilemma",
                 "description": "Presenting only two options when more alternatives exist."
               }
@@ -592,7 +592,7 @@
             "text": "There are no other paths. Vote for the pigs, or vote for the flies.",
             "logicalFallacies": [
               {
-                "id": "fallacy-false-dilemma",
+                "id": "false-dilemma",
                 "label": "False Dilemma",
                 "description": "Presenting only two options when more alternatives exist."
               }
@@ -618,7 +618,7 @@
               "text": "In summary, we either ban all pigs from the orchard or we lose the farm forever!",
               "logicalFallacies": [
                 {
-                  "id": "fallacy-false-dilemma",
+                  "id": "false-dilemma",
                   "label": "False Dilemma",
                   "description": "Presenting only two options when more alternatives exist."
                 }

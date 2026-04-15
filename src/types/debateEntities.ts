@@ -3,53 +3,69 @@
  */
 
 /** Always exactly two sides in a debate. */
-export type Side = "proposition" | "opposition";
+export type Side = 'proposition' | 'opposition';
+
+export type LogicalFallacyId =
+  | 'false-dilemma'
+  | 'nothing-to-hide'
+  | 'slippery-slope'
+  | 'ad-hominem'
+  | 'loaded-question'
+  | 'straw-man'
+  | 'appeal-to-pity'
+  | 'special-pleading'
+  | 'appeal-to-popularity'
+  | 'weak-analogy'
+  | 'hasty-generalization'
+  | 'glittering-generalities'
+  | 'appeal-to-emotion'
+  | 'appeal-to-fear';
 
 export interface LogicalFallacy {
-    id: string;
-    label: string;
-    description: string;
+  id: LogicalFallacyId;
+  label: string;
+  description: string;
 }
 
 export interface Sentence {
-    id: string;
-    text: string;
-    logicalFallacies: LogicalFallacy[];
+  id: string;
+  text: string;
+  logicalFallacies: LogicalFallacy[];
 }
 
 export type StatementType =
-    | "opening_constructive"
-    | "rebuttal"
-    | "crossfire"
-    | "closing_constructive";
+  | 'opening_constructive'
+  | 'rebuttal'
+  | 'crossfire'
+  | 'closing_constructive';
 
 export interface Statement {
-    id: string;
-    speakerId: string;
-    sentences: Sentence[];
-    type: StatementType;
+  id: string;
+  speakerId: string;
+  sentences: Sentence[];
+  type: StatementType;
 }
 
-export type JuryVerdict = "proposition_accepted" | "proposition_rejected";
+export type JuryVerdict = 'proposition_accepted' | 'proposition_rejected';
 
 // ---------------------------------------------------------------------------
 // Player options
 // ---------------------------------------------------------------------------
 
-export type OptionQuality = "logical_fallacy" | "ineffective" | "effective";
+export type OptionQuality = 'logical_fallacy' | 'ineffective' | 'effective';
 
 /**
  * One of the three pre-authored choices offered to the player in a player round.
  * `impact` is a score delta; keep in [-50, 50].
  */
 export interface PlayerOption {
-    id: string;
-    quality: OptionQuality;
-    sentences: Sentence[];
-    /** Integer delta in [-50, 50]. Negative for fallacy, ~0 for ineffective, positive for effective. */
-    impact: number;
-    /** Explanation of why this option is effective, ineffective, or a logical fallacy. */
-    reason?: string;
+  id: string;
+  quality: OptionQuality;
+  sentences: Sentence[];
+  /** Integer delta in [-50, 50]. Negative for fallacy, ~0 for ineffective, positive for effective. */
+  impact: number;
+  /** Explanation of why this option is effective, ineffective, or a logical fallacy. */
+  reason?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -58,19 +74,19 @@ export interface PlayerOption {
 
 /** A round where the NPC (opponent) speaks; the player only reads and continues. */
 export interface NpcRoundEntry {
-    kind: "npc";
-    id: string;
-    roundNumber: number;
-    type: StatementType;
-    speakerId: string;
-    statement: Statement;
+  kind: 'npc';
+  id: string;
+  roundNumber: number;
+  type: StatementType;
+  speakerId: string;
+  statement: Statement;
 }
 
 /** Links one NPC response to the player option that triggered it. */
 export interface OpponentResponse {
-    /** Id of the PlayerOption that triggers this response. */
-    forOptionId: string;
-    statement: Statement;
+  /** Id of the PlayerOption that triggers this response. */
+  forOptionId: string;
+  statement: Statement;
 }
 
 /**
@@ -83,22 +99,30 @@ export interface OpponentResponse {
  *    holds the NPC's opening statement before the player responds; no `opponentResponses`.
  */
 export interface PlayerRoundEntry {
-    kind: "player";
-    id: string;
-    roundNumber: number;
-    type: StatementType;
-    /** NPC speaks first (crossfire question) before the player responds. */
-    opponentPrompt?: Statement;
-    options: readonly [PlayerOption, PlayerOption, PlayerOption];
-    /**
-     * One NPC response per player option (exactly 3 elements, each with `forOptionId`
-     * matching the corresponding PlayerOption id). Present only when the NPC replies
-     * to each of the player's possible questions (player raises crossfire).
-     */
-    opponentResponses?: readonly [OpponentResponse, OpponentResponse, OpponentResponse];
+  kind: 'player';
+  id: string;
+  roundNumber: number;
+  type: StatementType;
+  /** NPC speaks first (crossfire question) before the player responds. */
+  opponentPrompt?: Statement;
+  options: readonly [PlayerOption, PlayerOption, PlayerOption];
+  /**
+   * One NPC response per player option (exactly 3 elements, each with `forOptionId`
+   * matching the corresponding PlayerOption id). Present only when the NPC replies
+   * to each of the player's possible questions (player raises crossfire).
+   */
+  opponentResponses?: readonly [OpponentResponse, OpponentResponse, OpponentResponse];
 }
 
 export type RoundEntry = NpcRoundEntry | PlayerRoundEntry;
+
+// ---------------------------------------------------------------------------
+// Logical Fallacies JSON authoring shape
+// ---------------------------------------------------------------------------
+
+export interface LogicalFallaciesListJson {
+  logicalFallacies: readonly LogicalFallacy[];
+}
 
 // ---------------------------------------------------------------------------
 // Scenario JSON authoring shape
@@ -109,14 +133,14 @@ export type RoundEntry = NpcRoundEntry | PlayerRoundEntry;
  * `rounds` defines the full sequential flow (NPC and player turns in order).
  */
 export interface DebateScenarioJson {
-    id: string;
-    /** Brief summary of what the debate is about. */
-    introduction?: string;
-    playerSide: Side;
-    /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
-    characters?: Record<string, string>;
-    logicalFallacies: LogicalFallacy[];
-    rounds: RoundEntry[];
+  id: string;
+  /** Brief summary of what the debate is about. */
+  introduction?: string;
+  playerSide: Side;
+  /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
+  characters?: Record<string, string>;
+  logicalFallacies: LogicalFallacy[];
+  rounds: RoundEntry[];
 }
 
 // ---------------------------------------------------------------------------
@@ -128,9 +152,9 @@ export interface DebateScenarioJson {
  * Replaces the old per-kind assembling types.
  */
 export interface AssemblingPlayerRound {
-    kind: "assembling_player_round";
-    roundType: StatementType;
-    options: readonly [PlayerOption, PlayerOption, PlayerOption];
+  kind: 'assembling_player_round';
+  roundType: StatementType;
+  options: readonly [PlayerOption, PlayerOption, PlayerOption];
 }
 
 export type AssemblingPhase = AssemblingPlayerRound;

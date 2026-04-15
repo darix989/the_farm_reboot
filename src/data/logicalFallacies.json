@@ -1,0 +1,69 @@
+{
+  "logicalFallacies": [
+    {
+      "id": "false-dilemma",
+      "label": "False Dilemma",
+      "description": "Presenting only two options when more alternatives exist."
+    },
+    {
+      "id": "nothing-to-hide",
+      "label": "Nothing to Hide",
+      "description": "Implying that privacy is only needed by those committing wrongdoing."
+    },
+    {
+      "id": "slippery-slope",
+      "label": "Slippery Slope",
+      "description": "Claiming a small step will inevitably lead to extreme consequences without evidence."
+    },
+    {
+      "id": "ad-hominem",
+      "label": "Ad Hominem",
+      "description": "Attacking the person making the argument rather than the argument itself."
+    },
+    {
+      "id": "loaded-question",
+      "label": "Loaded Question",
+      "description": "Asking a question that contains a built-in, unjustified assumption."
+    },
+    {
+      "id": "straw-man",
+      "label": "Straw Man",
+      "description": "Misrepresenting an opponent's argument to make it easier to attack."
+    },
+    {
+      "id": "appeal-to-pity",
+      "label": "Appeal to Pity",
+      "description": "Manipulating emotions by invoking sympathy rather than making a logical argument."
+    },
+    {
+      "id": "special-pleading",
+      "label": "Special Pleading",
+      "description": "Applying standards or exceptions to oneself that one does not accept when applied to others."
+    },
+    {
+      "id": "appeal-to-popularity",
+      "label": "Appeal to Popularity",
+      "description": "Claiming something is correct because many others believe or do it."
+    },
+    {
+      "id": "weak-analogy",
+      "label": "Weak Analogy",
+      "description": "Drawing a comparison between two things that are not sufficiently alike."
+    },
+    {
+      "id": "hasty-generalization",
+      "label": "Hasty Generalization",
+      "description": "Drawing a broad conclusion from too small or unrepresentative a sample."
+    },
+    {
+      "id": "glittering-generalities",
+      "label": "Glittering Generalities",
+      "description": "Using vague, emotionally appealing words to make a proposal sound virtuous without substance."
+    },
+    {
+      "id": "appeal-to-fear",
+      "label": "Appeal to Fear",
+      "description": "Using exaggerated threats or frightening scenarios to manipulate a decision."
+    }
+  ]
+}
