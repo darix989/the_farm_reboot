@@ -47,7 +47,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
         {wf.scenario.introduction && (
           <div
             className={shared.trialSectionBox}
-            style={{ fontSize: '1.875rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.80)' }}
+            style={{ fontSize: '1.758rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.80)' }}
           >
             <p style={{ color: 'rgba(255,255,255,0.50)' }}>Introduction</p>
             <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.90)' }}>
@@ -58,7 +58,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
 
         {wf.gamePhase !== 'debate_complete' && wf.currentRound && (
           <div className={shared.trialSectionBox}>
-            <p style={{ fontSize: '2.125rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
+            <p style={{ fontSize: '1.992rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
               <span style={{ color: 'rgba(255,255,255,0.50)' }}>Round </span>
               <span style={{ color: 'rgba(255,255,255,0.90)' }}>
                 {wf.currentRound.roundNumber} / {wf.totalRounds}
@@ -68,7 +68,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                   marginLeft: '1rem',
                   textTransform: 'capitalize',
                   color: 'rgba(255,255,255,0.50)',
-                  fontSize: '1.625rem',
+                  fontSize: '1.523rem',
                 }}
               >
                 {wf.currentRound.type.replace(/_/g, ' ')}
@@ -78,7 +78,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
         )}
 
         <div className={shared.trialSectionBox}>
-          <p style={{ fontSize: '2.125rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
+          <p style={{ fontSize: '1.992rem', lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
             <span style={{ color: 'rgba(255,255,255,0.50)' }}>Score </span>
             <span style={{ color: scoreColor(wf.totalScore) }}>
               {wf.totalScore > 0 ? '+' : ''}
@@ -87,7 +87,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
             <span
               style={{
                 marginLeft: '0.75rem',
-                fontSize: '1.375rem',
+                fontSize: '1.289rem',
                 color: 'rgba(255,255,255,0.35)',
               }}
             >
