@@ -12,6 +12,7 @@ import {
   qualityLabel,
   scoreColor,
 } from './utils/trialHelpers';
+import { optionFirstLine } from './optionUnlock';
 import styles from './TrialUI.module.scss';
 import shared from './trialShared.module.scss';
 import { uiFont } from '../uiFont';
@@ -164,7 +165,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                         </span>
                       </>
                     }
-                    text={opt.sentences[0]?.text ?? ''}
+                    text={optionFirstLine(opt, true)}
                     analyzeButton={
                       <AnalyzeButton
                         onClick={() =>

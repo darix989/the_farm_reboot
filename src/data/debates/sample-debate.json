@@ -177,7 +177,19 @@
           "quality": "effective",
           "impact": 20,
           "reason": "This is the strongest opening rebuttal. It reframes the entire debate around the core value of community trust versus fear-based control, directly contradicts Barnaby's 'nothing to hide' framing, and closes with a memorable principle ('Privacy is not a shield for thieves') that pre-empts future attacks.",
+          "unlockCondition": {
+            "npcRoundId": "round-1",
+            "sentenceId": "s-r1-3",
+            "fallacyId": "nothing-to-hide"
+          },
           "sentences": [
+            {
+              "id": "s-r2c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
             {
               "id": "s-r2c-1",
               "text": "True safety comes from community trust, not from placing natural predators in our sleeping quarters.",
@@ -470,7 +482,19 @@
           "quality": "effective",
           "impact": 22,
           "reason": "This is the ideal rebuttal to a Straw Man. It first corrects the record on what the Opposition actually argued, then explicitly names what Barnaby did ('attacking a version of my argument I never made'), and pivots back to the real issue (autonomy vs. surveillance). Naming the fallacy is persuasive and educational for the jury.",
+          "unlockCondition": {
+            "npcRoundId": "round-5",
+            "sentenceId": "s-r5-1",
+            "fallacyId": "straw-man"
+          },
           "sentences": [
+            {
+              "id": "s-r6c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
             {
               "id": "s-r6c-1",
               "text": "I am not defending thieves; I am defending our autonomy.",

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../types/debateEntities';
 import logicalFallaciesData from '../data/logicalFallacies.json';
 import TrialLayout from './trial/TrialLayout';
@@ -90,7 +90,15 @@ function computeMissedPairs(
 }
 
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
-  const wf = useTrialRoundWorkflow(debate);
+  const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, GuessRecord>>(new Map());
+  const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
+    () => new Set(),
+  );
+  const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds);
+
+  useEffect(() => {
+    setRevealedLockedOptionIds(new Set());
+  }, [wf.currentPlayerRound?.id]);
   const allFallacies = logicalFallaciesData.logicalFallacies as LogicalFallacy[];
   const fallacyById = useMemo(
     () => new Map(allFallacies.map((fallacy) => [fallacy.id, fallacy])),
@@ -101,7 +109,6 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // Modal + fallacy-guess state
   // -----------------------------------------------------------------------
   const [analysisTarget, setAnalysisTarget] = useState<AnalysisTarget | null>(null);
-  const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, GuessRecord>>(new Map());
 
   // The round number for which the player can still submit a guess.
   const currentPlayerRoundNumber = useMemo(() => {
@@ -238,6 +245,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     return '';
   }, [analysisTarget, debate]);
 
+  const revealLockedOption = useCallback((optionId: string) => {
+    setRevealedLockedOptionIds((prev) => new Set(prev).add(optionId));
+  }, []);
+
   return (
     <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
       <TrialLayout
@@ -256,6 +267,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             wf={wf}
             debate={debate}
             fallacyGuesses={fallacyGuesses}
+            revealedLockedOptionIds={revealedLockedOptionIds}
+            onRevealLockedOption={revealLockedOption}
             interactiveFooter={interactiveFooter}
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}

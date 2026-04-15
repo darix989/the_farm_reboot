@@ -59,6 +59,13 @@ export type JuryVerdict = 'proposition_accepted' | 'proposition_rejected';
 
 export type OptionQuality = 'logical_fallacy' | 'ineffective' | 'effective';
 
+/** When set on a `PlayerOption`, the option stays locked until the player identifies this fallacy in the given NPC sentence (same player round). */
+export interface PlayerOptionUnlockCondition {
+  npcRoundId: string;
+  sentenceId: string;
+  fallacyId: LogicalFallacyId;
+}
+
 /**
  * One of the three pre-authored choices offered to the player in a player round.
  * `impact` is a score delta; keep in [-50, 50].
@@ -71,6 +78,11 @@ export interface PlayerOption {
   impact: number;
   /** Explanation of why this option is effective, ineffective, or a logical fallacy. */
   reason?: string;
+  /**
+   * If set, `sentences` is placeholder copy until unlock; full content lives in `unlockedSentences`.
+   */
+  unlockCondition?: PlayerOptionUnlockCondition;
+  unlockedSentences?: Sentence[];
 }
 
 // ---------------------------------------------------------------------------

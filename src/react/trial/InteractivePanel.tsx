@@ -13,6 +13,7 @@ import ScrollFadeContainer from './components/ScrollFadeContainer';
 import StatementBlock from './components/StatementBlock';
 import AnalyzeButton from './components/AnalyzeButton';
 import { getSpeakerName, statementText, scoreColor } from './utils/trialHelpers';
+import { isPlayerOptionUnlocked, resolvedOptionSentences } from './optionUnlock';
 import styles from './TrialUI.module.scss';
 import shared from './trialShared.module.scss';
 import { uiFont } from '../uiFont';
@@ -27,6 +28,8 @@ interface InteractivePanelProps {
   wf: ReturnType<typeof useTrialRoundWorkflow>;
   debate: DebateScenarioJson;
   fallacyGuesses: Map<number, GuessRecord>;
+  revealedLockedOptionIds: Set<string>;
+  onRevealLockedOption: (optionId: string) => void;
   interactiveFooter: InteractiveFooter;
   onOpenAnalysis: (target: AnalysisTarget) => void;
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
@@ -36,9 +39,17 @@ interface InteractivePanelProps {
 // Choice button
 // ---------------------------------------------------------------------------
 
-function ChoiceButton({ label, onClick }: { label: string; onClick: () => void }) {
+function ChoiceButton({
+  label,
+  onClick,
+  disabled,
+}: {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+}) {
   return (
-    <button type="button" className={styles.trialChoiceBtn} onClick={onClick}>
+    <button type="button" className={styles.trialChoiceBtn} onClick={onClick} disabled={disabled}>
       <span className={styles.trialChoiceBtnInner}>{label}</span>
     </button>
   );
@@ -52,6 +63,8 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   wf,
   debate,
   fallacyGuesses,
+  revealedLockedOptionIds,
+  onRevealLockedOption,
   interactiveFooter,
   onOpenAnalysis,
   getNpcGuessState,
@@ -105,13 +118,37 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
               />
             )}
             <div className={styles.trialChoices}>
-              {playerRound.options.map((opt, idx) => (
-                <ChoiceButton
-                  key={opt.id}
-                  label={`${String.fromCharCode(65 + idx)}. ${statementText(opt.sentences)}`}
-                  onClick={() => wf.dispatch({ type: 'select_option', optionId: opt.id })}
-                />
-              ))}
+              {playerRound.options.map((opt, idx) => {
+                const guessUnlocked = isPlayerOptionUnlocked(opt, fallacyGuesses);
+                const revealed = !opt.unlockCondition || revealedLockedOptionIds.has(opt.id);
+                const locked = !!opt.unlockCondition && !guessUnlocked;
+                let body: string;
+                if (locked) {
+                  body = statementText(resolvedOptionSentences(opt, false));
+                } else if (opt.unlockCondition && guessUnlocked && !revealed) {
+                  body = 'Click to unlock';
+                } else {
+                  body = statementText(resolvedOptionSentences(opt, true));
+                }
+                return (
+                  <ChoiceButton
+                    key={opt.id}
+                    label={`${String.fromCharCode(65 + idx)}. ${body}`}
+                    disabled={locked}
+                    onClick={() => {
+                      if (
+                        opt.unlockCondition &&
+                        guessUnlocked &&
+                        !revealedLockedOptionIds.has(opt.id)
+                      ) {
+                        onRevealLockedOption(opt.id);
+                        return;
+                      }
+                      wf.dispatch({ type: 'select_option', optionId: opt.id });
+                    }}
+                  />
+                );
+              })}
             </div>
           </div>
         );
@@ -127,7 +164,12 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
           >
             <p style={{ color: 'rgba(255,255,255,0.50)' }}>Your choice (full text)</p>
             <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
-              {statementText(opt.sentences)}
+              {statementText(
+                resolvedOptionSentences(
+                  opt,
+                  !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses),
+                ),
+              )}
             </p>
             <p
               style={{

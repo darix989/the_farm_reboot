@@ -14,6 +14,7 @@ import magnifyingIcon from '../../static/icons/magnifying.svg';
 import fallacyPlaceholder from '../../static/icons/fallacy_placeholder.svg';
 import ScrollFadeContainer from './components/ScrollFadeContainer';
 import { qualityColor, qualityLabel, statementTypeLabel } from './utils/trialHelpers';
+import { resolvedOptionSentences } from './optionUnlock';
 import styles from './RoundAnalysisModal.module.scss';
 import shared from './trialShared.module.scss';
 import { uiFont } from '../uiFont';
@@ -465,6 +466,7 @@ function PlayerRoundAnalysis({
   option: PlayerOption;
   fallacyById: Map<string, LogicalFallacy>;
 }) {
+  const sentences = resolvedOptionSentences(option, true);
   return (
     <div className={styles.trialAnalysisBody}>
       <div className={shared.trialSectionBox} style={{ marginBottom: '1rem' }}>
@@ -520,7 +522,7 @@ function PlayerRoundAnalysis({
         Statement breakdown:
       </p>
       <div className={styles.trialSentenceList}>
-        {option.sentences.map((s) => {
+        {sentences.map((s) => {
           const hasFallacy = s.logicalFallacies.length > 0;
           return (
             <div
