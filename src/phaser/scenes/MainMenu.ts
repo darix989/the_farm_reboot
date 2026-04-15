@@ -1,6 +1,7 @@
 import { GameObjects, Scene } from 'phaser';
 
 import { EventBus } from '../EventBus';
+import { getGameState } from '../../store/gameStore';
 
 export class MainMenu extends Scene
 {
@@ -16,7 +17,7 @@ export class MainMenu extends Scene
 
     create ()
     {
-        this.background = this.add.image(512, 384, 'background');
+        this.background = this.add.image(1920, 1080, 'background');
 
         this.logo = this.add.image(512, 300, 'logo').setDepth(100);
 
@@ -25,6 +26,9 @@ export class MainMenu extends Scene
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
         }).setOrigin(0.5).setDepth(100);
+
+        // Example: Add experience when scene loads
+        getGameState().addExperience(10);
 
         EventBus.emit('current-scene-ready', this);
     }

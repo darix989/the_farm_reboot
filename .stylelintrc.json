@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss"
+  ],
+  "rules": {
+    "scss/at-rule-no-unknown": true,
+    "selector-class-pattern": null,
+    "color-function-notation": "legacy",
+    "color-function-alias-notation": null,
+    "alpha-value-notation": "number",
+    "color-hex-length": null,
+    "media-feature-range-notation": null,
+    "number-max-precision": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+    "declaration-property-value-keyword-no-deprecated": null
+  },
+  "ignoreFiles": [
+    "dist/**",
+    "node_modules/**"
+  ]
+}

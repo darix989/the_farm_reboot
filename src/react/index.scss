@@ -1,0 +1,104 @@
+/* =========================================================================
+   Minimal browser reset
+   ========================================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font: inherit;
+  padding: 0;
+}
+
+/* =========================================================================
+   Base
+   ========================================================================= */
+
+/* `font-size` on `html` is set from `App` from the 16:9 stage width so `rem` tracks resolution. */
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #000000;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* =========================================================================
+   App stage & overlay
+   ========================================================================= */
+
+#app {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#app-stage-16x9 {
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  height: min(100vh, calc(100vw * 9 / 16));
+  width: min(100vw, calc(100vh * 16 / 9));
+}
+
+.react-ui-overlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* =========================================================================
+   Phaser container
+   ========================================================================= */
+
+.phaser-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================================================================
+   React root
+   ========================================================================= */
+
+.react-root {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  flex-direction: column;
+}

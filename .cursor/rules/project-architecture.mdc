@@ -1,0 +1,15 @@
+---
+alwaysApply: true
+---
+
+## Folder Structure
+
+All the source code should go inside `src`, then use the following rules for each file:
+- UI files implemneted with React must go inside src/react
+- Game files that use Phaser and do not create any React component must go inside src/phaser
+- ## Folder Structure
+
+All the source code should go inside `src`, then use the following rules for each file:
+- UI files implemneted with React must go inside src/react
+- Game files that use Phaser and do not create any React component must go inside src/phaser
+- 

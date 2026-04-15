@@ -21,7 +21,7 @@ export default defineConfig({
     base: './',
     plugins: [
         react(),
-        phasermsg()
+        phasermsg(),
     ],
     logLevel: 'warning',
     build: {
