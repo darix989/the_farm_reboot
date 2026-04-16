@@ -33,6 +33,13 @@ const MainMenuUI: React.FC = () => {
           >
             Monty vs Penny
           </button>
+          <button
+            className={styles.menuButton}
+            type="button"
+            onClick={() => startTrial('002_bella_vs_woolsey')}
+          >
+            Bella vs Woolsey
+          </button>
         </div>
         <div className={styles.sceneInfo}>
           Current Scene: <strong>{currentScene}</strong>

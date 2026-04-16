@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { EventBus } from '../phaser/EventBus';
 
 /** Keys map to debate JSON files under `src/data/debates/`. */
-export type DebateScenarioKey = 'sample-debate' | '001_monty_vs_penny';
+export type DebateScenarioKey = 'sample-debate' | '001_monty_vs_penny' | '002_bella_vs_woolsey';
 
 // Simple game state interface
 interface GameState {

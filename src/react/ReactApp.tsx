@@ -7,12 +7,14 @@ import ReactRoot from './ReactRoot';
 import { useGameStore, type DebateScenarioKey } from '../store/gameStore';
 import type { DebateScenarioJson } from '../types/debateEntities';
 import montyVsPennyJson from '../data/debates/001_monty_vs_penny.json';
+import bellaVsWoolseyJson from '../data/debates/002_bella_vs_woolsey.json';
 import sampleDebateJson from '../data/debates/sample-debate.json';
 import styles from './ReactApp.module.scss';
 
 const DEBATES: Record<DebateScenarioKey, DebateScenarioJson> = {
   'sample-debate': sampleDebateJson as unknown as DebateScenarioJson,
   '001_monty_vs_penny': montyVsPennyJson as unknown as DebateScenarioJson,
+  '002_bella_vs_woolsey': bellaVsWoolseyJson as unknown as DebateScenarioJson,
 };
 
 const ReactApp: React.FC = () => {
