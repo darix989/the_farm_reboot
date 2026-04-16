@@ -21,8 +21,10 @@ export type LogicalFallacyId =
   | 'appeal-to-emotion'
   | 'appeal-to-fear';
 
+export type LogicalFallacyType = 'emotional' | 'faulty_logic' | 'structural';
 export interface LogicalFallacy {
   id: LogicalFallacyId;
+  type: LogicalFallacyType;
   label: string;
   description: string;
 }
