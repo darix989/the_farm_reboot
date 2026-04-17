@@ -315,3 +315,42 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/** Nudge when a locked option is guess-unlocked but not yet clicked open; slow shake, repeats every 10s */
+.trialChoiceBtnUnlockHint {
+  animation: trial-unlock-hint-shake 10s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trialChoiceBtnUnlockHint {
+    animation: none;
+  }
+}
+
+@keyframes trial-unlock-hint-shake {
+  0%,
+  12%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  2% {
+    transform: translate3d(-2px, 1px, 0) rotate(-0.4deg);
+  }
+
+  4% {
+    transform: translate3d(2px, -1px, 0) rotate(0.4deg);
+  }
+
+  6% {
+    transform: translate3d(-2px, 0, 0) rotate(-0.3deg);
+  }
+
+  8% {
+    transform: translate3d(2px, 0, 0) rotate(0.3deg);
+  }
+
+  10% {
+    transform: translate3d(-1px, 0, 0);
+  }
+}

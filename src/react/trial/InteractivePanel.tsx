@@ -10,6 +10,7 @@ function guessStateForRecord(record: GuessRecord): 'correct' | 'partial' | 'wron
   return 'wrong';
 }
 import ScrollFadeContainer from './components/ScrollFadeContainer';
+import cn from 'classnames';
 import StatementBlock from './components/StatementBlock';
 import AnalyzeButton from './components/AnalyzeButton';
 import { getSpeakerName, statementText, scoreColor } from './utils/trialHelpers';
@@ -43,13 +44,21 @@ function ChoiceButton({
   label,
   onClick,
   disabled,
+  unlockHint,
 }: {
   label: string;
   onClick: () => void;
   disabled?: boolean;
+  /** Unlocked statement not yet revealed — periodic nudge to click */
+  unlockHint?: boolean;
 }) {
   return (
-    <button type="button" className={styles.trialChoiceBtn} onClick={onClick} disabled={disabled}>
+    <button
+      type="button"
+      className={cn(styles.trialChoiceBtn, unlockHint && styles.trialChoiceBtnUnlockHint)}
+      onClick={onClick}
+      disabled={disabled}
+    >
       <span className={styles.trialChoiceBtnInner}>{label}</span>
     </button>
   );
@@ -130,11 +139,13 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 } else {
                   body = statementText(resolvedOptionSentences(opt, true));
                 }
+                const awaitingReveal = !!opt.unlockCondition && guessUnlocked && !revealed;
                 return (
                   <ChoiceButton
                     key={opt.id}
                     label={`${String.fromCharCode(65 + idx)}. ${body}`}
                     disabled={locked}
+                    unlockHint={awaitingReveal}
                     onClick={() => {
                       if (
                         opt.unlockCondition &&
