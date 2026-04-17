@@ -265,7 +265,19 @@
           "quality": "effective",
           "impact": 18,
           "reason": "This directly exposes Barnaby's False Dilemma by naming it ('surveillance or starvation') and immediately offering a concrete alternative (fixing the silo). It forces Barnaby to defend his framing, demonstrates the Opposition has practical solutions, and keeps the debate grounded in evidence.",
+          "unlockCondition": {
+            "npcRoundId": "round-1",
+            "sentenceId": "s-r1-4",
+            "fallacyId": "false-dilemma"
+          },
           "sentences": [
+            {
+              "id": "s-r3c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
             {
               "id": "s-r3c-1",
               "text": "You claim it's 'surveillance or starvation,' but why haven't we considered non-threatening options, like fixing the broken silo floorboards first?",
