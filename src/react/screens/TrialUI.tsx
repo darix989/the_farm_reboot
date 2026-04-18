@@ -24,6 +24,7 @@ import {
 import FeedbackPanel from '../trial/panels/FeedbackPanel';
 import WizardPanel from '../trial/panels/WizardPanel';
 import InteractivePanel from '../trial/panels/InteractivePanel';
+import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import { getSpeakerName } from '../trial/utils/trialHelpers';
 
 interface TrialUIProps {
@@ -40,6 +41,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   useEffect(() => {
     setRevealedLockedOptionIds(new Set());
   }, [wf.currentPlayerRound?.id]);
+
+  useEffect(() => {
+    if (wf.gamePhase === 'round_recap') setAnalysisTarget(null);
+  }, [wf.gamePhase]);
   const allFallacies = logicalFallaciesData.logicalFallacies as LogicalFallacy[];
   const fallacyById = useMemo(
     () => new Map(allFallacies.map((fallacy) => [fallacy.id, fallacy])),
@@ -251,6 +256,15 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           guessSession={activeSession}
           onGuess={handleGuess}
           onClose={() => setAnalysisTarget(null)}
+        />
+      )}
+      {wf.gamePhase === 'round_recap' && (
+        <RoundRecapModal
+          debate={debate}
+          wf={wf}
+          fallacyGuesses={fallacyGuesses}
+          revealedLockedOptionIds={revealedLockedOptionIds}
+          onClose={() => wf.dispatch({ type: 'continue' })}
         />
       )}
     </div>

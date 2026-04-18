@@ -98,7 +98,9 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
         ? (round.options.find((o) => o.id === completedForRound.optionId) ?? null)
         : isThisPlayerRound &&
             wf.selectedOption &&
-            (wf.gamePhase === 'player_confirming' || wf.gamePhase === 'npc_responding')
+            (wf.gamePhase === 'player_confirming' ||
+              wf.gamePhase === 'npc_responding' ||
+              wf.gamePhase === 'round_recap')
           ? wf.selectedOption
           : null
       : null;
@@ -111,7 +113,8 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
       (isThisPlayerRound &&
         (wf.gamePhase === 'player_choosing' ||
           wf.gamePhase === 'player_confirming' ||
-          wf.gamePhase === 'npc_responding')));
+          wf.gamePhase === 'npc_responding' ||
+          wf.gamePhase === 'round_recap')));
 
   const showPlayerStatement =
     round.kind === 'player' &&
@@ -119,7 +122,9 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
     (roundIndex < wf.currentRoundIndex ||
       wf.gamePhase === 'debate_complete' ||
       (isThisPlayerRound &&
-        (wf.gamePhase === 'player_confirming' || wf.gamePhase === 'npc_responding')));
+        (wf.gamePhase === 'player_confirming' ||
+          wf.gamePhase === 'npc_responding' ||
+          wf.gamePhase === 'round_recap')));
 
   const responseForCompleted =
     round.kind === 'player' && completedForRound && round.opponentResponses
@@ -129,10 +134,14 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   const showOpponentResponse =
     round.kind === 'player' &&
     (responseForCompleted ||
-      (isThisPlayerRound && wf.gamePhase === 'npc_responding' && wf.activeOpponentResponse));
+      (isThisPlayerRound &&
+        (wf.gamePhase === 'npc_responding' || wf.gamePhase === 'round_recap') &&
+        wf.activeOpponentResponse));
 
   const activeResponse =
-    isThisPlayerRound && wf.gamePhase === 'npc_responding' ? wf.activeOpponentResponse : null;
+    isThisPlayerRound && (wf.gamePhase === 'npc_responding' || wf.gamePhase === 'round_recap')
+      ? wf.activeOpponentResponse
+      : null;
   const displayResponse = activeResponse ?? responseForCompleted;
 
   const statusLabel =
@@ -199,7 +208,9 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
 
   /** Hide quality / score until this player round is over (advanced or debate finished). */
   const playerRoundEndedForLog =
-    roundIndex < wf.currentRoundIndex || wf.gamePhase === 'debate_complete';
+    roundIndex < wf.currentRoundIndex ||
+    wf.gamePhase === 'debate_complete' ||
+    (isThisPlayerRound && wf.gamePhase === 'round_recap');
 
   const impactLine =
     round.kind === 'player' && chosenOption && playerRoundEndedForLog && completedForRound ? (

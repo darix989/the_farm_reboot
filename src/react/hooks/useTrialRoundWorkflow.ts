@@ -23,6 +23,7 @@ export type GamePhase =
   | 'player_choosing' // player sees 3 options
   | 'player_confirming' // player reviews chosen option, can go Back or Confirm
   | 'npc_responding' // NPC response matched to the chosen option (crossfire)
+  | 'round_recap' // summary modal; dismiss advances to next round
   | 'debate_complete';
 
 export interface CompletedRound {
@@ -205,17 +206,28 @@ function reduceWorkflow(
       }
     }
 
-    // No NPC response: advance to next round immediately
-    return advanceToNextRound(
-      { ...state, completedRounds: newCompleted, totalScore: newScore },
-      scenario,
-      newCompleted,
-      newScore,
-    );
+    // No NPC response: show round recap before advancing
+    return {
+      ...state,
+      past: pushHistory(state),
+      gamePhase: 'round_recap',
+      completedRounds: newCompleted,
+      totalScore: newScore,
+    };
   }
 
   // --- NPC responding: player clicks Continue after seeing NPC reply ---
   if (state.gamePhase === 'npc_responding') {
+    if (action.type !== 'continue') return state;
+    return {
+      ...state,
+      past: pushHistory(state),
+      gamePhase: 'round_recap',
+    };
+  }
+
+  // --- Round recap: dismiss modal (Continue) advances ---
+  if (state.gamePhase === 'round_recap') {
     if (action.type !== 'continue') return state;
     return advanceToNextRound(state, scenario, state.completedRounds, state.totalScore);
   }
@@ -301,7 +313,11 @@ export function useTrialRoundWorkflow(
   }, [currentPlayerRound, state.selectedOptionId]);
 
   const activeOpponentResponse = useMemo((): OpponentResponse | null => {
-    if (state.gamePhase !== 'npc_responding' || !currentPlayerRound || !state.selectedOptionId) {
+    if (
+      (state.gamePhase !== 'npc_responding' && state.gamePhase !== 'round_recap') ||
+      !currentPlayerRound ||
+      !state.selectedOptionId
+    ) {
       return null;
     }
     return (
@@ -338,6 +354,8 @@ export function useTrialRoundWorkflow(
         return 'Review your choice below. Go back to change it, or confirm to lock it in.';
       case 'npc_responding':
         return `${opponentName} responds to your statement. Read it, then continue.`;
+      case 'round_recap':
+        return 'Review the round summary, then close the dialog to continue.';
       default:
         return '';
     }

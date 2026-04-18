@@ -10,12 +10,13 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `ReactRoot.tsx` | Positions the overlay over the Phaser canvas and syncs its size on resize. |
 | `screens/MainMenuUI.tsx` | Overlay shown while the `MainMenu` scene is active. |
 | `screens/BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
-| `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, and `RoundAnalysisModal`. |
+| `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, `RoundRecapModal`, and `RoundAnalysisModal`. |
 | `trial/TrialLayout.tsx` | Three-column layout shell used by `TrialUI`. |
 | `trial/panels/FeedbackPanel.tsx` | Left column: introduction, round counter, score, history, live crossfire prompt. |
 | `trial/panels/WizardPanel.tsx` | Centre column: `wizardMessage` only. |
 | `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and footer (Back / Continue / Confirm). |
 | `hooks/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. |
+| `trial/roundRecapModal/RoundRecapModal.tsx` | Post–player-round summary modal; closing it dispatches `continue` and advances the workflow. |
 | `trial/roundAnalysisModal/RoundAnalysisModal.tsx` | Modal overlay for per-round analysis and fallacy guessing (see below). |
 | `hooks/useScrollFade.ts` | Hook that tracks scroll edge state; drives animated fade overlays on scrollable containers. |
 | `trial/utils/trialHelpers.ts` | Shared helpers: speaker names, quality/score colours, statement text, statement type labels. |
@@ -117,9 +118,11 @@ player_choosing
     ▼
 player_confirming  ◄──── Back (undo)
     │  player clicks Confirm
-    ▼
-npc_responding  (only if the round has opponentResponses)
-    │  player clicks Continue
+    ├─► npc_responding  (when the round has opponentResponses)
+    │       │  player clicks Continue
+    │       └──────────────┐
+    └─► round_recap ◄──────┘  (also entered directly when there are no opponentResponses)
+    │  player closes Round recap modal (Continue)
     ▼
 [next round starts] ... until all rounds exhausted
     ▼
@@ -137,7 +140,7 @@ debate_complete
 | `currentNpcRound` | Typed shortcut when the current round is NPC. |
 | `currentPlayerRound` | Typed shortcut when the current round is player. |
 | `selectedOption` | The `PlayerOption` the player has clicked but not yet confirmed. |
-| `activeOpponentResponse` | The `OpponentResponse` matched to the confirmed option (during `npc_responding`). |
+| `activeOpponentResponse` | The `OpponentResponse` matched to the confirmed option (during `npc_responding` and `round_recap`). |
 | `completedRounds` | Array of `CompletedRound` records for all past player turns. |
 | `totalScore` | Running sum of `impact` values from confirmed options. |
 | `maxPossibleScore` | Sum of the best `impact` across every player round (for a score display). |
@@ -173,9 +176,10 @@ Content depends on `gamePhase`:
 | `player_choosing` | Optional `opponentPrompt` (`StatementBlock` + `AnalyzeButton`), then three choice buttons labelled A / B / C. |
 | `player_confirming` | The full text of the selected option plus a reminder that confirming is irreversible. |
 | `npc_responding` | The NPC's response matched to the confirmed option (`StatementBlock` + `AnalyzeButton`). |
+| `round_recap` | Same response view as `npc_responding` when a crossfire reply exists; otherwise a short note to use the recap modal. The footer **Continue** is disabled — the player advances only from the `RoundRecapModal`. |
 | `debate_complete` | A "debate finished" message with the final score. |
 
-The panel footer always shows **Back** (enabled only in `player_confirming`) and a context-sensitive **Continue / Confirm** button.
+The panel footer always shows **Back** (enabled only in `player_confirming`) and a context-sensitive **Continue / Confirm** button (disabled during `round_recap`).
 
 ---
 

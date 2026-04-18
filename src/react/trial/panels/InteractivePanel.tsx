@@ -192,6 +192,42 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         );
       }
 
+      case 'round_recap': {
+        const response = wf.activeOpponentResponse;
+        const playerRound = wf.currentPlayerRound;
+        if (response && playerRound) {
+          return (
+            <StatementBlock
+              speakerLabel={`${getSpeakerName(debate, response.statement.speakerId)}'s response:`}
+              text={statementText(response.statement.sentences)}
+              analyzeButton={
+                <AnalyzeButton
+                  guessState={getNpcGuessState(response.statement.id)}
+                  title="Analyze this response"
+                  onClick={() =>
+                    onOpenAnalysis({
+                      kind: 'opponent_response',
+                      statement: response.statement,
+                      playerRound,
+                    })
+                  }
+                />
+              }
+            />
+          );
+        }
+        return (
+          <div
+            className={shared.trialSectionBox}
+            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: uiColor.textBody }}
+          >
+            <p style={{ margin: 0, color: uiColor.textCaption }}>
+              Review the round summary in the dialog. Close it when you are ready to continue.
+            </p>
+          </div>
+        );
+      }
+
       case 'debate_complete':
         return (
           <div
