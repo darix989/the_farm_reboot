@@ -197,23 +197,21 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
     Boolean,
   ) as React.ReactElement[];
 
+  /** Hide quality / score until this player round is over (advanced or debate finished). */
+  const playerRoundEndedForLog =
+    roundIndex < wf.currentRoundIndex || wf.gamePhase === 'debate_complete';
+
   const impactLine =
-    round.kind === 'player' && chosenOption ? (
-      completedForRound ? (
-        <>
-          <span style={{ color: qualityColor(chosenOption.quality) }}>
-            {qualityLabel(chosenOption.quality)}
-          </span>{' '}
-          <span style={{ color: scoreColor(completedForRound.impact) }}>
-            ({completedForRound.impact > 0 ? '+' : ''}
-            {completedForRound.impact})
-          </span>
-        </>
-      ) : (
+    round.kind === 'player' && chosenOption && playerRoundEndedForLog && completedForRound ? (
+      <>
         <span style={{ color: qualityColor(chosenOption.quality) }}>
           {qualityLabel(chosenOption.quality)}
+        </span>{' '}
+        <span style={{ color: scoreColor(completedForRound.impact) }}>
+          ({completedForRound.impact > 0 ? '+' : ''}
+          {completedForRound.impact})
         </span>
-      )
+      </>
     ) : null;
 
   const optionUnlocked =
@@ -316,7 +314,8 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
               {round.kind === 'player' && showPlayerStatement && chosenOption && (
                 <div className={styles.debateLogStatementBlock}>
                   <p style={{ color: uiColor.textCaption }}>
-                    Round {completedForRound?.roundNumber ?? round.roundNumber} — You — {impactLine}
+                    Round {completedForRound?.roundNumber ?? round.roundNumber} — You
+                    {impactLine != null ? <> — {impactLine}</> : null}
                   </p>
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>{playerBodyText}</p>
                 </div>
