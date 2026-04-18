@@ -65,15 +65,26 @@
   height: 5vh;
   flex-shrink: 0;
   align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   overflow: hidden;
   border-radius: 0.5rem;
   border: 1px solid var(--ui-color-border-strong);
   background: var(--ui-color-overlay-medium);
   padding: 0.75rem 1rem 0.75rem 2.5rem;
 
-  h2 {
+  > h2 {
     margin: 0;
+    min-width: 0;
   }
+}
+
+.trialDebateLogTitleScore {
+  flex-shrink: 0;
+  font-size: var(--ui-font-body);
+  line-height: 1.375;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .trialPanelHeading {

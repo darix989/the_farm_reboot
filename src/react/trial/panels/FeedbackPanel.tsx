@@ -105,6 +105,25 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
     <div className={styles.trialPanelContent}>
       <div className={styles.trialAreaTitle}>
         <h2 className={styles.trialPanelHeading}>Debate Log</h2>
+        <p
+          className={styles.trialDebateLogTitleScore}
+          style={{ margin: 0, color: uiColor.textBody }}
+        >
+          <span style={{ color: uiColor.textHint }}>Score </span>
+          <span style={{ color: scoreColor(wf.totalScore) }}>
+            {wf.totalScore > 0 ? '+' : ''}
+            {wf.totalScore}
+          </span>
+          <span
+            style={{
+              marginLeft: '0.75rem',
+              fontSize: uiFont.subtitle,
+              color: uiColor.textDisabled,
+            }}
+          >
+            / {wf.maxPossibleScore}
+          </span>
+        </p>
       </div>
 
       <ScrollFadeContainer scrollRef={feedbackScrollRef} className={styles.trialFeedbackScroll}>
@@ -119,25 +138,6 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
             </p>
           </div>
         )}
-
-        <div className={shared.trialSectionBox}>
-          <p style={{ fontSize: uiFont.body, lineHeight: 1.375, color: uiColor.textBody }}>
-            <span style={{ color: uiColor.textHint }}>Score </span>
-            <span style={{ color: scoreColor(wf.totalScore) }}>
-              {wf.totalScore > 0 ? '+' : ''}
-              {wf.totalScore}
-            </span>
-            <span
-              style={{
-                marginLeft: '0.75rem',
-                fontSize: uiFont.subtitle,
-                color: uiColor.textDisabled,
-              }}
-            >
-              / {wf.maxPossibleScore}
-            </span>
-          </p>
-        </div>
 
         <div className={styles.debateLogRoundList}>
           {wf.scenario.rounds.map((round, roundIndex) => {
