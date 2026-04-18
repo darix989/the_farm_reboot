@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../TrialUI.module.scss';
+import styles from '../panels/TrialPanels.module.scss';
 
 interface HistoryEntryProps {
   /** Dim header line — accepts ReactNode so callers can include coloured spans. */

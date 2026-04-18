@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import cn from 'classnames';
-import { useScrollFade } from '../useScrollFade';
+import { useScrollFade } from '../../hooks/useScrollFade';
 import shared from '../trialShared.module.scss';
 
 interface ScrollFadeContainerProps {

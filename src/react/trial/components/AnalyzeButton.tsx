@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
-import styles from '../TrialUI.module.scss';
+import styles from '../panels/TrialPanels.module.scss';
 
 interface AnalyzeButtonProps {
   onClick: () => void;

@@ -1,22 +1,22 @@
 import React, { useEffect, useRef } from 'react';
-import type { DebateScenarioJson } from '../../types/debateEntities';
-import type { useTrialRoundWorkflow } from './useTrialRoundWorkflow';
-import type { AnalysisTarget } from './RoundAnalysisModal';
-import type { FallacyGuessSession } from './fallacyGuessTypes';
-import ScrollFadeContainer from './components/ScrollFadeContainer';
-import HistoryEntry from './components/HistoryEntry';
-import AnalyzeButton from './components/AnalyzeButton';
+import type { DebateScenarioJson } from '../../../types/debateEntities';
+import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
+import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
+import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
+import ScrollFadeContainer from '../components/ScrollFadeContainer';
+import HistoryEntry from '../components/HistoryEntry';
+import AnalyzeButton from '../components/AnalyzeButton';
 import {
   getSpeakerName,
   statementText,
   qualityColor,
   qualityLabel,
   scoreColor,
-} from './utils/trialHelpers';
-import { optionFirstLine } from './optionUnlock';
-import styles from './TrialUI.module.scss';
-import shared from './trialShared.module.scss';
-import { uiFont } from '../uiFont';
+} from '../utils/trialHelpers';
+import { optionFirstLine } from '../utils/optionUnlock';
+import styles from './TrialPanels.module.scss';
+import shared from '../trialShared.module.scss';
+import { uiFont } from '../../uiFont';
 
 interface FeedbackPanelProps {
   wf: ReturnType<typeof useTrialRoundWorkflow>;

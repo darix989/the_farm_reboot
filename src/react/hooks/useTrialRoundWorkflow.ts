@@ -12,7 +12,7 @@ import {
   isPlayerOptionUnlocked,
   resolvedOptionSentences,
   type GuessSessionForUnlock,
-} from './optionUnlock';
+} from '../trial/utils/optionUnlock';
 
 // ---------------------------------------------------------------------------
 // Public types

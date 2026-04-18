@@ -1,6 +1,6 @@
 import React from 'react';
-import { useGameStore, type DebateScenarioKey } from '../store/gameStore';
-import { GameManager } from '../utils/gameManager';
+import { useGameStore, type DebateScenarioKey } from '../../store/gameStore';
+import { GameManager } from '../../utils/gameManager';
 import styles from './MainMenuUI.module.scss';
 
 const MainMenuUI: React.FC = () => {

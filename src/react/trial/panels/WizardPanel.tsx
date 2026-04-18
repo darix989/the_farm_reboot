@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './TrialUI.module.scss';
+import styles from './TrialPanels.module.scss';
 
 interface WizardPanelProps {
   wizardMessage: string;

@@ -1,4 +1,4 @@
-import type { LogicalFallacy, Sentence } from '../../types/debateEntities';
+import type { LogicalFallacy, Sentence } from '../../../types/debateEntities';
 import type { GuessRecord } from './fallacyGuessTypes';
 
 export function pairKey(sentenceId: string, fallacyId: string): string {

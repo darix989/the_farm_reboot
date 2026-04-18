@@ -8,15 +8,15 @@ import type {
   PlayerRoundEntry,
   Sentence,
   Statement,
-} from '../../types/debateEntities';
+} from '../../../types/debateEntities';
 
-import magnifyingIcon from '../../static/icons/magnifying.svg';
-import fallacyPlaceholder from '../../static/icons/fallacy_placeholder.svg';
-import ScrollFadeContainer from './components/ScrollFadeContainer';
-import { qualityColor, qualityLabel, statementTypeLabel } from './utils/trialHelpers';
-import { resolvedOptionSentences } from './optionUnlock';
-import type { FallacyGuessSession, GuessPayload, GuessRecord } from './fallacyGuessTypes';
-import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './fallacyGuessTypes';
+import magnifyingIcon from '../../../static/icons/magnifying.svg';
+import fallacyPlaceholder from '../../../static/icons/fallacy_placeholder.svg';
+import ScrollFadeContainer from '../components/ScrollFadeContainer';
+import { qualityColor, qualityLabel, statementTypeLabel } from '../utils/trialHelpers';
+import { resolvedOptionSentences } from '../utils/optionUnlock';
+import type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
+import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from '../utils/fallacyGuessTypes';
 import {
   guessMultisetFromPicks,
   multisetToPairList,
@@ -26,13 +26,13 @@ import {
   shouldRevealFullSolution,
   truthMultisetFromSentences,
   correctIntersectionMultiset,
-} from './fallacyGuessUtils';
+} from '../utils/fallacyGuessUtils';
 import styles from './RoundAnalysisModal.module.scss';
-import shared from './trialShared.module.scss';
-import { uiFont } from '../uiFont';
+import shared from '../trialShared.module.scss';
+import { uiFont } from '../../uiFont';
 
-export type { FallacyGuessSession, GuessPayload, GuessRecord } from './fallacyGuessTypes';
-export { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './fallacyGuessTypes';
+export type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
+export { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from '../utils/fallacyGuessTypes';
 
 // ---------------------------------------------------------------------------
 // Types

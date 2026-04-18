@@ -1,4 +1,4 @@
-import type { LogicalFallacy } from '../../types/debateEntities';
+import type { LogicalFallacy } from '../../../types/debateEntities';
 
 export const DEFAULT_MAX_ANALYSIS_ATTEMPTS = 3;
 

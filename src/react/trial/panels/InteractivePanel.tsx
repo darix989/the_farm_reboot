@@ -1,18 +1,18 @@
 import React from 'react';
-import type { DebateScenarioJson } from '../../types/debateEntities';
-import type { useTrialRoundWorkflow } from './useTrialRoundWorkflow';
-import type { AnalysisTarget } from './RoundAnalysisModal';
-import type { FallacyGuessSession } from './fallacyGuessTypes';
-import { guessStateFromAttempts } from './fallacyGuessUtils';
-import ScrollFadeContainer from './components/ScrollFadeContainer';
+import type { DebateScenarioJson } from '../../../types/debateEntities';
+import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
+import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
+import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
+import { guessStateFromAttempts } from '../utils/fallacyGuessUtils';
+import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import cn from 'classnames';
-import StatementBlock from './components/StatementBlock';
-import AnalyzeButton from './components/AnalyzeButton';
-import { getSpeakerName, statementText, scoreColor } from './utils/trialHelpers';
-import { isPlayerOptionUnlocked, resolvedOptionSentences } from './optionUnlock';
-import styles from './TrialUI.module.scss';
-import shared from './trialShared.module.scss';
-import { uiFont } from '../uiFont';
+import StatementBlock from '../components/StatementBlock';
+import AnalyzeButton from '../components/AnalyzeButton';
+import { getSpeakerName, statementText, scoreColor } from '../utils/trialHelpers';
+import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
+import styles from './TrialPanels.module.scss';
+import shared from '../trialShared.module.scss';
+import { uiFont } from '../../uiFont';
 
 interface InteractiveFooter {
   submitLabel: string;

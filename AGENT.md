@@ -51,15 +51,20 @@ src/
     AGENT.md            # React-layer guide (TrialUI, debate workflow)
     ReactApp.tsx        # Scene-based UI switch; loading gate on isGameReady
     ReactRoot.tsx       # Overlay aligned to Phaser canvas (resize sync)
-    MainMenuUI.tsx      # Overlay rendered while the MainMenu scene is active
-    TrialUI.tsx         # Debate/trial overlay (rounds, player choices, score)
-    BoilerPlateUI.tsx   # Fallback overlay for unmapped scenes
-    hooks/useGame.ts    # Hooks around GameManager + store
+    screens/            # Scene-keyed overlays (imported by ReactApp)
+      MainMenuUI.tsx
+      TrialUI.tsx       # Debate/trial overlay (rounds, player choices, score)
+      BoilerPlateUI.tsx # Fallback overlay for unmapped scenes
+    hooks/
+      useGame.ts              # Hooks around GameManager + store
+      useTrialRoundWorkflow.ts # Reducer hook driving the debate state machine
+      useScrollFade.ts        # Scroll edges for animated fade overlays
     trial/
       TrialLayout.tsx           # Three-column layout (Feedback | Wizard | Interactive)
-      useTrialRoundWorkflow.ts  # Reducer hook driving the debate state machine
-      RoundAnalysisModal.tsx    # Modal overlay for per-round fallacy analysis / player review
-      useScrollFade.ts          # Hook: tracks scroll edges to drive animated fade overlays
+      roundAnalysisModal/       # Round analysis modal (component + styles)
+      panels/                   # Feedback, Wizard, Interactive column components
+      components/               # Shared trial widgets (ScrollFadeContainer, etc.)
+      utils/                    # trialHelpers, optionUnlock, fallacy guess types/utils
   store/gameStore.ts    # Zustand + EventBus listeners (current scene, game ref)
   utils/
     constants.ts        # PHASER_PARENT_ID = "phaser-parent"
@@ -70,7 +75,7 @@ src/
 
 1. **`PhaserGame`** (`src/phaser/PhaserGame.tsx`) mounts once, calls `StartGame(PHASER_PARENT_ID)`, stores the instance in Zustand, and emits **`game-ready`** / **`game-destroyed`** on `EventBus`.
 2. **`EventBus`** is a shared `EventEmitter`; scenes should emit **`current-scene-ready`** with the scene instance when React needs that scene (see upstream README pattern). `gameStore` subscribes and updates `currentScene` + `currentSceneInstance`.
-3. **`ReactApp`** reads `useGameStore()` (`isGameReady`, `currentScene`) and renders **`MainMenuUI`**, **`TrialUI`**, or **`BoilerPlateUI`** for other keys.
+3. **`ReactApp`** reads `useGameStore()` (`isGameReady`, `currentScene`) and renders **`MainMenuUI`**, **`TrialUI`**, or **`BoilerPlateUI`** from `src/react/screens/` for the matching scene keys.
 4. **`ReactRoot`** positions the overlay to match the Phaser canvas margins/size on resize.
 5. **`GameManager`** (`src/utils/gameManager.ts`) centralizes imperative access (scene switch, pause, `whenReady` / `whenSceneReady`) using the store.
 
@@ -94,8 +99,8 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 
 - All debate content is declared in a **`DebateScenarioJson`** value (see `src/types/debateEntities.ts`).
 - The `TrialUI` overlay (see `src/react/AGENT.md`) reads this value and drives the full interaction.
-- The game state machine lives in `src/react/trial/useTrialRoundWorkflow.ts`.
-- A **Round Analysis Modal** (`src/react/trial/RoundAnalysisModal.tsx`) lets the player inspect any completed round: guess logical fallacies in NPC statements (one guess per player turn), or review why their own choice was effective/flawed.
+- The game state machine lives in `src/react/hooks/useTrialRoundWorkflow.ts`.
+- A **Round Analysis Modal** (`src/react/trial/roundAnalysisModal/RoundAnalysisModal.tsx`) lets the player inspect any completed round: guess logical fallacies in NPC statements (one guess per player turn), or review why their own choice was effective/flawed.
 - **⚠️ Pointer-events gotcha:** `.react-ui-overlay` has `pointer-events: none` which inherits to all descendants. Any new interactive element outside an existing panel (modal, tooltip, etc.) **must** set `pointer-events: auto` on its root — otherwise clicks and hover silently fall through to the Phaser canvas.
 
 ## Extra docs in repo

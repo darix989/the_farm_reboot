@@ -1,8 +1,8 @@
 import React from 'react';
 import './index.scss';
-import BoilerPlateUI from './BoilerPlateUI';
-import MainMenuUI from './MainMenuUI';
-import TrialUI from './TrialUI';
+import BoilerPlateUI from './screens/BoilerPlateUI';
+import MainMenuUI from './screens/MainMenuUI';
+import TrialUI from './screens/TrialUI';
 import ReactRoot from './ReactRoot';
 import { useGameStore, type DebateScenarioKey } from '../store/gameStore';
 import type { DebateScenarioJson } from '../types/debateEntities';

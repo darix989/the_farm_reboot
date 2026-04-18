@@ -1,4 +1,4 @@
-import type { PlayerOption, Sentence } from '../../types/debateEntities';
+import type { PlayerOption, Sentence } from '../../../types/debateEntities';
 
 /** Subset of GuessRecord needed for unlock checks (structurally compatible with GuessRecord). */
 export type GuessRecordForUnlock =

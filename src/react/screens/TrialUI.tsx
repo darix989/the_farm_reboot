@@ -1,11 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../types/debateEntities';
-import logicalFallaciesData from '../data/logicalFallacies.json';
-import TrialLayout from './trial/TrialLayout';
-import { useTrialRoundWorkflow } from './trial/useTrialRoundWorkflow';
-import RoundAnalysisModal, { type AnalysisTarget } from './trial/RoundAnalysisModal';
-import type { FallacyGuessSession, GuessPayload, GuessRecord } from './trial/fallacyGuessTypes';
-import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './trial/fallacyGuessTypes';
+import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../types/debateEntities';
+import logicalFallaciesData from '../../data/logicalFallacies.json';
+import TrialLayout from '../trial/TrialLayout';
+import { useTrialRoundWorkflow } from '../hooks/useTrialRoundWorkflow';
+import RoundAnalysisModal, {
+  type AnalysisTarget,
+} from '../trial/roundAnalysisModal/RoundAnalysisModal';
+import type {
+  FallacyGuessSession,
+  GuessPayload,
+  GuessRecord,
+} from '../trial/utils/fallacyGuessTypes';
+import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from '../trial/utils/fallacyGuessTypes';
 import {
   computeMissedPairs,
   guessMultisetFromPicks,
@@ -14,11 +20,11 @@ import {
   multisetsEqual,
   truthMultisetFromSentences,
   guessStateFromAttempts,
-} from './trial/fallacyGuessUtils';
-import FeedbackPanel from './trial/FeedbackPanel';
-import WizardPanel from './trial/WizardPanel';
-import InteractivePanel from './trial/InteractivePanel';
-import { getSpeakerName } from './trial/utils/trialHelpers';
+} from '../trial/utils/fallacyGuessUtils';
+import FeedbackPanel from '../trial/panels/FeedbackPanel';
+import WizardPanel from '../trial/panels/WizardPanel';
+import InteractivePanel from '../trial/panels/InteractivePanel';
+import { getSpeakerName } from '../trial/utils/trialHelpers';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
