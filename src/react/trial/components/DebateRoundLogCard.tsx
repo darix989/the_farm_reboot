@@ -228,7 +228,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   const roundNumDisplay = String(round.roundNumber).padStart(2, '0');
 
   return (
-    <div className={styles.debateLogRound}>
+    <div className={styles.debateLogRound} data-debate-log-round-index={roundIndex}>
       <div className={styles.debateLogRoundHeader}>
         <div className={styles.debateLogRoundLead}>
           <div className={styles.debateLogRoundNumber} aria-label={`Round ${round.roundNumber}`}>

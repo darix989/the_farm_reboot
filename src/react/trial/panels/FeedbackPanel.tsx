@@ -46,9 +46,34 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   const prevRoundIndexRef = useRef(wf.currentRoundIndex);
 
   useEffect(() => {
-    const el = feedbackScrollRef.current;
-    if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-  }, [wf.currentRoundIndex]);
+    const container = feedbackScrollRef.current;
+    if (!container) return;
+
+    const n = wf.scenario.rounds.length;
+    if (n === 0) return;
+
+    const targetIndex =
+      wf.gamePhase === 'debate_complete' && wf.currentRoundIndex >= n
+        ? n - 1
+        : Math.min(wf.currentRoundIndex, n - 1);
+
+    const scrollToTarget = () => {
+      const child = container.querySelector<HTMLElement>(
+        `[data-debate-log-round-index="${targetIndex}"]`,
+      );
+      if (!child) return;
+
+      const padding = 12;
+      const cRect = container.getBoundingClientRect();
+      const chRect = child.getBoundingClientRect();
+      const scrollDelta = chRect.top - cRect.top - padding;
+      if (Math.abs(scrollDelta) < 4) return;
+      container.scrollBy({ top: scrollDelta, behavior: 'smooth' });
+    };
+
+    const t = window.setTimeout(scrollToTarget, 0);
+    return () => window.clearTimeout(t);
+  }, [wf.currentRoundIndex, wf.gamePhase, wf.scenario.rounds.length]);
 
   useEffect(() => {
     if (wf.currentRoundIndex === prevRoundIndexRef.current) return;
