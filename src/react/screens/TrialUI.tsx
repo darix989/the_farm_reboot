@@ -22,11 +22,12 @@ import {
   guessStateFromAttempts,
 } from '../trial/utils/fallacyGuessUtils';
 import FeedbackPanel from '../trial/panels/FeedbackPanel';
-import WizardPanel from '../trial/panels/WizardPanel';
+import WizardPanel, { type WizardPanelDetail } from '../trial/panels/WizardPanel';
 import InteractivePanel from '../trial/panels/InteractivePanel';
 import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
-import { getSpeakerName } from '../trial/utils/trialHelpers';
+import { getSpeakerName, statementText } from '../trial/utils/trialHelpers';
+import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
@@ -231,6 +232,75 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     setRevealedLockedOptionIds((prev) => new Set(prev).add(optionId));
   }, []);
 
+  const wizardDetail = useMemo((): WizardPanelDetail | null => {
+    switch (wf.gamePhase) {
+      case 'debate_intro': {
+        const intro = debate.introduction?.trim();
+        if (!intro) return null;
+        return { title: 'Introduction', body: intro };
+      }
+      case 'npc_speaking': {
+        const npc = wf.currentNpcRound;
+        if (!npc) return null;
+        return {
+          title: `${getSpeakerName(debate, npc.speakerId)} speaks:`,
+          body: statementText(npc.statement.sentences),
+        };
+      }
+      case 'player_choosing':
+        return null;
+      case 'player_confirming': {
+        const opt = wf.selectedOption;
+        if (!opt) return null;
+        const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
+        return {
+          title: 'Your choice (full text)',
+          body: statementText(resolvedOptionSentences(opt, showResolved)),
+        };
+      }
+      case 'npc_responding': {
+        const response = wf.activeOpponentResponse;
+        const playerRound = wf.currentPlayerRound;
+        if (!response || !playerRound) return null;
+        return {
+          title: `${getSpeakerName(debate, response.statement.speakerId)}'s response:`,
+          body: statementText(response.statement.sentences),
+        };
+      }
+      case 'round_recap': {
+        const response = wf.activeOpponentResponse;
+        const playerRound = wf.currentPlayerRound;
+        if (response && playerRound) {
+          return {
+            title: `${getSpeakerName(debate, response.statement.speakerId)}'s response:`,
+            body: statementText(response.statement.sentences),
+          };
+        }
+        return {
+          title: 'Round recap',
+          body: 'Review the round summary in the dialog. Close it when you are ready to continue.',
+        };
+      }
+      case 'debate_complete':
+        return {
+          title: 'The debate is finished.',
+          body: `Final score: ${wf.totalScore > 0 ? '+' : ''}${wf.totalScore} out of ${wf.maxPossibleScore}`,
+        };
+      default:
+        return null;
+    }
+  }, [
+    wf.gamePhase,
+    wf.currentNpcRound,
+    wf.selectedOption,
+    wf.activeOpponentResponse,
+    wf.currentPlayerRound,
+    wf.totalScore,
+    wf.maxPossibleScore,
+    debate,
+    fallacyGuesses,
+  ]);
+
   return (
     <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
       <TrialLayout
@@ -244,7 +314,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             getNpcGuessState={getNpcGuessState}
           />
         }
-        wizard={<WizardPanel wizardMessage={wf.wizardMessage} />}
+        wizard={<WizardPanel wizardMessage={wf.wizardMessage} detail={wizardDetail} />}
         interactive={
           <InteractivePanel
             key={debate.id}

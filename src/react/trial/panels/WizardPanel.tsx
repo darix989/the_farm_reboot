@@ -1,11 +1,19 @@
 import React from 'react';
 import styles from './TrialPanels.module.scss';
+import shared from '../trialShared.module.scss';
+import { uiColor } from '../../uiColor';
+
+export interface WizardPanelDetail {
+  title: string;
+  body: string;
+}
 
 interface WizardPanelProps {
   wizardMessage: string;
+  detail: WizardPanelDetail | null;
 }
 
-const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage }) => (
+const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail }) => (
   <div
     style={{
       display: 'flex',
@@ -20,7 +28,22 @@ const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage }) => (
       <h2 className={styles.trialPanelHeading}>Wizard</h2>
     </div>
     <div className={styles.trialWizardBodyWrap}>
-      <p className={styles.trialWizardMainText}>{wizardMessage}</p>
+      <p className={detail ? styles.trialWizardGuidanceText : styles.trialWizardMainText}>
+        {wizardMessage}
+      </p>
+      {detail && (
+        <div aria-live="polite" className={styles.trialWizardDetailLive}>
+          <div
+            className={shared.trialSectionBox}
+            style={{ fontSize: 'var(--ui-font-body)', lineHeight: 1.375 }}
+          >
+            <p style={{ color: uiColor.textCaption, margin: 0 }}>{detail.title}</p>
+            <p style={{ marginTop: '0.5rem', color: uiColor.textBody, marginBottom: 0 }}>
+              {detail.body}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   </div>
 );

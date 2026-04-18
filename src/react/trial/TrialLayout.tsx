@@ -12,10 +12,10 @@ export interface TrialLayoutProps {
 /**
  * Trial overlay over the Phaser canvas:
  * - Top-left quarter: empty (pointer-events pass through to Phaser).
- * - Top row, right half: Debate Log (top area only to the right of the game hole).
- * - Bottom row: Wizard 1/3 width, Interactive 2/3 width.
+ * - Top row, right half: Debate Log (to the right of the game hole).
+ * - Bottom row: Wizard left half, Interactive right half (same column spans as game hole + debate log).
  *
- * Uses a 6-column × 2-row grid so halves and thirds line up with the viewport.
+ * Uses a 6-column × 2-row grid so top and bottom halves align.
  */
 const TrialLayout: React.FC<TrialLayoutProps> = ({ feedback, wizard, interactive }) => {
   return (
