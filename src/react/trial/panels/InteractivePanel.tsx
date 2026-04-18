@@ -107,7 +107,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     const reduced =
       typeof window !== 'undefined' &&
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const ms = reduced ? 450 : 820;
+    const ms = reduced ? 480 : 1020;
     const t = window.setTimeout(() => setRevealAnimOptionId(null), ms);
     return () => window.clearTimeout(t);
   }, [revealAnimOptionId]);
