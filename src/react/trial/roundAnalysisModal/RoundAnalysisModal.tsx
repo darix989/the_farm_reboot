@@ -475,7 +475,7 @@ function NpcRoundAnalysis({
       )}
       {!canGuess && !hasAnyAttempt && (
         <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
-          Fallacy analysis is available during your turn.
+          You cannot submit fallacy guesses in this phase of the debate.
         </p>
       )}
 

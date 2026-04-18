@@ -63,8 +63,14 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // -----------------------------------------------------------------------
   const [analysisTarget, setAnalysisTarget] = useState<AnalysisTarget | null>(null);
 
-  const currentPlayerRoundNumber = useMemo(() => {
+  /**
+   * Map key for in-progress fallacy sessions. Matches `currentRound.roundNumber` whenever the
+   * player can react to the debate (including `npc_speaking`, so analysis opens as soon as the
+   * opponent line appears in the log — not only after advancing the round).
+   */
+  const fallacyGuessBucketRoundNumber = useMemo(() => {
     if (
+      wf.gamePhase === 'npc_speaking' ||
       wf.gamePhase === 'player_choosing' ||
       wf.gamePhase === 'player_confirming' ||
       wf.gamePhase === 'npc_responding'
@@ -88,13 +94,31 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   }, [analysisStatementTargetId, fallacyGuesses]);
 
   const canGuess = useMemo(() => {
-    if (currentPlayerRoundNumber === null || !analysisStatementTargetId) return false;
-    const sess = fallacyGuesses.get(currentPlayerRoundNumber);
+    if (fallacyGuessBucketRoundNumber === null || !analysisStatementTargetId) return false;
+
+    if (
+      wf.gamePhase === 'npc_speaking' &&
+      wf.currentNpcRound &&
+      analysisTarget &&
+      analysisTarget.kind === 'npc' &&
+      analysisTarget.round.id !== wf.currentNpcRound.id
+    ) {
+      return false;
+    }
+
+    const sess = fallacyGuesses.get(fallacyGuessBucketRoundNumber);
     if (!sess) return true;
     if (sess.npcRoundId !== analysisStatementTargetId) return true;
     if (isSessionTerminal(sess)) return false;
     return sess.attempts.length < sess.maxAttempts;
-  }, [currentPlayerRoundNumber, analysisStatementTargetId, fallacyGuesses]);
+  }, [
+    fallacyGuessBucketRoundNumber,
+    analysisStatementTargetId,
+    analysisTarget,
+    wf.gamePhase,
+    wf.currentNpcRound,
+    fallacyGuesses,
+  ]);
 
   const getNpcGuessState = useCallback(
     (npcRoundId: string): 'correct' | 'partial' | 'wrong' | null => {
@@ -109,7 +133,16 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
   const handleGuess = (payload: GuessPayload) => {
     if (!analysisTarget || analysisTarget.kind === 'player') return;
-    if (currentPlayerRoundNumber === null) return;
+    if (fallacyGuessBucketRoundNumber === null) return;
+
+    if (
+      wf.gamePhase === 'npc_speaking' &&
+      wf.currentNpcRound &&
+      analysisTarget.kind === 'npc' &&
+      analysisTarget.round.id !== wf.currentNpcRound.id
+    ) {
+      return;
+    }
 
     const sentences: Sentence[] =
       analysisTarget.kind === 'npc'
@@ -166,7 +199,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
     setFallacyGuesses((prev) => {
       const next = new Map(prev);
-      const existing = prev.get(currentPlayerRoundNumber);
+      const existing = prev.get(fallacyGuessBucketRoundNumber);
       let session: FallacyGuessSession;
 
       if (!existing || existing.npcRoundId !== targetId) {
@@ -181,7 +214,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           attempts: [...existing.attempts, record],
         };
       }
-      next.set(currentPlayerRoundNumber, session);
+      next.set(fallacyGuessBucketRoundNumber, session);
       return next;
     });
   };
