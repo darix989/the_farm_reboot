@@ -206,6 +206,11 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         submitDisabled = false;
         onSubmit = () => wf.dispatch({ type: 'continue' });
         break;
+      case 'player_choosing':
+        submitLabel = 'Continue';
+        submitDisabled = !wf.selectedOption;
+        onSubmit = () => wf.dispatch({ type: 'confirm_option' });
+        break;
       case 'player_confirming':
         submitLabel = 'Confirm';
         submitDisabled = false;
@@ -217,7 +222,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
     return { submitLabel, submitDisabled, onSubmit };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- wf.gamePhase + wf.dispatch cover footer behavior; setIntroSummaryOpen is stable
-  }, [wf.gamePhase, wf.dispatch]);
+  }, [wf.gamePhase, wf.dispatch, wf.selectedOption]);
 
   const modalSpeakerName = useMemo(() => {
     if (!analysisTarget) return '';
@@ -247,8 +252,15 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           body: statementText(npc.statement.sentences),
         };
       }
-      case 'player_choosing':
-        return null;
+      case 'player_choosing': {
+        const opt = wf.selectedOption;
+        if (!opt) return null;
+        const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
+        return {
+          title: 'Selected statement (full text)',
+          body: statementText(resolvedOptionSentences(opt, showResolved)),
+        };
+      }
       case 'player_confirming': {
         const opt = wf.selectedOption;
         if (!opt) return null;

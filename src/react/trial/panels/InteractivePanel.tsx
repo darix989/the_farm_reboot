@@ -45,6 +45,7 @@ function ChoiceButton({
   statementText,
   onClick,
   disabled,
+  selected,
   unlockHint,
   revealFlash,
 }: {
@@ -52,6 +53,7 @@ function ChoiceButton({
   statementText: string;
   onClick: () => void;
   disabled?: boolean;
+  selected?: boolean;
   /** Unlocked statement not yet revealed — periodic nudge to click */
   unlockHint?: boolean;
   /** One-time emphasis after revealing an unlock-gated statement */
@@ -63,6 +65,7 @@ function ChoiceButton({
       type="button"
       className={cn(
         styles.trialChoiceBtn,
+        selected && styles.trialChoiceBtnSelected,
         unlockHint && styles.trialChoiceBtnUnlockHint,
         revealFlash && styles.trialChoiceBtnRevealFlash,
       )}
@@ -179,6 +182,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                     optionLetter={optionLetter}
                     statementText={body}
                     disabled={locked}
+                    selected={wf.selectedOption?.id === opt.id}
                     unlockHint={awaitingReveal}
                     revealFlash={revealFlash}
                     onClick={() => {
@@ -341,13 +345,19 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
             <button
               type="button"
               className={shared.trialFooterBtn}
-              disabled={!wf.canUndo}
+              disabled={wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo}
               tabIndex={wf.gamePhase === 'debate_intro' ? -1 : undefined}
               style={{
                 visibility: wf.gamePhase === 'debate_intro' ? 'hidden' : 'visible',
               }}
               aria-hidden={wf.gamePhase === 'debate_intro'}
-              onClick={wf.undo}
+              onClick={() => {
+                if (wf.gamePhase === 'player_choosing') {
+                  wf.unselect();
+                  return;
+                }
+                wf.undo();
+              }}
             >
               Back
             </button>

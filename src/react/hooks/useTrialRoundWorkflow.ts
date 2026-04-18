@@ -57,6 +57,7 @@ interface WorkflowState extends WorkflowSnapshot {
 type Action =
   | { type: 'continue' }
   | { type: 'select_option'; optionId: string }
+  | { type: 'unselect_option' }
   | { type: 'confirm_option' }
   | { type: 'undo' };
 
@@ -179,24 +180,56 @@ function reduceWorkflow(
 
   // --- Player choosing: player selects one of the 3 options ---
   if (state.gamePhase === 'player_choosing') {
-    if (action.type !== 'select_option') return state;
     if (currentRound.kind !== 'player') return state;
-    const valid = currentRound.options.some((o) => o.id === action.optionId);
-    if (!valid) return state;
-    const opt = currentRound.options.find((o) => o.id === action.optionId);
-    if (opt && !isPlayerOptionUnlocked(opt, fallacyGuesses)) return state;
-    if (
-      opt?.unlockCondition &&
-      isPlayerOptionUnlocked(opt, fallacyGuesses) &&
-      !revealedLockedOptionIds.has(opt.id)
-    ) {
-      return state;
+
+    if (action.type === 'unselect_option') {
+      if (!state.selectedOptionId) return state;
+      return { ...state, selectedOptionId: null };
     }
+
+    if (action.type === 'select_option') {
+      const valid = currentRound.options.some((o) => o.id === action.optionId);
+      if (!valid) return state;
+      const opt = currentRound.options.find((o) => o.id === action.optionId);
+      if (opt && !isPlayerOptionUnlocked(opt, fallacyGuesses)) return state;
+      if (
+        opt?.unlockCondition &&
+        isPlayerOptionUnlocked(opt, fallacyGuesses) &&
+        !revealedLockedOptionIds.has(opt.id)
+      ) {
+        return state;
+      }
+      return {
+        ...state,
+        selectedOptionId: action.optionId,
+      };
+    }
+
+    if (action.type !== 'confirm_option') return state;
+    if (!state.selectedOptionId) return state;
+
+    const option = currentRound.options.find((o) => o.id === state.selectedOptionId);
+    if (!option) return state;
+
+    const newCompleted: CompletedRound[] = [
+      ...state.completedRounds,
+      {
+        roundId: currentRound.id,
+        roundNumber: currentRound.roundNumber,
+        optionId: option.id,
+        impact: option.impact,
+      },
+    ];
+    const newScore = state.totalScore + option.impact;
+
+    // If the round has opponent responses, enter responding; else go straight to recap.
+    const hasResponses = Boolean(currentRound.opponentResponses?.length);
     return {
       ...state,
       past: pushHistory(state),
-      gamePhase: 'player_confirming',
-      selectedOptionId: action.optionId,
+      gamePhase: hasResponses ? 'npc_responding' : 'round_recap',
+      completedRounds: newCompleted,
+      totalScore: newScore,
     };
   }
 
@@ -358,6 +391,7 @@ export function useTrialRoundWorkflow(
   // Back is only meaningful in player_confirming: the previous snapshot is always
   // player_choosing for the same round, so undo can never jump to a different round.
   const canUndo = state.gamePhase === 'player_confirming' && state.past.length > 0;
+  const canUnselect = state.gamePhase === 'player_choosing' && !!state.selectedOptionId;
 
   const opponentName = useMemo(() => {
     const npcRound = scenario.rounds.find((r) => r.kind === 'npc') as NpcRoundEntry | undefined;
@@ -379,9 +413,13 @@ export function useTrialRoundWorkflow(
         return `${roundLabel}. Read ${opponentName}'s statement, then click Continue.`;
       case 'player_choosing':
         if (currentPlayerRound?.opponentPrompt) {
-          return `${roundLabel}. ${opponentName} has asked a question. Choose your response.`;
+          return state.selectedOptionId
+            ? `${roundLabel}. Statement selected. Click Continue to submit, or Back to change it.`
+            : `${roundLabel}. ${opponentName} has asked a question. Choose your response.`;
         }
-        return `${roundLabel}. Choose your statement.`;
+        return state.selectedOptionId
+          ? `${roundLabel}. Statement selected. Click Continue to submit, or Back to change it.`
+          : `${roundLabel}. Choose your statement.`;
       case 'player_confirming':
         return 'Review your choice below. Go back to change it, or confirm to lock it in.';
       case 'npc_responding':
@@ -391,7 +429,7 @@ export function useTrialRoundWorkflow(
       default:
         return '';
     }
-  }, [state.gamePhase, currentRound, currentPlayerRound, opponentName]);
+  }, [state.gamePhase, state.selectedOptionId, currentRound, currentPlayerRound, opponentName]);
 
   const totalRounds = scenario.rounds.length;
   const playerRounds = scenario.rounds.filter((r) => r.kind === 'player');
@@ -407,6 +445,8 @@ export function useTrialRoundWorkflow(
     [],
   );
 
+  const unselect = useCallback(() => dispatch({ type: 'unselect_option' }), [dispatch]);
+
   return {
     scenario,
     gamePhase: state.gamePhase,
@@ -421,9 +461,11 @@ export function useTrialRoundWorkflow(
     totalScore: state.totalScore,
     maxPossibleScore,
     canUndo,
+    canUnselect,
     wizardMessage,
     dispatch,
     undo,
+    unselect,
     statementTitle,
     optionTitle: optionTitleWithUnlock,
   };
