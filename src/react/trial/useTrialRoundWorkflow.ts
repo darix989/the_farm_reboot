@@ -11,7 +11,7 @@ import type {
 import {
   isPlayerOptionUnlocked,
   resolvedOptionSentences,
-  type GuessRecordForUnlock,
+  type GuessSessionForUnlock,
 } from './optionUnlock';
 
 // ---------------------------------------------------------------------------
@@ -127,7 +127,7 @@ function reduceWorkflow(
   state: WorkflowState,
   action: Action,
   scenario: DebateScenarioJson,
-  fallacyGuesses: Map<number, GuessRecordForUnlock>,
+  fallacyGuesses: Map<number, GuessSessionForUnlock>,
   revealedLockedOptionIds: Set<string>,
 ): WorkflowState {
   if (action.type === 'undo') {
@@ -234,7 +234,7 @@ export function statementTitle(st: Statement): string {
 
 export function optionTitle(
   opt: PlayerOption,
-  fallacyGuesses?: Map<number, GuessRecordForUnlock>,
+  fallacyGuesses?: Map<number, GuessSessionForUnlock>,
   revealedLockedOptionIds?: Set<string>,
 ): string {
   const guessUnlocked =
@@ -253,7 +253,7 @@ export function optionTitle(
 
 export function useTrialRoundWorkflow(
   scenario: DebateScenarioJson,
-  fallacyGuesses: Map<number, GuessRecordForUnlock> = new Map(),
+  fallacyGuesses: Map<number, GuessSessionForUnlock> = new Map(),
   revealedLockedOptionIds: Set<string> = new Set(),
 ) {
   const scenarioRef = useRef(scenario);
@@ -354,7 +354,7 @@ export function useTrialRoundWorkflow(
   const optionTitleWithUnlock = useCallback(
     (opt: PlayerOption) =>
       optionTitle(opt, fallacyGuessesRef.current, revealedLockedOptionIdsRef.current),
-    [fallacyGuesses, revealedLockedOptionIds],
+    [],
   );
 
   return {

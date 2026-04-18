@@ -3,11 +3,18 @@ import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../types/deba
 import logicalFallaciesData from '../data/logicalFallacies.json';
 import TrialLayout from './trial/TrialLayout';
 import { useTrialRoundWorkflow } from './trial/useTrialRoundWorkflow';
-import RoundAnalysisModal, {
-  type AnalysisTarget,
-  type GuessPayload,
-  type GuessRecord,
-} from './trial/RoundAnalysisModal';
+import RoundAnalysisModal, { type AnalysisTarget } from './trial/RoundAnalysisModal';
+import type { FallacyGuessSession, GuessPayload, GuessRecord } from './trial/fallacyGuessTypes';
+import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './trial/fallacyGuessTypes';
+import {
+  computeMissedPairs,
+  guessMultisetFromPicks,
+  hasCorrectPairOverlap,
+  isSessionTerminal,
+  multisetsEqual,
+  truthMultisetFromSentences,
+  guessStateFromAttempts,
+} from './trial/fallacyGuessUtils';
 import FeedbackPanel from './trial/FeedbackPanel';
 import WizardPanel from './trial/WizardPanel';
 import InteractivePanel from './trial/InteractivePanel';
@@ -17,80 +24,8 @@ interface TrialUIProps {
   debate: DebateScenarioJson;
 }
 
-function pairKey(sentenceId: string, fallacyId: string): string {
-  return `${sentenceId}\u001f${fallacyId}`;
-}
-
-function incrementPairCount(m: Map<string, number>, sentenceId: string, fallacyId: string) {
-  const k = pairKey(sentenceId, fallacyId);
-  m.set(k, (m.get(k) ?? 0) + 1);
-}
-
-function truthMultisetFromSentences(sentences: Sentence[]): Map<string, number> {
-  const m = new Map<string, number>();
-  for (const s of sentences) {
-    for (const f of s.logicalFallacies) {
-      incrementPairCount(m, s.id, f.id);
-    }
-  }
-  return m;
-}
-
-function guessMultisetFromPicks(
-  picks: { sentenceId: string; fallacyId: string }[],
-): Map<string, number> {
-  const m = new Map<string, number>();
-  for (const p of picks) {
-    incrementPairCount(m, p.sentenceId, p.fallacyId);
-  }
-  return m;
-}
-
-function multisetsEqual(a: Map<string, number>, b: Map<string, number>): boolean {
-  if (a.size !== b.size) return false;
-  for (const [k, v] of a) {
-    if ((b.get(k) ?? 0) !== v) return false;
-  }
-  return true;
-}
-
-function hasCorrectPairOverlap(truth: Map<string, number>, guess: Map<string, number>): boolean {
-  for (const [k, tv] of truth) {
-    const gv = guess.get(k) ?? 0;
-    if (tv > 0 && gv > 0) return true;
-  }
-  return false;
-}
-
-function computeMissedPairs(
-  sentences: Sentence[],
-  truth: Map<string, number>,
-  guess: Map<string, number>,
-  fallacyById: Map<string, LogicalFallacy>,
-): { sentenceId: string; fallacy: LogicalFallacy }[] {
-  const missed: { sentenceId: string; fallacy: LogicalFallacy }[] = [];
-  const sentenceById = new Map(sentences.map((s) => [s.id, s]));
-  for (const [k, tCount] of truth) {
-    const gCount = guess.get(k) ?? 0;
-    const missedCount = tCount - Math.min(tCount, gCount);
-    if (missedCount <= 0) continue;
-    const sep = k.indexOf('\u001f');
-    if (sep < 0) continue;
-    const sentenceId = k.slice(0, sep);
-    const fallacyId = k.slice(sep + 1);
-    const sentence = sentenceById.get(sentenceId);
-    const hasFallacyInSentence = sentence?.logicalFallacies.some((x) => x.id === fallacyId);
-    const f = fallacyById.get(fallacyId);
-    if (!hasFallacyInSentence || !f) continue;
-    for (let i = 0; i < missedCount; i++) {
-      missed.push({ sentenceId, fallacy: f });
-    }
-  }
-  return missed;
-}
-
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
-  const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, GuessRecord>>(new Map());
+  const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, FallacyGuessSession>>(new Map());
   const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
     () => new Set(),
   );
@@ -110,7 +45,6 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // -----------------------------------------------------------------------
   const [analysisTarget, setAnalysisTarget] = useState<AnalysisTarget | null>(null);
 
-  // The round number for which the player can still submit a guess.
   const currentPlayerRoundNumber = useMemo(() => {
     if (
       wf.gamePhase === 'player_choosing' ||
@@ -122,38 +56,44 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     return null;
   }, [wf.gamePhase, wf.currentRound]);
 
-  const canGuess =
-    currentPlayerRoundNumber !== null && !fallacyGuesses.has(currentPlayerRoundNumber);
+  const analysisStatementTargetId = useMemo(() => {
+    if (!analysisTarget || analysisTarget.kind === 'player') return null;
+    return analysisTarget.kind === 'npc' ? analysisTarget.round.id : analysisTarget.statement.id;
+  }, [analysisTarget]);
+
+  const activeSession = useMemo((): FallacyGuessSession | null => {
+    if (!analysisStatementTargetId) return null;
+    for (const sess of fallacyGuesses.values()) {
+      if (sess.npcRoundId === analysisStatementTargetId) return sess;
+    }
+    return null;
+  }, [analysisStatementTargetId, fallacyGuesses]);
+
+  const canGuess = useMemo(() => {
+    if (currentPlayerRoundNumber === null || !analysisStatementTargetId) return false;
+    const sess = fallacyGuesses.get(currentPlayerRoundNumber);
+    if (!sess) return true;
+    if (sess.npcRoundId !== analysisStatementTargetId) return true;
+    if (isSessionTerminal(sess)) return false;
+    return sess.attempts.length < sess.maxAttempts;
+  }, [currentPlayerRoundNumber, analysisStatementTargetId, fallacyGuesses]);
 
   const getNpcGuessState = useCallback(
     (npcRoundId: string): 'correct' | 'partial' | 'wrong' | null => {
-      for (const record of fallacyGuesses.values()) {
-        if (record.npcRoundId !== npcRoundId) continue;
-        if (record.kind === 'no_fallacies') return record.correct ? 'correct' : 'wrong';
-        if (record.outcome === 'perfect') return 'correct';
-        if (record.outcome === 'partial') return 'partial';
-        return 'wrong';
+      for (const sess of fallacyGuesses.values()) {
+        if (sess.npcRoundId !== npcRoundId) continue;
+        return guessStateFromAttempts(sess.attempts);
       }
       return null;
     },
     [fallacyGuesses],
   );
 
-  const activeGuess = useMemo((): GuessRecord | null => {
-    if (!analysisTarget || analysisTarget.kind === 'player') return null;
-    const targetId =
-      analysisTarget.kind === 'npc' ? analysisTarget.round.id : analysisTarget.statement.id;
-    for (const [, record] of fallacyGuesses) {
-      if (record.npcRoundId === targetId) return record;
-    }
-    return null;
-  }, [analysisTarget, fallacyGuesses]);
-
   const handleGuess = (payload: GuessPayload) => {
     if (!analysisTarget || analysisTarget.kind === 'player') return;
     if (currentPlayerRoundNumber === null) return;
 
-    const sentences =
+    const sentences: Sentence[] =
       analysisTarget.kind === 'npc'
         ? analysisTarget.round.statement.sentences
         : analysisTarget.statement.sentences;
@@ -206,7 +146,26 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       };
     }
 
-    setFallacyGuesses((prev) => new Map(prev).set(currentPlayerRoundNumber, record));
+    setFallacyGuesses((prev) => {
+      const next = new Map(prev);
+      const existing = prev.get(currentPlayerRoundNumber);
+      let session: FallacyGuessSession;
+
+      if (!existing || existing.npcRoundId !== targetId) {
+        session = {
+          npcRoundId: targetId,
+          maxAttempts: DEFAULT_MAX_ANALYSIS_ATTEMPTS,
+          attempts: [record],
+        };
+      } else {
+        session = {
+          ...existing,
+          attempts: [...existing.attempts, record],
+        };
+      }
+      next.set(currentPlayerRoundNumber, session);
+      return next;
+    });
   };
 
   // -----------------------------------------------------------------------
@@ -282,7 +241,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           fallacyById={fallacyById}
           speakerName={modalSpeakerName}
           canGuess={canGuess}
-          existingGuess={activeGuess}
+          guessSession={activeSession}
           onGuess={handleGuess}
           onClose={() => setAnalysisTarget(null)}
         />

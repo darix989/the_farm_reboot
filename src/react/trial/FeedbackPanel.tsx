@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import type { DebateScenarioJson } from '../../types/debateEntities';
 import type { useTrialRoundWorkflow } from './useTrialRoundWorkflow';
-import type { AnalysisTarget, GuessRecord } from './RoundAnalysisModal';
+import type { AnalysisTarget } from './RoundAnalysisModal';
+import type { FallacyGuessSession } from './fallacyGuessTypes';
 import ScrollFadeContainer from './components/ScrollFadeContainer';
 import HistoryEntry from './components/HistoryEntry';
 import AnalyzeButton from './components/AnalyzeButton';
@@ -20,7 +21,7 @@ import { uiFont } from '../uiFont';
 interface FeedbackPanelProps {
   wf: ReturnType<typeof useTrialRoundWorkflow>;
   debate: DebateScenarioJson;
-  fallacyGuesses: Map<number, GuessRecord>;
+  fallacyGuesses: Map<number, FallacyGuessSession>;
   onOpenAnalysis: (target: AnalysisTarget) => void;
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
 }
@@ -28,7 +29,7 @@ interface FeedbackPanelProps {
 const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   wf,
   debate,
-  fallacyGuesses,
+  fallacyGuesses: _fallacyGuesses,
   onOpenAnalysis,
   getNpcGuessState,
 }) => {

@@ -1,6 +1,6 @@
 import type { PlayerOption, Sentence } from '../../types/debateEntities';
 
-/** Subset of GuessRecord needed for unlock checks (structurally compatible with RoundAnalysisModal's GuessRecord). */
+/** Subset of GuessRecord needed for unlock checks (structurally compatible with GuessRecord). */
 export type GuessRecordForUnlock =
   | {
       kind: 'multi';
@@ -9,20 +9,27 @@ export type GuessRecordForUnlock =
     }
   | { kind: 'no_fallacies'; npcRoundId: string };
 
+/** Structurally compatible with FallacyGuessSession for unlock checks. */
+export type GuessSessionForUnlock = {
+  attempts: GuessRecordForUnlock[];
+};
+
 export function isPlayerOptionUnlocked(
   option: PlayerOption,
-  fallacyGuesses: Map<number, GuessRecordForUnlock>,
+  fallacyGuesses: Map<number, GuessSessionForUnlock>,
 ): boolean {
   const cond = option.unlockCondition;
   if (!cond) return true;
 
-  for (const record of fallacyGuesses.values()) {
-    if (record.kind !== 'multi') continue;
-    if (record.npcRoundId !== cond.npcRoundId) continue;
-    const hasPair = record.picks.some(
-      (p) => p.sentenceId === cond.sentenceId && p.fallacyId === cond.fallacyId,
-    );
-    if (hasPair) return true;
+  for (const session of fallacyGuesses.values()) {
+    for (const record of session.attempts) {
+      if (record.kind !== 'multi') continue;
+      if (record.npcRoundId !== cond.npcRoundId) continue;
+      const hasPair = record.picks.some(
+        (p) => p.sentenceId === cond.sentenceId && p.fallacyId === cond.fallacyId,
+      );
+      if (hasPair) return true;
+    }
   }
   return false;
 }

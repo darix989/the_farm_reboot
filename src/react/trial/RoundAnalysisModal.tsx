@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
 import type {
   LogicalFallacy,
@@ -15,32 +15,28 @@ import fallacyPlaceholder from '../../static/icons/fallacy_placeholder.svg';
 import ScrollFadeContainer from './components/ScrollFadeContainer';
 import { qualityColor, qualityLabel, statementTypeLabel } from './utils/trialHelpers';
 import { resolvedOptionSentences } from './optionUnlock';
+import type { FallacyGuessSession, GuessPayload, GuessRecord } from './fallacyGuessTypes';
+import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './fallacyGuessTypes';
+import {
+  guessMultisetFromPicks,
+  multisetToPairList,
+  pairListToBySentence,
+  picksToBySentence,
+  pinnedMultisetFromAttempts,
+  shouldRevealFullSolution,
+  truthMultisetFromSentences,
+  correctIntersectionMultiset,
+} from './fallacyGuessUtils';
 import styles from './RoundAnalysisModal.module.scss';
 import shared from './trialShared.module.scss';
 import { uiFont } from '../uiFont';
 
+export type { FallacyGuessSession, GuessPayload, GuessRecord } from './fallacyGuessTypes';
+export { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './fallacyGuessTypes';
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
-
-export type GuessPayload =
-  | { type: 'picks'; picks: { sentenceId: string; fallacyId: string }[] }
-  | { type: 'no_fallacies' };
-
-export type GuessRecord =
-  | {
-      kind: 'multi';
-      npcRoundId: string;
-      picks: { sentenceId: string; fallacyId: string }[];
-      outcome: 'perfect' | 'partial' | 'none';
-      missedPairs: { sentenceId: string; fallacy: LogicalFallacy }[];
-    }
-  | {
-      kind: 'no_fallacies';
-      npcRoundId: string;
-      correct: boolean;
-      actualFallacies: LogicalFallacy[];
-    };
 
 export type AnalysisTarget =
   | { kind: 'npc'; round: NpcRoundEntry }
@@ -53,9 +49,9 @@ interface RoundAnalysisModalProps {
   allFallacies: LogicalFallacy[];
   fallacyById: Map<string, LogicalFallacy>;
   speakerName: string;
-  /** True when the player has an active turn (choosing / confirming). */
+  /** True when the player may still submit for this analysis target. */
   canGuess: boolean;
-  existingGuess: GuessRecord | null;
+  guessSession: FallacyGuessSession | null;
   onGuess: (payload: GuessPayload) => void;
   onClose: () => void;
 }
@@ -104,7 +100,19 @@ function joinFallacyLabels(nodes: React.ReactNode[]): React.ReactNode[] {
   return nodes.reduce<React.ReactNode[]>((acc, el, i) => (i === 0 ? [el] : [...acc, ', ', el]), []);
 }
 
-function GuessResultBanner({ guess, statement }: { guess: GuessRecord; statement: Statement }) {
+function GuessResultBanner({
+  guess,
+  statement,
+  spoilerSafe,
+  shouldRevealFullSolution,
+  fallacyById,
+}: {
+  guess: GuessRecord;
+  statement: Statement;
+  spoilerSafe: boolean;
+  shouldRevealFullSolution: boolean;
+  fallacyById: Map<string, LogicalFallacy>;
+}) {
   const sentenceIndex = (sentenceId: string) =>
     Math.max(
       0,
@@ -135,11 +143,20 @@ function GuessResultBanner({ guess, statement }: { guess: GuessRecord; statement
             <div>
               <p className={styles.trialGuessResultHeadline}>Incorrect</p>
               <p className={styles.trialGuessResultBody}>
-                This statement does contain logical fallacies:{' '}
-                {joinFallacyLabels(
-                  guess.actualFallacies.map((f) => <strong key={f.id}>{f.label}</strong>),
+                {spoilerSafe && !shouldRevealFullSolution ? (
+                  <>
+                    This statement still contains logical fallacies. Try again if you have attempts
+                    left.
+                  </>
+                ) : (
+                  <>
+                    This statement does contain logical fallacies:{' '}
+                    {joinFallacyLabels(
+                      guess.actualFallacies.map((f) => <strong key={f.id}>{f.label}</strong>),
+                    )}
+                    .
+                  </>
                 )}
-                .
               </p>
             </div>
           </>
@@ -149,6 +166,10 @@ function GuessResultBanner({ guess, statement }: { guess: GuessRecord; statement
   }
 
   const { outcome, missedPairs } = guess;
+  const truth = truthMultisetFromSentences(statement.sentences);
+  const correctThisAttempt = multisetToPairList(
+    correctIntersectionMultiset(truth, guessMultisetFromPicks(guess.picks)),
+  );
 
   if (outcome === 'perfect') {
     return (
@@ -165,53 +186,97 @@ function GuessResultBanner({ guess, statement }: { guess: GuessRecord; statement
   }
 
   if (outcome === 'partial') {
+    const showSpoilerSafePartial = spoilerSafe && !shouldRevealFullSolution;
     return (
       <div className={cn(styles.trialGuessResult, styles.partial)}>
         <span className={styles.trialGuessResultIcon}>◆</span>
         <div>
           <p className={styles.trialGuessResultHeadline}>Partially correct</p>
-          <p className={styles.trialGuessResultBody}>
-            You found at least one fallacy correctly, but some selections were wrong or some
-            fallacies were missed.
-          </p>
-          {missedPairs.length > 0 && (
-            <p className={styles.trialGuessResultBody}>
-              Missed:{' '}
-              {joinFallacyLabels(
-                missedPairs.map((mp, i) => (
-                  <strong key={`${mp.sentenceId}-${mp.fallacy.id}-${i}`}>
-                    {mp.fallacy.label} (sentence {sentenceIndex(mp.sentenceId)})
-                  </strong>
-                )),
+          {showSpoilerSafePartial ? (
+            <>
+              <p className={styles.trialGuessResultBody}>
+                Some of your selections matched. Confirmed for this attempt:
+              </p>
+              <p className={styles.trialGuessResultBody}>
+                Confirmed for this attempt:{' '}
+                {joinFallacyLabels(
+                  correctThisAttempt.map((p, i) => {
+                    const f = fallacyById.get(p.fallacyId);
+                    if (!f) return null;
+                    return (
+                      <strong key={`${p.sentenceId}-${p.fallacyId}-${i}`}>
+                        {f.label} (sentence {sentenceIndex(p.sentenceId)})
+                      </strong>
+                    );
+                  }),
+                )}
+                .
+              </p>
+              <p className={styles.trialGuessResultBody}>
+                Other selections were not confirmed. You can try again if you have attempts left.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className={styles.trialGuessResultBody}>
+                You found at least one fallacy correctly, but some selections were wrong or some
+                fallacies were missed.
+              </p>
+              {missedPairs.length > 0 && (
+                <p className={styles.trialGuessResultBody}>
+                  Missed:{' '}
+                  {joinFallacyLabels(
+                    missedPairs.map((mp, i) => (
+                      <strong key={`${mp.sentenceId}-${mp.fallacy.id}-${i}`}>
+                        {mp.fallacy.label} (sentence {sentenceIndex(mp.sentenceId)})
+                      </strong>
+                    )),
+                  )}
+                  .
+                </p>
               )}
-              .
-            </p>
+            </>
           )}
         </div>
       </div>
     );
   }
 
+  const showSpoilerSafeNone = spoilerSafe && !shouldRevealFullSolution;
+
   return (
     <div className={cn(styles.trialGuessResult, styles.wrong)}>
       <span className={styles.trialGuessResultIcon}>✗</span>
       <div>
         <p className={styles.trialGuessResultHeadline}>Incorrect</p>
-        <p className={styles.trialGuessResultBody}>
-          None of your selections matched a logical fallacy in the right place.
-        </p>
-        {missedPairs.length > 0 && (
-          <p className={styles.trialGuessResultBody}>
-            The statement contains:{' '}
-            {joinFallacyLabels(
-              missedPairs.map((mp, i) => (
-                <strong key={`${mp.sentenceId}-${mp.fallacy.id}-${i}`}>
-                  {mp.fallacy.label} (sentence {sentenceIndex(mp.sentenceId)})
-                </strong>
-              )),
+        {showSpoilerSafeNone ? (
+          <>
+            <p className={styles.trialGuessResultBody}>
+              None of your selections matched a logical fallacy in the right place.
+            </p>
+            <p className={styles.trialGuessResultBody}>
+              You can try again if you have attempts left.
+            </p>
+          </>
+        ) : (
+          <>
+            <p className={styles.trialGuessResultBody}>
+              None of your selections matched a logical fallacy in the right place.
+            </p>
+            {missedPairs.length > 0 && (
+              <p className={styles.trialGuessResultBody}>
+                The statement contains:{' '}
+                {joinFallacyLabels(
+                  missedPairs.map((mp, i) => (
+                    <strong key={`${mp.sentenceId}-${mp.fallacy.id}-${i}`}>
+                      {mp.fallacy.label} (sentence {sentenceIndex(mp.sentenceId)})
+                    </strong>
+                  )),
+                )}
+                .
+              </p>
             )}
-            .
-          </p>
+          </>
         )}
       </div>
     </div>
@@ -221,17 +286,6 @@ function GuessResultBanner({ guess, statement }: { guess: GuessRecord; statement
 // ---------------------------------------------------------------------------
 // NPC round analysis view
 // ---------------------------------------------------------------------------
-
-function picksToBySentence(
-  picks: { sentenceId: string; fallacyId: string }[],
-): Record<string, string[]> {
-  const acc: Record<string, string[]> = {};
-  for (const p of picks) {
-    if (!acc[p.sentenceId]) acc[p.sentenceId] = [];
-    if (!acc[p.sentenceId].includes(p.fallacyId)) acc[p.sentenceId].push(p.fallacyId);
-  }
-  return acc;
-}
 
 function flattenPicks(
   bySentence: Record<string, string[]>,
@@ -251,12 +305,27 @@ function uniqueFallacyIdsFromPicks(picks: { sentenceId: string; fallacyId: strin
   return Array.from(s);
 }
 
+function countIdInRow(ids: string[] | undefined, id: string): number {
+  return (ids ?? []).filter((x) => x === id).length;
+}
+
+/** Marks each pick pill as pinned when it consumes the multiset `pinnedRow` left-to-right. */
+function pinnedPickFlags(pickIds: string[], pinnedRow: string[]): boolean[] {
+  const bank = [...pinnedRow];
+  return pickIds.map((fid) => {
+    const i = bank.indexOf(fid);
+    if (i < 0) return false;
+    bank.splice(i, 1);
+    return true;
+  });
+}
+
 function NpcRoundAnalysis({
   statement,
   allFallacies,
   fallacyById,
   canGuess,
-  existingGuess,
+  guessSession,
   onGuess,
   onNoFallaciesRequest,
 }: {
@@ -264,40 +333,93 @@ function NpcRoundAnalysis({
   allFallacies: LogicalFallacy[];
   fallacyById: Map<string, LogicalFallacy>;
   canGuess: boolean;
-  existingGuess: GuessRecord | null;
+  guessSession: FallacyGuessSession | null;
   onGuess: (payload: GuessPayload) => void;
   onNoFallaciesRequest: () => void;
 }) {
   const [selectedSentenceId, setSelectedSentenceId] = useState<string | null>(null);
   const [bySentence, setBySentence] = useState<Record<string, string[]>>({});
 
-  useEffect(() => {
-    if (existingGuess?.kind === 'multi') {
-      setBySentence(picksToBySentence(existingGuess.picks));
-    } else if (!existingGuess) {
-      setBySentence({});
-    }
-  }, [existingGuess]);
+  const lastAttempt = guessSession?.attempts[guessSession.attempts.length - 1] ?? null;
+  const attemptsUsed = guessSession?.attempts.length ?? 0;
+  const maxAttempts = guessSession?.maxAttempts ?? DEFAULT_MAX_ANALYSIS_ATTEMPTS;
+  const hasAnyAttempt = attemptsUsed > 0;
+  const revealFull = !!(guessSession && shouldRevealFullSolution(guessSession));
+  const terminalSuccess =
+    lastAttempt &&
+    (lastAttempt.kind === 'no_fallacies'
+      ? lastAttempt.correct
+      : lastAttempt.kind === 'multi' && lastAttempt.outcome === 'perfect');
+  const showAllTruthPills = !!(revealFull || terminalSuccess);
+  const spoilerSafeBanner = !revealFull;
 
-  const hasGuessed = existingGuess !== null;
-  const wasNoFallaciesGuess = existingGuess?.kind === 'no_fallacies';
+  const truth = useMemo(() => truthMultisetFromSentences(statement.sentences), [statement]);
+  const pinnedMultiset = useMemo(
+    () => pinnedMultisetFromAttempts(truth, guessSession?.attempts ?? []),
+    [truth, guessSession],
+  );
+  const pinnedBySentence = useMemo(
+    () => pairListToBySentence(multisetToPairList(pinnedMultiset)),
+    [pinnedMultiset],
+  );
+
+  useEffect(() => {
+    if (!guessSession || guessSession.attempts.length === 0) {
+      setBySentence({});
+      return;
+    }
+    const last = guessSession.attempts[guessSession.attempts.length - 1]!;
+    const rf = shouldRevealFullSolution(guessSession);
+    const termOk =
+      last.kind === 'no_fallacies'
+        ? last.correct
+        : last.kind === 'multi' && last.outcome === 'perfect';
+
+    if (canGuess) {
+      const pinned = pinnedMultisetFromAttempts(
+        truthMultisetFromSentences(statement.sentences),
+        guessSession.attempts,
+      );
+      setBySentence(pairListToBySentence(multisetToPairList(pinned)));
+      return;
+    }
+
+    if (rf || termOk) {
+      if (last.kind === 'multi') {
+        setBySentence(picksToBySentence(last.picks));
+      } else {
+        setBySentence({});
+      }
+      return;
+    }
+
+    const pinned = pinnedMultisetFromAttempts(
+      truthMultisetFromSentences(statement.sentences),
+      guessSession.attempts,
+    );
+    setBySentence(pairListToBySentence(multisetToPairList(pinned)));
+  }, [guessSession, canGuess, truth]);
 
   const totalPickCount = useMemo(() => flattenPicks(bySentence).length, [bySentence]);
 
   const handleSentenceClick = (s: Sentence) => {
-    if (hasGuessed || !canGuess) return;
+    if (!canGuess) return;
     setSelectedSentenceId(s.id === selectedSentenceId ? null : s.id);
   };
 
   const handleFallacySelect = useCallback(
     (fallacyId: string) => {
-      if (!selectedSentenceId || hasGuessed) return;
+      if (!selectedSentenceId || !canGuess) return;
       setBySentence((prev) => {
         const sid = selectedSentenceId;
         const cur = prev[sid] ?? [];
+        const pinnedRow = pinnedBySentence[sid] ?? [];
         const idx = cur.indexOf(fallacyId);
         if (idx >= 0) {
-          const next = cur.filter((id) => id !== fallacyId);
+          if (countIdInRow(cur, fallacyId) <= countIdInRow(pinnedRow, fallacyId)) {
+            return prev;
+          }
+          const next = cur.filter((_, i) => i !== idx);
           const copy = { ...prev };
           if (next.length === 0) delete copy[sid];
           else copy[sid] = next;
@@ -307,7 +429,7 @@ function NpcRoundAnalysis({
         return { ...prev, [sid]: [...cur, fallacyId] };
       });
     },
-    [hasGuessed, selectedSentenceId],
+    [canGuess, selectedSentenceId, pinnedBySentence],
   );
 
   const handleSubmitGuess = () => {
@@ -322,35 +444,59 @@ function NpcRoundAnalysis({
 
   const selectedIdsForPicker = selectedSentenceId ? (bySentence[selectedSentenceId] ?? []) : [];
 
-  const showReadOnlyPicker =
-    hasGuessed &&
-    ((existingGuess!.kind === 'multi' && existingGuess!.outcome !== 'perfect') ||
-      (existingGuess!.kind === 'no_fallacies' && !existingGuess!.correct));
-
   const readOnlySelectedIds =
-    existingGuess?.kind === 'multi' ? uniqueFallacyIdsFromPicks(existingGuess.picks) : [];
+    lastAttempt?.kind === 'multi' ? uniqueFallacyIdsFromPicks(lastAttempt.picks) : [];
+  const wasNoFallaciesGuess = lastAttempt?.kind === 'no_fallacies';
+
+  const showReadOnlyPicker =
+    !canGuess &&
+    hasAnyAttempt &&
+    revealFull &&
+    lastAttempt &&
+    ((lastAttempt.kind === 'multi' && lastAttempt.outcome !== 'perfect') ||
+      (lastAttempt.kind === 'no_fallacies' && !lastAttempt.correct));
 
   return (
     <div className={styles.trialAnalysisBody}>
-      {!hasGuessed && canGuess && (
+      <p className={styles.trialAnalysisHint}>
+        {maxAttempts} attempts per analysis.{' '}
+        {hasAnyAttempt
+          ? `Attempt ${attemptsUsed} of ${maxAttempts} — ${Math.max(0, maxAttempts - attemptsUsed)} remaining.`
+          : `You have up to ${maxAttempts} attempts.`}
+      </p>
+
+      {!hasAnyAttempt && canGuess && (
         <p className={styles.trialAnalysisHint}>
           Select a sentence, then pick up to two logical fallacies (toggle to remove). You can tag
           multiple sentences before submitting — or use &quot;No Fallacies&quot; if the statement is
           clean.
         </p>
       )}
-      {!hasGuessed && !canGuess && (
+      {!canGuess && !hasAnyAttempt && (
         <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
           Fallacy analysis is available during your turn.
         </p>
       )}
 
+      {lastAttempt && (
+        <GuessResultBanner
+          guess={lastAttempt}
+          statement={statement}
+          spoilerSafe={spoilerSafeBanner}
+          shouldRevealFullSolution={revealFull}
+          fallacyById={fallacyById}
+        />
+      )}
+
       <div className={styles.trialSentenceList}>
         {statement.sentences.map((s) => {
           const isSelected = selectedSentenceId === s.id;
-          const revealFallacy = s.logicalFallacies.length > 0 && hasGuessed;
-
           const playerPickIds = bySentence[s.id] ?? [];
+          const pinnedIds = pinnedBySentence[s.id] ?? [];
+          const showTruthRow = showAllTruthPills && s.logicalFallacies.length > 0;
+          const pinnedFlags = pinnedPickFlags(playerPickIds, pinnedIds);
+          const readonlyPinnedFlags =
+            !canGuess && playerPickIds.length > 0 ? pinnedPickFlags(playerPickIds, pinnedIds) : [];
 
           return (
             <button
@@ -358,9 +504,9 @@ function NpcRoundAnalysis({
               type="button"
               className={cn(styles.trialSentenceCard, {
                 [styles.selected]: isSelected,
-                [styles.clickable]: canGuess && !hasGuessed,
-                [styles.static]: !canGuess || hasGuessed,
-                [styles.hasFallacyRevealed]: revealFallacy,
+                [styles.clickable]: canGuess,
+                [styles.static]: !canGuess,
+                [styles.hasFallacyRevealed]: showTruthRow,
               })}
               onClick={(e) => {
                 e.stopPropagation();
@@ -368,13 +514,21 @@ function NpcRoundAnalysis({
               }}
             >
               <p className={styles.trialSentenceText}>{s.text}</p>
-              {!hasGuessed && canGuess && playerPickIds.length > 0 && (
+              {canGuess && playerPickIds.length > 0 && (
                 <div className={styles.trialPlayerPickRow}>
-                  {playerPickIds.map((fid) => {
+                  {playerPickIds.map((fid, pillIdx) => {
                     const f = allFallacies.find((x) => x.id === fid);
                     if (!f) return null;
+                    const isPinned = pinnedFlags[pillIdx] ?? false;
                     return (
-                      <span key={fid} className={styles.trialPlayerPickPill} title={f.description}>
+                      <span
+                        key={`${fid}-${pillIdx}`}
+                        className={cn(
+                          styles.trialPlayerPickPill,
+                          isPinned && styles.trialPinnedPill,
+                        )}
+                        title={f.description}
+                      >
                         <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
                         {f.label}
                       </span>
@@ -382,7 +536,29 @@ function NpcRoundAnalysis({
                   })}
                 </div>
               )}
-              {revealFallacy && (
+              {!canGuess && playerPickIds.length > 0 && !showTruthRow && (
+                <div className={styles.trialPlayerPickRow}>
+                  {playerPickIds.map((fid, pillIdx) => {
+                    const f = allFallacies.find((x) => x.id === fid);
+                    if (!f) return null;
+                    const isPinned = readonlyPinnedFlags[pillIdx] ?? false;
+                    return (
+                      <span
+                        key={`${fid}-${pillIdx}`}
+                        className={cn(
+                          styles.trialPlayerPickPill,
+                          isPinned && styles.trialFallacyPill,
+                        )}
+                        title={f.description}
+                      >
+                        <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
+                        {f.label}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+              {showTruthRow && (
                 <div className={styles.trialPlayerPickRow}>
                   {s.logicalFallacies.map((f: LogicalFallacyScenario, i) => {
                     const fallacy = fallacyById.get(f.id);
@@ -405,7 +581,7 @@ function NpcRoundAnalysis({
         })}
       </div>
 
-      {canGuess && !hasGuessed && selectedSentenceId && (
+      {canGuess && selectedSentenceId && (
         <div className={styles.trialFallacyPickerSection}>
           <p className={styles.trialAnalysisHint}>
             Choose fallacies for this sentence (up to two, click again to remove):
@@ -418,7 +594,7 @@ function NpcRoundAnalysis({
         </div>
       )}
 
-      {canGuess && !hasGuessed && totalPickCount > 0 && (
+      {canGuess && totalPickCount > 0 && (
         <div className={styles.trialAnalysisSubmitRow}>
           <button
             type="button"
@@ -430,7 +606,7 @@ function NpcRoundAnalysis({
         </div>
       )}
 
-      {canGuess && !hasGuessed && (
+      {canGuess && (
         <div className={styles.trialNoFallaciesRow}>
           <button type="button" className={styles.trialNoFallaciesBtn} onClick={handleNoFallacies}>
             No Fallacies in this statement
@@ -440,7 +616,9 @@ function NpcRoundAnalysis({
 
       {showReadOnlyPicker && (
         <div className={styles.trialFallacyPickerSection}>
-          <p className={cn(styles.trialAnalysisHint, styles.disabled)}>Your guess (read-only):</p>
+          <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
+            Your last guess (read-only):
+          </p>
           <FallacyPicker
             fallacies={allFallacies}
             selectedIds={wasNoFallaciesGuess ? [] : readOnlySelectedIds}
@@ -449,8 +627,6 @@ function NpcRoundAnalysis({
           />
         </div>
       )}
-
-      {hasGuessed && <GuessResultBanner guess={existingGuess!} statement={statement} />}
     </div>
   );
 }
@@ -586,8 +762,8 @@ function NoFallaciesConfirmDialog({
       >
         <p className={styles.trialConfirmTitle}>No Fallacies?</p>
         <p className={styles.trialConfirmBody}>
-          You're about to submit that this statement contains no logical fallacies. This cannot be
-          undone.
+          You&apos;re about to submit that this statement contains no logical fallacies. This uses
+          one attempt and cannot be undone.
         </p>
         <div className={styles.trialConfirmActions}>
           <button
@@ -620,11 +796,52 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   fallacyById,
   speakerName,
   canGuess,
-  existingGuess,
+  guessSession,
   onGuess,
   onClose,
 }) => {
   const [showNoFallaciesConfirm, setShowNoFallaciesConfirm] = useState(false);
+  const modalScrollRef = useRef<HTMLDivElement>(null);
+  const analysisTargetKeyRef = useRef<string>('');
+  const prevAttemptsLenRef = useRef(0);
+
+  const analysisTargetKey =
+    target.kind === 'player' ? '' : target.kind === 'npc' ? target.round.id : target.statement.id;
+
+  useEffect(() => {
+    if (target.kind === 'player' || !analysisTargetKey) return;
+    const n = guessSession?.attempts.length ?? 0;
+    if (analysisTargetKeyRef.current !== analysisTargetKey) {
+      analysisTargetKeyRef.current = analysisTargetKey;
+      prevAttemptsLenRef.current = n;
+      return;
+    }
+
+    const prevLen = prevAttemptsLenRef.current;
+    prevAttemptsLenRef.current = n;
+    if (n <= prevLen) return;
+
+    let rafOuter = 0;
+    let rafInner = 0;
+    let scrollTimeout: ReturnType<typeof setTimeout> | undefined;
+
+    const runScroll = () => {
+      const el = modalScrollRef.current;
+      if (el) el.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    rafOuter = requestAnimationFrame(() => {
+      rafInner = requestAnimationFrame(() => {
+        scrollTimeout = window.setTimeout(runScroll, 48);
+      });
+    });
+
+    return () => {
+      cancelAnimationFrame(rafOuter);
+      cancelAnimationFrame(rafInner);
+      if (scrollTimeout !== undefined) window.clearTimeout(scrollTimeout);
+    };
+  }, [guessSession?.attempts.length, analysisTargetKey, target.kind]);
 
   const handleNoFallaciesConfirm = () => {
     onGuess({ type: 'no_fallacies' });
@@ -698,7 +915,11 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
           </button>
         </div>
 
-        <ScrollFadeContainer isModal className={styles.trialModalContent}>
+        <ScrollFadeContainer
+          isModal
+          className={styles.trialModalContent}
+          scrollRef={modalScrollRef}
+        >
           {target.kind === 'player' ? (
             <PlayerRoundAnalysis option={target.chosenOption} fallacyById={fallacyById} />
           ) : (
@@ -707,7 +928,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               allFallacies={allFallacies}
               fallacyById={fallacyById}
               canGuess={canGuess}
-              existingGuess={existingGuess}
+              guessSession={guessSession}
               onGuess={onGuess}
               onNoFallaciesRequest={() => setShowNoFallaciesConfirm(true)}
             />
