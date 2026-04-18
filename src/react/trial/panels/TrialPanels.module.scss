@@ -296,6 +296,7 @@
   animation: debate-log-status-opacity-pulse 2.4s ease-in-out infinite;
 }
 
+/* Duration + buffer must stay in sync with `DEBATE_LOG_BODY_TRANSITION_MS` in `FeedbackPanel.tsx`. */
 .debateLogRoundBodyShell {
   display: grid;
   grid-template-rows: 0fr;

@@ -20,6 +20,9 @@ interface FeedbackPanelProps {
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
 }
 
+/** Match `grid-template-rows` transition on `.debateLogRoundBodyShell` (+ small buffer). */
+const DEBATE_LOG_BODY_TRANSITION_MS = 480;
+
 function roundExpandedDefault(
   roundIndex: number,
   gamePhase: ReturnType<typeof useTrialRoundWorkflow>['gamePhase'],
@@ -44,6 +47,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
     Partial<Record<string, boolean>>
   >({});
   const prevRoundIndexRef = useRef(wf.currentRoundIndex);
+  const prevScrollRoundIndexRef = useRef<number | null>(null);
 
   useEffect(() => {
     const container = feedbackScrollRef.current;
@@ -52,10 +56,14 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
     const n = wf.scenario.rounds.length;
     if (n === 0) return;
 
+    const prevIndex = prevScrollRoundIndexRef.current;
+    const currIndex = wf.currentRoundIndex;
+    /** After a round change, cards animate shrink/expand; wait before measuring. */
+    const indexChanged = prevIndex !== null && prevIndex !== currIndex;
+    const delayMs = indexChanged ? DEBATE_LOG_BODY_TRANSITION_MS : 0;
+
     const targetIndex =
-      wf.gamePhase === 'debate_complete' && wf.currentRoundIndex >= n
-        ? n - 1
-        : Math.min(wf.currentRoundIndex, n - 1);
+      wf.gamePhase === 'debate_complete' && currIndex >= n ? n - 1 : Math.min(currIndex, n - 1);
 
     const scrollToTarget = () => {
       const child = container.querySelector<HTMLElement>(
@@ -71,8 +79,13 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
       container.scrollBy({ top: scrollDelta, behavior: 'smooth' });
     };
 
-    const t = window.setTimeout(scrollToTarget, 0);
-    return () => window.clearTimeout(t);
+    const tid = window.setTimeout(() => {
+      requestAnimationFrame(scrollToTarget);
+    }, delayMs);
+
+    prevScrollRoundIndexRef.current = currIndex;
+
+    return () => window.clearTimeout(tid);
   }, [wf.currentRoundIndex, wf.gamePhase, wf.scenario.rounds.length]);
 
   useEffect(() => {
