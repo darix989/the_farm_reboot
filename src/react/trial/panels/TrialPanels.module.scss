@@ -185,38 +185,68 @@
 
 .debateLogRoundHeader {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 1rem;
+  min-width: 0;
 }
 
-.debateLogRoundMeta {
+.debateLogRoundLead {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem 0.75rem;
   min-width: 0;
   flex: 1;
+  align-items: center;
+  gap: 0.85rem 1rem;
 }
 
-.debateLogSideBadge {
+.debateLogRoundNumber {
+  flex-shrink: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.85rem, 2.8vw, 2.35rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ui-color-text-emphasis);
+}
+
+.debateLogRoundStack {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.debateLogRoundSideLine {
+  font-size: var(--ui-font-micro);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.debateLogRoundSideLineProp {
+  color: var(--ui-color-info-text);
+}
+
+.debateLogRoundSideLineOpp {
+  color: var(--ui-color-warning);
+}
+
+.debateLogRoundTypeLine {
+  font-family: Georgia, 'Times New Roman', serif;
   font-size: var(--ui-font-subtitle);
   font-weight: 600;
-  padding: 0.125rem 0.5rem;
-  border-radius: 0.25rem;
+  line-height: 1.2;
+  color: var(--ui-color-text-emphasis);
 }
 
-.debateLogSideProposition {
-  color: var(--ui-color-info-text);
-  border: 1px solid var(--ui-color-info-border-active);
-  background: var(--ui-color-info-bg);
-}
-
-.debateLogSideOpposition {
-  color: var(--ui-color-danger-text-soft);
-  border: 1px solid var(--ui-color-danger-border-active);
-  background: var(--ui-color-danger-bg-hover);
+.debateLogRoundHeaderEnd {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
 }
 
 .debateLogStatusActive,
@@ -226,6 +256,7 @@
   font-weight: 500;
   padding: 0.1rem 0.45rem;
   border-radius: 0.25rem;
+  text-transform: lowercase;
 }
 
 .debateLogStatusActive {
@@ -236,21 +267,14 @@
 
 .debateLogStatusUpcoming {
   color: var(--ui-color-text-muted);
-  border: 1px solid var(--ui-color-border-inner);
-  background: var(--ui-color-overlay-deep);
+  border: 1px dashed var(--ui-color-border-inner);
+  background: transparent;
 }
 
 .debateLogStatusCompleted {
   color: var(--ui-color-text-disabled);
   border: 1px solid var(--ui-color-border-fade);
   background: var(--ui-color-overlay-panel);
-}
-
-.debateLogRoundActions {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  flex-shrink: 0;
 }
 
 .debateLogAnalyzeGroup {
@@ -290,10 +314,15 @@
     background 0.15s ease-in-out,
     color 0.15s ease-in-out;
 
-  &:hover {
+  &:hover:not(:disabled) {
     border-color: var(--ui-color-info-border-active);
     background: var(--ui-color-info-bg);
     color: var(--ui-color-info-text);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
   }
 }
 

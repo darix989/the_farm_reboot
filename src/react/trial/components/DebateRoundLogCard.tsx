@@ -18,7 +18,6 @@ import {
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
-import { uiFont } from '../../uiFont';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -44,6 +43,8 @@ function showRealPlayerOptionCopy(
   const guessUnlocked = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
   return !opt.unlockCondition || (guessUnlocked && revealedLockedOptionIds.has(opt.id));
 }
+
+type DebateRoundStatus = 'active' | 'upcoming' | 'completed';
 
 function roundStatus(
   roundIndex: number,
@@ -71,14 +72,20 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   const bodyId = useId();
   const status = roundStatus(roundIndex, wf.gamePhase, wf.currentRoundIndex);
   const isUpcoming = status === 'upcoming';
-  const isActive = status === 'active';
 
-  const defaultExpanded = isActive;
+  const defaultExpanded = status === 'active';
   const effectiveExpanded = isUpcoming ? false : (expandOverride ?? defaultExpanded);
 
   const headerSide = sideForRoundHeader(debate, round);
-  const sideClass =
-    headerSide === 'proposition' ? styles.debateLogSideProposition : styles.debateLogSideOpposition;
+  const sideLineClass =
+    headerSide === 'proposition'
+      ? styles.debateLogRoundSideLineProp
+      : styles.debateLogRoundSideLineOpp;
+
+  const stackedSideLabel =
+    round.kind === 'player'
+      ? `${sideDisplayLabel(headerSide).toUpperCase()} · YOU`
+      : sideDisplayLabel(headerSide).toUpperCase();
 
   const isThisPlayerRound = wf.currentPlayerRound?.id === round.id && round.kind === 'player';
 
@@ -128,7 +135,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   const displayResponse = activeResponse ?? responseForCompleted;
 
   const statusLabel =
-    status === 'active' ? 'Active' : status === 'upcoming' ? 'Upcoming' : 'Completed';
+    status === 'active' ? 'active' : status === 'upcoming' ? 'upcoming' : 'completed';
 
   const analyzeNpc =
     round.kind === 'npc' && !isUpcoming ? (
@@ -218,19 +225,29 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
       ? statementText(resolvedOptionSentences(chosenOption, optionUnlocked))
       : '';
 
+  const roundNumDisplay = String(round.roundNumber).padStart(2, '0');
+
   return (
     <div className={styles.debateLogRound}>
       <div className={styles.debateLogRoundHeader}>
-        <div className={styles.debateLogRoundMeta}>
-          <span style={{ color: uiColor.textHint, fontSize: uiFont.body }}>
-            Round {round.roundNumber}
-          </span>
-          <span style={{ color: uiColor.textBody, fontSize: uiFont.body }}>
-            {statementTypeLabel(round.type)}
-          </span>
-          <span className={`${styles.debateLogSideBadge} ${sideClass}`}>
-            {sideDisplayLabel(headerSide)}
-          </span>
+        <div className={styles.debateLogRoundLead}>
+          <div className={styles.debateLogRoundNumber} aria-label={`Round ${round.roundNumber}`}>
+            {roundNumDisplay}
+          </div>
+          <div className={styles.debateLogRoundStack}>
+            <div className={`${styles.debateLogRoundSideLine} ${sideLineClass}`}>
+              {stackedSideLabel}
+            </div>
+            <div className={styles.debateLogRoundTypeLine}>{statementTypeLabel(round.type)}</div>
+          </div>
+        </div>
+
+        <div className={styles.debateLogRoundHeaderEnd}>
+          {analyzeRow.length > 0 && (
+            <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze statements">
+              {analyzeRow}
+            </div>
+          )}
           <span
             className={
               status === 'active'
@@ -242,25 +259,23 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
           >
             {statusLabel}
           </span>
-        </div>
-        <div className={styles.debateLogRoundActions}>
-          {analyzeRow.length > 0 && (
-            <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze statements">
-              {analyzeRow}
-            </div>
-          )}
-          {!isUpcoming && (
-            <button
-              type="button"
-              className={styles.debateLogExpandBtn}
-              aria-expanded={effectiveExpanded}
-              aria-controls={bodyId}
-              onClick={onExpandToggle}
-              title={effectiveExpanded ? 'Minimize' : 'Expand'}
-            >
-              {effectiveExpanded ? '▼' : '▶'}
-            </button>
-          )}
+          <button
+            type="button"
+            className={styles.debateLogExpandBtn}
+            aria-expanded={!isUpcoming && effectiveExpanded}
+            aria-controls={bodyId}
+            disabled={isUpcoming}
+            onClick={onExpandToggle}
+            title={
+              isUpcoming
+                ? 'Not available until this round starts'
+                : effectiveExpanded
+                  ? 'Minimize'
+                  : 'Expand'
+            }
+          >
+            {effectiveExpanded && !isUpcoming ? '▼' : '▶'}
+          </button>
         </div>
       </div>
 
