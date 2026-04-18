@@ -1,4 +1,5 @@
 @use './uiTypography' as ui-typography;
+@use './uiColors' as ui-colors;
 
 /* =========================================================================
    Minimal browser reset
@@ -34,6 +35,10 @@ button {
    ========================================================================= */
 
 /* `font-size` on `html` is set from `App` from the 16:9 stage width so `rem` tracks resolution. */
+html {
+  @include ui-colors.color-palette;
+}
+
 html,
 body,
 #root {
@@ -44,8 +49,8 @@ body,
 body {
   margin: 0;
   padding: 0;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #000000;
+  color: var(--ui-color-text-primary);
+  background-color: var(--ui-color-bg);
   font-family: Arial, Helvetica, sans-serif;
 }
 

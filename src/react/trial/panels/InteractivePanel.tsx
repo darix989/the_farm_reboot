@@ -13,6 +13,7 @@ import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/option
 import styles from './TrialPanels.module.scss';
 import shared from '../trialShared.module.scss';
 import { uiFont } from '../../uiFont';
+import { uiColor } from '../../uiColor';
 
 interface InteractiveFooter {
   submitLabel: string;
@@ -166,10 +167,10 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         return (
           <div
             className={shared.trialSectionBox}
-            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
+            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: uiColor.textBody }}
           >
-            <p style={{ color: 'rgba(255,255,255,0.50)' }}>Your choice (full text)</p>
-            <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>
+            <p style={{ color: uiColor.textHint }}>Your choice (full text)</p>
+            <p style={{ marginTop: '0.5rem', color: uiColor.textBody }}>
               {statementText(
                 resolvedOptionSentences(
                   opt,
@@ -180,11 +181,11 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
             <p
               style={{
                 marginTop: '1.5rem',
-                borderTop: '1px solid rgba(255,255,255,0.10)',
+                borderTop: `1px solid ${uiColor.borderFade}`,
                 paddingTop: '1rem',
                 fontSize: uiFont.body,
                 lineHeight: 1.375,
-                color: 'rgba(255,255,255,0.45)',
+                color: uiColor.textCaption,
               }}
             >
               Go back to change your selection, or confirm to lock it in. Confirming cannot be
@@ -223,14 +224,14 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         return (
           <div
             className={shared.trialSectionBox}
-            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
+            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: uiColor.textBody }}
           >
             <p>The debate is finished.</p>
             <p
               style={{
                 marginTop: '1rem',
                 fontSize: uiFont.body,
-                color: 'rgba(255,255,255,0.50)',
+                color: uiColor.textHint,
               }}
             >
               Final score:{' '}

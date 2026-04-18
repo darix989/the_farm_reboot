@@ -16,7 +16,7 @@ This document summarizes how **the_farm_reboot** is structured, how React and Ph
 | Bundler | Vite 6 (`vite/config.dev.mjs`, `vite/config.prod.mjs`) |
 | Language | TypeScript 5.7 (strict, `noUnusedLocals` / `noUnusedParameters`) |
 | Global UI state | Zustand (`src/store/gameStore.ts`) |
-| Styling | Plain CSS (`src/react/index.css`) — Tailwind has been removed |
+| Styling | SCSS — `src/react/index.scss` (global) + `*.module.scss` (per feature); shared **design tokens** for fonts (`uiTypography.scss` / `uiFont.ts`) and colors (`uiColors.scss` / `uiColor.ts`). Tailwind has been removed. |
 | Lint | ESLint 9 + TypeScript ESLint (`.eslintrc.cjs`) |
 
 ## How to run and build
@@ -49,6 +49,10 @@ src/
     scenes/             # Boot, Preloader, MainMenu, Game, Trial, GameOver
   react/
     AGENT.md            # React-layer guide (TrialUI, debate workflow)
+    uiTypography.scss   # @mixin font-scale → --ui-font-* on `.react-root`
+    uiFont.ts             # var(--ui-font-*) for inline styles in TSX
+    uiColors.scss         # @mixin color-palette → --ui-color-* on `html`
+    uiColor.ts            # var(--ui-color-*) for inline styles in TSX
     ReactApp.tsx        # Scene-based UI switch; loading gate on isGameReady
     ReactRoot.tsx       # Overlay aligned to Phaser canvas (resize sync)
     screens/            # Scene-keyed overlays (imported by ReactApp)
@@ -70,6 +74,16 @@ src/
     constants.ts        # PHASER_PARENT_ID = "phaser-parent"
     gameManager.ts      # Static helpers: switchScene, pause, whenReady, etc.
 ```
+
+## React UI design tokens (fonts and colors)
+
+React overlays share a small token system (mirrored SCSS + TypeScript so CSS modules and inline `style` stay aligned):
+
+- **Fonts** — [`src/react/uiTypography.scss`](src/react/uiTypography.scss) defines `@mixin font-scale`, which sets `--ui-font-*` custom properties. [`src/react/index.scss`](src/react/index.scss) applies it on **`.react-root`**. [`src/react/uiFont.ts`](src/react/uiFont.ts) exports `var(--ui-font-*)` strings for TSX.
+- **Colors** — [`src/react/uiColors.scss`](src/react/uiColors.scss) defines `@mixin color-palette` with `--ui-color-*` (neutrals, borders, brand accent, status colours). It is included on **`html`** in `index.scss` so `body` and all descendants inherit tokens. [`src/react/uiColor.ts`](src/react/uiColor.ts) exports `var(--ui-color-*)` for TSX (e.g. `trialHelpers.qualityColor`, panels).
+- **Per-file only** — colours or values used in a single SCSS module can stay as **`$variables` at the top** of that file instead of growing the global palette.
+
+Details and Trial-specific styling notes: [`src/react/AGENT.md`](src/react/AGENT.md).
 
 ## React ↔ Phaser integration
 
@@ -110,6 +124,7 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 
 ## Quick checklist for changes
 
+- New **shared UI colour or font step** → extend `uiColors.scss` / `uiColor.ts` or `uiTypography.scss` / `uiFont.ts`, then use `var(--ui-*)` or the TS mirrors in components.
 - New **overlay or menu** → `src/react/`, wire via `ReactApp.tsx` if scene-specific.
 - New **scene or game logic** → `src/phaser/scenes/` (and register in `main.ts`).
 - **Cross-layer signals** → `EventBus` + optional `gameStore` actions.

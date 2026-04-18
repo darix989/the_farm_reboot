@@ -26,8 +26,12 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `trial/components/StatementBlock.tsx` | Speaker label + statement text (+ optional inline analyse button). |
 | `trial/components/ScrollFadeContainer.tsx` | Wraps a scrollable div with top/bottom fade overlays; calls `useScrollFade` internally. |
 | `hooks/useGame.ts` | Utilities around the `GameManager` and the Zustand store. |
-| `index.scss` | Global base styles for the React layer (imported from `ReactApp.tsx`; no Tailwind). |
-| `*.module.scss` | Per-component styles (e.g. `trial/panels/TrialPanels.module.scss`, `trial/trialShared.module.scss`, `trial/roundAnalysisModal/RoundAnalysisModal.module.scss`). |
+| `index.scss` | Global base styles for the React layer (imported from `ReactApp.tsx`; no Tailwind). Applies `uiTypography.font-scale` on `.react-root` and `uiColors.color-palette` on `html`. |
+| `uiTypography.scss` | `@mixin font-scale` — sets `--ui-font-*` (consumed under `.react-root`). |
+| `uiFont.ts` | `uiFont` object: `var(--ui-font-*)` for inline `style` in TSX. |
+| `uiColors.scss` | `@mixin color-palette` — sets `--ui-color-*` on the element where the mixin is included (`html` in `index.scss`). |
+| `uiColor.ts` | `uiColor` object: `var(--ui-color-*)` for inline styles and helpers (e.g. `trialHelpers`). |
+| `*.module.scss` | Per-component styles (e.g. `trial/panels/TrialPanels.module.scss`, `trial/trialShared.module.scss`, `trial/roundAnalysisModal/RoundAnalysisModal.module.scss`). Prefer `var(--ui-color-*)` over raw hex/rgba for shared colours. |
 
 ---
 
@@ -257,14 +261,38 @@ Equivalent structure (conceptually; actual class names come from CSS modules suc
 
 ## CSS conventions
 
-- **Global** — [`index.scss`](index.scss): minimal reset, `#app` / overlay layout, `.react-root`. Imported by `ReactApp.tsx`.
-- **Trial UI** — CSS modules under `trial/` (e.g. `trial/panels/TrialPanels.module.scss`, `trial/trialShared.module.scss`, `trial/roundAnalysisModal/RoundAnalysisModal.module.scss`, `TrialLayout.module.scss`). Class names in source are camelCase (e.g. `trialScrollFadeWrap`); the compiled DOM may use hashed names.
+### Global entry (`index.scss`)
+
+- Minimal reset, `#app` / overlay layout, **`.react-root`** (React subtree).
+- **`@include ui-colors.color-palette` on `html`** — defines `--ui-color-*` for the whole document (including `body`). Use `var(--ui-color-*)` in any SCSS or plain CSS that loads after these rules.
+- **`@include ui-typography.font-scale` on `.react-root`** — defines `--ui-font-*` only under the overlay root so `rem` in typography tokens still tracks the same subtree as `App.tsx` stage sizing.
+- Imported by `ReactApp.tsx`.
+
+### Shared tokens (fonts and colours)
+
+| Mechanism | SCSS | TS / inline `style` |
+|-----------|------|---------------------|
+| Font scale | [`uiTypography.scss`](uiTypography.scss) — `@mixin font-scale` | [`uiFont.ts`](uiFont.ts) — `uiFont.body`, `uiFont.display`, etc. (`var(--ui-font-*)`) |
+| Colour palette | [`uiColors.scss`](uiColors.scss) — `@mixin color-palette` | [`uiColor.ts`](uiColor.ts) — `uiColor.textBody`, `uiColor.accent`, `uiColor.danger`, etc. (`var(--ui-color-*)`) |
+
+**When to use what**
+
+- In **`.module.scss`**, prefer `var(--ui-color-*)` and `var(--ui-font-*)` instead of duplicating hex/rgba or parallel `rem` ladders.
+- In **TSX** inline styles, import `uiFont` / `uiColor` so runtime values stay tied to the same custom properties.
+- **`trial/utils/trialHelpers.ts`** — `qualityColor` and `scoreColor` return `uiColor.*` entries (semantic: info / danger / neutrals), not raw literals.
+
+**File-local colours** — If a value is only used inside one module (one-off gradient stop, shadow, or layout tint), define **`$scssVariables` at the top** of that `.module.scss` and reference them below. Do not add a global `--ui-color-*` unless the same value appears in more than one place.
+
+### Trial and screens
+
+- **CSS modules** under `trial/`, `screens/`, etc. (e.g. `trial/panels/TrialPanels.module.scss`, `trial/trialShared.module.scss`, `trial/roundAnalysisModal/RoundAnalysisModal.module.scss`, `TrialLayout.module.scss`). Class names in source are camelCase (e.g. `trialScrollFadeWrap`); the compiled DOM may use hashed names.
+- **Trial panel chrome** — outer panels use `--ui-color-surface-trial-panel` (`uiColor.surfaceTrialPanel` in `TrialLayout.tsx`); inner areas and modals use the overlay/surface tokens in `uiColors.scss` (e.g. `--ui-color-surface-modal`, scroll-fade neutrals).
+
+### Other rules
+
 - Native scrollbars are hidden everywhere with `scrollbar-width: none` (Firefox) and `::-webkit-scrollbar { display: none }` (Chrome/Safari/Edge). Scrolling still works; only the track is hidden.
 - `scrollbar-gutter: stable` is **not** used (it would reserve space for a hidden bar).
-- Font sizes use `rem` values tied to a responsive root `font-size` set by `App.tsx` based on the canvas width (so `1rem` scales with the viewport).
-- Color palette: cyan `#22d3ee` / `#67e8f9` for positive/effective; red `#f87171` for fallacy/negative; white at various opacities for text hierarchy.
-- Panel background: `#3a3a3a` (from `TrialLayout`) + `rgba(0,0,0,0.25)` inner panel = effectively `~#2b2b2b`. Scroll fade overlays use `rgba(20,20,20,0.88)` to approximate this.
-- Modal background: `rgba(10,12,18,0.96)` with a blurred backdrop.
+- **Font sizing** — `rem` tracks a responsive root `font-size` set by `App.tsx` based on the canvas width. Typography tokens (`--ui-font-*`) are applied on `.react-root` alongside that scale.
 
 ---
 

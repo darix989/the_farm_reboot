@@ -17,6 +17,7 @@ import { optionFirstLine } from '../utils/optionUnlock';
 import styles from './TrialPanels.module.scss';
 import shared from '../trialShared.module.scss';
 import { uiFont } from '../../uiFont';
+import { uiColor } from '../../uiColor';
 
 interface FeedbackPanelProps {
   wf: ReturnType<typeof useTrialRoundWorkflow>;
@@ -50,10 +51,10 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
         {wf.scenario.introduction && (
           <div
             className={shared.trialSectionBox}
-            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: 'rgba(255,255,255,0.80)' }}
+            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: uiColor.textSecondary }}
           >
-            <p style={{ color: 'rgba(255,255,255,0.50)' }}>Introduction</p>
-            <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.90)' }}>
+            <p style={{ color: uiColor.textHint }}>Introduction</p>
+            <p style={{ marginTop: '0.5rem', color: uiColor.textEmphasis }}>
               {wf.scenario.introduction}
             </p>
           </div>
@@ -61,18 +62,16 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
 
         {wf.gamePhase !== 'debate_complete' && wf.currentRound && (
           <div className={shared.trialSectionBox}>
-            <p
-              style={{ fontSize: uiFont.body, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}
-            >
-              <span style={{ color: 'rgba(255,255,255,0.50)' }}>Round </span>
-              <span style={{ color: 'rgba(255,255,255,0.90)' }}>
+            <p style={{ fontSize: uiFont.body, lineHeight: 1.375, color: uiColor.textBody }}>
+              <span style={{ color: uiColor.textHint }}>Round </span>
+              <span style={{ color: uiColor.textEmphasis }}>
                 {wf.currentRound.roundNumber} / {wf.totalRounds}
               </span>
               <span
                 style={{
                   marginLeft: '1rem',
                   textTransform: 'capitalize',
-                  color: 'rgba(255,255,255,0.50)',
+                  color: uiColor.textHint,
                   fontSize: uiFont.body,
                 }}
               >
@@ -83,8 +82,8 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
         )}
 
         <div className={shared.trialSectionBox}>
-          <p style={{ fontSize: uiFont.body, lineHeight: 1.375, color: 'rgba(255,255,255,0.85)' }}>
-            <span style={{ color: 'rgba(255,255,255,0.50)' }}>Score </span>
+          <p style={{ fontSize: uiFont.body, lineHeight: 1.375, color: uiColor.textBody }}>
+            <span style={{ color: uiColor.textHint }}>Score </span>
             <span style={{ color: scoreColor(wf.totalScore) }}>
               {wf.totalScore > 0 ? '+' : ''}
               {wf.totalScore}
@@ -93,7 +92,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
               style={{
                 marginLeft: '0.75rem',
                 fontSize: uiFont.subtitle,
-                color: 'rgba(255,255,255,0.35)',
+                color: uiColor.textDisabled,
               }}
             >
               / {wf.maxPossibleScore}
@@ -106,7 +105,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
             className={shared.trialSectionBox}
             style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}
           >
-            <p style={{ color: 'rgba(255,255,255,0.50)' }}>History</p>
+            <p style={{ color: uiColor.textHint }}>History</p>
 
             {wf.scenario.rounds.slice(0, wf.currentRoundIndex).map((round) => {
               if (round.kind === 'npc') {

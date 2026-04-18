@@ -1,6 +1,7 @@
 import React from 'react';
 import shared from '../trialShared.module.scss';
 import { uiFont } from '../../uiFont';
+import { uiColor } from '../../uiColor';
 
 interface StatementBlockProps {
   /** Dim label shown above the text (e.g. "Opponent speaks:"). */
@@ -27,8 +28,8 @@ const StatementBlock: React.FC<StatementBlockProps> = ({ speakerLabel, text, ana
       }}
     >
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ color: 'rgba(255,255,255,0.45)' }}>{speakerLabel}</p>
-        <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>{text}</p>
+        <p style={{ color: uiColor.textCaption }}>{speakerLabel}</p>
+        <p style={{ marginTop: '0.5rem', color: uiColor.textBody }}>{text}</p>
       </div>
       {analyzeButton}
     </div>

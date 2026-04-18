@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--ui-color-overlay-modal);
   backdrop-filter: blur(4px);
   padding: 1.5rem;
   pointer-events: auto;
@@ -23,13 +23,13 @@
   max-width: 68rem;
   max-height: 88vh;
   border-radius: 0.75rem;
-  border: 2px solid rgba(255, 255, 255, 0.28);
-  background: rgba(10, 12, 18, 0.96);
+  border: 2px solid var(--ui-color-border-panel);
+  background: var(--ui-color-surface-modal);
   box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.7),
-    0 0 0 1px rgba(255, 255, 255, 0.06);
+    0 24px 64px var(--ui-color-shadow-deep),
+    0 0 0 1px var(--ui-color-border-faint);
   overflow: hidden;
-  color: white;
+  color: var(--ui-color-white);
 }
 
 /* =========================================================================
@@ -43,8 +43,8 @@
   gap: 1rem;
   flex-shrink: 0;
   padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(0, 0, 0, 0.35);
+  border-bottom: 1px solid var(--ui-color-border-muted);
+  background: var(--ui-color-overlay-medium);
 }
 
 .trialModalHeaderLeft {
@@ -64,14 +64,14 @@
 .trialModalTitle {
   font-size: var(--ui-font-body);
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--ui-color-text-title);
   margin: 0;
   line-height: 1.2;
 }
 
 .trialModalSubtitle {
   font-size: var(--ui-font-subtitle);
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--ui-color-text-caption);
   text-transform: capitalize;
   margin: 0.2rem 0 0;
 }
@@ -84,9 +84,9 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 0.375rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--ui-color-border-default);
+  background: var(--ui-color-glass-06);
+  color: var(--ui-color-text-muted-2);
   font-size: var(--ui-font-caption);
   cursor: pointer;
   transition:
@@ -94,8 +94,8 @@
     color 0.15s ease-in-out;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.95);
+    background: var(--ui-color-glass-12);
+    color: var(--ui-color-text-title);
   }
 }
 
@@ -128,11 +128,11 @@
 
 .trialAnalysisHint {
   font-size: var(--ui-font-body);
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--ui-color-text-subtle);
   margin: 0;
 
   &.disabled {
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--ui-color-text-ghost);
     font-style: italic;
   }
 }
@@ -158,13 +158,13 @@
   gap: 0.75rem;
   padding-top: 0.75rem;
   margin-top: 0.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--ui-color-border-hairline);
 
   &::before {
     content: 'or';
     flex-shrink: 0;
     font-size: var(--ui-font-label);
-    color: rgba(255, 255, 255, 0.3);
+    color: var(--ui-color-text-ghost);
     font-style: italic;
   }
 }
@@ -174,9 +174,9 @@
   box-sizing: border-box;
   padding: 0.75rem 1rem;
   background: transparent;
-  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border: 1px dashed var(--ui-color-border-dashed);
   border-radius: 0.375rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: var(--ui-color-text-subtle);
   font-size: var(--ui-font-control);
   cursor: pointer;
   text-align: center;
@@ -186,8 +186,8 @@
   pointer-events: auto;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.5);
-    color: rgba(255, 255, 255, 0.85);
+    border-color: var(--ui-color-border-dashed-hover);
+    color: var(--ui-color-text-body);
   }
 }
 
@@ -204,14 +204,14 @@
 .trialSentenceCard {
   width: 100%;
   border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--ui-color-border-default);
+  background: var(--ui-color-overlay-subtle);
   padding: 0.875rem 1rem;
   text-align: left;
   transition:
     border-color 0.15s ease-in-out,
     color 0.15s ease-in-out;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--ui-color-text-body);
 
   &.static {
     cursor: default;
@@ -226,21 +226,21 @@
     cursor: pointer;
 
     &:hover {
-      border-color: rgba(6, 182, 212, 0.7);
-      color: #a5f3fc;
+      border-color: var(--ui-color-info-border-active);
+      color: var(--ui-color-info-text);
     }
   }
 
   &.selected {
-    border-color: rgba(6, 182, 212, 0.8);
-    background: rgba(6, 182, 212, 0.1);
-    box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.3);
-    color: #a5f3fc;
+    border-color: var(--ui-color-info-border-strong);
+    background: var(--ui-color-info-bg-soft);
+    box-shadow: 0 0 0 1px var(--ui-color-info-ring);
+    color: var(--ui-color-info-text);
   }
 
   &.hasFallacyRevealed {
-    border-color: rgba(248, 113, 113, 0.45);
-    background: rgba(248, 113, 113, 0.07);
+    border-color: var(--ui-color-danger-border);
+    background: var(--ui-color-danger-bg-faint);
   }
 }
 
@@ -260,8 +260,8 @@
   flex-direction: column;
   gap: 0.875rem;
   border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--ui-color-border-muted);
+  background: var(--ui-color-overlay-card);
   padding: 1rem;
 }
 
@@ -281,8 +281,8 @@
   align-items: center;
   gap: 0.35rem;
   border-radius: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--ui-color-border-default);
+  background: var(--ui-color-overlay-muted);
   padding: 0.625rem 0.5rem;
   cursor: pointer;
   transition:
@@ -291,14 +291,14 @@
   text-align: center;
 
   &:hover {
-    border-color: rgba(6, 182, 212, 0.6);
-    background: rgba(6, 182, 212, 0.08);
+    border-color: var(--ui-color-info-border-hover);
+    background: var(--ui-color-info-bg-faint);
   }
 
   &.selected {
-    border-color: rgba(6, 182, 212, 0.85);
-    background: rgba(6, 182, 212, 0.15);
-    box-shadow: 0 0 0 1px rgba(6, 182, 212, 0.35);
+    border-color: var(--ui-color-info-border-max);
+    background: var(--ui-color-info-bg-strong);
+    box-shadow: 0 0 0 1px var(--ui-color-info-ring-strong);
   }
 
   &:disabled {
@@ -306,8 +306,8 @@
     opacity: 0.85;
 
     &:hover {
-      border-color: rgba(255, 255, 255, 0.18);
-      background: rgba(0, 0, 0, 0.3);
+      border-color: var(--ui-color-border-default);
+      background: var(--ui-color-overlay-muted);
     }
   }
 }
@@ -328,7 +328,7 @@
 .trialFallacyItemLabel {
   font-size: var(--ui-font-caption);
   line-height: 1.3;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--ui-color-text-secondary);
   word-break: break-word;
 }
 
@@ -345,41 +345,41 @@
   padding: 1rem 1.125rem;
 
   &.correct {
-    border-color: rgba(34, 197, 94, 0.45);
-    background: rgba(34, 197, 94, 0.09);
+    border-color: var(--ui-color-success-border);
+    background: var(--ui-color-success-bg-faint);
 
     .trialGuessResultIcon {
-      color: #4ade80;
+      color: var(--ui-color-success);
     }
 
     .trialGuessResultHeadline {
-      color: #4ade80;
+      color: var(--ui-color-success);
     }
   }
 
   &.wrong {
-    border-color: rgba(248, 113, 113, 0.45);
-    background: rgba(248, 113, 113, 0.09);
+    border-color: var(--ui-color-danger-border);
+    background: var(--ui-color-danger-bg-soft);
 
     .trialGuessResultIcon {
-      color: #f87171;
+      color: var(--ui-color-danger);
     }
 
     .trialGuessResultHeadline {
-      color: #f87171;
+      color: var(--ui-color-danger);
     }
   }
 
   &.partial {
-    border-color: rgba(234, 179, 8, 0.5);
-    background: rgba(234, 179, 8, 0.08);
+    border-color: var(--ui-color-warning-border);
+    background: var(--ui-color-warning-bg-faint);
 
     .trialGuessResultIcon {
-      color: #facc15;
+      color: var(--ui-color-warning);
     }
 
     .trialGuessResultHeadline {
-      color: #facc15;
+      color: var(--ui-color-warning);
     }
   }
 }
@@ -399,7 +399,7 @@
 .trialGuessResultBody {
   font-size: var(--ui-font-body);
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--ui-color-text-muted);
   margin: 0;
 }
 
@@ -419,18 +419,18 @@
   align-items: center;
   gap: 0.35rem;
   border-radius: 999px;
-  border: 1px solid rgba(6, 182, 212, 0.45);
-  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid var(--ui-color-info-border);
+  background: var(--ui-color-info-bg-soft);
   padding: 0.2rem 0.65rem 0.2rem 0.45rem;
   font-size: var(--ui-font-label);
-  color: rgba(165, 243, 252, 0.95);
+  color: var(--ui-color-info-text-soft);
   cursor: default;
 }
 
 .trialPinnedPill {
-  border-color: rgba(74, 222, 128, 0.55);
-  background: rgba(34, 197, 94, 0.12);
-  color: rgba(187, 247, 208, 0.95);
+  border-color: var(--ui-color-success-border-hover);
+  background: var(--ui-color-success-bg);
+  color: var(--ui-color-success-text-soft);
 }
 
 .trialFallacyPill {
@@ -438,11 +438,11 @@
   align-items: center;
   gap: 0.35rem;
   border-radius: 999px;
-  border: 1px solid rgba(248, 113, 113, 0.4);
-  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid var(--ui-color-danger-border-soft);
+  background: var(--ui-color-danger-bg);
   padding: 0.2rem 0.65rem 0.2rem 0.45rem;
   font-size: var(--ui-font-label);
-  color: rgba(255, 180, 180, 0.9);
+  color: var(--ui-color-danger-text-soft);
   cursor: help;
 }
 
@@ -466,7 +466,7 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: rgba(5, 8, 15, 0.82);
+  background: var(--ui-color-overlay-confirm);
   backdrop-filter: blur(6px);
   pointer-events: auto;
 }
@@ -478,22 +478,22 @@
   width: 100%;
   max-width: 34rem;
   padding: 2rem;
-  background: rgba(22, 25, 38, 0.98);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: var(--ui-color-surface-confirm);
+  border: 1px solid var(--ui-color-border-default);
   border-radius: 0.625rem;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 12px 40px var(--ui-color-shadow-deep);
 }
 
 .trialConfirmTitle {
   font-size: var(--ui-font-body);
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--ui-color-text-strong);
 }
 
 .trialConfirmBody {
   font-size: var(--ui-font-body);
   line-height: 1.55;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--ui-color-text-muted-2);
 }
 
 .trialConfirmActions {

@@ -30,6 +30,7 @@ import {
 import styles from './RoundAnalysisModal.module.scss';
 import shared from '../trialShared.module.scss';
 import { uiFont } from '../../uiFont';
+import { uiColor } from '../../uiColor';
 
 export type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
 export { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from '../utils/fallacyGuessTypes';
@@ -649,7 +650,7 @@ function PlayerRoundAnalysis({
         <p
           style={{
             fontSize: uiFont.subtitle,
-            color: 'rgba(255,255,255,0.50)',
+            color: uiColor.textHint,
             marginBottom: '0.5rem',
           }}
         >
@@ -670,10 +671,10 @@ function PlayerRoundAnalysis({
               fontWeight: 400,
               color:
                 option.impact > 0
-                  ? '#67e8f9'
+                  ? uiColor.infoBright
                   : option.impact < 0
-                    ? '#f87171'
-                    : 'rgba(255,255,255,0.40)',
+                    ? uiColor.danger
+                    : uiColor.textFaint,
             }}
           >
             {option.impact > 0 ? '+' : ''}
@@ -686,7 +687,7 @@ function PlayerRoundAnalysis({
               marginTop: '0.75rem',
               fontSize: uiFont.body,
               lineHeight: 1.5,
-              color: 'rgba(255,255,255,0.75)',
+              color: uiColor.textMuted,
             }}
           >
             {option.reason}

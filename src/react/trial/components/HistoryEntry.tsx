@@ -1,4 +1,5 @@
 import React from 'react';
+import { uiColor } from '../../uiColor';
 import styles from '../panels/TrialPanels.module.scss';
 
 interface HistoryEntryProps {
@@ -17,8 +18,8 @@ interface HistoryEntryProps {
  */
 const HistoryEntry: React.FC<HistoryEntryProps> = ({ label, text, analyzeButton }) => (
   <div className={styles.trialHistoryEntry}>
-    <p style={{ color: 'rgba(255,255,255,0.45)' }}>{label}</p>
-    <p style={{ marginTop: '0.25rem', color: 'rgba(255,255,255,0.75)' }}>{text}</p>
+    <p style={{ color: uiColor.textCaption }}>{label}</p>
+    <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>{text}</p>
     {analyzeButton}
   </div>
 );

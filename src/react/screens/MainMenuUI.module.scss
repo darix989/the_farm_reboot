@@ -15,8 +15,8 @@
 }
 
 .menuContainer {
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: var(--ui-color-overlay-backdrop);
+  border: 2px solid var(--ui-color-border-emphasis);
   border-radius: 10px;
   padding: 30px;
   text-align: center;
@@ -27,8 +27,8 @@
 .menuTitle {
   font-size: var(--ui-font-display);
   margin-bottom: 30px;
-  color: #0ec3c9;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  color: var(--ui-color-accent);
+  text-shadow: 2px 2px 4px var(--ui-color-overlay-backdrop);
 }
 
 .buttonContainer {
@@ -43,9 +43,9 @@
   padding: 15px 20px;
   font-size: var(--ui-font-subtitle);
   font-weight: bold;
-  background: linear-gradient(45deg, #000000, #1a1a1a);
-  color: rgba(255, 255, 255, 0.9);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(45deg, var(--ui-color-bg), var(--ui-color-bg-soft));
+  color: var(--ui-color-text-emphasis);
+  border: 2px solid var(--ui-color-border-emphasis);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -53,21 +53,21 @@
   letter-spacing: 1px;
 
   &:hover {
-    border-color: #0ec3c9;
-    color: #0ec3c9;
-    box-shadow: 0 0 15px rgba(14, 195, 201, 0.3);
+    border-color: var(--ui-color-accent);
+    color: var(--ui-color-accent);
+    box-shadow: 0 0 15px var(--ui-color-accent-glow);
     transform: translateY(-2px);
   }
 
   &:active {
-    background: #0ec3c9;
-    color: #000000;
+    background: var(--ui-color-accent);
+    color: var(--ui-color-text-on-accent);
     transform: translateY(0);
   }
 }
 
 .sceneInfo {
   font-size: var(--ui-font-caption);
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--ui-color-text-muted-2);
   margin-top: 15px;
 }
