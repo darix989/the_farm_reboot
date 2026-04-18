@@ -5,9 +5,9 @@ import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import DebateRoundLogCard from '../components/DebateRoundLogCard';
+import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/IntroDebateLogCard';
 import { scoreColor } from '../utils/trialHelpers';
 import styles from './TrialPanels.module.scss';
-import shared from '../trialShared.module.scss';
 import { uiFont } from '../../uiFont';
 import { uiColor } from '../../uiColor';
 
@@ -147,20 +147,22 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
       </div>
 
       <ScrollFadeContainer scrollRef={feedbackScrollRef} className={styles.trialFeedbackScroll}>
-        {wf.scenario.introduction && (
-          <div
-            data-debate-log-intro
-            className={shared.trialSectionBox}
-            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: uiColor.textSecondary }}
-          >
-            <p style={{ color: uiColor.textHint }}>Introduction</p>
-            <p style={{ marginTop: '0.5rem', color: uiColor.textEmphasis }}>
-              {wf.scenario.introduction}
-            </p>
-          </div>
-        )}
-
         <div className={styles.debateLogRoundList}>
+          {wf.scenario.introduction?.trim() && (
+            <IntroDebateLogCard
+              wf={wf}
+              introductionText={wf.scenario.introduction.trim()}
+              expandOverride={expandOverrideByRoundId[INTRO_DEBATE_LOG_CARD_ID]}
+              onExpandToggle={() => {
+                setExpandOverrideByRoundId((prev) => {
+                  const o = prev[INTRO_DEBATE_LOG_CARD_ID];
+                  const def = wf.gamePhase === 'debate_intro';
+                  const current = o ?? def;
+                  return { ...prev, [INTRO_DEBATE_LOG_CARD_ID]: !current };
+                });
+              }}
+            />
+          )}
           {wf.scenario.rounds.map((round, roundIndex) => {
             const expandOverride = expandOverrideByRoundId[round.id];
 

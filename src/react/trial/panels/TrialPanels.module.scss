@@ -265,6 +265,12 @@
   color: var(--ui-color-warning);
 }
 
+.debateLogRoundSideLineModerator {
+  text-transform: none;
+  letter-spacing: 0.04em;
+  color: var(--ui-color-text-muted);
+}
+
 .debateLogRoundTypeLine {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: var(--ui-font-subtitle);
