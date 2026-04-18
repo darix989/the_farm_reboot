@@ -123,6 +123,20 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
 
   const renderContent = () => {
     switch (wf.gamePhase) {
+      case 'debate_intro': {
+        const intro = debate.introduction?.trim();
+        if (!intro) return null;
+        return (
+          <div
+            className={shared.trialSectionBox}
+            style={{ fontSize: uiFont.body, lineHeight: 1.375, color: uiColor.textSecondary }}
+          >
+            <p style={{ color: uiColor.textHint }}>Introduction</p>
+            <p style={{ marginTop: '0.5rem', color: uiColor.textEmphasis }}>{intro}</p>
+          </div>
+        );
+      }
+
       case 'npc_speaking': {
         const npc = wf.currentNpcRound;
         if (!npc) return null;
@@ -328,6 +342,11 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
               type="button"
               className={shared.trialFooterBtn}
               disabled={!wf.canUndo}
+              tabIndex={wf.gamePhase === 'debate_intro' ? -1 : undefined}
+              style={{
+                visibility: wf.gamePhase === 'debate_intro' ? 'hidden' : 'visible',
+              }}
+              aria-hidden={wf.gamePhase === 'debate_intro'}
               onClick={wf.undo}
             >
               Back

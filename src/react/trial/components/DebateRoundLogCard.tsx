@@ -53,6 +53,7 @@ function roundStatus(
   currentRoundIndex: number,
 ): DebateRoundStatus {
   if (gamePhase === 'debate_complete') return 'completed';
+  if (gamePhase === 'debate_intro') return 'upcoming';
   if (roundIndex === currentRoundIndex) return 'active';
   if (roundIndex > currentRoundIndex) return 'upcoming';
   return 'completed';

@@ -107,6 +107,9 @@ Optional fields on a player round:
 `useTrialRoundWorkflow` (in `hooks/useTrialRoundWorkflow.ts`) maintains a `GamePhase` enum and an undo-capable history stack. The phases and their transitions are:
 
 ```
+debate_intro   (only when `scenario.introduction` is non-empty)
+    │  player clicks Continue → intro summary modal → Begin Round 1
+    ▼
 npc_speaking
     │  player clicks Continue
     ▼

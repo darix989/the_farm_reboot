@@ -25,6 +25,7 @@ import FeedbackPanel from '../trial/panels/FeedbackPanel';
 import WizardPanel from '../trial/panels/WizardPanel';
 import InteractivePanel from '../trial/panels/InteractivePanel';
 import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
+import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
 import { getSpeakerName } from '../trial/utils/trialHelpers';
 
 interface TrialUIProps {
@@ -36,7 +37,12 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
     () => new Set(),
   );
+  const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
   const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds);
+
+  useEffect(() => {
+    setIntroSummaryOpen(false);
+  }, [debate.id]);
 
   useEffect(() => {
     setRevealedLockedOptionIds(new Set());
@@ -188,6 +194,11 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     let onSubmit: (() => void) | undefined;
 
     switch (wf.gamePhase) {
+      case 'debate_intro':
+        submitLabel = 'Continue';
+        submitDisabled = false;
+        onSubmit = () => setIntroSummaryOpen(true);
+        break;
       case 'npc_speaking':
       case 'npc_responding':
         submitLabel = 'Continue';
@@ -204,6 +215,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     }
 
     return { submitLabel, submitDisabled, onSubmit };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- wf.gamePhase + wf.dispatch cover footer behavior; setIntroSummaryOpen is stable
   }, [wf.gamePhase, wf.dispatch]);
 
   const modalSpeakerName = useMemo(() => {
@@ -257,6 +269,15 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           guessSession={activeSession}
           onGuess={handleGuess}
           onClose={() => setAnalysisTarget(null)}
+        />
+      )}
+      {introSummaryOpen && wf.gamePhase === 'debate_intro' && (
+        <IntroSummaryModal
+          debate={debate}
+          onClose={() => {
+            setIntroSummaryOpen(false);
+            wf.dispatch({ type: 'continue' });
+          }}
         />
       )}
       {wf.gamePhase === 'round_recap' && (

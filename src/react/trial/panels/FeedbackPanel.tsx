@@ -28,6 +28,7 @@ function roundExpandedDefault(
   gamePhase: ReturnType<typeof useTrialRoundWorkflow>['gamePhase'],
   currentRoundIndex: number,
 ): boolean {
+  if (gamePhase === 'debate_intro') return false;
   if (gamePhase === 'debate_complete') return false;
   if (roundIndex > currentRoundIndex) return false;
   if (roundIndex === currentRoundIndex) return true;
@@ -54,7 +55,6 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
     if (!container) return;
 
     const n = wf.scenario.rounds.length;
-    if (n === 0) return;
 
     const prevIndex = prevScrollRoundIndexRef.current;
     const currIndex = wf.currentRoundIndex;
@@ -62,10 +62,30 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
     const indexChanged = prevIndex !== null && prevIndex !== currIndex;
     const delayMs = indexChanged ? DEBATE_LOG_BODY_TRANSITION_MS : 0;
 
-    const targetIndex =
-      wf.gamePhase === 'debate_complete' && currIndex >= n ? n - 1 : Math.min(currIndex, n - 1);
+    const scrollToIntro = () => {
+      const introEl = container.querySelector<HTMLElement>('[data-debate-log-intro]');
+      if (!introEl) {
+        container.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+      const padding = 12;
+      const cRect = container.getBoundingClientRect();
+      const chRect = introEl.getBoundingClientRect();
+      const scrollDelta = chRect.top - cRect.top - padding;
+      if (Math.abs(scrollDelta) < 4) return;
+      container.scrollBy({ top: scrollDelta, behavior: 'smooth' });
+    };
 
     const scrollToTarget = () => {
+      if (wf.gamePhase === 'debate_intro' && wf.scenario.introduction?.trim()) {
+        scrollToIntro();
+        return;
+      }
+      if (n === 0) return;
+
+      const targetIndex =
+        wf.gamePhase === 'debate_complete' && currIndex >= n ? n - 1 : Math.min(currIndex, n - 1);
+
       const child = container.querySelector<HTMLElement>(
         `[data-debate-log-round-index="${targetIndex}"]`,
       );
@@ -86,7 +106,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
     prevScrollRoundIndexRef.current = currIndex;
 
     return () => window.clearTimeout(tid);
-  }, [wf.currentRoundIndex, wf.gamePhase, wf.scenario.rounds.length]);
+  }, [wf.currentRoundIndex, wf.gamePhase, wf.scenario.introduction, wf.scenario.rounds.length]);
 
   useEffect(() => {
     if (wf.currentRoundIndex === prevRoundIndexRef.current) return;
@@ -129,6 +149,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
       <ScrollFadeContainer scrollRef={feedbackScrollRef} className={styles.trialFeedbackScroll}>
         {wf.scenario.introduction && (
           <div
+            data-debate-log-intro
             className={shared.trialSectionBox}
             style={{ fontSize: uiFont.body, lineHeight: 1.375, color: uiColor.textSecondary }}
           >
@@ -154,6 +175,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                 revealedLockedOptionIds={revealedLockedOptionIds}
                 expandOverride={expandOverride}
                 onExpandToggle={() => {
+                  if (wf.gamePhase === 'debate_intro') return;
                   const isUpcoming =
                     wf.gamePhase !== 'debate_complete' && roundIndex > wf.currentRoundIndex;
                   if (isUpcoming) return;

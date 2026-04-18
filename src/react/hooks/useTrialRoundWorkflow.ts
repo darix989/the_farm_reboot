@@ -19,6 +19,7 @@ import {
 // ---------------------------------------------------------------------------
 
 export type GamePhase =
+  | 'debate_intro' // read scenario introduction; Continue opens summary then starts round 1
   | 'npc_speaking' // player reads NPC statement, clicks Continue
   | 'player_choosing' // player sees 3 options
   | 'player_confirming' // player reviews chosen option, can go Back or Confirm
@@ -81,9 +82,17 @@ function initialPhaseForRound(round: RoundEntry): GamePhase {
   return round.kind === 'npc' ? 'npc_speaking' : 'player_choosing';
 }
 
+function scenarioHasIntroduction(scenario: DebateScenarioJson): boolean {
+  return Boolean(scenario.introduction?.trim());
+}
+
 function createInitialState(scenario: DebateScenarioJson): WorkflowState {
   const firstRound = scenario.rounds[0];
-  const gamePhase: GamePhase = firstRound ? initialPhaseForRound(firstRound) : 'debate_complete';
+  const gamePhase: GamePhase = scenarioHasIntroduction(scenario)
+    ? 'debate_intro'
+    : firstRound
+      ? initialPhaseForRound(firstRound)
+      : 'debate_complete';
   return {
     gamePhase,
     currentRoundIndex: 0,
@@ -138,6 +147,26 @@ function reduceWorkflow(
   }
 
   if (state.gamePhase === 'debate_complete') return state;
+
+  // --- Debate intro: UI shows summary modal then dispatches Continue (no undo snapshot) ---
+  if (state.gamePhase === 'debate_intro') {
+    if (action.type !== 'continue') return state;
+    const firstRound = scenario.rounds[0];
+    if (!firstRound) {
+      return {
+        ...state,
+        gamePhase: 'debate_complete',
+        currentRoundIndex: 0,
+        selectedOptionId: null,
+      };
+    }
+    return {
+      ...state,
+      gamePhase: initialPhaseForRound(firstRound),
+      currentRoundIndex: 0,
+      selectedOptionId: null,
+    };
+  }
 
   const currentRound = scenario.rounds[state.currentRoundIndex];
   if (!currentRound) return state;
@@ -338,6 +367,9 @@ export function useTrialRoundWorkflow(
 
   const wizardMessage = useMemo((): string => {
     if (state.gamePhase === 'debate_complete') return 'The debate is finished.';
+    if (state.gamePhase === 'debate_intro') {
+      return "We're about to play a debate. Read the introduction, and once you are ready, click Continue.";
+    }
     if (!currentRound) return '';
 
     const roundLabel = `Round ${currentRound.roundNumber} — ${currentRound.type.replace(/_/g, ' ')}`;
