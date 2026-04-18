@@ -499,32 +499,58 @@
    ========================================================================= */
 
 .trialChoices {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+
+  @media (max-width: 639px) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    gap: 1.25rem;
+  }
 }
 
 .trialChoiceBtn {
+  box-sizing: border-box;
+  display: flex;
   width: 100%;
   min-width: 0;
-  max-width: 100%;
+  min-height: 5.75rem;
+  align-items: flex-start;
+  justify-content: stretch;
   overflow: hidden;
   border-radius: 0.5rem;
-  border: 2px solid var(--ui-color-border-ring);
-  background: var(--ui-color-overlay-panel);
-  padding: 1.5rem 2.25rem;
+  border: 1px solid var(--ui-color-border-strong);
+  background: var(--ui-color-overlay-muted);
+  padding: 0.875rem;
   text-align: left;
-  font-size: var(--ui-font-body);
-  line-height: 1.375;
+  font-size: var(--ui-font-subtitle);
+  line-height: 1.4;
   color: var(--ui-color-text-emphasis);
-  box-shadow: 0 1px 2px 0 var(--ui-color-shadow-soft);
+  box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
   transition:
     border-color 0.15s ease-in-out,
+    background 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out,
     color 0.15s ease-in-out;
 
-  &:hover {
+  &:hover:not(:disabled) {
     border-color: var(--ui-color-info-border-active);
+    background: var(--ui-color-overlay-panel);
+    box-shadow:
+      0 0 0 1px var(--ui-color-info-border-active),
+      0 1px 2px 0 var(--ui-color-shadow-soft);
     color: var(--ui-color-info-text);
+
+    .trialChoiceLetter {
+      border-color: var(--ui-color-info-border-active);
+      background: var(--ui-color-info-bg);
+      color: var(--ui-color-info-text);
+    }
   }
 
   &:disabled {
@@ -532,18 +558,52 @@
     opacity: 0.4;
 
     &:hover {
-      border-color: var(--ui-color-border-ring);
+      border-color: var(--ui-color-border-strong);
+      background: var(--ui-color-overlay-muted);
+      box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
       color: var(--ui-color-text-emphasis);
     }
   }
+
+  @media (min-width: 768px) {
+    padding: 1rem;
+  }
 }
 
-.trialChoiceBtnInner {
-  display: block;
+.trialChoiceBtnRow {
+  display: flex;
+  width: 100%;
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+.trialChoiceLetter {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.3125rem;
+  border: 1px solid var(--ui-color-border-inner);
+  background: var(--ui-color-overlay-deep);
+  color: var(--ui-color-text-emphasis);
+  font-size: var(--ui-font-label);
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    border-color 0.15s ease-in-out,
+    background 0.15s ease-in-out,
+    color 0.15s ease-in-out;
+}
+
+.trialChoiceStatement {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /** Nudge when a locked option is guess-unlocked but not yet clicked open; slow shake, repeats every 10s */
@@ -590,8 +650,8 @@
   0% {
     transform: scale(0.93) rotate(-2.5deg);
     filter: brightness(1.08) saturate(1.06);
-    border-color: var(--ui-color-border-ring);
-    box-shadow: 0 1px 2px 0 var(--ui-color-shadow-soft);
+    border-color: var(--ui-color-border-strong);
+    box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
   }
 
   11% {
@@ -640,8 +700,8 @@
   100% {
     transform: scale(1) rotate(0deg);
     filter: none;
-    border-color: var(--ui-color-border-ring);
-    box-shadow: 0 1px 2px 0 var(--ui-color-shadow-soft);
+    border-color: var(--ui-color-border-strong);
+    box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
   }
 }
 

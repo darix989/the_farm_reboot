@@ -41,13 +41,15 @@ interface InteractivePanelProps {
 // ---------------------------------------------------------------------------
 
 function ChoiceButton({
-  label,
+  optionLetter,
+  statementText,
   onClick,
   disabled,
   unlockHint,
   revealFlash,
 }: {
-  label: string;
+  optionLetter: string;
+  statementText: string;
   onClick: () => void;
   disabled?: boolean;
   /** Unlocked statement not yet revealed — periodic nudge to click */
@@ -55,6 +57,7 @@ function ChoiceButton({
   /** One-time emphasis after revealing an unlock-gated statement */
   revealFlash?: boolean;
 }) {
+  const ariaLabel = `Option ${optionLetter}: ${statementText}`;
   return (
     <button
       type="button"
@@ -63,10 +66,16 @@ function ChoiceButton({
         unlockHint && styles.trialChoiceBtnUnlockHint,
         revealFlash && styles.trialChoiceBtnRevealFlash,
       )}
+      aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
     >
-      <span className={styles.trialChoiceBtnInner}>{label}</span>
+      <span className={styles.trialChoiceBtnRow}>
+        <span className={styles.trialChoiceLetter} aria-hidden>
+          {optionLetter}
+        </span>
+        <span className={styles.trialChoiceStatement}>{statementText}</span>
+      </span>
     </button>
   );
 }
@@ -149,10 +158,12 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 const awaitingReveal = !!opt.unlockCondition && guessUnlocked && !revealed;
                 const revealFlash =
                   revealed && revealAnimOptionId === opt.id && !!opt.unlockCondition;
+                const optionLetter = String.fromCharCode(65 + idx);
                 return (
                   <ChoiceButton
                     key={opt.id}
-                    label={`${String.fromCharCode(65 + idx)}. ${body}`}
+                    optionLetter={optionLetter}
+                    statementText={body}
                     disabled={locked}
                     unlockHint={awaitingReveal}
                     revealFlash={revealFlash}
