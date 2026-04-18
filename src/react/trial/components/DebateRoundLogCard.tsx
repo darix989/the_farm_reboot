@@ -137,64 +137,9 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   const statusLabel =
     status === 'active' ? 'active' : status === 'upcoming' ? 'upcoming' : 'completed';
 
-  const analyzeNpc =
-    round.kind === 'npc' && !isUpcoming ? (
-      <AnalyzeButton
-        key="npc"
-        guessState={getNpcGuessState(round.id)}
-        onClick={() => onOpenAnalysis({ kind: 'npc', round })}
-      />
-    ) : null;
+  const showPromptAnalyze = round.kind === 'player' && !!round.opponentPrompt && showOpponentPrompt;
 
-  const promptAnalyze =
-    round.kind === 'player' && round.opponentPrompt && showOpponentPrompt && !isUpcoming ? (
-      <AnalyzeButton
-        key="prompt"
-        guessState={getNpcGuessState(round.opponentPrompt.id)}
-        title="Analyze this question"
-        onClick={() =>
-          onOpenAnalysis({
-            kind: 'opponent_prompt',
-            statement: round.opponentPrompt!,
-            playerRound: round,
-          })
-        }
-      />
-    ) : null;
-
-  const playerAnalyze =
-    round.kind === 'player' && chosenOption && showPlayerStatement ? (
-      <AnalyzeButton
-        key="player"
-        onClick={() =>
-          onOpenAnalysis({
-            kind: 'player',
-            round,
-            chosenOption: chosenOption!,
-          })
-        }
-      />
-    ) : null;
-
-  const responseAnalyze =
-    round.kind === 'player' && displayResponse && showOpponentResponse && !isUpcoming ? (
-      <AnalyzeButton
-        key="response"
-        guessState={getNpcGuessState(displayResponse.statement.id)}
-        title="Analyze this response"
-        onClick={() =>
-          onOpenAnalysis({
-            kind: 'opponent_response',
-            statement: displayResponse.statement,
-            playerRound: round,
-          })
-        }
-      />
-    ) : null;
-
-  const analyzeRow = [analyzeNpc, promptAnalyze, playerAnalyze, responseAnalyze].filter(
-    Boolean,
-  ) as React.ReactElement[];
+  const showResponseAnalyze = round.kind === 'player' && !!displayResponse && showOpponentResponse;
 
   /** Hide quality / score until this player round is over (advanced or debate finished). */
   const playerRoundEndedForLog =
@@ -243,11 +188,6 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
         </div>
 
         <div className={styles.debateLogRoundHeaderEnd}>
-          {analyzeRow.length > 0 && (
-            <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze statements">
-              {analyzeRow}
-            </div>
-          )}
           <span
             className={cn(
               status === 'active' && styles.debateLogStatusActive,
@@ -290,10 +230,19 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
             <div id={bodyId} className={styles.debateLogRoundBody}>
               {round.kind === 'npc' && (
                 <div className={styles.debateLogStatementBlock}>
-                  <p style={{ color: uiColor.textCaption }}>
-                    {getSpeakerName(debate, round.speakerId)} —{' '}
-                    {sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}
-                  </p>
+                  <div className={styles.debateLogStatementHeaderRow}>
+                    <p style={{ color: uiColor.textCaption, margin: 0 }}>
+                      {getSpeakerName(debate, round.speakerId)} —{' '}
+                      {sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}
+                    </p>
+                    <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze statement">
+                      <AnalyzeButton
+                        guessState={getNpcGuessState(round.id)}
+                        title="Analyze this statement"
+                        onClick={() => onOpenAnalysis({ kind: 'npc', round })}
+                      />
+                    </div>
+                  </div>
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(round.statement.sentences)}
                   </p>
@@ -302,10 +251,27 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
 
               {round.kind === 'player' && showOpponentPrompt && round.opponentPrompt && (
                 <div className={styles.debateLogStatementBlock}>
-                  <p style={{ color: uiColor.textCaption }}>
-                    Round {round.roundNumber} —{' '}
-                    {`${getSpeakerName(debate, round.opponentPrompt.speakerId)}'s question`}
-                  </p>
+                  <div className={styles.debateLogStatementHeaderRow}>
+                    <p style={{ color: uiColor.textCaption, margin: 0 }}>
+                      Round {round.roundNumber} —{' '}
+                      {`${getSpeakerName(debate, round.opponentPrompt.speakerId)}'s question`}
+                    </p>
+                    {showPromptAnalyze && (
+                      <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze question">
+                        <AnalyzeButton
+                          guessState={getNpcGuessState(round.opponentPrompt.id)}
+                          title="Analyze this question"
+                          onClick={() =>
+                            onOpenAnalysis({
+                              kind: 'opponent_prompt',
+                              statement: round.opponentPrompt!,
+                              playerRound: round,
+                            })
+                          }
+                        />
+                      </div>
+                    )}
+                  </div>
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(round.opponentPrompt.sentences)}
                   </p>
@@ -314,20 +280,51 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
 
               {round.kind === 'player' && showPlayerStatement && chosenOption && (
                 <div className={styles.debateLogStatementBlock}>
-                  <p style={{ color: uiColor.textCaption }}>
-                    Round {completedForRound?.roundNumber ?? round.roundNumber} — You
-                    {impactLine != null ? <> — {impactLine}</> : null}
-                  </p>
+                  <div className={styles.debateLogStatementHeaderRow}>
+                    <p style={{ color: uiColor.textCaption, margin: 0 }}>
+                      Round {completedForRound?.roundNumber ?? round.roundNumber} — You
+                      {impactLine != null ? <> — {impactLine}</> : null}
+                    </p>
+                    <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze your line">
+                      <AnalyzeButton
+                        title="Analyze this statement"
+                        onClick={() =>
+                          onOpenAnalysis({
+                            kind: 'player',
+                            round,
+                            chosenOption: chosenOption!,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>{playerBodyText}</p>
                 </div>
               )}
 
               {round.kind === 'player' && showOpponentResponse && displayResponse && (
                 <div className={styles.debateLogStatementBlock}>
-                  <p style={{ color: uiColor.textCaption }}>
-                    Round {completedForRound?.roundNumber ?? round.roundNumber} —{' '}
-                    {getSpeakerName(debate, displayResponse.statement.speakerId)} responds
-                  </p>
+                  <div className={styles.debateLogStatementHeaderRow}>
+                    <p style={{ color: uiColor.textCaption, margin: 0 }}>
+                      Round {completedForRound?.roundNumber ?? round.roundNumber} —{' '}
+                      {getSpeakerName(debate, displayResponse.statement.speakerId)} responds
+                    </p>
+                    {showResponseAnalyze && (
+                      <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze response">
+                        <AnalyzeButton
+                          guessState={getNpcGuessState(displayResponse.statement.id)}
+                          title="Analyze this response"
+                          onClick={() =>
+                            onOpenAnalysis({
+                              kind: 'opponent_response',
+                              statement: displayResponse.statement,
+                              playerRound: round,
+                            })
+                          }
+                        />
+                      </div>
+                    )}
+                  </div>
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(displayResponse.statement.sentences)}
                   </p>

@@ -427,6 +427,17 @@
   line-height: 1.375;
 }
 
+.debateLogStatementHeaderRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+
+  .debateLogAnalyzeGroup {
+    margin-top: -0.1rem;
+  }
+}
+
 .debateLogMinPreview {
   margin: 0.5rem 0 0;
   font-size: var(--ui-font-body);
