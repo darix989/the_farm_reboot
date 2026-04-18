@@ -277,6 +277,40 @@
   background: var(--ui-color-overlay-panel);
 }
 
+@keyframes debate-log-status-opacity-pulse {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.debateLogStatusActivePulse {
+  display: inline-block;
+  animation: debate-log-status-opacity-pulse 2.4s ease-in-out infinite;
+}
+
+.debateLogRoundBodyShell {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.debateLogRoundBodyShellExpanded {
+  grid-template-rows: 1fr;
+}
+
+.debateLogRoundBodyInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .debateLogAnalyzeGroup {
   display: flex;
   flex-wrap: wrap;
@@ -327,10 +361,24 @@
 }
 
 .debateLogRoundBody {
-  margin-top: 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+.debateLogRoundBodyShellExpanded .debateLogRoundBody {
+  padding-top: 0.75rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .debateLogRoundBodyShell {
+    transition: none;
+  }
+
+  .debateLogStatusActivePulse {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .debateLogStatementBlock {

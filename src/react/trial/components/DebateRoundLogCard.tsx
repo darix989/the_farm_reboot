@@ -1,4 +1,5 @@
 import React, { useId } from 'react';
+import cn from 'classnames';
 import type { DebateScenarioJson, PlayerOption } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
@@ -249,15 +250,15 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
             </div>
           )}
           <span
-            className={
-              status === 'active'
-                ? styles.debateLogStatusActive
-                : status === 'upcoming'
-                  ? styles.debateLogStatusUpcoming
-                  : styles.debateLogStatusCompleted
-            }
+            className={cn(
+              status === 'active' && styles.debateLogStatusActive,
+              status === 'upcoming' && styles.debateLogStatusUpcoming,
+              status === 'completed' && styles.debateLogStatusCompleted,
+            )}
           >
-            {statusLabel}
+            <span className={cn(status === 'active' && styles.debateLogStatusActivePulse)}>
+              {statusLabel}
+            </span>
           </span>
           <button
             type="button"
@@ -279,52 +280,61 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
         </div>
       </div>
 
-      {effectiveExpanded && !isUpcoming && (
-        <div id={bodyId} className={styles.debateLogRoundBody}>
-          {round.kind === 'npc' && (
-            <div className={styles.debateLogStatementBlock}>
-              <p style={{ color: uiColor.textCaption }}>
-                {getSpeakerName(debate, round.speakerId)} —{' '}
-                {sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}
-              </p>
-              <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
-                {statementText(round.statement.sentences)}
-              </p>
-            </div>
+      {!isUpcoming && (
+        <div
+          className={cn(
+            styles.debateLogRoundBodyShell,
+            effectiveExpanded && styles.debateLogRoundBodyShellExpanded,
           )}
+        >
+          <div className={styles.debateLogRoundBodyInner} aria-hidden={!effectiveExpanded}>
+            <div id={bodyId} className={styles.debateLogRoundBody}>
+              {round.kind === 'npc' && (
+                <div className={styles.debateLogStatementBlock}>
+                  <p style={{ color: uiColor.textCaption }}>
+                    {getSpeakerName(debate, round.speakerId)} —{' '}
+                    {sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}
+                  </p>
+                  <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
+                    {statementText(round.statement.sentences)}
+                  </p>
+                </div>
+              )}
 
-          {round.kind === 'player' && showOpponentPrompt && round.opponentPrompt && (
-            <div className={styles.debateLogStatementBlock}>
-              <p style={{ color: uiColor.textCaption }}>
-                Round {round.roundNumber} —{' '}
-                {`${getSpeakerName(debate, round.opponentPrompt.speakerId)}'s question`}
-              </p>
-              <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
-                {statementText(round.opponentPrompt.sentences)}
-              </p>
-            </div>
-          )}
+              {round.kind === 'player' && showOpponentPrompt && round.opponentPrompt && (
+                <div className={styles.debateLogStatementBlock}>
+                  <p style={{ color: uiColor.textCaption }}>
+                    Round {round.roundNumber} —{' '}
+                    {`${getSpeakerName(debate, round.opponentPrompt.speakerId)}'s question`}
+                  </p>
+                  <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
+                    {statementText(round.opponentPrompt.sentences)}
+                  </p>
+                </div>
+              )}
 
-          {round.kind === 'player' && showPlayerStatement && chosenOption && (
-            <div className={styles.debateLogStatementBlock}>
-              <p style={{ color: uiColor.textCaption }}>
-                Round {completedForRound?.roundNumber ?? round.roundNumber} — You — {impactLine}
-              </p>
-              <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>{playerBodyText}</p>
-            </div>
-          )}
+              {round.kind === 'player' && showPlayerStatement && chosenOption && (
+                <div className={styles.debateLogStatementBlock}>
+                  <p style={{ color: uiColor.textCaption }}>
+                    Round {completedForRound?.roundNumber ?? round.roundNumber} — You — {impactLine}
+                  </p>
+                  <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>{playerBodyText}</p>
+                </div>
+              )}
 
-          {round.kind === 'player' && showOpponentResponse && displayResponse && (
-            <div className={styles.debateLogStatementBlock}>
-              <p style={{ color: uiColor.textCaption }}>
-                Round {completedForRound?.roundNumber ?? round.roundNumber} —{' '}
-                {getSpeakerName(debate, displayResponse.statement.speakerId)} responds
-              </p>
-              <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
-                {statementText(displayResponse.statement.sentences)}
-              </p>
+              {round.kind === 'player' && showOpponentResponse && displayResponse && (
+                <div className={styles.debateLogStatementBlock}>
+                  <p style={{ color: uiColor.textCaption }}>
+                    Round {completedForRound?.roundNumber ?? round.roundNumber} —{' '}
+                    {getSpeakerName(debate, displayResponse.statement.speakerId)} responds
+                  </p>
+                  <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
+                    {statementText(displayResponse.statement.sentences)}
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       )}
 
