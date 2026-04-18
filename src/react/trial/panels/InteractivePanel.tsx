@@ -188,12 +188,10 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
             <button
               type="button"
               className={shared.trialFooterBtn}
-              disabled={wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo}
-              tabIndex={wf.gamePhase === 'debate_intro' ? -1 : undefined}
-              style={{
-                visibility: wf.gamePhase === 'debate_intro' ? 'hidden' : 'visible',
-              }}
-              aria-hidden={wf.gamePhase === 'debate_intro'}
+              disabled={
+                wf.gamePhase === 'debate_intro' ||
+                (wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo)
+              }
               onClick={() => {
                 if (wf.gamePhase === 'player_choosing') {
                   wf.unselect();
