@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
@@ -7,7 +7,12 @@ import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import cn from 'classnames';
 import StatementBlock from '../components/StatementBlock';
 import AnalyzeButton from '../components/AnalyzeButton';
-import { getSpeakerName, statementText, scoreColor } from '../utils/trialHelpers';
+import {
+  getSpeakerName,
+  statementText,
+  scoreColor,
+  shuffleCopyDeterministic,
+} from '../utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import styles from './TrialPanels.module.scss';
 import shared from '../trialShared.module.scss';
@@ -73,6 +78,21 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   onOpenAnalysis,
   getNpcGuessState,
 }) => {
+  const [playthroughShuffleKey] = useState(() =>
+    typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+  );
+
+  const choosingOptionsOrder = useMemo(() => {
+    if (wf.gamePhase !== 'player_choosing' || !wf.currentPlayerRound) return null;
+    return shuffleCopyDeterministic(
+      wf.currentPlayerRound.options,
+      playthroughShuffleKey,
+      wf.currentPlayerRound.id,
+    );
+  }, [wf.gamePhase, wf.currentPlayerRound, playthroughShuffleKey]);
+
   const renderContent = () => {
     switch (wf.gamePhase) {
       case 'npc_speaking': {
@@ -90,12 +110,12 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
 
       case 'player_choosing': {
         const playerRound = wf.currentPlayerRound;
-        if (!playerRound) return null;
+        if (!playerRound || !choosingOptionsOrder) return null;
 
         return (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div className={styles.trialChoices}>
-              {playerRound.options.map((opt, idx) => {
+              {choosingOptionsOrder.map((opt, idx) => {
                 const guessUnlocked = isPlayerOptionUnlocked(opt, fallacyGuesses);
                 const revealed = !opt.unlockCondition || revealedLockedOptionIds.has(opt.id);
                 const locked = !!opt.unlockCondition && !guessUnlocked;

@@ -235,6 +235,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         wizard={<WizardPanel wizardMessage={wf.wizardMessage} />}
         interactive={
           <InteractivePanel
+            key={debate.id}
             wf={wf}
             debate={debate}
             fallacyGuesses={fallacyGuesses}
