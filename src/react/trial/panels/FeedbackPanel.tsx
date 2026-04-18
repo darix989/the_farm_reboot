@@ -23,6 +23,13 @@ interface FeedbackPanelProps {
 /** Match `grid-template-rows` transition on `.debateLogRoundBodyShell` (+ small buffer). */
 const DEBATE_LOG_BODY_TRANSITION_MS = 480;
 
+/**
+ * Leaving `debate_intro` does not change `currentRoundIndex` (still 0), but the intro card and
+ * round 1 both animate; scrolling immediately measures wrong heights — wait longer than a normal
+ * round-only transition.
+ */
+const DEBATE_LOG_LEAVE_INTRO_SCROLL_MS = 720;
+
 function roundExpandedDefault(
   roundIndex: number,
   gamePhase: ReturnType<typeof useTrialRoundWorkflow>['gamePhase'],
@@ -49,6 +56,9 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   >({});
   const prevRoundIndexRef = useRef(wf.currentRoundIndex);
   const prevScrollRoundIndexRef = useRef<number | null>(null);
+  const prevGamePhaseRef = useRef<ReturnType<typeof useTrialRoundWorkflow>['gamePhase'] | null>(
+    null,
+  );
 
   useEffect(() => {
     const container = feedbackScrollRef.current;
@@ -58,9 +68,14 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
 
     const prevIndex = prevScrollRoundIndexRef.current;
     const currIndex = wf.currentRoundIndex;
+    const prevPhase = prevGamePhaseRef.current;
     /** After a round change, cards animate shrink/expand; wait before measuring. */
     const indexChanged = prevIndex !== null && prevIndex !== currIndex;
-    const delayMs = indexChanged ? DEBATE_LOG_BODY_TRANSITION_MS : 0;
+    /** `currentRoundIndex` often stays 0 when intro ends; still need a delay for layout. */
+    const leavingIntro = prevPhase === 'debate_intro' && wf.gamePhase !== 'debate_intro';
+    let delayMs = 0;
+    if (indexChanged) delayMs = DEBATE_LOG_BODY_TRANSITION_MS;
+    if (leavingIntro) delayMs = Math.max(delayMs, DEBATE_LOG_LEAVE_INTRO_SCROLL_MS);
 
     const scrollToIntro = () => {
       const introEl = container.querySelector<HTMLElement>('[data-debate-log-intro]');
@@ -104,6 +119,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
     }, delayMs);
 
     prevScrollRoundIndexRef.current = currIndex;
+    prevGamePhaseRef.current = wf.gamePhase;
 
     return () => window.clearTimeout(tid);
   }, [wf.currentRoundIndex, wf.gamePhase, wf.scenario.introduction, wf.scenario.rounds.length]);
