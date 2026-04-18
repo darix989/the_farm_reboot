@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
@@ -45,17 +45,24 @@ function ChoiceButton({
   onClick,
   disabled,
   unlockHint,
+  revealFlash,
 }: {
   label: string;
   onClick: () => void;
   disabled?: boolean;
   /** Unlocked statement not yet revealed — periodic nudge to click */
   unlockHint?: boolean;
+  /** One-time emphasis after revealing an unlock-gated statement */
+  revealFlash?: boolean;
 }) {
   return (
     <button
       type="button"
-      className={cn(styles.trialChoiceBtn, unlockHint && styles.trialChoiceBtnUnlockHint)}
+      className={cn(
+        styles.trialChoiceBtn,
+        unlockHint && styles.trialChoiceBtnUnlockHint,
+        revealFlash && styles.trialChoiceBtnRevealFlash,
+      )}
       onClick={onClick}
       disabled={disabled}
     >
@@ -93,6 +100,18 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     );
   }, [wf.gamePhase, wf.currentPlayerRound, playthroughShuffleKey]);
 
+  const [revealAnimOptionId, setRevealAnimOptionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!revealAnimOptionId) return;
+    const reduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ms = reduced ? 450 : 820;
+    const t = window.setTimeout(() => setRevealAnimOptionId(null), ms);
+    return () => window.clearTimeout(t);
+  }, [revealAnimOptionId]);
+
   const renderContent = () => {
     switch (wf.gamePhase) {
       case 'npc_speaking': {
@@ -128,18 +147,22 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                   body = statementText(resolvedOptionSentences(opt, true));
                 }
                 const awaitingReveal = !!opt.unlockCondition && guessUnlocked && !revealed;
+                const revealFlash =
+                  revealed && revealAnimOptionId === opt.id && !!opt.unlockCondition;
                 return (
                   <ChoiceButton
                     key={opt.id}
                     label={`${String.fromCharCode(65 + idx)}. ${body}`}
                     disabled={locked}
                     unlockHint={awaitingReveal}
+                    revealFlash={revealFlash}
                     onClick={() => {
                       if (
                         opt.unlockCondition &&
                         guessUnlocked &&
                         !revealedLockedOptionIds.has(opt.id)
                       ) {
+                        setRevealAnimOptionId(opt.id);
                         onRevealLockedOption(opt.id);
                         return;
                       }
