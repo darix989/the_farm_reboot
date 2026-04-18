@@ -3,7 +3,6 @@ import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
-import { guessStateFromAttempts } from '../utils/fallacyGuessUtils';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import cn from 'classnames';
 import StatementBlock from '../components/StatementBlock';
@@ -93,35 +92,8 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         const playerRound = wf.currentPlayerRound;
         if (!playerRound) return null;
 
-        let promptGuessState: 'correct' | 'partial' | 'wrong' | null = null;
-        if (playerRound.opponentPrompt) {
-          const session = fallacyGuesses.get(playerRound.roundNumber);
-          if (session && session.npcRoundId === playerRound.opponentPrompt.id) {
-            promptGuessState = guessStateFromAttempts(session.attempts);
-          }
-        }
-
         return (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            {playerRound.opponentPrompt && (
-              <StatementBlock
-                speakerLabel={`${getSpeakerName(debate, playerRound.opponentPrompt.speakerId)}'s question:`}
-                text={statementText(playerRound.opponentPrompt.sentences)}
-                analyzeButton={
-                  <AnalyzeButton
-                    guessState={promptGuessState}
-                    title="Analyze this statement"
-                    onClick={() =>
-                      onOpenAnalysis({
-                        kind: 'opponent_prompt',
-                        statement: playerRound.opponentPrompt!,
-                        playerRound,
-                      })
-                    }
-                  />
-                }
-              />
-            )}
             <div className={styles.trialChoices}>
               {playerRound.options.map((opt, idx) => {
                 const guessUnlocked = isPlayerOptionUnlocked(opt, fallacyGuesses);
