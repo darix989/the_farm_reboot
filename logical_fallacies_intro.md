@@ -15,7 +15,7 @@ Attacking the person instead of the argument.
 Assuming something is true because many people believe it.
 * **Example:** "Everyone is buying this stock, so it's a guaranteed win."
 
-### 3. Straw Man
+### 3. Straw Man (isn't this level 2 or 3?)
 Distorting an opponent's position to make it easier to attack.
 * **Example:** "You want to lower the military budget? I can't believe you want our country to be defenseless."
 
