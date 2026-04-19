@@ -11,7 +11,7 @@ import type {
 } from '../../../types/debateEntities';
 
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
-import fallacyPlaceholder from '../../../static/icons/fallacy_placeholder.svg';
+import { getLogicalFallacyIconSrc } from '../utils/logicalFallacyIcons';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import { perRoundImpactScoreBounds, statementTypeLabel } from '../utils/trialHelpers';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
@@ -87,7 +87,11 @@ function FallacyPicker({
           title={f.description}
           disabled={disabled}
         >
-          <img src={fallacyPlaceholder} alt="" className={styles.trialFallacyItemIcon} />
+          <img
+            src={getLogicalFallacyIconSrc(f.id)}
+            alt=""
+            className={styles.trialFallacyItemIcon}
+          />
           <span className={styles.trialFallacyItemLabel}>{f.label}</span>
         </button>
       ))}
@@ -535,7 +539,11 @@ function NpcRoundAnalysis({
                         )}
                         title={f.description}
                       >
-                        <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
+                        <img
+                          src={getLogicalFallacyIconSrc(fid)}
+                          alt=""
+                          className={styles.trialPillIcon}
+                        />
                         {f.label}
                       </span>
                     );
@@ -557,7 +565,11 @@ function NpcRoundAnalysis({
                         )}
                         title={f.description}
                       >
-                        <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
+                        <img
+                          src={getLogicalFallacyIconSrc(fid)}
+                          alt=""
+                          className={styles.trialPillIcon}
+                        />
                         {f.label}
                       </span>
                     );
@@ -575,7 +587,11 @@ function NpcRoundAnalysis({
                         className={styles.trialFallacyPill}
                         title={fallacy.description}
                       >
-                        <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
+                        <img
+                          src={getLogicalFallacyIconSrc(f.id)}
+                          alt=""
+                          className={styles.trialPillIcon}
+                        />
                         {fallacy.label}
                       </span>
                     );
