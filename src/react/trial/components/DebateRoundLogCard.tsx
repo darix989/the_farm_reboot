@@ -114,7 +114,9 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   const showPlayerStatement =
     round.kind === 'player' &&
     chosenOption &&
-    (roundIndex < wf.currentRoundIndex || wf.gamePhase === 'debate_complete');
+    (roundIndex < wf.currentRoundIndex ||
+      wf.gamePhase === 'debate_complete' ||
+      (isThisPlayerRound && (wf.gamePhase === 'npc_responding' || wf.gamePhase === 'round_recap')));
 
   const responseForCompleted =
     round.kind === 'player' && completedForRound && round.opponentResponses
