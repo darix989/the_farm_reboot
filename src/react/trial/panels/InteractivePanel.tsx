@@ -5,7 +5,11 @@ import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import cn from 'classnames';
-import { statementText, shuffleCopyDeterministic } from '../utils/trialHelpers';
+import {
+  statementText,
+  shuffleCopyDeterministic,
+  truncateStatementPreview,
+} from '../utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import styles from './TrialPanels.module.scss';
 import shared from '../trialShared.module.scss';
@@ -37,6 +41,7 @@ interface InteractivePanelProps {
 function ChoiceButton({
   optionLetter,
   statementText,
+  accessibilityStatement,
   onClick,
   disabled,
   selected,
@@ -44,7 +49,10 @@ function ChoiceButton({
   revealFlash,
 }: {
   optionLetter: string;
+  /** Truncated label shown in the button */
   statementText: string;
+  /** Full statement for screen readers (defaults to `statementText`) */
+  accessibilityStatement?: string;
   onClick: () => void;
   disabled?: boolean;
   selected?: boolean;
@@ -53,7 +61,7 @@ function ChoiceButton({
   /** One-time emphasis after revealing an unlock-gated statement */
   revealFlash?: boolean;
 }) {
-  const ariaLabel = `Option ${optionLetter}: ${statementText}`;
+  const ariaLabel = `Option ${optionLetter}: ${accessibilityStatement ?? statementText}`;
   return (
     <button
       type="button"
@@ -147,7 +155,8 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
               <ChoiceButton
                 key={opt.id}
                 optionLetter={optionLetter}
-                statementText={body}
+                statementText={truncateStatementPreview(body)}
+                accessibilityStatement={body}
                 disabled={locked}
                 selected={wf.selectedOption?.id === opt.id}
                 unlockHint={awaitingReveal}

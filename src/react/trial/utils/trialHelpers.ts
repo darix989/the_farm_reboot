@@ -27,6 +27,12 @@ export function statementText(sentences: Sentence[]): string {
   return sentences.map((s) => s.text).join(' ');
 }
 
+/** Preview line for compact UI (e.g. choice buttons); full text stays in aria-label. */
+export function truncateStatementPreview(text: string, maxChars = 80): string {
+  if (text.length <= maxChars) return text;
+  return `${text.slice(0, maxChars)}...`;
+}
+
 /** Returns a CSS color string for a numeric score or impact value. */
 export function scoreColor(score: number): string {
   if (score > 0) return uiColor.infoBright;
