@@ -5,6 +5,7 @@ import { sideDisplayLabel } from '../utils/trialHelpers';
 import shared from '../trialShared.module.scss';
 import cn from 'classnames';
 import recapStyles from '../roundRecapModal/RoundRecapModal.module.scss';
+import getLabel from '../../../data/labels';
 
 const INTRO_SUMMARY_MAX_CHARS = 320;
 
@@ -47,15 +48,15 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
         <div className={recapStyles.recapHeader}>
           <div>
             <h2 id="intro-summary-title" className={recapStyles.recapTitle}>
-              Before the debate
+              {getLabel('beforeTheDebate')}
             </h2>
-            <p className={recapStyles.recapSubtitle}>Introduction summary</p>
+            <p className={recapStyles.recapSubtitle}>{getLabel('introductionSummary')}</p>
           </div>
           <button
             type="button"
             className={recapStyles.recapCloseBtn}
             onClick={onClose}
-            aria-label="Close"
+            aria-label={getLabel('close')}
           >
             ✕
           </button>
@@ -63,13 +64,14 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
 
         <ScrollFadeContainer isModal className={recapStyles.recapContent}>
           <div className={recapStyles.recapSection}>
-            <p className={recapStyles.recapSectionLabel}>Your side</p>
+            <p className={recapStyles.recapSectionLabel}>{getLabel('yourSide')}</p>
             <p className={recapStyles.recapBody}>
-              You will argue as the <strong>{sideLabel}</strong> side.
+              {getLabel('youWillArgueAsThe')} <strong>{sideLabel}</strong>{' '}
+              {getLabel('debateSideNoun')}
             </p>
           </div>
           <div className={recapStyles.recapSection}>
-            <p className={recapStyles.recapSectionLabel}>Introduction</p>
+            <p className={recapStyles.recapSectionLabel}>{getLabel('introduction')}</p>
             <p className={recapStyles.recapBody}>{introSummary}</p>
           </div>
         </ScrollFadeContainer>
@@ -80,7 +82,7 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
             className={cn(shared.trialFooterBtn, recapStyles.recapPrimaryBtn)}
             onClick={onClose}
           >
-            Begin Round 1
+            {getLabel('beginRound1')}
           </button>
         </div>
       </div>

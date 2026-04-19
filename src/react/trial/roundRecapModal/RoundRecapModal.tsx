@@ -15,6 +15,7 @@ import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import shared from '../trialShared.module.scss';
 import cn from 'classnames';
 import styles from './RoundRecapModal.module.scss';
+import getLabel from '../../../data/labels';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -55,8 +56,11 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
 
   const roundHeading =
     round && round.kind === 'player'
-      ? `Round ${round.roundNumber} — ${statementTypeLabel(round.type)}`
-      : 'Round recap';
+      ? getLabel('roundHeadingWithStatementType', false, {
+          roundNumber: round.roundNumber,
+          statementType: statementTypeLabel(round.type),
+        })
+      : getLabel('roundRecap');
 
   const recap =
     round && round.kind === 'player' && chosen && lastCompleted
@@ -80,7 +84,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
         <div className={styles.recapHeader}>
           <div>
             <h2 id="round-recap-title" className={styles.recapTitle}>
-              Round recap
+              {getLabel('roundRecap')}
             </h2>
             <p className={styles.recapSubtitle}>{roundHeading}</p>
           </div>
@@ -88,7 +92,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
             type="button"
             className={styles.recapCloseBtn}
             onClick={onClose}
-            aria-label="Close"
+            aria-label={getLabel('close')}
           >
             ✕
           </button>
@@ -98,7 +102,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
           {recap ? (
             <>
               <div className={styles.recapSection}>
-                <p className={styles.recapSectionLabel}>Your statement</p>
+                <p className={styles.recapSectionLabel}>{getLabel('yourStatement')}</p>
                 <p className={styles.recapBody}>{choicePreview}</p>
                 <p className={styles.recapBody} style={{ marginTop: '0.75rem' }}>
                   <span style={{ color: qualityColor(recap.chosen.quality) }}>
@@ -106,27 +110,30 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                   </span>
                   {' · '}
                   <span>
-                    <ModeratorOpinionInline score={recap.lastCompleted.impact} /> this round
+                    <ModeratorOpinionInline score={recap.lastCompleted.impact} />
+                    {getLabel('thisRound')}
                   </span>
                 </p>
               </div>
 
               {responseBody ? (
                 <div className={styles.recapSection}>
-                  <p className={styles.recapSectionLabel}>{responseSpeaker}&apos;s response</p>
+                  <p className={styles.recapSectionLabel}>
+                    {getLabel('opponentResponseHeading', false, { name: responseSpeaker })}
+                  </p>
                   <p className={styles.recapBody}>{responseBody}</p>
                 </div>
               ) : null}
 
               <div className={styles.recapSection}>
-                <p className={styles.recapSectionLabel}>Score</p>
+                <p className={styles.recapSectionLabel}>{getLabel('score')}</p>
                 <p className={styles.recapBody}>
                   <ModeratorOpinionInline score={wf.totalScore} />
                 </p>
               </div>
             </>
           ) : (
-            <p className={styles.recapBody}>Round complete.</p>
+            <p className={styles.recapBody}>{getLabel('roundComplete')}</p>
           )}
         </ScrollFadeContainer>
 
@@ -136,7 +143,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
             className={cn(shared.trialFooterBtn, styles.recapPrimaryBtn)}
             onClick={onClose}
           >
-            Continue
+            {getLabel('continue')}
           </button>
         </div>
       </div>

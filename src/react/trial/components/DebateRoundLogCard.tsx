@@ -19,6 +19,7 @@ import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
+import getLabel from '../../../data/labels';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -86,7 +87,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
 
   const stackedSideLabel =
     round.kind === 'player'
-      ? `${sideDisplayLabel(headerSide).toUpperCase()} · YOU`
+      ? `${sideDisplayLabel(headerSide).toUpperCase()}${getLabel('sideYouSuffix')}`
       : sideDisplayLabel(headerSide).toUpperCase();
 
   const isThisPlayerRound = wf.currentPlayerRound?.id === round.id && round.kind === 'player';
@@ -137,7 +138,11 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   const displayResponse = activeResponse ?? responseForCompleted;
 
   const statusLabel =
-    status === 'active' ? 'active' : status === 'upcoming' ? 'upcoming' : 'completed';
+    status === 'active'
+      ? getLabel('statusActive')
+      : status === 'upcoming'
+        ? getLabel('statusUpcoming')
+        : getLabel('statusCompleted');
 
   const showPromptAnalyze = round.kind === 'player' && !!round.opponentPrompt && showOpponentPrompt;
 
@@ -175,7 +180,10 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
     <div className={styles.debateLogRound} data-debate-log-round-index={roundIndex}>
       <div className={styles.debateLogRoundHeader}>
         <div className={styles.debateLogRoundLead}>
-          <div className={styles.debateLogRoundNumber} aria-label={`Round ${round.roundNumber}`}>
+          <div
+            className={styles.debateLogRoundNumber}
+            aria-label={getLabel('roundAria', false, { roundNumber: round.roundNumber })}
+          >
             {roundNumDisplay}
           </div>
           <div className={styles.debateLogRoundStack}>
@@ -207,10 +215,10 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
             onClick={onExpandToggle}
             title={
               isUpcoming
-                ? 'Not available until this round starts'
+                ? getLabel('notAvailableUntilRoundStarts')
                 : effectiveExpanded
-                  ? 'Minimize'
-                  : 'Expand'
+                  ? getLabel('minimize')
+                  : getLabel('expand')
             }
           >
             {effectiveExpanded && !isUpcoming ? '▼' : '▶'}
@@ -234,10 +242,13 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                       {getSpeakerName(debate, round.speakerId)} —{' '}
                       {sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}
                     </p>
-                    <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze statement">
+                    <div
+                      className={styles.debateLogAnalyzeGroup}
+                      aria-label={getLabel('analyzeStatementGroupAria')}
+                    >
                       <AnalyzeButton
                         guessState={getNpcGuessState(round.id)}
-                        title="Analyze this statement"
+                        title={getLabel('analyzeThisStatement')}
                         onClick={() => onOpenAnalysis({ kind: 'npc', round })}
                       />
                     </div>
@@ -252,14 +263,19 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
                     <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      Round {round.roundNumber} —{' '}
-                      {`${getSpeakerName(debate, round.opponentPrompt.speakerId)}'s question`}
+                      {getLabel('roundHeader', false, { roundNumber: round.roundNumber })}
+                      {getLabel('debaterQuestion', false, {
+                        name: getSpeakerName(debate, round.opponentPrompt.speakerId),
+                      })}
                     </p>
                     {showPromptAnalyze && (
-                      <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze question">
+                      <div
+                        className={styles.debateLogAnalyzeGroup}
+                        aria-label={getLabel('analyzeQuestionGroupAria')}
+                      >
                         <AnalyzeButton
                           guessState={getNpcGuessState(round.opponentPrompt.id)}
-                          title="Analyze this question"
+                          title={getLabel('analyzeThisQuestion')}
                           onClick={() =>
                             onOpenAnalysis({
                               kind: 'opponent_prompt',
@@ -281,13 +297,19 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
                     <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      Round {completedForRound?.roundNumber ?? round.roundNumber} — You
+                      {getLabel('roundHeader', false, {
+                        roundNumber: completedForRound?.roundNumber ?? round.roundNumber,
+                      })}
+                      {getLabel('you')}
                       {impactLine != null ? <> — {impactLine}</> : null}
                     </p>
-                    <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze your line">
+                    <div
+                      className={styles.debateLogAnalyzeGroup}
+                      aria-label={getLabel('analyzeYourLineGroupAria')}
+                    >
                       <AnalyzeButton
                         guessState={getNpcGuessState(chosenOption.id)}
-                        title="Analyze this statement"
+                        title={getLabel('analyzeThisStatement')}
                         onClick={() =>
                           onOpenAnalysis({
                             kind: 'player',
@@ -306,14 +328,21 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
                     <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      Round {completedForRound?.roundNumber ?? round.roundNumber} —{' '}
-                      {getSpeakerName(debate, displayResponse.statement.speakerId)} responds
+                      {getLabel('roundHeader', false, {
+                        roundNumber: completedForRound?.roundNumber ?? round.roundNumber,
+                      })}
+                      {getLabel('responds', false, {
+                        name: getSpeakerName(debate, displayResponse.statement.speakerId),
+                      })}
                     </p>
                     {showResponseAnalyze && (
-                      <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze response">
+                      <div
+                        className={styles.debateLogAnalyzeGroup}
+                        aria-label={getLabel('analyzeResponseGroupAria')}
+                      >
                         <AnalyzeButton
                           guessState={getNpcGuessState(displayResponse.statement.id)}
-                          title="Analyze this response"
+                          title={getLabel('analyzeThisResponse')}
                           onClick={() =>
                             onOpenAnalysis({
                               kind: 'opponent_response',
@@ -337,7 +366,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
 
       {isUpcoming && (
         <p className={styles.debateLogMinPreview} style={{ color: uiColor.textHint }}>
-          This round has not started yet.
+          {getLabel('roundNotStartedYet')}
         </p>
       )}
     </div>

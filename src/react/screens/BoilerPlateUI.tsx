@@ -3,6 +3,7 @@ import { useGameStore } from '../../store/gameStore';
 import { useGame, useCurrentScene, useGameOperations } from '../hooks/useGame';
 import { GameManager } from '../../utils/gameManager';
 import styles from './BoilerPlateUI.module.scss';
+import getLabel from '../../data/labels';
 
 function App() {
   const { isReady } = useGame();
@@ -58,7 +59,7 @@ function App() {
       <div style={{ pointerEvents: 'auto' }}>
         <div className={styles.spritePosition}>
           <div>
-            Game Status: <strong>Loading...</strong>
+            {getLabel('gameStatus')} <strong>{getLabel('loadingEllipsis')}</strong>
           </div>
         </div>
       </div>
@@ -69,31 +70,32 @@ function App() {
     <div style={{ pointerEvents: 'auto' }}>
       <div>
         <button className={styles.button} onClick={changeScene}>
-          Change Scene
+          {getLabel('changeScene')}
         </button>
       </div>
       <div>
         <button disabled={canMoveSprite} className={styles.button} onClick={moveSprite}>
-          Toggle Movement
+          {getLabel('toggleMovement')}
         </button>
       </div>
       <div className={styles.spritePosition}>
         <div>
-          Current Scene: <strong>{currentScene}</strong>
+          {getLabel('currentScene')} <strong>{currentScene}</strong>
         </div>
         <div>
-          Game Status: <strong>Ready</strong>
+          {getLabel('gameStatus')} <strong>{getLabel('ready')}</strong>
         </div>
         <div>
-          Player Level: {player.level} | Experience: {player.experience}
+          {getLabel('playerLevelExperience', false, {
+            level: player.level,
+            experience: player.experience,
+          })}
         </div>
-        <div>
-          Logo Position: x: {spritePosition.x}, y: {spritePosition.y}
-        </div>
+        <div>{getLabel('logoPosition', false, { x: spritePosition.x, y: spritePosition.y })}</div>
       </div>
       <div>
         <button className={styles.button} onClick={addSprite}>
-          Add New Sprite
+          {getLabel('addNewSprite')}
         </button>
       </div>
     </div>

@@ -3,6 +3,7 @@ import cn from 'classnames';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
+import getLabel from '../../../data/labels';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -36,22 +37,22 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
   const defaultExpanded = status === 'active';
   const effectiveExpanded = expandOverride ?? defaultExpanded;
 
-  const statusLabel = status === 'active' ? 'active' : 'completed';
+  const statusLabel = status === 'active' ? getLabel('statusActive') : getLabel('statusCompleted');
 
   return (
     <div className={styles.debateLogRound} data-debate-log-intro>
       <div className={styles.debateLogRoundHeader}>
         <div className={styles.debateLogRoundLead}>
-          <div className={styles.debateLogRoundNumber} aria-label="Introduction">
+          <div className={styles.debateLogRoundNumber} aria-label={getLabel('introduction')}>
             00
           </div>
           <div className={styles.debateLogRoundStack}>
             <div
               className={`${styles.debateLogRoundSideLine} ${styles.debateLogRoundSideLineModerator}`}
             >
-              Moderator
+              {getLabel('moderator')}
             </div>
-            <div className={styles.debateLogRoundTypeLine}>Introduction</div>
+            <div className={styles.debateLogRoundTypeLine}>{getLabel('introduction')}</div>
           </div>
         </div>
 
@@ -72,7 +73,7 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
             aria-expanded={effectiveExpanded}
             aria-controls={bodyId}
             onClick={onExpandToggle}
-            title={effectiveExpanded ? 'Minimize' : 'Expand'}
+            title={effectiveExpanded ? getLabel('minimize') : getLabel('expand')}
           >
             {effectiveExpanded ? '▼' : '▶'}
           </button>

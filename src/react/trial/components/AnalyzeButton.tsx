@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
+import getLabel from '../../../data/labels';
 import styles from '../panels/TrialPanels.module.scss';
 
 interface AnalyzeButtonProps {
@@ -12,7 +13,7 @@ interface AnalyzeButtonProps {
 const AnalyzeButton: React.FC<AnalyzeButtonProps> = ({
   onClick,
   guessState,
-  title = 'Analyze this round',
+  title = getLabel('analyzeThisRound'),
 }) => (
   <button
     type="button"
@@ -24,7 +25,7 @@ const AnalyzeButton: React.FC<AnalyzeButtonProps> = ({
     title={title}
     onClick={onClick}
   >
-    <img src={magnifyingIcon} alt="Analyze" />
+    <img src={magnifyingIcon} alt={getLabel('analyzeImageAlt')} />
   </button>
 );
 

@@ -13,6 +13,7 @@ import {
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import styles from './TrialPanels.module.scss';
 import shared from '../trialShared.module.scss';
+import getLabel from '../../../data/labels';
 
 interface InteractiveFooter {
   submitLabel: string;
@@ -61,7 +62,10 @@ function ChoiceButton({
   /** One-time emphasis after revealing an unlock-gated statement */
   revealFlash?: boolean;
 }) {
-  const ariaLabel = `Option ${optionLetter}: ${accessibilityStatement ?? statementText}`;
+  const ariaLabel = getLabel('optionAriaLabel', false, {
+    optionLetter,
+    statement: accessibilityStatement ?? statementText,
+  });
   return (
     <button
       type="button"
@@ -144,7 +148,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
             if (locked) {
               body = statementText(resolvedOptionSentences(opt, false));
             } else if (opt.unlockCondition && guessUnlocked && !revealed) {
-              body = 'Click to unlock';
+              body = getLabel('clickToUnlock');
             } else {
               body = statementText(resolvedOptionSentences(opt, true));
             }
@@ -188,7 +192,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   return (
     <div className={styles.trialInteractiveBody}>
       <div className={styles.trialAreaTitle}>
-        <h2 className={styles.trialPanelHeading}>Interactive</h2>
+        <h2 className={styles.trialPanelHeading}>{getLabel('interactive')}</h2>
       </div>
 
       <div className={styles.trialInteractiveScrollWrap}>
@@ -213,7 +217,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 wf.undo();
               }}
             >
-              Back
+              {getLabel('back')}
             </button>
             <button
               type="button"

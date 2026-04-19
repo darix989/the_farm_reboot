@@ -6,6 +6,7 @@ import type {
   Side,
 } from '../../../types/debateEntities';
 import { uiColor } from '../../uiColor';
+import getLabel from '../../../data/labels';
 
 export function getSpeakerName(debate: DebateScenarioJson, speakerId: string): string {
   return debate.characters?.[speakerId] ?? speakerId.charAt(0).toUpperCase() + speakerId.slice(1);
@@ -18,9 +19,9 @@ export function qualityColor(quality: PlayerOption['quality']): string {
 }
 
 export function qualityLabel(quality: PlayerOption['quality']): string {
-  if (quality === 'effective') return 'Effective';
-  if (quality === 'logical_fallacy') return 'Logical Fallacy';
-  return 'Ineffective';
+  if (quality === 'effective') return getLabel('qualityEffective');
+  if (quality === 'logical_fallacy') return getLabel('qualityLogicalFallacy');
+  return getLabel('qualityIneffective');
 }
 
 export function statementText(sentences: Sentence[]): string {
@@ -40,7 +41,7 @@ export function scoreColor(score: number): string {
   return uiColor.textEmphasis;
 }
 
-export const MODERATOR_OPINION_LABEL = "Moderator's opinion";
+export const MODERATOR_OPINION_LABEL = getLabel('moderatorsOpinion');
 
 export function moderatorOpinionEmoji(score: number): string {
   if (score > 0) return '😊';
@@ -81,7 +82,7 @@ export function sideForRoundHeader(debate: DebateScenarioJson, round: RoundEntry
 }
 
 export function sideDisplayLabel(side: Side): string {
-  return side === 'proposition' ? 'Proposition' : 'Opposition';
+  return side === 'proposition' ? getLabel('sideProposition') : getLabel('sideOpposition');
 }
 
 function deriveShuffleSeed(playthroughKey: string, roundId: string): number {

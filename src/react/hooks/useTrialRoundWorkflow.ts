@@ -13,6 +13,7 @@ import {
   resolvedOptionSentences,
   type GuessSessionForUnlock,
 } from '../trial/utils/optionUnlock';
+import getLabel from '../../data/labels';
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -400,32 +401,35 @@ export function useTrialRoundWorkflow(
   }, [scenario]);
 
   const wizardMessage = useMemo((): string => {
-    if (state.gamePhase === 'debate_complete') return 'The debate is finished.';
+    if (state.gamePhase === 'debate_complete') return getLabel('debateFinished');
     if (state.gamePhase === 'debate_intro') {
-      return "We're about to play a debate. Read the introduction, and once you are ready, click Continue.";
+      return getLabel('workflowDebateIntro');
     }
     if (!currentRound) return '';
 
-    const roundLabel = `Round ${currentRound.roundNumber} — ${currentRound.type.replace(/_/g, ' ')}`;
+    const roundLabel = getLabel('workflowRoundWithType', false, {
+      roundNumber: currentRound.roundNumber,
+      typeDisplay: currentRound.type.replace(/_/g, ' '),
+    });
 
     switch (state.gamePhase) {
       case 'npc_speaking':
-        return `${roundLabel}. Read ${opponentName}'s statement, then click Continue.`;
+        return getLabel('workflowNpcSpeaking', false, { roundLabel, opponentName });
       case 'player_choosing':
         if (currentPlayerRound?.opponentPrompt) {
           return state.selectedOptionId
-            ? `${roundLabel}. Statement selected. Click Continue to submit, or Back to change it.`
-            : `${roundLabel}. ${opponentName} has asked a question. Choose your response.`;
+            ? getLabel('workflowStatementSelected', false, { roundLabel })
+            : getLabel('workflowPlayerChoosingQuestion', false, { roundLabel, opponentName });
         }
         return state.selectedOptionId
-          ? `${roundLabel}. Statement selected. Click Continue to submit, or Back to change it.`
-          : `${roundLabel}. Choose your statement.`;
+          ? getLabel('workflowStatementSelected', false, { roundLabel })
+          : getLabel('workflowPlayerChoosingStatement', false, { roundLabel });
       case 'player_confirming':
-        return 'Review your choice below. Go back to change it, or confirm to lock it in.';
+        return getLabel('workflowPlayerConfirming');
       case 'npc_responding':
-        return `${opponentName} responds to your statement. Read it, then continue.`;
+        return getLabel('workflowNpcResponding', false, { opponentName });
       case 'round_recap':
-        return 'Review the round summary, then close the dialog to continue.';
+        return getLabel('workflowRoundRecap');
       default:
         return '';
     }

@@ -10,6 +10,7 @@ import montyVsPennyJson from '../data/debates/001_monty_vs_penny.json';
 import bellaVsWoolseyJson from '../data/debates/002_bella_vs_woolsey.json';
 import sampleDebateJson from '../data/debates/sample-debate.json';
 import styles from './ReactApp.module.scss';
+import getLabel from '../data/labels';
 
 const DEBATES: Record<DebateScenarioKey, DebateScenarioJson> = {
   'sample-debate': sampleDebateJson as unknown as DebateScenarioJson,
@@ -24,7 +25,7 @@ const ReactApp: React.FC = () => {
     return (
       <ReactRoot>
         <div className={styles.loadingContainer}>
-          <h2>Loading Game...</h2>
+          <h2>{getLabel('loadingGame')}</h2>
         </div>
       </ReactRoot>
     );

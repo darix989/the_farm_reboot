@@ -32,6 +32,7 @@ import {
   statementText,
 } from '../trial/utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
+import getLabel from '../../data/labels';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
@@ -234,29 +235,29 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // Footer action state
   // -----------------------------------------------------------------------
   const interactiveFooter = useMemo(() => {
-    let submitLabel = 'Continue';
+    let submitLabel = getLabel('continue');
     let submitDisabled = true;
     let onSubmit: (() => void) | undefined;
 
     switch (wf.gamePhase) {
       case 'debate_intro':
-        submitLabel = 'Continue';
+        submitLabel = getLabel('continue');
         submitDisabled = false;
         onSubmit = () => setIntroSummaryOpen(true);
         break;
       case 'npc_speaking':
       case 'npc_responding':
-        submitLabel = 'Continue';
+        submitLabel = getLabel('continue');
         submitDisabled = false;
         onSubmit = () => wf.dispatch({ type: 'continue' });
         break;
       case 'player_choosing':
-        submitLabel = 'Continue';
+        submitLabel = getLabel('continue');
         submitDisabled = !wf.selectedOption;
         onSubmit = () => wf.dispatch({ type: 'confirm_option' });
         break;
       case 'player_confirming':
-        submitLabel = 'Confirm';
+        submitLabel = getLabel('confirm');
         submitDisabled = false;
         onSubmit = () => wf.dispatch({ type: 'confirm_option' });
         break;
@@ -286,13 +287,15 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_intro': {
         const intro = debate.introduction?.trim();
         if (!intro) return null;
-        return { title: 'Introduction', body: intro };
+        return { title: getLabel('wizardDetailIntroduction'), body: intro };
       }
       case 'npc_speaking': {
         const npc = wf.currentNpcRound;
         if (!npc) return null;
         return {
-          title: `${getSpeakerName(debate, npc.speakerId)} speaks:`,
+          title: getLabel('wizardDetailSpeaks', false, {
+            name: getSpeakerName(debate, npc.speakerId),
+          }),
           body: statementText(npc.statement.sentences),
         };
       }
@@ -301,7 +304,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         if (!opt) return null;
         const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
         return {
-          title: 'Selected statement (full text)',
+          title: getLabel('wizardDetailSelectedStatement'),
           body: statementText(resolvedOptionSentences(opt, showResolved)),
         };
       }
@@ -310,7 +313,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         if (!opt) return null;
         const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
         return {
-          title: 'Your choice (full text)',
+          title: getLabel('wizardDetailYourChoice'),
           body: statementText(resolvedOptionSentences(opt, showResolved)),
         };
       }
@@ -319,7 +322,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         const playerRound = wf.currentPlayerRound;
         if (!response || !playerRound) return null;
         return {
-          title: `${getSpeakerName(debate, response.statement.speakerId)}'s response:`,
+          title: getLabel('wizardDetailResponse', false, {
+            name: getSpeakerName(debate, response.statement.speakerId),
+          }),
           body: statementText(response.statement.sentences),
         };
       }
@@ -328,18 +333,20 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         const playerRound = wf.currentPlayerRound;
         if (response && playerRound) {
           return {
-            title: `${getSpeakerName(debate, response.statement.speakerId)}'s response:`,
+            title: getLabel('wizardDetailResponse', false, {
+              name: getSpeakerName(debate, response.statement.speakerId),
+            }),
             body: statementText(response.statement.sentences),
           };
         }
         return {
-          title: 'Round recap',
-          body: 'Review the round summary in the dialog. Close it when you are ready to continue.',
+          title: getLabel('roundRecap'),
+          body: getLabel('wizardDetailRoundRecapBody'),
         };
       }
       case 'debate_complete':
         return {
-          title: 'The debate is finished.',
+          title: getLabel('debateFinished'),
           body: moderatorOpinionPlainText(wf.totalScore),
         };
       default:

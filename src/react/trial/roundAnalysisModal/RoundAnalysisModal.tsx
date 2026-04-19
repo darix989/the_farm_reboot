@@ -32,6 +32,7 @@ import styles from './RoundAnalysisModal.module.scss';
 import shared from '../trialShared.module.scss';
 import { uiFont } from '../../uiFont';
 import { uiColor } from '../../uiColor';
+import getLabel from '../../../data/labels';
 
 export type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
 export { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from '../utils/fallacyGuessTypes';
@@ -133,9 +134,9 @@ function GuessResultBanner({
           <>
             <span className={styles.trialGuessResultIcon}>✓</span>
             <div>
-              <p className={styles.trialGuessResultHeadline}>Correct!</p>
+              <p className={styles.trialGuessResultHeadline}>{getLabel('guessHeadlineCorrect')}</p>
               <p className={styles.trialGuessResultBody}>
-                This statement contains no logical fallacies.
+                {getLabel('guessNoFallaciesCorrectBody')}
               </p>
             </div>
           </>
@@ -143,16 +144,15 @@ function GuessResultBanner({
           <>
             <span className={styles.trialGuessResultIcon}>✗</span>
             <div>
-              <p className={styles.trialGuessResultHeadline}>Incorrect</p>
+              <p className={styles.trialGuessResultHeadline}>
+                {getLabel('guessHeadlineIncorrect')}
+              </p>
               <p className={styles.trialGuessResultBody}>
                 {spoilerSafe && !shouldRevealFullSolution ? (
-                  <>
-                    This statement still contains logical fallacies. Try again if you have attempts
-                    left.
-                  </>
+                  <>{getLabel('guessNoFallaciesWrongBodySpoiler')}</>
                 ) : (
                   <>
-                    This statement does contain logical fallacies:{' '}
+                    {getLabel('guessNoFallaciesWrongBodyRevealPrefix')}{' '}
                     {joinFallacyLabels(
                       guess.actualFallacies.map((f) => <strong key={f.id}>{f.label}</strong>),
                     )}
@@ -178,10 +178,8 @@ function GuessResultBanner({
       <div className={cn(styles.trialGuessResult, styles.correct)}>
         <span className={styles.trialGuessResultIcon}>✓</span>
         <div>
-          <p className={styles.trialGuessResultHeadline}>Correct!</p>
-          <p className={styles.trialGuessResultBody}>
-            You found every logical fallacy in the right sentences.
-          </p>
+          <p className={styles.trialGuessResultHeadline}>{getLabel('guessHeadlineCorrect')}</p>
+          <p className={styles.trialGuessResultBody}>{getLabel('guessPerfectBody')}</p>
         </div>
       </div>
     );
@@ -193,44 +191,45 @@ function GuessResultBanner({
       <div className={cn(styles.trialGuessResult, styles.partial)}>
         <span className={styles.trialGuessResultIcon}>◆</span>
         <div>
-          <p className={styles.trialGuessResultHeadline}>Partially correct</p>
+          <p className={styles.trialGuessResultHeadline}>
+            {getLabel('guessHeadlinePartiallyCorrect')}
+          </p>
           {showSpoilerSafePartial ? (
             <>
+              <p className={styles.trialGuessResultBody}>{getLabel('guessPartialIntro')}</p>
               <p className={styles.trialGuessResultBody}>
-                Some of your selections matched. Confirmed for this attempt:
-              </p>
-              <p className={styles.trialGuessResultBody}>
-                Confirmed for this attempt:{' '}
+                {getLabel('guessPartialConfirmedPrefix')}{' '}
                 {joinFallacyLabels(
                   correctThisAttempt.map((p, i) => {
                     const f = fallacyById.get(p.fallacyId);
                     if (!f) return null;
                     return (
                       <strong key={`${p.sentenceId}-${p.fallacyId}-${i}`}>
-                        {f.label} (sentence {sentenceIndex(p.sentenceId)})
+                        {f.label}{' '}
+                        {getLabel('sentenceReference', false, {
+                          sentenceIndex: sentenceIndex(p.sentenceId),
+                        })}
                       </strong>
                     );
                   }),
                 )}
                 .
               </p>
-              <p className={styles.trialGuessResultBody}>
-                Other selections were not confirmed. You can try again if you have attempts left.
-              </p>
+              <p className={styles.trialGuessResultBody}>{getLabel('guessPartialTryAgain')}</p>
             </>
           ) : (
             <>
-              <p className={styles.trialGuessResultBody}>
-                You found at least one fallacy correctly, but some selections were wrong or some
-                fallacies were missed.
-              </p>
+              <p className={styles.trialGuessResultBody}>{getLabel('guessPartialFullBody')}</p>
               {missedPairs.length > 0 && (
                 <p className={styles.trialGuessResultBody}>
-                  Missed:{' '}
+                  {getLabel('missedPrefix')}{' '}
                   {joinFallacyLabels(
                     missedPairs.map((mp, i) => (
                       <strong key={`${mp.sentenceId}-${mp.fallacy.id}-${i}`}>
-                        {mp.fallacy.label} (sentence {sentenceIndex(mp.sentenceId)})
+                        {mp.fallacy.label}{' '}
+                        {getLabel('sentenceReference', false, {
+                          sentenceIndex: sentenceIndex(mp.sentenceId),
+                        })}
                       </strong>
                     )),
                   )}
@@ -250,28 +249,25 @@ function GuessResultBanner({
     <div className={cn(styles.trialGuessResult, styles.wrong)}>
       <span className={styles.trialGuessResultIcon}>✗</span>
       <div>
-        <p className={styles.trialGuessResultHeadline}>Incorrect</p>
+        <p className={styles.trialGuessResultHeadline}>{getLabel('guessHeadlineIncorrect')}</p>
         {showSpoilerSafeNone ? (
           <>
-            <p className={styles.trialGuessResultBody}>
-              None of your selections matched a logical fallacy in the right place.
-            </p>
-            <p className={styles.trialGuessResultBody}>
-              You can try again if you have attempts left.
-            </p>
+            <p className={styles.trialGuessResultBody}>{getLabel('guessNoneWrongLine1')}</p>
+            <p className={styles.trialGuessResultBody}>{getLabel('guessNoneWrongLine2')}</p>
           </>
         ) : (
           <>
-            <p className={styles.trialGuessResultBody}>
-              None of your selections matched a logical fallacy in the right place.
-            </p>
+            <p className={styles.trialGuessResultBody}>{getLabel('guessNoneWrongLine1')}</p>
             {missedPairs.length > 0 && (
               <p className={styles.trialGuessResultBody}>
-                The statement contains:{' '}
+                {getLabel('guessNoneRevealPrefix')}{' '}
                 {joinFallacyLabels(
                   missedPairs.map((mp, i) => (
                     <strong key={`${mp.sentenceId}-${mp.fallacy.id}-${i}`}>
-                      {mp.fallacy.label} (sentence {sentenceIndex(mp.sentenceId)})
+                      {mp.fallacy.label}{' '}
+                      {getLabel('sentenceReference', false, {
+                        sentenceIndex: sentenceIndex(mp.sentenceId),
+                      })}
                     </strong>
                   )),
                 )}
@@ -461,22 +457,22 @@ function NpcRoundAnalysis({
   return (
     <div className={styles.trialAnalysisBody}>
       <p className={styles.trialAnalysisHint}>
-        {maxAttempts} attempts per analysis.{' '}
+        {getLabel('attemptsPerAnalysis', false, { maxAttempts })}{' '}
         {hasAnyAttempt
-          ? `Attempt ${attemptsUsed} of ${maxAttempts} — ${Math.max(0, maxAttempts - attemptsUsed)} remaining.`
-          : `You have up to ${maxAttempts} attempts.`}
+          ? getLabel('attemptProgress', false, {
+              attemptsUsed,
+              maxAttempts,
+              remaining: Math.max(0, maxAttempts - attemptsUsed),
+            })
+          : getLabel('attemptsUpTo', false, { maxAttempts })}
       </p>
 
       {!hasAnyAttempt && canGuess && (
-        <p className={styles.trialAnalysisHint}>
-          Select a sentence, then pick up to two logical fallacies (toggle to remove). You can tag
-          multiple sentences before submitting — or use &quot;No Fallacies&quot; if the statement is
-          clean.
-        </p>
+        <p className={styles.trialAnalysisHint}>{getLabel('analysisSelectSentenceHint')}</p>
       )}
       {!canGuess && !hasAnyAttempt && (
         <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
-          You cannot submit fallacy guesses in this phase of the debate.
+          {getLabel('analysisCannotGuessPhase')}
         </p>
       )}
 
@@ -585,9 +581,7 @@ function NpcRoundAnalysis({
 
       {canGuess && selectedSentenceId && (
         <div className={styles.trialFallacyPickerSection}>
-          <p className={styles.trialAnalysisHint}>
-            Choose fallacies for this sentence (up to two, click again to remove):
-          </p>
+          <p className={styles.trialAnalysisHint}>{getLabel('chooseFallaciesForSentence')}</p>
           <FallacyPicker
             fallacies={allFallacies}
             selectedIds={selectedIdsForPicker}
@@ -603,7 +597,7 @@ function NpcRoundAnalysis({
             className={cn(shared.trialFooterBtn, styles.submitFooterBtn)}
             onClick={handleSubmitGuess}
           >
-            Submit guess
+            {getLabel('submitGuess')}
           </button>
         </div>
       )}
@@ -611,7 +605,7 @@ function NpcRoundAnalysis({
       {canGuess && (
         <div className={styles.trialNoFallaciesRow}>
           <button type="button" className={styles.trialNoFallaciesBtn} onClick={handleNoFallacies}>
-            No Fallacies in this statement
+            {getLabel('noFallaciesInStatement')}
           </button>
         </div>
       )}
@@ -619,7 +613,7 @@ function NpcRoundAnalysis({
       {showReadOnlyPicker && (
         <div className={styles.trialFallacyPickerSection}>
           <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
-            Your last guess (read-only):
+            {getLabel('yourLastGuessReadOnly')}
           </p>
           <FallacyPicker
             fallacies={allFallacies}
@@ -648,7 +642,7 @@ function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
             marginBottom: '0.5rem',
           }}
         >
-          Assessment
+          {getLabel('assessment')}
         </p>
         <p
           style={{
@@ -721,25 +715,22 @@ function NoFallaciesConfirmDialog({
         aria-modal="true"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className={styles.trialConfirmTitle}>No Fallacies?</p>
-        <p className={styles.trialConfirmBody}>
-          You&apos;re about to submit that this statement contains no logical fallacies. This uses
-          one attempt and cannot be undone.
-        </p>
+        <p className={styles.trialConfirmTitle}>{getLabel('noFallaciesConfirmTitle')}</p>
+        <p className={styles.trialConfirmBody}>{getLabel('noFallaciesConfirmBody')}</p>
         <div className={styles.trialConfirmActions}>
           <button
             type="button"
             className={cn(shared.trialFooterBtn, styles.confirmFooterBtn)}
             onClick={onCancel}
           >
-            Cancel
+            {getLabel('cancel')}
           </button>
           <button
             type="button"
             className={cn(shared.trialFooterBtn, styles.confirmFooterBtn)}
             onClick={onConfirm}
           >
-            Confirm
+            {getLabel('confirm')}
           </button>
         </div>
       </div>
@@ -844,9 +835,9 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
 
   const titleSuffix =
     target.kind === 'opponent_prompt'
-      ? `${speakerName}'s question`
+      ? getLabel('opponentsQuestion', false, { speakerName })
       : target.kind === 'opponent_response'
-        ? `${speakerName}'s response`
+        ? getLabel('opponentsResponse', false, { speakerName })
         : speakerName;
 
   return (
@@ -867,7 +858,10 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
             <img src={magnifyingIcon} alt="" className={styles.trialModalHeaderIcon} />
             <div>
               <p className={styles.trialModalTitle}>
-                Round {roundNumber} — {target.kind === 'player' ? 'You' : titleSuffix}
+                {getLabel('modalRoundTitle', false, {
+                  roundNumber,
+                  tail: target.kind === 'player' ? getLabel('you') : titleSuffix,
+                })}
               </p>
               <p className={styles.trialModalSubtitle}>
                 {statementTypeLabel(statType)}
@@ -891,7 +885,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
             type="button"
             className={styles.trialModalCloseBtn}
             onClick={onClose}
-            aria-label="Close"
+            aria-label={getLabel('close')}
           >
             ✕
           </button>

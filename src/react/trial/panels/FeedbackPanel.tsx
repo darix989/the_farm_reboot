@@ -9,6 +9,7 @@ import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/Intr
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import styles from './TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
+import getLabel from '../../../data/labels';
 
 interface FeedbackPanelProps {
   wf: ReturnType<typeof useTrialRoundWorkflow>;
@@ -139,7 +140,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   return (
     <div className={styles.trialPanelContent}>
       <div className={styles.trialAreaTitle}>
-        <h2 className={styles.trialPanelHeading}>Debate Log</h2>
+        <h2 className={styles.trialPanelHeading}>{getLabel('debateLog')}</h2>
         <p
           className={styles.trialDebateLogTitleScore}
           style={{ margin: 0, color: uiColor.textBody }}

@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './TrialPanels.module.scss';
 import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
+import getLabel from '../../../data/labels';
 
 export interface WizardPanelDetail {
   title: string;
@@ -25,7 +26,7 @@ const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail }) => (
     }}
   >
     <div className={styles.trialAreaTitle}>
-      <h2 className={styles.trialPanelHeading}>Wizard</h2>
+      <h2 className={styles.trialPanelHeading}>{getLabel('wizard')}</h2>
     </div>
     <div className={styles.trialWizardBodyWrap}>
       <p className={detail ? styles.trialWizardGuidanceText : styles.trialWizardMainText}>
