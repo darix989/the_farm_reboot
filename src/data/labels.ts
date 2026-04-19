@@ -105,12 +105,12 @@ const LABELS = {
   attemptProgress: 'Attempt {attemptsUsed} of {maxAttempts} — {remaining} remaining.',
   attemptsUpTo: 'You have up to {maxAttempts} attempts.',
   analysisSelectSentenceHint:
-    'Select a sentence, then pick up to two logical fallacies (toggle to remove). You can tag multiple sentences before submitting — or use "No Fallacies" if the statement is clean.',
+    'Select a sentence, then pick up to two logical fallacies (toggle to remove). You can tag multiple sentences, then tap Spot Fallacies — or No Fallacies if the statement is clean.',
   analysisCannotGuessPhase: 'You cannot submit fallacy guesses in this phase of the debate.',
   chooseFallaciesForSentence:
     'Choose fallacies for this sentence (up to two, click again to remove):',
-  submitGuess: 'Submit guess',
-  noFallaciesInStatement: 'No Fallacies in this statement',
+  submitGuess: 'Spot Fallacies',
+  noFallaciesInStatement: 'No Fallacies',
   yourLastGuessReadOnly: 'Your last guess (read-only):',
   sentenceReference: '(sentence {sentenceIndex})',
   guessHeadlineCorrect: 'Correct!',

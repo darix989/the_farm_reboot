@@ -68,14 +68,21 @@ function FallacyPicker({
   selectedIds,
   onSelect,
   disabled,
+  compactGrid,
 }: {
   fallacies: LogicalFallacy[];
   selectedIds: string[];
   onSelect: (id: string) => void;
   disabled?: boolean;
+  /** Denser 3-column grid for the modal right-hand column. */
+  compactGrid?: boolean;
 }) {
   return (
-    <div className={styles.trialFallacyGrid}>
+    <div
+      className={cn(styles.trialFallacyGrid, {
+        [styles.trialFallacyGridAside]: compactGrid,
+      })}
+    >
       {fallacies.map((f) => (
         <button
           key={f.id}
@@ -464,30 +471,10 @@ function NpcRoundAnalysis({
     ((lastAttempt.kind === 'multi' && lastAttempt.outcome !== 'perfect') ||
       (lastAttempt.kind === 'no_fallacies' && !lastAttempt.correct));
 
+  const showGuessAside = canGuess || showReadOnlyPicker;
+
   return (
-    <div className={styles.trialAnalysisBody}>
-      <p className={styles.trialAnalysisHint}>
-        {getLabel('attemptsPerAnalysis', { replacements: { maxAttempts } })}{' '}
-        {hasAnyAttempt
-          ? getLabel('attemptProgress', {
-              replacements: {
-                attemptsUsed,
-                maxAttempts,
-                remaining: Math.max(0, maxAttempts - attemptsUsed),
-              },
-            })
-          : getLabel('attemptsUpTo', { replacements: { maxAttempts } })}
-      </p>
-
-      {!hasAnyAttempt && canGuess && (
-        <p className={styles.trialAnalysisHint}>{getLabel('analysisSelectSentenceHint')}</p>
-      )}
-      {!canGuess && !hasAnyAttempt && (
-        <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
-          {getLabel('analysisCannotGuessPhase')}
-        </p>
-      )}
-
+    <div className={cn(styles.trialAnalysisBody, styles.trialAnalysisBodyFill)}>
       {lastAttempt && (
         <GuessResultBanner
           guess={lastAttempt}
@@ -498,155 +485,226 @@ function NpcRoundAnalysis({
         />
       )}
 
-      <div className={styles.trialSentenceList}>
-        {statement.sentences.map((s) => {
-          const isSelected = selectedSentenceId === s.id;
-          const playerPickIds = bySentence[s.id] ?? [];
-          const pinnedIds = pinnedBySentence[s.id] ?? [];
-          const showTruthRow = showAllTruthPills && s.logicalFallacies.length > 0;
-          const pinnedFlags = pinnedPickFlags(playerPickIds, pinnedIds);
-          const readonlyPinnedFlags =
-            !canGuess && playerPickIds.length > 0 ? pinnedPickFlags(playerPickIds, pinnedIds) : [];
-
-          return (
-            <button
-              key={s.id}
-              type="button"
-              className={cn(styles.trialSentenceCard, {
-                [styles.selected]: isSelected,
-                [styles.clickable]: canGuess,
-                [styles.static]: !canGuess,
-                [styles.hasFallacyRevealed]: showTruthRow,
-              })}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleSentenceClick(s);
-              }}
-            >
-              <p className={styles.trialSentenceText}>{s.text}</p>
-              {canGuess && playerPickIds.length > 0 && (
-                <div className={styles.trialPlayerPickRow}>
-                  {playerPickIds.map((fid, pillIdx) => {
-                    const f = allFallacies.find((x) => x.id === fid);
-                    if (!f) return null;
-                    const isPinned = pinnedFlags[pillIdx] ?? false;
-                    return (
-                      <span
-                        key={`${fid}-${pillIdx}`}
-                        className={cn(
-                          styles.trialPlayerPickPill,
-                          isPinned && styles.trialPinnedPill,
-                        )}
-                        title={f.description}
-                      >
-                        <img
-                          src={getLogicalFallacyIconSrc(fid)}
-                          alt=""
-                          className={styles.trialPillIcon}
-                        />
-                        {f.label}
-                      </span>
-                    );
-                  })}
-                </div>
-              )}
-              {!canGuess && playerPickIds.length > 0 && !showTruthRow && (
-                <div className={styles.trialPlayerPickRow}>
-                  {playerPickIds.map((fid, pillIdx) => {
-                    const f = allFallacies.find((x) => x.id === fid);
-                    if (!f) return null;
-                    const isPinned = readonlyPinnedFlags[pillIdx] ?? false;
-                    return (
-                      <span
-                        key={`${fid}-${pillIdx}`}
-                        className={cn(
-                          styles.trialPlayerPickPill,
-                          isPinned && styles.trialFallacyPill,
-                        )}
-                        title={f.description}
-                      >
-                        <img
-                          src={getLogicalFallacyIconSrc(fid)}
-                          alt=""
-                          className={styles.trialPillIcon}
-                        />
-                        {f.label}
-                      </span>
-                    );
-                  })}
-                </div>
-              )}
-              {showTruthRow && (
-                <div className={styles.trialPlayerPickRow}>
-                  {s.logicalFallacies.map((f: LogicalFallacyScenario, i) => {
-                    const fallacy = fallacyById.get(f.id);
-                    if (!fallacy) return null;
-                    return (
-                      <span
-                        key={`${f.id}-${i}`}
-                        className={styles.trialFallacyPill}
-                        title={fallacy.description}
-                      >
-                        <img
-                          src={getLogicalFallacyIconSrc(f.id)}
-                          alt=""
-                          className={styles.trialPillIcon}
-                        />
-                        {fallacy.label}
-                      </span>
-                    );
-                  })}
-                </div>
-              )}
-            </button>
-          );
+      <div
+        className={cn(styles.trialAnalysisSplit, {
+          [styles.trialAnalysisSplitSingle]: !showGuessAside,
         })}
+      >
+        <div className={styles.trialLeftPane}>
+          <div className={styles.trialColumnInstructions}>
+            <p className={styles.trialAnalysisHint}>
+              {getLabel('attemptsPerAnalysis', { replacements: { maxAttempts } })}{' '}
+              {hasAnyAttempt
+                ? getLabel('attemptProgress', {
+                    replacements: {
+                      attemptsUsed,
+                      maxAttempts,
+                      remaining: Math.max(0, maxAttempts - attemptsUsed),
+                    },
+                  })
+                : getLabel('attemptsUpTo', { replacements: { maxAttempts } })}
+            </p>
+
+            {!hasAnyAttempt && canGuess && (
+              <p className={styles.trialAnalysisHint}>{getLabel('analysisSelectSentenceHint')}</p>
+            )}
+            {!canGuess && !hasAnyAttempt && (
+              <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
+                {getLabel('analysisCannotGuessPhase')}
+              </p>
+            )}
+          </div>
+
+          <div className={styles.trialScrollSlot}>
+            <ScrollFadeContainer isModal className={styles.trialAnalysisColumnScroll}>
+              <div className={styles.trialSentenceList}>
+                {statement.sentences.map((s) => {
+                  const isSelected = selectedSentenceId === s.id;
+                  const playerPickIds = bySentence[s.id] ?? [];
+                  const pinnedIds = pinnedBySentence[s.id] ?? [];
+                  const showTruthRow = showAllTruthPills && s.logicalFallacies.length > 0;
+                  const pinnedFlags = pinnedPickFlags(playerPickIds, pinnedIds);
+                  const readonlyPinnedFlags =
+                    !canGuess && playerPickIds.length > 0
+                      ? pinnedPickFlags(playerPickIds, pinnedIds)
+                      : [];
+
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      className={cn(styles.trialSentenceCard, {
+                        [styles.selected]: isSelected,
+                        [styles.clickable]: canGuess,
+                        [styles.static]: !canGuess,
+                        [styles.hasFallacyRevealed]: showTruthRow,
+                      })}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSentenceClick(s);
+                      }}
+                    >
+                      <p className={styles.trialSentenceText}>{s.text}</p>
+                      {canGuess && playerPickIds.length > 0 && (
+                        <div className={styles.trialPlayerPickRow}>
+                          {playerPickIds.map((fid, pillIdx) => {
+                            const f = allFallacies.find((x) => x.id === fid);
+                            if (!f) return null;
+                            const isPinned = pinnedFlags[pillIdx] ?? false;
+                            return (
+                              <span
+                                key={`${fid}-${pillIdx}`}
+                                className={cn(
+                                  styles.trialPlayerPickPill,
+                                  isPinned && styles.trialPinnedPill,
+                                )}
+                                title={f.description}
+                              >
+                                <img
+                                  src={getLogicalFallacyIconSrc(fid)}
+                                  alt=""
+                                  className={styles.trialPillIcon}
+                                />
+                                {f.label}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
+                      {!canGuess && playerPickIds.length > 0 && !showTruthRow && (
+                        <div className={styles.trialPlayerPickRow}>
+                          {playerPickIds.map((fid, pillIdx) => {
+                            const f = allFallacies.find((x) => x.id === fid);
+                            if (!f) return null;
+                            const isPinned = readonlyPinnedFlags[pillIdx] ?? false;
+                            return (
+                              <span
+                                key={`${fid}-${pillIdx}`}
+                                className={cn(
+                                  styles.trialPlayerPickPill,
+                                  isPinned && styles.trialFallacyPill,
+                                )}
+                                title={f.description}
+                              >
+                                <img
+                                  src={getLogicalFallacyIconSrc(fid)}
+                                  alt=""
+                                  className={styles.trialPillIcon}
+                                />
+                                {f.label}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
+                      {showTruthRow && (
+                        <div className={styles.trialPlayerPickRow}>
+                          {s.logicalFallacies.map((f: LogicalFallacyScenario, i) => {
+                            const fallacy = fallacyById.get(f.id);
+                            if (!fallacy) return null;
+                            return (
+                              <span
+                                key={`${f.id}-${i}`}
+                                className={styles.trialFallacyPill}
+                                title={fallacy.description}
+                              >
+                                <img
+                                  src={getLogicalFallacyIconSrc(f.id)}
+                                  alt=""
+                                  className={styles.trialPillIcon}
+                                />
+                                {fallacy.label}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </ScrollFadeContainer>
+          </div>
+        </div>
+
+        {showGuessAside && (
+          <div className={styles.trialGuessAside}>
+            {canGuess && (
+              <>
+                <div className={styles.trialColumnInstructions}>
+                  <p
+                    className={cn(styles.trialAnalysisHint, {
+                      [styles.disabled]: !selectedSentenceId,
+                    })}
+                  >
+                    {getLabel('chooseFallaciesForSentence')}
+                  </p>
+                </div>
+
+                <div
+                  className={cn(
+                    styles.trialFallacyPickerSection,
+                    styles.trialFallacyPickerSectionStretch,
+                  )}
+                >
+                  <div className={styles.trialScrollSlot}>
+                    <ScrollFadeContainer isModal className={styles.trialAnalysisColumnScroll}>
+                      <FallacyPicker
+                        fallacies={allFallacies}
+                        selectedIds={selectedIdsForPicker}
+                        onSelect={handleFallacySelect}
+                        disabled={!selectedSentenceId}
+                        compactGrid
+                      />
+                    </ScrollFadeContainer>
+                  </div>
+                </div>
+
+                <div className={styles.trialGuessActionsRow}>
+                  <button
+                    type="button"
+                    className={styles.trialNoFallaciesBtn}
+                    onClick={handleNoFallacies}
+                  >
+                    {getLabel('noFallaciesInStatement')}
+                  </button>
+                  <button
+                    type="button"
+                    className={cn(shared.trialFooterBtn, styles.submitFooterBtn)}
+                    onClick={handleSubmitGuess}
+                    disabled={totalPickCount === 0}
+                  >
+                    {getLabel('submitGuess')}
+                  </button>
+                </div>
+              </>
+            )}
+
+            {showReadOnlyPicker && (
+              <>
+                <div className={styles.trialColumnInstructions}>
+                  <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
+                    {getLabel('yourLastGuessReadOnly')}
+                  </p>
+                </div>
+                <div className={styles.trialFallacyPickerSection}>
+                  <div className={styles.trialScrollSlot}>
+                    <ScrollFadeContainer isModal className={styles.trialAnalysisColumnScroll}>
+                      <FallacyPicker
+                        fallacies={allFallacies}
+                        selectedIds={wasNoFallaciesGuess ? [] : readOnlySelectedIds}
+                        onSelect={() => {}}
+                        disabled
+                        compactGrid
+                      />
+                    </ScrollFadeContainer>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
-
-      {canGuess && selectedSentenceId && (
-        <div className={styles.trialFallacyPickerSection}>
-          <p className={styles.trialAnalysisHint}>{getLabel('chooseFallaciesForSentence')}</p>
-          <FallacyPicker
-            fallacies={allFallacies}
-            selectedIds={selectedIdsForPicker}
-            onSelect={handleFallacySelect}
-          />
-        </div>
-      )}
-
-      {canGuess && totalPickCount > 0 && (
-        <div className={styles.trialAnalysisSubmitRow}>
-          <button
-            type="button"
-            className={cn(shared.trialFooterBtn, styles.submitFooterBtn)}
-            onClick={handleSubmitGuess}
-          >
-            {getLabel('submitGuess')}
-          </button>
-        </div>
-      )}
-
-      {canGuess && (
-        <div className={styles.trialNoFallaciesRow}>
-          <button type="button" className={styles.trialNoFallaciesBtn} onClick={handleNoFallacies}>
-            {getLabel('noFallaciesInStatement')}
-          </button>
-        </div>
-      )}
-
-      {showReadOnlyPicker && (
-        <div className={styles.trialFallacyPickerSection}>
-          <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
-            {getLabel('yourLastGuessReadOnly')}
-          </p>
-          <FallacyPicker
-            fallacies={allFallacies}
-            selectedIds={wasNoFallaciesGuess ? [] : readOnlySelectedIds}
-            onSelect={() => {}}
-            disabled
-          />
-        </div>
-      )}
     </div>
   );
 }
