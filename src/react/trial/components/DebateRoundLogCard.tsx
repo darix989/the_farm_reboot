@@ -7,6 +7,7 @@ import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import AnalyzeButton from './AnalyzeButton';
 import {
   getSpeakerName,
+  perRoundImpactScoreBounds,
   qualityColor,
   qualityLabel,
   sideDisplayLabel,
@@ -154,13 +155,19 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
     wf.gamePhase === 'debate_complete' ||
     (isThisPlayerRound && wf.gamePhase === 'round_recap');
 
+  const roundImpactBounds = perRoundImpactScoreBounds();
   const impactLine =
     round.kind === 'player' && chosenOption && playerRoundEndedForLog && completedForRound ? (
       <>
         <span style={{ color: qualityColor(chosenOption.quality) }}>
           {qualityLabel(chosenOption.quality)}
         </span>{' '}
-        <ModeratorOpinionInline score={completedForRound.impact} />
+        <ModeratorOpinionInline
+          score={completedForRound.impact}
+          min={roundImpactBounds.min}
+          max={roundImpactBounds.max}
+          variant="compact"
+        />
       </>
     ) : null;
 

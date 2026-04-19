@@ -5,7 +5,9 @@ import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import {
+  debateTotalScoreBounds,
   getSpeakerName,
+  perRoundImpactScoreBounds,
   qualityColor,
   qualityLabel,
   statementText,
@@ -37,6 +39,9 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
   const round = wf.currentRound;
   const chosen = wf.selectedOption;
   const lastCompleted = wf.completedRounds[wf.completedRounds.length - 1] ?? null;
+
+  const totalScoreBounds = useMemo(() => debateTotalScoreBounds(debate), [debate]);
+  const roundImpactBounds = perRoundImpactScoreBounds();
 
   const choicePreview = useMemo(() => {
     if (!chosen) return '';
@@ -112,7 +117,12 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                   </span>
                   {' · '}
                   <span>
-                    <ModeratorOpinionInline score={recap.lastCompleted.impact} />
+                    <ModeratorOpinionInline
+                      score={recap.lastCompleted.impact}
+                      min={roundImpactBounds.min}
+                      max={roundImpactBounds.max}
+                      variant="compact"
+                    />
                     {getLabel('thisRound')}
                   </span>
                 </p>
@@ -132,7 +142,11 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
               <div className={styles.recapSection}>
                 <p className={styles.recapSectionLabel}>{getLabel('score')}</p>
                 <p className={styles.recapBody}>
-                  <ModeratorOpinionInline score={wf.totalScore} />
+                  <ModeratorOpinionInline
+                    score={wf.totalScore}
+                    min={totalScoreBounds.min}
+                    max={totalScoreBounds.max}
+                  />
                 </p>
               </div>
             </>

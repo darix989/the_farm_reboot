@@ -61,6 +61,9 @@ export type JuryVerdict = 'proposition_accepted' | 'proposition_rejected';
 
 export type OptionQuality = 'logical_fallacy' | 'ineffective' | 'effective';
 
+/** Max absolute value for `PlayerOption.impact` (symmetric range [-50, 50]). */
+export const PLAYER_OPTION_IMPACT_ABS_MAX = 50;
+
 /** When set on a `PlayerOption`, the option stays locked until the player identifies this fallacy in the given NPC sentence (same player round). */
 export interface PlayerOptionUnlockCondition {
   npcRoundId: string;
@@ -70,13 +73,13 @@ export interface PlayerOptionUnlockCondition {
 
 /**
  * One of the three pre-authored choices offered to the player in a player round.
- * `impact` is a score delta; keep in [-50, 50].
+ * `impact` is a score delta; keep in [-PLAYER_OPTION_IMPACT_ABS_MAX, PLAYER_OPTION_IMPACT_ABS_MAX].
  */
 export interface PlayerOption {
   id: string;
   quality: OptionQuality;
   sentences: Sentence[];
-  /** Integer delta in [-50, 50]. Negative for fallacy, ~0 for ineffective, positive for effective. */
+  /** Integer delta in [-PLAYER_OPTION_IMPACT_ABS_MAX, PLAYER_OPTION_IMPACT_ABS_MAX]. Negative for fallacy, ~0 for ineffective, positive for effective. */
   impact: number;
   /** Explanation of why this option is effective, ineffective, or a logical fallacy. */
   reason?: string;

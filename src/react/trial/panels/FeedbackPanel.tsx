@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
@@ -7,6 +7,7 @@ import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import DebateRoundLogCard from '../components/DebateRoundLogCard';
 import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/IntroDebateLogCard';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
+import { debateTotalScoreBounds } from '../utils/trialHelpers';
 import styles from './TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -59,6 +60,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   const prevGamePhaseRef = useRef<ReturnType<typeof useTrialRoundWorkflow>['gamePhase'] | null>(
     null,
   );
+  const totalScoreBounds = useMemo(() => debateTotalScoreBounds(debate), [debate]);
 
   useEffect(() => {
     const container = feedbackScrollRef.current;
@@ -145,7 +147,11 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
           className={styles.trialDebateLogTitleScore}
           style={{ margin: 0, color: uiColor.textBody }}
         >
-          <ModeratorOpinionInline score={wf.totalScore} />
+          <ModeratorOpinionInline
+            score={wf.totalScore}
+            min={totalScoreBounds.min}
+            max={totalScoreBounds.max}
+          />
         </p>
       </div>
 

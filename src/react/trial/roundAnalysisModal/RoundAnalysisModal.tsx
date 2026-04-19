@@ -13,7 +13,12 @@ import type {
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
 import fallacyPlaceholder from '../../../static/icons/fallacy_placeholder.svg';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
-import { qualityColor, qualityLabel, statementTypeLabel } from '../utils/trialHelpers';
+import {
+  perRoundImpactScoreBounds,
+  qualityColor,
+  qualityLabel,
+  statementTypeLabel,
+} from '../utils/trialHelpers';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { resolvedOptionSentences } from '../utils/optionUnlock';
 import type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
@@ -640,6 +645,7 @@ function NpcRoundAnalysis({
 // ---------------------------------------------------------------------------
 
 function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
+  const impactBounds = perRoundImpactScoreBounds();
   return (
     <div className={styles.trialAnalysisBody} style={{ marginTop: '1rem' }}>
       <div className={shared.trialSectionBox} style={{ marginBottom: '0' }}>
@@ -667,7 +673,12 @@ function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
               fontWeight: 400,
             }}
           >
-            <ModeratorOpinionInline score={option.impact} />
+            <ModeratorOpinionInline
+              score={option.impact}
+              min={impactBounds.min}
+              max={impactBounds.max}
+              variant="compact"
+            />
           </span>
         </p>
         {option.reason && (

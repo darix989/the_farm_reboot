@@ -1,9 +1,10 @@
-import type {
-  DebateScenarioJson,
-  PlayerOption,
-  RoundEntry,
-  Sentence,
-  Side,
+import {
+  PLAYER_OPTION_IMPACT_ABS_MAX,
+  type DebateScenarioJson,
+  type PlayerOption,
+  type RoundEntry,
+  type Sentence,
+  type Side,
 } from '../../../types/debateEntities';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -52,6 +53,18 @@ export function moderatorOpinionEmoji(score: number): string {
 /** Plain text for wizard strings and similar (emoji is first for quick scanning). */
 export function moderatorOpinionPlainText(score: number): string {
   return `${moderatorOpinionEmoji(score)} ${MODERATOR_OPINION_LABEL}`;
+}
+
+/** Symmetric bounds for one player round's impact (moderator gauge). */
+export function perRoundImpactScoreBounds(): { min: number; max: number } {
+  return { min: -PLAYER_OPTION_IMPACT_ABS_MAX, max: PLAYER_OPTION_IMPACT_ABS_MAX };
+}
+
+/** Min/max possible cumulative score for a debate (one ±max per player round). */
+export function debateTotalScoreBounds(debate: DebateScenarioJson): { min: number; max: number } {
+  const playerRounds = debate.rounds.filter((r) => r.kind === 'player').length;
+  const cap = Math.max(1, playerRounds) * PLAYER_OPTION_IMPACT_ABS_MAX;
+  return { min: -cap, max: cap };
 }
 
 export function statementTypeLabel(type: string): string {
