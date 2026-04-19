@@ -8,7 +8,6 @@ import DebateRoundLogCard from '../components/DebateRoundLogCard';
 import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/IntroDebateLogCard';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import styles from './TrialPanels.module.scss';
-import { uiFont } from '../../uiFont';
 import { uiColor } from '../../uiColor';
 
 interface FeedbackPanelProps {
@@ -146,15 +145,6 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
           style={{ margin: 0, color: uiColor.textBody }}
         >
           <ModeratorOpinionInline score={wf.totalScore} />
-          <span
-            style={{
-              marginLeft: '0.75rem',
-              fontSize: uiFont.subtitle,
-              color: uiColor.textDisabled,
-            }}
-          >
-            {wf.totalScore} / {wf.maxPossibleScore}
-          </span>
         </p>
       </div>
 

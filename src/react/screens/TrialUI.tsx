@@ -340,7 +340,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_complete':
         return {
           title: 'The debate is finished.',
-          body: `${moderatorOpinionPlainText(wf.totalScore)} · ${wf.totalScore} out of ${wf.maxPossibleScore}`,
+          body: moderatorOpinionPlainText(wf.totalScore),
         };
       default:
         return null;
@@ -352,7 +352,6 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     wf.activeOpponentResponse,
     wf.currentPlayerRound,
     wf.totalScore,
-    wf.maxPossibleScore,
     debate,
     fallacyGuesses,
   ]);

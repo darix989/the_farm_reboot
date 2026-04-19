@@ -121,10 +121,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
               <div className={styles.recapSection}>
                 <p className={styles.recapSectionLabel}>Score</p>
                 <p className={styles.recapBody}>
-                  <ModeratorOpinionInline score={wf.totalScore} />{' '}
-                  <span style={{ color: 'var(--ui-color-text-disabled)' }}>
-                    {wf.totalScore} / {wf.maxPossibleScore}
-                  </span>
+                  <ModeratorOpinionInline score={wf.totalScore} />
                 </p>
               </div>
             </>
