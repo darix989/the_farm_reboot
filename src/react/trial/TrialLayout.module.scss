@@ -72,3 +72,10 @@
   grid-column: 2;
   grid-row: 2;
 }
+
+/* Debate log, wizard, and interactive panels share typography scaled from `--ui-font-*` tokens. */
+.trialFeedbackPanel,
+.trialWizardPanel,
+.trialInteractivePanel {
+  --ui-trial-panel-font-scale: 1.3;
+}

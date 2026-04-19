@@ -36,7 +36,10 @@ const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail }) => (
         <div aria-live="polite" className={styles.trialWizardDetailLive}>
           <div
             className={shared.trialSectionBox}
-            style={{ fontSize: 'var(--ui-font-body)', lineHeight: 1.375 }}
+            style={{
+              fontSize: 'calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1))',
+              lineHeight: 1.375,
+            }}
           >
             <p style={{ color: uiColor.textCaption, margin: 0 }}>{detail.title}</p>
             <p style={{ marginTop: '0.5rem', color: uiColor.textBody, marginBottom: 0 }}>

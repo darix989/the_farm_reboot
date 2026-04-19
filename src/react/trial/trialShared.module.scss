@@ -83,7 +83,7 @@
   background: var(--ui-color-overlay-panel);
   padding: 0.75rem 0.5rem;
   text-align: center;
-  font-size: var(--ui-font-footer);
+  font-size: calc(var(--ui-font-footer) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 500;
   line-height: 1.375;
   color: var(--ui-color-text-emphasis);
@@ -94,7 +94,7 @@
 
   @media (min-width: 640px) {
     padding: 1rem 0.75rem;
-    font-size: var(--ui-font-footer-wide);
+    font-size: calc(var(--ui-font-footer-wide) * var(--ui-trial-panel-font-scale, 1));
   }
 
   &:hover {

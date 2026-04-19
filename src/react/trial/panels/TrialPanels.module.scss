@@ -10,7 +10,7 @@
   height: 100%;
   min-height: 0;
   flex-direction: column;
-  gap: 1rem;
+  gap: calc(1rem * var(--ui-trial-panel-font-scale, 1));
 }
 
 .trialInteractiveBody {
@@ -84,14 +84,14 @@
 
 .trialDebateLogTitleScore {
   flex-shrink: 0;
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.375;
   text-align: right;
   white-space: nowrap;
 }
 
 .trialPanelHeading {
-  font-size: var(--ui-font-display);
+  font-size: calc(var(--ui-font-display) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -136,7 +136,7 @@
   overflow-wrap: break-word;
   padding: 0 0.25rem;
   word-break: break-word;
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.625;
   color: var(--ui-color-text-body);
 }
@@ -163,7 +163,7 @@
   overflow-y: auto;
   padding: 1rem;
   word-break: break-word;
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.625;
   color: var(--ui-color-text-body);
 }
@@ -190,7 +190,7 @@
   flex: 1;
   min-height: 0;
   flex-direction: column;
-  gap: 1rem;
+  gap: calc(1rem * var(--ui-trial-panel-font-scale, 1));
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: none;
@@ -207,14 +207,15 @@
 .debateLogRoundList {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: calc(0.75rem * var(--ui-trial-panel-font-scale, 1));
 }
 
 .debateLogRound {
   border-radius: 0.5rem;
   border: 1px solid var(--ui-color-border-strong);
   background: var(--ui-color-overlay-muted);
-  padding: 0.75rem 1rem;
+  padding: calc(0.75rem * var(--ui-trial-panel-font-scale, 1))
+    calc(1rem * var(--ui-trial-panel-font-scale, 1));
   box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
 }
 
@@ -222,7 +223,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: calc(1rem * var(--ui-trial-panel-font-scale, 1));
   min-width: 0;
 }
 
@@ -231,13 +232,14 @@
   min-width: 0;
   flex: 1;
   align-items: center;
-  gap: 0.85rem 1rem;
+  gap: calc(0.85rem * var(--ui-trial-panel-font-scale, 1))
+    calc(1rem * var(--ui-trial-panel-font-scale, 1));
 }
 
 .debateLogRoundNumber {
   flex-shrink: 0;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(1.85rem, 2.8vw, 2.35rem);
+  font-size: calc(clamp(1.85rem, 2.8vw, 2.35rem) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -253,7 +255,7 @@
 }
 
 .debateLogRoundSideLine {
-  font-size: var(--ui-font-micro);
+  font-size: calc(var(--ui-font-micro) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 600;
   line-height: 1.25;
   letter-spacing: 0.07em;
@@ -276,7 +278,7 @@
 
 .debateLogRoundTypeLine {
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: var(--ui-font-subtitle);
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 600;
   line-height: 1.2;
   color: var(--ui-color-text-emphasis);
@@ -286,16 +288,17 @@
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  gap: 0.5rem;
+  gap: calc(0.5rem * var(--ui-trial-panel-font-scale, 1));
   margin-left: auto;
 }
 
 .debateLogStatusActive,
 .debateLogStatusUpcoming,
 .debateLogStatusCompleted {
-  font-size: var(--ui-font-subtitle);
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 500;
-  padding: 0.1rem 0.45rem;
+  padding: calc(0.1rem * var(--ui-trial-panel-font-scale, 1))
+    calc(0.45rem * var(--ui-trial-panel-font-scale, 1));
   border-radius: 0.25rem;
   text-transform: lowercase;
 }
@@ -356,7 +359,7 @@
 .debateLogAnalyzeGroup {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: calc(0.25rem * var(--ui-trial-panel-font-scale, 1));
   align-items: center;
   justify-content: flex-end;
 
@@ -382,7 +385,10 @@
   border: 1px solid var(--ui-color-border-inner);
   background: var(--ui-color-overlay-deep);
   color: var(--ui-color-text-muted);
-  font-size: math.div(debate-log-icon.$trial-debate-log-icon-size * 0.65, 1.85);
+  font-size: calc(
+    #{math.div(debate-log-icon.$trial-debate-log-icon-size * 0.65, 1.85)} *
+      var(--ui-trial-panel-font-scale, 1)
+  );
   line-height: 1;
   cursor: pointer;
   transition:
@@ -405,11 +411,11 @@
 .debateLogRoundBody {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: calc(0.75rem * var(--ui-trial-panel-font-scale, 1));
 }
 
 .debateLogRoundBodyShellExpanded .debateLogRoundBody {
-  padding-top: 0.75rem;
+  padding-top: calc(0.75rem * var(--ui-trial-panel-font-scale, 1));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -425,8 +431,8 @@
 
 .debateLogStatementBlock {
   border-top: 1px solid var(--ui-color-border-fade);
-  padding-top: 0.65rem;
-  font-size: var(--ui-font-body);
+  padding-top: calc(0.65rem * var(--ui-trial-panel-font-scale, 1));
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.375;
 }
 
@@ -434,7 +440,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: calc(0.5rem * var(--ui-trial-panel-font-scale, 1));
 
   .debateLogAnalyzeGroup {
     margin-top: -0.1rem;
@@ -442,8 +448,8 @@
 }
 
 .debateLogMinPreview {
-  margin: 0.5rem 0 0;
-  font-size: var(--ui-font-body);
+  margin: calc(0.5rem * var(--ui-trial-panel-font-scale, 1)) 0 0;
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.375;
 }
 
@@ -456,7 +462,7 @@
   border-top: 1px solid var(--ui-color-border-fade);
   padding-top: 0.75rem;
   padding-bottom: 2.25rem; /* room for the analyze button */
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.375;
 }
 
@@ -580,7 +586,7 @@
   background: var(--ui-color-overlay-muted);
   padding: 0.875rem;
   text-align: left;
-  font-size: var(--ui-font-subtitle);
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.4;
   color: var(--ui-color-text-emphasis);
   box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
@@ -657,7 +663,7 @@
   border: 1px solid var(--ui-color-border-inner);
   background: var(--ui-color-overlay-deep);
   color: var(--ui-color-text-emphasis);
-  font-size: var(--ui-font-label);
+  font-size: calc(var(--ui-font-label) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 700;
   line-height: 1;
   transition:
