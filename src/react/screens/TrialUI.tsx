@@ -376,8 +376,6 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           <FeedbackPanel
             wf={wf}
             debate={debate}
-            fallacyGuesses={fallacyGuesses}
-            revealedLockedOptionIds={revealedLockedOptionIds}
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
           />

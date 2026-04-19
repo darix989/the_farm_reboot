@@ -1,15 +1,12 @@
 import React, { useId } from 'react';
 import cn from 'classnames';
-import type { DebateScenarioJson, PlayerOption } from '../../../types/debateEntities';
+import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
-import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import AnalyzeButton from './AnalyzeButton';
 import {
   getSpeakerName,
   perRoundImpactScoreBounds,
-  qualityColor,
-  qualityLabel,
   sideDisplayLabel,
   sideForRoundHeader,
   sideForStatementSpeaker,
@@ -17,7 +14,7 @@ import {
   statementTypeLabel,
 } from '../utils/trialHelpers';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
-import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
+import { resolvedOptionSentences } from '../utils/optionUnlock';
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -29,22 +26,11 @@ interface DebateRoundLogCardProps {
   round: DebateScenarioJson['rounds'][number];
   roundIndex: number;
   wf: Wf;
-  fallacyGuesses: Map<number, FallacyGuessSession>;
-  revealedLockedOptionIds: Set<string>;
   /** When set, overrides default expand (active = expanded, else minimized). */
   expandOverride: boolean | undefined;
   onExpandToggle: () => void;
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
   onOpenAnalysis: (target: AnalysisTarget) => void;
-}
-
-function showRealPlayerOptionCopy(
-  opt: PlayerOption,
-  fallacyGuesses: Map<number, FallacyGuessSession>,
-  revealedLockedOptionIds: Set<string>,
-): boolean {
-  const guessUnlocked = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
-  return !opt.unlockCondition || (guessUnlocked && revealedLockedOptionIds.has(opt.id));
 }
 
 type DebateRoundStatus = 'active' | 'upcoming' | 'completed';
@@ -66,8 +52,6 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   round,
   roundIndex,
   wf,
-  fallacyGuesses,
-  revealedLockedOptionIds,
   expandOverride,
   onExpandToggle,
   getNpcGuessState,
@@ -149,7 +133,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
 
   const showResponseAnalyze = round.kind === 'player' && !!displayResponse && showOpponentResponse;
 
-  /** Hide quality / score until this player round is over (advanced or debate finished). */
+  /** Hide moderator gauge until this player round is over (advanced or debate finished). */
   const playerRoundEndedForLog =
     roundIndex < wf.currentRoundIndex ||
     wf.gamePhase === 'debate_complete' ||
@@ -158,27 +142,17 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   const roundImpactBounds = perRoundImpactScoreBounds();
   const impactLine =
     round.kind === 'player' && chosenOption && playerRoundEndedForLog && completedForRound ? (
-      <>
-        <span style={{ color: qualityColor(chosenOption.quality) }}>
-          {qualityLabel(chosenOption.quality)}
-        </span>{' '}
-        <ModeratorOpinionInline
-          score={completedForRound.impact}
-          min={roundImpactBounds.min}
-          max={roundImpactBounds.max}
-          variant="compact"
-        />
-      </>
+      <ModeratorOpinionInline
+        score={completedForRound.impact}
+        min={roundImpactBounds.min}
+        max={roundImpactBounds.max}
+        variant="compact"
+      />
     ) : null;
-
-  const optionUnlocked =
-    chosenOption && round.kind === 'player'
-      ? showRealPlayerOptionCopy(chosenOption, fallacyGuesses, revealedLockedOptionIds)
-      : false;
 
   const playerBodyText =
     chosenOption && round.kind === 'player'
-      ? statementText(resolvedOptionSentences(chosenOption, optionUnlocked))
+      ? statementText(resolvedOptionSentences(chosenOption, true))
       : '';
 
   const roundNumDisplay = String(round.roundNumber).padStart(2, '0');

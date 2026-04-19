@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
-import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import DebateRoundLogCard from '../components/DebateRoundLogCard';
 import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/IntroDebateLogCard';
@@ -15,8 +14,6 @@ import getLabel from '../../../data/labels';
 interface FeedbackPanelProps {
   wf: ReturnType<typeof useTrialRoundWorkflow>;
   debate: DebateScenarioJson;
-  fallacyGuesses: Map<number, FallacyGuessSession>;
-  revealedLockedOptionIds: Set<string>;
   onOpenAnalysis: (target: AnalysisTarget) => void;
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
 }
@@ -46,8 +43,6 @@ function roundExpandedDefault(
 const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   wf,
   debate,
-  fallacyGuesses,
-  revealedLockedOptionIds,
   onOpenAnalysis,
   getNpcGuessState,
 }) => {
@@ -182,8 +177,6 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                 round={round}
                 roundIndex={roundIndex}
                 wf={wf}
-                fallacyGuesses={fallacyGuesses}
-                revealedLockedOptionIds={revealedLockedOptionIds}
                 expandOverride={expandOverride}
                 onExpandToggle={() => {
                   if (wf.gamePhase === 'debate_intro') return;

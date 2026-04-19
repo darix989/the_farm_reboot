@@ -13,12 +13,7 @@ import type {
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
 import fallacyPlaceholder from '../../../static/icons/fallacy_placeholder.svg';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
-import {
-  perRoundImpactScoreBounds,
-  qualityColor,
-  qualityLabel,
-  statementTypeLabel,
-} from '../utils/trialHelpers';
+import { perRoundImpactScoreBounds, statementTypeLabel } from '../utils/trialHelpers';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { resolvedOptionSentences } from '../utils/optionUnlock';
 import type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
@@ -641,7 +636,7 @@ function NpcRoundAnalysis({
 }
 
 // ---------------------------------------------------------------------------
-// Player assessment (quality / impact / reason) — after fallacy guessing ends
+// Player assessment (impact / reason) — after fallacy guessing ends
 // ---------------------------------------------------------------------------
 
 function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
@@ -661,25 +656,16 @@ function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
         <p
           style={{
             fontSize: uiFont.body,
-            fontWeight: 600,
-            color: qualityColor(option.quality),
+            fontWeight: 400,
+            color: uiColor.textBody,
           }}
         >
-          {qualityLabel(option.quality)}
-          <span
-            style={{
-              marginLeft: '0.75rem',
-              fontSize: uiFont.subtitle,
-              fontWeight: 400,
-            }}
-          >
-            <ModeratorOpinionInline
-              score={option.impact}
-              min={impactBounds.min}
-              max={impactBounds.max}
-              variant="compact"
-            />
-          </span>
+          <ModeratorOpinionInline
+            score={option.impact}
+            min={impactBounds.min}
+            max={impactBounds.max}
+            variant="compact"
+          />
         </p>
         {option.reason && (
           <p
@@ -884,22 +870,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                   },
                 })}
               </p>
-              <p className={styles.trialModalSubtitle}>
-                {statementTypeLabel(statType)}
-                {target.kind === 'player' && playerRevealAssessment && (
-                  <>
-                    {' '}
-                    <span
-                      style={{
-                        color: qualityColor(target.chosenOption.quality),
-                        fontWeight: 600,
-                      }}
-                    >
-                      · {qualityLabel(target.chosenOption.quality)}
-                    </span>
-                  </>
-                )}
-              </p>
+              <p className={styles.trialModalSubtitle}>{statementTypeLabel(statType)}</p>
             </div>
           </div>
           <button
