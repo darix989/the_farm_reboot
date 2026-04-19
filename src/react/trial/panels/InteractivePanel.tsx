@@ -62,9 +62,11 @@ function ChoiceButton({
   /** One-time emphasis after revealing an unlock-gated statement */
   revealFlash?: boolean;
 }) {
-  const ariaLabel = getLabel('optionAriaLabel', false, {
-    optionLetter,
-    statement: accessibilityStatement ?? statementText,
+  const ariaLabel = getLabel('optionAriaLabel', {
+    replacements: {
+      optionLetter,
+      statement: accessibilityStatement ?? statementText,
+    },
   });
   return (
     <button

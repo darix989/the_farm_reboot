@@ -1,6 +1,6 @@
 /**
  * Central UI copy. Use {@link getLabel} with a key; optional `{name}` placeholders are replaced
- * when a `replacements` map is passed.
+ * when `replacements` is set on the options argument.
  */
 const LABELS = {
   // --- App shell / menus ---
@@ -169,12 +169,15 @@ function applyReplacements(
   });
 }
 
+export type GetLabelOptions = {
+  /** When true, appends a period (e.g. for TTS pauses). */
+  addPeriod?: boolean;
+  replacements?: Record<string, string | number>;
+};
+
 /** Returns the string for `label`, optionally appending a period (e.g. for TTS pauses). */
-function getLabel(
-  label: Labels,
-  addPeriod?: boolean,
-  replacements?: Record<string, string | number>,
-) {
+function getLabel(label: Labels, options?: GetLabelOptions): string {
+  const { addPeriod, replacements } = options ?? {};
   const raw = LABELS[label];
   const resolved = applyReplacements(raw, replacements);
   return `${resolved}${addPeriod ? '.' : ''}`;

@@ -293,8 +293,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         const npc = wf.currentNpcRound;
         if (!npc) return null;
         return {
-          title: getLabel('wizardDetailSpeaks', false, {
-            name: getSpeakerName(debate, npc.speakerId),
+          title: getLabel('wizardDetailSpeaks', {
+            replacements: {
+              name: getSpeakerName(debate, npc.speakerId),
+            },
           }),
           body: statementText(npc.statement.sentences),
         };
@@ -322,8 +324,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         const playerRound = wf.currentPlayerRound;
         if (!response || !playerRound) return null;
         return {
-          title: getLabel('wizardDetailResponse', false, {
-            name: getSpeakerName(debate, response.statement.speakerId),
+          title: getLabel('wizardDetailResponse', {
+            replacements: {
+              name: getSpeakerName(debate, response.statement.speakerId),
+            },
           }),
           body: statementText(response.statement.sentences),
         };
@@ -333,8 +337,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         const playerRound = wf.currentPlayerRound;
         if (response && playerRound) {
           return {
-            title: getLabel('wizardDetailResponse', false, {
-              name: getSpeakerName(debate, response.statement.speakerId),
+            title: getLabel('wizardDetailResponse', {
+              replacements: {
+                name: getSpeakerName(debate, response.statement.speakerId),
+              },
             }),
             body: statementText(response.statement.sentences),
           };

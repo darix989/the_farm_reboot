@@ -56,9 +56,11 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
 
   const roundHeading =
     round && round.kind === 'player'
-      ? getLabel('roundHeadingWithStatementType', false, {
-          roundNumber: round.roundNumber,
-          statementType: statementTypeLabel(round.type),
+      ? getLabel('roundHeadingWithStatementType', {
+          replacements: {
+            roundNumber: round.roundNumber,
+            statementType: statementTypeLabel(round.type),
+          },
         })
       : getLabel('roundRecap');
 
@@ -119,7 +121,9 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
               {responseBody ? (
                 <div className={styles.recapSection}>
                   <p className={styles.recapSectionLabel}>
-                    {getLabel('opponentResponseHeading', false, { name: responseSpeaker })}
+                    {getLabel('opponentResponseHeading', {
+                      replacements: { name: responseSpeaker },
+                    })}
                   </p>
                   <p className={styles.recapBody}>{responseBody}</p>
                 </div>

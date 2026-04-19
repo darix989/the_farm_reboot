@@ -407,27 +407,31 @@ export function useTrialRoundWorkflow(
     }
     if (!currentRound) return '';
 
-    const roundLabel = getLabel('workflowRoundWithType', false, {
-      roundNumber: currentRound.roundNumber,
-      typeDisplay: currentRound.type.replace(/_/g, ' '),
+    const roundLabel = getLabel('workflowRoundWithType', {
+      replacements: {
+        roundNumber: currentRound.roundNumber,
+        typeDisplay: currentRound.type.replace(/_/g, ' '),
+      },
     });
 
     switch (state.gamePhase) {
       case 'npc_speaking':
-        return getLabel('workflowNpcSpeaking', false, { roundLabel, opponentName });
+        return getLabel('workflowNpcSpeaking', { replacements: { roundLabel, opponentName } });
       case 'player_choosing':
         if (currentPlayerRound?.opponentPrompt) {
           return state.selectedOptionId
-            ? getLabel('workflowStatementSelected', false, { roundLabel })
-            : getLabel('workflowPlayerChoosingQuestion', false, { roundLabel, opponentName });
+            ? getLabel('workflowStatementSelected', { replacements: { roundLabel } })
+            : getLabel('workflowPlayerChoosingQuestion', {
+                replacements: { roundLabel, opponentName },
+              });
         }
         return state.selectedOptionId
-          ? getLabel('workflowStatementSelected', false, { roundLabel })
-          : getLabel('workflowPlayerChoosingStatement', false, { roundLabel });
+          ? getLabel('workflowStatementSelected', { replacements: { roundLabel } })
+          : getLabel('workflowPlayerChoosingStatement', { replacements: { roundLabel } });
       case 'player_confirming':
         return getLabel('workflowPlayerConfirming');
       case 'npc_responding':
-        return getLabel('workflowNpcResponding', false, { opponentName });
+        return getLabel('workflowNpcResponding', { replacements: { opponentName } });
       case 'round_recap':
         return getLabel('workflowRoundRecap');
       default:

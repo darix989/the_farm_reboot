@@ -182,7 +182,9 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
         <div className={styles.debateLogRoundLead}>
           <div
             className={styles.debateLogRoundNumber}
-            aria-label={getLabel('roundAria', false, { roundNumber: round.roundNumber })}
+            aria-label={getLabel('roundAria', {
+              replacements: { roundNumber: round.roundNumber },
+            })}
           >
             {roundNumDisplay}
           </div>
@@ -263,9 +265,13 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
                     <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      {getLabel('roundHeader', false, { roundNumber: round.roundNumber })}
-                      {getLabel('debaterQuestion', false, {
-                        name: getSpeakerName(debate, round.opponentPrompt.speakerId),
+                      {getLabel('roundHeader', {
+                        replacements: { roundNumber: round.roundNumber },
+                      })}
+                      {getLabel('debaterQuestion', {
+                        replacements: {
+                          name: getSpeakerName(debate, round.opponentPrompt.speakerId),
+                        },
                       })}
                     </p>
                     {showPromptAnalyze && (
@@ -297,8 +303,10 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
                     <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      {getLabel('roundHeader', false, {
-                        roundNumber: completedForRound?.roundNumber ?? round.roundNumber,
+                      {getLabel('roundHeader', {
+                        replacements: {
+                          roundNumber: completedForRound?.roundNumber ?? round.roundNumber,
+                        },
                       })}
                       {getLabel('you')}
                       {impactLine != null ? <> — {impactLine}</> : null}
@@ -328,11 +336,15 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
                     <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      {getLabel('roundHeader', false, {
-                        roundNumber: completedForRound?.roundNumber ?? round.roundNumber,
+                      {getLabel('roundHeader', {
+                        replacements: {
+                          roundNumber: completedForRound?.roundNumber ?? round.roundNumber,
+                        },
                       })}
-                      {getLabel('responds', false, {
-                        name: getSpeakerName(debate, displayResponse.statement.speakerId),
+                      {getLabel('responds', {
+                        replacements: {
+                          name: getSpeakerName(debate, displayResponse.statement.speakerId),
+                        },
                       })}
                     </p>
                     {showResponseAnalyze && (

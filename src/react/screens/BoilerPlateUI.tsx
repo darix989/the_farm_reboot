@@ -86,12 +86,18 @@ function App() {
           {getLabel('gameStatus')} <strong>{getLabel('ready')}</strong>
         </div>
         <div>
-          {getLabel('playerLevelExperience', false, {
-            level: player.level,
-            experience: player.experience,
+          {getLabel('playerLevelExperience', {
+            replacements: {
+              level: player.level,
+              experience: player.experience,
+            },
           })}
         </div>
-        <div>{getLabel('logoPosition', false, { x: spritePosition.x, y: spritePosition.y })}</div>
+        <div>
+          {getLabel('logoPosition', {
+            replacements: { x: spritePosition.x, y: spritePosition.y },
+          })}
+        </div>
       </div>
       <div>
         <button className={styles.button} onClick={addSprite}>

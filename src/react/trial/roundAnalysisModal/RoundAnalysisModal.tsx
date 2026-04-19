@@ -206,8 +206,10 @@ function GuessResultBanner({
                     return (
                       <strong key={`${p.sentenceId}-${p.fallacyId}-${i}`}>
                         {f.label}{' '}
-                        {getLabel('sentenceReference', false, {
-                          sentenceIndex: sentenceIndex(p.sentenceId),
+                        {getLabel('sentenceReference', {
+                          replacements: {
+                            sentenceIndex: sentenceIndex(p.sentenceId),
+                          },
                         })}
                       </strong>
                     );
@@ -227,8 +229,10 @@ function GuessResultBanner({
                     missedPairs.map((mp, i) => (
                       <strong key={`${mp.sentenceId}-${mp.fallacy.id}-${i}`}>
                         {mp.fallacy.label}{' '}
-                        {getLabel('sentenceReference', false, {
-                          sentenceIndex: sentenceIndex(mp.sentenceId),
+                        {getLabel('sentenceReference', {
+                          replacements: {
+                            sentenceIndex: sentenceIndex(mp.sentenceId),
+                          },
                         })}
                       </strong>
                     )),
@@ -265,8 +269,10 @@ function GuessResultBanner({
                   missedPairs.map((mp, i) => (
                     <strong key={`${mp.sentenceId}-${mp.fallacy.id}-${i}`}>
                       {mp.fallacy.label}{' '}
-                      {getLabel('sentenceReference', false, {
-                        sentenceIndex: sentenceIndex(mp.sentenceId),
+                      {getLabel('sentenceReference', {
+                        replacements: {
+                          sentenceIndex: sentenceIndex(mp.sentenceId),
+                        },
                       })}
                     </strong>
                   )),
@@ -457,14 +463,16 @@ function NpcRoundAnalysis({
   return (
     <div className={styles.trialAnalysisBody}>
       <p className={styles.trialAnalysisHint}>
-        {getLabel('attemptsPerAnalysis', false, { maxAttempts })}{' '}
+        {getLabel('attemptsPerAnalysis', { replacements: { maxAttempts } })}{' '}
         {hasAnyAttempt
-          ? getLabel('attemptProgress', false, {
-              attemptsUsed,
-              maxAttempts,
-              remaining: Math.max(0, maxAttempts - attemptsUsed),
+          ? getLabel('attemptProgress', {
+              replacements: {
+                attemptsUsed,
+                maxAttempts,
+                remaining: Math.max(0, maxAttempts - attemptsUsed),
+              },
             })
-          : getLabel('attemptsUpTo', false, { maxAttempts })}
+          : getLabel('attemptsUpTo', { replacements: { maxAttempts } })}
       </p>
 
       {!hasAnyAttempt && canGuess && (
@@ -835,9 +843,9 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
 
   const titleSuffix =
     target.kind === 'opponent_prompt'
-      ? getLabel('opponentsQuestion', false, { speakerName })
+      ? getLabel('opponentsQuestion', { replacements: { speakerName } })
       : target.kind === 'opponent_response'
-        ? getLabel('opponentsResponse', false, { speakerName })
+        ? getLabel('opponentsResponse', { replacements: { speakerName } })
         : speakerName;
 
   return (
@@ -858,9 +866,11 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
             <img src={magnifyingIcon} alt="" className={styles.trialModalHeaderIcon} />
             <div>
               <p className={styles.trialModalTitle}>
-                {getLabel('modalRoundTitle', false, {
-                  roundNumber,
-                  tail: target.kind === 'player' ? getLabel('you') : titleSuffix,
+                {getLabel('modalRoundTitle', {
+                  replacements: {
+                    roundNumber,
+                    tail: target.kind === 'player' ? getLabel('you') : titleSuffix,
+                  },
                 })}
               </p>
               <p className={styles.trialModalSubtitle}>
