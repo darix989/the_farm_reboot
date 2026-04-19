@@ -171,6 +171,10 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                     onRevealLockedOption(opt.id);
                     return;
                   }
+                  if (wf.selectedOption?.id === opt.id) {
+                    wf.unselect();
+                    return;
+                  }
                   wf.dispatch({ type: 'select_option', optionId: opt.id });
                 }}
               />
