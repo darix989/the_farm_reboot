@@ -17,6 +17,9 @@ export type LogicalFallacyId =
   | 'appeal-to-popularity'
   | 'weak-analogy'
   | 'hasty-generalization'
+  | 'anecdotal'
+  | 'false-cause'
+  | 'genetic'
   | 'glittering-generalities'
   | 'appeal-to-emotion'
   | 'appeal-to-fear';
