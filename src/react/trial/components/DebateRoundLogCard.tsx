@@ -70,9 +70,12 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
       ? styles.debateLogRoundSideLineProp
       : styles.debateLogRoundSideLineOpp;
 
+  /** "· YOU" only when this player round opens with the player's line (not NPC-led crossfire). */
+  const showSideYouOnRoundBadge = round.kind === 'player' && !round.opponentPrompt;
+
   const stackedSideLabel =
     round.kind === 'player'
-      ? `${sideDisplayLabel(headerSide).toUpperCase()}${getLabel('sideYouSuffix')}`
+      ? `${sideDisplayLabel(headerSide).toUpperCase()}${showSideYouOnRoundBadge ? getLabel('sideYouSuffix') : ''}`
       : sideDisplayLabel(headerSide).toUpperCase();
 
   const isThisPlayerRound = wf.currentPlayerRound?.id === round.id && round.kind === 'player';

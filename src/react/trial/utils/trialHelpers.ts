@@ -88,9 +88,18 @@ export function sideForStatementSpeaker(debate: DebateScenarioJson, speakerId: s
   return debate.playerSide;
 }
 
-/** Side badge for the round header (NPC = speaker's side; player round = player's side). */
+/**
+ * Side badge for the debate log round header.
+ * - NPC round: the speaker's side.
+ * - Player round with `opponentPrompt` (NPC asks first in crossfire): the asker's side so the
+ *   stripe matches who speaks first; the player's reply is labeled inline ("You").
+ * - Other player rounds: the player's side (they lead the exchange).
+ */
 export function sideForRoundHeader(debate: DebateScenarioJson, round: RoundEntry): Side {
   if (round.kind === 'npc') return sideForStatementSpeaker(debate, round.speakerId);
+  if (round.kind === 'player' && round.opponentPrompt) {
+    return sideForStatementSpeaker(debate, round.opponentPrompt.speakerId);
+  }
   return debate.playerSide;
 }
 
