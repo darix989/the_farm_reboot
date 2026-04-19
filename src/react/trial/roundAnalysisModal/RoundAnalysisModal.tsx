@@ -633,20 +633,13 @@ function NpcRoundAnalysis({
 }
 
 // ---------------------------------------------------------------------------
-// Player round analysis view
+// Player assessment (quality / impact / reason) — after fallacy guessing ends
 // ---------------------------------------------------------------------------
 
-function PlayerRoundAnalysis({
-  option,
-  fallacyById,
-}: {
-  option: PlayerOption;
-  fallacyById: Map<string, LogicalFallacy>;
-}) {
-  const sentences = resolvedOptionSentences(option, true);
+function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
   return (
-    <div className={styles.trialAnalysisBody}>
-      <div className={shared.trialSectionBox} style={{ marginBottom: '1rem' }}>
+    <div className={styles.trialAnalysisBody} style={{ marginTop: '1rem' }}>
+      <div className={shared.trialSectionBox} style={{ marginBottom: '0' }}>
         <p
           style={{
             fontSize: uiFont.subtitle,
@@ -694,47 +687,20 @@ function PlayerRoundAnalysis({
           </p>
         )}
       </div>
-
-      <p className={styles.trialAnalysisHint} style={{ marginBottom: '0.5rem' }}>
-        Statement breakdown:
-      </p>
-      <div className={styles.trialSentenceList}>
-        {sentences.map((s) => {
-          const hasFallacy = s.logicalFallacies.length > 0;
-          return (
-            <div
-              key={s.id}
-              className={cn(styles.trialSentenceCard, styles.static, {
-                [styles.hasFallacyRevealed]: hasFallacy,
-              })}
-            >
-              <p className={styles.trialSentenceText}>{s.text}</p>
-              {hasFallacy && (
-                <div
-                  style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}
-                >
-                  {s.logicalFallacies.map((f) => {
-                    const fallacy = fallacyById.get(f.id);
-                    if (!fallacy) return null;
-                    return (
-                      <span
-                        key={f.id}
-                        className={styles.trialFallacyPill}
-                        title={fallacy.description}
-                      >
-                        <img src={fallacyPlaceholder} alt="" className={styles.trialPillIcon} />
-                        {fallacy.label}
-                      </span>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
     </div>
   );
+}
+
+function syntheticStatementFromPlayerTarget(
+  round: PlayerRoundEntry,
+  chosenOption: PlayerOption,
+): Statement {
+  return {
+    id: chosenOption.id,
+    type: round.type,
+    speakerId: 'player',
+    sentences: resolvedOptionSentences(chosenOption, true),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -807,10 +773,31 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   const prevAttemptsLenRef = useRef(0);
 
   const analysisTargetKey =
-    target.kind === 'player' ? '' : target.kind === 'npc' ? target.round.id : target.statement.id;
+    target.kind === 'player'
+      ? target.chosenOption.id
+      : target.kind === 'npc'
+        ? target.round.id
+        : target.statement.id;
+
+  const playerSyntheticStatement = useMemo((): Statement | null => {
+    if (target.kind !== 'player') return null;
+    return syntheticStatementFromPlayerTarget(target.round, target.chosenOption);
+  }, [target]);
+
+  const playerRevealAssessment = useMemo(() => {
+    if (target.kind !== 'player') return false;
+    if (!guessSession || guessSession.attempts.length === 0) return false;
+    const revealFull = shouldRevealFullSolution(guessSession);
+    const last = guessSession.attempts[guessSession.attempts.length - 1]!;
+    const terminalOk =
+      last.kind === 'no_fallacies'
+        ? last.correct
+        : last.kind === 'multi' && last.outcome === 'perfect';
+    return revealFull || terminalOk;
+  }, [target, guessSession]);
 
   useEffect(() => {
-    if (target.kind === 'player' || !analysisTargetKey) return;
+    if (!analysisTargetKey) return;
     const n = guessSession?.attempts.length ?? 0;
     if (analysisTargetKeyRef.current !== analysisTargetKey) {
       analysisTargetKeyRef.current = analysisTargetKey;
@@ -842,7 +829,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
       cancelAnimationFrame(rafInner);
       if (scrollTimeout !== undefined) window.clearTimeout(scrollTimeout);
     };
-  }, [guessSession?.attempts.length, analysisTargetKey, target.kind]);
+  }, [guessSession?.attempts.length, analysisTargetKey]);
 
   const handleNoFallaciesConfirm = () => {
     onGuess({ type: 'no_fallacies' });
@@ -890,7 +877,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               </p>
               <p className={styles.trialModalSubtitle}>
                 {statementTypeLabel(statType)}
-                {target.kind === 'player' && (
+                {target.kind === 'player' && playerRevealAssessment && (
                   <>
                     {' '}
                     <span
@@ -922,7 +909,22 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
           scrollRef={modalScrollRef}
         >
           {target.kind === 'player' ? (
-            <PlayerRoundAnalysis option={target.chosenOption} fallacyById={fallacyById} />
+            playerSyntheticStatement ? (
+              <>
+                <NpcRoundAnalysis
+                  statement={playerSyntheticStatement}
+                  allFallacies={allFallacies}
+                  fallacyById={fallacyById}
+                  canGuess={canGuess}
+                  guessSession={guessSession}
+                  onGuess={onGuess}
+                  onNoFallaciesRequest={() => setShowNoFallaciesConfirm(true)}
+                />
+                {playerRevealAssessment ? (
+                  <PlayerAssessmentSection option={target.chosenOption} />
+                ) : null}
+              </>
+            ) : null
           ) : (
             <NpcRoundAnalysis
               statement={target.kind === 'npc' ? target.round.statement : target.statement}

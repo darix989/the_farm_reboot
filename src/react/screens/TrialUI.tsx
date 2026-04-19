@@ -49,9 +49,6 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     setRevealedLockedOptionIds(new Set());
   }, [wf.currentPlayerRound?.id]);
 
-  useEffect(() => {
-    if (wf.gamePhase === 'round_recap') setAnalysisTarget(null);
-  }, [wf.gamePhase]);
   const allFallacies = logicalFallaciesData.logicalFallacies as LogicalFallacy[];
   const fallacyById = useMemo(
     () => new Map(allFallacies.map((fallacy) => [fallacy.id, fallacy])),
@@ -73,7 +70,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       wf.gamePhase === 'npc_speaking' ||
       wf.gamePhase === 'player_choosing' ||
       wf.gamePhase === 'player_confirming' ||
-      wf.gamePhase === 'npc_responding'
+      wf.gamePhase === 'npc_responding' ||
+      wf.gamePhase === 'round_recap'
     ) {
       return wf.currentRound?.roundNumber ?? null;
     }
@@ -81,7 +79,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   }, [wf.gamePhase, wf.currentRound]);
 
   const analysisStatementTargetId = useMemo(() => {
-    if (!analysisTarget || analysisTarget.kind === 'player') return null;
+    if (!analysisTarget) return null;
+    if (analysisTarget.kind === 'player') return analysisTarget.chosenOption.id;
     return analysisTarget.kind === 'npc' ? analysisTarget.round.id : analysisTarget.statement.id;
   }, [analysisTarget]);
 
@@ -132,24 +131,32 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   );
 
   const handleGuess = (payload: GuessPayload) => {
-    if (!analysisTarget || analysisTarget.kind === 'player') return;
+    if (!analysisTarget) return;
     if (fallacyGuessBucketRoundNumber === null) return;
 
-    if (
-      wf.gamePhase === 'npc_speaking' &&
-      wf.currentNpcRound &&
-      analysisTarget.kind === 'npc' &&
-      analysisTarget.round.id !== wf.currentNpcRound.id
-    ) {
-      return;
+    if (analysisTarget.kind !== 'player') {
+      if (
+        wf.gamePhase === 'npc_speaking' &&
+        wf.currentNpcRound &&
+        analysisTarget.kind === 'npc' &&
+        analysisTarget.round.id !== wf.currentNpcRound.id
+      ) {
+        return;
+      }
     }
 
-    const sentences: Sentence[] =
-      analysisTarget.kind === 'npc'
-        ? analysisTarget.round.statement.sentences
-        : analysisTarget.statement.sentences;
-    const targetId =
-      analysisTarget.kind === 'npc' ? analysisTarget.round.id : analysisTarget.statement.id;
+    let sentences: Sentence[];
+    let targetId: string;
+    if (analysisTarget.kind === 'player') {
+      sentences = resolvedOptionSentences(analysisTarget.chosenOption, true);
+      targetId = analysisTarget.chosenOption.id;
+    } else if (analysisTarget.kind === 'npc') {
+      sentences = analysisTarget.round.statement.sentences;
+      targetId = analysisTarget.round.id;
+    } else {
+      sentences = analysisTarget.statement.sentences;
+      targetId = analysisTarget.statement.id;
+    }
 
     let record: GuessRecord;
 

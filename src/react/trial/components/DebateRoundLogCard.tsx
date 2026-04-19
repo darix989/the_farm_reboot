@@ -289,6 +289,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                     </p>
                     <div className={styles.debateLogAnalyzeGroup} aria-label="Analyze your line">
                       <AnalyzeButton
+                        guessState={getNpcGuessState(chosenOption.id)}
                         title="Analyze this statement"
                         onClick={() =>
                           onOpenAnalysis({
