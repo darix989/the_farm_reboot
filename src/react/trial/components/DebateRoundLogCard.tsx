@@ -9,13 +9,13 @@ import {
   getSpeakerName,
   qualityColor,
   qualityLabel,
-  scoreColor,
   sideDisplayLabel,
   sideForRoundHeader,
   sideForStatementSpeaker,
   statementText,
   statementTypeLabel,
 } from '../utils/trialHelpers';
+import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
@@ -155,10 +155,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
         <span style={{ color: qualityColor(chosenOption.quality) }}>
           {qualityLabel(chosenOption.quality)}
         </span>{' '}
-        <span style={{ color: scoreColor(completedForRound.impact) }}>
-          ({completedForRound.impact > 0 ? '+' : ''}
-          {completedForRound.impact})
-        </span>
+        <ModeratorOpinionInline score={completedForRound.impact} />
       </>
     ) : null;
 

@@ -34,6 +34,19 @@ export function scoreColor(score: number): string {
   return uiColor.textEmphasis;
 }
 
+export const MODERATOR_OPINION_LABEL = "Moderator's opinion";
+
+export function moderatorOpinionEmoji(score: number): string {
+  if (score > 0) return '😊';
+  if (score < 0) return '😠';
+  return '😐';
+}
+
+/** Plain text for wizard strings and similar (emoji is first for quick scanning). */
+export function moderatorOpinionPlainText(score: number): string {
+  return `${moderatorOpinionEmoji(score)} ${MODERATOR_OPINION_LABEL}`;
+}
+
 export function statementTypeLabel(type: string): string {
   return type.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }

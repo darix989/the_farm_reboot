@@ -14,6 +14,7 @@ import magnifyingIcon from '../../../static/icons/magnifying.svg';
 import fallacyPlaceholder from '../../../static/icons/fallacy_placeholder.svg';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import { qualityColor, qualityLabel, statementTypeLabel } from '../utils/trialHelpers';
+import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { resolvedOptionSentences } from '../utils/optionUnlock';
 import type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
 import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from '../utils/fallacyGuessTypes';
@@ -662,16 +663,9 @@ function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
               marginLeft: '0.75rem',
               fontSize: uiFont.subtitle,
               fontWeight: 400,
-              color:
-                option.impact > 0
-                  ? uiColor.infoBright
-                  : option.impact < 0
-                    ? uiColor.danger
-                    : uiColor.textFaint,
             }}
           >
-            {option.impact > 0 ? '+' : ''}
-            {option.impact} pts
+            <ModeratorOpinionInline score={option.impact} />
           </span>
         </p>
         {option.reason && (

@@ -6,7 +6,7 @@ import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import DebateRoundLogCard from '../components/DebateRoundLogCard';
 import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/IntroDebateLogCard';
-import { scoreColor } from '../utils/trialHelpers';
+import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import styles from './TrialPanels.module.scss';
 import { uiFont } from '../../uiFont';
 import { uiColor } from '../../uiColor';
@@ -145,11 +145,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
           className={styles.trialDebateLogTitleScore}
           style={{ margin: 0, color: uiColor.textBody }}
         >
-          <span style={{ color: uiColor.textHint }}>Score </span>
-          <span style={{ color: scoreColor(wf.totalScore) }}>
-            {wf.totalScore > 0 ? '+' : ''}
-            {wf.totalScore}
-          </span>
+          <ModeratorOpinionInline score={wf.totalScore} />
           <span
             style={{
               marginLeft: '0.75rem',
@@ -157,7 +153,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
               color: uiColor.textDisabled,
             }}
           >
-            / {wf.maxPossibleScore}
+            {wf.totalScore} / {wf.maxPossibleScore}
           </span>
         </p>
       </div>

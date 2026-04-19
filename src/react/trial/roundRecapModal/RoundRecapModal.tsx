@@ -8,10 +8,10 @@ import {
   getSpeakerName,
   qualityColor,
   qualityLabel,
-  scoreColor,
   statementText,
   statementTypeLabel,
 } from '../utils/trialHelpers';
+import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import shared from '../trialShared.module.scss';
 import cn from 'classnames';
 import styles from './RoundRecapModal.module.scss';
@@ -105,9 +105,8 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                     {qualityLabel(recap.chosen.quality)}
                   </span>
                   {' · '}
-                  <span style={{ color: scoreColor(recap.lastCompleted.impact) }}>
-                    {recap.lastCompleted.impact > 0 ? '+' : ''}
-                    {recap.lastCompleted.impact} this round
+                  <span>
+                    <ModeratorOpinionInline score={recap.lastCompleted.impact} /> this round
                   </span>
                 </p>
               </div>
@@ -122,12 +121,9 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
               <div className={styles.recapSection}>
                 <p className={styles.recapSectionLabel}>Score</p>
                 <p className={styles.recapBody}>
-                  <span style={{ color: scoreColor(wf.totalScore) }}>
-                    {wf.totalScore > 0 ? '+' : ''}
-                    {wf.totalScore}
-                  </span>{' '}
+                  <ModeratorOpinionInline score={wf.totalScore} />{' '}
                   <span style={{ color: 'var(--ui-color-text-disabled)' }}>
-                    / {wf.maxPossibleScore}
+                    {wf.totalScore} / {wf.maxPossibleScore}
                   </span>
                 </p>
               </div>

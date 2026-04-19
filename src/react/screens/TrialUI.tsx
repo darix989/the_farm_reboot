@@ -26,7 +26,11 @@ import WizardPanel, { type WizardPanelDetail } from '../trial/panels/WizardPanel
 import InteractivePanel from '../trial/panels/InteractivePanel';
 import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
-import { getSpeakerName, statementText } from '../trial/utils/trialHelpers';
+import {
+  getSpeakerName,
+  moderatorOpinionPlainText,
+  statementText,
+} from '../trial/utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
 
 interface TrialUIProps {
@@ -336,7 +340,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_complete':
         return {
           title: 'The debate is finished.',
-          body: `Final score: ${wf.totalScore > 0 ? '+' : ''}${wf.totalScore} out of ${wf.maxPossibleScore}`,
+          body: `${moderatorOpinionPlainText(wf.totalScore)} · ${wf.totalScore} out of ${wf.maxPossibleScore}`,
         };
       default:
         return null;
