@@ -6,14 +6,14 @@ import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import AnalyzeButton from './AnalyzeButton';
 import {
   getSpeakerName,
-  perRoundImpactScoreBounds,
+  MODERATOR_OPINION_LABEL,
+  moderatorOpinionEmoji,
   sideDisplayLabel,
   sideForRoundHeader,
   sideForStatementSpeaker,
   statementText,
   statementTypeLabel,
 } from '../utils/trialHelpers';
-import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { resolvedOptionSentences } from '../utils/optionUnlock';
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
@@ -133,21 +133,21 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
 
   const showResponseAnalyze = round.kind === 'player' && !!displayResponse && showOpponentResponse;
 
-  /** Hide moderator gauge until this player round is over (advanced or debate finished). */
+  /** Hide impact emoji until this player round is over (advanced or debate finished). */
   const playerRoundEndedForLog =
     roundIndex < wf.currentRoundIndex ||
     wf.gamePhase === 'debate_complete' ||
     (isThisPlayerRound && wf.gamePhase === 'round_recap');
 
-  const roundImpactBounds = perRoundImpactScoreBounds();
-  const impactLine =
+  const impactEmojiLine =
     round.kind === 'player' && chosenOption && playerRoundEndedForLog && completedForRound ? (
-      <ModeratorOpinionInline
-        score={completedForRound.impact}
-        min={roundImpactBounds.min}
-        max={roundImpactBounds.max}
-        variant="compact"
-      />
+      <span
+        aria-label={`${MODERATOR_OPINION_LABEL}: ${
+          completedForRound.impact > 0 ? '+' : ''
+        }${completedForRound.impact}`}
+      >
+        <span aria-hidden="true">{moderatorOpinionEmoji(completedForRound.impact)}</span>
+      </span>
     ) : null;
 
   const playerBodyText =
@@ -290,7 +290,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         },
                       })}
                       {getLabel('you')}
-                      {impactLine != null ? <> — {impactLine}</> : null}
+                      {impactEmojiLine != null ? <> — {impactEmojiLine}</> : null}
                     </p>
                     <div
                       className={styles.debateLogAnalyzeGroup}
