@@ -11,19 +11,19 @@ export interface TrialLayoutProps {
 
 /**
  * Trial overlay over the Phaser canvas:
- * - Top-left quarter: empty (pointer-events pass through to Phaser).
- * - Top row, right half: Debate Log (to the right of the game hole).
- * - Bottom row: Wizard left half, Interactive right half (same column spans as game hole + debate log).
+ * - Top-left: empty game hole (pointer-events pass through to Phaser).
+ * - Top-right: Debate Log beside the game hole.
+ * - Bottom row: Wizard under the hole, Interactive under the log.
  *
- * Uses a 6-column × 2-row grid so top and bottom halves align.
+ * Two columns: left 60% (3fr), right 40% (2fr), two equal-height rows.
  */
 const TrialLayout: React.FC<TrialLayoutProps> = ({ feedback, wizard, interactive }) => {
   return (
     <div className={styles.trialLayoutGrid}>
-      {/* Top-left quarter: game hole (cols 1–3 = 50% width, row 1 = top 50% height) */}
+      {/* Top-left: game hole (60% column width, top 50% height) */}
       <div className={styles.trialGameHole} aria-hidden />
 
-      {/* Debate Log: top row, right 50% (cols 4–6) */}
+      {/* Debate Log: top row, right column (40% width) */}
       <div
         className={cn(styles.trialPanel, styles.trialFeedbackPanel)}
         style={{ backgroundColor: uiColor.surfaceTrialPanel }}
@@ -31,7 +31,7 @@ const TrialLayout: React.FC<TrialLayoutProps> = ({ feedback, wizard, interactive
         <div className={styles.trialPanelInner}>{feedback}</div>
       </div>
 
-      {/* Wizard: bottom row, left third (cols 1–2 of 6) */}
+      {/* Wizard: bottom row, left column (60% width) */}
       <div
         className={cn(styles.trialPanel, styles.trialWizardPanel)}
         style={{ backgroundColor: uiColor.surfaceTrialPanel }}
@@ -39,7 +39,7 @@ const TrialLayout: React.FC<TrialLayoutProps> = ({ feedback, wizard, interactive
         <div className={styles.trialPanelInner}>{wizard}</div>
       </div>
 
-      {/* Interactive: bottom row, right two-thirds (cols 3–6 of 6) */}
+      {/* Interactive: bottom row, right column (40% width) */}
       <div
         className={cn(styles.trialPanel, styles.trialInteractivePanel)}
         style={{ backgroundColor: uiColor.surfaceTrialPanel }}
