@@ -1,3 +1,6 @@
+@use 'sass:math';
+@use '../debateLogIconSizing' as debate-log-icon;
+
 /* =========================================================================
    Trial panels — panel content wrappers
    ========================================================================= */
@@ -361,8 +364,8 @@
     position: static;
     bottom: auto;
     right: auto;
-    width: 1.85rem;
-    height: 1.85rem;
+    width: debate-log-icon.$trial-debate-log-icon-size;
+    height: debate-log-icon.$trial-debate-log-icon-size;
     flex-shrink: 0;
   }
 }
@@ -372,14 +375,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 2rem;
-  height: 1.85rem;
-  padding: 0 0.35rem;
+  min-width: math.div(debate-log-icon.$trial-debate-log-icon-size * 2, 1.85);
+  height: debate-log-icon.$trial-debate-log-icon-size;
+  padding: 0 math.div(debate-log-icon.$trial-debate-log-icon-size * 0.35, 1.85);
   border-radius: 0.375rem;
   border: 1px solid var(--ui-color-border-inner);
   background: var(--ui-color-overlay-deep);
   color: var(--ui-color-text-muted);
-  font-size: 0.65rem;
+  font-size: math.div(debate-log-icon.$trial-debate-log-icon-size * 0.65, 1.85);
   line-height: 1;
   cursor: pointer;
   transition:
