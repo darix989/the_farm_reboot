@@ -475,22 +475,12 @@ function NpcRoundAnalysis({
 
   return (
     <div className={cn(styles.trialAnalysisBody, styles.trialAnalysisBodyFill)}>
-      {lastAttempt && (
-        <GuessResultBanner
-          guess={lastAttempt}
-          statement={statement}
-          spoilerSafe={spoilerSafeBanner}
-          shouldRevealFullSolution={revealFull}
-          fallacyById={fallacyById}
-        />
-      )}
-
       <div
         className={cn(styles.trialAnalysisSplit, {
           [styles.trialAnalysisSplitSingle]: !showGuessAside,
         })}
       >
-        <div className={styles.trialLeftPane}>
+        <div className={styles.trialLeftMain}>
           <div className={styles.trialColumnInstructions}>
             <p className={styles.trialAnalysisHint}>
               {getLabel('attemptsPerAnalysis', { replacements: { maxAttempts } })}{' '}
@@ -628,7 +618,7 @@ function NpcRoundAnalysis({
         </div>
 
         {showGuessAside && (
-          <div className={styles.trialGuessAside}>
+          <div className={styles.trialRightMain}>
             {canGuess && (
               <>
                 <div className={styles.trialColumnInstructions}>
@@ -659,24 +649,6 @@ function NpcRoundAnalysis({
                     </ScrollFadeContainer>
                   </div>
                 </div>
-
-                <div className={styles.trialGuessActionsRow}>
-                  <button
-                    type="button"
-                    className={styles.trialNoFallaciesBtn}
-                    onClick={handleNoFallacies}
-                  >
-                    {getLabel('noFallaciesInStatement')}
-                  </button>
-                  <button
-                    type="button"
-                    className={cn(shared.trialFooterBtn, styles.submitFooterBtn)}
-                    onClick={handleSubmitGuess}
-                    disabled={totalPickCount === 0}
-                  >
-                    {getLabel('submitGuess')}
-                  </button>
-                </div>
               </>
             )}
 
@@ -701,6 +673,42 @@ function NpcRoundAnalysis({
                   </div>
                 </div>
               </>
+            )}
+          </div>
+        )}
+
+        <div className={styles.trialLeftFooter}>
+          {lastAttempt && (
+            <GuessResultBanner
+              guess={lastAttempt}
+              statement={statement}
+              spoilerSafe={spoilerSafeBanner}
+              shouldRevealFullSolution={revealFull}
+              fallacyById={fallacyById}
+            />
+          )}
+        </div>
+
+        {showGuessAside && (
+          <div className={styles.trialRightFooter}>
+            {canGuess && (
+              <div className={styles.trialGuessActionsRow}>
+                <button
+                  type="button"
+                  className={styles.trialNoFallaciesBtn}
+                  onClick={handleNoFallacies}
+                >
+                  {getLabel('noFallaciesInStatement')}
+                </button>
+                <button
+                  type="button"
+                  className={cn(shared.trialFooterBtn, styles.submitFooterBtn)}
+                  onClick={handleSubmitGuess}
+                  disabled={totalPickCount === 0}
+                >
+                  {getLabel('submitGuess')}
+                </button>
+              </div>
             )}
           </div>
         )}

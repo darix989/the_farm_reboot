@@ -21,11 +21,15 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 
   /* ~10% under the prior 90vw / 88vh caps — comfortable on 1920×1080. */
   width: min(100%, 81vw);
   max-width: none;
-  max-height: 79vh;
+
+  /* Fixed shell height so adding the guess feedback row does not resize the dialog. */
+  height: min(79vh, calc(100vh - 2.75rem));
+  max-height: min(79vh, calc(100vh - 2.75rem));
   border-radius: 0.75rem;
   border: 2px solid var(--ui-color-border-panel);
   background: var(--ui-color-surface-modal);
@@ -142,10 +146,14 @@
    Two-column split: sentences | fallacy tools
    ------------------------------------------------------------------------- */
 
-/* ~55% / ~45% — between the old left-heavy layout and the tighter 9/16 split. */
+/* ~55% / ~45% — row1: scrollable mains; row2: result banner | action buttons */
 .trialAnalysisSplit {
   display: grid;
   grid-template-columns: minmax(0, 12fr) minmax(22rem, 10fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'leftMain rightMain'
+    'leftFoot rightFoot';
   gap: 1rem;
   align-items: stretch;
   flex: 1;
@@ -154,21 +162,62 @@
 
 .trialAnalysisSplitSingle {
   grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'leftMain'
+    'leftFoot';
 }
 
 @media (max-width: 640px) {
   .trialAnalysisSplit:not(.trialAnalysisSplitSingle) {
     grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      'leftMain'
+      'rightMain'
+      'leftFoot'
+      'rightFoot';
   }
 }
 
-.trialLeftPane {
+.trialLeftMain {
+  grid-area: leftMain;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   min-width: 0;
   min-height: 0;
   height: 100%;
+}
+
+.trialLeftFooter {
+  grid-area: leftFoot;
+  min-width: 0;
+  align-self: stretch;
+
+  .trialGuessResult {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.trialRightMain {
+  grid-area: rightMain;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.trialRightFooter {
+  grid-area: rightFoot;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+  flex-shrink: 0;
 }
 
 .trialColumnInstructions {
@@ -198,15 +247,6 @@
   }
 }
 
-.trialGuessAside {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  min-width: 0;
-  min-height: 0;
-  height: 100%;
-}
-
 .trialFallacyPickerSectionStretch {
   flex: 1;
   min-height: 0;
@@ -232,7 +272,7 @@
   padding-top: 0.5rem;
 }
 
-.trialGuessAside .trialGuessActionsRow {
+.trialRightFooter .trialGuessActionsRow {
   padding-top: 0;
 }
 
@@ -241,8 +281,8 @@
   max-width: 18rem;
 }
 
-.trialGuessAside .trialGuessActionsRow .submitFooterBtn,
-.trialGuessAside .trialGuessActionsRow .trialNoFallaciesBtn {
+.trialRightFooter .trialGuessActionsRow .submitFooterBtn,
+.trialRightFooter .trialGuessActionsRow .trialNoFallaciesBtn {
   flex: 1 1 0;
   min-width: 0;
 
@@ -250,7 +290,7 @@
   width: auto;
 }
 
-.trialGuessAside .trialGuessActionsRow .submitFooterBtn {
+.trialRightFooter .trialGuessActionsRow .submitFooterBtn {
   max-width: none;
 }
 
