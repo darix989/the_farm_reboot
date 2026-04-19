@@ -32,7 +32,7 @@ All application code lives under **`src/`**. Cursor rule **`.cursor/rules/projec
 
 - **React UI** → `src/react/` (components, hooks, CSS).
 - **Phaser-only** (no React components) → `src/phaser/` (`main.ts`, `PhaserGame.tsx` bridge, scenes, `EventBus.ts`).
-- **Shared** → `src/store/`, `src/utils/`, top-level `src/App.tsx`, `src/main.tsx`.
+- **Shared** → `src/store/`, `src/utils/`, `src/data/` (UI copy), top-level `src/App.tsx`, `src/main.tsx`.
 
 See also the root **README.md** for commands, structure, and the React–Phaser bridge.
 
@@ -42,6 +42,8 @@ src/
   App.tsx               # PhaserGame + ReactApp siblings
   types/
     debateEntities.ts   # DebateScenarioJson and all debate domain types
+  data/
+    labels.ts           # Central UI strings + default export getLabel()
   phaser/
     PhaserGame.tsx      # Creates/destroys Phaser Game, wires Zustand + EventBus
     main.ts             # Game config, scene list, scale (1920×1080 FIT)
@@ -84,6 +86,14 @@ React overlays share a small token system (mirrored SCSS + TypeScript so CSS mod
 - **Per-file only** — colours or values used in a single SCSS module can stay as **`$variables` at the top** of that file instead of growing the global palette.
 
 Details and Trial-specific styling notes: [`src/react/AGENT.md`](src/react/AGENT.md).
+
+## UI copy (`getLabel`)
+
+User-visible strings for React overlays and Phaser scenes live in one place: [`src/data/labels.ts`](src/data/labels.ts).
+
+- **Default export** — `getLabel(label, options?)` where `label` is a key of the `LABELS` map (TypeScript type **`Labels`**).
+- **Options** (`GetLabelOptions`, optional) — **`replacements`**: map placeholder keys to `string | number` (templates use `{word}` tokens, e.g. `'Round {roundNumber}'`). **`addPeriod`**: when `true`, appends a trailing `.` for TTS-style pauses; otherwise omit for normal UI copy.
+- **Adding copy** — extend the `LABELS` object with a new key and string; call sites get type-checked via `Labels`.
 
 ## React ↔ Phaser integration
 
@@ -130,3 +140,4 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 - **Cross-layer signals** → `EventBus` + optional `gameStore` actions.
 - Keep **`PHASER_PARENT_ID`** in sync between the Phaser parent div and `ReactRoot` layout logic.
 - New **debate content** → author a `DebateScenarioJson` object and pass it to `TrialUI` as the `debate` prop; no code changes required.
+- New **fixed UI string** (menus, modals, ARIA, Phaser labels) → add an entry in `src/data/labels.ts` and use `getLabel('yourKey', { replacements: { … } })` when the template has placeholders.
