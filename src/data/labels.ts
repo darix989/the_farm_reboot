@@ -94,9 +94,9 @@ const LABELS = {
   // --- Round recap modal ---
   roundRecap: 'Round recap',
   yourStatement: 'Your statement',
-  score: 'Score',
+  activeRoundImpact: 'Active Round Impact',
+  overallScore: 'Overall Score',
   roundComplete: 'Round complete.',
-  thisRound: ' this round',
   opponentResponseHeading: "{name}'s response",
 
   // --- Round analysis modal ---

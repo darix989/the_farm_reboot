@@ -7,9 +7,7 @@ import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/option
 import {
   debateTotalScoreBounds,
   getSpeakerName,
-  perRoundImpactScoreBounds,
-  qualityColor,
-  qualityLabel,
+  moderatorOpinionEmoji,
   statementText,
   statementTypeLabel,
 } from '../utils/trialHelpers';
@@ -41,7 +39,6 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
   const lastCompleted = wf.completedRounds[wf.completedRounds.length - 1] ?? null;
 
   const totalScoreBounds = useMemo(() => debateTotalScoreBounds(debate), [debate]);
-  const roundImpactBounds = perRoundImpactScoreBounds();
 
   const choicePreview = useMemo(() => {
     if (!chosen) return '';
@@ -73,6 +70,12 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
     round && round.kind === 'player' && chosen && lastCompleted
       ? { round, chosen, lastCompleted }
       : null;
+
+  const activeRoundImpactAriaLabel = recap
+    ? `${getLabel('activeRoundImpact')}: ${
+        recap.lastCompleted.impact > 0 ? '+' : ''
+      }${recap.lastCompleted.impact}`
+    : '';
 
   return (
     <div
@@ -111,21 +114,6 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
               <div className={styles.recapSection}>
                 <p className={styles.recapSectionLabel}>{getLabel('yourStatement')}</p>
                 <p className={styles.recapBody}>{choicePreview}</p>
-                <p className={styles.recapBody} style={{ marginTop: '0.75rem' }}>
-                  <span style={{ color: qualityColor(recap.chosen.quality) }}>
-                    {qualityLabel(recap.chosen.quality)}
-                  </span>
-                  {' · '}
-                  <span>
-                    <ModeratorOpinionInline
-                      score={recap.lastCompleted.impact}
-                      min={roundImpactBounds.min}
-                      max={roundImpactBounds.max}
-                      variant="compact"
-                    />
-                    {getLabel('thisRound')}
-                  </span>
-                </p>
               </div>
 
               {responseBody ? (
@@ -140,7 +128,17 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
               ) : null}
 
               <div className={styles.recapSection}>
-                <p className={styles.recapSectionLabel}>{getLabel('score')}</p>
+                <p className={styles.recapSectionLabel}>{getLabel('activeRoundImpact')}</p>
+                <p className={styles.recapBody}>
+                  <span aria-label={activeRoundImpactAriaLabel}>
+                    <span aria-hidden="true">
+                      {moderatorOpinionEmoji(recap.lastCompleted.impact)}
+                    </span>
+                  </span>
+                </p>
+                <p className={styles.recapSectionLabel} style={{ marginTop: '1rem' }}>
+                  {getLabel('overallScore')}
+                </p>
                 <p className={styles.recapBody}>
                   <ModeratorOpinionInline
                     score={wf.totalScore}
