@@ -120,10 +120,8 @@
 
 .recapFooter {
   flex-shrink: 0;
+  display: flex;
+  justify-content: center;
   padding: 1rem 1.5rem 1.25rem;
   border-top: 1px solid var(--ui-color-border-muted);
-}
-
-.recapPrimaryBtn {
-  width: 100%;
 }

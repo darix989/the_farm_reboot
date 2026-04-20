@@ -14,6 +14,7 @@ import type {
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
 import { getLogicalFallacyIconSrc } from '../utils/logicalFallacyIcons';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
+import TrialTextButton from '../components/TrialTextButton';
 import { perRoundImpactScoreBounds, statementTypeLabel } from '../utils/trialHelpers';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { resolvedOptionSentences } from '../utils/optionUnlock';
@@ -713,21 +714,16 @@ function NpcRoundAnalysis({
           <div className={styles.trialRightFooter}>
             {canGuess && (
               <div className={styles.trialGuessActionsRow}>
-                <button
-                  type="button"
-                  className={styles.trialNoFallaciesBtn}
-                  onClick={handleNoFallacies}
-                >
+                <TrialTextButton variant="dashed" widthMode="flexGrow" onClick={handleNoFallacies}>
                   {getLabel('noFallaciesInStatement')}
-                </button>
-                <button
-                  type="button"
-                  className={cn(shared.trialFooterBtn, styles.submitFooterBtn)}
+                </TrialTextButton>
+                <TrialTextButton
+                  widthMode="flexGrow"
                   onClick={handleSubmitGuess}
                   disabled={totalPickCount === 0}
                 >
                   {getLabel('submitGuess')}
-                </button>
+                </TrialTextButton>
               </div>
             )}
           </div>
@@ -825,20 +821,12 @@ function NoFallaciesConfirmDialog({
         <p className={styles.trialConfirmTitle}>{getLabel('noFallaciesConfirmTitle')}</p>
         <p className={styles.trialConfirmBody}>{getLabel('noFallaciesConfirmBody')}</p>
         <div className={styles.trialConfirmActions}>
-          <button
-            type="button"
-            className={cn(shared.trialFooterBtn, styles.confirmFooterBtn)}
-            onClick={onCancel}
-          >
+          <TrialTextButton size="compact" onClick={onCancel}>
             {getLabel('cancel')}
-          </button>
-          <button
-            type="button"
-            className={cn(shared.trialFooterBtn, styles.confirmFooterBtn)}
-            onClick={onConfirm}
-          >
+          </TrialTextButton>
+          <TrialTextButton size="compact" onClick={onConfirm}>
             {getLabel('confirm')}
-          </button>
+          </TrialTextButton>
         </div>
       </div>
     </div>

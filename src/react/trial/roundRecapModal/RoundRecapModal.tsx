@@ -3,6 +3,7 @@ import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
+import TrialTextButton from '../components/TrialTextButton';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import {
   debateTotalScoreBounds,
@@ -12,8 +13,8 @@ import {
   statementTypeLabel,
 } from '../utils/trialHelpers';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
-import shared from '../trialShared.module.scss';
 import cn from 'classnames';
+import shared from '../trialShared.module.scss';
 import styles from './RoundRecapModal.module.scss';
 import getLabel from '../../../data/labels';
 
@@ -154,13 +155,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
         </ScrollFadeContainer>
 
         <div className={styles.recapFooter}>
-          <button
-            type="button"
-            className={cn(shared.trialFooterBtn, styles.recapPrimaryBtn)}
-            onClick={onClose}
-          >
-            {getLabel('continue')}
-          </button>
+          <TrialTextButton onClick={onClose}>{getLabel('continue')}</TrialTextButton>
         </div>
       </div>
     </div>

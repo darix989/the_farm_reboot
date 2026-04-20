@@ -4,6 +4,7 @@ import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
+import TrialTextButton from '../components/TrialTextButton';
 import cn from 'classnames';
 import {
   statementText,
@@ -12,7 +13,6 @@ import {
 } from '../utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import styles from './TrialPanels.module.scss';
-import shared from '../trialShared.module.scss';
 import getLabel from '../../../data/labels';
 
 interface InteractiveFooter {
@@ -204,9 +204,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
 
         <div className={styles.trialInteractiveFooter}>
           <div className={styles.trialFooterGrid}>
-            <button
-              type="button"
-              className={shared.trialFooterBtn}
+            <TrialTextButton
               disabled={
                 wf.gamePhase === 'debate_intro' ||
                 (wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo)
@@ -220,15 +218,13 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
               }}
             >
               {getLabel('back')}
-            </button>
-            <button
-              type="button"
-              className={shared.trialFooterBtn}
+            </TrialTextButton>
+            <TrialTextButton
               disabled={interactiveFooter.submitDisabled || !interactiveFooter.onSubmit}
               onClick={() => interactiveFooter.onSubmit?.()}
             >
               {interactiveFooter.submitLabel}
-            </button>
+            </TrialTextButton>
           </div>
         </div>
       </div>

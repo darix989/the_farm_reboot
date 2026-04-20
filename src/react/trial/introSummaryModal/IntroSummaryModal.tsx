@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import type { DebateScenarioJson } from '../../../types/debateEntities';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
+import TrialTextButton from '../components/TrialTextButton';
 import { sideDisplayLabel } from '../utils/trialHelpers';
 import shared from '../trialShared.module.scss';
 import cn from 'classnames';
@@ -77,13 +78,7 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
         </ScrollFadeContainer>
 
         <div className={recapStyles.recapFooter}>
-          <button
-            type="button"
-            className={cn(shared.trialFooterBtn, recapStyles.recapPrimaryBtn)}
-            onClick={onClose}
-          >
-            {getLabel('beginRound1')}
-          </button>
+          <TrialTextButton onClick={onClose}>{getLabel('beginRound1')}</TrialTextButton>
         </div>
       </div>
     </div>

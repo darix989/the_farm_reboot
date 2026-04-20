@@ -310,63 +310,6 @@
   padding-top: 0;
 }
 
-/* max-width override when this footer button is used outside the aside */
-.submitFooterBtn {
-  max-width: 18rem;
-}
-
-.trialRightFooter .trialGuessActionsRow .submitFooterBtn,
-.trialRightFooter .trialGuessActionsRow .trialNoFallaciesBtn {
-  flex: 1 1 0;
-  min-width: 0;
-
-  /* Override .trialFooterBtn width:100% so both flex items share the row 50/50 */
-  width: auto;
-}
-
-.trialRightFooter .trialGuessActionsRow .submitFooterBtn {
-  max-width: none;
-}
-
-/* =========================================================================
-   No-Fallacies (dashed) button — paired with Spot Fallacies in the aside
-   ========================================================================= */
-
-.trialNoFallaciesBtn {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 5.5rem;
-  padding: 0.75rem 0.5rem;
-  background: transparent;
-  border: 1px dashed var(--ui-color-border-dashed);
-  border-radius: 0.5rem;
-  color: var(--ui-color-text-subtle);
-
-  /* Match .trialFooterBtn (trialShared) typography */
-  font-size: calc(var(--ui-font-footer) * var(--ui-trial-panel-font-scale, 1));
-  font-weight: 500;
-  line-height: 1.375;
-  cursor: pointer;
-
-  @media (min-width: 640px) {
-    padding: 1rem 0.75rem;
-    font-size: calc(var(--ui-font-footer-wide) * var(--ui-trial-panel-font-scale, 1));
-  }
-
-  text-align: center;
-  transition:
-    border-color 0.15s ease,
-    color 0.15s ease;
-  pointer-events: auto;
-
-  &:hover {
-    border-color: var(--ui-color-border-dashed-hover);
-    color: var(--ui-color-text-body);
-  }
-}
-
 /* =========================================================================
    Sentence cards
    ========================================================================= */
@@ -714,9 +657,4 @@
   gap: 0.75rem;
   justify-content: flex-end;
   padding-top: 0.25rem;
-}
-
-/* max-width override for confirm-action footer buttons */
-.confirmFooterBtn {
-  max-width: 12rem;
 }
