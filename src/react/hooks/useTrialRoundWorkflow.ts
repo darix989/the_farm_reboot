@@ -8,16 +8,24 @@ import type {
   RoundEntry,
   Statement,
 } from '../../types/debateEntities';
+import {
+  isPlayerOptionUnlocked,
+  resolvedOptionSentences,
+  type GuessSessionForUnlock,
+} from '../trial/utils/optionUnlock';
+import getLabel from '../../data/labels';
 
 // ---------------------------------------------------------------------------
 // Public types
 // ---------------------------------------------------------------------------
 
 export type GamePhase =
-  | 'npc_speaking'      // player reads NPC statement, clicks Continue
-  | 'player_choosing'   // player sees 3 options
+  | 'debate_intro' // read scenario introduction; Continue opens summary then starts round 1
+  | 'npc_speaking' // player reads NPC statement, clicks Continue
+  | 'player_choosing' // player sees 3 options
   | 'player_confirming' // player reviews chosen option, can go Back or Confirm
-  | 'npc_responding'    // NPC response matched to the chosen option (crossfire)
+  | 'npc_responding' // NPC response matched to the chosen option (crossfire)
+  | 'round_recap' // summary modal; dismiss advances to next round
   | 'debate_complete';
 
 export interface CompletedRound {
@@ -50,6 +58,7 @@ interface WorkflowState extends WorkflowSnapshot {
 type Action =
   | { type: 'continue' }
   | { type: 'select_option'; optionId: string }
+  | { type: 'unselect_option' }
   | { type: 'confirm_option' }
   | { type: 'undo' };
 
@@ -75,11 +84,17 @@ function initialPhaseForRound(round: RoundEntry): GamePhase {
   return round.kind === 'npc' ? 'npc_speaking' : 'player_choosing';
 }
 
+function scenarioHasIntroduction(scenario: DebateScenarioJson): boolean {
+  return Boolean(scenario.introduction?.trim());
+}
+
 function createInitialState(scenario: DebateScenarioJson): WorkflowState {
   const firstRound = scenario.rounds[0];
-  const gamePhase: GamePhase = firstRound
-    ? initialPhaseForRound(firstRound)
-    : 'debate_complete';
+  const gamePhase: GamePhase = scenarioHasIntroduction(scenario)
+    ? 'debate_intro'
+    : firstRound
+      ? initialPhaseForRound(firstRound)
+      : 'debate_complete';
   return {
     gamePhase,
     currentRoundIndex: 0,
@@ -124,6 +139,8 @@ function reduceWorkflow(
   state: WorkflowState,
   action: Action,
   scenario: DebateScenarioJson,
+  fallacyGuesses: Map<number, GuessSessionForUnlock>,
+  revealedLockedOptionIds: Set<string>,
 ): WorkflowState {
   if (action.type === 'undo') {
     if (state.past.length === 0) return state;
@@ -132,6 +149,26 @@ function reduceWorkflow(
   }
 
   if (state.gamePhase === 'debate_complete') return state;
+
+  // --- Debate intro: UI shows summary modal then dispatches Continue (no undo snapshot) ---
+  if (state.gamePhase === 'debate_intro') {
+    if (action.type !== 'continue') return state;
+    const firstRound = scenario.rounds[0];
+    if (!firstRound) {
+      return {
+        ...state,
+        gamePhase: 'debate_complete',
+        currentRoundIndex: 0,
+        selectedOptionId: null,
+      };
+    }
+    return {
+      ...state,
+      gamePhase: initialPhaseForRound(firstRound),
+      currentRoundIndex: 0,
+      selectedOptionId: null,
+    };
+  }
 
   const currentRound = scenario.rounds[state.currentRoundIndex];
   if (!currentRound) return state;
@@ -144,15 +181,56 @@ function reduceWorkflow(
 
   // --- Player choosing: player selects one of the 3 options ---
   if (state.gamePhase === 'player_choosing') {
-    if (action.type !== 'select_option') return state;
     if (currentRound.kind !== 'player') return state;
-    const valid = currentRound.options.some((o) => o.id === action.optionId);
-    if (!valid) return state;
+
+    if (action.type === 'unselect_option') {
+      if (!state.selectedOptionId) return state;
+      return { ...state, selectedOptionId: null };
+    }
+
+    if (action.type === 'select_option') {
+      const valid = currentRound.options.some((o) => o.id === action.optionId);
+      if (!valid) return state;
+      const opt = currentRound.options.find((o) => o.id === action.optionId);
+      if (opt && !isPlayerOptionUnlocked(opt, fallacyGuesses)) return state;
+      if (
+        opt?.unlockCondition &&
+        isPlayerOptionUnlocked(opt, fallacyGuesses) &&
+        !revealedLockedOptionIds.has(opt.id)
+      ) {
+        return state;
+      }
+      return {
+        ...state,
+        selectedOptionId: action.optionId,
+      };
+    }
+
+    if (action.type !== 'confirm_option') return state;
+    if (!state.selectedOptionId) return state;
+
+    const option = currentRound.options.find((o) => o.id === state.selectedOptionId);
+    if (!option) return state;
+
+    const newCompleted: CompletedRound[] = [
+      ...state.completedRounds,
+      {
+        roundId: currentRound.id,
+        roundNumber: currentRound.roundNumber,
+        optionId: option.id,
+        impact: option.impact,
+      },
+    ];
+    const newScore = state.totalScore + option.impact;
+
+    // If the round has opponent responses, enter responding; else go straight to recap.
+    const hasResponses = Boolean(currentRound.opponentResponses?.length);
     return {
       ...state,
       past: pushHistory(state),
-      gamePhase: 'player_confirming',
-      selectedOptionId: action.optionId,
+      gamePhase: hasResponses ? 'npc_responding' : 'round_recap',
+      completedRounds: newCompleted,
+      totalScore: newScore,
     };
   }
 
@@ -191,24 +269,30 @@ function reduceWorkflow(
       }
     }
 
-    // No NPC response: advance to next round immediately
-    return advanceToNextRound(
-      { ...state, completedRounds: newCompleted, totalScore: newScore },
-      scenario,
-      newCompleted,
-      newScore,
-    );
+    // No NPC response: show round recap before advancing
+    return {
+      ...state,
+      past: pushHistory(state),
+      gamePhase: 'round_recap',
+      completedRounds: newCompleted,
+      totalScore: newScore,
+    };
   }
 
   // --- NPC responding: player clicks Continue after seeing NPC reply ---
   if (state.gamePhase === 'npc_responding') {
     if (action.type !== 'continue') return state;
-    return advanceToNextRound(
-      state,
-      scenario,
-      state.completedRounds,
-      state.totalScore,
-    );
+    return {
+      ...state,
+      past: pushHistory(state),
+      gamePhase: 'round_recap',
+    };
+  }
+
+  // --- Round recap: dismiss modal (Continue) advances ---
+  if (state.gamePhase === 'round_recap') {
+    if (action.type !== 'continue') return state;
+    return advanceToNextRound(state, scenario, state.completedRounds, state.totalScore);
   }
 
   return state;
@@ -223,8 +307,18 @@ export function statementTitle(st: Statement): string {
   return first.length > 80 ? `${first.slice(0, 77)}…` : first;
 }
 
-export function optionTitle(opt: PlayerOption): string {
-  const first = opt.sentences[0]?.text ?? opt.id;
+export function optionTitle(
+  opt: PlayerOption,
+  fallacyGuesses?: Map<number, GuessSessionForUnlock>,
+  revealedLockedOptionIds?: Set<string>,
+): string {
+  const guessUnlocked =
+    !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses ?? new Map());
+  const showRealCopy =
+    !opt.unlockCondition ||
+    (guessUnlocked &&
+      (revealedLockedOptionIds === undefined || revealedLockedOptionIds.has(opt.id)));
+  const first = resolvedOptionSentences(opt, showRealCopy)[0]?.text ?? opt.id;
   return first.length > 80 ? `${first.slice(0, 77)}…` : first;
 }
 
@@ -232,16 +326,32 @@ export function optionTitle(opt: PlayerOption): string {
 // Hook
 // ---------------------------------------------------------------------------
 
-export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
+export function useTrialRoundWorkflow(
+  scenario: DebateScenarioJson,
+  fallacyGuesses: Map<number, GuessSessionForUnlock> = new Map(),
+  revealedLockedOptionIds: Set<string> = new Set(),
+) {
   const scenarioRef = useRef(scenario);
   scenarioRef.current = scenario;
 
-  const [state, setState] = useState<WorkflowState>(() =>
-    createInitialState(scenario),
-  );
+  const fallacyGuessesRef = useRef(fallacyGuesses);
+  fallacyGuessesRef.current = fallacyGuesses;
+
+  const revealedLockedOptionIdsRef = useRef(revealedLockedOptionIds);
+  revealedLockedOptionIdsRef.current = revealedLockedOptionIds;
+
+  const [state, setState] = useState<WorkflowState>(() => createInitialState(scenario));
 
   const dispatch = useCallback((action: Action) => {
-    setState((prev) => reduceWorkflow(prev, action, scenarioRef.current));
+    setState((prev) =>
+      reduceWorkflow(
+        prev,
+        action,
+        scenarioRef.current,
+        fallacyGuessesRef.current,
+        revealedLockedOptionIdsRef.current,
+      ),
+    );
   }, []);
 
   const undo = useCallback(() => dispatch({ type: 'undo' }), [dispatch]);
@@ -266,50 +376,68 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
   }, [currentPlayerRound, state.selectedOptionId]);
 
   const activeOpponentResponse = useMemo((): OpponentResponse | null => {
-    if (state.gamePhase !== 'npc_responding' || !currentPlayerRound || !state.selectedOptionId) {
+    if (
+      (state.gamePhase !== 'npc_responding' && state.gamePhase !== 'round_recap') ||
+      !currentPlayerRound ||
+      !state.selectedOptionId
+    ) {
       return null;
     }
     return (
-      currentPlayerRound.opponentResponses?.find(
-        (r) => r.forOptionId === state.selectedOptionId,
-      ) ?? null
+      currentPlayerRound.opponentResponses?.find((r) => r.forOptionId === state.selectedOptionId) ??
+      null
     );
   }, [state.gamePhase, currentPlayerRound, state.selectedOptionId]);
 
   // Back is only meaningful in player_confirming: the previous snapshot is always
   // player_choosing for the same round, so undo can never jump to a different round.
-  const canUndo =
-    state.gamePhase === 'player_confirming' &&
-    state.past.length > 0;
+  const canUndo = state.gamePhase === 'player_confirming' && state.past.length > 0;
+  const canUnselect = state.gamePhase === 'player_choosing' && !!state.selectedOptionId;
 
   const opponentName = useMemo(() => {
-    const npcRound = scenario.rounds.find(r => r.kind === 'npc') as NpcRoundEntry | undefined;
+    const npcRound = scenario.rounds.find((r) => r.kind === 'npc') as NpcRoundEntry | undefined;
     const id = npcRound?.speakerId ?? 'opponent';
-    return scenario.characters?.[id] ?? (id.charAt(0).toUpperCase() + id.slice(1));
+    return scenario.characters?.[id] ?? id.charAt(0).toUpperCase() + id.slice(1);
   }, [scenario]);
 
   const wizardMessage = useMemo((): string => {
-    if (state.gamePhase === 'debate_complete') return 'The debate is finished.';
+    if (state.gamePhase === 'debate_complete') return getLabel('debateFinished');
+    if (state.gamePhase === 'debate_intro') {
+      return getLabel('workflowDebateIntro');
+    }
     if (!currentRound) return '';
 
-    const roundLabel = `Round ${currentRound.roundNumber} — ${currentRound.type.replace(/_/g, ' ')}`;
+    const roundLabel = getLabel('workflowRoundWithType', {
+      replacements: {
+        roundNumber: currentRound.roundNumber,
+        typeDisplay: currentRound.type.replace(/_/g, ' '),
+      },
+    });
 
     switch (state.gamePhase) {
       case 'npc_speaking':
-        return `${roundLabel}. Read ${opponentName}'s statement, then click Continue.`;
+        return getLabel('workflowNpcSpeaking', { replacements: { roundLabel, opponentName } });
       case 'player_choosing':
         if (currentPlayerRound?.opponentPrompt) {
-          return `${roundLabel}. ${opponentName} has asked a question. Choose your response.`;
+          return state.selectedOptionId
+            ? getLabel('workflowStatementSelected', { replacements: { roundLabel } })
+            : getLabel('workflowPlayerChoosingQuestion', {
+                replacements: { roundLabel, opponentName },
+              });
         }
-        return `${roundLabel}. Choose your statement.`;
+        return state.selectedOptionId
+          ? getLabel('workflowStatementSelected', { replacements: { roundLabel } })
+          : getLabel('workflowPlayerChoosingStatement', { replacements: { roundLabel } });
       case 'player_confirming':
-        return 'Review your choice below. Go back to change it, or confirm to lock it in.';
+        return getLabel('workflowPlayerConfirming');
       case 'npc_responding':
-        return `${opponentName} responds to your statement. Read it, then continue.`;
+        return getLabel('workflowNpcResponding', { replacements: { opponentName } });
+      case 'round_recap':
+        return getLabel('workflowRoundRecap');
       default:
         return '';
     }
-  }, [state.gamePhase, currentRound, currentPlayerRound, opponentName]);
+  }, [state.gamePhase, state.selectedOptionId, currentRound, currentPlayerRound, opponentName]);
 
   const totalRounds = scenario.rounds.length;
   const playerRounds = scenario.rounds.filter((r) => r.kind === 'player');
@@ -318,6 +446,14 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     const best = Math.max(...r.options.map((o) => o.impact));
     return sum + best;
   }, 0);
+
+  const optionTitleWithUnlock = useCallback(
+    (opt: PlayerOption) =>
+      optionTitle(opt, fallacyGuessesRef.current, revealedLockedOptionIdsRef.current),
+    [],
+  );
+
+  const unselect = useCallback(() => dispatch({ type: 'unselect_option' }), [dispatch]);
 
   return {
     scenario,
@@ -333,10 +469,12 @@ export function useTrialRoundWorkflow(scenario: DebateScenarioJson) {
     totalScore: state.totalScore,
     maxPossibleScore,
     canUndo,
+    canUnselect,
     wizardMessage,
     dispatch,
     undo,
+    unselect,
     statementTitle,
-    optionTitle,
+    optionTitle: optionTitleWithUnlock,
   };
 }

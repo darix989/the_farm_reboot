@@ -4,31 +4,31 @@
 
 .spritePosition {
   margin: 10px 0 0 10px;
-  font-size: 0.8em;
+  font-size: var(--ui-font-micro);
 }
 
 .button {
   width: 140px;
   margin: 10px;
   padding: 10px;
-  background-color: #000000;
-  color: rgba(255, 255, 255, 0.87);
-  border: 1px solid rgba(255, 255, 255, 0.87);
+  background-color: var(--ui-color-bg);
+  color: var(--ui-color-text-primary);
+  border: 1px solid var(--ui-color-text-primary);
   cursor: pointer;
   transition: all 0.3s;
 
   &:hover {
-    border: 1px solid #0ec3c9;
-    color: #0ec3c9;
+    border: 1px solid var(--ui-color-accent);
+    color: var(--ui-color-accent);
   }
 
   &:active {
-    background-color: #0ec3c9;
+    background-color: var(--ui-color-accent);
   }
 
   &:disabled {
     cursor: not-allowed;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--ui-color-border-emphasis);
+    color: var(--ui-color-text-ghost);
   }
 }

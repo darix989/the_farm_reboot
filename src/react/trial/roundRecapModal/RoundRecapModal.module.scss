@@ -1,0 +1,129 @@
+@use 'sass:math';
+@use '../trialModalCloseIconSizing' as modal-close;
+
+.recapOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ui-color-overlay-modal);
+  backdrop-filter: blur(4px);
+  padding: 1.5rem;
+  pointer-events: auto;
+}
+
+.recapBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 50vw;
+  max-height: 85vh;
+  min-height: 0;
+  border-radius: 0.75rem;
+  border: 2px solid var(--ui-color-border-panel);
+  background: var(--ui-color-surface-modal);
+  box-shadow:
+    0 24px 64px var(--ui-color-shadow-deep),
+    0 0 0 1px var(--ui-color-border-faint);
+  overflow: hidden;
+  color: var(--ui-color-white);
+}
+
+.recapHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-shrink: 0;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--ui-color-border-muted);
+  background: var(--ui-color-overlay-medium);
+}
+
+.recapTitle {
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  font-weight: 600;
+  color: var(--ui-color-text-title);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.recapSubtitle {
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  color: var(--ui-color-text-caption);
+  margin: 0.35rem 0 0;
+  text-transform: capitalize;
+}
+
+.recapCloseBtn {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: modal-close.$trial-modal-close-icon-size;
+  height: modal-close.$trial-modal-close-icon-size;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--ui-color-text-caption);
+
+  /* Glyph size vs. hit target — same ratio as debate-log expand/collapse */
+  font-size: calc(
+    #{math.div(modal-close.$trial-modal-close-icon-size * 0.65, 1.85)} *
+      var(--ui-trial-panel-font-scale, 1)
+  );
+  line-height: 1;
+  cursor: pointer;
+}
+
+.recapCloseBtn:hover {
+  color: var(--ui-color-text-title);
+  background: var(--ui-color-overlay-light);
+}
+
+.recapContent {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.25rem 1.5rem 1.5rem;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.recapSection {
+  margin-top: 1.25rem;
+}
+
+.recapSection:first-child {
+  margin-top: 0;
+}
+
+.recapSectionLabel {
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  color: var(--ui-color-text-hint);
+  margin: 0 0 0.5rem;
+}
+
+.recapBody {
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.45;
+  color: var(--ui-color-text-body);
+  margin: 0;
+}
+
+.recapFooter {
+  flex-shrink: 0;
+  padding: 1rem 1.5rem 1.25rem;
+  border-top: 1px solid var(--ui-color-border-muted);
+}
+
+.recapPrimaryBtn {
+  width: 100%;
+}

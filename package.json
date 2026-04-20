@@ -39,8 +39,8 @@
       "prettier --write"
     ],
     "src/**/*.{css,scss}": [
-      "stylelint --fix",
-      "prettier --write"
+      "prettier --write",
+      "stylelint --fix"
     ],
     "src/**/*.json": [
       "prettier --write"

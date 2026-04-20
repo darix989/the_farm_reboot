@@ -1,6 +1,6 @@
 # AGENT.md — React overlay layer
 
-This document describes the React UI layer under `src/react/` with a focus on the Trial/debate screen (`TrialUI.tsx`) and its supporting files.
+This document describes the React UI layer under `src/react/` with a focus on the Trial/debate screen (`screens/TrialUI.tsx`) and its supporting files.
 
 ## Files at a glance
 
@@ -8,24 +8,31 @@ This document describes the React UI layer under `src/react/` with a focus on th
 |------|---------|
 | `ReactApp.tsx` | Scene-keyed switch: renders `MainMenuUI`, `TrialUI`, or `BoilerPlateUI` based on the active Phaser scene. |
 | `ReactRoot.tsx` | Positions the overlay over the Phaser canvas and syncs its size on resize. |
-| `MainMenuUI.tsx` | Overlay shown while the `MainMenu` scene is active. |
-| `BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
-| `TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, and `RoundAnalysisModal`. |
+| `screens/MainMenuUI.tsx` | Overlay shown while the `MainMenu` scene is active. |
+| `screens/BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
+| `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, `RoundRecapModal`, and `RoundAnalysisModal`. |
 | `trial/TrialLayout.tsx` | Three-column layout shell used by `TrialUI`. |
-| `trial/FeedbackPanel.tsx` | Left column: introduction, round counter, score, history, live crossfire prompt. |
-| `trial/WizardPanel.tsx` | Centre column: `wizardMessage` only. |
-| `trial/InteractivePanel.tsx` | Right column: phase-specific content and footer (Back / Continue / Confirm). |
-| `trial/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. |
-| `trial/RoundAnalysisModal.tsx` | Modal overlay for per-round analysis and fallacy guessing (see below). |
-| `trial/useScrollFade.ts` | Hook that tracks scroll edge state; drives animated fade overlays on scrollable containers. |
+| `trial/panels/FeedbackPanel.tsx` | Left column: introduction, round counter, score, history, live crossfire prompt. |
+| `trial/panels/WizardPanel.tsx` | Centre column: `wizardMessage` only. |
+| `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and footer (Back / Continue / Confirm). |
+| `hooks/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. |
+| `trial/roundRecapModal/RoundRecapModal.tsx` | Post–player-round summary modal; closing it dispatches `continue` and advances the workflow. |
+| `trial/roundAnalysisModal/RoundAnalysisModal.tsx` | Modal overlay for per-round analysis and fallacy guessing (see below). |
+| `hooks/useScrollFade.ts` | Hook that tracks scroll edge state; drives animated fade overlays on scrollable containers. |
 | `trial/utils/trialHelpers.ts` | Shared helpers: speaker names, quality/score colours, statement text, statement type labels. |
+| `trial/utils/optionUnlock.ts` | Player-option unlock rules and resolved sentence text for locked choices. |
+| `trial/utils/fallacyGuessTypes.ts` / `fallacyGuessUtils.ts` | Types and multiset logic for the analysis-modal guessing game. |
 | `trial/components/AnalyzeButton.tsx` | Magnifying-glass analyse button (history / interactive). |
 | `trial/components/HistoryEntry.tsx` | Repeated history row layout (label, body, optional analyse button). |
 | `trial/components/StatementBlock.tsx` | Speaker label + statement text (+ optional inline analyse button). |
 | `trial/components/ScrollFadeContainer.tsx` | Wraps a scrollable div with top/bottom fade overlays; calls `useScrollFade` internally. |
 | `hooks/useGame.ts` | Utilities around the `GameManager` and the Zustand store. |
-| `index.scss` | Global base styles for the React layer (imported from `ReactApp.tsx`; no Tailwind). |
-| `*.module.scss` | Per-component styles (e.g. `TrialUI.module.scss`, `trial/trialShared.module.scss`, `RoundAnalysisModal.module.scss`). |
+| `index.scss` | Global base styles for the React layer (imported from `ReactApp.tsx`; no Tailwind). Applies `uiTypography.font-scale` on `.react-root` and `uiColors.color-palette` on `html`. |
+| `uiTypography.scss` | `@mixin font-scale` — sets `--ui-font-*` (consumed under `.react-root`). |
+| `uiFont.ts` | `uiFont` object: `var(--ui-font-*)` for inline `style` in TSX. |
+| `uiColors.scss` | `@mixin color-palette` — sets `--ui-color-*` on the element where the mixin is included (`html` in `index.scss`). |
+| `uiColor.ts` | `uiColor` object: `var(--ui-color-*)` for inline styles and helpers (e.g. `trialHelpers`). |
+| `*.module.scss` | Per-component styles (e.g. `trial/panels/TrialPanels.module.scss`, `trial/trialShared.module.scss`, `trial/roundAnalysisModal/RoundAnalysisModal.module.scss`). Prefer `var(--ui-color-*)` over raw hex/rgba for shared colours. |
 
 ---
 
@@ -48,7 +55,7 @@ This caused the round analysis modal to be completely non-interactive until `poi
 Implementation split:
 
 - **`TrialUI.tsx`** — `useTrialRoundWorkflow`, `analysisTarget` / `fallacyGuesses`, `handleGuess`, `getNpcGuessState` (memoised), `interactiveFooter` and `modalSpeakerName` memos, then composes `FeedbackPanel`, `WizardPanel`, `InteractivePanel`, and `RoundAnalysisModal`.
-- **Panels** — Own their JSX and imports; shared presentation lives in `trial/components/*` and `trial/utils/trialHelpers.ts`.
+- **Panels** — Own their JSX and imports; shared presentation lives in `trial/components/*`, `trial/panels/TrialPanels.module.scss`, and `trial/utils/trialHelpers.ts`.
 
 ### Data model — `DebateScenarioJson`
 
@@ -97,9 +104,12 @@ Optional fields on a player round:
 
 ## Game phases and state machine
 
-`useTrialRoundWorkflow` (in `trial/useTrialRoundWorkflow.ts`) maintains a `GamePhase` enum and an undo-capable history stack. The phases and their transitions are:
+`useTrialRoundWorkflow` (in `hooks/useTrialRoundWorkflow.ts`) maintains a `GamePhase` enum and an undo-capable history stack. The phases and their transitions are:
 
 ```
+debate_intro   (only when `scenario.introduction` is non-empty)
+    │  player clicks Continue → intro summary modal → Begin Round 1
+    ▼
 npc_speaking
     │  player clicks Continue
     ▼
@@ -111,9 +121,11 @@ player_choosing
     ▼
 player_confirming  ◄──── Back (undo)
     │  player clicks Confirm
-    ▼
-npc_responding  (only if the round has opponentResponses)
-    │  player clicks Continue
+    ├─► npc_responding  (when the round has opponentResponses)
+    │       │  player clicks Continue
+    │       └──────────────┐
+    └─► round_recap ◄──────┘  (also entered directly when there are no opponentResponses)
+    │  player closes Round recap modal (Continue)
     ▼
 [next round starts] ... until all rounds exhausted
     ▼
@@ -131,7 +143,7 @@ debate_complete
 | `currentNpcRound` | Typed shortcut when the current round is NPC. |
 | `currentPlayerRound` | Typed shortcut when the current round is player. |
 | `selectedOption` | The `PlayerOption` the player has clicked but not yet confirmed. |
-| `activeOpponentResponse` | The `OpponentResponse` matched to the confirmed option (during `npc_responding`). |
+| `activeOpponentResponse` | The `OpponentResponse` matched to the confirmed option (during `npc_responding` and `round_recap`). |
 | `completedRounds` | Array of `CompletedRound` records for all past player turns. |
 | `totalScore` | Running sum of `impact` values from confirmed options. |
 | `maxPossibleScore` | Sum of the best `impact` across every player round (for a score display). |
@@ -145,7 +157,7 @@ debate_complete
 
 `TrialLayout` (in `trial/TrialLayout.tsx`) arranges three named slots side-by-side. `TrialUI` passes in `FeedbackPanel`, `WizardPanel`, and `InteractivePanel` as those slots.
 
-### Feedback panel (`trial/FeedbackPanel.tsx`)
+### Feedback panel (`trial/panels/FeedbackPanel.tsx`)
 
 - Shows the `introduction` text (if present) at the top, always visible.
 - Displays the current **round counter** (`Round N / total`) and **score** (coloured cyan for positive, red for negative).
@@ -153,11 +165,11 @@ debate_complete
 - Each history entry has a **magnifying glass button** (bottom-right corner, `src/static/icons/magnifying.svg`) via `AnalyzeButton` that opens the `RoundAnalysisModal`. The button turns **green** if the player correctly guessed a fallacy in that NPC round, or **red** if the guess was wrong.
 - The panel **auto-scrolls to the bottom** whenever `currentRoundIndex` increases (new history content is added), using a `useEffect` + `scrollTo` on the scroll ref owned by `FeedbackPanel`.
 
-### Wizard panel (`trial/WizardPanel.tsx`)
+### Wizard panel (`trial/panels/WizardPanel.tsx`)
 
 - Displays `wizardMessage` — a single contextual hint that tells the player what to do next (e.g. "Read the opponent's statement, then click Continue").
 
-### Interactive panel (`trial/InteractivePanel.tsx`)
+### Interactive panel (`trial/panels/InteractivePanel.tsx`)
 
 Content depends on `gamePhase`:
 
@@ -167,13 +179,14 @@ Content depends on `gamePhase`:
 | `player_choosing` | Optional `opponentPrompt` (`StatementBlock` + `AnalyzeButton`), then three choice buttons labelled A / B / C. |
 | `player_confirming` | The full text of the selected option plus a reminder that confirming is irreversible. |
 | `npc_responding` | The NPC's response matched to the confirmed option (`StatementBlock` + `AnalyzeButton`). |
+| `round_recap` | Same response view as `npc_responding` when a crossfire reply exists; otherwise a short note to use the recap modal. The footer **Continue** is disabled — the player advances only from the `RoundRecapModal`. |
 | `debate_complete` | A "debate finished" message with the final score. |
 
-The panel footer always shows **Back** (enabled only in `player_confirming`) and a context-sensitive **Continue / Confirm** button.
+The panel footer always shows **Back** (enabled only in `player_confirming`) and a context-sensitive **Continue / Confirm** button (disabled during `round_recap`).
 
 ---
 
-## Round Analysis Modal (`RoundAnalysisModal.tsx`)
+## Round Analysis Modal (`trial/roundAnalysisModal/RoundAnalysisModal.tsx`)
 
 A full-screen overlay opened by clicking the magnifying glass button on any history entry. Closed by clicking the backdrop or the ✕ button.
 
@@ -212,7 +225,7 @@ interface GuessRecord {
 
 ## Scroll fade overlays (`useScrollFade` + `ScrollFadeContainer`)
 
-`useScrollFade(ref)` returns `{ top: boolean, bottom: boolean }`, updated via a `scroll` event listener and a `ResizeObserver`. CSS `transition: opacity 0.3s ease` on the overlay classes handles the animation.
+`useScrollFade` (in `hooks/useScrollFade.ts`) — `useScrollFade(ref)` returns `{ top: boolean, bottom: boolean }`, updated via a `scroll` event listener and a `ResizeObserver`. CSS `transition: opacity 0.3s ease` on the overlay classes handles the animation.
 
 **`ScrollFadeContainer`** (`trial/components/ScrollFadeContainer.tsx`) wraps the scrollable element and the two fade overlays. It calls `useScrollFade` on the ref attached to the inner scroll div. Optional props:
 
@@ -235,9 +248,9 @@ Equivalent structure (conceptually; actual class names come from CSS modules suc
 
 | Container | Location |
 |-----------|----------|
-| Feedback scroll area | `trial/FeedbackPanel.tsx` (`ScrollFadeContainer` + optional `scrollRef`) |
-| Interactive scroll area | `trial/InteractivePanel.tsx` (`ScrollFadeContainer`) |
-| Modal body | `trial/RoundAnalysisModal.tsx` (`ScrollFadeContainer` with `isModal`) |
+| Feedback scroll area | `trial/panels/FeedbackPanel.tsx` (`ScrollFadeContainer` + optional `scrollRef`) |
+| Interactive scroll area | `trial/panels/InteractivePanel.tsx` (`ScrollFadeContainer`) |
+| Modal body | `trial/roundAnalysisModal/RoundAnalysisModal.tsx` (`ScrollFadeContainer` with `isModal`) |
 
 ---
 
@@ -255,14 +268,38 @@ Equivalent structure (conceptually; actual class names come from CSS modules suc
 
 ## CSS conventions
 
-- **Global** — [`index.scss`](index.scss): minimal reset, `#app` / overlay layout, `.react-root`. Imported by `ReactApp.tsx`.
-- **Trial UI** — CSS modules under `trial/` and `trial/` parent folder (e.g. `TrialUI.module.scss`, `trial/trialShared.module.scss`, `RoundAnalysisModal.module.scss`, `TrialLayout.module.scss`). Class names in source are camelCase (e.g. `trialScrollFadeWrap`); the compiled DOM may use hashed names.
+### Global entry (`index.scss`)
+
+- Minimal reset, `#app` / overlay layout, **`.react-root`** (React subtree).
+- **`@include ui-colors.color-palette` on `html`** — defines `--ui-color-*` for the whole document (including `body`). Use `var(--ui-color-*)` in any SCSS or plain CSS that loads after these rules.
+- **`@include ui-typography.font-scale` on `.react-root`** — defines `--ui-font-*` only under the overlay root so `rem` in typography tokens still tracks the same subtree as `App.tsx` stage sizing.
+- Imported by `ReactApp.tsx`.
+
+### Shared tokens (fonts and colours)
+
+| Mechanism | SCSS | TS / inline `style` |
+|-----------|------|---------------------|
+| Font scale | [`uiTypography.scss`](uiTypography.scss) — `@mixin font-scale` | [`uiFont.ts`](uiFont.ts) — `uiFont.body`, `uiFont.display`, etc. (`var(--ui-font-*)`) |
+| Colour palette | [`uiColors.scss`](uiColors.scss) — `@mixin color-palette` | [`uiColor.ts`](uiColor.ts) — `uiColor.textBody`, `uiColor.accent`, `uiColor.danger`, etc. (`var(--ui-color-*)`) |
+
+**When to use what**
+
+- In **`.module.scss`**, prefer `var(--ui-color-*)` and `var(--ui-font-*)` instead of duplicating hex/rgba or parallel `rem` ladders.
+- In **TSX** inline styles, import `uiFont` / `uiColor` so runtime values stay tied to the same custom properties.
+- **`trial/utils/trialHelpers.ts`** — `qualityColor` and `scoreColor` return `uiColor.*` entries (semantic: info / danger / neutrals), not raw literals.
+
+**File-local colours** — If a value is only used inside one module (one-off gradient stop, shadow, or layout tint), define **`$scssVariables` at the top** of that `.module.scss` and reference them below. Do not add a global `--ui-color-*` unless the same value appears in more than one place.
+
+### Trial and screens
+
+- **CSS modules** under `trial/`, `screens/`, etc. (e.g. `trial/panels/TrialPanels.module.scss`, `trial/trialShared.module.scss`, `trial/roundAnalysisModal/RoundAnalysisModal.module.scss`, `TrialLayout.module.scss`). Class names in source are camelCase (e.g. `trialScrollFadeWrap`); the compiled DOM may use hashed names.
+- **Trial panel chrome** — outer panels use `--ui-color-surface-trial-panel` (`uiColor.surfaceTrialPanel` in `TrialLayout.tsx`); inner areas and modals use the overlay/surface tokens in `uiColors.scss` (e.g. `--ui-color-surface-modal`, scroll-fade neutrals).
+
+### Other rules
+
 - Native scrollbars are hidden everywhere with `scrollbar-width: none` (Firefox) and `::-webkit-scrollbar { display: none }` (Chrome/Safari/Edge). Scrolling still works; only the track is hidden.
 - `scrollbar-gutter: stable` is **not** used (it would reserve space for a hidden bar).
-- Font sizes use `rem` values tied to a responsive root `font-size` set by `App.tsx` based on the canvas width (so `1rem` scales with the viewport).
-- Color palette: cyan `#22d3ee` / `#67e8f9` for positive/effective; red `#f87171` for fallacy/negative; white at various opacities for text hierarchy.
-- Panel background: `#3a3a3a` (from `TrialLayout`) + `rgba(0,0,0,0.25)` inner panel = effectively `~#2b2b2b`. Scroll fade overlays use `rgba(20,20,20,0.88)` to approximate this.
-- Modal background: `rgba(10,12,18,0.96)` with a blurred backdrop.
+- **Font sizing** — `rem` tracks a responsive root `font-size` set by `App.tsx` based on the canvas width. Typography tokens (`--ui-font-*`) are applied on `.react-root` alongside that scale.
 
 ---
 
@@ -275,6 +312,6 @@ Remember to:
 - Add a `reason` string to every `PlayerOption` (shown in the player-round analysis view).
 - Annotate each `Sentence` with the appropriate `logicalFallacies` entries where applicable.
 
-To change the turn structure or scoring, edit `useTrialRoundWorkflow.ts`. The types that govern valid round shapes live in `src/types/debateEntities.ts`.
+To change the turn structure or scoring, edit `hooks/useTrialRoundWorkflow.ts`. The types that govern valid round shapes live in `src/types/debateEntities.ts`.
 
-To add a new UI block inside a trial panel, prefer extending the relevant panel (`FeedbackPanel.tsx` / `InteractivePanel.tsx`) or a small component under `trial/components/` rather than growing `TrialUI.tsx`.
+To add a new UI block inside a trial panel, prefer extending the relevant panel under `trial/panels/` or a small component under `trial/components/` rather than growing `screens/TrialUI.tsx`.

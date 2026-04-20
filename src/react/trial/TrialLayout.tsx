@@ -1,9 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
+import { uiColor } from '../uiColor';
 import styles from './TrialLayout.module.scss';
-
-/** Solid dark gray so panels read clearly over the Phaser canvas. */
-const TRIAL_PANEL_BG = '#3a3a3a';
 
 export interface TrialLayoutProps {
   feedback: React.ReactNode;
@@ -13,49 +11,40 @@ export interface TrialLayoutProps {
 
 /**
  * Trial overlay over the Phaser canvas:
- * - Top-left quarter: empty (pointer-events pass through to Phaser).
- * - Top row, right half: Feedback (top area only to the right of the game hole).
- * - Bottom row: Wizard 1/3 width, Interactive 2/3 width.
+ * - Top-left: empty game hole (pointer-events pass through to Phaser).
+ * - Top-right: Debate Log beside the game hole.
+ * - Bottom row: Wizard under the hole, Interactive under the log.
  *
- * Uses a 6-column × 2-row grid so halves and thirds line up with the viewport.
+ * Two columns: left 60% (3fr), right 40% (2fr), two equal-height rows.
  */
 const TrialLayout: React.FC<TrialLayoutProps> = ({ feedback, wizard, interactive }) => {
   return (
     <div className={styles.trialLayoutGrid}>
-      {/* Top-left quarter: game hole (cols 1–3 = 50% width, row 1 = top 50% height) */}
-      <div
-        className={styles.trialGameHole}
-        aria-hidden
-      />
+      {/* Top-left: game hole (60% column width, top 50% height) */}
+      <div className={styles.trialGameHole} aria-hidden />
 
-      {/* Feedback: top row, right 50% (cols 4–6) */}
+      {/* Debate Log: top row, right column (40% width) */}
       <div
         className={cn(styles.trialPanel, styles.trialFeedbackPanel)}
-        style={{ backgroundColor: TRIAL_PANEL_BG }}
+        style={{ backgroundColor: uiColor.surfaceTrialPanel }}
       >
-        <div className={styles.trialPanelInner}>
-          {feedback}
-        </div>
+        <div className={styles.trialPanelInner}>{feedback}</div>
       </div>
 
-      {/* Wizard: bottom row, left third (cols 1–2 of 6) */}
+      {/* Wizard: bottom row, left column (60% width) */}
       <div
         className={cn(styles.trialPanel, styles.trialWizardPanel)}
-        style={{ backgroundColor: TRIAL_PANEL_BG }}
+        style={{ backgroundColor: uiColor.surfaceTrialPanel }}
       >
-        <div className={styles.trialPanelInner}>
-          {wizard}
-        </div>
+        <div className={styles.trialPanelInner}>{wizard}</div>
       </div>
 
-      {/* Interactive: bottom row, right two-thirds (cols 3–6 of 6) */}
+      {/* Interactive: bottom row, right column (40% width) */}
       <div
         className={cn(styles.trialPanel, styles.trialInteractivePanel)}
-        style={{ backgroundColor: TRIAL_PANEL_BG }}
+        style={{ backgroundColor: uiColor.surfaceTrialPanel }}
       >
-        <div className={styles.trialPanelInner}>
-          {interactive}
-        </div>
+        <div className={styles.trialPanelInner}>{interactive}</div>
       </div>
     </div>
   );

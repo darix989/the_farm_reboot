@@ -1,0 +1,130 @@
+/* =========================================================================
+   React UI color palette — applied on `html` (see `index.scss`).
+   TSX uses `uiColor` from `uiColor.ts` for inline `style` values.
+   ========================================================================= */
+
+@mixin color-palette {
+  /* --- Base ------------------------------------------------------------- */
+  --ui-color-bg: #000000;
+  --ui-color-bg-soft: #1a1a1a;
+  --ui-color-white: #ffffff;
+  --ui-color-text-on-accent: #000000;
+
+  /* --- Neutral text (white alpha ladder) ------------------------------ */
+  --ui-color-text-primary: rgba(255, 255, 255, 0.87);
+  --ui-color-text-title: rgba(255, 255, 255, 0.95);
+  --ui-color-text-strong: rgba(255, 255, 255, 0.92);
+  --ui-color-text-emphasis: rgba(255, 255, 255, 0.9);
+  --ui-color-text-body: rgba(255, 255, 255, 0.85);
+  --ui-color-text-secondary: rgba(255, 255, 255, 0.8);
+  --ui-color-text-muted: rgba(255, 255, 255, 0.75);
+  --ui-color-text-subtle: rgba(255, 255, 255, 0.55);
+  --ui-color-text-hint: rgba(255, 255, 255, 0.5);
+  --ui-color-text-caption: rgba(255, 255, 255, 0.45);
+  --ui-color-text-faint: rgba(255, 255, 255, 0.4);
+  --ui-color-text-disabled: rgba(255, 255, 255, 0.35);
+  --ui-color-text-ghost: rgba(255, 255, 255, 0.3);
+  --ui-color-text-muted-2: rgba(255, 255, 255, 0.6);
+
+  /* --- Neutral surfaces (black alpha) -------------------------------- */
+  --ui-color-overlay-backdrop: rgba(0, 0, 0, 0.8);
+  --ui-color-overlay-modal: rgba(0, 0, 0, 0.7);
+  --ui-color-overlay-panel: rgba(0, 0, 0, 0.45);
+  --ui-color-overlay-deep: rgba(0, 0, 0, 0.4);
+  --ui-color-overlay-medium: rgba(0, 0, 0, 0.35);
+  --ui-color-overlay-muted: rgba(0, 0, 0, 0.3);
+  --ui-color-overlay-subtle: rgba(0, 0, 0, 0.28);
+  --ui-color-overlay-card: rgba(0, 0, 0, 0.25);
+
+  /* --- Glass / fills (white on dark) ---------------------------------- */
+  --ui-color-glass-06: rgba(255, 255, 255, 0.06);
+  --ui-color-glass-12: rgba(255, 255, 255, 0.12);
+
+  /* --- Borders (white alpha) ------------------------------------------ */
+  --ui-color-border-faint: rgba(255, 255, 255, 0.06);
+  --ui-color-border-hairline: rgba(255, 255, 255, 0.08);
+  --ui-color-border-fade: rgba(255, 255, 255, 0.1);
+  --ui-color-border-muted: rgba(255, 255, 255, 0.12);
+  --ui-color-border-soft: rgba(255, 255, 255, 0.15);
+  --ui-color-border-default: rgba(255, 255, 255, 0.18);
+  --ui-color-border-medium: rgba(255, 255, 255, 0.2);
+  --ui-color-border-strong: rgba(255, 255, 255, 0.25);
+  --ui-color-border-panel: rgba(255, 255, 255, 0.28);
+  --ui-color-border-emphasis: rgba(255, 255, 255, 0.3);
+  --ui-color-border-ring: rgba(255, 255, 255, 0.35);
+  --ui-color-border-dashed: rgba(255, 255, 255, 0.25);
+  --ui-color-border-dashed-hover: rgba(255, 255, 255, 0.5);
+  --ui-color-border-inset: rgba(255, 255, 255, 0.08);
+  --ui-color-border-inner: rgba(255, 255, 255, 0.2);
+  --ui-color-ring-subtle: rgba(255, 255, 255, 0.05);
+
+  /* --- Tinted surfaces (modals / panels) ------------------------------ */
+  --ui-color-surface-trial-panel: #3a3a3a;
+  --ui-color-surface-modal: rgba(10, 12, 18, 0.96);
+  --ui-color-surface-confirm: rgba(22, 25, 38, 0.98);
+  --ui-color-overlay-confirm: rgba(5, 8, 15, 0.82);
+
+  /* --- Shadows -------------------------------------------------------- */
+  --ui-color-shadow-deep: rgba(0, 0, 0, 0.7);
+  --ui-color-shadow-soft: rgba(0, 0, 0, 0.05);
+
+  /* --- Scroll fade gradients ------------------------------------------ */
+  --ui-color-scroll-fade-neutral: rgba(20, 20, 20, 0.88);
+  --ui-color-scroll-fade-modal: rgba(10, 12, 18, 0.95);
+
+  /* --- Brand accent --------------------------------------------------- */
+  --ui-color-accent: #0ec3c9;
+  --ui-color-accent-glow: rgba(14, 195, 201, 0.3);
+
+  /* --- Info / cyan (interactive focus) ------------------------------- */
+  --ui-color-info: #22d3ee;
+  --ui-color-info-bright: #67e8f9;
+  --ui-color-info-text: #a5f3fc;
+  --ui-color-info-text-soft: rgba(165, 243, 252, 0.95);
+  --ui-color-info-border: rgba(6, 182, 212, 0.45);
+  --ui-color-info-border-hover: rgba(6, 182, 212, 0.6);
+  --ui-color-info-border-active: rgba(6, 182, 212, 0.7);
+  --ui-color-info-border-strong: rgba(6, 182, 212, 0.8);
+  --ui-color-info-border-max: rgba(6, 182, 212, 0.85);
+  --ui-color-info-bg-faint: rgba(6, 182, 212, 0.08);
+  --ui-color-info-bg-soft: rgba(6, 182, 212, 0.1);
+  --ui-color-info-bg: rgba(6, 182, 212, 0.12);
+  --ui-color-info-bg-strong: rgba(6, 182, 212, 0.15);
+  --ui-color-info-ring: rgba(6, 182, 212, 0.3);
+  --ui-color-info-ring-strong: rgba(6, 182, 212, 0.35);
+  --ui-color-panel-heading-cyan: rgba(34, 211, 238, 0.9);
+
+  /* --- Success (green) ------------------------------------------------- */
+  --ui-color-success: #4ade80;
+  --ui-color-success-border: rgba(34, 197, 94, 0.45);
+  --ui-color-success-border-hover: rgba(74, 222, 128, 0.55);
+  --ui-color-success-border-active: rgba(34, 197, 94, 0.7);
+  --ui-color-success-border-strong: rgba(34, 197, 94, 0.9);
+  --ui-color-success-bg-faint: rgba(34, 197, 94, 0.09);
+  --ui-color-success-bg: rgba(34, 197, 94, 0.12);
+  --ui-color-success-bg-hover: rgba(34, 197, 94, 0.15);
+  --ui-color-success-bg-strong: rgba(34, 197, 94, 0.25);
+  --ui-color-success-text-soft: rgba(187, 247, 208, 0.95);
+
+  /* --- Warning (amber) ------------------------------------------------- */
+  --ui-color-warning: #facc15;
+  --ui-color-warning-border: rgba(234, 179, 8, 0.5);
+  --ui-color-warning-border-active: rgba(234, 179, 8, 0.7);
+  --ui-color-warning-border-strong: rgba(234, 179, 8, 0.9);
+  --ui-color-warning-bg-faint: rgba(234, 179, 8, 0.08);
+  --ui-color-warning-bg: rgba(234, 179, 8, 0.12);
+  --ui-color-warning-bg-hover: rgba(234, 179, 8, 0.22);
+
+  /* --- Danger (red) ---------------------------------------------------- */
+  --ui-color-danger: #f87171;
+  --ui-color-danger-border-soft: rgba(248, 113, 113, 0.4);
+  --ui-color-danger-border: rgba(248, 113, 113, 0.45);
+  --ui-color-danger-border-active: rgba(248, 113, 113, 0.7);
+  --ui-color-danger-border-strong: rgba(248, 113, 113, 0.9);
+  --ui-color-danger-bg-faint: rgba(248, 113, 113, 0.07);
+  --ui-color-danger-bg-soft: rgba(248, 113, 113, 0.09);
+  --ui-color-danger-bg: rgba(248, 113, 113, 0.12);
+  --ui-color-danger-bg-hover: rgba(248, 113, 113, 0.15);
+  --ui-color-danger-bg-strong: rgba(248, 113, 113, 0.25);
+  --ui-color-danger-text-soft: rgba(255, 180, 180, 0.9);
+}

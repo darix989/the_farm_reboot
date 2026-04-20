@@ -1,0 +1,675 @@
+{
+  "id": "debate-apple-surplus",
+  "introduction": "The north orchard has produced a massive surplus of apples. Mayor Monty (the Pig) argues that either the pigs eat them all immediately or the farm will be overrun by a plague of fruit flies. As Penny the Goat, you must show the farm that there are other ways to handle the harvest.",
+  "playerSide": "opposition",
+  "characters": {
+    "monty": "Mayor Monty",
+    "penny": "Penny"
+  },
+  "logicalFallacies": [
+    {
+      "id": "false-dilemma",
+      "explanation": "TBD"
+    }
+  ],
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "opening_constructive",
+      "speakerId": "monty",
+      "statement": {
+        "id": "stmt-r1-monty",
+        "speakerId": "monty",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Friends, we face a sticky disaster. The cellar is full, and the extra apples are rotting on the ground as we speak.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "We have only two paths forward: either the pigs eat the entire surplus today, or we dump it all in the compost and let the fruit flies take over the barn.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "TBD"
+              }
+            ]
+          },
+          {
+            "id": "s-r1-3",
+            "text": "Do you want full pigs or a plague of flies? The choice is that simple.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "TBD"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "opening_constructive",
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -15,
+          "reason": "This response uses a False Dilemma itself, suggesting that if we don't listen to Penny, the farm will literally explode. It doesn't fix the logic; it just adds more bad logic.",
+          "sentences": [
+            {
+              "id": "s-r2a-1",
+              "text": "Either we ignore Monty completely, or this farm will be destroyed by sunset!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "This is factually true but ignores the debate. Talking about the color of the apples doesn't address the 'eat them or rot' dilemma Monty presented.",
+          "sentences": [
+            {
+              "id": "s-r2b-1",
+              "text": "The apples are very red this year and they look delicious.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "effective",
+          "impact": 20,
+          "reason": "This is the best response because it immediately points out that there are more than two choices, which is the core way to defeat a False Dilemma.",
+          "unlockCondition": {
+            "npcRoundId": "round-1",
+            "sentenceId": "s-r1-2",
+            "fallacyId": "false-dilemma"
+          },
+          "sentences": [
+            {
+              "id": "s-r2c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r2c-1",
+              "text": "Monty is trying to make us choose between two extremes, but those aren't our only options.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r2c-2",
+              "text": "We could dry the apples for winter, or trade them with the nearby sheep for extra wool.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r3-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "This creates another False Dilemma by implying Monty is either a genius or a total failure.",
+          "sentences": [
+            {
+              "id": "s-r3a-1",
+              "text": "Monty, are you a brilliant leader who will save us, or a failure who wants us to starve?",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "A minor detail that doesn't challenge his logic.",
+          "sentences": [
+            {
+              "id": "s-r3b-1",
+              "text": "Which pigs exactly would be doing the eating?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-c",
+          "quality": "effective",
+          "impact": 15,
+          "reason": "This directly questions why Monty is ignoring the third and fourth options, forcing him to defend his limited view.",
+          "sentences": [
+            {
+              "id": "s-r3c-1",
+              "text": "Why have you excluded the possibility of drying or trading the apples from your proposal?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r3-opt-a",
+          "statement": {
+            "id": "stmt-r3-resp-a",
+            "speakerId": "monty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3ra-1",
+                "text": "I am a leader who makes hard choices while you just ask silly questions!",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-b",
+          "statement": {
+            "id": "stmt-r3-resp-b",
+            "speakerId": "monty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3rb-1",
+                "text": "All of them! It's a heavy burden, but the pigs are willing to sacrifice their waistlines for the farm.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-c",
+          "statement": {
+            "id": "stmt-r3-resp-c",
+            "speakerId": "monty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3rc-1",
+                "text": "Drying takes too long, and trading is uncertain. We either act now with my plan, or we fail. There is no middle ground.",
+                "logicalFallacies": [
+                  {
+                    "id": "false-dilemma",
+                    "explanation": "TBD"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "crossfire",
+      "opponentPrompt": {
+        "id": "stmt-r4-monty-question",
+        "speakerId": "monty",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r4q-1",
+            "text": "Penny, do you want to see the pigs well-fed, or do you want to see our beautiful barn filled with flies and rot?",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "TBD"
+              }
+            ]
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r4-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "This is another False Dilemma. It suggests that there are only two outcomes for the barn's future.",
+          "sentences": [
+            {
+              "id": "s-r4a-1",
+              "text": "Our barn will either be a paradise or a garbage dump, and your plan makes it a dump!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "This doesn't answer the question or provide a solution.",
+          "sentences": [
+            {
+              "id": "s-r4b-1",
+              "text": "Flies are very small, but they are certainly annoying.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "This rejects the 'either-or' framing and provides a solution that benefits everyone, not just the pigs.",
+          "sentences": [
+            {
+              "id": "s-r4c-1",
+              "text": "I want a farm where the food is preserved for the winter so every animal has enough to eat later, not just the pigs today.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-5",
+      "roundNumber": 5,
+      "type": "rebuttal",
+      "speakerId": "monty",
+      "statement": {
+        "id": "stmt-r5-monty",
+        "speakerId": "monty",
+        "type": "rebuttal",
+        "sentences": [
+          {
+            "id": "s-r5-1",
+            "text": "Penny's talk of 'drying' and 'trading' is just a distraction from the crisis.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-2",
+            "text": "Every minute we spend talking about 'options' is a minute the flies get closer.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-3",
+            "text": "You either support the pigs' plan, or you support the flies. Which is it?",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "TBD"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-6",
+      "roundNumber": 6,
+      "type": "rebuttal",
+      "options": [
+        {
+          "id": "r6-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -15,
+          "reason": "This is a False Dilemma. It limits the barn's choices to only Penny's way or Monty's way.",
+          "sentences": [
+            {
+              "id": "s-r6a-1",
+              "text": "Either we do exactly what I say, or Monty will lead us all into a pit of rot!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "This is a weak defense that doesn't tackle the logical flaw.",
+          "sentences": [
+            {
+              "id": "s-r6b-1",
+              "text": "I am not a distraction, I am a goat, and I think we should keep talking.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-c",
+          "quality": "effective",
+          "impact": 22,
+          "reason": "This explicitly names the fallacy and explains why the 'with me or against me' logic is false.",
+          "unlockCondition": {
+            "npcRoundId": "round-5",
+            "sentenceId": "s-r5-3",
+            "fallacyId": "false-dilemma"
+          },
+          "sentences": [
+            {
+              "id": "s-r6c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r6c-1",
+              "text": "Rejecting a bad plan doesn't mean I support the flies.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r6c-2",
+              "text": "By pretending there are only two choices, Monty is trying to scare us into giving the pigs all the food.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-7",
+      "roundNumber": 7,
+      "type": "crossfire",
+      "opponentPrompt": {
+        "id": "stmt-r7-monty-question",
+        "speakerId": "monty",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r7q-1",
+            "text": "If you don't let the pigs eat the apples now, aren't you just choosing to waste them?",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "TBD"
+              }
+            ]
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r7-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "Using another False Dilemma.",
+          "sentences": [
+            {
+              "id": "s-r7a-1",
+              "text": "Waste is either your fault or mine, and I say it's yours!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Does not address the binary choice Monty is forcing.",
+          "sentences": [
+            {
+              "id": "s-r7b-1",
+              "text": "Apples are never really wasted if the worms eat them.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "Reiterates the existence of more options (drying/trading).",
+          "sentences": [
+            {
+              "id": "s-r7c-1",
+              "text": "No, because drying them preserves them. That is the exact opposite of waste.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-8",
+      "roundNumber": 8,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r8-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "False Dilemma.",
+          "sentences": [
+            {
+              "id": "s-r8a-1",
+              "text": "Monty, are you going to help us dry these apples, or are you just going to sit there and be greedy?",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r8-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Irrelevant question.",
+          "sentences": [
+            {
+              "id": "s-r8b-1",
+              "text": "How many apples can a pig eat in one minute?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r8-opt-c",
+          "quality": "effective",
+          "impact": 20,
+          "reason": "Forces Monty to address a specific alternative, breaking the two-option trap.",
+          "sentences": [
+            {
+              "id": "s-r8c-1",
+              "text": "If we set up the drying racks today, we could save half the crop by tomorrow. Why isn't that a better choice than eating it all at once?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r8-opt-a",
+          "statement": {
+            "id": "stmt-r8-resp-a",
+            "speakerId": "monty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r8ra-1",
+                "text": "I am not greedy, I am efficient! You are just being difficult.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r8-opt-b",
+          "statement": {
+            "id": "stmt-r8-resp-b",
+            "speakerId": "monty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r8rb-1",
+                "text": "More than you think, Penny. Many more.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r8-opt-c",
+          "statement": {
+            "id": "stmt-r8-resp-c",
+            "speakerId": "monty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r8rc-1",
+                "text": "Drying racks are complicated. It's either my simple solution or total chaos. Why take the risk?",
+                "logicalFallacies": [
+                  {
+                    "id": "false-dilemma",
+                    "explanation": "TBD"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-9",
+      "roundNumber": 9,
+      "type": "closing_constructive",
+      "speakerId": "monty",
+      "statement": {
+        "id": "stmt-r9-monty",
+        "speakerId": "monty",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r9-1",
+            "text": "Animals of the farm, the sun is setting and the apples are softening.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r9-2",
+            "text": "You must choose now: a feast for the pigs, or a famine for everyone else when the flies arrive.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "TBD"
+              }
+            ]
+          },
+          {
+            "id": "s-r9-3",
+            "text": "There are no other paths. Vote for the pigs, or vote for the flies.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "TBD"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-10",
+      "roundNumber": 10,
+      "type": "closing_constructive",
+      "options": [
+        {
+          "id": "r10-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -15,
+          "reason": "Final False Dilemma. It mimics Monty's bad logic.",
+          "sentences": [
+            {
+              "id": "s-r10a-1",
+              "text": "In summary, we either ban all pigs from the orchard or we lose the farm forever!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Too vague and doesn't summarize the argument.",
+          "sentences": [
+            {
+              "id": "s-r10b-1",
+              "text": "I think we should all just take a nap and think about it tomorrow.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-c",
+          "quality": "effective",
+          "impact": 25,
+          "reason": "The perfect tutorial conclusion. It names the fallacy one last time, reminds the jury of the 'third way' (preservation), and asks for a vote based on logic rather than fear.",
+          "sentences": [
+            {
+              "id": "s-r10c-1",
+              "text": "Monty has spent this whole debate trying to trap us between two bad choices.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10c-2",
+              "text": "We don't have to choose between pigs and flies; we can choose to be smart and preserve our food for everyone.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10c-3",
+              "text": "Vote for preservation, not just consumption.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

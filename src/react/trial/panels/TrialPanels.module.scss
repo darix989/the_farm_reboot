@@ -1,0 +1,800 @@
+@use 'sass:math';
+@use '../debateLogIconSizing' as debate-log-icon;
+
+/* =========================================================================
+   Trial panels — panel content wrappers
+   ========================================================================= */
+
+.trialPanelContent {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  gap: calc(1rem * var(--ui-trial-panel-font-scale, 1));
+}
+
+.trialInteractiveBody {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+
+.trialInteractiveScrollWrap {
+  margin-top: 1rem;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.trialInteractiveFooter {
+  flex-shrink: 0;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid var(--ui-color-border-soft);
+  padding-top: 1rem;
+}
+
+.trialFooterGrid {
+  display: grid;
+  width: 100%;
+  max-width: 56rem;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  gap: 1rem;
+  padding: 0 0.5rem;
+
+  @media (min-width: 640px) {
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  @media (min-width: 768px) {
+    gap: 2rem;
+  }
+}
+
+/* =========================================================================
+   Trial panels — area title strip
+   ========================================================================= */
+
+.trialAreaTitle {
+  box-sizing: border-box;
+  display: flex;
+  height: 5vh;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid var(--ui-color-border-strong);
+  background: var(--ui-color-overlay-medium);
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+
+  > h2 {
+    margin: 0;
+    min-width: 0;
+  }
+}
+
+.trialDebateLogTitleScore {
+  flex-shrink: 0;
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.375;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.trialPanelHeading {
+  font-size: calc(var(--ui-font-display) * var(--ui-trial-panel-font-scale, 1));
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ui-color-panel-heading-cyan);
+  margin: 0;
+}
+
+/* =========================================================================
+   Trial panels — wizard body
+   ========================================================================= */
+
+.trialWizardBodyWrap {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 100%;
+  min-height: 0;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.75rem 0.5rem;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    padding: 0.75rem;
+  }
+}
+
+.trialWizardGuidanceText {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  margin: 0;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: break-word;
+  padding: 0 0.25rem;
+  word-break: break-word;
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.625;
+  color: var(--ui-color-text-body);
+}
+
+.trialWizardDetailLive {
+  flex: 1 1 0%;
+  min-height: 0;
+  min-width: 0;
+}
+
+.trialWizardMainText {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: none;
+  box-sizing: border-box;
+  flex: 1 1 0%;
+  margin: 0;
+  max-width: 100%;
+  min-height: 0;
+  min-width: 0;
+  outline: none;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 1rem;
+  word-break: break-word;
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.625;
+  color: var(--ui-color-text-body);
+}
+
+/* =========================================================================
+   Trial panels — scroll area
+   ========================================================================= */
+
+.trialScrollArea {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 0.25rem;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.trialFeedbackScroll {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  gap: calc(1rem * var(--ui-trial-panel-font-scale, 1));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* =========================================================================
+   Trial panels — debate log (round cards)
+   ========================================================================= */
+
+.debateLogRoundList {
+  display: flex;
+  flex-direction: column;
+  gap: calc(0.75rem * var(--ui-trial-panel-font-scale, 1));
+}
+
+.debateLogRound {
+  border-radius: 0.5rem;
+  border: 1px solid var(--ui-color-border-strong);
+  background: var(--ui-color-overlay-muted);
+  padding: calc(0.75rem * var(--ui-trial-panel-font-scale, 1))
+    calc(1rem * var(--ui-trial-panel-font-scale, 1));
+  box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
+}
+
+.debateLogRoundHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(1rem * var(--ui-trial-panel-font-scale, 1));
+  min-width: 0;
+}
+
+.debateLogRoundLead {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: calc(0.85rem * var(--ui-trial-panel-font-scale, 1))
+    calc(1rem * var(--ui-trial-panel-font-scale, 1));
+}
+
+.debateLogRoundNumber {
+  flex-shrink: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: calc(clamp(1.85rem, 2.8vw, 2.35rem) * var(--ui-trial-panel-font-scale, 1));
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ui-color-text-emphasis);
+}
+
+.debateLogRoundStack {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.debateLogRoundSideLine {
+  font-size: calc(var(--ui-font-micro) * var(--ui-trial-panel-font-scale, 1));
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.debateLogRoundSideLineProp {
+  color: var(--ui-color-info-text);
+}
+
+.debateLogRoundSideLineOpp {
+  color: var(--ui-color-warning);
+}
+
+.debateLogRoundSideLineModerator {
+  text-transform: none;
+  letter-spacing: 0.04em;
+  color: var(--ui-color-text-muted);
+}
+
+.debateLogRoundTypeLine {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ui-color-text-emphasis);
+}
+
+.debateLogRoundHeaderEnd {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: calc(0.5rem * var(--ui-trial-panel-font-scale, 1));
+  margin-left: auto;
+}
+
+.debateLogStatusActive,
+.debateLogStatusUpcoming,
+.debateLogStatusCompleted {
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  font-weight: 500;
+  padding: calc(0.1rem * var(--ui-trial-panel-font-scale, 1))
+    calc(0.45rem * var(--ui-trial-panel-font-scale, 1));
+  border-radius: 0.25rem;
+  text-transform: lowercase;
+}
+
+.debateLogStatusActive {
+  color: var(--ui-color-info-text);
+  border: 1px solid var(--ui-color-info-border-active);
+  background: var(--ui-color-info-bg);
+}
+
+.debateLogStatusUpcoming {
+  color: var(--ui-color-text-muted);
+  border: 1px dashed var(--ui-color-border-inner);
+  background: transparent;
+}
+
+.debateLogStatusCompleted {
+  color: var(--ui-color-text-disabled);
+  border: 1px solid var(--ui-color-border-fade);
+  background: var(--ui-color-overlay-panel);
+}
+
+@keyframes debate-log-status-opacity-pulse {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.debateLogStatusActivePulse {
+  display: inline-block;
+  animation: debate-log-status-opacity-pulse 2.4s ease-in-out infinite;
+}
+
+/* Duration + buffer must stay in sync with `DEBATE_LOG_BODY_TRANSITION_MS` in `FeedbackPanel.tsx`. */
+.debateLogRoundBodyShell {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.45s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.debateLogRoundBodyShellExpanded {
+  grid-template-rows: 1fr;
+}
+
+.debateLogRoundBodyInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.debateLogAnalyzeGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(0.25rem * var(--ui-trial-panel-font-scale, 1));
+  align-items: center;
+  justify-content: flex-end;
+
+  .trialAnalyzeBtn {
+    position: static;
+    bottom: auto;
+    right: auto;
+    width: debate-log-icon.$trial-debate-log-icon-size;
+    height: debate-log-icon.$trial-debate-log-icon-size;
+    flex-shrink: 0;
+  }
+}
+
+.debateLogExpandBtn {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: math.div(debate-log-icon.$trial-debate-log-icon-size * 2, 1.85);
+  height: debate-log-icon.$trial-debate-log-icon-size;
+  padding: 0 math.div(debate-log-icon.$trial-debate-log-icon-size * 0.35, 1.85);
+  border-radius: 0.375rem;
+  border: 1px solid var(--ui-color-border-inner);
+  background: var(--ui-color-overlay-deep);
+  color: var(--ui-color-text-muted);
+  font-size: calc(
+    #{math.div(debate-log-icon.$trial-debate-log-icon-size * 0.65, 1.85)} *
+      var(--ui-trial-panel-font-scale, 1)
+  );
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease-in-out,
+    background 0.15s ease-in-out,
+    color 0.15s ease-in-out;
+
+  &:hover:not(:disabled) {
+    border-color: var(--ui-color-info-border-active);
+    background: var(--ui-color-info-bg);
+    color: var(--ui-color-info-text);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+  }
+}
+
+.debateLogRoundBody {
+  display: flex;
+  flex-direction: column;
+  gap: calc(0.75rem * var(--ui-trial-panel-font-scale, 1));
+}
+
+.debateLogRoundBodyShellExpanded .debateLogRoundBody {
+  padding-top: calc(0.75rem * var(--ui-trial-panel-font-scale, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .debateLogRoundBodyShell {
+    transition: none;
+  }
+
+  .debateLogStatusActivePulse {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.debateLogStatementBlock {
+  border-top: 1px solid var(--ui-color-border-fade);
+  padding-top: calc(0.65rem * var(--ui-trial-panel-font-scale, 1));
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.375;
+}
+
+.debateLogStatementHeaderRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: calc(0.5rem * var(--ui-trial-panel-font-scale, 1));
+
+  .debateLogAnalyzeGroup {
+    margin-top: -0.1rem;
+  }
+}
+
+.debateLogMinPreview {
+  margin: calc(0.5rem * var(--ui-trial-panel-font-scale, 1)) 0 0;
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.375;
+}
+
+/* =========================================================================
+   Trial panels — history entry
+   ========================================================================= */
+
+.trialHistoryEntry {
+  position: relative;
+  border-top: 1px solid var(--ui-color-border-fade);
+  padding-top: 0.75rem;
+  padding-bottom: 2.25rem; /* room for the analyze button */
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.375;
+}
+
+/* =========================================================================
+   Trial panels — analyze button (magnifying glass on history entries)
+   ========================================================================= */
+
+.trialAnalyzeBtn {
+  position: absolute;
+  bottom: 0.4rem;
+  right: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.3rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--ui-color-border-inner);
+  background: var(--ui-color-overlay-deep);
+  color: var(--ui-color-text-muted-2);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease-in-out,
+    background 0.15s ease-in-out;
+
+  &:hover {
+    border-color: var(--ui-color-info-border-active);
+    background: var(--ui-color-info-bg);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.7;
+    filter: invert(1);
+  }
+
+  &:hover img {
+    opacity: 1;
+  }
+
+  &.correct {
+    border-color: var(--ui-color-success-border-active);
+    background: var(--ui-color-success-bg-hover);
+
+    img {
+      opacity: 1;
+      filter: invert(1) sepia(1) saturate(3) hue-rotate(90deg);
+    }
+
+    &:hover {
+      border-color: var(--ui-color-success-border-strong);
+      background: var(--ui-color-success-bg-strong);
+    }
+  }
+
+  &.partial {
+    border-color: var(--ui-color-warning-border-active);
+    background: var(--ui-color-warning-bg);
+
+    img {
+      opacity: 1;
+      filter: invert(1) sepia(1) saturate(2.5) hue-rotate(15deg);
+    }
+
+    &:hover {
+      border-color: var(--ui-color-warning-border-strong);
+      background: var(--ui-color-warning-bg-hover);
+    }
+  }
+
+  &.wrong {
+    border-color: var(--ui-color-danger-border-active);
+    background: var(--ui-color-danger-bg-hover);
+
+    img {
+      opacity: 1;
+      filter: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
+    }
+
+    &:hover {
+      border-color: var(--ui-color-danger-border-strong);
+      background: var(--ui-color-danger-bg-strong);
+    }
+  }
+}
+
+/* =========================================================================
+   Trial panels — choice list
+   ========================================================================= */
+
+.trialChoices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+
+  @media (max-width: 639px) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    gap: 1.25rem;
+  }
+}
+
+.trialChoiceBtn {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 5.75rem;
+  align-items: flex-start;
+  justify-content: stretch;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid var(--ui-color-border-strong);
+  background: var(--ui-color-overlay-muted);
+  padding: 0.875rem;
+  text-align: left;
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.4;
+  color: var(--ui-color-text-emphasis);
+  box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
+  transition:
+    border-color 0.15s ease-in-out,
+    background 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out,
+    color 0.15s ease-in-out;
+
+  &:hover:not(:disabled) {
+    border-color: var(--ui-color-info-border-active);
+    background: var(--ui-color-overlay-panel);
+    box-shadow:
+      0 0 0 1px var(--ui-color-info-border-active),
+      0 1px 2px 0 var(--ui-color-shadow-soft);
+    color: var(--ui-color-info-text);
+
+    .trialChoiceLetter {
+      border-color: var(--ui-color-info-border-active);
+      background: var(--ui-color-info-bg);
+      color: var(--ui-color-info-text);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+
+    &:hover {
+      border-color: var(--ui-color-border-strong);
+      background: var(--ui-color-overlay-muted);
+      box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
+      color: var(--ui-color-text-emphasis);
+    }
+  }
+
+  @media (min-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.trialChoiceBtnSelected {
+  border-color: var(--ui-color-info-border-active);
+  background: var(--ui-color-overlay-panel);
+  box-shadow:
+    0 0 0 1px var(--ui-color-info-border-active),
+    0 1px 2px 0 var(--ui-color-shadow-soft);
+  color: var(--ui-color-info-text);
+
+  .trialChoiceLetter {
+    border-color: var(--ui-color-info-border-active);
+    background: var(--ui-color-info-bg);
+    color: var(--ui-color-info-text);
+  }
+}
+
+.trialChoiceBtnRow {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+.trialChoiceLetter {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.3125rem;
+  border: 1px solid var(--ui-color-border-inner);
+  background: var(--ui-color-overlay-deep);
+  color: var(--ui-color-text-emphasis);
+  font-size: calc(var(--ui-font-label) * var(--ui-trial-panel-font-scale, 1));
+  font-weight: 700;
+  line-height: 1;
+  transition:
+    border-color 0.15s ease-in-out,
+    background 0.15s ease-in-out,
+    color 0.15s ease-in-out;
+}
+
+.trialChoiceStatement {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/** Nudge when a locked option is guess-unlocked but not yet clicked open; slow shake, repeats every 10s */
+.trialChoiceBtnUnlockHint {
+  animation: trial-unlock-hint-shake 10s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trialChoiceBtnUnlockHint {
+    animation: none;
+  }
+}
+
+@keyframes trial-unlock-hint-shake {
+  0%,
+  12%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  2% {
+    transform: translate3d(-2px, 1px, 0) rotate(-0.4deg);
+  }
+
+  4% {
+    transform: translate3d(2px, -1px, 0) rotate(0.4deg);
+  }
+
+  6% {
+    transform: translate3d(-2px, 0, 0) rotate(-0.3deg);
+  }
+
+  8% {
+    transform: translate3d(2px, 0, 0) rotate(0.3deg);
+  }
+
+  10% {
+    transform: translate3d(-1px, 0, 0);
+  }
+}
+
+/** One-time after the player clicks to reveal an unlock-gated statement — softer elastic “ta-da” */
+@keyframes trial-choice-reveal-tada {
+  0% {
+    transform: scale(0.93) rotate(-2.5deg);
+    filter: brightness(1.08) saturate(1.06);
+    border-color: var(--ui-color-border-strong);
+    box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
+  }
+
+  11% {
+    transform: scale(1.06) rotate(3deg);
+    border-color: var(--ui-color-warning-border-active);
+    box-shadow:
+      0 0 0 1px var(--ui-color-warning-border-active),
+      0 8px 22px -4px var(--ui-color-warning-bg);
+  }
+
+  22% {
+    transform: scale(0.97) rotate(-2.5deg);
+    border-color: var(--ui-color-info-border-active);
+    box-shadow:
+      0 0 0 1px var(--ui-color-info-border-active),
+      0 6px 18px -3px var(--ui-color-info-bg-strong);
+  }
+
+  34% {
+    transform: scale(1.03) rotate(1.8deg);
+    box-shadow:
+      0 0 0 1px var(--ui-color-info-border-active),
+      0 4px 14px -2px var(--ui-color-info-bg);
+  }
+
+  46% {
+    transform: scale(0.99) rotate(-1.2deg);
+  }
+
+  58% {
+    transform: scale(1.02) rotate(0.9deg);
+  }
+
+  70% {
+    transform: scale(0.995) rotate(-0.5deg);
+  }
+
+  82% {
+    transform: scale(1.008) rotate(0.35deg);
+  }
+
+  92% {
+    transform: scale(1) rotate(-0.12deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+    filter: none;
+    border-color: var(--ui-color-border-strong);
+    box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
+  }
+}
+
+@keyframes trial-choice-reveal-fade {
+  0% {
+    opacity: 0.45;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.trialChoiceBtnRevealFlash {
+  transform-origin: center center;
+  animation: trial-choice-reveal-tada 0.92s cubic-bezier(0.36, 1.18, 0.45, 0.96) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trialChoiceBtnRevealFlash {
+    animation: trial-choice-reveal-fade 0.45s ease forwards;
+  }
+}

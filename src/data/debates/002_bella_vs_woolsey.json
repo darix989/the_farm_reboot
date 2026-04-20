@@ -1,0 +1,662 @@
+{
+  "id": "debate-siesta-proposal",
+  "introduction": "Bella the Cow has proposed a 15-minute mandatory 'Quiet Time' after lunch to improve the farm's productivity. Woolsey the Sheep, a staunch advocate for 'The Grind,' is terrified this is the beginning of the end for the farm's work ethic. As Bella, you must defend your proposal against Woolsey's escalating fears.",
+  "playerSide": "proposition",
+  "characters": {
+    "bella": "Bella",
+    "woolsey": "Woolsey"
+  },
+  "logicalFallacies": [
+    {
+      "id": "slippery-slope",
+      "explanation": "Claiming that a small first step will inevitably lead to a chain of related (and usually negative) events without providing evidence for that progression."
+    },
+    {
+      "id": "false-dilemma",
+      "explanation": "Presenting only two options when more alternatives exist."
+    }
+  ],
+  "rounds": [
+    {
+      "kind": "player",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "opening_constructive",
+      "options": [
+        {
+          "id": "r1-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "This is a False Dilemma. It suggests that without the nap, everyone will definitely collapse, ignoring the possibility that they could just keep working as they are now.",
+          "sentences": [
+            {
+              "id": "s-r1a-1",
+              "text": "Either we implement this 15-minute rest, or the entire workforce will drop dead from exhaustion by Friday.",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r1-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "This is a pleasant sentiment but doesn't provide a logical argument for the proposal.",
+          "sentences": [
+            {
+              "id": "s-r1b-1",
+              "text": "I think we all deserve a nice sit-down because the grass is particularly soft this time of year.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r1-opt-c",
+          "quality": "effective",
+          "impact": 20,
+          "reason": "This provides a clear, evidence-based reason for the proposal, focusing on productivity and health.",
+          "sentences": [
+            {
+              "id": "s-r1c-1",
+              "text": "A brief 15-minute quiet period after the midday meal will reduce heat-stress and actually increase our total output for the afternoon.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "opening_constructive",
+      "speakerId": "woolsey",
+      "statement": {
+        "id": "stmt-r2-woolsey",
+        "speakerId": "woolsey",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r2-1",
+            "text": "Friends, Bella's plan is the first crack in the foundation of this farm.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-2",
+            "text": "If we allow 15 minutes of laziness today, tomorrow the sheep will demand 30 minutes, then an hour, and before you know it, we'll be working three-day weeks.",
+            "logicalFallacies": [
+              {
+                "id": "slippery-slope",
+                "explanation": "TBD"
+              }
+            ]
+          },
+          {
+            "id": "s-r2-3",
+            "text": "Once the work ethic is gone, the fences will rot, the wolves will move in, and this farm will be a memory.",
+            "logicalFallacies": [
+              {
+                "id": "slippery-slope",
+                "explanation": "TBD"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r3-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "Another Slippery Slope. It assumes Woolsey's opposition will lead directly to a specific disaster.",
+          "sentences": [
+            {
+              "id": "s-r3a-1",
+              "text": "Woolsey, if you keep working us this hard, isn't it true we'll eventually be too tired to even run from a wolf?",
+              "logicalFallacies": [
+                {
+                  "id": "slippery-slope",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "This is a distracting detail about sheep wool that doesn't challenge his logic.",
+          "sentences": [
+            {
+              "id": "s-r3b-1",
+              "text": "Does your wool get hotter than my hide in the afternoon sun?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-c",
+          "quality": "effective",
+          "impact": 15,
+          "reason": "This forces him to justify why he thinks a small rest period leads to a total collapse of the farm.",
+          "sentences": [
+            {
+              "id": "s-r3c-1",
+              "text": "What evidence do you have that a scheduled rest period leads to a three-day work week?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r3-opt-a",
+          "statement": {
+            "id": "stmt-r3ra",
+            "speakerId": "woolsey",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3ra-1",
+                "text": "Nonsense! Hard work is the only thing that keeps us safe. Rest is for the weak.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-b",
+          "statement": {
+            "id": "stmt-r3rb",
+            "speakerId": "woolsey",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3rb-1",
+                "text": "My wool is of no concern! My commitment to the harvest is what matters.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-c",
+          "statement": {
+            "id": "stmt-r3rc",
+            "speakerId": "woolsey",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3rc-1",
+                "text": "It's common sense! You give an inch, they take a mile. It starts with a nap and ends with a 'For Sale' sign on the gate.",
+                "logicalFallacies": [
+                  {
+                    "id": "slippery-slope",
+                    "explanation": "TBD"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "crossfire",
+      "opponentPrompt": {
+        "id": "stmt-r4-woolsey-q",
+        "speakerId": "woolsey",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r4q-1",
+            "text": "Bella, tell the jury: do you want a farm that produces grain, or do you want a farm that produces dreams and dust?",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "TBD"
+              }
+            ]
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r4-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "This uses the 'nothing-to-hide' fallacy, implying only lazy animals fear his logic.",
+          "sentences": [
+            {
+              "id": "s-r4a-1",
+              "text": "Only someone who is afraid of a little peace and quiet would ask such a question!",
+              "logicalFallacies": [
+                {
+                  "id": "nothing-to-hide",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "This is a literal answer to a rhetorical question and doesn't advance your case.",
+          "sentences": [
+            {
+              "id": "s-r4b-1",
+              "text": "I actually like dreaming, especially when the sun is warm.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "This rejects his false choice and explains that the rest is exactly what ensures the 'grain' gets produced.",
+          "sentences": [
+            {
+              "id": "s-r4c-1",
+              "text": "That is a false choice, Woolsey. We are resting *so that* we can produce more grain, not instead of it.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-5",
+      "roundNumber": 5,
+      "type": "rebuttal",
+      "speakerId": "woolsey",
+      "statement": {
+        "id": "stmt-r5-woolsey",
+        "speakerId": "woolsey",
+        "type": "rebuttal",
+        "sentences": [
+          {
+            "id": "s-r5-1",
+            "text": "Bella says this is 'efficient,' but we all know where this path leads.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-2",
+            "text": "If we stop the tractors for 15 minutes, we'll lose the momentum of the day.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-3",
+            "text": "Once we lose that momentum, the harvest will fall behind. Once it falls behind, we will starve in the winter.",
+            "logicalFallacies": [
+              {
+                "id": "slippery-slope",
+                "explanation": "TBD"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-6",
+      "roundNumber": 6,
+      "type": "rebuttal",
+      "options": [
+        {
+          "id": "r6-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -15,
+          "reason": "This uses an Ad Hominem attack on the Sheep species.",
+          "sentences": [
+            {
+              "id": "s-r6a-1",
+              "text": "Woolsey is just being a stubborn sheep who doesn't understand modern cow-science!",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "This doesn't address the logic, just makes a vague promise.",
+          "sentences": [
+            {
+              "id": "s-r6b-1",
+              "text": "I promise that we won't starve, we just need to be more positive.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-c",
+          "quality": "effective",
+          "impact": 22,
+          "reason": "This identifies the Slippery Slope and points out that one step does not lead to the extreme conclusion without proof.",
+          "unlockCondition": {
+            "npcRoundId": "round-5",
+            "sentenceId": "s-r5-3",
+            "fallacyId": "slippery-slope"
+          },
+          "sentences": [
+            {
+              "id": "s-r6c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r6c-1",
+              "text": "Woolsey is using a Slippery Slope. He's trying to scare you into thinking a 15-minute break inevitably leads to starvation.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r6c-2",
+              "text": "There is no proof that resting our bodies for a moment will lead to a total harvest failure.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-7",
+      "roundNumber": 7,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r7-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "Loaded Question. It assumes he wants everyone to suffer.",
+          "sentences": [
+            {
+              "id": "s-r7a-1",
+              "text": "Why do you enjoy seeing the animals suffer in the midday heat, Woolsey?",
+              "logicalFallacies": [
+                {
+                  "id": "loaded-question",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Doesn't target a logical flaw.",
+          "sentences": [
+            {
+              "id": "s-r7b-1",
+              "text": "Is it true that sheep don't sleep at all during the day?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-c",
+          "quality": "effective",
+          "impact": 20,
+          "reason": "This forces him to explain the actual mechanism of his 'slope' or admit it's just a guess.",
+          "sentences": [
+            {
+              "id": "s-r7c-1",
+              "text": "Can you explain exactly how 15 minutes of rest causes a fence to rot or a wolf to attack?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r7-opt-a",
+          "statement": {
+            "id": "stmt-r7ra",
+            "speakerId": "woolsey",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r7ra-1",
+                "text": "I don't! I enjoy seeing them survive, which requires food, which requires WORK!",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r7-opt-b",
+          "statement": {
+            "id": "stmt-r7rb",
+            "speakerId": "woolsey",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r7rb-1",
+                "text": "We are very vigilant! Unlike some cows who want to nap the day away.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r7-opt-c",
+          "statement": {
+            "id": "stmt-r7rc",
+            "speakerId": "woolsey",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r7rc-1",
+                "text": "It's the culture! Once you relax the rules once, you can never go back. It's all or nothing.",
+                "logicalFallacies": [
+                  {
+                    "id": "false-dilemma",
+                    "explanation": "TBD"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-8",
+      "roundNumber": 8,
+      "type": "crossfire",
+      "opponentPrompt": {
+        "id": "stmt-r8-woolsey-q",
+        "speakerId": "woolsey",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r8q-1",
+            "text": "Bella, isn't it true that once the pigs hear about your 'quiet time,' they will demand a total vacation?",
+            "logicalFallacies": [
+              {
+                "id": "slippery-slope",
+                "explanation": "TBD"
+              }
+            ]
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r4-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "Slippery Slope from your side.",
+          "sentences": [
+            {
+              "id": "s-r8a-1",
+              "text": "If you don't let the pigs rest, they'll surely revolt and take over the farmhouse!",
+              "logicalFallacies": [
+                {
+                  "id": "slippery-slope",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Answering about the pigs' preferences doesn't solve the logical dispute.",
+          "sentences": [
+            {
+              "id": "s-r8b-1",
+              "text": "The pigs actually like vacations, but I haven't talked to them yet.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "This points out that a reasonable rule for one group doesn't automatically mean an unreasonable rule for another.",
+          "sentences": [
+            {
+              "id": "s-r8c-1",
+              "text": "No, because we are talking about a specific, timed rest for efficiency. What the pigs might 'demand' later is a separate conversation we can have then.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-9",
+      "roundNumber": 9,
+      "type": "closing_constructive",
+      "speakerId": "woolsey",
+      "statement": {
+        "id": "stmt-r9-woolsey",
+        "speakerId": "woolsey",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r9-1",
+            "text": "In conclusion, we stand at a precipice.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r9-2",
+            "text": "We either choose to be a farm that works, or a farm that sleeps until we are all starving.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "TBD"
+              }
+            ]
+          },
+          {
+            "id": "s-r9-3",
+            "text": "If you vote for Bella's 'nap,' you are voting for the end of Green Meadows Farm.",
+            "logicalFallacies": [
+              {
+                "id": "slippery-slope",
+                "explanation": "TBD"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-10",
+      "roundNumber": 10,
+      "type": "closing_constructive",
+      "options": [
+        {
+          "id": "r10-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -15,
+          "reason": "Using an Appeal to Pity.",
+          "sentences": [
+            {
+              "id": "s-r10a-1",
+              "text": "Please vote for my plan because my hooves are so tired and I am very sad.",
+              "logicalFallacies": [
+                {
+                  "id": "appeal-to-pity",
+                  "explanation": "TBD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Too weak and doesn't summarize the win.",
+          "sentences": [
+            {
+              "id": "s-r10b-1",
+              "text": "Let's just try it for a day and see if we like it.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-c",
+          "quality": "effective",
+          "impact": 25,
+          "reason": "A perfect closing that names both fallacies and refocuses on the practical benefits of the proposal.",
+          "sentences": [
+            {
+              "id": "s-r10c-1",
+              "text": "Woolsey has tried to scare you with false choices and imaginary slopes.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10c-2",
+              "text": "A 15-minute rest isn't a 'slippery slope' to failure; it's a bridge to a more productive farm.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10c-3",
+              "text": "Vote for intelligence and endurance, not just blind momentum.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

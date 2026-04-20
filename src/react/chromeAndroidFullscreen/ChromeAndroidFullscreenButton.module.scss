@@ -1,0 +1,43 @@
+@use './ChromeAndroidFullscreenButtonSizing' as chrome-fs-btn;
+
+.wrap {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: chrome-fs-btn.$chrome-android-fullscreen-button-size;
+  height: chrome-fs-btn.$chrome-android-fullscreen-button-size;
+  padding: 0;
+  color: var(--ui-color-text-primary);
+  background: var(--ui-color-overlay-panel);
+  border: 1px solid var(--ui-color-glass-12);
+  border-radius: 0.375rem;
+  backdrop-filter: blur(6px);
+}
+
+.button:hover {
+  background: var(--ui-color-overlay-medium);
+}
+
+.button:active {
+  transform: scale(0.96);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--ui-color-text-secondary);
+  outline-offset: 2px;
+}
+
+.icon {
+  width: chrome-fs-btn.$chrome-android-fullscreen-button-size * 0.62;
+  height: chrome-fs-btn.$chrome-android-fullscreen-button-size * 0.62;
+  flex-shrink: 0;
+}

@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import cn from 'classnames';
-import { useScrollFade } from '../useScrollFade';
+import { useScrollFade } from '../../hooks/useScrollFade';
 import shared from '../trialShared.module.scss';
 
 interface ScrollFadeContainerProps {
   /** External ref to attach to the scrollable div. Pass one when the parent
    *  also needs direct access to the element (e.g. for programmatic scrolling). */
-  scrollRef?: React.RefObject<HTMLDivElement>;
+  scrollRef?: React.RefObject<HTMLDivElement | null>;
   /** CSS module class applied to the inner scrollable div. */
   className?: string;
   /** When true, applies the modal-variant fade gradient colours. */

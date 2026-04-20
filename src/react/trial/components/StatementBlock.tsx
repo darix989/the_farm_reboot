@@ -1,5 +1,6 @@
 import React from 'react';
 import shared from '../trialShared.module.scss';
+import { uiColor } from '../../uiColor';
 
 interface StatementBlockProps {
   /** Dim label shown above the text (e.g. "Opponent speaks:"). */
@@ -16,7 +17,13 @@ interface StatementBlockProps {
  * Used in the interactive panel for NPC and opponent statements.
  */
 const StatementBlock: React.FC<StatementBlockProps> = ({ speakerLabel, text, analyzeButton }) => (
-  <div className={shared.trialSectionBox} style={{ fontSize: '1.875rem', lineHeight: 1.375 }}>
+  <div
+    className={shared.trialSectionBox}
+    style={{
+      fontSize: 'calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1))',
+      lineHeight: 1.375,
+    }}
+  >
     <div
       style={{
         display: 'flex',
@@ -26,8 +33,8 @@ const StatementBlock: React.FC<StatementBlockProps> = ({ speakerLabel, text, ana
       }}
     >
       <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{ color: 'rgba(255,255,255,0.45)' }}>{speakerLabel}</p>
-        <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>{text}</p>
+        <p style={{ color: uiColor.textCaption }}>{speakerLabel}</p>
+        <p style={{ marginTop: '0.5rem', color: uiColor.textBody }}>{text}</p>
       </div>
       {analyzeButton}
     </div>

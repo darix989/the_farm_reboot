@@ -1,0 +1,16 @@
+/* =========================================================================
+   React UI font scale — applied on `.react-root` (see `index.scss`).
+   `rem` still tracks App.tsx root; TSX uses `uiFont` from `uiFont.ts`.
+   ========================================================================= */
+
+@mixin font-scale {
+  --ui-font-micro: 0.75rem;
+  --ui-font-caption: 1.055rem;
+  --ui-font-label: 1.172rem;
+  --ui-font-subtitle: 1.289rem;
+  --ui-font-body: 1.406rem;
+  --ui-font-display: 2.109rem;
+  --ui-font-footer: clamp(0.879rem, 1.266vw, 1.289rem);
+  --ui-font-footer-wide: clamp(0.9375rem, 1.406vw, 1.523rem);
+  --ui-font-control: clamp(0.82rem, 1.172vw, 1.289rem);
+}

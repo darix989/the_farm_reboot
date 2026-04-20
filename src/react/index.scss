@@ -1,3 +1,6 @@
+@use './uiTypography' as ui-typography;
+@use './uiColors' as ui-colors;
+
 /* =========================================================================
    Minimal browser reset
    ========================================================================= */
@@ -8,7 +11,13 @@
   box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin: 0;
   padding: 0;
 }
@@ -26,6 +35,10 @@ button {
    ========================================================================= */
 
 /* `font-size` on `html` is set from `App` from the 16:9 stage width so `rem` tracks resolution. */
+html {
+  @include ui-colors.color-palette;
+}
+
 html,
 body,
 #root {
@@ -36,8 +49,8 @@ body,
 body {
   margin: 0;
   padding: 0;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #000000;
+  color: var(--ui-color-text-primary);
+  background-color: var(--ui-color-bg);
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -92,6 +105,8 @@ body {
    ========================================================================= */
 
 .react-root {
+  @include ui-typography.font-scale;
+
   position: relative;
   z-index: 1;
   display: flex;

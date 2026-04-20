@@ -1,32 +1,145 @@
-import type { DebateScenarioJson, PlayerOption, Sentence } from '../../../types/debateEntities';
+import {
+  PLAYER_OPTION_IMPACT_ABS_MAX,
+  type DebateScenarioJson,
+  type PlayerOption,
+  type RoundEntry,
+  type Sentence,
+  type Side,
+} from '../../../types/debateEntities';
+import { uiColor } from '../../uiColor';
+import getLabel from '../../../data/labels';
 
 export function getSpeakerName(debate: DebateScenarioJson, speakerId: string): string {
   return debate.characters?.[speakerId] ?? speakerId.charAt(0).toUpperCase() + speakerId.slice(1);
 }
 
 export function qualityColor(quality: PlayerOption['quality']): string {
-  if (quality === 'effective') return '#22d3ee';
-  if (quality === 'logical_fallacy') return '#f87171';
-  return 'rgba(255,255,255,0.50)';
+  if (quality === 'effective') return uiColor.info;
+  if (quality === 'logical_fallacy') return uiColor.danger;
+  return uiColor.textHint;
 }
 
 export function qualityLabel(quality: PlayerOption['quality']): string {
-  if (quality === 'effective') return 'Effective';
-  if (quality === 'logical_fallacy') return 'Logical Fallacy';
-  return 'Ineffective';
+  if (quality === 'effective') return getLabel('qualityEffective');
+  if (quality === 'logical_fallacy') return getLabel('qualityLogicalFallacy');
+  return getLabel('qualityIneffective');
 }
 
 export function statementText(sentences: Sentence[]): string {
   return sentences.map((s) => s.text).join(' ');
 }
 
+/** Preview line for compact UI (e.g. choice buttons); full text stays in aria-label. */
+export function truncateStatementPreview(text: string, maxChars = 80): string {
+  if (text.length <= maxChars) return text;
+  return `${text.slice(0, maxChars)}...`;
+}
+
 /** Returns a CSS color string for a numeric score or impact value. */
 export function scoreColor(score: number): string {
-  if (score > 0) return '#67e8f9';
-  if (score < 0) return '#f87171';
-  return 'rgba(255,255,255,0.90)';
+  if (score > 0) return uiColor.infoBright;
+  if (score < 0) return uiColor.danger;
+  return uiColor.textEmphasis;
+}
+
+export const MODERATOR_OPINION_LABEL = getLabel('moderatorsOpinion');
+
+export function moderatorOpinionEmoji(score: number): string {
+  if (score > 0) return '😊';
+  if (score < 0) return '😠';
+  return '😐';
+}
+
+/** Plain text for wizard strings and similar (emoji is first for quick scanning). */
+export function moderatorOpinionPlainText(score: number): string {
+  return `${moderatorOpinionEmoji(score)} ${MODERATOR_OPINION_LABEL}`;
+}
+
+/** Symmetric bounds for one player round's impact (moderator gauge). */
+export function perRoundImpactScoreBounds(): { min: number; max: number } {
+  return { min: -PLAYER_OPTION_IMPACT_ABS_MAX, max: PLAYER_OPTION_IMPACT_ABS_MAX };
+}
+
+/** Min/max possible cumulative score for a debate (one ±max per player round). */
+export function debateTotalScoreBounds(debate: DebateScenarioJson): { min: number; max: number } {
+  const playerRounds = debate.rounds.filter((r) => r.kind === 'player').length;
+  const cap = Math.max(1, playerRounds) * PLAYER_OPTION_IMPACT_ABS_MAX;
+  return { min: -cap, max: cap };
 }
 
 export function statementTypeLabel(type: string): string {
   return type.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+export function opponentSide(playerSide: Side): Side {
+  return playerSide === 'proposition' ? 'opposition' : 'proposition';
+}
+
+/** First NPC round's speaker is treated as the opponent in 1v1 debates. */
+export function firstNpcSpeakerId(debate: DebateScenarioJson): string | null {
+  const npc = debate.rounds.find((r) => r.kind === 'npc');
+  return npc?.kind === 'npc' ? npc.speakerId : null;
+}
+
+/** Which debate side a statement's speaker is on. */
+export function sideForStatementSpeaker(debate: DebateScenarioJson, speakerId: string): Side {
+  const oppId = firstNpcSpeakerId(debate);
+  if (oppId && speakerId === oppId) return opponentSide(debate.playerSide);
+  return debate.playerSide;
+}
+
+/**
+ * Side badge for the debate log round header.
+ * - NPC round: the speaker's side.
+ * - Player round with `opponentPrompt` (NPC asks first in crossfire): the asker's side so the
+ *   stripe matches who speaks first; the player's reply is labeled inline ("You").
+ * - Other player rounds: the player's side (they lead the exchange).
+ */
+export function sideForRoundHeader(debate: DebateScenarioJson, round: RoundEntry): Side {
+  if (round.kind === 'npc') return sideForStatementSpeaker(debate, round.speakerId);
+  if (round.kind === 'player' && round.opponentPrompt) {
+    return sideForStatementSpeaker(debate, round.opponentPrompt.speakerId);
+  }
+  return debate.playerSide;
+}
+
+export function sideDisplayLabel(side: Side): string {
+  return side === 'proposition' ? getLabel('sideProposition') : getLabel('sideOpposition');
+}
+
+function deriveShuffleSeed(playthroughKey: string, roundId: string): number {
+  const str = `${playthroughKey}\x1e${roundId}`;
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i)!;
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function mulberry32(seed: number) {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Fisher–Yates shuffle; order depends only on `playthroughKey` and `roundId` (stable across re-renders and undo). */
+export function shuffleCopyDeterministic<T>(
+  items: readonly T[],
+  playthroughKey: string,
+  roundId: string,
+): T[] {
+  const arr = [...items];
+  const rng = mulberry32(deriveShuffleSeed(playthroughKey, roundId));
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const tmp = arr[i]!;
+    arr[i] = arr[j]!;
+    arr[j] = tmp;
+  }
+  return arr;
 }

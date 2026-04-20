@@ -1,0 +1,8 @@
+/* Shared with `TrialLayout` panels and `.trialModalFontScope` so typography stays in sync. */
+@mixin trial-panel-font-scale {
+  --ui-trial-panel-font-scale: 1.3;
+
+  @media (max-width: 1080px) {
+    --ui-trial-panel-font-scale: 1.8;
+  }
+}
