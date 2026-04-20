@@ -70,7 +70,7 @@
 }
 
 .trialModalTitle {
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 600;
   color: var(--ui-color-text-title);
   margin: 0;
@@ -78,7 +78,7 @@
 }
 
 .trialModalSubtitle {
-  font-size: var(--ui-font-subtitle);
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
   color: var(--ui-color-text-caption);
   text-transform: capitalize;
   margin: 0.2rem 0 0;
@@ -95,7 +95,7 @@
   border: 1px solid var(--ui-color-border-default);
   background: var(--ui-color-glass-06);
   color: var(--ui-color-text-muted-2);
-  font-size: var(--ui-font-caption);
+  font-size: calc(var(--ui-font-caption) * var(--ui-trial-panel-font-scale, 1));
   cursor: pointer;
   transition:
     background 0.15s ease-in-out,
@@ -253,7 +253,7 @@
 }
 
 .trialAnalysisHint {
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   color: var(--ui-color-text-subtle);
   margin: 0;
 
@@ -311,14 +311,14 @@
   color: var(--ui-color-text-subtle);
 
   /* Match .trialFooterBtn (trialShared) typography */
-  font-size: var(--ui-font-footer);
+  font-size: calc(var(--ui-font-footer) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 500;
   line-height: 1.375;
   cursor: pointer;
 
   @media (min-width: 640px) {
     padding: 1rem 0.75rem;
-    font-size: var(--ui-font-footer-wide);
+    font-size: calc(var(--ui-font-footer-wide) * var(--ui-trial-panel-font-scale, 1));
   }
 
   text-align: center;
@@ -387,7 +387,7 @@
 }
 
 .trialSentenceText {
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.5;
   color: inherit;
   margin: 0;
@@ -434,7 +434,7 @@
   }
 
   .trialFallacyItemLabel {
-    font-size: var(--ui-font-label);
+    font-size: calc(var(--ui-font-label) * var(--ui-trial-panel-font-scale, 1));
   }
 }
 
@@ -492,7 +492,7 @@
 }
 
 .trialFallacyItemLabel {
-  font-size: var(--ui-font-caption);
+  font-size: calc(var(--ui-font-caption) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.3;
   color: var(--ui-color-text-secondary);
   word-break: break-word;
@@ -551,19 +551,19 @@
 }
 
 .trialGuessResultIcon {
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1;
   flex-shrink: 0;
 }
 
 .trialGuessResultHeadline {
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 600;
   margin: 0 0 0.25rem;
 }
 
 .trialGuessResultBody {
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.5;
   color: var(--ui-color-text-muted);
   margin: 0;
@@ -588,7 +588,7 @@
   border: 1px solid var(--ui-color-info-border);
   background: var(--ui-color-info-bg-soft);
   padding: 0.2rem 0.65rem 0.2rem 0.45rem;
-  font-size: var(--ui-font-label);
+  font-size: calc(var(--ui-font-label) * var(--ui-trial-panel-font-scale, 1));
   color: var(--ui-color-info-text-soft);
   cursor: default;
 }
@@ -607,7 +607,7 @@
   border: 1px solid var(--ui-color-danger-border-soft);
   background: var(--ui-color-danger-bg);
   padding: 0.2rem 0.65rem 0.2rem 0.45rem;
-  font-size: var(--ui-font-label);
+  font-size: calc(var(--ui-font-label) * var(--ui-trial-panel-font-scale, 1));
   color: var(--ui-color-danger-text-soft);
   cursor: help;
 }
@@ -651,13 +651,13 @@
 }
 
 .trialConfirmTitle {
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 600;
   color: var(--ui-color-text-strong);
 }
 
 .trialConfirmBody {
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.55;
   color: var(--ui-color-text-muted-2);
 }

@@ -85,7 +85,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
       }}
     >
       <div
-        className={styles.recapBox}
+        className={cn(shared.trialModalFontScope, styles.recapBox)}
         role="dialog"
         aria-modal="true"
         aria-labelledby="round-recap-title"

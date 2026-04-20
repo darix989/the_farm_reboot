@@ -2,6 +2,8 @@
    Trial Layout — grid & panels
    ========================================================================= */
 
+@use './trialPanelFontScale' as trial-font;
+
 .trialLayoutGrid {
   display: grid;
   height: 100%;
@@ -77,10 +79,5 @@
 .trialFeedbackPanel,
 .trialWizardPanel,
 .trialInteractivePanel {
-  --ui-trial-panel-font-scale: 1.3;
-
-  /* Slightly larger type on phones (matches `min-width: 768px` used elsewhere on trial chrome). */
-  @media (max-width: 767px) {
-    --ui-trial-panel-font-scale: 1.5;
-  }
+  @include trial-font.trial-panel-font-scale;
 }

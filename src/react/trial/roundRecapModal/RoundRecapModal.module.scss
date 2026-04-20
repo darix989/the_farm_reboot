@@ -41,7 +41,7 @@
 }
 
 .recapTitle {
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 600;
   color: var(--ui-color-text-title);
   margin: 0;
@@ -49,7 +49,7 @@
 }
 
 .recapSubtitle {
-  font-size: var(--ui-font-subtitle);
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
   color: var(--ui-color-text-caption);
   margin: 0.35rem 0 0;
   text-transform: capitalize;
@@ -65,7 +65,7 @@
   border-radius: 0.5rem;
   background: transparent;
   color: var(--ui-color-text-caption);
-  font-size: 1.25rem;
+  font-size: calc(1.25rem * var(--ui-trial-panel-font-scale, 1));
   line-height: 1;
   cursor: pointer;
 }
@@ -97,13 +97,13 @@
 }
 
 .recapSectionLabel {
-  font-size: var(--ui-font-subtitle);
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
   color: var(--ui-color-text-hint);
   margin: 0 0 0.5rem;
 }
 
 .recapBody {
-  font-size: var(--ui-font-body);
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.45;
   color: var(--ui-color-text-body);
   margin: 0;

@@ -30,7 +30,6 @@ import {
 } from '../utils/fallacyGuessUtils';
 import styles from './RoundAnalysisModal.module.scss';
 import shared from '../trialShared.module.scss';
-import { uiFont } from '../../uiFont';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
 
@@ -728,7 +727,7 @@ function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
       <div className={shared.trialSectionBox} style={{ marginBottom: '0' }}>
         <p
           style={{
-            fontSize: uiFont.subtitle,
+            fontSize: 'calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1))',
             color: uiColor.textHint,
             marginBottom: '0.5rem',
           }}
@@ -737,7 +736,7 @@ function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
         </p>
         <p
           style={{
-            fontSize: uiFont.body,
+            fontSize: 'calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1))',
             fontWeight: 400,
             color: uiColor.textBody,
           }}
@@ -753,7 +752,7 @@ function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
           <p
             style={{
               marginTop: '0.75rem',
-              fontSize: uiFont.body,
+              fontSize: 'calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1))',
               lineHeight: 1.5,
               color: uiColor.textMuted,
             }}
@@ -935,7 +934,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
       }}
     >
       <div
-        className={styles.trialModalBox}
+        className={cn(shared.trialModalFontScope, styles.trialModalBox)}
         role="dialog"
         aria-modal="true"
         onClick={(e) => e.stopPropagation()}

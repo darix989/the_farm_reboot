@@ -39,7 +39,7 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
       }}
     >
       <div
-        className={recapStyles.recapBox}
+        className={cn(shared.trialModalFontScope, recapStyles.recapBox)}
         role="dialog"
         aria-modal="true"
         aria-labelledby="intro-summary-title"

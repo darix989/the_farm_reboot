@@ -2,6 +2,13 @@
    Shared styles used by both TrialUI and RoundAnalysisModal
    ========================================================================= */
 
+@use './trialPanelFontScale' as trial-font;
+
+/* Root for trial modals (portaled / outside `TrialLayout`); sets `--ui-trial-panel-font-scale`. */
+.trialModalFontScope {
+  @include trial-font.trial-panel-font-scale;
+}
+
 /* --- Scroll-fade wrapper ------------------------------------------------- */
 
 .trialScrollFadeWrap {
