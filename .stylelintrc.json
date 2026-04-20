@@ -12,7 +12,9 @@
     "media-feature-range-notation": null,
     "number-max-precision": null,
     "declaration-block-no-redundant-longhand-properties": null,
-    "declaration-property-value-keyword-no-deprecated": null
+    "declaration-property-value-keyword-no-deprecated": null,
+    "scss/operator-no-newline-after": null,
+    "scss/operator-no-newline-before": null
   },
   "ignoreFiles": [
     "dist/**",
