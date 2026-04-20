@@ -9,6 +9,9 @@ export default defineConfig({
         react(),
     ],
     server: {
-        port: 8080
+        // 0.0.0.0 is more reliable than host: true on some Windows setups (LAN IPv4).
+        host: '0.0.0.0',
+        port: 8080,
+        strictPort: true,
     }
 })
