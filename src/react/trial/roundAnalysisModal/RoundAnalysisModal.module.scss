@@ -124,21 +124,6 @@
   }
 }
 
-.trialModalHeaderActions {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
-
-.trialModalAttemptRecap {
-  margin: 0;
-  align-self: center;
-  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
-  color: var(--ui-color-text-caption);
-  white-space: nowrap;
-}
-
 /* =========================================================================
    Modal content scroll area
    ========================================================================= */
@@ -185,7 +170,7 @@
   grid-template-rows: minmax(0, 1fr) auto;
   grid-template-areas:
     'leftMain rightMain'
-    'leftFoot rightFoot';
+    '. rightFoot';
   gap: 1rem;
   align-items: stretch;
   flex: 1;
@@ -194,20 +179,17 @@
 
 .trialAnalysisSplitSingle {
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) auto;
-  grid-template-areas:
-    'leftMain'
-    'leftFoot';
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: 'leftMain';
 }
 
 @media (max-width: 640px) {
   .trialAnalysisSplit:not(.trialAnalysisSplitSingle) {
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) auto auto;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) auto;
     grid-template-areas:
       'leftMain'
       'rightMain'
-      'leftFoot'
       'rightFoot';
   }
 }
@@ -220,17 +202,6 @@
   min-width: 0;
   min-height: 0;
   height: 100%;
-}
-
-.trialLeftFooter {
-  grid-area: leftFoot;
-  min-width: 0;
-  align-self: stretch;
-
-  .trialGuessResult {
-    width: 100%;
-    box-sizing: border-box;
-  }
 }
 
 .trialRightMain {
@@ -294,6 +265,36 @@
     color: var(--ui-color-text-ghost);
     font-style: italic;
   }
+}
+
+.trialSentenceFeedback {
+  position: relative;
+  margin-bottom: 0.75rem;
+
+  .trialGuessResult {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 9.5rem;
+  }
+}
+
+.trialSentenceAttemptRecap {
+  margin: 0;
+  position: absolute;
+  top: 0.55rem;
+  right: 0.65rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.45rem;
+  border: 1px solid var(--ui-color-border-muted);
+  background: var(--ui-color-overlay-subtle);
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  color: var(--ui-color-text-caption);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.trialSentenceFeedbackStart {
+  min-height: 2.15rem;
 }
 
 .trialGuessActionsRow {
@@ -579,6 +580,19 @@
 
     .trialGuessResultHeadline {
       color: var(--ui-color-warning);
+    }
+  }
+
+  &.pending {
+    border-color: var(--ui-color-border-muted);
+    background: var(--ui-color-overlay-subtle);
+
+    .trialGuessResultIcon {
+      color: var(--ui-color-text-caption);
+    }
+
+    .trialGuessResultHeadline {
+      color: var(--ui-color-text-title);
     }
   }
 }

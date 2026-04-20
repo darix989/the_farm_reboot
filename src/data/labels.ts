@@ -112,6 +112,8 @@ const LABELS = {
   chooseFallaciesForSentence:
     'Choose fallacies for this sentence (up to two, click again to remove):',
   attemptRecapCompact: 'Attempts: {attemptsUsed}/{maxAttempts}',
+  guessAwaitingHeadline: 'Ready to analyze',
+  guessAwaitingBody: 'Analyze the statement, split by sentences. Spot any fallacies, if any.',
   submitGuess: 'Spot Fallacies',
   noFallaciesInStatement: 'No Fallacies',
   yourLastGuessReadOnly: 'Your last guess (read-only):',

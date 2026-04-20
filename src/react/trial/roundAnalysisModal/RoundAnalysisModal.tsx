@@ -353,9 +353,12 @@ function NpcRoundAnalysis({
 }) {
   const [selectedSentenceId, setSelectedSentenceId] = useState<string | null>(null);
   const [bySentence, setBySentence] = useState<Record<string, string[]>>({});
+  const sentenceScrollRef = useRef<HTMLDivElement>(null);
+  const prevAttemptsLenRef = useRef(0);
 
   const lastAttempt = guessSession?.attempts[guessSession.attempts.length - 1] ?? null;
   const attemptsUsed = guessSession?.attempts.length ?? 0;
+  const maxAttempts = guessSession?.maxAttempts ?? DEFAULT_MAX_ANALYSIS_ATTEMPTS;
   const hasAnyAttempt = attemptsUsed > 0;
   const revealFull = !!(guessSession && shouldRevealFullSolution(guessSession));
   const terminalSuccess =
@@ -471,6 +474,17 @@ function NpcRoundAnalysis({
 
   const showGuessAside = canGuess || showReadOnlyPicker;
 
+  useEffect(() => {
+    const currentAttempts = guessSession?.attempts.length ?? 0;
+    const prevAttempts = prevAttemptsLenRef.current;
+    prevAttemptsLenRef.current = currentAttempts;
+    if (!lastAttempt || currentAttempts <= prevAttempts) return;
+
+    requestAnimationFrame(() => {
+      sentenceScrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
+    });
+  }, [lastAttempt, guessSession?.attempts.length]);
+
   return (
     <div className={cn(styles.trialAnalysisBody, styles.trialAnalysisBodyFill)}>
       <div
@@ -480,8 +494,55 @@ function NpcRoundAnalysis({
       >
         <div className={styles.trialLeftMain}>
           <div className={styles.trialScrollSlot}>
-            <ScrollFadeContainer isModal className={styles.trialAnalysisColumnScroll}>
+            <ScrollFadeContainer
+              isModal
+              className={styles.trialAnalysisColumnScroll}
+              scrollRef={sentenceScrollRef}
+            >
               <div className={styles.trialSentenceList}>
+                {lastAttempt ? (
+                  <div className={styles.trialSentenceFeedback}>
+                    <GuessResultBanner
+                      guess={lastAttempt}
+                      statement={statement}
+                      spoilerSafe={spoilerSafeBanner}
+                      shouldRevealFullSolution={revealFull}
+                      fallacyById={fallacyById}
+                    />
+                    <p className={styles.trialSentenceAttemptRecap}>
+                      {getLabel('attemptRecapCompact', {
+                        replacements: {
+                          attemptsUsed,
+                          maxAttempts,
+                        },
+                      })}
+                    </p>
+                  </div>
+                ) : (
+                  <div
+                    className={cn(styles.trialSentenceFeedback, styles.trialSentenceFeedbackStart)}
+                  >
+                    <div className={cn(styles.trialGuessResult, styles.pending)}>
+                      <span className={styles.trialGuessResultIcon}>•</span>
+                      <div>
+                        <p className={styles.trialGuessResultHeadline}>
+                          {getLabel('guessAwaitingHeadline')}
+                        </p>
+                        <p className={styles.trialGuessResultBody}>
+                          {getLabel('guessAwaitingBody')}
+                        </p>
+                      </div>
+                    </div>
+                    <p className={styles.trialSentenceAttemptRecap}>
+                      {getLabel('attemptRecapCompact', {
+                        replacements: {
+                          attemptsUsed,
+                          maxAttempts,
+                        },
+                      })}
+                    </p>
+                  </div>
+                )}
                 {statement.sentences.map((s) => {
                   const isSelected = selectedSentenceId === s.id;
                   const playerPickIds = bySentence[s.id] ?? [];
@@ -644,18 +705,6 @@ function NpcRoundAnalysis({
             )}
           </div>
         )}
-
-        <div className={styles.trialLeftFooter}>
-          {lastAttempt && (
-            <GuessResultBanner
-              guess={lastAttempt}
-              statement={statement}
-              spoilerSafe={spoilerSafeBanner}
-              shouldRevealFullSolution={revealFull}
-              fallacyById={fallacyById}
-            />
-          )}
-        </div>
 
         {showGuessAside && (
           <div className={styles.trialRightFooter}>
@@ -923,24 +972,14 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               <p className={styles.trialModalSubtitle}>{statementTypeLabel(statType)}</p>
             </div>
           </div>
-          <div className={styles.trialModalHeaderActions}>
-            <button
-              type="button"
-              className={styles.trialModalCloseBtn}
-              onClick={onClose}
-              aria-label={getLabel('close')}
-            >
-              ✕
-            </button>
-            <p className={styles.trialModalAttemptRecap}>
-              {getLabel('attemptRecapCompact', {
-                replacements: {
-                  attemptsUsed: guessSession?.attempts.length ?? 0,
-                  maxAttempts: guessSession?.maxAttempts ?? DEFAULT_MAX_ANALYSIS_ATTEMPTS,
-                },
-              })}
-            </p>
-          </div>
+          <button
+            type="button"
+            className={styles.trialModalCloseBtn}
+            onClick={onClose}
+            aria-label={getLabel('close')}
+          >
+            ✕
+          </button>
         </div>
 
         <ScrollFadeContainer
