@@ -940,9 +940,9 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className={styles.trialModalHeader}>
-          <div className={styles.trialModalHeaderLeft}>
+          <div className={styles.trialModalHeaderMain}>
             <img src={magnifyingIcon} alt="" className={styles.trialModalHeaderIcon} />
-            <div>
+            <div className={styles.trialModalHeaderTitles}>
               <p className={styles.trialModalTitle}>
                 {getLabel('modalRoundTitle', {
                   replacements: {
