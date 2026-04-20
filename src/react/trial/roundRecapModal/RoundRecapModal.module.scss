@@ -1,3 +1,6 @@
+@use 'sass:math';
+@use '../debateLogIconSizing' as debate-log-icon;
+
 .recapOverlay {
   position: fixed;
   inset: 0;
@@ -56,16 +59,22 @@
 }
 
 .recapCloseBtn {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: debate-log-icon.$trial-debate-log-icon-size;
+  height: debate-log-icon.$trial-debate-log-icon-size;
   border: none;
   border-radius: 0.5rem;
   background: transparent;
   color: var(--ui-color-text-caption);
-  font-size: calc(1.25rem * var(--ui-trial-panel-font-scale, 1));
+
+  /* Match debate-log expand/collapse glyph scale */
+  font-size: calc(
+    #{math.div(debate-log-icon.$trial-debate-log-icon-size * 0.65, 1.85)} *
+      var(--ui-trial-panel-font-scale, 1)
+  );
   line-height: 1;
   cursor: pointer;
 }

@@ -2,6 +2,9 @@
    RoundAnalysisModal — overlay & box
    ========================================================================= */
 
+@use 'sass:math';
+@use '../debateLogIconSizing' as debate-log-icon;
+
 .trialModalOverlay {
   position: fixed;
   inset: 0;
@@ -85,17 +88,23 @@
 }
 
 .trialModalCloseBtn {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: debate-log-icon.$trial-debate-log-icon-size;
+  height: debate-log-icon.$trial-debate-log-icon-size;
   border-radius: 0.375rem;
   border: 1px solid var(--ui-color-border-default);
   background: var(--ui-color-glass-06);
   color: var(--ui-color-text-muted-2);
-  font-size: calc(var(--ui-font-caption) * var(--ui-trial-panel-font-scale, 1));
+
+  /* Match debate-log expand/collapse glyph scale */
+  font-size: calc(
+    #{math.div(debate-log-icon.$trial-debate-log-icon-size * 0.65, 1.85)} *
+      var(--ui-trial-panel-font-scale, 1)
+  );
   cursor: pointer;
   transition:
     background 0.15s ease-in-out,
