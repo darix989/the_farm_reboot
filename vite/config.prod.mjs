@@ -17,13 +17,20 @@ const phasermsg = () => {
     }
 }
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
     base: './',
     plugins: [
         react(),
         phasermsg(),
     ],
-    logLevel: 'warning',
+    // `warning` hides the preview URL (printed at info) so the server looks "stuck".
+    logLevel: command === 'build' ? 'warning' : 'info',
+    preview: {
+        host: '0.0.0.0',
+        port: 4173,
+        // If 4173 is taken (old preview tab), try the next free port instead of exiting.
+        strictPort: false,
+    },
     build: {
         rollupOptions: {
             output: {
@@ -43,4 +50,4 @@ export default defineConfig({
             }
         }
     }
-});
+}));
