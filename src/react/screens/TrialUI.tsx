@@ -399,6 +399,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         <RoundAnalysisModal
           target={analysisTarget}
           allFallacies={allFallacies}
+          availableLogicalFallacies={debate.availableLogicalFallacies}
           fallacyById={fallacyById}
           speakerName={modalSpeakerName}
           canGuess={canGuess}

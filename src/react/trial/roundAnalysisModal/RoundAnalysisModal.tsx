@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import cn from 'classnames';
 import type {
   LogicalFallacy,
+  LogicalFallacyId,
   LogicalFallacyScenario,
   NpcRoundEntry,
   PlayerOption,
@@ -49,6 +50,8 @@ export type AnalysisTarget =
 interface RoundAnalysisModalProps {
   target: AnalysisTarget;
   allFallacies: LogicalFallacy[];
+  /** Fallacy ids the player may choose in this scenario (catalog order preserved). */
+  availableLogicalFallacies: readonly LogicalFallacyId[];
   fallacyById: Map<string, LogicalFallacy>;
   speakerName: string;
   /** True when the player may still submit for this analysis target. */
@@ -336,7 +339,7 @@ function pinnedPickFlags(pickIds: string[], pinnedRow: string[]): boolean[] {
 
 function NpcRoundAnalysis({
   statement,
-  allFallacies,
+  pickerFallacies,
   fallacyById,
   canGuess,
   guessSession,
@@ -344,7 +347,7 @@ function NpcRoundAnalysis({
   onNoFallaciesRequest,
 }: {
   statement: Statement;
-  allFallacies: LogicalFallacy[];
+  pickerFallacies: LogicalFallacy[];
   fallacyById: Map<string, LogicalFallacy>;
   canGuess: boolean;
   guessSession: FallacyGuessSession | null;
@@ -573,7 +576,7 @@ function NpcRoundAnalysis({
                       {canGuess && playerPickIds.length > 0 && (
                         <div className={styles.trialPlayerPickRow}>
                           {playerPickIds.map((fid, pillIdx) => {
-                            const f = allFallacies.find((x) => x.id === fid);
+                            const f = fallacyById.get(fid);
                             if (!f) return null;
                             const isPinned = pinnedFlags[pillIdx] ?? false;
                             return (
@@ -599,7 +602,7 @@ function NpcRoundAnalysis({
                       {!canGuess && playerPickIds.length > 0 && !showTruthRow && (
                         <div className={styles.trialPlayerPickRow}>
                           {playerPickIds.map((fid, pillIdx) => {
-                            const f = allFallacies.find((x) => x.id === fid);
+                            const f = fallacyById.get(fid);
                             if (!f) return null;
                             const isPinned = readonlyPinnedFlags[pillIdx] ?? false;
                             return (
@@ -669,7 +672,7 @@ function NpcRoundAnalysis({
                   <div className={styles.trialScrollSlot}>
                     <ScrollFadeContainer isModal className={styles.trialAnalysisColumnScroll}>
                       <FallacyPicker
-                        fallacies={allFallacies}
+                        fallacies={pickerFallacies}
                         selectedIds={selectedIdsForPicker}
                         onSelect={handleFallacySelect}
                         disabled={!selectedSentenceId}
@@ -692,7 +695,7 @@ function NpcRoundAnalysis({
                   <div className={styles.trialScrollSlot}>
                     <ScrollFadeContainer isModal className={styles.trialAnalysisColumnScroll}>
                       <FallacyPicker
-                        fallacies={allFallacies}
+                        fallacies={pickerFallacies}
                         selectedIds={wasNoFallaciesGuess ? [] : readOnlySelectedIds}
                         onSelect={() => {}}
                         disabled
@@ -849,6 +852,7 @@ function NoFallaciesConfirmDialog({
 const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   target,
   allFallacies,
+  availableLogicalFallacies,
   fallacyById,
   speakerName,
   canGuess,
@@ -867,6 +871,11 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
       : target.kind === 'npc'
         ? target.round.id
         : target.statement.id;
+
+  const pickerFallacies = useMemo(() => {
+    const allowed = new Set(availableLogicalFallacies);
+    return allFallacies.filter((f) => allowed.has(f.id as LogicalFallacyId));
+  }, [allFallacies, availableLogicalFallacies]);
 
   const playerSyntheticStatement = useMemo((): Statement | null => {
     if (target.kind !== 'player') return null;
@@ -992,7 +1001,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               <>
                 <NpcRoundAnalysis
                   statement={playerSyntheticStatement}
-                  allFallacies={allFallacies}
+                  pickerFallacies={pickerFallacies}
                   fallacyById={fallacyById}
                   canGuess={canGuess}
                   guessSession={guessSession}
@@ -1007,7 +1016,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
           ) : (
             <NpcRoundAnalysis
               statement={target.kind === 'npc' ? target.round.statement : target.statement}
-              allFallacies={allFallacies}
+              pickerFallacies={pickerFallacies}
               fallacyById={fallacyById}
               canGuess={canGuess}
               guessSession={guessSession}

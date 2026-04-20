@@ -60,6 +60,21 @@
       "explanation": "TBD"
     }
   ],
+  "availableLogicalFallacies": [
+    "false-dilemma",
+    "nothing-to-hide",
+    "slippery-slope",
+    "ad-hominem",
+    "loaded-question",
+    "straw-man",
+    "appeal-to-pity",
+    "special-pleading",
+    "appeal-to-popularity",
+    "weak-analogy",
+    "hasty-generalization",
+    "glittering-generalities",
+    "appeal-to-fear"
+  ],
   "rounds": [
     {
       "kind": "npc",

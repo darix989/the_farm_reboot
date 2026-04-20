@@ -165,6 +165,7 @@ export interface DebateScenarioJson {
   /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
   characters?: Record<string, string>;
   logicalFallacies: LogicalFallacyScenario[];
+  availableLogicalFallacies: LogicalFallacyId[];
   rounds: RoundEntry[];
 }
 

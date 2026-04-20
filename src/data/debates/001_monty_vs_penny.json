@@ -12,6 +12,7 @@
       "explanation": "TBD"
     }
   ],
+  "availableLogicalFallacies": ["false-dilemma"],
   "rounds": [
     {
       "kind": "npc",

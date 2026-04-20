@@ -16,6 +16,14 @@
       "explanation": "Presenting only two options when more alternatives exist."
     }
   ],
+  "availableLogicalFallacies": [
+    "false-dilemma",
+    "nothing-to-hide",
+    "slippery-slope",
+    "ad-hominem",
+    "loaded-question",
+    "appeal-to-pity"
+  ],
   "rounds": [
     {
       "kind": "player",
