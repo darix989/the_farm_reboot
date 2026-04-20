@@ -1,5 +1,5 @@
 @use 'sass:math';
-@use '../debateLogIconSizing' as debate-log-icon;
+@use '../trialModalCloseIconSizing' as modal-close;
 
 .recapOverlay {
   position: fixed;
@@ -63,16 +63,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: debate-log-icon.$trial-debate-log-icon-size;
-  height: debate-log-icon.$trial-debate-log-icon-size;
+  width: modal-close.$trial-modal-close-icon-size;
+  height: modal-close.$trial-modal-close-icon-size;
   border: none;
   border-radius: 0.5rem;
   background: transparent;
   color: var(--ui-color-text-caption);
 
-  /* Match debate-log expand/collapse glyph scale */
+  /* Glyph size vs. hit target — same ratio as debate-log expand/collapse */
   font-size: calc(
-    #{math.div(debate-log-icon.$trial-debate-log-icon-size * 0.65, 1.85)} *
+    #{math.div(modal-close.$trial-modal-close-icon-size * 0.65, 1.85)} *
       var(--ui-trial-panel-font-scale, 1)
   );
   line-height: 1;
