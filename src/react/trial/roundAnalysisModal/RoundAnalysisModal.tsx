@@ -356,7 +356,6 @@ function NpcRoundAnalysis({
 
   const lastAttempt = guessSession?.attempts[guessSession.attempts.length - 1] ?? null;
   const attemptsUsed = guessSession?.attempts.length ?? 0;
-  const maxAttempts = guessSession?.maxAttempts ?? DEFAULT_MAX_ANALYSIS_ATTEMPTS;
   const hasAnyAttempt = attemptsUsed > 0;
   const revealFull = !!(guessSession && shouldRevealFullSolution(guessSession));
   const terminalSuccess =
@@ -480,30 +479,6 @@ function NpcRoundAnalysis({
         })}
       >
         <div className={styles.trialLeftMain}>
-          <div className={styles.trialColumnInstructions}>
-            <p className={styles.trialAnalysisHint}>
-              {getLabel('attemptsPerAnalysis', { replacements: { maxAttempts } })}{' '}
-              {hasAnyAttempt
-                ? getLabel('attemptProgress', {
-                    replacements: {
-                      attemptsUsed,
-                      maxAttempts,
-                      remaining: Math.max(0, maxAttempts - attemptsUsed),
-                    },
-                  })
-                : getLabel('attemptsUpTo', { replacements: { maxAttempts } })}
-            </p>
-
-            {!hasAnyAttempt && canGuess && (
-              <p className={styles.trialAnalysisHint}>{getLabel('analysisSelectSentenceHint')}</p>
-            )}
-            {!canGuess && !hasAnyAttempt && (
-              <p className={cn(styles.trialAnalysisHint, styles.disabled)}>
-                {getLabel('analysisCannotGuessPhase')}
-              </p>
-            )}
-          </div>
-
           <div className={styles.trialScrollSlot}>
             <ScrollFadeContainer isModal className={styles.trialAnalysisColumnScroll}>
               <div className={styles.trialSentenceList}>
@@ -621,13 +596,7 @@ function NpcRoundAnalysis({
             {canGuess && (
               <>
                 <div className={styles.trialColumnInstructions}>
-                  <p
-                    className={cn(styles.trialAnalysisHint, {
-                      [styles.disabled]: !selectedSentenceId,
-                    })}
-                  >
-                    {getLabel('chooseFallaciesForSentence')}
-                  </p>
+                  <p className={styles.trialAnalysisHint}>{getLabel('analysisFlowHint')}</p>
                 </div>
 
                 <div
@@ -954,14 +923,24 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               <p className={styles.trialModalSubtitle}>{statementTypeLabel(statType)}</p>
             </div>
           </div>
-          <button
-            type="button"
-            className={styles.trialModalCloseBtn}
-            onClick={onClose}
-            aria-label={getLabel('close')}
-          >
-            ✕
-          </button>
+          <div className={styles.trialModalHeaderActions}>
+            <button
+              type="button"
+              className={styles.trialModalCloseBtn}
+              onClick={onClose}
+              aria-label={getLabel('close')}
+            >
+              ✕
+            </button>
+            <p className={styles.trialModalAttemptRecap}>
+              {getLabel('attemptRecapCompact', {
+                replacements: {
+                  attemptsUsed: guessSession?.attempts.length ?? 0,
+                  maxAttempts: guessSession?.maxAttempts ?? DEFAULT_MAX_ANALYSIS_ATTEMPTS,
+                },
+              })}
+            </p>
+          </div>
         </div>
 
         <ScrollFadeContainer

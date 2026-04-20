@@ -106,9 +106,12 @@ const LABELS = {
   attemptsUpTo: 'You have up to {maxAttempts} attempts.',
   analysisSelectSentenceHint:
     'Select a sentence, then pick up to two logical fallacies (toggle to remove). You can tag multiple sentences, then tap Spot Fallacies — or No Fallacies if the statement is clean.',
+  analysisFlowHint:
+    'Select a sentence, apply one or two fallacies, then submit. Or click No Fallacies.',
   analysisCannotGuessPhase: 'You cannot submit fallacy guesses in this phase of the debate.',
   chooseFallaciesForSentence:
     'Choose fallacies for this sentence (up to two, click again to remove):',
+  attemptRecapCompact: 'Attempts: {attemptsUsed}/{maxAttempts}',
   submitGuess: 'Spot Fallacies',
   noFallaciesInStatement: 'No Fallacies',
   yourLastGuessReadOnly: 'Your last guess (read-only):',
