@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   exitFullscreenIfActive,
+  isChromeOnAndroid,
   isDocumentFullscreen,
+  isSmartphone,
   requestFullscreenIfChromeAndroid,
 } from '../../utils/chromeAndroidFullscreen';
 import styles from './ChromeAndroidFullscreenButton.module.scss';
@@ -13,6 +15,7 @@ const ICON_EXIT_FULLSCREEN =
   'M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z';
 
 export function ChromeAndroidFullscreenButton() {
+  const showControl = isSmartphone() && isChromeOnAndroid();
   const [fullscreen, setFullscreen] = useState(() => isDocumentFullscreen());
 
   useEffect(() => {
@@ -28,6 +31,10 @@ export function ChromeAndroidFullscreenButton() {
       requestFullscreenIfChromeAndroid();
     }
   }, []);
+
+  if (!showControl) {
+    return null;
+  }
 
   return (
     <div className={styles.wrap}>
