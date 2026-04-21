@@ -157,7 +157,7 @@ export interface LogicalFallaciesListJson {
  * Spotlight rectangle as fractions of `#app-stage-16x9` (0 = start edge, 1 = full span).
  * Maps to viewport pixels at runtime via `getBoundingClientRect()` on the stage.
  */
-export type DebateTutorialSpotlightJson = {
+export type DebateTutorialArea = {
   /** Left edge / stage width. */
   x: number;
   /** Top edge / stage height. */
@@ -169,15 +169,16 @@ export type DebateTutorialSpotlightJson = {
 };
 
 /** One panel in the intro tutorial; optional spotlight defaults to full stage when omitted. */
-export interface DebateTutorialStepJson {
+export interface DebateTutorialStep {
+  modal?: DebateTutorialArea;
   message: string;
-  spotlight?: DebateTutorialSpotlightJson;
+  spotlight?: DebateTutorialArea;
 }
 
 /** Shown once at trial start in `debate_intro`, before the scenario introduction text. */
 export interface DebateTutorialJson {
   /** At least one step; multiple steps use Back / Continue / Got it in the tutorial overlay. */
-  steps: DebateTutorialStepJson[];
+  steps: DebateTutorialStep[];
 }
 
 /**
