@@ -12,6 +12,7 @@ import {
   truncateStatementPreview,
 } from '../utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
+import { debateEventBus } from '../utils/debateEventBus';
 import styles from './TrialPanels.module.scss';
 import getLabel from '../../../data/labels';
 
@@ -181,6 +182,13 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                     wf.unselect();
                     return;
                   }
+                  if (playerRound) {
+                    debateEventBus.emit('interactive:statement_selected', {
+                      roundNumber: playerRound.roundNumber,
+                      roundId: playerRound.id,
+                      optionId: opt.id,
+                    });
+                  }
                   wf.dispatch({ type: 'select_option', optionId: opt.id });
                 }}
               />
@@ -210,6 +218,10 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 (wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo)
               }
               onClick={() => {
+                debateEventBus.emit('interactive:back', {
+                  fromPhase: wf.gamePhase,
+                  roundNumber: wf.currentRound?.roundNumber ?? null,
+                });
                 if (wf.gamePhase === 'player_choosing') {
                   wf.unselect();
                   return;

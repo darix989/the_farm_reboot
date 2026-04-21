@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type {
   DebateScenarioJson,
   NpcRoundEntry,
@@ -13,6 +13,7 @@ import {
   resolvedOptionSentences,
   type GuessSessionForUnlock,
 } from '../trial/utils/optionUnlock';
+import { debateEventBus, type RoundLifecyclePayload } from '../trial/utils/debateEventBus';
 import getLabel from '../../data/labels';
 
 // ---------------------------------------------------------------------------
@@ -355,6 +356,56 @@ export function useTrialRoundWorkflow(
   }, []);
 
   const undo = useCallback(() => dispatch({ type: 'undo' }), [dispatch]);
+
+  // ---------------------------------------------------------------------
+  // Round lifecycle events (round:start / round:end)
+  // ---------------------------------------------------------------------
+  // `lastStartedRoundIndexRef` tracks the round we have most recently emitted
+  // `round:start` for, so we can detect advances (-> end + start) and the
+  // final transition into `debate_complete` (-> end only).
+  const lastStartedRoundIndexRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const rounds = scenarioRef.current.rounds;
+
+    const payloadFor = (index: number): RoundLifecyclePayload | null => {
+      const round = rounds[index];
+      if (!round) return null;
+      return {
+        roundNumber: round.roundNumber,
+        roundId: round.id,
+        kind: round.kind,
+        type: round.type,
+      };
+    };
+
+    // While the intro screen is up, no round is active yet — wait.
+    if (state.gamePhase === 'debate_intro') return;
+
+    const prevIndex = lastStartedRoundIndexRef.current;
+
+    if (state.gamePhase === 'debate_complete') {
+      if (prevIndex !== null) {
+        const endPayload = payloadFor(prevIndex);
+        if (endPayload) debateEventBus.emit('round:end', endPayload);
+        lastStartedRoundIndexRef.current = null;
+      }
+      return;
+    }
+
+    if (prevIndex === state.currentRoundIndex) return;
+
+    if (prevIndex !== null) {
+      const endPayload = payloadFor(prevIndex);
+      if (endPayload) debateEventBus.emit('round:end', endPayload);
+    }
+
+    const startPayload = payloadFor(state.currentRoundIndex);
+    if (startPayload) {
+      debateEventBus.emit('round:start', startPayload);
+      lastStartedRoundIndexRef.current = state.currentRoundIndex;
+    }
+  }, [state.currentRoundIndex, state.gamePhase]);
 
   const currentRound = scenario.rounds[state.currentRoundIndex] ?? null;
 

@@ -30,6 +30,7 @@ import {
   truthMultisetFromSentences,
   correctIntersectionMultiset,
 } from '../utils/fallacyGuessUtils';
+import { debateEventBus, type AnalysisTargetKind } from '../utils/debateEventBus';
 import styles from './RoundAnalysisModal.module.scss';
 import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
@@ -346,6 +347,8 @@ function NpcRoundAnalysis({
   guessSession,
   onGuess,
   onNoFallaciesRequest,
+  analysisTargetKind,
+  analysisTargetId,
 }: {
   statement: Statement;
   pickerFallacies: LogicalFallacy[];
@@ -354,6 +357,9 @@ function NpcRoundAnalysis({
   guessSession: FallacyGuessSession | null;
   onGuess: (payload: GuessPayload) => void;
   onNoFallaciesRequest: () => void;
+  /** Target metadata forwarded to sentence/fallacy toggle events. */
+  analysisTargetKind: AnalysisTargetKind;
+  analysisTargetId: string;
 }) {
   const [selectedSentenceId, setSelectedSentenceId] = useState<string | null>(null);
   const [bySentence, setBySentence] = useState<Record<string, string[]>>({});
@@ -424,7 +430,16 @@ function NpcRoundAnalysis({
 
   const handleSentenceClick = (s: Sentence) => {
     if (!canGuess) return;
-    setSelectedSentenceId(s.id === selectedSentenceId ? null : s.id);
+    const isSelecting = s.id !== selectedSentenceId;
+    debateEventBus.emit(
+      isSelecting ? 'analysis:sentence_selected' : 'analysis:sentence_deselected',
+      {
+        sentenceId: s.id,
+        targetId: analysisTargetId,
+        targetKind: analysisTargetKind,
+      },
+    );
+    setSelectedSentenceId(isSelecting ? s.id : null);
   };
 
   const handleFallacySelect = useCallback(
@@ -443,13 +458,25 @@ function NpcRoundAnalysis({
           const copy = { ...prev };
           if (next.length === 0) delete copy[sid];
           else copy[sid] = next;
+          debateEventBus.emit('analysis:fallacy_deselected', {
+            fallacyId,
+            sentenceId: sid,
+            targetId: analysisTargetId,
+            targetKind: analysisTargetKind,
+          });
           return copy;
         }
         if (cur.length >= 2) return prev;
+        debateEventBus.emit('analysis:fallacy_selected', {
+          fallacyId,
+          sentenceId: sid,
+          targetId: analysisTargetId,
+          targetKind: analysisTargetKind,
+        });
         return { ...prev, [sid]: [...cur, fallacyId] };
       });
     },
-    [canGuess, selectedSentenceId, pinnedBySentence],
+    [canGuess, selectedSentenceId, pinnedBySentence, analysisTargetId, analysisTargetKind],
   );
 
   const handleSubmitGuess = () => {
@@ -860,6 +887,32 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
         ? target.round.id
         : target.statement.id;
 
+  /** Narrow the bus enum alongside `target.kind`. */
+  const analysisTargetKind: AnalysisTargetKind = target.kind;
+  const analysisTargetId: string = analysisTargetKey;
+
+  const analysisRoundNumber =
+    target.kind === 'opponent_prompt' || target.kind === 'opponent_response'
+      ? target.playerRound.roundNumber
+      : target.round.roundNumber;
+
+  // Emit `analysis:open` when the modal mounts for a new target; `analysis:close` on unmount /
+  // target change. Balances open/close regardless of how the modal is dismissed (backdrop,
+  // ✕ button, ESC wiring, parent state change).
+  useEffect(() => {
+    const payload = {
+      targetKind: analysisTargetKind,
+      targetId: analysisTargetId,
+      roundNumber: analysisRoundNumber,
+    };
+    debateEventBus.emit('analysis:open', payload);
+    return () => {
+      debateEventBus.emit('analysis:close', payload);
+    };
+    // Open/close paired once per target key — other fields derive from the same target.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [analysisTargetKey]);
+
   const pickerFallacies = useMemo(() => {
     const allowed = new Set(availableLogicalFallacies);
     return allFallacies.filter((f) => allowed.has(f.id as LogicalFallacyId));
@@ -922,11 +975,6 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
     setShowNoFallaciesConfirm(false);
   };
 
-  const roundNumber =
-    target.kind === 'opponent_prompt' || target.kind === 'opponent_response'
-      ? target.playerRound.roundNumber
-      : target.round.roundNumber;
-
   const statType =
     target.kind === 'npc'
       ? target.round.type
@@ -961,7 +1009,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               <p className={styles.trialModalTitle}>
                 {getLabel('modalRoundTitle', {
                   replacements: {
-                    roundNumber,
+                    roundNumber: analysisRoundNumber,
                     tail: target.kind === 'player' ? getLabel('you') : titleSuffix,
                   },
                 })}
@@ -995,6 +1043,8 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                   guessSession={guessSession}
                   onGuess={onGuess}
                   onNoFallaciesRequest={() => setShowNoFallaciesConfirm(true)}
+                  analysisTargetKind={analysisTargetKind}
+                  analysisTargetId={analysisTargetId}
                 />
                 {playerRevealAssessment ? (
                   <PlayerAssessmentSection option={target.chosenOption} />
@@ -1010,6 +1060,8 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               guessSession={guessSession}
               onGuess={onGuess}
               onNoFallaciesRequest={() => setShowNoFallaciesConfirm(true)}
+              analysisTargetKind={analysisTargetKind}
+              analysisTargetId={analysisTargetId}
             />
           )}
         </ScrollFadeContainer>

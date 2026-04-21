@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TrialTextButton from '../components/TrialTextButton';
+import { debateEventBus } from '../utils/debateEventBus';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import {
   debateTotalScoreBounds,
@@ -38,6 +39,21 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
   const round = wf.currentRound;
   const chosen = wf.selectedOption;
   const lastCompleted = wf.completedRounds[wf.completedRounds.length - 1] ?? null;
+
+  // Fire `round:recap:open` once when the modal mounts, `round:recap:close` on unmount.
+  // Using mount / unmount (driven by TrialUI's `gamePhase === 'round_recap'` gate) keeps the
+  // open/close pair balanced even if the player closes via the backdrop, the X button, or
+  // Continue — all routes unmount the component.
+  useEffect(() => {
+    if (!round) return;
+    const payload = { roundNumber: round.roundNumber, roundId: round.id };
+    debateEventBus.emit('round:recap:open', payload);
+    return () => {
+      debateEventBus.emit('round:recap:close', payload);
+    };
+    // Open/close must fire exactly once per mount lifecycle of this specific recap.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [round?.id]);
 
   const totalScoreBounds = useMemo(() => debateTotalScoreBounds(debate), [debate]);
 

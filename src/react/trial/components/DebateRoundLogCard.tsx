@@ -15,6 +15,7 @@ import {
   statementTypeLabel,
 } from '../utils/trialHelpers';
 import { resolvedOptionSentences } from '../utils/optionUnlock';
+import { debateEventBus } from '../utils/debateEventBus';
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -198,7 +199,18 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
             aria-expanded={!isUpcoming && effectiveExpanded}
             aria-controls={bodyId}
             disabled={isUpcoming}
-            onClick={onExpandToggle}
+            onClick={() => {
+              // `effectiveExpanded` reflects the state before the toggle fires, so the
+              // event we emit is the *intended transition*: if it is currently expanded
+              // the click will shrink it, and vice versa.
+              if (!isUpcoming) {
+                debateEventBus.emit(
+                  effectiveExpanded ? 'debate_log:round:shrink' : 'debate_log:round:expand',
+                  { roundNumber: round.roundNumber, roundId: round.id },
+                );
+              }
+              onExpandToggle();
+            }}
             title={
               isUpcoming
                 ? getLabel('notAvailableUntilRoundStarts')
@@ -235,7 +247,13 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                       <AnalyzeButton
                         guessState={getNpcGuessState(round.id)}
                         title={getLabel('analyzeThisStatement')}
-                        onClick={() => onOpenAnalysis({ kind: 'npc', round })}
+                        onClick={() => {
+                          debateEventBus.emit('debate_log:round:analyze', {
+                            roundNumber: round.roundNumber,
+                            roundId: round.id,
+                          });
+                          onOpenAnalysis({ kind: 'npc', round });
+                        }}
                       />
                     </div>
                   </div>
@@ -266,13 +284,17 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         <AnalyzeButton
                           guessState={getNpcGuessState(round.opponentPrompt.id)}
                           title={getLabel('analyzeThisQuestion')}
-                          onClick={() =>
+                          onClick={() => {
+                            debateEventBus.emit('debate_log:round:analyze', {
+                              roundNumber: round.roundNumber,
+                              roundId: round.id,
+                            });
                             onOpenAnalysis({
                               kind: 'opponent_prompt',
                               statement: round.opponentPrompt!,
                               playerRound: round,
-                            })
-                          }
+                            });
+                          }}
                         />
                       </div>
                     )}
@@ -302,13 +324,17 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                       <AnalyzeButton
                         guessState={getNpcGuessState(chosenOption.id)}
                         title={getLabel('analyzeThisStatement')}
-                        onClick={() =>
+                        onClick={() => {
+                          debateEventBus.emit('debate_log:round:analyze', {
+                            roundNumber: round.roundNumber,
+                            roundId: round.id,
+                          });
                           onOpenAnalysis({
                             kind: 'player',
                             round,
                             chosenOption: chosenOption!,
-                          })
-                        }
+                          });
+                        }}
                       />
                     </div>
                   </div>
@@ -339,13 +365,17 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         <AnalyzeButton
                           guessState={getNpcGuessState(displayResponse.statement.id)}
                           title={getLabel('analyzeThisResponse')}
-                          onClick={() =>
+                          onClick={() => {
+                            debateEventBus.emit('debate_log:round:analyze', {
+                              roundNumber: round.roundNumber,
+                              roundId: round.id,
+                            });
                             onOpenAnalysis({
                               kind: 'opponent_response',
                               statement: displayResponse.statement,
                               playerRound: round,
-                            })
-                          }
+                            });
+                          }}
                         />
                       </div>
                     )}

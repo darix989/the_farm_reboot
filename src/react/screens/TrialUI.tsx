@@ -33,6 +33,7 @@ import {
   statementText,
 } from '../trial/utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
+import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import getLabel from '../../data/labels';
 
 interface TrialUIProps {
@@ -260,6 +261,56 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         };
       }
       next.set(fallacyGuessBucketRoundNumber, session);
+
+      // ---- Fire analysis:* events for this guess attempt --------------------
+      const targetKind: AnalysisTargetKind = analysisTarget.kind;
+      const roundNumberForEvent =
+        analysisTarget.kind === 'opponent_prompt' || analysisTarget.kind === 'opponent_response'
+          ? analysisTarget.playerRound.roundNumber
+          : analysisTarget.round.roundNumber;
+
+      debateEventBus.emit('analysis:guess_submitted', {
+        targetId,
+        targetKind,
+        roundNumber: roundNumberForEvent,
+        payload,
+      });
+
+      const attemptsUsed = session.attempts.length;
+      const maxAttempts = session.maxAttempts;
+      const outcomePayload = {
+        targetId,
+        targetKind,
+        roundNumber: roundNumberForEvent,
+        record,
+        attemptsUsed,
+        maxAttempts,
+      };
+
+      const isCorrect =
+        record.kind === 'no_fallacies' ? record.correct : record.outcome === 'perfect';
+      const isPartial = record.kind === 'multi' && record.outcome === 'partial';
+
+      if (isCorrect) {
+        debateEventBus.emit('analysis:guess_correct', outcomePayload);
+      } else if (isPartial) {
+        debateEventBus.emit('analysis:guess_partially_correct', outcomePayload);
+      } else {
+        debateEventBus.emit('analysis:guess_incorrect', outcomePayload);
+      }
+
+      // Terminal success (correct) doesn't count as "max attempts reached" — only emit
+      // when the player exhausted attempts without landing a perfect / correct guess.
+      if (!isCorrect && attemptsUsed >= maxAttempts) {
+        debateEventBus.emit('analysis:guess_max_attempts_reached', {
+          targetId,
+          targetKind,
+          roundNumber: roundNumberForEvent,
+          attemptsUsed,
+          maxAttempts,
+        });
+      }
+
       return next;
     });
   };
@@ -272,29 +323,67 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     let submitDisabled = true;
     let onSubmit: (() => void) | undefined;
 
+    const currentRoundNumber = wf.currentRound?.roundNumber ?? null;
+
     switch (wf.gamePhase) {
       case 'debate_intro': {
         const introGated = Boolean(debate.introTutorial) && !introTutorialDone;
         submitLabel = getLabel('continue');
         submitDisabled = introGated;
-        onSubmit = introGated ? undefined : () => setIntroSummaryOpen(true);
+        onSubmit = introGated
+          ? undefined
+          : () => {
+              debateEventBus.emit('interactive:continue', {
+                fromPhase: 'debate_intro',
+                roundNumber: null,
+              });
+              setIntroSummaryOpen(true);
+            };
         break;
       }
       case 'npc_speaking':
       case 'npc_responding':
         submitLabel = getLabel('continue');
         submitDisabled = false;
-        onSubmit = () => wf.dispatch({ type: 'continue' });
+        onSubmit = () => {
+          debateEventBus.emit('interactive:continue', {
+            fromPhase: wf.gamePhase,
+            roundNumber: currentRoundNumber,
+          });
+          wf.dispatch({ type: 'continue' });
+        };
         break;
       case 'player_choosing':
         submitLabel = getLabel('continue');
         submitDisabled = !wf.selectedOption;
-        onSubmit = () => wf.dispatch({ type: 'confirm_option' });
+        onSubmit = () => {
+          const option = wf.selectedOption;
+          const round = wf.currentPlayerRound;
+          if (option && round) {
+            debateEventBus.emit('interactive:confirm', {
+              roundNumber: round.roundNumber,
+              roundId: round.id,
+              optionId: option.id,
+            });
+          }
+          wf.dispatch({ type: 'confirm_option' });
+        };
         break;
       case 'player_confirming':
         submitLabel = getLabel('confirm');
         submitDisabled = false;
-        onSubmit = () => wf.dispatch({ type: 'confirm_option' });
+        onSubmit = () => {
+          const option = wf.selectedOption;
+          const round = wf.currentPlayerRound;
+          if (option && round) {
+            debateEventBus.emit('interactive:confirm', {
+              roundNumber: round.roundNumber,
+              roundId: round.id,
+              optionId: option.id,
+            });
+          }
+          wf.dispatch({ type: 'confirm_option' });
+        };
         break;
       default:
         submitDisabled = true;
@@ -302,7 +391,15 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
     return { submitLabel, submitDisabled, onSubmit };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- wf.gamePhase + wf.dispatch cover footer behavior; setIntroSummaryOpen is stable
-  }, [wf.gamePhase, wf.dispatch, wf.selectedOption, debate.introTutorial, introTutorialDone]);
+  }, [
+    wf.gamePhase,
+    wf.dispatch,
+    wf.selectedOption,
+    wf.currentRound,
+    wf.currentPlayerRound,
+    debate.introTutorial,
+    introTutorialDone,
+  ]);
 
   const modalSpeakerName = useMemo(() => {
     if (!analysisTarget) return '';
