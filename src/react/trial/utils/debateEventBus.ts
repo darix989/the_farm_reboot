@@ -22,7 +22,7 @@
  *   useDebateEvent('round:recap:open', (p) => { ... });
  */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { EventTrigger, StatementType } from '../../../types/debateEntities';
 import type { GamePhase } from '../../hooks/useTrialRoundWorkflow';
 import type { GuessPayload, GuessRecord } from './fallacyGuessTypes';
@@ -246,12 +246,29 @@ export const debateEventBus = new DebateEventBus();
 
 /**
  * React hook that subscribes to a debate event for the life of the component.
- * Re-subscribes whenever the listener identity changes — memoise with `useCallback`
- * if that matters for your caller.
+ *
+ * The subscription is created once per `event` value and kept stable across renders,
+ * even if `listener` is a fresh arrow on every render. Internally we route the call
+ * through a ref so the latest listener always wins without ever cleaning up /
+ * resubscribing the underlying bus handler.
+ *
+ * Why this matters: emits that fire from `useEffect` in the same component (or an
+ * ancestor hook called earlier in the same component) would otherwise race the
+ * cleanup-then-resubscribe cycle and arrive while nothing is listening. Keeping the
+ * subscription identity stable closes that window.
  */
 export function useDebateEvent<E extends EventTrigger>(
   event: E,
   listener: DebateEventListener<E>,
 ): void {
-  useEffect(() => debateEventBus.on(event, listener), [event, listener]);
+  const listenerRef = useRef(listener);
+  // Keep the ref pointed at the latest listener. Assigning during render is safe for
+  // refs and ensures the newest closure is already visible by the time any effect in
+  // this render cycle fires an emit.
+  listenerRef.current = listener;
+
+  useEffect(() => {
+    const stable: DebateEventListener<E> = (payload) => listenerRef.current(payload);
+    return debateEventBus.on(event, stable);
+  }, [event]);
 }
