@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTutorialStore } from '../../store/tutorialStore';
 import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../types/debateEntities';
 import logicalFallaciesData from '../../data/logicalFallacies.json';
 import TrialLayout from '../trial/TrialLayout';
@@ -38,17 +39,48 @@ interface TrialUIProps {
   debate: DebateScenarioJson;
 }
 
+function sameIntroTutorialStepMessages(
+  a: readonly { message: string }[],
+  b: readonly { message: string }[],
+): boolean {
+  if (a.length !== b.length) return false;
+  return a.every((step, i) => step.message === b[i]?.message);
+}
+
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, FallacyGuessSession>>(new Map());
   const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
     () => new Set(),
   );
   const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
+  const [introTutorialDone, setIntroTutorialDone] = useState(false);
   const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds);
 
   useEffect(() => {
     setIntroSummaryOpen(false);
+    setIntroTutorialDone(false);
+    useTutorialStore.getState().resetTutorial();
   }, [debate.id]);
+
+  useEffect(() => {
+    if (wf.gamePhase !== 'debate_intro') return;
+    const spec = debate.introTutorial;
+    if (!spec?.steps?.length) return;
+    if (introTutorialDone) return;
+
+    const store = useTutorialStore.getState();
+    if (store.isOpen && sameIntroTutorialStepMessages(store.steps, spec.steps)) {
+      return;
+    }
+
+    store.openTutorial({
+      steps: spec.steps.map((step) => ({
+        message: step.message,
+        spotlight: step.spotlight,
+      })),
+      onComplete: () => setIntroTutorialDone(true),
+    });
+  }, [wf.gamePhase, debate.introTutorial, introTutorialDone]);
 
   useEffect(() => {
     setRevealedLockedOptionIds(new Set());
@@ -240,11 +272,13 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     let onSubmit: (() => void) | undefined;
 
     switch (wf.gamePhase) {
-      case 'debate_intro':
+      case 'debate_intro': {
+        const introGated = Boolean(debate.introTutorial) && !introTutorialDone;
         submitLabel = getLabel('continue');
-        submitDisabled = false;
-        onSubmit = () => setIntroSummaryOpen(true);
+        submitDisabled = introGated;
+        onSubmit = introGated ? undefined : () => setIntroSummaryOpen(true);
         break;
+      }
       case 'npc_speaking':
       case 'npc_responding':
         submitLabel = getLabel('continue');
@@ -267,7 +301,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
     return { submitLabel, submitDisabled, onSubmit };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- wf.gamePhase + wf.dispatch cover footer behavior; setIntroSummaryOpen is stable
-  }, [wf.gamePhase, wf.dispatch, wf.selectedOption]);
+  }, [wf.gamePhase, wf.dispatch, wf.selectedOption, debate.introTutorial, introTutorialDone]);
 
   const modalSpeakerName = useMemo(() => {
     if (!analysisTarget) return '';
@@ -287,6 +321,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_intro': {
         const intro = debate.introduction?.trim();
         if (!intro) return null;
+        if (debate.introTutorial && !introTutorialDone) {
+          return null;
+        }
         return { title: getLabel('wizardDetailIntroduction'), body: intro };
       }
       case 'npc_speaking': {
@@ -367,6 +404,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     wf.totalScore,
     debate,
     fallacyGuesses,
+    introTutorialDone,
   ]);
 
   return (

@@ -1,6 +1,28 @@
 {
   "id": "debate-apple-surplus",
   "introduction": "The north orchard has produced a massive surplus of apples. Mayor Monty (the Pig) argues that either the pigs eat them all immediately or the farm will be overrun by a plague of fruit flies. As Penny the Goat, you must show the farm that there are other ways to handle the harvest.",
+  "introTutorial": {
+    "steps": [
+      {
+        "message": "This debate runs for ten rounds, alternating between your side and your opponent. Whenever it's your turn, choose the statement you believe will work best—the moderator will judge how convincing it is.",
+        "spotlight": {
+          "x": 1656,
+          "y": 40,
+          "width": 200,
+          "height": 200
+        }
+      },
+      {
+        "message": "Watch for logical fallacies in your opponent's lines. Spot them in the analysis view to unlock certain statements when a choice is locked until you find the right fallacy.",
+        "spotlight": {
+          "x": 1356,
+          "y": 150,
+          "width": 250,
+          "height": 300
+        }
+      }
+    ]
+  },
   "playerSide": "opposition",
   "characters": {
     "monty": "Mayor Monty",

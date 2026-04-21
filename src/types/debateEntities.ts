@@ -153,6 +153,26 @@ export interface LogicalFallaciesListJson {
 // Scenario JSON authoring shape
 // ---------------------------------------------------------------------------
 
+/** Viewport rect for a tutorial step (same space as `getBoundingClientRect()`). */
+export type DebateIntroTutorialSpotlightJson = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+/** One panel in the intro tutorial; optional spotlight defaults to `#app-stage-16x9` when opening. */
+export interface DebateIntroTutorialStepJson {
+  message: string;
+  spotlight?: DebateIntroTutorialSpotlightJson;
+}
+
+/** Shown once at trial start in `debate_intro`, before the scenario introduction text. */
+export interface DebateIntroTutorialJson {
+  /** At least one step; multiple steps use Back / Continue / Got it in the tutorial overlay. */
+  steps: DebateIntroTutorialStepJson[];
+}
+
 /**
  * Authoring shape for a single-player debate scenario loaded from JSON.
  * `rounds` defines the full sequential flow (NPC and player turns in order).
@@ -161,6 +181,8 @@ export interface DebateScenarioJson {
   id: string;
   /** Brief summary of what the debate is about. */
   introduction?: string;
+  /** Optional onboarding spotlight tutorial before `introduction` is shown. */
+  introTutorial?: DebateIntroTutorialJson;
   playerSide: Side;
   /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
   characters?: Record<string, string>;

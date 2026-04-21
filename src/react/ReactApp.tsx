@@ -4,6 +4,7 @@ import BoilerPlateUI from './screens/BoilerPlateUI';
 import MainMenuUI from './screens/MainMenuUI';
 import TrialUI from './screens/TrialUI';
 import ReactRoot from './ReactRoot';
+import TutorialOverlay from './tutorial/TutorialOverlay';
 import { useGameStore, type DebateScenarioKey } from '../store/gameStore';
 import type { DebateScenarioJson } from '../types/debateEntities';
 import montyVsPennyJson from '../data/debates/001_monty_vs_penny.json';
@@ -46,7 +47,12 @@ const ReactApp: React.FC = () => {
     }
   };
 
-  return <ReactRoot>{renderSceneUI()}</ReactRoot>;
+  return (
+    <ReactRoot>
+      {renderSceneUI()}
+      <TutorialOverlay />
+    </ReactRoot>
+  );
 };
 
 export default ReactApp;

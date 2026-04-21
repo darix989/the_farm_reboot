@@ -83,6 +83,10 @@ const LABELS = {
   workflowNpcResponding: '{opponentName} responds to your statement. Read it, then continue.',
   workflowRoundRecap: 'Review the round summary, then close the dialog to continue.',
 
+  // --- Tutorial overlay ---
+  tutorialGotIt: 'Got it',
+  tutorialDialogTitle: 'Tutorial',
+
   // --- Intro summary modal ---
   beforeTheDebate: 'Before the debate',
   introductionSummary: 'Introduction summary',
