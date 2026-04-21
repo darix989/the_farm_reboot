@@ -1,14 +1,4 @@
-.srOnly {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
+@use '../uiTypography' as ui-typography;
 
 .root {
   position: fixed;
@@ -56,6 +46,8 @@
 }
 
 .dialog {
+  @include ui-typography.font-scale;
+
   pointer-events: auto;
   box-sizing: border-box;
   width: min(
@@ -96,11 +88,8 @@
   }
 }
 
-.message {
-  margin: 0;
-  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
-  line-height: 1.45;
-  color: var(--ui-color-text-primary);
+/* Body copy: `trialWizardGuidanceText` supplies uiTypography `--ui-font-body` sizing; portal needs `.dialog` font-scale mixin. */
+.messageBody {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
