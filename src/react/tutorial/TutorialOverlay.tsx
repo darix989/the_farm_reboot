@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import { useTutorialStore } from '../../store/tutorialStore';
-import type { TutorialSpotlightRect } from '../../store/tutorialStore';
+import { resolveStageSpotlightToViewport, type TutorialSpotlightRect } from './spotlightRect';
 import TrialTextButton from '../trial/components/TrialTextButton';
 import panelStyles from '../trial/panels/TrialPanels.module.scss';
 import shared from '../trial/trialShared.module.scss';
@@ -70,7 +70,11 @@ const TutorialOverlay: React.FC = () => {
   useEffect(() => {
     if (!isOpen) return;
     const sync = () => {
-      setViewport({ w: window.innerWidth, h: window.innerHeight });
+      const vv = window.visualViewport;
+      setViewport({
+        w: vv?.width ?? window.innerWidth,
+        h: vv?.height ?? window.innerHeight,
+      });
     };
     sync();
     window.addEventListener('resize', sync);
@@ -93,7 +97,7 @@ const TutorialOverlay: React.FC = () => {
   const isSingle = steps.length === 1;
   const step = steps[stepIndex]!;
   const body = step.message;
-  const spotlight = step.spotlight;
+  const spotlightPx = resolveStageSpotlightToViewport(step.spotlightSpec);
 
   const onPrimary = () => {
     if (isSingle || isLast) {
@@ -107,7 +111,7 @@ const TutorialOverlay: React.FC = () => {
 
   const ui = (
     <div className={styles.root} role="presentation">
-      <SpotlightShutters spotlight={spotlight} vw={viewport.w} vh={viewport.h} />
+      <SpotlightShutters spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
 
       <div className={styles.dialogWrap}>
         <div
@@ -116,11 +120,13 @@ const TutorialOverlay: React.FC = () => {
           aria-modal="true"
           aria-labelledby="tutorial-dialog-title"
         >
-          <div className={styles.dialogBody}>
-            <h2 id="tutorial-dialog-title" className={styles.srOnly}>
+          <div className={panelStyles.trialAreaTitle}>
+            <h2 id="tutorial-dialog-title" className={panelStyles.trialPanelHeading}>
               {getLabel('tutorialDialogTitle')}
             </h2>
-            <p className={styles.message}>{body}</p>
+          </div>
+          <div className={styles.dialogBody}>
+            <p className={cn(panelStyles.trialWizardGuidanceText, styles.messageBody)}>{body}</p>
           </div>
           <div className={cn(styles.footer, isSingle && styles.footerSingle)}>
             {isSingle ? (

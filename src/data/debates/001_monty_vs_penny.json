@@ -6,19 +6,19 @@
       {
         "message": "This debate runs for ten rounds, alternating between your side and your opponent. Whenever it's your turn, choose the statement you believe will work best—the moderator will judge how convincing it is.",
         "spotlight": {
-          "x": 1656,
-          "y": 40,
-          "width": 200,
-          "height": 200
+          "x": 0.8708,
+          "y": 0.037,
+          "width": 0.1042,
+          "height": 0.1852
         }
       },
       {
         "message": "Watch for logical fallacies in your opponent's lines. Spot them in the analysis view to unlock certain statements when a choice is locked until you find the right fallacy.",
         "spotlight": {
-          "x": 1356,
-          "y": 150,
-          "width": 250,
-          "height": 300
+          "x": 0.7063,
+          "y": 0.1389,
+          "width": 0.1302,
+          "height": 0.2778
         }
       }
     ]

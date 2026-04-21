@@ -153,15 +153,22 @@ export interface LogicalFallaciesListJson {
 // Scenario JSON authoring shape
 // ---------------------------------------------------------------------------
 
-/** Viewport rect for a tutorial step (same space as `getBoundingClientRect()`). */
+/**
+ * Spotlight rectangle as fractions of `#app-stage-16x9` (0 = start edge, 1 = full span).
+ * Maps to viewport pixels at runtime via `getBoundingClientRect()` on the stage.
+ */
 export type DebateIntroTutorialSpotlightJson = {
+  /** Left edge / stage width. */
   x: number;
+  /** Top edge / stage height. */
   y: number;
+  /** Width / stage width. */
   width: number;
+  /** Height / stage height. */
   height: number;
 };
 
-/** One panel in the intro tutorial; optional spotlight defaults to `#app-stage-16x9` when opening. */
+/** One panel in the intro tutorial; optional spotlight defaults to full stage when omitted. */
 export interface DebateIntroTutorialStepJson {
   message: string;
   spotlight?: DebateIntroTutorialSpotlightJson;

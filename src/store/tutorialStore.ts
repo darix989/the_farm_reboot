@@ -1,33 +1,18 @@
 import { create } from 'zustand';
+import type { DebateIntroTutorialSpotlightJson } from '../types/debateEntities';
+import { FULL_STAGE_SPOTLIGHT_RATIOS } from '../react/tutorial/spotlightRect';
 
-/** Viewport coordinates (same space as `getBoundingClientRect()`). */
-export type TutorialSpotlightRect = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
+export type { TutorialSpotlightRect } from '../react/tutorial/spotlightRect';
 
-const STAGE_ELEMENT_ID = 'app-stage-16x9';
-
-function readStageSpotlight(): TutorialSpotlightRect {
-  const el = document.getElementById(STAGE_ELEMENT_ID);
-  if (!el) {
-    return { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
-  }
-  const r = el.getBoundingClientRect();
-  return { x: r.left, y: r.top, width: r.width, height: r.height };
-}
-
-/** One normalized step (spotlight always resolved for consumers like the overlay). */
+/** One tutorial step after open; spotlight stays as stage ratios until the overlay resolves to px. */
 export interface TutorialStepResolved {
   message: string;
-  spotlight: TutorialSpotlightRect;
+  spotlightSpec: DebateIntroTutorialSpotlightJson;
 }
 
 export type TutorialStepInput = {
   message: string;
-  spotlight?: TutorialSpotlightRect;
+  spotlight?: DebateIntroTutorialSpotlightJson;
 };
 
 export interface OpenTutorialPayload {
@@ -68,7 +53,7 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
     const steps: TutorialStepResolved[] = payload.steps
       .map((step) => ({
         message: step.message.trim(),
-        spotlight: step.spotlight ?? readStageSpotlight(),
+        spotlightSpec: step.spotlight ?? FULL_STAGE_SPOTLIGHT_RATIOS,
       }))
       .filter((s) => s.message.length > 0);
     if (steps.length === 0) return;
