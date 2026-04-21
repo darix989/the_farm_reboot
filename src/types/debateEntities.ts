@@ -157,7 +157,7 @@ export interface LogicalFallaciesListJson {
  * Spotlight rectangle as fractions of `#app-stage-16x9` (0 = start edge, 1 = full span).
  * Maps to viewport pixels at runtime via `getBoundingClientRect()` on the stage.
  */
-export type DebateIntroTutorialSpotlightJson = {
+export type DebateTutorialSpotlightJson = {
   /** Left edge / stage width. */
   x: number;
   /** Top edge / stage height. */
@@ -169,15 +169,15 @@ export type DebateIntroTutorialSpotlightJson = {
 };
 
 /** One panel in the intro tutorial; optional spotlight defaults to full stage when omitted. */
-export interface DebateIntroTutorialStepJson {
+export interface DebateTutorialStepJson {
   message: string;
-  spotlight?: DebateIntroTutorialSpotlightJson;
+  spotlight?: DebateTutorialSpotlightJson;
 }
 
 /** Shown once at trial start in `debate_intro`, before the scenario introduction text. */
-export interface DebateIntroTutorialJson {
+export interface DebateTutorialJson {
   /** At least one step; multiple steps use Back / Continue / Got it in the tutorial overlay. */
-  steps: DebateIntroTutorialStepJson[];
+  steps: DebateTutorialStepJson[];
 }
 
 /**
@@ -189,7 +189,7 @@ export interface DebateScenarioJson {
   /** Brief summary of what the debate is about. */
   introduction?: string;
   /** Optional onboarding spotlight tutorial before `introduction` is shown. */
-  introTutorial?: DebateIntroTutorialJson;
+  introTutorial?: DebateTutorialJson;
   playerSide: Side;
   /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
   characters?: Record<string, string>;

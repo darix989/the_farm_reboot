@@ -1,4 +1,4 @@
-import type { DebateIntroTutorialSpotlightJson } from '../../types/debateEntities';
+import type { DebateTutorialSpotlightJson } from '../../types/debateEntities';
 
 /** Viewport pixel rect (same space as `DOMRect` from `getBoundingClientRect()`). */
 export type TutorialSpotlightRect = {
@@ -11,7 +11,7 @@ export type TutorialSpotlightRect = {
 const STAGE_ELEMENT_ID = 'app-stage-16x9';
 
 /** Default when a step omits `spotlight` in JSON — entire `#app-stage-16x9`. */
-export const FULL_STAGE_SPOTLIGHT_RATIOS: DebateIntroTutorialSpotlightJson = {
+export const FULL_STAGE_SPOTLIGHT_RATIOS: DebateTutorialSpotlightJson = {
   x: 0,
   y: 0,
   width: 1,
@@ -24,8 +24,8 @@ function clamp01(n: number): number {
 
 /** Keeps spotlight inside the stage unit square; trims size if it overflows. */
 export function clampSpotlightRatios(
-  spec: DebateIntroTutorialSpotlightJson,
-): DebateIntroTutorialSpotlightJson {
+  spec: DebateTutorialSpotlightJson,
+): DebateTutorialSpotlightJson {
   const x = clamp01(spec.x);
   const y = clamp01(spec.y);
   let width = clamp01(spec.width);
@@ -40,7 +40,7 @@ export function clampSpotlightRatios(
  * Uses the stage element’s current `getBoundingClientRect()` (letterbox-safe).
  */
 export function resolveStageSpotlightToViewport(
-  spec: DebateIntroTutorialSpotlightJson | undefined | null,
+  spec: DebateTutorialSpotlightJson | undefined | null,
 ): TutorialSpotlightRect {
   const el = document.getElementById(STAGE_ELEMENT_ID);
   const s = el?.getBoundingClientRect();

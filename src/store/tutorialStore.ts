@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { DebateIntroTutorialSpotlightJson } from '../types/debateEntities';
+import type { DebateTutorialSpotlightJson } from '../types/debateEntities';
 import { FULL_STAGE_SPOTLIGHT_RATIOS } from '../react/tutorial/spotlightRect';
 
 export type { TutorialSpotlightRect } from '../react/tutorial/spotlightRect';
@@ -7,12 +7,12 @@ export type { TutorialSpotlightRect } from '../react/tutorial/spotlightRect';
 /** One tutorial step after open; spotlight stays as stage ratios until the overlay resolves to px. */
 export interface TutorialStepResolved {
   message: string;
-  spotlightSpec: DebateIntroTutorialSpotlightJson;
+  spotlightSpec: DebateTutorialSpotlightJson;
 }
 
 export type TutorialStepInput = {
   message: string;
-  spotlight?: DebateIntroTutorialSpotlightJson;
+  spotlight?: DebateTutorialSpotlightJson;
 };
 
 export interface OpenTutorialPayload {
