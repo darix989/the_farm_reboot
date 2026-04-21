@@ -2,6 +2,10 @@
  * Domain entities for the dialogue / debate game (see plan_002.md).
  */
 
+// Type-only import — avoids a runtime cycle with the bus module. The bus depends
+// on `EventTrigger` from this file, and we depend on the trigger type it defines.
+import type { DebateTutorialTrigger } from '../react/trial/utils/debateEventBus';
+
 /** Always exactly two sides in a debate. */
 export type Side = 'proposition' | 'opposition';
 
@@ -210,6 +214,25 @@ export interface DebateTutorialJson {
 }
 
 /**
+ * Pair a tutorial overlay with a debate-event trigger. The overlay opens when
+ * `trigger.event` fires AND every key in `trigger.where` matches the emitted
+ * payload by deep structural equality.
+ *
+ * Semantics:
+ *  - Fires at most once per scenario run (the dedup key is `id` when set, else
+ *    the array index). To reset, open a different scenario.
+ *  - If another tutorial is already open, matches are dropped (not queued).
+ *  - At most one tutorial opens per event emission, even if multiple entries
+ *    match — the first match wins in author order.
+ */
+export interface DebateScenarioTutorialEntry {
+  /** Optional stable id; used as the dedup key. Falls back to array index. */
+  id?: string;
+  trigger: DebateTutorialTrigger;
+  tutorial: DebateTutorialJson;
+}
+
+/**
  * Authoring shape for a single-player debate scenario loaded from JSON.
  * `rounds` defines the full sequential flow (NPC and player turns in order).
  */
@@ -225,6 +248,12 @@ export interface DebateScenarioJson {
   logicalFallacies: LogicalFallacyScenario[];
   availableLogicalFallacies: LogicalFallacyId[];
   rounds: RoundEntry[];
+  /**
+   * Overlay tutorials wired to specific debate events via the typed event bus.
+   * See `DebateScenarioTutorialEntry`. Separate from `introTutorial`, which still
+   * runs once at `debate_intro`.
+   */
+  tutorials?: readonly DebateScenarioTutorialEntry[];
 }
 
 // ---------------------------------------------------------------------------

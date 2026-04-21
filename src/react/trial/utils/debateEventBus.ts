@@ -241,6 +241,80 @@ class DebateEventBus {
 export const debateEventBus = new DebateEventBus();
 
 // ---------------------------------------------------------------------------
+// Tutorial triggers — event + optional deep-subset payload filter
+// ---------------------------------------------------------------------------
+
+/**
+ * Recursive `Partial`. Lets authors supply a filter that matches a subset of any
+ * payload: omit keys to leave them wild, specify any subset at any depth to pin
+ * them. Array filters still need to match the array exactly (same length, same
+ * element shape) — arrays in payloads are rare enough that this is fine for now.
+ */
+export type DeepPartial<T> = T extends readonly unknown[]
+  ? T
+  : T extends object
+    ? { readonly [K in keyof T]?: DeepPartial<T[K]> }
+    : T;
+
+/**
+ * Per-event trigger shape. Pick an event name; optionally pin the payload via
+ * `where`, which accepts any subset of the payload's shape (at any nesting level).
+ *
+ * Examples:
+ *   { event: 'round:start', where: { roundId: 'r3' } }
+ *   { event: 'interactive:statement_selected', where: { optionId: 'opt-42' } }
+ *   { event: 'analysis:guess_correct', where: { targetKind: 'npc', roundNumber: 2 } }
+ *
+ * Because this is a mapped discriminated union over `EventTrigger`, `where` is
+ * typed strictly against the payload of the specific `event` — a typo in a key
+ * or a mismatched value will red-squiggle at author time.
+ */
+export type DebateTutorialTrigger = {
+  [E in EventTrigger]: {
+    event: E;
+    where?: DeepPartial<DebateEventPayloads[E]>;
+  };
+}[EventTrigger];
+
+/**
+ * True when `actual` contains every key/value in `spec` by structural equality.
+ * - Primitives match with `===`.
+ * - Objects match when every explicitly-set key in `spec` matches (omitted keys
+ *   and `undefined` values are wildcards).
+ * - Arrays require identical length and per-index match.
+ */
+export function debatePayloadSatisfies(spec: unknown, actual: unknown): boolean {
+  if (spec === actual) return true;
+  if (spec === null || actual === null) return spec === actual;
+  if (typeof spec !== typeof actual) return false;
+  if (Array.isArray(spec)) {
+    if (!Array.isArray(actual) || actual.length !== spec.length) return false;
+    return spec.every((v, i) => debatePayloadSatisfies(v, actual[i]));
+  }
+  if (typeof spec === 'object') {
+    if (typeof actual !== 'object') return false;
+    const actualRec = actual as Record<string, unknown>;
+    for (const [k, v] of Object.entries(spec as Record<string, unknown>)) {
+      if (v === undefined) continue; // treat undefined keys as wildcards
+      if (!debatePayloadSatisfies(v, actualRec[k])) return false;
+    }
+    return true;
+  }
+  return false; // two different primitives
+}
+
+/** Does this trigger match the emitted event + payload? */
+export function debateTutorialTriggerMatches<E extends EventTrigger>(
+  trigger: DebateTutorialTrigger,
+  event: E,
+  payload: DebateEventPayloads[E],
+): boolean {
+  if (trigger.event !== event) return false;
+  if (!trigger.where) return true;
+  return debatePayloadSatisfies(trigger.where, payload);
+}
+
+// ---------------------------------------------------------------------------
 // React helpers
 // ---------------------------------------------------------------------------
 

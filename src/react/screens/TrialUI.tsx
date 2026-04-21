@@ -33,7 +33,12 @@ import {
   statementText,
 } from '../trial/utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
-import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
+import {
+  debateEventBus,
+  useDebateEvent,
+  type AnalysisTargetKind,
+} from '../trial/utils/debateEventBus';
+import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
 import getLabel from '../../data/labels';
 
 interface TrialUIProps {
@@ -56,6 +61,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
   const [introTutorialDone, setIntroTutorialDone] = useState(false);
   const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds);
+
+  // Opens scenario-defined tutorial overlays in response to bus events —
+  // complements `introTutorial`, which still runs once at `debate_intro`.
+  useScenarioTutorials(debate.tutorials);
 
   useEffect(() => {
     setIntroSummaryOpen(false);

@@ -700,5 +700,56 @@
         }
       ]
     }
+  ],
+  "tutorials": [
+    {
+      "id": "analysis-select-sentence",
+      "trigger": { "event": "analysis:open" },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Select first a sentence that you think has a logical fallacy.",
+            "spotlight": {
+              "x": 0.1,
+              "y": 0.1,
+              "width": 0.3,
+              "height": 0.8
+            },
+            "modal": {
+              "x": 0.6,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "spot-false-dilemma",
+      "trigger": {
+        "event": "analysis:fallacy_selected",
+        "where": { "fallacyId": "false-dilemma" }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "You are spotting the false dilemma fallacy on the selected sentence, click the button 'Spot Fallacies' to submit your guess.",
+            "spotlight": {
+              "x": 0.8708,
+              "y": 0.037,
+              "width": 0.1042,
+              "height": 0.1852
+            },
+            "modal": {
+              "x": 0.2,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.5
+            }
+          }
+        ]
+      }
+    }
   ]
 }
