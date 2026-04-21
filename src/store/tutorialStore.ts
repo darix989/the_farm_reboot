@@ -8,11 +8,14 @@ export type { TutorialSpotlightRect } from '../react/tutorial/spotlightRect';
 export interface TutorialStepResolved {
   message: string;
   spotlightSpec: DebateTutorialArea;
+  /** Optional stage-normalized rect for the dialog itself; when absent, the overlay uses its CSS default. */
+  modalSpec?: DebateTutorialArea;
 }
 
 export type TutorialStepInput = {
   message: string;
   spotlight?: DebateTutorialArea;
+  modal?: DebateTutorialArea;
 };
 
 export interface OpenTutorialPayload {
@@ -54,6 +57,7 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
       .map((step) => ({
         message: step.message.trim(),
         spotlightSpec: step.spotlight ?? FULL_STAGE_SPOTLIGHT_RATIOS,
+        modalSpec: step.modal,
       }))
       .filter((s) => s.message.length > 0);
     if (steps.length === 0) return;

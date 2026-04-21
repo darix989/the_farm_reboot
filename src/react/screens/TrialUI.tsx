@@ -77,6 +77,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       steps: spec.steps.map((step) => ({
         message: step.message,
         spotlight: step.spotlight,
+        modal: step.modal,
       })),
       onComplete: () => setIntroTutorialDone(true),
     });

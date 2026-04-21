@@ -149,6 +149,34 @@ export interface LogicalFallaciesListJson {
   logicalFallacies: readonly LogicalFallacy[];
 }
 
+export type EventTrigger =
+  | 'round:start'
+  | 'round:end'
+  | 'interactive:statement_selected'
+  | 'interactive:back'
+  | 'interactive:continue'
+  | 'interactive:confirm'
+  | 'round:recap:open'
+  | 'round:recap:close'
+  | 'debate_log:round:analyze'
+  | 'debate_log:round:shrink'
+  | 'debate_log:round:expand'
+  | 'analysis:open'
+  | 'analysis:close'
+  | 'analysis:sentence_selected'
+  | 'analysis:sentence_deselected'
+  | 'analysis:fallacy_selected'
+  | 'analysis:fallacy_deselected'
+  | 'analysis:guess_submitted'
+  | 'analysis:guess_correct'
+  | 'analysis:guess_incorrect'
+  | 'analysis:guess_partially_correct'
+  | 'analysis:guess_max_attempts_reached';
+
+export type DebateTutorialLogic = {
+  triggerEvent: EventTrigger;
+};
+
 // ---------------------------------------------------------------------------
 // Scenario JSON authoring shape
 // ---------------------------------------------------------------------------

@@ -98,6 +98,18 @@ const TutorialOverlay: React.FC = () => {
   const step = steps[stepIndex]!;
   const body = step.message;
   const spotlightPx = resolveStageSpotlightToViewport(step.spotlightSpec);
+  const modalPx = step.modalSpec ? resolveStageSpotlightToViewport(step.modalSpec) : null;
+  const dialogStyle: React.CSSProperties | undefined = modalPx
+    ? {
+        position: 'fixed',
+        left: modalPx.x,
+        top: modalPx.y,
+        width: modalPx.width,
+        height: modalPx.height,
+        maxWidth: 'none',
+        maxHeight: 'none',
+      }
+    : undefined;
 
   const onPrimary = () => {
     if (isSingle || isLast) {
@@ -119,6 +131,7 @@ const TutorialOverlay: React.FC = () => {
           role="dialog"
           aria-modal="true"
           aria-labelledby="tutorial-dialog-title"
+          style={dialogStyle}
         >
           <div className={panelStyles.trialAreaTitle}>
             <h2 id="tutorial-dialog-title" className={panelStyles.trialPanelHeading}>
