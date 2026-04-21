@@ -445,38 +445,51 @@ function NpcRoundAnalysis({
   const handleFallacySelect = useCallback(
     (fallacyId: string) => {
       if (!selectedSentenceId || !canGuess) return;
-      setBySentence((prev) => {
-        const sid = selectedSentenceId;
-        const cur = prev[sid] ?? [];
-        const pinnedRow = pinnedBySentence[sid] ?? [];
-        const idx = cur.indexOf(fallacyId);
-        if (idx >= 0) {
-          if (countIdInRow(cur, fallacyId) <= countIdInRow(pinnedRow, fallacyId)) {
-            return prev;
-          }
-          const next = cur.filter((_, i) => i !== idx);
-          const copy = { ...prev };
-          if (next.length === 0) delete copy[sid];
-          else copy[sid] = next;
-          debateEventBus.emit('analysis:fallacy_deselected', {
-            fallacyId,
-            sentenceId: sid,
-            targetId: analysisTargetId,
-            targetKind: analysisTargetKind,
-          });
-          return copy;
+      const sid = selectedSentenceId;
+      const cur = bySentence[sid] ?? [];
+      const pinnedRow = pinnedBySentence[sid] ?? [];
+      const idx = cur.indexOf(fallacyId);
+      // Compute the next state and decide which event to emit *before* calling
+      // setState. Emitting from inside a functional updater runs during React's
+      // render phase — and the tutorial bus listener synchronously calls
+      // `useTutorialStore.getState().openTutorial(...)`, which would schedule
+      // an update to `TutorialOverlay` while `NpcRoundAnalysis` is still
+      // rendering (triggers "Cannot update a component while rendering a
+      // different component").
+      if (idx >= 0) {
+        if (countIdInRow(cur, fallacyId) <= countIdInRow(pinnedRow, fallacyId)) {
+          return;
         }
-        if (cur.length >= 2) return prev;
-        debateEventBus.emit('analysis:fallacy_selected', {
+        const next = cur.filter((_, i) => i !== idx);
+        const copy = { ...bySentence };
+        if (next.length === 0) delete copy[sid];
+        else copy[sid] = next;
+        setBySentence(copy);
+        debateEventBus.emit('analysis:fallacy_deselected', {
           fallacyId,
           sentenceId: sid,
           targetId: analysisTargetId,
           targetKind: analysisTargetKind,
         });
-        return { ...prev, [sid]: [...cur, fallacyId] };
+        return;
+      }
+      if (cur.length >= 2) return;
+      setBySentence({ ...bySentence, [sid]: [...cur, fallacyId] });
+      debateEventBus.emit('analysis:fallacy_selected', {
+        fallacyId,
+        sentenceId: sid,
+        targetId: analysisTargetId,
+        targetKind: analysisTargetKind,
       });
     },
-    [canGuess, selectedSentenceId, pinnedBySentence, analysisTargetId, analysisTargetKind],
+    [
+      canGuess,
+      selectedSentenceId,
+      pinnedBySentence,
+      bySentence,
+      analysisTargetId,
+      analysisTargetKind,
+    ],
   );
 
   const handleSubmitGuess = () => {

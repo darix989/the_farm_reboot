@@ -285,6 +285,56 @@ Why this matters: if a listener was re-subscribed every render, then on any rend
 
 Routing through a ref means the subscription is installed once on mount and the latest closure is always visible via `listenerRef.current`. No caller-side `useCallback` is required.
 
+### Emitting safely — never emit from a render-phase callback
+
+`debateEventBus.emit(...)` is synchronous: every subscriber runs on the emitter's stack before `emit` returns. Some of those subscribers (notably `useScenarioTutorials`) synchronously call `useTutorialStore.getState().openTutorial(...)`, which in turn triggers a zustand `set(...)` and schedules a re-render of `TutorialOverlay`. If you emit from somewhere that React considers "render phase", that downstream re-render schedule lands while a different component is still rendering and React logs:
+
+> Cannot update a component (`TutorialOverlay`) while rendering a different component (`NpcRoundAnalysis`). To locate the bad setState() call inside `NpcRoundAnalysis`, follow the stack trace as described in https://react.dev/link/setstate-in-render
+
+Render-phase callbacks include:
+
+- **The body of a component function** — anything that runs top-to-bottom during `render`.
+- **`useMemo` / `useCallback` factories**.
+- **Functional `setState` updaters** — the `(prev) => next` form. React may re-run these during render (e.g. on concurrent bail-out or under `StrictMode` double-invocation), so they must be pure.
+- **`useReducer` reducers**, for the same reason.
+- **Render-time side effects inside JSX** (e.g. calling `emit` from a `.map` callback that runs in render).
+
+Safe places to emit:
+
+- **DOM event handlers** (`onClick`, `onChange`, …) — they run after render has committed.
+- **`useEffect` / `useLayoutEffect` bodies and their cleanups** — same.
+- **Timers, promises, bus callbacks, and other async continuations**.
+- **Imperative code in non-React modules** (e.g. `useTrialRoundWorkflow` transitioning a round).
+
+#### Pattern: if you need both a state update and an emit, emit *outside* the updater
+
+```ts
+// BAD — emit runs inside a functional updater, i.e. during render.
+const handleFallacySelect = useCallback((fallacyId: string) => {
+  setBySentence((prev) => {
+    // ...compute copy...
+    debateEventBus.emit('analysis:fallacy_selected', { /* ... */ }); // ❌ render-phase emit
+    return copy;
+  });
+}, [/* deps */]);
+```
+
+```ts
+// GOOD — compute from the closure, call setState with the result, then emit.
+const handleFallacySelect = useCallback((fallacyId: string) => {
+  const cur = bySentence[sid] ?? [];
+  // ...decide the transition from `cur`...
+  setBySentence({ ...bySentence, [sid]: [...cur, fallacyId] });
+  debateEventBus.emit('analysis:fallacy_selected', { /* ... */ }); // ✅ event-handler scope
+}, [bySentence, /* ...other deps */]);
+```
+
+Trade-off to accept: dropping the functional updater means adding the state value (here `bySentence`) to the `useCallback` dependency list, so the handler re-creates when that state changes. That is cheaper than a render-phase violation, and in practice the identity change is invisible to unmemoized children.
+
+If a functional updater is genuinely required (e.g. to coalesce rapid updates against the latest state), stage the emit as data during the updater and fire it from the surrounding scope once `setState` returns — but prefer the simple shape above.
+
+This rule is not tutorial-specific. It applies to any emit whose listener chain ends in a React state update — including future zustand stores, context providers, or `useState` consumers wired through `useDebateEvent`.
+
 ---
 
 ## Scenario tutorials (`DebateScenarioJson.tutorials`)
@@ -362,6 +412,10 @@ Called from `TrialUI`. It subscribes once per unique event referenced in the tut
 ### `introTutorial` vs `tutorials`
 
 `introTutorial` still runs once at `debate_intro` via a dedicated effect in `TrialUI` — it predates the bus and is kept on its own code path because no bus event fires during the intro phase. Every other tutorial moment should live under `tutorials`. Both can coexist on the same scenario without special handling.
+
+### Gotcha: emits that trigger tutorials run synchronously
+
+`useScenarioTutorials` handles bus events synchronously and calls `openTutorial(...)` on the tutorial store in the same tick. That scheduling hits `TutorialOverlay` immediately, so any emit at the authoring site must come from event-handler or effect scope — not from a render-phase callback (function component body, `useMemo` / `useCallback` factory, functional `setState` updater, `useReducer` reducer). See **Debate event bus → Emitting safely** above for the full rule and an example pattern.
 
 ---
 
