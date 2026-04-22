@@ -152,7 +152,7 @@ const TutorialOverlay: React.FC = () => {
               </h2>
             </div>
           </div>
-          <ScrollFadeContainer isModal className={styles.dialogBody}>
+          <ScrollFadeContainer isModal ignoreTutorialScrollLock className={styles.dialogBody}>
             <p className={cn(panelStyles.trialWizardGuidanceText, styles.messageBody)}>{body}</p>
           </ScrollFadeContainer>
           <div className={cn(styles.footer, isSingle && styles.footerSingle)}>
