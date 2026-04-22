@@ -33,11 +33,7 @@ import {
   statementText,
 } from '../trial/utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
-import {
-  debateEventBus,
-  useDebateEvent,
-  type AnalysisTargetKind,
-} from '../trial/utils/debateEventBus';
+import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
 import getLabel from '../../data/labels';
 
@@ -234,6 +230,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       };
     }
 
+    // Bus emits must not run inside the `setFallacyGuesses` updater: React treats that
+    // updater as TrialUI render work, and synchronous listeners call `openTutorial` /
+    // `stepForward` on the tutorial store → "Cannot update TutorialOverlay while rendering TrialUI".
+    let sessionAfterCommit: FallacyGuessSession | null = null;
     setFallacyGuesses((prev) => {
       const next = new Map(prev);
       const existing = prev.get(fallacyGuessBucketRoundNumber);
@@ -252,58 +252,61 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         };
       }
       next.set(fallacyGuessBucketRoundNumber, session);
-
-      // ---- Fire analysis:* events for this guess attempt --------------------
-      const targetKind: AnalysisTargetKind = analysisTarget.kind;
-      const roundNumberForEvent =
-        analysisTarget.kind === 'opponent_prompt' || analysisTarget.kind === 'opponent_response'
-          ? analysisTarget.playerRound.roundNumber
-          : analysisTarget.round.roundNumber;
-
-      debateEventBus.emit('analysis:guess_submitted', {
-        targetId,
-        targetKind,
-        roundNumber: roundNumberForEvent,
-        payload,
-      });
-
-      const attemptsUsed = session.attempts.length;
-      const maxAttempts = session.maxAttempts;
-      const outcomePayload = {
-        targetId,
-        targetKind,
-        roundNumber: roundNumberForEvent,
-        record,
-        attemptsUsed,
-        maxAttempts,
-      };
-
-      const isCorrect =
-        record.kind === 'no_fallacies' ? record.correct : record.outcome === 'perfect';
-      const isPartial = record.kind === 'multi' && record.outcome === 'partial';
-
-      if (isCorrect) {
-        debateEventBus.emit('analysis:guess_correct', outcomePayload);
-      } else if (isPartial) {
-        debateEventBus.emit('analysis:guess_partially_correct', outcomePayload);
-      } else {
-        debateEventBus.emit('analysis:guess_incorrect', outcomePayload);
-      }
-
-      // Terminal success (correct) doesn't count as "max attempts reached" — only emit
-      // when the player exhausted attempts without landing a perfect / correct guess.
-      if (!isCorrect && attemptsUsed >= maxAttempts) {
-        debateEventBus.emit('analysis:guess_max_attempts_reached', {
-          targetId,
-          targetKind,
-          roundNumber: roundNumberForEvent,
-          attemptsUsed,
-          maxAttempts,
-        });
-      }
-
+      sessionAfterCommit = session;
       return next;
     });
+
+    // `useState` functional updaters run synchronously for this dispatch; the assignment
+    // above always runs before we continue (TS does not model that flow).
+    const session = sessionAfterCommit!;
+
+    const targetKind: AnalysisTargetKind = analysisTarget.kind;
+    const roundNumberForEvent =
+      analysisTarget.kind === 'opponent_prompt' || analysisTarget.kind === 'opponent_response'
+        ? analysisTarget.playerRound.roundNumber
+        : analysisTarget.round.roundNumber;
+
+    debateEventBus.emit('analysis:guess_submitted', {
+      targetId,
+      targetKind,
+      roundNumber: roundNumberForEvent,
+      payload,
+    });
+
+    const attemptsUsed = session.attempts.length;
+    const maxAttempts = session.maxAttempts;
+    const outcomePayload = {
+      targetId,
+      targetKind,
+      roundNumber: roundNumberForEvent,
+      record,
+      attemptsUsed,
+      maxAttempts,
+    };
+
+    const isCorrect =
+      record.kind === 'no_fallacies' ? record.correct : record.outcome === 'perfect';
+    const isPartial = record.kind === 'multi' && record.outcome === 'partial';
+
+    if (isCorrect) {
+      debateEventBus.emit('analysis:guess_correct', outcomePayload);
+    } else if (isPartial) {
+      debateEventBus.emit('analysis:guess_partially_correct', outcomePayload);
+    } else {
+      debateEventBus.emit('analysis:guess_incorrect', outcomePayload);
+    }
+
+    // Terminal success (correct) doesn't count as "max attempts reached" — only emit
+    // when the player exhausted attempts without landing a perfect / correct guess.
+    if (!isCorrect && attemptsUsed >= maxAttempts) {
+      debateEventBus.emit('analysis:guess_max_attempts_reached', {
+        targetId,
+        targetKind,
+        roundNumber: roundNumberForEvent,
+        attemptsUsed,
+        maxAttempts,
+      });
+    }
   };
 
   // -----------------------------------------------------------------------
