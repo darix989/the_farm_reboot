@@ -16,6 +16,31 @@ import getLabel from '../../data/labels';
 import { debateEventBus } from '../trial/utils/debateEventBus';
 import styles from './TutorialOverlay.module.scss';
 
+declare global {
+  interface Window {
+    /**
+     * Dev-only: force `TutorialOverlay` to re-render so any change to
+     * `window.spotlightOverride` is picked up immediately. Only defined while
+     * the overlay is mounted.
+     */
+    forceTutorialRender?: () => void;
+    /**
+     * Dev-only: partial spotlight rect (stage-normalized fractions, 0–1) merged
+     * over the current step's `spotlight`. Missing keys inherit from the step.
+     */
+    spotlightOverride?: {
+      /** Left edge / stage width. */
+      x?: number;
+      /** Top edge / stage height. */
+      y?: number;
+      /** Width / stage width. */
+      width?: number;
+      /** Height / stage height. */
+      height?: number;
+    };
+  }
+}
+
 /** Dim everything outside `spotlight`; the hole stays bright and receives clicks through to the UI below. */
 function SpotlightShutters({
   spotlight,
@@ -95,6 +120,17 @@ const TutorialOverlay: React.FC = () => {
     };
   }, [isOpen]);
 
+  // Dev-only: bump a render tick from the console so `window.spotlightOverride`
+  // can be tweaked live. The spotlight spec is derived on every render, so
+  // triggering a re-render is enough to merge in the latest override values.
+  const [, setRenderTick] = useState(0);
+  useEffect(() => {
+    window.forceTutorialRender = () => setRenderTick((n) => n + 1);
+    return () => {
+      delete window.forceTutorialRender;
+    };
+  }, []);
+
   const lastIndex = steps.length > 0 ? steps.length - 1 : 0;
   const isLast = stepIndex >= lastIndex;
   const isSingle = steps.length === 1;
@@ -123,9 +159,20 @@ const TutorialOverlay: React.FC = () => {
   }
 
   const body = step.message;
-  const spotlightPx = resolveStageSpotlightToViewport(step.spotlightSpec);
+  // Merge dev-time `window.spotlightOverride` (partial) over the step's spec so
+  // individual fractions can be tweaked live from the browser console.
+  const override = window.spotlightOverride;
+  const effectiveSpotlightSpec = override
+    ? {
+        x: override.x ?? step.spotlightSpec.x,
+        y: override.y ?? step.spotlightSpec.y,
+        width: override.width ?? step.spotlightSpec.width,
+        height: override.height ?? step.spotlightSpec.height,
+      }
+    : step.spotlightSpec;
+  const spotlightPx = resolveStageSpotlightToViewport(effectiveSpotlightSpec);
   const blockClicksBehindModal =
-    isFullStageSpotlight(step.spotlightSpec) ||
+    isFullStageSpotlight(effectiveSpotlightSpec) ||
     spotlightCoversEntireViewport(spotlightPx, viewport.w, viewport.h);
   const modalPx = step.modalSpec ? resolveStageSpotlightToViewport(step.modalSpec) : null;
   const dialogStyle: React.CSSProperties | undefined = modalPx
