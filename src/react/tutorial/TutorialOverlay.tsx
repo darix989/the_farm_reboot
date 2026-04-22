@@ -106,6 +106,32 @@ function SpotlightShutters({
   );
 }
 
+/**
+ * Pulsing cyan glow traced around the spotlight hole. Rendered as a separate,
+ * click-through overlay so it can sit above the shutter panes (and therefore
+ * blend its outer glow into the dimmed area) without interfering with clicks
+ * on the underlying UI. The ring picks up the project's accent tokens and
+ * mirrors the dialog's keyframes for visual cohesion.
+ */
+function SpotlightGlow({
+  spotlight,
+  vw,
+  vh,
+}: {
+  spotlight: TutorialSpotlightRect;
+  vw: number;
+  vh: number;
+}) {
+  const left = Math.max(0, Math.min(vw, spotlight.x));
+  const top = Math.max(0, Math.min(vh, spotlight.y));
+  const right = Math.max(0, Math.min(vw, spotlight.x + spotlight.width));
+  const bottom = Math.max(0, Math.min(vh, spotlight.y + spotlight.height));
+  const width = Math.max(0, right - left);
+  const height = Math.max(0, bottom - top);
+  if (width <= 0 || height <= 0) return null;
+  return <div className={styles.spotlightGlow} style={{ left, top, width, height }} aria-hidden />;
+}
+
 const TutorialOverlay: React.FC = () => {
   const isOpen = useTutorialStore((s) => s.isOpen);
   const steps = useTutorialStore((s) => s.steps);
@@ -301,6 +327,9 @@ const TutorialOverlay: React.FC = () => {
   const ui = (
     <div className={styles.root} role="presentation">
       <SpotlightShutters spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
+      {!blockClicksBehindModal ? (
+        <SpotlightGlow spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
+      ) : null}
       {blockClicksBehindModal ? (
         <div className={styles.clickBlocker} aria-hidden role="presentation" />
       ) : null}
