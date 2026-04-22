@@ -7,6 +7,17 @@
   pointer-events: none;
 }
 
+/* Full-viewport catch when the spotlight “hole” is the whole stage (or viewport): blocks clicks without extra dimming. */
+.clickBlocker {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  pointer-events: auto;
+  touch-action: none;
+  background: transparent;
+}
+
 /* Four panes leave a rectangular “hole” undimmed; each pane blocks pointer events. */
 .shutter {
   position: fixed;

@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import { useTutorialStore } from '../../store/tutorialStore';
-import { resolveStageSpotlightToViewport, type TutorialSpotlightRect } from './spotlightRect';
+import {
+  isFullStageSpotlight,
+  resolveStageSpotlightToViewport,
+  spotlightCoversEntireViewport,
+  type TutorialSpotlightRect,
+} from './spotlightRect';
 import TrialTextButton from '../trial/components/TrialTextButton';
 import panelStyles from '../trial/panels/TrialPanels.module.scss';
 import shared from '../trial/trialShared.module.scss';
@@ -98,6 +103,9 @@ const TutorialOverlay: React.FC = () => {
   const step = steps[stepIndex]!;
   const body = step.message;
   const spotlightPx = resolveStageSpotlightToViewport(step.spotlightSpec);
+  const blockClicksBehindModal =
+    isFullStageSpotlight(step.spotlightSpec) ||
+    spotlightCoversEntireViewport(spotlightPx, viewport.w, viewport.h);
   const modalPx = step.modalSpec ? resolveStageSpotlightToViewport(step.modalSpec) : null;
   const dialogStyle: React.CSSProperties | undefined = modalPx
     ? {
@@ -124,6 +132,9 @@ const TutorialOverlay: React.FC = () => {
   const ui = (
     <div className={styles.root} role="presentation">
       <SpotlightShutters spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
+      {blockClicksBehindModal ? (
+        <div className={styles.clickBlocker} aria-hidden role="presentation" />
+      ) : null}
 
       <div className={styles.dialogWrap}>
         <div

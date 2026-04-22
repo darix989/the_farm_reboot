@@ -33,6 +33,32 @@ export function clampSpotlightRatios(spec: DebateTutorialArea): DebateTutorialAr
   return { x, y, width, height };
 }
 
+const RATIO_EPS = 1e-3;
+
+/** True when the spotlight is the whole stage (e.g. JSON omitted `spotlight`). Shutters only cover letterboxing, so the stage stays a click-through “hole”. */
+export function isFullStageSpotlight(spec: DebateTutorialArea | undefined | null): boolean {
+  const r = clampSpotlightRatios(spec ?? FULL_STAGE_SPOTLIGHT_RATIOS);
+  return (
+    r.x <= RATIO_EPS && r.y <= RATIO_EPS && r.width >= 1 - RATIO_EPS && r.height >= 1 - RATIO_EPS
+  );
+}
+
+/** True when the resolved hole covers the viewport (shutter panes collapse to zero thickness). */
+export function spotlightCoversEntireViewport(
+  spotlight: TutorialSpotlightRect,
+  vw: number,
+  vh: number,
+): boolean {
+  if (vw <= 0 || vh <= 0) return false;
+  const eps = 0.5;
+  return (
+    spotlight.x <= eps &&
+    spotlight.y <= eps &&
+    spotlight.x + spotlight.width >= vw - eps &&
+    spotlight.y + spotlight.height >= vh - eps
+  );
+}
+
 /**
  * Converts stage-normalized spotlight ratios to viewport pixels for fixed overlays.
  * Uses the stage element’s current `getBoundingClientRect()` (letterbox-safe).
