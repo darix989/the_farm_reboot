@@ -144,10 +144,12 @@ const TutorialOverlay: React.FC = () => {
           aria-labelledby="tutorial-dialog-title"
           style={dialogStyle}
         >
-          <div className={panelStyles.trialAreaTitle}>
-            <h2 id="tutorial-dialog-title" className={panelStyles.trialPanelHeading}>
-              {getLabel('tutorialDialogTitle')}
-            </h2>
+          <div className={styles.dialogTitleWrap}>
+            <div className={panelStyles.trialAreaTitle}>
+              <h2 id="tutorial-dialog-title" className={panelStyles.trialPanelHeading}>
+                {getLabel('tutorialDialogTitle')}
+              </h2>
+            </div>
           </div>
           <div className={styles.dialogBody}>
             <p className={cn(panelStyles.trialWizardGuidanceText, styles.messageBody)}>{body}</p>

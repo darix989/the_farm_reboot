@@ -56,6 +56,16 @@
   pointer-events: none;
 }
 
+/* Inset the shared `trialAreaTitle` strip like `trialPanelInner` does for debate log / wizard / interactive. */
+.dialogTitleWrap {
+  flex-shrink: 0;
+  margin: 1rem 1.25rem 0;
+
+  @media (min-width: 640px) {
+    margin: 1.25rem 1.5rem 0;
+  }
+}
+
 .dialog {
   @include ui-typography.font-scale;
 
