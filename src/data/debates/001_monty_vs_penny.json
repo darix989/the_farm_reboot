@@ -711,13 +711,13 @@
           {
             "message": "Round 1 has the opening constructive of the proposition side. Let's inspect their statement and check if there is something off! Click the Magnifying glass icon to analyze!",
             "spotlight": {
-              "x": 0.7,
-              "y": 0.2,
-              "width": 0.35,
-              "height": 0.12
+              "x": 0.6,
+              "y": 0.22,
+              "width": 0.4,
+              "height": 0.3
             },
             "modal": {
-              "x": 0.325,
+              "x": 0.225,
               "y": 0.06,
               "width": 0.35,
               "height": 0.48
@@ -732,11 +732,20 @@
       "tutorial": {
         "steps": [
           {
+            "message": "This is the statement analysis view.",
+            "modal": {
+              "x": 0.7,
+              "y": 0.45,
+              "width": 0.25,
+              "height": 0.33
+            }
+          },
+          {
             "message": "Select first a sentence that you think has a logical fallacy.",
             "spotlight": {
-              "x": 0.1,
+              "x": 0.02,
               "y": 0.1,
-              "width": 0.3,
+              "width": 0.52,
               "height": 0.8
             },
             "modal": {
@@ -745,28 +754,17 @@
               "width": 0.35,
               "height": 0.5
             }
-          }
-        ]
-      }
-    },
-    {
-      "id": "spot-false-dilemma",
-      "trigger": {
-        "event": "analysis:fallacy_selected",
-        "where": { "fallacyId": "false-dilemma" }
-      },
-      "tutorial": {
-        "steps": [
+          },
           {
             "message": "You are spotting the false dilemma fallacy on the selected sentence, click the button 'Spot Fallacies' to submit your guess.",
             "spotlight": {
-              "x": 0.8708,
-              "y": 0.037,
-              "width": 0.1042,
-              "height": 0.1852
+              "x": 0.55,
+              "y": 0.2,
+              "width": 0.5,
+              "height": 0.3
             },
             "modal": {
-              "x": 0.2,
+              "x": 0.05,
               "y": 0.2,
               "width": 0.35,
               "height": 0.5
