@@ -38,6 +38,22 @@ declare global {
       /** Height / stage height. */
       height?: number;
     };
+    /**
+     * Dev-only: partial modal rect (stage-normalized fractions, 0–1) merged
+     * over the current step's `modal`. Missing keys inherit from the step; if
+     * the step has no `modal` spec, all four fields must be supplied for the
+     * override to take effect (otherwise the CSS default placement is used).
+     */
+    modalOverride?: {
+      /** Left edge / stage width. */
+      x?: number;
+      /** Top edge / stage height. */
+      y?: number;
+      /** Width / stage width. */
+      width?: number;
+      /** Height / stage height. */
+      height?: number;
+    };
   }
 }
 
@@ -174,7 +190,35 @@ const TutorialOverlay: React.FC = () => {
   const blockClicksBehindModal =
     isFullStageSpotlight(effectiveSpotlightSpec) ||
     spotlightCoversEntireViewport(spotlightPx, viewport.w, viewport.h);
-  const modalPx = step.modalSpec ? resolveStageSpotlightToViewport(step.modalSpec) : null;
+  // Merge dev-time `window.modalOverride` (partial) over the step's `modalSpec`
+  // when present. If the step has no `modalSpec`, the override only takes effect
+  // when all four fractions are supplied — otherwise we fall through to the
+  // overlay's CSS default placement.
+  const modalOverride = window.modalOverride;
+  let effectiveModalSpec = step.modalSpec;
+  if (step.modalSpec && modalOverride) {
+    effectiveModalSpec = {
+      x: modalOverride.x ?? step.modalSpec.x,
+      y: modalOverride.y ?? step.modalSpec.y,
+      width: modalOverride.width ?? step.modalSpec.width,
+      height: modalOverride.height ?? step.modalSpec.height,
+    };
+  } else if (
+    !step.modalSpec &&
+    modalOverride &&
+    modalOverride.x !== undefined &&
+    modalOverride.y !== undefined &&
+    modalOverride.width !== undefined &&
+    modalOverride.height !== undefined
+  ) {
+    effectiveModalSpec = {
+      x: modalOverride.x,
+      y: modalOverride.y,
+      width: modalOverride.width,
+      height: modalOverride.height,
+    };
+  }
+  const modalPx = effectiveModalSpec ? resolveStageSpotlightToViewport(effectiveModalSpec) : null;
   const dialogStyle: React.CSSProperties | undefined = modalPx
     ? {
         position: 'fixed',
