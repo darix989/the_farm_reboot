@@ -115,6 +115,25 @@
   overflow-wrap: anywhere;
 }
 
+/* Shown in place of the primary button when a spotlighted step auto-concludes on the next event. */
+.spotlightHint {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: var(--ui-color-overlay-medium);
+  border-bottom: 1px solid var(--ui-color-border-muted);
+  color: var(--ui-color-white);
+  font-style: italic;
+  text-align: center;
+  opacity: 0.9;
+}
+
+@media (min-width: 640px) {
+  .spotlightHint {
+    padding: 1rem 1.25rem;
+  }
+}
+
 .footer {
   flex-shrink: 0;
   padding: 0.75rem 1rem;

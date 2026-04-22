@@ -10,12 +10,19 @@ export interface TutorialStepResolved {
   spotlightSpec: DebateTutorialArea;
   /** Optional stage-normalized rect for the dialog itself; when absent, the overlay uses its CSS default. */
   modalSpec?: DebateTutorialArea;
+  /**
+   * When `true`, keep the Continue / Got it button even if the step has a
+   * spotlight. Without this flag, spotlighted steps hide the button and
+   * auto-conclude on the next `EventTrigger` fired from the debate event bus.
+   */
+  showContinueWithSpotlight?: boolean;
 }
 
 export type TutorialStepInput = {
   message: string;
   spotlight?: DebateTutorialArea;
   modal?: DebateTutorialArea;
+  showContinueWithSpotlight?: boolean;
 };
 
 export interface OpenTutorialPayload {
@@ -58,6 +65,7 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
         message: step.message.trim(),
         spotlightSpec: step.spotlight ?? FULL_STAGE_SPOTLIGHT_RATIOS,
         modalSpec: step.modal,
+        showContinueWithSpotlight: step.showContinueWithSpotlight,
       }))
       .filter((s) => s.message.length > 0);
     if (steps.length === 0) return;

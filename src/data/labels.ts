@@ -86,6 +86,7 @@ const LABELS = {
   // --- Tutorial overlay ---
   tutorialGotIt: 'Got it',
   tutorialDialogTitle: 'Tutorial',
+  tutorialSpotlightHint: 'Click the highlighted button to continue',
 
   // --- Intro summary modal ---
   beforeTheDebate: 'Before the debate',

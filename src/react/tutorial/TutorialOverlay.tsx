@@ -13,6 +13,7 @@ import ScrollFadeContainer from '../trial/components/ScrollFadeContainer';
 import panelStyles from '../trial/panels/TrialPanels.module.scss';
 import shared from '../trial/trialShared.module.scss';
 import getLabel from '../../data/labels';
+import { debateEventBus } from '../trial/utils/debateEventBus';
 import styles from './TutorialOverlay.module.scss';
 
 /** Dim everything outside `spotlight`; the hole stays bright and receives clicks through to the UI below. */
@@ -94,14 +95,33 @@ const TutorialOverlay: React.FC = () => {
     };
   }, [isOpen]);
 
-  if (!isOpen || steps.length === 0) {
+  const lastIndex = steps.length > 0 ? steps.length - 1 : 0;
+  const isLast = stepIndex >= lastIndex;
+  const isSingle = steps.length === 1;
+  const step = isOpen && steps.length > 0 ? steps[stepIndex]! : null;
+  const hasFocusedSpotlight = step ? !isFullStageSpotlight(step.spotlightSpec) : false;
+  const autoConcludeOnEvent =
+    step !== null && hasFocusedSpotlight && !step.showContinueWithSpotlight;
+
+  // When the current step auto-concludes on any debate event, advance or finish
+  // on the next emit. The hint text takes the place of the Continue / Got it
+  // button, so the spotlighted button in the underlying UI drives the flow.
+  useEffect(() => {
+    if (!autoConcludeOnEvent) return;
+    const unsubscribe = debateEventBus.onAny(() => {
+      if (isSingle || isLast) {
+        finishTutorial();
+      } else {
+        stepForward();
+      }
+    });
+    return unsubscribe;
+  }, [autoConcludeOnEvent, isSingle, isLast, finishTutorial, stepForward, stepIndex]);
+
+  if (!isOpen || !step) {
     return null;
   }
 
-  const lastIndex = steps.length - 1;
-  const isLast = stepIndex >= lastIndex;
-  const isSingle = steps.length === 1;
-  const step = steps[stepIndex]!;
   const body = step.message;
   const spotlightPx = resolveStageSpotlightToViewport(step.spotlightSpec);
   const blockClicksBehindModal =
@@ -130,6 +150,55 @@ const TutorialOverlay: React.FC = () => {
 
   const primaryLabel = isSingle || isLast ? getLabel('tutorialGotIt') : getLabel('continue');
 
+  // Footer layout:
+  //  - Normal: single primary (isSingle) or Back + primary grid
+  //  - Auto-conclude + single step: no footer buttons (hint alone drives the step)
+  //  - Auto-conclude + multi-step: Back stays (so users can revisit earlier steps);
+  //    the primary cell is empty because the spotlighted button concludes the step.
+  const renderFooter = () => {
+    if (autoConcludeOnEvent) {
+      if (isSingle) return null;
+      return (
+        <div className={styles.footer}>
+          <div className={panelStyles.trialFooterGrid}>
+            <TrialTextButton
+              type="button"
+              variant="solid"
+              onClick={stepBack}
+              disabled={stepIndex === 0}
+            >
+              {getLabel('back')}
+            </TrialTextButton>
+            <span aria-hidden />
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className={cn(styles.footer, isSingle && styles.footerSingle)}>
+        {isSingle ? (
+          <TrialTextButton type="button" variant="solid" onClick={onPrimary}>
+            {primaryLabel}
+          </TrialTextButton>
+        ) : (
+          <div className={panelStyles.trialFooterGrid}>
+            <TrialTextButton
+              type="button"
+              variant="solid"
+              onClick={stepBack}
+              disabled={stepIndex === 0}
+            >
+              {getLabel('back')}
+            </TrialTextButton>
+            <TrialTextButton type="button" variant="solid" onClick={onPrimary}>
+              {primaryLabel}
+            </TrialTextButton>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const ui = (
     <div className={styles.root} role="presentation">
       <SpotlightShutters spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
@@ -155,27 +224,12 @@ const TutorialOverlay: React.FC = () => {
           <ScrollFadeContainer isModal ignoreTutorialScrollLock className={styles.dialogBody}>
             <p className={cn(panelStyles.trialWizardGuidanceText, styles.messageBody)}>{body}</p>
           </ScrollFadeContainer>
-          <div className={cn(styles.footer, isSingle && styles.footerSingle)}>
-            {isSingle ? (
-              <TrialTextButton type="button" variant="solid" onClick={onPrimary}>
-                {primaryLabel}
-              </TrialTextButton>
-            ) : (
-              <div className={panelStyles.trialFooterGrid}>
-                <TrialTextButton
-                  type="button"
-                  variant="solid"
-                  onClick={stepBack}
-                  disabled={stepIndex === 0}
-                >
-                  {getLabel('back')}
-                </TrialTextButton>
-                <TrialTextButton type="button" variant="solid" onClick={onPrimary}>
-                  {primaryLabel}
-                </TrialTextButton>
-              </div>
-            )}
-          </div>
+          {autoConcludeOnEvent ? (
+            <p className={styles.spotlightHint} role="status" aria-live="polite">
+              {getLabel('tutorialSpotlightHint')}
+            </p>
+          ) : null}
+          {renderFooter()}
         </div>
       </div>
     </div>

@@ -178,12 +178,23 @@ void _assertKeysMatch;
 
 export type DebateEventListener<E extends EventTrigger> = (payload: DebateEventPayloads[E]) => void;
 
+/**
+ * Listener fired for every emit, regardless of event name. Receives the
+ * concrete event and its payload (typed as `unknown` — widen with a narrowing
+ * check if you need the shape).
+ */
+export type DebateAnyEventListener = (
+  event: EventTrigger,
+  payload: DebateEventPayloads[EventTrigger],
+) => void;
+
 type ListenerMap = {
   [E in EventTrigger]?: Set<DebateEventListener<E>>;
 };
 
 class DebateEventBus {
   private readonly listeners: ListenerMap = {};
+  private readonly anyListeners: Set<DebateAnyEventListener> = new Set();
 
   /** Subscribe to `event`. Returns an unsubscribe function. */
   on<E extends EventTrigger>(event: E, listener: DebateEventListener<E>): () => void {
@@ -215,17 +226,38 @@ class DebateEventBus {
     if (bucket.size === 0) delete this.listeners[event];
   }
 
+  /**
+   * Subscribe to every event regardless of name. Fires *after* the per-event
+   * listeners for a given emit. Returns an unsubscribe function.
+   */
+  onAny(listener: DebateAnyEventListener): () => void {
+    this.anyListeners.add(listener);
+    return () => {
+      this.anyListeners.delete(listener);
+    };
+  }
+
   /** Emit `event` with its payload. Listener exceptions are isolated per listener. */
   emit<E extends EventTrigger>(event: E, payload: DebateEventPayloads[E]): void {
     const bucket = this.listeners[event] as Set<DebateEventListener<E>> | undefined;
-    if (!bucket || bucket.size === 0) return;
-    // Iterate a copy so listeners can unsubscribe themselves without mutating during iteration.
-    for (const listener of Array.from(bucket)) {
-      try {
-        listener(payload);
-      } catch (err) {
-        // Don't let one bad listener stop the others.
-        console.error(`[debateEventBus] listener for "${event}" threw:`, err);
+    if (bucket && bucket.size > 0) {
+      // Iterate a copy so listeners can unsubscribe themselves without mutating during iteration.
+      for (const listener of Array.from(bucket)) {
+        try {
+          listener(payload);
+        } catch (err) {
+          // Don't let one bad listener stop the others.
+          console.error(`[debateEventBus] listener for "${event}" threw:`, err);
+        }
+      }
+    }
+    if (this.anyListeners.size > 0) {
+      for (const listener of Array.from(this.anyListeners)) {
+        try {
+          listener(event, payload as DebateEventPayloads[EventTrigger]);
+        } catch (err) {
+          console.error(`[debateEventBus] any-listener for "${event}" threw:`, err);
+        }
       }
     }
   }
@@ -235,6 +267,7 @@ class DebateEventBus {
     for (const key of Object.keys(this.listeners) as EventTrigger[]) {
       delete this.listeners[key];
     }
+    this.anyListeners.clear();
   }
 
   /** For tests: report how many listeners are registered for `event`. */

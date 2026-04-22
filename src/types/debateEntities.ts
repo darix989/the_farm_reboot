@@ -206,6 +206,18 @@ export interface DebateTutorialStep {
   modal?: DebateTutorialArea;
   message: string;
   spotlight?: DebateTutorialArea;
+  /**
+   * When a step has a (non-full-stage) `spotlight`, the default is that the step
+   * concludes as soon as any new `EventTrigger` fires (assumed to originate from
+   * the spotlighted button) — no Continue / Got it button is shown; a hint
+   * ("Click the highlighted button to continue") is rendered instead.
+   *
+   * Set this to `true` to opt out of that default and keep the normal
+   * Continue / Got it button behavior even when a spotlight is defined.
+   *
+   * Ignored when the step has no spotlight (or a full-stage spotlight).
+   */
+  showContinueWithSpotlight?: boolean;
 }
 
 /** Ordered list of steps shown in a tutorial overlay. */
