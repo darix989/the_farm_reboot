@@ -3,7 +3,7 @@
 ## Size guidelines
 
 Minimum values for the modal size:
-- `width` >= `0.25`;
+- `width` >= `0.33`;
 - `height` >= `0.33`
 
 This will guarantee to have 2 lines of text without any scroll.

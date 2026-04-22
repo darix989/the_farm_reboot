@@ -217,7 +217,12 @@ const TutorialOverlay: React.FC = () => {
           <div className={styles.dialogTitleWrap}>
             <div className={panelStyles.trialAreaTitle}>
               <h2 id="tutorial-dialog-title" className={panelStyles.trialPanelHeading}>
-                {getLabel('tutorialDialogTitle')}
+                {getLabel('tutorialDialogTitle', {
+                  replacements: {
+                    currentStep: stepIndex + 1,
+                    totalSteps: steps.length,
+                  },
+                })}
               </h2>
             </div>
           </div>

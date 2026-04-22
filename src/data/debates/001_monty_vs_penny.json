@@ -734,9 +734,9 @@
           {
             "message": "This is the statement analysis view.",
             "modal": {
-              "x": 0.7,
+              "x": 0.6,
               "y": 0.45,
-              "width": 0.25,
+              "width": 0.33,
               "height": 0.33
             }
           },
