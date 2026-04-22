@@ -769,6 +769,21 @@
               "width": 0.35,
               "height": 0.5
             }
+          },
+          {
+            "message": "Let's click 'Spot Fallacies' to submit your guess.",
+            "spotlight": {
+              "x": 0.72,
+              "y": 0.77,
+              "width": 0.18,
+              "height": 0.1
+            },
+            "modal": {
+              "x": 0.05,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.5
+            }
           }
         ]
       }

@@ -25,6 +25,10 @@ declare global {
      */
     forceTutorialRender?: () => void;
     /**
+     * Reset all tutorial render overrides to their default values.
+     */
+    resetTutorialRenderOverrides?: () => void;
+    /**
      * Dev-only: partial spotlight rect (stage-normalized fractions, 0–1) merged
      * over the current step's `spotlight`. Missing keys inherit from the step.
      */
@@ -142,6 +146,10 @@ const TutorialOverlay: React.FC = () => {
   const [, setRenderTick] = useState(0);
   useEffect(() => {
     window.forceTutorialRender = () => setRenderTick((n) => n + 1);
+    window.resetTutorialRenderOverrides = () => {
+      window.spotlightOverride = undefined;
+      window.modalOverride = undefined;
+    };
     return () => {
       delete window.forceTutorialRender;
     };
