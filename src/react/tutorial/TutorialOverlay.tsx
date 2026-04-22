@@ -9,6 +9,7 @@ import {
   type TutorialSpotlightRect,
 } from './spotlightRect';
 import TrialTextButton from '../trial/components/TrialTextButton';
+import ScrollFadeContainer from '../trial/components/ScrollFadeContainer';
 import panelStyles from '../trial/panels/TrialPanels.module.scss';
 import shared from '../trial/trialShared.module.scss';
 import getLabel from '../../data/labels';
@@ -151,9 +152,9 @@ const TutorialOverlay: React.FC = () => {
               </h2>
             </div>
           </div>
-          <div className={styles.dialogBody}>
+          <ScrollFadeContainer isModal className={styles.dialogBody}>
             <p className={cn(panelStyles.trialWizardGuidanceText, styles.messageBody)}>{body}</p>
-          </div>
+          </ScrollFadeContainer>
           <div className={cn(styles.footer, isSingle && styles.footerSingle)}>
             {isSingle ? (
               <TrialTextButton type="button" variant="solid" onClick={onPrimary}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './TrialPanels.module.scss';
+import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -28,26 +29,28 @@ const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail }) => (
     <div className={styles.trialAreaTitle}>
       <h2 className={styles.trialPanelHeading}>{getLabel('wizard')}</h2>
     </div>
-    <div className={styles.trialWizardBodyWrap}>
-      <p className={detail ? styles.trialWizardGuidanceText : styles.trialWizardMainText}>
-        {wizardMessage}
-      </p>
-      {detail && (
-        <div aria-live="polite" className={styles.trialWizardDetailLive}>
-          <div
-            className={shared.trialSectionBox}
-            style={{
-              fontSize: 'calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1))',
-              lineHeight: 1.375,
-            }}
-          >
-            <p style={{ color: uiColor.textCaption, margin: 0 }}>{detail.title}</p>
-            <p style={{ marginTop: '0.5rem', color: uiColor.textBody, marginBottom: 0 }}>
-              {detail.body}
-            </p>
+    <div className={styles.trialWizardBodySlot}>
+      <ScrollFadeContainer className={styles.trialWizardBodyScroll}>
+        <p className={detail ? styles.trialWizardGuidanceText : styles.trialWizardMainText}>
+          {wizardMessage}
+        </p>
+        {detail && (
+          <div aria-live="polite" className={styles.trialWizardDetailLive}>
+            <div
+              className={shared.trialSectionBox}
+              style={{
+                fontSize: 'calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1))',
+                lineHeight: 1.375,
+              }}
+            >
+              <p style={{ color: uiColor.textCaption, margin: 0 }}>{detail.title}</p>
+              <p style={{ marginTop: '0.5rem', color: uiColor.textBody, marginBottom: 0 }}>
+                {detail.body}
+              </p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </ScrollFadeContainer>
     </div>
   </div>
 );
