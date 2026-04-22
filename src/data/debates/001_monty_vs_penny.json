@@ -743,10 +743,10 @@
           {
             "message": "Select first a sentence that you think has a logical fallacy.",
             "spotlight": {
-              "x": 0.02,
-              "y": 0.1,
-              "width": 0.52,
-              "height": 0.8
+              "x": 0.08,
+              "y": 0.5,
+              "width": 0.46,
+              "height": 0.17
             },
             "modal": {
               "x": 0.6,
@@ -758,9 +758,9 @@
           {
             "message": "You are spotting the false dilemma fallacy on the selected sentence, click the button 'Spot Fallacies' to submit your guess.",
             "spotlight": {
-              "x": 0.55,
+              "x": 0.54,
               "y": 0.2,
-              "width": 0.5,
+              "width": 0.2,
               "height": 0.3
             },
             "modal": {
@@ -773,16 +773,49 @@
           {
             "message": "Let's click 'Spot Fallacies' to submit your guess.",
             "spotlight": {
-              "x": 0.72,
-              "y": 0.77,
+              "x": 0.715,
+              "y": 0.78,
               "width": 0.18,
               "height": 0.1
             },
             "modal": {
-              "x": 0.05,
+              "x": 0.15,
+              "y": 0.3,
+              "width": 0.35,
+              "height": 0.5
+            }
+          },
+          {
+            "message": "Good job! You have spotted the false dilemma fallacy on the selected sentence. But it seems there is still more.",
+            "modal": {
+              "x": 0.6,
               "y": 0.2,
               "width": 0.35,
               "height": 0.5
+            }
+          },
+          {
+            "message": "You generally have 3 attempts to spot the logical fallacies in the whole statement.",
+            "modal": {
+              "x": 0.6,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.5
+            }
+          },
+          {
+            "message": "Although you can try all the attempts in a row, we will do that in a second moment, let's exit for now.",
+            "modal": {
+              "x": 0.6,
+              "y": 0.3,
+              "width": 0.35,
+              "height": 0.5
+            },
+            "spotlight": {
+              "x": 0.848,
+              "y": 0.12,
+              "width": 0.05,
+              "height": 0.07
             }
           }
         ]
