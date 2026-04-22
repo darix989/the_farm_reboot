@@ -66,6 +66,40 @@
   }
 }
 
+/* Cyan pulse traced around the spotlight hole. The element itself is
+   click-through (pointer-events: none) and sits above the shutter panes so
+   the outer box-shadow blends into the dimmed area. Inner + outer shadows
+   ramp together so the rim reads as "alive" without altering the hole's
+   geometry. */
+@keyframes tutorial-spotlight-glow {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 0 0 1px var(--ui-color-accent-glow),
+      0 0 16px 2px var(--ui-color-accent-glow);
+  }
+
+  50% {
+    box-shadow:
+      inset 0 0 0 2px var(--ui-color-accent),
+      0 0 36px 10px var(--ui-color-accent-glow);
+  }
+}
+
+.spotlightGlow {
+  position: fixed;
+
+  /* Above shutters (z-index: 0) so the outer glow paints over the dim overlay,
+     below the dialog (z-index: 20001) so the modal still sits on top. */
+  z-index: 2;
+  pointer-events: none;
+  touch-action: none;
+  background: transparent;
+  border-radius: 0.25rem;
+  animation: tutorial-spotlight-glow 2.4s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
 /* Cyan pulse on the modal border: amplitude of the outer glow and the
    border tint ramp together so the edge reads as "alive" without shifting
    the dialog's size or layout. Uses the project's accent tokens. */
@@ -126,6 +160,13 @@
       0 24px 64px var(--ui-color-shadow-deep),
       0 0 0 1px var(--ui-color-accent),
       0 0 24px 4px var(--ui-color-accent-glow);
+  }
+
+  .spotlightGlow {
+    animation: none;
+    box-shadow:
+      inset 0 0 0 2px var(--ui-color-accent),
+      0 0 24px 6px var(--ui-color-accent-glow);
   }
 }
 
