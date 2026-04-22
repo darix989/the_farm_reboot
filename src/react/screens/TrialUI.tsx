@@ -45,53 +45,35 @@ interface TrialUIProps {
   debate: DebateScenarioJson;
 }
 
-function sameIntroTutorialStepMessages(
-  a: readonly { message: string }[],
-  b: readonly { message: string }[],
-): boolean {
-  if (a.length !== b.length) return false;
-  return a.every((step, i) => step.message === b[i]?.message);
-}
-
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, FallacyGuessSession>>(new Map());
   const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
     () => new Set(),
   );
   const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
-  const [introTutorialDone, setIntroTutorialDone] = useState(false);
   const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds);
 
-  // Opens scenario-defined tutorial overlays in response to bus events —
-  // complements `introTutorial`, which still runs once at `debate_intro`.
+  // Opens scenario-defined tutorial overlays in response to bus events,
+  // including the onboarding overlay wired to `introduction:start`.
   useScenarioTutorials(debate.tutorials);
+
+  // While any tutorial overlay is visible, we gate the `debate_intro` Continue
+  // button and hide the intro body in the wizard panel — the same treatment the
+  // legacy `introTutorial` field used to get.
+  const isTutorialOpen = useTutorialStore((s) => s.isOpen);
 
   useEffect(() => {
     setIntroSummaryOpen(false);
-    setIntroTutorialDone(false);
     useTutorialStore.getState().resetTutorial();
   }, [debate.id]);
 
+  // Emit `introduction:start` once per scenario when we enter `debate_intro`.
+  // `useScenarioTutorials` listens for this and opens any tutorial entry whose
+  // `trigger.event === 'introduction:start'` matches.
   useEffect(() => {
     if (wf.gamePhase !== 'debate_intro') return;
-    const spec = debate.introTutorial;
-    if (!spec?.steps?.length) return;
-    if (introTutorialDone) return;
-
-    const store = useTutorialStore.getState();
-    if (store.isOpen && sameIntroTutorialStepMessages(store.steps, spec.steps)) {
-      return;
-    }
-
-    store.openTutorial({
-      steps: spec.steps.map((step) => ({
-        message: step.message,
-        spotlight: step.spotlight,
-        modal: step.modal,
-      })),
-      onComplete: () => setIntroTutorialDone(true),
-    });
-  }, [wf.gamePhase, debate.introTutorial, introTutorialDone]);
+    debateEventBus.emit('introduction:start', { debateId: debate.id });
+  }, [wf.gamePhase, debate.id]);
 
   useEffect(() => {
     setRevealedLockedOptionIds(new Set());
@@ -336,7 +318,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
     switch (wf.gamePhase) {
       case 'debate_intro': {
-        const introGated = Boolean(debate.introTutorial) && !introTutorialDone;
+        const introGated = isTutorialOpen;
         submitLabel = getLabel('continue');
         submitDisabled = introGated;
         onSubmit = introGated
@@ -406,8 +388,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     wf.selectedOption,
     wf.currentRound,
     wf.currentPlayerRound,
-    debate.introTutorial,
-    introTutorialDone,
+    isTutorialOpen,
   ]);
 
   const modalSpeakerName = useMemo(() => {
@@ -428,7 +409,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_intro': {
         const intro = debate.introduction?.trim();
         if (!intro) return null;
-        if (debate.introTutorial && !introTutorialDone) {
+        if (isTutorialOpen) {
           return null;
         }
         return { title: getLabel('wizardDetailIntroduction'), body: intro };
@@ -511,7 +492,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     wf.totalScore,
     debate,
     fallacyGuesses,
-    introTutorialDone,
+    isTutorialOpen,
   ]);
 
   return (

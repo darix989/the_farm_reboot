@@ -71,8 +71,7 @@ Implementation split:
 | `characters` | `Record<string, string>?` | Maps a `speakerId` to a display name; falls back to capitalising the id. |
 | `logicalFallacies` | `LogicalFallacy[]` | Master catalogue of all fallacies usable in this scenario. Displayed in the analysis modal's fallacy picker. |
 | `rounds` | `RoundEntry[]` | Ordered list of NPC and player turns (see below). |
-| `introTutorial` | `DebateTutorialJson?` | Overlay shown once at `debate_intro`, before the intro summary modal. Legacy path — runs on a dedicated effect, not through the bus. |
-| `tutorials` | `DebateScenarioTutorialEntry[]?` | Bus-driven overlays triggered by specific `EventTrigger` emissions with optional payload filters. See "Scenario tutorials" below. |
+| `tutorials` | `DebateScenarioTutorialEntry[]?` | Bus-driven overlays triggered by specific `EventTrigger` emissions with optional payload filters. See "Scenario tutorials" below. The onboarding overlay that used to live on `introTutorial` is now just an entry here triggered by `introduction:start`. |
 
 ---
 
@@ -237,6 +236,7 @@ A compile-time assertion (`_AssertKeysMatch`) keeps `EventTrigger` and `DebateEv
 
 | Event | Payload | Emitted from |
 |-------|---------|--------------|
+| `introduction:start` | `IntroductionStartPayload` | `TrialUI` — fires once per scenario when the `debate_intro` phase begins. Drives the onboarding tutorial overlay via `scenario.tutorials`. |
 | `round:start` / `round:end` | `RoundLifecyclePayload` | `useTrialRoundWorkflow` — on `currentRoundIndex` / `gamePhase` transitions, including the step into `debate_complete`. |
 | `interactive:continue` | `InteractiveContinuePayload` | `TrialUI` — the Continue footer in `debate_intro`, `npc_speaking`, `npc_responding`. |
 | `interactive:confirm` | `InteractiveConfirmPayload` | `TrialUI` — the Confirm footer in `player_choosing` / `player_confirming`. |
@@ -378,7 +378,7 @@ Called from `TrialUI`. It subscribes once per unique event referenced in the tut
 
 - **Fires once per scenario run.** After an entry fires, its dedup key (either `entry.id` or `__idx_<n>`) is stored in a ref-backed `Set` that lives for the hook's mount. Swapping to a different `tutorials` reference (e.g. loading another scenario) resets the set.
 - **First match wins per emission.** If several entries target the same event and all pass their `where` filters, only the first in author order opens.
-- **Does not stomp an open overlay.** If any tutorial is already on screen (including the intro tutorial), matches are dropped rather than queued.
+- **Does not stomp an open overlay.** If any tutorial is already on screen, matches are dropped rather than queued.
 - **No duplicate subscriptions.** One bus listener per unique `event` name, installed on mount and torn down on unmount.
 
 ### Authoring example
@@ -409,9 +409,9 @@ Called from `TrialUI`. It subscribes once per unique event referenced in the tut
 ]
 ```
 
-### `introTutorial` vs `tutorials`
+### Onboarding tutorial (`introduction:start`)
 
-`introTutorial` still runs once at `debate_intro` via a dedicated effect in `TrialUI` — it predates the bus and is kept on its own code path because no bus event fires during the intro phase. Every other tutorial moment should live under `tutorials`. Both can coexist on the same scenario without special handling.
+The onboarding overlay that used to live on a dedicated `introTutorial` field is now authored as a regular `tutorials` entry with `trigger.event === 'introduction:start'`. `TrialUI` emits `introduction:start` (with the scenario id as payload) once per scenario when the `debate_intro` phase begins, and `useScenarioTutorials` opens the matching entry via `useTutorialStore`. While any tutorial overlay is open during `debate_intro`, the Continue footer is disabled and the wizard panel hides the intro body — the same gating that was previously tied to the legacy `introTutorial` field.
 
 ### Gotcha: emits that trigger tutorials run synchronously
 

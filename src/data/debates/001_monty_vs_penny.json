@@ -1,28 +1,6 @@
 {
   "id": "debate-apple-surplus",
   "introduction": "The north orchard has produced a massive surplus of apples. Mayor Monty (the Pig) argues that either the pigs eat them all immediately or the farm will be overrun by a plague of fruit flies. As Penny the Goat, you must show the farm that there are other ways to handle the harvest.",
-  "introTutorial": {
-    "steps": [
-      {
-        "message": "This debate runs for ten rounds, alternating between your side and your opponent's. Whenever it's your turn, choose the statement you believe will work best—the moderator will judge how convincing it is.",
-        "modal": {
-          "x": 0.35,
-          "y": 0.35,
-          "width": 0.35,
-          "height": 0.5
-        }
-      },
-      {
-        "message": "Watch for logical fallacies in your opponent's lines. Spot them in the analysis view, that can unlock certain statements!",
-        "modal": {
-          "x": 0.35,
-          "y": 0.35,
-          "width": 0.35,
-          "height": 0.5
-        }
-      }
-    ]
-  },
   "playerSide": "opposition",
   "characters": {
     "monty": "Mayor Monty",
@@ -696,6 +674,32 @@
     }
   ],
   "tutorials": [
+    {
+      "id": "intro",
+      "trigger": { "event": "introduction:start" },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This debate runs for ten rounds, alternating between your side and your opponent's. Whenever it's your turn, choose the statement you believe will work best—the moderator will judge how convincing it is.",
+            "modal": {
+              "x": 0.35,
+              "y": 0.35,
+              "width": 0.35,
+              "height": 0.5
+            }
+          },
+          {
+            "message": "Watch for logical fallacies in your opponent's lines. Spot them in the analysis view, that can unlock certain statements!",
+            "modal": {
+              "x": 0.35,
+              "y": 0.35,
+              "width": 0.35,
+              "height": 0.5
+            }
+          }
+        ]
+      }
+    },
     {
       "id": "analysis-select-sentence",
       "trigger": { "event": "analysis:open" },

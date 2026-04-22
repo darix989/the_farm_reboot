@@ -154,6 +154,7 @@ export interface LogicalFallaciesListJson {
 }
 
 export type EventTrigger =
+  | 'introduction:start'
   | 'round:start'
   | 'round:end'
   | 'interactive:statement_selected'
@@ -207,7 +208,7 @@ export interface DebateTutorialStep {
   spotlight?: DebateTutorialArea;
 }
 
-/** Shown once at trial start in `debate_intro`, before the scenario introduction text. */
+/** Ordered list of steps shown in a tutorial overlay. */
 export interface DebateTutorialJson {
   /** At least one step; multiple steps use Back / Continue / Got it in the tutorial overlay. */
   steps: DebateTutorialStep[];
@@ -240,8 +241,6 @@ export interface DebateScenarioJson {
   id: string;
   /** Brief summary of what the debate is about. */
   introduction?: string;
-  /** Optional onboarding spotlight tutorial before `introduction` is shown. */
-  introTutorial?: DebateTutorialJson;
   playerSide: Side;
   /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
   characters?: Record<string, string>;
@@ -250,8 +249,9 @@ export interface DebateScenarioJson {
   rounds: RoundEntry[];
   /**
    * Overlay tutorials wired to specific debate events via the typed event bus.
-   * See `DebateScenarioTutorialEntry`. Separate from `introTutorial`, which still
-   * runs once at `debate_intro`.
+   * See `DebateScenarioTutorialEntry`. The onboarding overlay that used to live
+   * on `introTutorial` is now just a regular entry here, triggered by the
+   * `introduction:start` event that fires when the `debate_intro` phase begins.
    */
   tutorials?: readonly DebateScenarioTutorialEntry[];
 }

@@ -34,6 +34,12 @@ import type { GuessPayload, GuessRecord } from './fallacyGuessTypes';
 /** Identifies which entity inside a debate an analysis action is targeting. */
 export type AnalysisTargetKind = 'npc' | 'player' | 'opponent_prompt' | 'opponent_response';
 
+/** Fired once when the `debate_intro` phase begins for a scenario. */
+export interface IntroductionStartPayload {
+  /** Id of the scenario whose introduction is starting. */
+  debateId: string;
+}
+
 export interface RoundLifecyclePayload {
   roundNumber: number;
   roundId: string;
@@ -127,6 +133,7 @@ export interface AnalysisGuessMaxAttemptsPayload {
 // ---------------------------------------------------------------------------
 
 export interface DebateEventPayloads {
+  'introduction:start': IntroductionStartPayload;
   'round:start': RoundLifecyclePayload;
   'round:end': RoundLifecyclePayload;
   'interactive:statement_selected': InteractiveStatementSelectedPayload;
