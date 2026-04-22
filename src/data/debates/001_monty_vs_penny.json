@@ -701,6 +701,32 @@
       }
     },
     {
+      "id": "round-1-opening-constructive-analyze",
+      "trigger": {
+        "event": "round:start",
+        "where": { "roundId": "round-1" }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Round 1 has the opening constructive of the proposition side. Let's inspect their statement and check if there is something off! Click the Magnifying glass icon to analyze!",
+            "spotlight": {
+              "x": 0.7,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.12
+            },
+            "modal": {
+              "x": 0.325,
+              "y": 0.06,
+              "width": 0.35,
+              "height": 0.48
+            }
+          }
+        ]
+      }
+    },
+    {
       "id": "analysis-select-sentence",
       "trigger": { "event": "analysis:open" },
       "tutorial": {
