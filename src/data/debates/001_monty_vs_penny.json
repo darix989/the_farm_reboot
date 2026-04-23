@@ -727,6 +727,37 @@
       }
     },
     {
+      "id": "round-2-player-your-turn",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundNumber": 2,
+          "kind": "player",
+          "roundId": "round-2"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This is your turn, now you can choose 1 of 3 possible statement to say",
+            "spotlight": {
+              "x": 0.63,
+              "y": 0.6,
+              "width": 0.095,
+              "height": 0.26
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            },
+            "showContinueWithSpotlight": true
+          }
+        ]
+      }
+    },
+    {
       "id": "analysis-select-sentence",
       "trigger": { "event": "analysis:open" },
       "tutorial": {

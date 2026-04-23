@@ -27,6 +27,12 @@ Minimum values for the modal size:
 
 This will guarantee to have 2 lines of text without any scroll.
 
+## Common modal areas
+
+- On game area (top left)
+  - Centered inside the game area:
+    `x: 0.125, y: 0.06, width: 0.4, height: 0.4`
+
 ## Common spotlight areas
 
 - FeedbackPanel:
@@ -57,25 +63,16 @@ This will guarantee to have 2 lines of text without any scroll.
 
 - InteractivePanel:
   - Back and Continue buttons inside InteractivePanel:
-  ```
-  "spotlight": {
-    "x": 0.63,
-    "y": 0.85,
-    "width": 0.34,
-    "height": 0.12
-  ```
+  `x: 0.63, y: 0.85, width: 0.34, height: 0.12`
   - Continue button inside InteractivePanel:
-  ```
-  "spotlight": {
-    "x": 0.805,
-    "y": 0.85,
-    "width": 0.18,
-    "height": 0.12
-  ```
+  `x: 0.805, y: 0.85, width: 0.18, height: 0.12`
   - Options inside InteractivePanel:
+    `x: 0.63, y: 0.6, width: 0.34, height: 0.26`
   - Option A inside InteractivePanel:
+    `x: 0.63, y: 0.6, width: 0.095, height: 0.26`
   - Option B inside InteractivePanel:
+    `x: 0.75, y: 0.6, width: 0.095, height: 0.26`
   - Option C inside InteractivePanel:
+    `x: 0.87, y: 0.6, width: 0.095, height: 0.26`
 - WizardPanel:
   - Whole area inside WizardPanel:
-  
