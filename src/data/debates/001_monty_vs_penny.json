@@ -819,6 +819,12 @@
             "showContinueWithSpotlight": true
           },
           {
+            "artificialInteractions": [
+              {
+                "delayTimeMs": 2000,
+                "action": { "type": "debate_log:scroll_to_top" }
+              }
+            ],
             "message": "Let's try again to find out whether your opponent used a logical fallacy in his statement. Let's reach again the Analyze button of the Round 1",
             "spotlight": {
               "x": 0.87,
