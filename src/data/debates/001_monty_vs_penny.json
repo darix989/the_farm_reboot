@@ -740,7 +740,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "This is your turn, now you can choose 1 of 3 possible statement to say",
+            "message": "This is your turn, now you can choose 1 of 3 possible statement to say in order to convince the moderator about your thesis.",
             "spotlight": {
               "x": 0.63,
               "y": 0.6,
@@ -756,7 +756,70 @@
             "showContinueWithSpotlight": true
           },
           {
-            "message": "Look at the Option C, it looks to be Locked",
+            "message": "For example, if you click on Option A, you will se the whole statement in the Wizard Panel.",
+            "spotlight": {
+              "x": 0.63,
+              "y": 0.6,
+              "width": 0.095,
+              "height": 0.26
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            }
+          },
+          {
+            "message": "See the Wizard Panel, now it has the whole statement of the Option A.",
+            "spotlight": {
+              "x": 0.63,
+              "y": 0.6,
+              "width": 0.095,
+              "height": 0.26
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            },
+            "showContinueWithSpotlight": true
+          },
+          {
+            "message": "Now, let's look again at the Interactive Area: one of the 3 options is locked.",
+            "spotlight": {
+              "x": 0.87,
+              "y": 0.6,
+              "width": 0.095,
+              "height": 0.26
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            },
+            "showContinueWithSpotlight": true
+          },
+          {
+            "message": "An option is locked when you are not considering every information available to you. For example, a logical fallacy used by your opponent.",
+            "spotlight": {
+              "x": 0.87,
+              "y": 0.6,
+              "width": 0.095,
+              "height": 0.26
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            },
+            "showContinueWithSpotlight": true
+          },
+          {
+            "message": "Let's try again to find out whether your opponent used a logical fallacy in his statement. Let's reach again the Analyze button of the Round 1",
             "spotlight": {
               "x": 0.87,
               "y": 0.6,
