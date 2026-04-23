@@ -197,12 +197,29 @@ const TutorialOverlay: React.FC = () => {
   // `stepForward` / `finishTutorial` below emit them synchronously, so without
   // this guard we would recursively advance/finish on our own emission before
   // React reruns this effect with the new `stepIndex`.
+  //
+  // Stale-listener guard (see `armedFor` below): a single user click can emit
+  // several debate events synchronously (e.g. `analysis:guess_submitted` →
+  // `analysis:guess_partially_correct`). Once the first event auto-concludes
+  // the current tutorial, the React effect cleanup hasn't run yet, so this
+  // listener is still live when the second event arrives. Without a guard it
+  // would re-enter `finishTutorial` / `stepForward` against whatever tutorial
+  // / step the store has since moved to — which manifests as a chained
+  // `tutorial:end → openTutorial(...)` tutorial immediately closing itself.
   useEffect(() => {
     if (!autoConcludeOnEvent) return;
+    const armedFor = {
+      tutorialId: useTutorialStore.getState().tutorialId,
+      stepIndex,
+    };
     const unsubscribe = debateEventBus.onAny((event) => {
       if (event === 'tutorial:start' || event === 'tutorial:next' || event === 'tutorial:end') {
         return;
       }
+      const current = useTutorialStore.getState();
+      if (!current.isOpen) return;
+      if (current.tutorialId !== armedFor.tutorialId) return;
+      if (current.stepIndex !== armedFor.stepIndex) return;
       if (isSingle || isLast) {
         finishTutorial();
       } else {
