@@ -8,12 +8,19 @@ interface AnalyzeButtonProps {
   onClick: () => void;
   guessState?: 'correct' | 'partial' | 'wrong' | null;
   title?: string;
+  /**
+   * Optional debate-log round id the button belongs to. Emitted as
+   * `data-debate-log-analyze-round-id` so tutorial `artificialInteractions`
+   * can synthetically click the analyze button for a specific round.
+   */
+  dataRoundId?: string;
 }
 
 const AnalyzeButton: React.FC<AnalyzeButtonProps> = ({
   onClick,
   guessState,
   title = getLabel('analyzeThisRound'),
+  dataRoundId,
 }) => (
   <button
     type="button"
@@ -24,6 +31,7 @@ const AnalyzeButton: React.FC<AnalyzeButtonProps> = ({
     })}
     title={title}
     onClick={onClick}
+    data-debate-log-analyze-round-id={dataRoundId}
   >
     <img src={magnifyingIcon} alt={getLabel('analyzeImageAlt')} />
   </button>

@@ -199,6 +199,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
             aria-expanded={!isUpcoming && effectiveExpanded}
             aria-controls={bodyId}
             disabled={isUpcoming}
+            data-debate-log-toggle-expand-round-id={round.id}
             onClick={() => {
               // `effectiveExpanded` reflects the state before the toggle fires, so the
               // event we emit is the *intended transition*: if it is currently expanded
@@ -247,6 +248,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                       <AnalyzeButton
                         guessState={getNpcGuessState(round.id)}
                         title={getLabel('analyzeThisStatement')}
+                        dataRoundId={round.id}
                         onClick={() => {
                           debateEventBus.emit('debate_log:round:analyze', {
                             roundNumber: round.roundNumber,
@@ -284,6 +286,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         <AnalyzeButton
                           guessState={getNpcGuessState(round.opponentPrompt.id)}
                           title={getLabel('analyzeThisQuestion')}
+                          dataRoundId={round.id}
                           onClick={() => {
                             debateEventBus.emit('debate_log:round:analyze', {
                               roundNumber: round.roundNumber,
@@ -324,6 +327,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                       <AnalyzeButton
                         guessState={getNpcGuessState(chosenOption.id)}
                         title={getLabel('analyzeThisStatement')}
+                        dataRoundId={round.id}
                         onClick={() => {
                           debateEventBus.emit('debate_log:round:analyze', {
                             roundNumber: round.roundNumber,
@@ -365,6 +369,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         <AnalyzeButton
                           guessState={getNpcGuessState(displayResponse.statement.id)}
                           title={getLabel('analyzeThisResponse')}
+                          dataRoundId={round.id}
                           onClick={() => {
                             debateEventBus.emit('debate_log:round:analyze', {
                               roundNumber: round.roundNumber,

@@ -83,6 +83,7 @@ export function useScenarioTutorials(
               spotlight: step.spotlight,
               modal: step.modal,
               showContinueWithSpotlight: step.showContinueWithSpotlight,
+              artificialInteractions: step.artificialInteractions,
             })),
           });
           // First match wins per emission, even if several entries would match.

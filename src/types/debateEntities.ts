@@ -210,6 +210,35 @@ export type DebateTutorialArea = {
   height: number;
 };
 
+/**
+ * Discriminated action performed by a synthetic UI interaction scheduled from
+ * a tutorial step. Each action maps to a single concrete gesture on the
+ * underlying debate UI (scroll a container, click a button).
+ *
+ * New action types should stay narrowly scoped — one gesture per variant —
+ * so tutorial authors can compose sequences deterministically from JSON.
+ */
+export type TutorialArtificialInteractionAction =
+  /** Scroll the debate log's scrollable content to the top. */
+  | { type: 'debate_log:scroll_to_top' }
+  /** Click the shrink / expand toggle on a specific debate-log round card. */
+  | { type: 'debate_log:round:toggle_expand'; roundId: string }
+  /** Click the analyze (magnifying-glass) button on a specific debate-log round card. */
+  | { type: 'debate_log:round:analyze'; roundId: string };
+
+/**
+ * One artificial UI interaction fired automatically while a tutorial step is
+ * visible. Interactions run in author order; each one optionally waits for
+ * `delayTimeMs` before executing, so authors can space them out to let the UI
+ * settle (e.g. scroll animation finishing before a click).
+ */
+export interface TutorialArtificialInteraction {
+  /** Milliseconds to wait before executing this interaction. Defaults to 0 when omitted. */
+  delayTimeMs?: number;
+  /** The gesture to perform. */
+  action: TutorialArtificialInteractionAction;
+}
+
 /** One panel in the intro tutorial; optional spotlight defaults to full stage when omitted. */
 export interface DebateTutorialStep {
   modal?: DebateTutorialArea;
@@ -227,6 +256,17 @@ export interface DebateTutorialStep {
    * Ignored when the step has no spotlight (or a full-stage spotlight).
    */
   showContinueWithSpotlight?: boolean;
+  /**
+   * Optional ordered sequence of synthetic UI interactions fired while this
+   * step is visible. Each entry's `delayTimeMs` is measured from the moment
+   * the step becomes active (delays are cumulative across the list, so
+   * entry N fires at `sum(delayTimeMs[0..N])`).
+   *
+   * Interactions are scheduled once per step activation and are cancelled if
+   * the step changes, the tutorial closes, or the overlay unmounts before
+   * they fire.
+   */
+  artificialInteractions?: readonly TutorialArtificialInteraction[];
 }
 
 /** Ordered list of steps shown in a tutorial overlay. */

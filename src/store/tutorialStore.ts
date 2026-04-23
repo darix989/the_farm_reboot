@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { DebateTutorialArea } from '../types/debateEntities';
+import type { DebateTutorialArea, TutorialArtificialInteraction } from '../types/debateEntities';
 import { FULL_STAGE_SPOTLIGHT_RATIOS } from '../react/tutorial/spotlightRect';
 import { debateEventBus } from '../react/trial/utils/debateEventBus';
 
@@ -17,6 +17,13 @@ export interface TutorialStepResolved {
    * auto-conclude on the next `EventTrigger` fired from the debate event bus.
    */
   showContinueWithSpotlight?: boolean;
+  /**
+   * Ordered sequence of synthetic UI interactions to fire while this step is
+   * active. Consumed by `TutorialOverlay`, which schedules each entry's
+   * `delayTimeMs` (cumulative) and cancels pending timers when the step
+   * changes or the tutorial closes.
+   */
+  artificialInteractions?: readonly TutorialArtificialInteraction[];
 }
 
 export type TutorialStepInput = {
@@ -24,6 +31,7 @@ export type TutorialStepInput = {
   spotlight?: DebateTutorialArea;
   modal?: DebateTutorialArea;
   showContinueWithSpotlight?: boolean;
+  artificialInteractions?: readonly TutorialArtificialInteraction[];
 };
 
 export interface OpenTutorialPayload {
@@ -77,6 +85,7 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
         spotlightSpec: step.spotlight ?? FULL_STAGE_SPOTLIGHT_RATIOS,
         modalSpec: step.modal,
         showContinueWithSpotlight: step.showContinueWithSpotlight,
+        artificialInteractions: step.artificialInteractions,
       }))
       .filter((s) => s.message.length > 0);
     if (steps.length === 0) return;

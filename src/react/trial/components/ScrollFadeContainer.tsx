@@ -14,6 +14,13 @@ interface ScrollFadeContainerProps {
   isModal?: boolean;
   /** Opt out of the tutorial scroll-lock. Set on the overlay's own dialog body so it stays scrollable while every other ScrollFadeContainer is frozen. */
   ignoreTutorialScrollLock?: boolean;
+  /**
+   * Optional stable identifier emitted as `data-scroll-key` on the inner
+   * scrollable div. Used by tutorial `artificialInteractions` and other
+   * external automation to locate the right scroll container without
+   * relying on hashed CSS-module class names.
+   */
+  scrollElementDataKey?: string;
   children: React.ReactNode;
 }
 
@@ -31,6 +38,7 @@ const ScrollFadeContainer: React.FC<ScrollFadeContainerProps> = ({
   className,
   isModal,
   ignoreTutorialScrollLock,
+  scrollElementDataKey,
   children,
 }) => {
   const internalRef = useRef<HTMLDivElement>(null);
@@ -51,6 +59,7 @@ const ScrollFadeContainer: React.FC<ScrollFadeContainerProps> = ({
         className={className}
         ref={activeRef}
         style={locked ? { overflow: 'hidden' } : undefined}
+        data-scroll-key={scrollElementDataKey}
       >
         {children}
       </div>

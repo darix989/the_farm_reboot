@@ -14,6 +14,7 @@ import panelStyles from '../trial/panels/TrialPanels.module.scss';
 import shared from '../trial/trialShared.module.scss';
 import getLabel from '../../data/labels';
 import { debateEventBus } from '../trial/utils/debateEventBus';
+import { scheduleArtificialInteractions } from './artificialInteractions';
 import styles from './TutorialOverlay.module.scss';
 
 declare global {
@@ -206,6 +207,18 @@ const TutorialOverlay: React.FC = () => {
   // would re-enter `finishTutorial` / `stepForward` against whatever tutorial
   // / step the store has since moved to — which manifests as a chained
   // `tutorial:end → openTutorial(...)` tutorial immediately closing itself.
+  // Schedule the step's artificial interactions (scroll / click the debate log)
+  // when the step becomes active. Cumulative `delayTimeMs` values are honored by
+  // `scheduleArtificialInteractions`. The cleanup clears every still-pending
+  // timer on step change, tutorial close, or overlay unmount so a late timer
+  // can never fire against the wrong step or a dismounted UI.
+  useEffect(() => {
+    if (!isOpen || !step) return;
+    const interactions = step.artificialInteractions;
+    if (!interactions || interactions.length === 0) return;
+    return scheduleArtificialInteractions(interactions);
+  }, [isOpen, step, stepIndex]);
+
   useEffect(() => {
     if (!autoConcludeOnEvent) return;
     const armedFor = {

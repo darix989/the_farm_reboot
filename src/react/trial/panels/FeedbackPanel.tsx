@@ -150,7 +150,13 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
         </p>
       </div>
 
-      <ScrollFadeContainer scrollRef={feedbackScrollRef} className={styles.trialFeedbackScroll}>
+      <ScrollFadeContainer
+        scrollRef={feedbackScrollRef}
+        className={styles.trialFeedbackScroll}
+        // Stable hook for tutorial `artificialInteractions` that target the
+        // debate log scroll container (e.g. `debate_log:scroll_to_top`).
+        scrollElementDataKey="debateLogScroll"
+      >
         <div className={styles.debateLogRoundList}>
           {wf.scenario.introduction?.trim() && (
             <IntroDebateLogCard
