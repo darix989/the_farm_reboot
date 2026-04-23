@@ -21,13 +21,13 @@ it will drift the moment the window aspect ratio stops being 16:9.
 ## Size guidelines
 
 Minimum values for the modal size:
+
 - `width` >= `0.33`;
 - `height` >= `0.33`
 
 This will guarantee to have 2 lines of text without any scroll.
 
 ## Common spotlight areas
-
 
 - FeedbackPanel:
   - Analyze button of the current round inside FeedbackPanel:
@@ -57,5 +57,25 @@ This will guarantee to have 2 lines of text without any scroll.
 
 - InteractivePanel:
   - Back and Continue buttons inside InteractivePanel:
+  ```
+  "spotlight": {
+    "x": 0.63,
+    "y": 0.85,
+    "width": 0.34,
+    "height": 0.12
+  ```
+  - Continue button inside InteractivePanel:
+  ```
+  "spotlight": {
+    "x": 0.805,
+    "y": 0.85,
+    "width": 0.18,
+    "height": 0.12
+  ```
+  - Options inside InteractivePanel:
+  - Option A inside InteractivePanel:
+  - Option B inside InteractivePanel:
+  - Option C inside InteractivePanel:
 - WizardPanel:
   - Whole area inside WizardPanel:
+  

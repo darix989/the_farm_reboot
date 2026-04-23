@@ -838,6 +838,32 @@
           }
         ]
       }
+    },
+    {
+      "id": "analysis-next-round-continue",
+      "trigger": {
+        "event": "tutorial:end",
+        "where": { "tutorialId": "analysis-post-submit-guess" }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Let's go to the next round",
+            "spotlight": {
+              "x": 0.805,
+              "y": 0.85,
+              "width": 0.18,
+              "height": 0.12
+            },
+            "modal": {
+              "x": 0.05,
+              "y": 0.25,
+              "width": 0.35,
+              "height": 0.45
+            }
+          }
+        ]
+      }
     }
   ]
 }
