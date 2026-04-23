@@ -741,12 +741,12 @@
             }
           },
           {
-            "message": "Select first a sentence that you think has a logical fallacy.",
+            "message": "First, select a sentence that you think has a logical fallacy.",
             "spotlight": {
-              "x": 0.08,
-              "y": 0.5,
-              "width": 0.46,
-              "height": 0.17
+              "x": 0.117,
+              "y": 0.52,
+              "width": 0.41,
+              "height": 0.16
             },
             "modal": {
               "x": 0.6,
