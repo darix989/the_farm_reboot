@@ -784,7 +784,18 @@
               "width": 0.35,
               "height": 0.5
             }
-          },
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-post-submit-guess",
+      "trigger": {
+        "event": "tutorial:end",
+        "where": { "tutorialId": "analysis-select-sentence" }
+      },
+      "tutorial": {
+        "steps": [
           {
             "message": "Good job! You have spotted the false dilemma fallacy on the selected sentence. But it seems there is still more.",
             "modal": {
