@@ -200,7 +200,9 @@ $tutorial-modal-glow: rgba(22, 163, 74, 0.45);
   overflow-wrap: anywhere;
 }
 
-/* Shown in place of the primary button when a spotlighted step auto-concludes on the next event. */
+/* Shown in place of the primary button when a spotlighted step auto-concludes on the next event.
+   Portal is outside `.react-root`; match `trialWizardGuidanceText` so size tracks `--ui-font-subtitle`
+   and `--ui-trial-panel-font-scale` (larger on narrow viewports). */
 .spotlightHint {
   flex-shrink: 0;
   margin: 0;
@@ -208,8 +210,10 @@ $tutorial-modal-glow: rgba(22, 163, 74, 0.45);
   background: var(--ui-color-overlay-medium);
   border-bottom: 1px solid var(--ui-color-border-muted);
   color: var(--ui-color-white);
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.625;
   font-style: italic;
-  text-align: center;
+  text-align: left;
   opacity: 0.9;
 }
 
