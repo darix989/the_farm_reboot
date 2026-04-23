@@ -107,11 +107,11 @@ function SpotlightShutters({
 }
 
 /**
- * Pulsing cyan glow traced around the spotlight hole. Rendered as a separate,
+ * Pulsing amber glow traced around the spotlight hole. Rendered as a separate,
  * click-through overlay so it can sit above the shutter panes (and therefore
  * blend its outer glow into the dimmed area) without interfering with clicks
- * on the underlying UI. The ring picks up the project's accent tokens and
- * mirrors the dialog's keyframes for visual cohesion.
+ * on the underlying UI. Uses tutorial-only colors (not the cyan UI accent) so
+ * focused controls are not mistaken for the tutorial chrome.
  */
 function SpotlightGlow({
   spotlight,

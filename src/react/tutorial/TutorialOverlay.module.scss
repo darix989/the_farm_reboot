@@ -1,5 +1,13 @@
 @use '../uiTypography' as ui-typography;
 
+/* Warm amber spotlight + violet modal rim: distinct from `--ui-color-accent` (cyan) on focused controls. */
+$tutorial-spotlight-ring: #f0c254;
+$tutorial-spotlight-ring-strong: #ffe08a;
+$tutorial-spotlight-glow: rgba(240, 194, 84, 0.5);
+$tutorial-modal-border: #a78bfa;
+$tutorial-modal-border-strong: #c9b8fc;
+$tutorial-modal-glow: rgba(167, 139, 250, 0.45);
+
 .root {
   position: fixed;
   inset: 0;
@@ -66,7 +74,7 @@
   }
 }
 
-/* Cyan pulse traced around the spotlight hole. The element itself is
+/* Amber pulse traced around the spotlight hole. The element itself is
    click-through (pointer-events: none) and sits above the shutter panes so
    the outer box-shadow blends into the dimmed area. Inner + outer shadows
    ramp together so the rim reads as "alive" without altering the hole's
@@ -75,14 +83,14 @@
   0%,
   100% {
     box-shadow:
-      inset 0 0 0 1px var(--ui-color-accent-glow),
-      0 0 16px 2px var(--ui-color-accent-glow);
+      inset 0 0 0 1px $tutorial-spotlight-glow,
+      0 0 16px 2px $tutorial-spotlight-glow;
   }
 
   50% {
     box-shadow:
-      inset 0 0 0 2px var(--ui-color-accent),
-      0 0 36px 10px var(--ui-color-accent-glow);
+      inset 0 0 0 2px $tutorial-spotlight-ring-strong,
+      0 0 36px 10px $tutorial-spotlight-glow;
   }
 }
 
@@ -100,9 +108,9 @@
   will-change: box-shadow;
 }
 
-/* Cyan pulse on the modal border: amplitude of the outer glow and the
+/* Violet pulse on the modal border: amplitude of the outer glow and the
    border tint ramp together so the edge reads as "alive" without shifting
-   the dialog's size or layout. Uses the project's accent tokens. */
+   the dialog's size or layout. */
 @keyframes tutorial-dialog-glow {
   0%,
   100% {
@@ -110,15 +118,15 @@
     box-shadow:
       0 24px 64px var(--ui-color-shadow-deep),
       0 0 0 1px var(--ui-color-border-faint),
-      0 0 14px 0 var(--ui-color-accent-glow);
+      0 0 14px 0 $tutorial-modal-glow;
   }
 
   50% {
-    border-color: var(--ui-color-accent);
+    border-color: $tutorial-modal-border-strong;
     box-shadow:
       0 24px 64px var(--ui-color-shadow-deep),
-      0 0 0 1px var(--ui-color-accent),
-      0 0 32px 6px var(--ui-color-accent-glow);
+      0 0 0 1px $tutorial-modal-border,
+      0 0 32px 6px $tutorial-modal-glow;
   }
 }
 
@@ -155,18 +163,18 @@
 @media (prefers-reduced-motion: reduce) {
   .dialog {
     animation: none;
-    border-color: var(--ui-color-accent);
+    border-color: $tutorial-modal-border-strong;
     box-shadow:
       0 24px 64px var(--ui-color-shadow-deep),
-      0 0 0 1px var(--ui-color-accent),
-      0 0 24px 4px var(--ui-color-accent-glow);
+      0 0 0 1px $tutorial-modal-border,
+      0 0 24px 4px $tutorial-modal-glow;
   }
 
   .spotlightGlow {
     animation: none;
     box-shadow:
-      inset 0 0 0 2px var(--ui-color-accent),
-      0 0 24px 6px var(--ui-color-accent-glow);
+      inset 0 0 0 2px $tutorial-spotlight-ring,
+      0 0 24px 6px $tutorial-spotlight-glow;
   }
 }
 
