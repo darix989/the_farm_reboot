@@ -1,12 +1,12 @@
 @use '../uiTypography' as ui-typography;
 
-/* Warm amber spotlight + violet modal rim: distinct from `--ui-color-accent` (cyan) on focused controls. */
-$tutorial-spotlight-ring: #f0c254;
-$tutorial-spotlight-ring-strong: #ffe08a;
-$tutorial-spotlight-glow: rgba(240, 194, 84, 0.5);
-$tutorial-modal-border: #a78bfa;
-$tutorial-modal-border-strong: #c9b8fc;
-$tutorial-modal-glow: rgba(167, 139, 250, 0.45);
+/* Green spotlight + green modal rim: distinct from `--ui-color-accent` (cyan) on focused controls. */
+$tutorial-spotlight-ring: #22c55e;
+$tutorial-spotlight-ring-strong: #4ade80;
+$tutorial-spotlight-glow: rgba(34, 197, 94, 0.5);
+$tutorial-modal-border: #16a34a;
+$tutorial-modal-border-strong: #86efac;
+$tutorial-modal-glow: rgba(22, 163, 74, 0.45);
 
 .root {
   position: fixed;
