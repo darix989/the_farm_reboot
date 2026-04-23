@@ -246,9 +246,10 @@ const TutorialOverlay: React.FC = () => {
       }
     : step.spotlightSpec;
   const spotlightPx = resolveStageSpotlightToViewport(effectiveSpotlightSpec);
-  const blockClicksBehindModal =
-    isFullStageSpotlight(effectiveSpotlightSpec) ||
-    spotlightCoversEntireViewport(spotlightPx, viewport.w, viewport.h);
+  const spotlightLeavesViewportHole =
+    !isFullStageSpotlight(effectiveSpotlightSpec) &&
+    !spotlightCoversEntireViewport(spotlightPx, viewport.w, viewport.h);
+  const blockClicksBehindModal = !spotlightLeavesViewportHole || step.showContinueWithSpotlight;
   // Merge dev-time `window.modalOverride` (partial) over the step's `modalSpec`
   // when present. If the step has no `modalSpec`, the override only takes effect
   // when all four fractions are supplied — otherwise we fall through to the
@@ -352,7 +353,7 @@ const TutorialOverlay: React.FC = () => {
   const ui = (
     <div className={styles.root} role="presentation">
       <SpotlightShutters spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
-      {!blockClicksBehindModal ? (
+      {spotlightLeavesViewportHole ? (
         <SpotlightGlow spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
       ) : null}
       {blockClicksBehindModal ? (
