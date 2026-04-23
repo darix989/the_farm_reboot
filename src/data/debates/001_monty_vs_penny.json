@@ -821,7 +821,7 @@
           {
             "artificialInteractions": [
               {
-                "delayTimeMs": 2000,
+                "delayTimeMs": 500,
                 "action": { "type": "debate_log:scroll_to_top" }
               }
             ],
@@ -869,7 +869,7 @@
     },
     {
       "id": "analysis-select-sentence",
-      "trigger": { "event": "analysis:open" },
+      "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 1 } },
       "tutorial": {
         "steps": [
           {

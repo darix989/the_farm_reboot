@@ -61,6 +61,8 @@ interface RoundAnalysisModalProps {
   guessSession: FallacyGuessSession | null;
   onGuess: (payload: GuessPayload) => void;
   onClose: () => void;
+  /** Workflow round from `TrialUI` (null when intro/complete); see `analysis:open` payload. */
+  activeRoundNumber: number | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -887,6 +889,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   guessSession,
   onGuess,
   onClose,
+  activeRoundNumber,
 }) => {
   const [showNoFallaciesConfirm, setShowNoFallaciesConfirm] = useState(false);
   const modalScrollRef = useRef<HTMLDivElement>(null);
@@ -916,13 +919,14 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
     const payload = {
       targetKind: analysisTargetKind,
       targetId: analysisTargetId,
-      roundNumber: analysisRoundNumber,
+      analysisRoundNumber,
+      activeRoundNumber,
     };
     debateEventBus.emit('analysis:open', payload);
     return () => {
       debateEventBus.emit('analysis:close', payload);
     };
-    // Open/close paired once per target key — other fields derive from the same target.
+    // Open/close paired once per target key — `activeRoundNumber` is captured when the target changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [analysisTargetKey]);
 

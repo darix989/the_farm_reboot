@@ -535,6 +535,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           guessSession={activeSession}
           onGuess={handleGuess}
           onClose={() => setAnalysisTarget(null)}
+          activeRoundNumber={fallacyGuessBucketRoundNumber}
         />
       )}
       {introSummaryOpen && wf.gamePhase === 'debate_intro' && (

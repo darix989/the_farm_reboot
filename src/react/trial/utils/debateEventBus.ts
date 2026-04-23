@@ -11,6 +11,12 @@
  *
  * Usage:
  *   debateEventBus.emit('round:start', { roundNumber: 1, roundId: 'r1', kind: 'npc', type: 'opening_constructive' });
+ *   debateEventBus.emit('analysis:open', {
+ *     targetKind: 'npc',
+ *     targetId: 'r1',
+ *     analysisRoundNumber: 1,
+ *     activeRoundNumber: 1,
+ *   });
  *
  *   const unsubscribe = debateEventBus.on('analysis:guess_correct', (p) => {
  *     // p is DebateEventPayloads['analysis:guess_correct']
@@ -86,7 +92,13 @@ export interface AnalysisOpenClosePayload {
   targetKind: AnalysisTargetKind;
   /** NPC round id, opponent statement id, or chosen option id depending on targetKind. */
   targetId: string;
-  roundNumber: number;
+  /** `RoundEntry.roundNumber` for the content under analysis. */
+  analysisRoundNumber: number;
+  /**
+   * Workflow round when the modal opens (`TrialUI` / `useTrialRoundWorkflow`), or `null`
+   * when there is no in-play round (e.g. `debate_intro`, `debate_complete`).
+   */
+  activeRoundNumber: number | null;
 }
 
 export interface AnalysisSentenceTogglePayload {

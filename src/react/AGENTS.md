@@ -193,6 +193,8 @@ The panel footer always shows **Back** (enabled only in `player_confirming`) and
 
 A full-screen overlay opened by clicking the magnifying glass button on any history entry. Closed by clicking the backdrop or the ✕ button.
 
+`analysis:open` / `analysis:close` carry **`analysisRoundNumber`** (the `RoundEntry.roundNumber` of the row under inspection) and **`activeRoundNumber`** (workflow round from `TrialUI`, same phase gate as `fallacyGuessBucketRoundNumber`, or `null` during `debate_intro` / `debate_complete`). Tutorials that should run only while the player is still “in” round N should filter on `activeRoundNumber`, not `analysisRoundNumber`, so opening analysis on an older log line during a later round does not match.
+
 ### NPC round view
 
 - Lists each sentence of the NPC's statement as an individual clickable card.
@@ -245,7 +247,7 @@ A compile-time assertion (`_AssertKeysMatch`) keeps `EventTrigger` and `DebateEv
 | `round:recap:open` / `round:recap:close` | `RoundRecapTogglePayload` | `RoundRecapModal` — mount/unmount effect so any dismissal path stays balanced. |
 | `debate_log:round:analyze` | `DebateLogRoundPayload` | `DebateRoundLogCard` — every `AnalyzeButton` click site. |
 | `debate_log:round:shrink` / `debate_log:round:expand` | `DebateLogRoundPayload` | `DebateRoundLogCard` — expand/collapse toggle. |
-| `analysis:open` / `analysis:close` | `AnalysisOpenClosePayload` | `RoundAnalysisModal` — mount/unmount effect. |
+| `analysis:open` / `analysis:close` | `AnalysisOpenClosePayload` (`analysisRoundNumber`, `activeRoundNumber`, `targetKind`, `targetId`) | `RoundAnalysisModal` — mount/unmount effect; `activeRoundNumber` is passed from `TrialUI` (`fallacyGuessBucketRoundNumber`). |
 | `analysis:sentence_selected` / `analysis:sentence_deselected` | `AnalysisSentenceTogglePayload` | `RoundAnalysisModal` — sentence click in the NPC view. |
 | `analysis:fallacy_selected` / `analysis:fallacy_deselected` | `AnalysisFallacyTogglePayload` | `RoundAnalysisModal` — fallacy picker click. |
 | `analysis:guess_submitted` | `AnalysisGuessSubmittedPayload` | `TrialUI.handleGuess` — always fires first when a guess lands. |
@@ -388,7 +390,7 @@ Called from `TrialUI`. It subscribes once per unique event referenced in the tut
 "tutorials": [
   {
     "id": "analysis-select-sentence",
-    "trigger": { "event": "analysis:open" },
+    "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 1 } },
     "tutorial": {
       "steps": [
         { "message": "Select first a sentence that you think has a logical fallacy." }
