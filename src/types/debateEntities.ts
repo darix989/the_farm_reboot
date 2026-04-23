@@ -141,6 +141,12 @@ export interface PlayerRoundEntry {
    * to each of the player's possible questions (player raises crossfire).
    */
   opponentResponses?: readonly [OpponentResponse, OpponentResponse, OpponentResponse];
+  /**
+   * When `true`, `options` are rendered in their authored order for every game
+   * run instead of being deterministically shuffled per playthrough. Useful for
+   * tutorial / scripted rounds where option positions must stay stable.
+   */
+  preventOptionsShuffle?: boolean;
 }
 
 export type RoundEntry = NpcRoundEntry | PlayerRoundEntry;
@@ -274,15 +280,3 @@ export interface DebateScenarioJson {
 // ---------------------------------------------------------------------------
 // Assembling phase (UI state during a player round)
 // ---------------------------------------------------------------------------
-
-/**
- * All player rounds use the same interaction pattern: pick one of three options.
- * Replaces the old per-kind assembling types.
- */
-export interface AssemblingPlayerRound {
-  kind: 'assembling_player_round';
-  roundType: StatementType;
-  options: readonly [PlayerOption, PlayerOption, PlayerOption];
-}
-
-export type AssemblingPhase = AssemblingPlayerRound;

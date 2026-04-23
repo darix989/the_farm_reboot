@@ -57,6 +57,7 @@
       "kind": "player",
       "id": "round-2",
       "roundNumber": 2,
+      "preventOptionsShuffle": true,
       "type": "opening_constructive",
       "options": [
         {
@@ -743,6 +744,22 @@
             "spotlight": {
               "x": 0.63,
               "y": 0.6,
+              "width": 0.34,
+              "height": 0.26
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            },
+            "showContinueWithSpotlight": true
+          },
+          {
+            "message": "Look at the Option C, it looks to be Locked",
+            "spotlight": {
+              "x": 0.87,
+              "y": 0.6,
               "width": 0.095,
               "height": 0.26
             },
@@ -775,9 +792,9 @@
             "message": "First, select a sentence that you think has a logical fallacy.",
             "spotlight": {
               "x": 0.117,
-              "y": 0.52,
+              "y": 0.4,
               "width": 0.41,
-              "height": 0.16
+              "height": 0.11
             },
             "modal": {
               "x": 0.6,
@@ -828,7 +845,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Good job! You have spotted the false dilemma fallacy on the selected sentence. But it seems there is still more.",
+            "message": "Argh! This sentence seems to not have any logical fallacy.",
             "modal": {
               "x": 0.6,
               "y": 0.2,

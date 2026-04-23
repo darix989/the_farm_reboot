@@ -114,6 +114,9 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
 
   const choosingOptionsOrder = useMemo(() => {
     if (wf.gamePhase !== 'player_choosing' || !wf.currentPlayerRound) return null;
+    if (wf.currentPlayerRound.preventOptionsShuffle) {
+      return [...wf.currentPlayerRound.options];
+    }
     return shuffleCopyDeterministic(
       wf.currentPlayerRound.options,
       playthroughShuffleKey,
