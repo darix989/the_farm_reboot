@@ -807,11 +807,18 @@
           },
           {
             "message": "You generally have 3 attempts to spot the logical fallacies in the whole statement.",
+            "showContinueWithSpotlight": true,
             "modal": {
               "x": 0.6,
               "y": 0.2,
               "width": 0.35,
               "height": 0.5
+            },
+            "spotlight": {
+              "x": 0.43,
+              "y": 0.22,
+              "width": 0.1,
+              "height": 0.1
             }
           },
           {
