@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { DebateTutorialArea } from '../types/debateEntities';
 import { FULL_STAGE_SPOTLIGHT_RATIOS } from '../react/tutorial/spotlightRect';
+import { debateEventBus } from '../react/trial/utils/debateEventBus';
 
 export type { TutorialSpotlightRect } from '../react/tutorial/spotlightRect';
 
@@ -27,6 +28,13 @@ export type TutorialStepInput = {
 
 export interface OpenTutorialPayload {
   steps: readonly TutorialStepInput[];
+  /**
+   * Optional stable id for this tutorial. Included in the
+   * `tutorial:start` / `tutorial:next` / `tutorial:end` event payloads so
+   * listeners can pin a specific tutorial via `where: { tutorialId: 'foo' }`.
+   * Typically copied from `DebateScenarioTutorialEntry.id`.
+   */
+  id?: string;
   /** Called only after the user finishes with **Got it** on the final step (or the only step). */
   onComplete?: () => void;
 }
@@ -36,6 +44,8 @@ interface TutorialState {
   steps: TutorialStepResolved[];
   stepIndex: number;
   onComplete: (() => void) | undefined;
+  /** Id of the currently open tutorial, mirrored onto lifecycle event payloads. */
+  tutorialId: string | undefined;
 }
 
 interface TutorialStore extends TutorialState {
@@ -54,6 +64,7 @@ const initial: TutorialState = {
   steps: [],
   stepIndex: 0,
   onComplete: undefined,
+  tutorialId: undefined,
 };
 
 export const useTutorialStore = create<TutorialStore>((set, get) => ({
@@ -74,14 +85,32 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
       steps,
       stepIndex: 0,
       onComplete: payload.onComplete,
+      tutorialId: payload.id,
+    });
+    debateEventBus.emit('tutorial:start', {
+      tutorialId: payload.id,
+      stepIndex: 0,
+      totalSteps: steps.length,
     });
   },
 
   resetTutorial: () => set({ ...initial }),
 
   finishTutorial: () => {
-    const cb = get().onComplete;
+    const s = get();
+    const wasOpen = s.isOpen;
+    const endPayload = wasOpen
+      ? {
+          tutorialId: s.tutorialId,
+          stepIndex: s.stepIndex,
+          totalSteps: s.steps.length,
+        }
+      : null;
+    const cb = s.onComplete;
     set({ ...initial });
+    if (endPayload) {
+      debateEventBus.emit('tutorial:end', endPayload);
+    }
     cb?.();
   },
 
@@ -92,13 +121,18 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
       return { stepIndex: clamped };
     }),
 
-  stepForward: () =>
-    set((s) => {
-      if (!s.isOpen || s.steps.length === 0) return s;
-      return {
-        stepIndex: Math.min(s.steps.length - 1, s.stepIndex + 1),
-      };
-    }),
+  stepForward: () => {
+    const s = get();
+    if (!s.isOpen || s.steps.length === 0) return;
+    const next = Math.min(s.steps.length - 1, s.stepIndex + 1);
+    if (next === s.stepIndex) return;
+    set({ stepIndex: next });
+    debateEventBus.emit('tutorial:next', {
+      tutorialId: s.tutorialId,
+      stepIndex: next,
+      totalSteps: s.steps.length,
+    });
+  },
 
   stepBack: () =>
     set((s) => {

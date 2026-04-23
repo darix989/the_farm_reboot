@@ -192,9 +192,17 @@ const TutorialOverlay: React.FC = () => {
   // When the current step auto-concludes on any debate event, advance or finish
   // on the next emit. The hint text takes the place of the Continue / Got it
   // button, so the spotlighted button in the underlying UI drives the flow.
+  //
+  // Ignore the tutorial's own lifecycle events (`tutorial:start/next/end`) —
+  // `stepForward` / `finishTutorial` below emit them synchronously, so without
+  // this guard we would recursively advance/finish on our own emission before
+  // React reruns this effect with the new `stepIndex`.
   useEffect(() => {
     if (!autoConcludeOnEvent) return;
-    const unsubscribe = debateEventBus.onAny(() => {
+    const unsubscribe = debateEventBus.onAny((event) => {
+      if (event === 'tutorial:start' || event === 'tutorial:next' || event === 'tutorial:end') {
+        return;
+      }
       if (isSingle || isLast) {
         finishTutorial();
       } else {

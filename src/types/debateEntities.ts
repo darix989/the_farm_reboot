@@ -176,7 +176,10 @@ export type EventTrigger =
   | 'analysis:guess_correct'
   | 'analysis:guess_incorrect'
   | 'analysis:guess_partially_correct'
-  | 'analysis:guess_max_attempts_reached';
+  | 'analysis:guess_max_attempts_reached'
+  | 'tutorial:start'
+  | 'tutorial:next'
+  | 'tutorial:end';
 
 export type DebateTutorialLogic = {
   triggerEvent: EventTrigger;

@@ -251,6 +251,7 @@ A compile-time assertion (`_AssertKeysMatch`) keeps `EventTrigger` and `DebateEv
 | `analysis:guess_submitted` | `AnalysisGuessSubmittedPayload` | `TrialUI.handleGuess` — always fires first when a guess lands. |
 | `analysis:guess_correct` / `analysis:guess_incorrect` / `analysis:guess_partially_correct` | `AnalysisGuessOutcomePayload` | `TrialUI.handleGuess` — derived from the `GuessRecord`. |
 | `analysis:guess_max_attempts_reached` | `AnalysisGuessMaxAttemptsPayload` | `TrialUI.handleGuess` — only when attempts run out on a non-correct guess. |
+| `tutorial:start` / `tutorial:next` / `tutorial:end` | `TutorialLifecyclePayload` | `useTutorialStore` — `openTutorial` emits `tutorial:start`, `stepForward` emits `tutorial:next` when the index actually advances, `finishTutorial` emits `tutorial:end`. Payload carries `tutorialId` (from `DebateScenarioTutorialEntry.id`) and `stepIndex` so listeners can pin a specific tutorial/step via `where`. |
 
 ### API
 

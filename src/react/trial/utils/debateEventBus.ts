@@ -128,6 +128,29 @@ export interface AnalysisGuessMaxAttemptsPayload {
   maxAttempts: number;
 }
 
+/**
+ * Shared payload for the `tutorial:start` / `tutorial:next` / `tutorial:end`
+ * lifecycle events. Together `tutorialId` + `stepIndex` identify which tutorial
+ * fired and which step it was on at the time of the emit.
+ *
+ * Semantics of `stepIndex` per event:
+ *  - `tutorial:start` — the step the tutorial opens on (currently always `0`).
+ *  - `tutorial:next`  — the new (post-advance) step index.
+ *  - `tutorial:end`   — the step the user finished on (typically the last).
+ */
+export interface TutorialLifecyclePayload {
+  /**
+   * Stable id copied from `DebateScenarioTutorialEntry.id`, or whatever the
+   * caller passed to `openTutorial({ id })`. `undefined` for tutorials opened
+   * without an id (e.g. array-index-keyed scenario entries).
+   */
+  tutorialId: string | undefined;
+  /** Zero-based index of the step this event describes. */
+  stepIndex: number;
+  /** Total number of steps in the tutorial. */
+  totalSteps: number;
+}
+
 // ---------------------------------------------------------------------------
 // Event -> payload map (the source of truth — keys match EventTrigger literals).
 // ---------------------------------------------------------------------------
@@ -156,6 +179,9 @@ export interface DebateEventPayloads {
   'analysis:guess_incorrect': AnalysisGuessOutcomePayload;
   'analysis:guess_partially_correct': AnalysisGuessOutcomePayload;
   'analysis:guess_max_attempts_reached': AnalysisGuessMaxAttemptsPayload;
+  'tutorial:start': TutorialLifecyclePayload;
+  'tutorial:next': TutorialLifecyclePayload;
+  'tutorial:end': TutorialLifecyclePayload;
 }
 
 /**

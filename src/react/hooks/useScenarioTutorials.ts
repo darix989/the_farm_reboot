@@ -77,6 +77,7 @@ export function useScenarioTutorials(
 
           firedRef.current.add(dedupKey);
           store.openTutorial({
+            id: entry.id,
             steps: entry.tutorial.steps.map((step) => ({
               message: step.message,
               spotlight: step.spotlight,
