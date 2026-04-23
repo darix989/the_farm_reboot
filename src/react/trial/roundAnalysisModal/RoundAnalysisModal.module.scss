@@ -6,7 +6,15 @@
 @use '../trialModalCloseIconSizing' as modal-close;
 
 .trialModalOverlay {
-  position: fixed;
+  /*
+   * `absolute` (not `fixed`) so the overlay is anchored to the 16:9 stage
+   * (`#app-stage-16x9` is `position: relative`) rather than the viewport.
+   * This keeps the modal inside the same coordinate space the tutorial
+   * spotlight ratios are expressed in, so `{x, y, width, height}` values
+   * defined at 1080p land on the same UI at any aspect ratio (the stage is
+   * letterboxed on non-16:9 viewports, e.g. 874×402 landscape iPhone).
+   */
+  position: absolute;
   inset: 0;
   z-index: 9999;
   display: flex;
@@ -26,13 +34,13 @@
   flex-direction: column;
   min-height: 0;
 
-  /* ~10% under the prior 90vw / 88vh caps — comfortable on 1920×1080. */
-  width: min(100%, 81vw);
+  /* Percentages of the stage (not viewport) so the modal follows the letterboxed 16:9 rectangle. */
+  width: 81%;
   max-width: none;
 
   /* Fixed shell height so adding the guess feedback row does not resize the dialog. */
-  height: min(79vh, calc(100vh - 2.75rem));
-  max-height: min(79vh, calc(100vh - 2.75rem));
+  height: min(79%, calc(100% - 2.75rem));
+  max-height: min(79%, calc(100% - 2.75rem));
   border-radius: 0.75rem;
   border: 2px solid var(--ui-color-border-panel);
   background: var(--ui-color-surface-modal);
