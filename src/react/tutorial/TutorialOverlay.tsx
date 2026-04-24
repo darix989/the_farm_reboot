@@ -341,7 +341,12 @@ const TutorialOverlay: React.FC = () => {
     return (
       <div className={cn(styles.footer, isSingle && styles.footerSingle)}>
         {isSingle ? (
-          <TrialTextButton type="button" variant="solid" onClick={onPrimary}>
+          <TrialTextButton
+            type="button"
+            variant="solid"
+            className={styles.primaryActionGlow}
+            onClick={onPrimary}
+          >
             {primaryLabel}
           </TrialTextButton>
         ) : (
@@ -354,7 +359,12 @@ const TutorialOverlay: React.FC = () => {
             >
               {getLabel('back')}
             </TrialTextButton>
-            <TrialTextButton type="button" variant="solid" onClick={onPrimary}>
+            <TrialTextButton
+              type="button"
+              variant="solid"
+              className={styles.primaryActionGlow}
+              onClick={onPrimary}
+            >
               {primaryLabel}
             </TrialTextButton>
           </div>

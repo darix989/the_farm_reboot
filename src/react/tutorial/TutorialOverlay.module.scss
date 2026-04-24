@@ -1,6 +1,6 @@
 @use '../uiTypography' as ui-typography;
 
-/* Green spotlight + green modal rim: distinct from `--ui-color-accent` (cyan) on focused controls. */
+/* Green spotlight + primary tutorial CTA glow: distinct from `--ui-color-accent` (cyan) on focused controls. */
 $tutorial-spotlight-ring: #22c55e;
 $tutorial-spotlight-ring-strong: #4ade80;
 $tutorial-spotlight-glow: rgba(34, 197, 94, 0.5);
@@ -108,25 +108,23 @@ $tutorial-modal-glow: rgba(22, 163, 74, 0.45);
   will-change: box-shadow;
 }
 
-/* Violet pulse on the modal border: amplitude of the outer glow and the
-   border tint ramp together so the edge reads as "alive" without shifting
-   the dialog's size or layout. */
-@keyframes tutorial-dialog-glow {
+/* Pulsing green rim on Continue / Got it: keeps `TrialTextButton` base shadow in every keyframe stop
+   so the solid variant does not flatten mid-cycle. */
+@keyframes tutorial-primary-glow {
   0%,
   100% {
-    border-color: var(--ui-color-border-panel);
+    border-color: var(--ui-color-border-ring);
     box-shadow:
-      0 24px 64px var(--ui-color-shadow-deep),
-      0 0 0 1px var(--ui-color-border-faint),
-      0 0 14px 0 $tutorial-modal-glow;
+      0 1px 2px 0 var(--ui-color-shadow-soft),
+      0 0 10px 0 $tutorial-modal-glow;
   }
 
   50% {
     border-color: $tutorial-modal-border-strong;
     box-shadow:
-      0 24px 64px var(--ui-color-shadow-deep),
+      0 1px 2px 0 var(--ui-color-shadow-soft),
       0 0 0 1px $tutorial-modal-border,
-      0 0 32px 6px $tutorial-modal-glow;
+      0 0 22px 4px $tutorial-modal-glow;
   }
 }
 
@@ -155,19 +153,22 @@ $tutorial-modal-glow: rgba(22, 163, 74, 0.45);
     0 0 0 1px var(--ui-color-border-faint);
   color: var(--ui-color-white);
   overflow: hidden;
-  animation: tutorial-dialog-glow 2.4s ease-in-out infinite;
 }
 
-/* Respect the user's motion preferences — freeze the glow on the strong
-   state so the modal still reads as highlighted but doesn't pulse. */
+.primaryActionGlow:not(:disabled) {
+  animation: tutorial-primary-glow 2.4s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+/* Respect the user's motion preferences — freeze the primary CTA glow; spotlight unchanged. */
 @media (prefers-reduced-motion: reduce) {
-  .dialog {
+  .primaryActionGlow:not(:disabled) {
     animation: none;
     border-color: $tutorial-modal-border-strong;
     box-shadow:
-      0 24px 64px var(--ui-color-shadow-deep),
+      0 1px 2px 0 var(--ui-color-shadow-soft),
       0 0 0 1px $tutorial-modal-border,
-      0 0 24px 4px $tutorial-modal-glow;
+      0 0 16px 3px $tutorial-modal-glow;
   }
 
   .spotlightGlow {

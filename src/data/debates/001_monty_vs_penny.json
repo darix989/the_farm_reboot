@@ -681,7 +681,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Here starts the debate! With this tutorial you will learn how to analyze statements, spot logical fallacies and select the best statements to win the debate.",
+            "message": "Here starts your first debate! To partecipate a debate there are few rules you need to follow, and with this tutorial you will learn how to: analyze statements; spot logical fallacies and select the best statements to win the debate!",
             "modal": {
               "x": 0.35,
               "y": 0.35,
@@ -690,7 +690,7 @@
             }
           },
           {
-            "message": "Every debate runs for 10 rounds, alternating between your side and your opponent's. Whenever it's your turn, choose the statement you believe will work best to win the favour of the moderator.",
+            "message": "Every debate runs for 10 rounds, alternating between your side and your opponent's. Whenever it's your turn, choose the statement you believe will work best to win the favour of the moderator. If, along these 10 rounds, you will be more convincing than your opponent, you will win the debate!",
             "modal": {
               "x": 0.35,
               "y": 0.35,
