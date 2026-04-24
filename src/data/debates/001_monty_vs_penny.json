@@ -745,6 +745,12 @@
           {
             "message": "Round 1 has the opening constructive of the proposition side (the other side!). You can read the whole statement from the Wizard Panel.",
             "showContinueWithSpotlight": true,
+            "artificialInteractions": [
+              {
+                "delayTimeMs": 500,
+                "action": { "type": "wizard:scroll_to_bottom" }
+              }
+            ],
             "spotlight": {
               "x": 0.02,
               "y": 0.6,
@@ -760,11 +766,12 @@
           },
           {
             "message": "Every round's statement is logged in the Debate Log Panel.",
+            "showContinueWithSpotlight": true,
             "spotlight": {
               "x": 0.6,
-              "y": 0.22,
-              "width": 0.4,
-              "height": 0.3
+              "y": 0.03,
+              "width": 0.373,
+              "height": 0.46
             },
             "modal": {
               "x": 0.225,
@@ -775,6 +782,7 @@
           },
           {
             "message": "During a debate, it's important to analyze the statements of both sides.",
+            "showContinueWithSpotlight": true,
             "spotlight": {
               "x": 0.6,
               "y": 0.22,
@@ -791,16 +799,16 @@
           {
             "message": "Let's inspect the opening constructive statement of the proposition side and check if there is something off! Click the Magnifying glass icon to analyze!",
             "spotlight": {
-              "x": 0.6,
-              "y": 0.22,
-              "width": 0.4,
-              "height": 0.3
+              "x": 0.925,
+              "y": 0.225,
+              "width": 0.045,
+              "height": 0.075
             },
             "modal": {
               "x": 0.225,
               "y": 0.06,
               "width": 0.35,
-              "height": 0.48
+              "height": 0.55
             }
           }
         ]

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './TrialPanels.module.scss';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
+import { WIZARD_SCROLL_KEY } from '../../tutorial/artificialInteractions';
 import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -30,7 +31,10 @@ const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail }) => (
       <h2 className={styles.trialPanelHeading}>{getLabel('wizard')}</h2>
     </div>
     <div className={styles.trialWizardBodySlot}>
-      <ScrollFadeContainer className={styles.trialWizardBodyScroll}>
+      <ScrollFadeContainer
+        className={styles.trialWizardBodyScroll}
+        scrollElementDataKey={WIZARD_SCROLL_KEY}
+      >
         <p className={detail ? styles.trialWizardGuidanceText : styles.trialWizardMainText}>
           {wizardMessage}
         </p>

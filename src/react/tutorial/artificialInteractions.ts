@@ -30,9 +30,21 @@ import type {
  */
 export const DEBATE_LOG_SCROLL_KEY = 'debateLogScroll';
 
+/**
+ * Data attribute key on the wizard panel scroll container (`WizardPanel` /
+ * `ScrollFadeContainer`). Used for `wizard:scroll_to_top` and
+ * `wizard:scroll_to_bottom`.
+ */
+export const WIZARD_SCROLL_KEY = 'wizardScroll';
+
 function findDebateLogScroll(): HTMLElement | null {
   if (typeof document === 'undefined') return null;
   return document.querySelector<HTMLElement>(`[data-scroll-key="${DEBATE_LOG_SCROLL_KEY}"]`);
+}
+
+function findWizardScroll(): HTMLElement | null {
+  if (typeof document === 'undefined') return null;
+  return document.querySelector<HTMLElement>(`[data-scroll-key="${WIZARD_SCROLL_KEY}"]`);
 }
 
 function findDebateLogToggleButton(roundId: string): HTMLButtonElement | null {
@@ -69,6 +81,18 @@ export function runArtificialInteractionAction(action: TutorialArtificialInterac
       const btn = findDebateLogAnalyzeButton(action.roundId);
       if (!btn || btn.disabled) return;
       btn.click();
+      return;
+    }
+    case 'wizard:scroll_to_top': {
+      const el = findWizardScroll();
+      if (!el) return;
+      el.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    case 'wizard:scroll_to_bottom': {
+      const el = findWizardScroll();
+      if (!el) return;
+      el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
       return;
     }
     default: {

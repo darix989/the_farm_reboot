@@ -226,7 +226,11 @@ export type TutorialArtificialInteractionAction =
   /** Click the shrink / expand toggle on a specific debate-log round card. */
   | { type: 'debate_log:round:toggle_expand'; roundId: string }
   /** Click the analyze (magnifying-glass) button on a specific debate-log round card. */
-  | { type: 'debate_log:round:analyze'; roundId: string };
+  | { type: 'debate_log:round:analyze'; roundId: string }
+  /** Scroll the wizard panel's scrollable content to the top. */
+  | { type: 'wizard:scroll_to_top' }
+  /** Scroll the wizard panel's scrollable content to the bottom. */
+  | { type: 'wizard:scroll_to_bottom' };
 
 /**
  * One artificial UI interaction fired automatically while a tutorial step is
