@@ -1020,61 +1020,61 @@
           {
             "message": "We have other 2 chances to find to correctly analyze this statement. This time I have a good feeling about the second sentence.",
             "modal": {
-              "x": 0.55,
-              "y": 0.45,
-              "width": 0.33,
-              "height": 0.33
+              "x": 0.6,
+              "y": 0.4,
+              "width": 0.36,
+              "height": 0.5
             },
             "spotlight": {
               "x": 0.117,
-              "y": 0.4,
+              "y": 0.65,
               "width": 0.41,
-              "height": 0.11
+              "height": 0.14
             }
           },
           {
             "message": "Ok, now pick the fallacy.",
-            "modal": {
-              "x": 0.55,
-              "y": 0.45,
-              "width": 0.33,
-              "height": 0.33
-            },
             "spotlight": {
-              "x": 0.117,
-              "y": 0.4,
-              "width": 0.41,
-              "height": 0.11
+              "x": 0.54,
+              "y": 0.2,
+              "width": 0.2,
+              "height": 0.3
+            },
+            "modal": {
+              "x": 0.05,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.5
             }
           },
           {
             "message": "Submit your guess.",
-            "modal": {
-              "x": 0.55,
-              "y": 0.45,
-              "width": 0.33,
-              "height": 0.33
-            },
             "spotlight": {
-              "x": 0.117,
-              "y": 0.4,
-              "width": 0.41,
-              "height": 0.11
+              "x": 0.715,
+              "y": 0.78,
+              "width": 0.18,
+              "height": 0.1
+            },
+            "modal": {
+              "x": 0.15,
+              "y": 0.3,
+              "width": 0.35,
+              "height": 0.5
             }
           },
           {
             "message": "Correct!",
             "modal": {
-              "x": 0.55,
-              "y": 0.45,
-              "width": 0.33,
-              "height": 0.33
+              "x": 0.6,
+              "y": 0.4,
+              "width": 0.36,
+              "height": 0.5
             },
             "spotlight": {
               "x": 0.117,
-              "y": 0.4,
+              "y": 0.65,
               "width": 0.41,
-              "height": 0.11
+              "height": 0.14
             }
           }
         ]
