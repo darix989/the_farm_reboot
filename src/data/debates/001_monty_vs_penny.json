@@ -773,10 +773,10 @@
           {
             "message": "See the Wizard Panel, now it has the whole statement of the Option A.",
             "spotlight": {
-              "x": 0.63,
-              "y": 0.6,
-              "width": 0.095,
-              "height": 0.26
+              "x": 0.02,
+              "y": 0.53,
+              "width": 0.55,
+              "height": 0.4
             },
             "modal": {
               "x": 0.125,
@@ -832,6 +832,12 @@
               "width": 0.4,
               "height": 0.4
             },
+            "spotlight": {
+              "x": 0.6,
+              "y": 0.23,
+              "width": 0.38,
+              "height": 0.14
+            },
             "showContinueWithSpotlight": true
           },
           {
@@ -844,7 +850,7 @@
             },
             "spotlight": {
               "x": 0.92,
-              "y": 0.2,
+              "y": 0.245,
               "width": 0.05,
               "height": 0.1
             }
@@ -868,7 +874,7 @@
       }
     },
     {
-      "id": "analysis-select-sentence",
+      "id": "analysis-select-sentence-first-wrong-guess",
       "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 1 } },
       "tutorial": {
         "steps": [
@@ -933,7 +939,7 @@
       "id": "analysis-post-submit-guess",
       "trigger": {
         "event": "tutorial:end",
-        "where": { "tutorialId": "analysis-select-sentence" }
+        "where": { "tutorialId": "analysis-select-sentence-first-wrong-guess" }
       },
       "tutorial": {
         "steps": [
@@ -1001,6 +1007,74 @@
               "y": 0.25,
               "width": 0.35,
               "height": 0.45
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-select-sentence-correct-guess",
+      "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 2 } },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "We have other 2 chances to find to correctly analyze this statement. This time I have a good feeling about the second sentence.",
+            "modal": {
+              "x": 0.55,
+              "y": 0.45,
+              "width": 0.33,
+              "height": 0.33
+            },
+            "spotlight": {
+              "x": 0.117,
+              "y": 0.4,
+              "width": 0.41,
+              "height": 0.11
+            }
+          },
+          {
+            "message": "Ok, now pick the fallacy.",
+            "modal": {
+              "x": 0.55,
+              "y": 0.45,
+              "width": 0.33,
+              "height": 0.33
+            },
+            "spotlight": {
+              "x": 0.117,
+              "y": 0.4,
+              "width": 0.41,
+              "height": 0.11
+            }
+          },
+          {
+            "message": "Submit your guess.",
+            "modal": {
+              "x": 0.55,
+              "y": 0.45,
+              "width": 0.33,
+              "height": 0.33
+            },
+            "spotlight": {
+              "x": 0.117,
+              "y": 0.4,
+              "width": 0.41,
+              "height": 0.11
+            }
+          },
+          {
+            "message": "Correct!",
+            "modal": {
+              "x": 0.55,
+              "y": 0.45,
+              "width": 0.33,
+              "height": 0.33
+            },
+            "spotlight": {
+              "x": 0.117,
+              "y": 0.4,
+              "width": 0.41,
+              "height": 0.11
             }
           }
         ]
