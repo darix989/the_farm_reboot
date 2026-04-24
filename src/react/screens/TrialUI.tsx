@@ -41,6 +41,12 @@ interface TrialUIProps {
   debate: DebateScenarioJson;
 }
 
+/** Map key for `fallacyGuesses`: the player round that owns this analysis target, not the workflow's current round. */
+function guessStorageRoundNumberForTarget(target: AnalysisTarget): number {
+  if (target.kind === 'npc' || target.kind === 'player') return target.round.roundNumber;
+  return target.playerRound.roundNumber;
+}
+
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, FallacyGuessSession>>(new Map());
   const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
@@ -110,16 +116,22 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     return analysisTarget.kind === 'npc' ? analysisTarget.round.id : analysisTarget.statement.id;
   }, [analysisTarget]);
 
+  const analysisGuessStorageRoundNumber = useMemo((): number | null => {
+    return analysisTarget ? guessStorageRoundNumberForTarget(analysisTarget) : null;
+  }, [analysisTarget]);
+
   const activeSession = useMemo((): FallacyGuessSession | null => {
-    if (!analysisStatementTargetId) return null;
+    if (!analysisStatementTargetId || analysisGuessStorageRoundNumber === null) return null;
+    const byKey = fallacyGuesses.get(analysisGuessStorageRoundNumber);
+    if (byKey && byKey.npcRoundId === analysisStatementTargetId) return byKey;
     for (const sess of fallacyGuesses.values()) {
       if (sess.npcRoundId === analysisStatementTargetId) return sess;
     }
     return null;
-  }, [analysisStatementTargetId, fallacyGuesses]);
+  }, [analysisStatementTargetId, analysisGuessStorageRoundNumber, fallacyGuesses]);
 
   const canGuess = useMemo(() => {
-    if (fallacyGuessBucketRoundNumber === null || !analysisStatementTargetId) return false;
+    if (!analysisStatementTargetId || analysisGuessStorageRoundNumber === null) return false;
 
     if (
       wf.gamePhase === 'npc_speaking' &&
@@ -131,13 +143,13 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       return false;
     }
 
-    const sess = fallacyGuesses.get(fallacyGuessBucketRoundNumber);
+    const sess = fallacyGuesses.get(analysisGuessStorageRoundNumber);
     if (!sess) return true;
     if (sess.npcRoundId !== analysisStatementTargetId) return true;
     if (isSessionTerminal(sess)) return false;
     return sess.attempts.length < sess.maxAttempts;
   }, [
-    fallacyGuessBucketRoundNumber,
+    analysisGuessStorageRoundNumber,
     analysisStatementTargetId,
     analysisTarget,
     wf.gamePhase,
@@ -158,7 +170,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
   const handleGuess = (payload: GuessPayload) => {
     if (!analysisTarget) return;
-    if (fallacyGuessBucketRoundNumber === null) return;
+    const guessStorageRoundNumber = guessStorageRoundNumberForTarget(analysisTarget);
 
     if (analysisTarget.kind !== 'player') {
       if (
@@ -236,7 +248,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     let sessionAfterCommit: FallacyGuessSession | null = null;
     setFallacyGuesses((prev) => {
       const next = new Map(prev);
-      const existing = prev.get(fallacyGuessBucketRoundNumber);
+      const existing = prev.get(guessStorageRoundNumber);
       let session: FallacyGuessSession;
 
       if (!existing || existing.npcRoundId !== targetId) {
@@ -251,7 +263,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           attempts: [...existing.attempts, record],
         };
       }
-      next.set(fallacyGuessBucketRoundNumber, session);
+      next.set(guessStorageRoundNumber, session);
       sessionAfterCommit = session;
       return next;
     });
