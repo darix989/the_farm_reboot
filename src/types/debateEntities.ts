@@ -164,6 +164,7 @@ export type EventTrigger =
   | 'round:start'
   | 'round:end'
   | 'interactive:statement_selected'
+  | 'interactive:statement_unlocked'
   | 'interactive:back'
   | 'interactive:continue'
   | 'interactive:confirm'

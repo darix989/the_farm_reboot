@@ -178,6 +178,11 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                     !revealedLockedOptionIds.has(opt.id)
                   ) {
                     setRevealAnimOptionId(opt.id);
+                    debateEventBus.emit('interactive:statement_unlocked', {
+                      roundNumber: playerRound.roundNumber,
+                      roundId: playerRound.id,
+                      optionId: opt.id,
+                    });
                     onRevealLockedOption(opt.id);
                     return;
                   }

@@ -59,6 +59,9 @@ export interface InteractiveStatementSelectedPayload {
   optionId: string;
 }
 
+/** Player revealed full text for a guess-gated option (`unlockCondition`); same fields as `interactive:statement_selected`. */
+export type InteractiveStatementUnlockedPayload = InteractiveStatementSelectedPayload;
+
 export interface InteractiveContinuePayload {
   /** Phase the Continue was pressed from (intro, NPC speaking, NPC responding, etc.). */
   fromPhase: GamePhase;
@@ -172,6 +175,7 @@ export interface DebateEventPayloads {
   'round:start': RoundLifecyclePayload;
   'round:end': RoundLifecyclePayload;
   'interactive:statement_selected': InteractiveStatementSelectedPayload;
+  'interactive:statement_unlocked': InteractiveStatementUnlockedPayload;
   'interactive:back': InteractiveBackPayload;
   'interactive:continue': InteractiveContinuePayload;
   'interactive:confirm': InteractiveConfirmPayload;
@@ -341,6 +345,7 @@ export type DeepPartial<T> = T extends readonly unknown[]
  * Examples:
  *   { event: 'round:start', where: { roundId: 'r3' } }
  *   { event: 'interactive:statement_selected', where: { optionId: 'opt-42' } }
+ *   { event: 'interactive:statement_unlocked', where: { roundId: 'pr2' } }
  *   { event: 'analysis:guess_correct', where: { targetKind: 'npc', roundNumber: 2 } }
  *
  * Because this is a mapped discriminated union over `EventTrigger`, `where` is
