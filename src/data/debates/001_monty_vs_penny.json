@@ -690,7 +690,7 @@
             }
           },
           {
-            "message": "Every debate runs for ten rounds, alternating between your side and your opponent's. Whenever it's your turn, choose the statement you believe will work best to win the favour of the moderator.",
+            "message": "Every debate runs for 10 rounds, alternating between your side and your opponent's. Whenever it's your turn, choose the statement you believe will work best to win the favour of the moderator.",
             "modal": {
               "x": 0.35,
               "y": 0.35,
@@ -725,9 +725,9 @@
           {
             "message": "You can see what side you are on. Click Begin Round 1 to get started.",
             "modal": {
-              "x": 0.65,
+              "x": 0.62,
               "y": 0.02,
-              "width": 0.3,
+              "width": 0.35,
               "height": 0.4
             }
           }
@@ -743,7 +743,53 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Round 1 has the opening constructive of the proposition side. Let's inspect their statement and check if there is something off! Click the Magnifying glass icon to analyze!",
+            "message": "Round 1 has the opening constructive of the proposition side (the other side!). You can read the whole statement from the Wizard Panel.",
+            "showContinueWithSpotlight": true,
+            "spotlight": {
+              "x": 0.02,
+              "y": 0.6,
+              "width": 0.55,
+              "height": 0.35
+            },
+            "modal": {
+              "x": 0.225,
+              "y": 0.06,
+              "width": 0.35,
+              "height": 0.48
+            }
+          },
+          {
+            "message": "Every round's statement is logged in the Debate Log Panel.",
+            "spotlight": {
+              "x": 0.6,
+              "y": 0.22,
+              "width": 0.4,
+              "height": 0.3
+            },
+            "modal": {
+              "x": 0.225,
+              "y": 0.06,
+              "width": 0.35,
+              "height": 0.48
+            }
+          },
+          {
+            "message": "During a debate, it's important to analyze the statements of both sides.",
+            "spotlight": {
+              "x": 0.6,
+              "y": 0.22,
+              "width": 0.4,
+              "height": 0.3
+            },
+            "modal": {
+              "x": 0.225,
+              "y": 0.06,
+              "width": 0.35,
+              "height": 0.48
+            }
+          },
+          {
+            "message": "Let's inspect the opening constructive statement of the proposition side and check if there is something off! Click the Magnifying glass icon to analyze!",
             "spotlight": {
               "x": 0.6,
               "y": 0.22,
