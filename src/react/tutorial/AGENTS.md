@@ -74,5 +74,9 @@ This will guarantee to have 2 lines of text without any scroll.
     `x: 0.75, y: 0.6, width: 0.095, height: 0.26`
   - Option C inside InteractivePanel:
     `x: 0.87, y: 0.6, width: 0.095, height: 0.26`
+
 - WizardPanel:
   - Whole area inside WizardPanel:
+
+- Debate Log Panel:
+  - `x: 0.61, y: 0.11, width: 0.37, height: 0.4`

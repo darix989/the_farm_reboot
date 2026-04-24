@@ -681,7 +681,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "This debate runs for ten rounds, alternating between your side and your opponent's. Whenever it's your turn, choose the statement you believe will work best—the moderator will judge how convincing it is.",
+            "message": "Here starts the debate! With this tutorial you will learn how to analyze statements, spot logical fallacies and select the best statements to win the debate.",
             "modal": {
               "x": 0.35,
               "y": 0.35,
@@ -690,12 +690,28 @@
             }
           },
           {
-            "message": "Watch for logical fallacies in your opponent's lines. Spot them in the analysis view, that can unlock certain statements!",
+            "message": "Every debate runs for ten rounds, alternating between your side and your opponent's. Whenever it's your turn, choose the statement you believe will work best to win the favour of the moderator.",
             "modal": {
               "x": 0.35,
               "y": 0.35,
               "width": 0.35,
               "height": 0.5
+            }
+          },
+          {
+            "message": "As first thing, read the moderator's introduction in the Debate Log Panel. Then click Continue to get started.",
+            "showContinueWithSpotlight": true,
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            },
+            "spotlight": {
+              "x": 0.61,
+              "y": 0.11,
+              "width": 0.37,
+              "height": 0.4
             }
           }
         ]
