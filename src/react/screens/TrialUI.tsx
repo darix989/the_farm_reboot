@@ -77,6 +77,12 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     debateEventBus.emit('introduction:start', { debateId: debate.id });
   }, [wf.gamePhase, debate.id]);
 
+  // Emit when `IntroSummaryModal` is shown (same condition as its render guard).
+  useEffect(() => {
+    if (!introSummaryOpen || wf.gamePhase !== 'debate_intro') return;
+    debateEventBus.emit('introduction:summary', { debateId: debate.id });
+  }, [introSummaryOpen, wf.gamePhase, debate.id]);
+
   useEffect(() => {
     setRevealedLockedOptionIds(new Set());
   }, [wf.currentPlayerRound?.id]);

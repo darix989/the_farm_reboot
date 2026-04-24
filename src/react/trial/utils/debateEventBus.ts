@@ -46,6 +46,12 @@ export interface IntroductionStartPayload {
   debateId: string;
 }
 
+/** Fired when the introduction summary modal opens (after Continue on the intro step, before round 1). */
+export interface IntroductionSummaryPayload {
+  /** Id of the scenario. */
+  debateId: string;
+}
+
 export interface RoundLifecyclePayload {
   roundNumber: number;
   roundId: string;
@@ -172,6 +178,7 @@ export interface TutorialLifecyclePayload {
 
 export interface DebateEventPayloads {
   'introduction:start': IntroductionStartPayload;
+  'introduction:summary': IntroductionSummaryPayload;
   'round:start': RoundLifecyclePayload;
   'round:end': RoundLifecyclePayload;
   'interactive:statement_selected': InteractiveStatementSelectedPayload;

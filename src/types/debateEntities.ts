@@ -161,6 +161,7 @@ export interface LogicalFallaciesListJson {
 
 export type EventTrigger =
   | 'introduction:start'
+  | 'introduction:summary'
   | 'round:start'
   | 'round:end'
   | 'interactive:statement_selected'
@@ -313,7 +314,8 @@ export interface DebateScenarioJson {
    * Overlay tutorials wired to specific debate events via the typed event bus.
    * See `DebateScenarioTutorialEntry`. The onboarding overlay that used to live
    * on `introTutorial` is now just a regular entry here, triggered by the
-   * `introduction:start` event that fires when the `debate_intro` phase begins.
+   * `introduction:start` when the `debate_intro` phase begins, and
+   * `introduction:summary` when the pre-round introduction summary modal opens.
    */
   tutorials?: readonly DebateScenarioTutorialEntry[];
 }

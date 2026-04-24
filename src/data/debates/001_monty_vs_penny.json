@@ -718,6 +718,23 @@
       }
     },
     {
+      "id": "intro-summary",
+      "trigger": { "event": "introduction:summary" },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "You can see what side you are on. Click Begin Round 1 to get started.",
+            "modal": {
+              "x": 0.65,
+              "y": 0.02,
+              "width": 0.3,
+              "height": 0.4
+            }
+          }
+        ]
+      }
+    },
+    {
       "id": "round-1-opening-constructive-analyze",
       "trigger": {
         "event": "round:start",
@@ -907,9 +924,9 @@
             "message": "First, select a sentence that you think has a logical fallacy.",
             "spotlight": {
               "x": 0.117,
-              "y": 0.4,
+              "y": 0.425,
               "width": 0.41,
-              "height": 0.11
+              "height": 0.15
             },
             "modal": {
               "x": 0.6,
