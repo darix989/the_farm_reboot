@@ -1,13 +1,13 @@
 @use '../breakpoints' as bp;
 @use '../uiTypography' as ui-typography;
 
-/* Green spotlight + primary tutorial CTA glow: distinct from `--ui-color-accent` (cyan) on focused controls. */
-$tutorial-spotlight-ring: #22c55e;
-$tutorial-spotlight-ring-strong: #4ade80;
-$tutorial-spotlight-glow: rgba(34, 197, 94, 0.5);
-$tutorial-modal-border: #16a34a;
-$tutorial-modal-border-strong: #86efac;
-$tutorial-modal-glow: rgba(22, 163, 74, 0.45);
+/* Shared tutorial guidance tokens from `uiColors.scss`. */
+$tutorial-spotlight-ring: var(--ui-color-tutorial-guidance);
+$tutorial-spotlight-ring-strong: var(--ui-color-tutorial-guidance-border-strong);
+$tutorial-spotlight-glow: var(--ui-color-tutorial-guidance-glow);
+$tutorial-modal-border: var(--ui-color-tutorial-guidance-border);
+$tutorial-modal-border-strong: var(--ui-color-tutorial-guidance-border-strong);
+$tutorial-modal-glow: var(--ui-color-tutorial-guidance-glow);
 
 .root {
   position: fixed;

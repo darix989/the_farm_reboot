@@ -94,6 +94,12 @@
   --ui-color-info-ring-strong: rgba(6, 182, 212, 0.35);
   --ui-color-panel-heading-cyan: rgba(34, 211, 238, 0.9);
 
+  /* --- Tutorial guidance (shared target highlight + tutorial CTA glow) --- */
+  --ui-color-tutorial-guidance: var(--ui-color-info);
+  --ui-color-tutorial-guidance-border: rgba(34, 211, 238, 0.45);
+  --ui-color-tutorial-guidance-border-strong: rgba(103, 232, 249, 0.85);
+  --ui-color-tutorial-guidance-glow: rgba(34, 211, 238, 0.45);
+
   /* --- Success (green) ------------------------------------------------- */
   --ui-color-success: #4ade80;
   --ui-color-success-border: rgba(34, 197, 94, 0.45);

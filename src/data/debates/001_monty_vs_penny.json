@@ -709,7 +709,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Before **[info]Round 1[/info]**, read the summary and your side, then **[accent]Begin Round 1[/accent]**.",
+            "message": "Before Round 1, read the summary and **[accent]your side[/accent]**. Once you are ready, click **[accent]Begin Round 1[/accent]**.",
             "modal": {
               "x": 0.62,
               "y": 0.02,
