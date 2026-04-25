@@ -734,7 +734,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Round 1 is the proposition's opening constructive (the other side). Read it in the **[accent]Wizard Panel[/accent]**.",
+            "message": "Round 1 is about the **[warning]proposition's opening constructive[/warning]** which is spoken by (**[warning]the other side[/warning]**). Read it in the **[accent]Wizard Panel[/accent]**.",
             "showContinueWithSpotlight": true,
             "artificialInteractions": [
               {
