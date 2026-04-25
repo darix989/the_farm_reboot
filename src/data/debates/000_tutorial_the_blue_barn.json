@@ -334,7 +334,7 @@
           "impact": 22,
           "reason": "Names the Ad Hominem out loud, refuses the personal bait, and drags the debate back to the roof and the budget — the questions Barnaby was trying to dodge.",
           "unlockCondition": {
-            "npcRoundId": "round-4",
+            "npcRoundId": "stmt-r4-barnaby-question",
             "sentenceId": "s-r4q-1",
             "fallacyId": "ad-hominem"
           },
