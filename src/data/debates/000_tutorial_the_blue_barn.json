@@ -704,6 +704,18 @@
       }
     },
     {
+      "id": "intro-summary",
+      "trigger": { "event": "introduction:summary" },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Each round has its recap.",
+            "modal": { "size": "small", "position": "bottomRight" }
+          }
+        ]
+      }
+    },
+    {
       "id": "round-1-opening-constructive-analyze",
       "trigger": {
         "event": "round:start",
@@ -761,6 +773,21 @@
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": { "size": "small", "position": "topRight" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-2-recap-moderator-sneak-peek",
+      "trigger": {
+        "event": "round:recap:open",
+        "where": { "roundNumber": 2, "roundId": "round-2" }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "At the end of your rounds you will get a sneak peek of how the moderator was influenced by your statement.",
+            "modal": { "size": "small", "position": "bottomRight" }
           }
         ]
       }
