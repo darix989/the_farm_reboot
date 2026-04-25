@@ -13,6 +13,7 @@ const entries = [
   { src: 'src/data/debates', dest: '.' },
   { src: 'src/data/logicalFallacies.json', dest: 'logicalFallacies.json' },
   { src: 'src/types/debateEntities.ts', dest: 'debateEntities.ts' },
+  { src: 'src/react/tutorial/AGENTS.md', dest: 'tutorial_AGENTS.md' },
   { src: 'docs/logical_fallacies_intro.md', dest: 'logical_fallacies_intro.md' },
   { src: 'docs/logical_fallacies_distribution.md', dest: 'logical_fallacies_distribution.md' },
 ];
