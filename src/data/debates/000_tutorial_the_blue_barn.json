@@ -1,6 +1,6 @@
 {
   "id": "debate-blue-barn-final",
-  "introduction": "Barnaby the Bunny insists we should paint the entire barn bright blue because 'blue is the happiest color' and it will make everyone feel like they are floating in the sky. As Pip the Mouse, you must explain that the farm's coins should go to fixing the leaking roof first. Listen carefully — Barnaby will reach for personal attacks and either-or traps when his idea is challenged.",
+  "introduction": "Barnaby the Bunny propose we should paint the entire barn bright blue because 'blue is the happiest color.",
   "playerSide": "opposition",
   "characters": {
     "barnaby": "Barnaby",
@@ -38,11 +38,6 @@
             "id": "s-r1-2",
             "text": "If we paint our barn that same beautiful blue, every animal will wake up feeling like they are floating among the clouds.",
             "logicalFallacies": []
-          },
-          {
-            "id": "s-r1-3",
-            "text": "Blue is the happiest color, and a happy barn is a barn worth living in. Let us invest our savings in that vision.",
-            "logicalFallacies": []
           }
         ]
       }
@@ -57,7 +52,7 @@
         {
           "id": "r2-opt-a",
           "quality": "ineffective",
-          "impact": -5,
+          "impact": 0,
           "reason": "Focuses on personal taste in colors instead of addressing the farm's real priority: a roof that actually keeps the rain out.",
           "sentences": [
             {
@@ -67,58 +62,7 @@
             },
             {
               "id": "s-r2a-2",
-              "text": "Bright blue would clash with the green fields and the yellow afternoon sun.",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r2a-3",
-              "text": "Repainting just to change colors feels like a waste of a perfectly good afternoon.",
-              "logicalFallacies": []
-            }
-          ]
-        },
-        {
-          "id": "r2-opt-b",
-          "quality": "ineffective",
-          "impact": 0,
-          "reason": "Surrenders the argument before it has even started. Doesn't engage with the proposition or offer a real alternative.",
-          "sentences": [
-            {
-              "id": "s-r2b-1",
-              "text": "I am just a small mouse, and nobody really listens to me anyway.",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r2b-2",
-              "text": "Maybe the rabbits know more about decorating than I do.",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r2b-3",
-              "text": "If everyone wants the barn blue, who am I to argue with the whole farm?",
-              "logicalFallacies": []
-            }
-          ]
-        },
-        {
-          "id": "r2-opt-c",
-          "quality": "effective",
-          "impact": 20,
-          "reason": "Reframes the debate around survival and concrete needs. Anchors the audience to the leaking roof — a problem paint cannot solve.",
-          "sentences": [
-            {
-              "id": "s-r2c-1",
-              "text": "The barn's roof has three holes that drip water onto the hay every time it rains.",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r2c-2",
-              "text": "Our savings should go toward patching that roof before the autumn storms arrive.",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r2c-3",
-              "text": "A safe, dry barn protects every animal — and that has to come before a coat of paint.",
+              "text": "We should spend more money to repair the holes on the roof, safety is more important than painting the barn.",
               "logicalFallacies": []
             }
           ]
@@ -139,63 +83,7 @@
           "sentences": [
             {
               "id": "s-r3a-1",
-              "text": "Will the blue match the door of the chicken coop?",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r3a-2",
-              "text": "What shade of blue do you have in mind — sky, navy, or robin's egg?",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r3a-3",
-              "text": "Will the cows be allowed to vote on the exact tone?",
-              "logicalFallacies": []
-            }
-          ]
-        },
-        {
-          "id": "r3-opt-b",
-          "quality": "ineffective",
-          "impact": -5,
-          "reason": "Vague philosophical jabs at Barnaby's premise. Doesn't pin him down on numbers or priorities.",
-          "sentences": [
-            {
-              "id": "s-r3b-1",
-              "text": "Are you really sure blue is the happiest color of them all?",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r3b-2",
-              "text": "Who told you blue makes anyone feel like they're floating?",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r3b-3",
-              "text": "Couldn't a different color do exactly the same thing for far less money?",
-              "logicalFallacies": []
-            }
-          ]
-        },
-        {
-          "id": "r3-opt-c",
-          "quality": "effective",
-          "impact": 18,
-          "reason": "Forces Barnaby onto the financial battlefield. Either he produces a budget, or his proposal looks reckless to the jury.",
-          "sentences": [
-            {
-              "id": "s-r3c-1",
-              "text": "Barnaby, how many coins will the paint and brushes actually cost the farm?",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r3c-2",
-              "text": "How does that compare to the cost of repairing the roof beams before winter?",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r3c-3",
-              "text": "Have you written down a budget anywhere we can all see, or is this all in your head?",
+              "text": "How much of the money should we spend on the paint and brushes?",
               "logicalFallacies": []
             }
           ]
@@ -211,37 +99,7 @@
             "sentences": [
               {
                 "id": "s-r3ra-1",
-                "text": "All shades of blue are happy shades. The exact tone will reveal itself in the moment of inspiration!",
-                "logicalFallacies": []
-              }
-            ]
-          }
-        },
-        {
-          "forOptionId": "r3-opt-b",
-          "statement": {
-            "id": "stmt-r3-resp-b",
-            "speakerId": "barnaby",
-            "type": "crossfire",
-            "sentences": [
-              {
-                "id": "s-r3rb-1",
-                "text": "I have it on excellent authority from the sky itself, Pip. The sky never lies.",
-                "logicalFallacies": []
-              }
-            ]
-          }
-        },
-        {
-          "forOptionId": "r3-opt-c",
-          "statement": {
-            "id": "stmt-r3-resp-c",
-            "speakerId": "barnaby",
-            "type": "crossfire",
-            "sentences": [
-              {
-                "id": "s-r3rc-1",
-                "text": "Coins are for accountants, Pip — I am painting the bigger picture, and that picture is BLUE!",
+                "text": "Almost all of the money will go to the paint and brushes.",
                 "logicalFallacies": []
               }
             ]
@@ -273,57 +131,14 @@
       },
       "options": [
         {
-          "id": "r4-opt-a",
-          "quality": "logical_fallacy",
-          "impact": -15,
-          "reason": "This is a counter Ad Hominem — attacking Barnaby's species and looks instead of his argument. It makes Pip look just as petty as Barnaby.",
-          "sentences": [
-            {
-              "id": "s-r4a-1",
-              "text": "And why should anyone listen to a fluffy bunny who only thinks about carrots and parties?",
-              "logicalFallacies": [
-                {
-                  "id": "ad-hominem",
-                  "explanation": "Pip attacks Barnaby's species and lifestyle rather than answering the question about the proposal."
-                }
-              ]
-            },
-            {
-              "id": "s-r4a-2",
-              "text": "Your ears are far too long for any sensible argument to fit between them.",
-              "logicalFallacies": [
-                {
-                  "id": "ad-hominem",
-                  "explanation": "Another personal attack — about Barnaby's body — rather than addressing the substance of the debate."
-                }
-              ]
-            },
-            {
-              "id": "s-r4a-3",
-              "text": "Maybe rabbits should stick to hopping and leave the planning to mice.",
-              "logicalFallacies": []
-            }
-          ]
-        },
-        {
           "id": "r4-opt-b",
           "quality": "ineffective",
-          "impact": -5,
+          "impact": 0,
           "reason": "Defensive about appearance — exactly where Barnaby wants the conversation. Misses the chance to name the fallacy and pivot back to the roof.",
           "sentences": [
             {
               "id": "s-r4b-1",
               "text": "I am not drab! I groom my fur every single morning down by the pond.",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r4b-2",
-              "text": "Gray is a very practical color for a mouse who lives in the shadows of the barn.",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r4b-3",
-              "text": "You are being very mean and it is hurting my feelings in front of everyone.",
               "logicalFallacies": []
             }
           ]
@@ -349,16 +164,6 @@
             {
               "id": "s-r4c-1",
               "text": "Barnaby, the color of my fur has nothing to do with the holes in our roof.",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r4c-2",
-              "text": "That is an Ad Hominem — attacking my appearance instead of answering my question about the budget.",
-              "logicalFallacies": []
-            },
-            {
-              "id": "s-r4c-3",
-              "text": "So let's stick to the real question: how do we pay for paint when the rafters are dripping rainwater onto the hay?",
               "logicalFallacies": []
             }
           ]
