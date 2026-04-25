@@ -13,6 +13,10 @@ import {
 } from '../utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import { debateEventBus } from '../utils/debateEventBus';
+import {
+  canRunTutorialTargetAction,
+  notifyTutorialTargetAction,
+} from '../../tutorial/tutorialInteractionGuard';
 import styles from './TrialPanels.module.scss';
 import getLabel from '../../../data/labels';
 
@@ -49,6 +53,7 @@ function ChoiceButton({
   selected,
   unlockHint,
   revealFlash,
+  tutorialOptionId,
 }: {
   optionLetter: string;
   /** Truncated label shown in the button */
@@ -62,6 +67,7 @@ function ChoiceButton({
   unlockHint?: boolean;
   /** One-time emphasis after revealing an unlock-gated statement */
   revealFlash?: boolean;
+  tutorialOptionId?: string;
 }) {
   const ariaLabel = getLabel('optionAriaLabel', {
     replacements: {
@@ -81,6 +87,7 @@ function ChoiceButton({
       aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
+      data-tutorial-interactive-option-id={tutorialOptionId}
     >
       <span className={styles.trialChoiceBtnRow}>
         <span className={styles.trialChoiceLetter} aria-hidden>
@@ -145,7 +152,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div className={styles.trialChoices}>
+        <div className={styles.trialChoices} data-tutorial-panel="interactive">
           {choosingOptionsOrder.map((opt, idx) => {
             const guessUnlocked = isPlayerOptionUnlocked(opt, fallacyGuesses);
             const revealed = !opt.unlockCondition || revealedLockedOptionIds.has(opt.id);
@@ -171,7 +178,10 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 selected={wf.selectedOption?.id === opt.id}
                 unlockHint={awaitingReveal}
                 revealFlash={revealFlash}
+                tutorialOptionId={opt.id}
                 onClick={() => {
+                  const target = { kind: 'interactive_option', optionId: opt.id } as const;
+                  if (!canRunTutorialTargetAction(target)) return;
                   if (
                     opt.unlockCondition &&
                     guessUnlocked &&
@@ -184,10 +194,12 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                       optionId: opt.id,
                     });
                     onRevealLockedOption(opt.id);
+                    notifyTutorialTargetAction(target);
                     return;
                   }
                   if (wf.selectedOption?.id === opt.id) {
                     wf.unselect();
+                    notifyTutorialTargetAction(target);
                     return;
                   }
                   if (playerRound) {
@@ -198,6 +210,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                     });
                   }
                   wf.dispatch({ type: 'select_option', optionId: opt.id });
+                  notifyTutorialTargetAction(target);
                 }}
               />
             );
@@ -226,22 +239,38 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 (wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo)
               }
               onClick={() => {
+                const target = { kind: 'interactive_action', action: 'back' } as const;
+                if (!canRunTutorialTargetAction(target)) return;
                 debateEventBus.emit('interactive:back', {
                   fromPhase: wf.gamePhase,
                   roundNumber: wf.currentRound?.roundNumber ?? null,
                 });
                 if (wf.gamePhase === 'player_choosing') {
                   wf.unselect();
+                  notifyTutorialTargetAction(target);
                   return;
                 }
                 wf.undo();
+                notifyTutorialTargetAction(target);
               }}
+              data-tutorial-interactive-action="back"
             >
               {getLabel('back')}
             </TrialTextButton>
             <TrialTextButton
               disabled={interactiveFooter.submitDisabled || !interactiveFooter.onSubmit}
-              onClick={() => interactiveFooter.onSubmit?.()}
+              onClick={() => {
+                const target = {
+                  kind: 'interactive_action',
+                  action: wf.gamePhase === 'player_confirming' ? 'confirm' : 'continue',
+                } as const;
+                if (!canRunTutorialTargetAction(target)) return;
+                interactiveFooter.onSubmit?.();
+                notifyTutorialTargetAction(target);
+              }}
+              data-tutorial-interactive-action={
+                wf.gamePhase === 'player_confirming' ? 'confirm' : 'continue'
+              }
             >
               {interactiveFooter.submitLabel}
             </TrialTextButton>

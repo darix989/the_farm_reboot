@@ -80,9 +80,10 @@ export function useScenarioTutorials(
             id: entry.id,
             steps: entry.tutorial.steps.map((step) => ({
               message: step.message,
-              spotlight: step.spotlight,
               modal: step.modal,
-              showContinueWithSpotlight: step.showContinueWithSpotlight,
+              targetComponent: step.targetComponent,
+              interactionMode: step.interactionMode,
+              targetClassName: step.targetClassName,
               artificialInteractions: step.artificialInteractions,
             })),
           });

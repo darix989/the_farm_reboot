@@ -2,137 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import { useTutorialStore } from '../../store/tutorialStore';
-import {
-  isFullStageSpotlight,
-  resolveStageSpotlightToViewport,
-  spotlightCoversEntireViewport,
-  type TutorialSpotlightRect,
-} from './spotlightRect';
+import { resolveStageSpotlightToViewport } from './spotlightRect';
 import { useStageRect } from './useStageRect';
 import TrialTextButton from '../trial/components/TrialTextButton';
 import ScrollFadeContainer from '../trial/components/ScrollFadeContainer';
 import panelStyles from '../trial/panels/TrialPanels.module.scss';
 import shared from '../trial/trialShared.module.scss';
 import getLabel from '../../data/labels';
-import { debateEventBus } from '../trial/utils/debateEventBus';
 import { scheduleArtificialInteractions } from './artificialInteractions';
+import { resolveTutorialTargetElement } from './tutorialTarget';
+import highlightStyles from './tutorialHighlight.module.scss';
 import styles from './TutorialOverlay.module.scss';
 import { TutorialModalRichBody } from './tutorialRichMessage';
 
 declare global {
   interface Window {
-    /**
-     * Dev-only: force `TutorialOverlay` to re-render so any change to
-     * `window.spotlightOverride` is picked up immediately. Only defined while
-     * the overlay is mounted.
-     */
     forceTutorialRender?: () => void;
-    /**
-     * Reset all tutorial render overrides to their default values.
-     */
     resetTutorialRenderOverrides?: () => void;
-    /**
-     * Dev-only: partial spotlight rect (stage-normalized fractions, 0–1) merged
-     * over the current step's `spotlight`. Missing keys inherit from the step.
-     */
-    spotlightOverride?: {
-      /** Left edge / stage width. */
-      x?: number;
-      /** Top edge / stage height. */
-      y?: number;
-      /** Width / stage width. */
-      width?: number;
-      /** Height / stage height. */
-      height?: number;
-    };
-    /**
-     * Dev-only: partial modal rect (stage-normalized fractions, 0–1) merged
-     * over the current step's `modal`. Missing keys inherit from the step; if
-     * the step has no `modal` spec, all four fields must be supplied for the
-     * override to take effect (otherwise the CSS default placement is used).
-     */
     modalOverride?: {
-      /** Left edge / stage width. */
       x?: number;
-      /** Top edge / stage height. */
       y?: number;
-      /** Width / stage width. */
       width?: number;
-      /** Height / stage height. */
       height?: number;
     };
   }
-}
-
-/** Dim everything outside `spotlight`; the hole stays bright and receives clicks through to the UI below. */
-function SpotlightShutters({
-  spotlight,
-  vw,
-  vh,
-}: {
-  spotlight: TutorialSpotlightRect;
-  vw: number;
-  vh: number;
-}) {
-  const { x, y, width: spotW, height: spotH } = spotlight;
-  const holeTop = Math.max(0, Math.min(vh, y));
-  const holeBottom = Math.max(0, Math.min(vh, y + spotH));
-  const holeLeft = Math.max(0, Math.min(vw, x));
-  const holeRight = Math.max(0, Math.min(vw, x + spotW));
-  const midH = Math.max(0, holeBottom - holeTop);
-  const topH = holeTop;
-  const bottomTop = holeBottom;
-  const bottomH = Math.max(0, vh - holeBottom);
-  const leftW = holeLeft;
-  const rightLeft = holeRight;
-  const rightW = Math.max(0, vw - holeRight);
-
-  return (
-    <>
-      <div className={cn(styles.shutter, styles.shutterTop)} style={{ height: topH }} aria-hidden />
-      <div
-        className={cn(styles.shutter, styles.shutterBottom)}
-        style={{ top: bottomTop, height: bottomH }}
-        aria-hidden
-      />
-      <div
-        className={cn(styles.shutter, styles.shutterLeft)}
-        style={{ top: holeTop, width: leftW, height: midH }}
-        aria-hidden
-      />
-      <div
-        className={cn(styles.shutter, styles.shutterRight)}
-        style={{ top: holeTop, left: rightLeft, width: rightW, height: midH }}
-        aria-hidden
-      />
-    </>
-  );
-}
-
-/**
- * Pulsing amber glow traced around the spotlight hole. Rendered as a separate,
- * click-through overlay so it can sit above the shutter panes (and therefore
- * blend its outer glow into the dimmed area) without interfering with clicks
- * on the underlying UI. Uses tutorial-only colors (not the cyan UI accent) so
- * focused controls are not mistaken for the tutorial chrome.
- */
-function SpotlightGlow({
-  spotlight,
-  vw,
-  vh,
-}: {
-  spotlight: TutorialSpotlightRect;
-  vw: number;
-  vh: number;
-}) {
-  const left = Math.max(0, Math.min(vw, spotlight.x));
-  const top = Math.max(0, Math.min(vh, spotlight.y));
-  const right = Math.max(0, Math.min(vw, spotlight.x + spotlight.width));
-  const bottom = Math.max(0, Math.min(vh, spotlight.y + spotlight.height));
-  const width = Math.max(0, right - left);
-  const height = Math.max(0, bottom - top);
-  if (width <= 0 || height <= 0) return null;
-  return <div className={styles.spotlightGlow} style={{ left, top, width, height }} aria-hidden />;
 }
 
 const TutorialOverlay: React.FC = () => {
@@ -143,20 +36,12 @@ const TutorialOverlay: React.FC = () => {
   const stepBack = useTutorialStore((s) => s.stepBack);
   const finishTutorial = useTutorialStore((s) => s.finishTutorial);
 
-  // Single coherent snapshot of the stage rect + viewport, observed reactively.
-  // Both spotlight conversion and shutter sizing read from this so they can't
-  // drift across frames (see `useStageRect.ts` for the full list of layout
-  // signals it watches).
-  const { stageRect, viewport } = useStageRect();
+  const { stageRect } = useStageRect();
 
-  // Dev-only: bump a render tick from the console so `window.spotlightOverride`
-  // can be tweaked live. The spotlight spec is derived on every render, so
-  // triggering a re-render is enough to merge in the latest override values.
   const [, setRenderTick] = useState(0);
   useEffect(() => {
     window.forceTutorialRender = () => setRenderTick((n) => n + 1);
     window.resetTutorialRenderOverrides = () => {
-      window.spotlightOverride = undefined;
       window.modalOverride = undefined;
     };
     return () => {
@@ -168,32 +53,8 @@ const TutorialOverlay: React.FC = () => {
   const isLast = stepIndex >= lastIndex;
   const isSingle = steps.length === 1;
   const step = isOpen && steps.length > 0 ? steps[stepIndex]! : null;
-  const hasFocusedSpotlight = step ? !isFullStageSpotlight(step.spotlightSpec) : false;
-  const autoConcludeOnEvent =
-    step !== null && hasFocusedSpotlight && !step.showContinueWithSpotlight;
+  const isTargetOnlyStep = !!(step?.targetComponent && step.interactionMode === 'target_only');
 
-  // When the current step auto-concludes on any debate event, advance or finish
-  // on the next emit. The hint text takes the place of the Continue / Got it
-  // button, so the spotlighted button in the underlying UI drives the flow.
-  //
-  // Ignore the tutorial's own lifecycle events (`tutorial:start/next/end`) —
-  // `stepForward` / `finishTutorial` below emit them synchronously, so without
-  // this guard we would recursively advance/finish on our own emission before
-  // React reruns this effect with the new `stepIndex`.
-  //
-  // Stale-listener guard (see `armedFor` below): a single user click can emit
-  // several debate events synchronously (e.g. `analysis:guess_submitted` →
-  // `analysis:guess_partially_correct`). Once the first event auto-concludes
-  // the current tutorial, the React effect cleanup hasn't run yet, so this
-  // listener is still live when the second event arrives. Without a guard it
-  // would re-enter `finishTutorial` / `stepForward` against whatever tutorial
-  // / step the store has since moved to — which manifests as a chained
-  // `tutorial:end → openTutorial(...)` tutorial immediately closing itself.
-  // Schedule the step's artificial interactions (scroll / click the debate log)
-  // when the step becomes active. Cumulative `delayTimeMs` values are honored by
-  // `scheduleArtificialInteractions`. The cleanup clears every still-pending
-  // timer on step change, tutorial close, or overlay unmount so a late timer
-  // can never fire against the wrong step or a dismounted UI.
   useEffect(() => {
     if (!isOpen || !step) return;
     const interactions = step.artificialInteractions;
@@ -202,52 +63,20 @@ const TutorialOverlay: React.FC = () => {
   }, [isOpen, step, stepIndex]);
 
   useEffect(() => {
-    if (!autoConcludeOnEvent) return;
-    const armedFor = {
-      tutorialId: useTutorialStore.getState().tutorialId,
-      stepIndex,
+    if (!isOpen || !step?.targetComponent) return;
+    const targetEl = resolveTutorialTargetElement(step.targetComponent);
+    if (!targetEl) return;
+    const className = step.targetClassName ?? highlightStyles.tutorialTargetHighlight;
+    targetEl.classList.add(className);
+    return () => {
+      targetEl.classList.remove(className);
     };
-    const unsubscribe = debateEventBus.onAny((event) => {
-      if (event === 'tutorial:start' || event === 'tutorial:next' || event === 'tutorial:end') {
-        return;
-      }
-      const current = useTutorialStore.getState();
-      if (!current.isOpen) return;
-      if (current.tutorialId !== armedFor.tutorialId) return;
-      if (current.stepIndex !== armedFor.stepIndex) return;
-      if (isSingle || isLast) {
-        finishTutorial();
-      } else {
-        stepForward();
-      }
-    });
-    return unsubscribe;
-  }, [autoConcludeOnEvent, isSingle, isLast, finishTutorial, stepForward, stepIndex]);
+  }, [isOpen, step]);
 
   if (!isOpen || !step) {
     return null;
   }
 
-  // Merge dev-time `window.spotlightOverride` (partial) over the step's spec so
-  // individual fractions can be tweaked live from the browser console.
-  const override = window.spotlightOverride;
-  const effectiveSpotlightSpec = override
-    ? {
-        x: override.x ?? step.spotlightSpec.x,
-        y: override.y ?? step.spotlightSpec.y,
-        width: override.width ?? step.spotlightSpec.width,
-        height: override.height ?? step.spotlightSpec.height,
-      }
-    : step.spotlightSpec;
-  const spotlightPx = resolveStageSpotlightToViewport(effectiveSpotlightSpec, stageRect);
-  const spotlightLeavesViewportHole =
-    !isFullStageSpotlight(effectiveSpotlightSpec) &&
-    !spotlightCoversEntireViewport(spotlightPx, viewport.w, viewport.h);
-  const blockClicksBehindModal = !spotlightLeavesViewportHole || step.showContinueWithSpotlight;
-  // Merge dev-time `window.modalOverride` (partial) over the step's `modalSpec`
-  // when present. If the step has no `modalSpec`, the override only takes effect
-  // when all four fractions are supplied — otherwise we fall through to the
-  // overlay's CSS default placement.
   const modalOverride = window.modalOverride;
   let effectiveModalSpec = step.modalSpec;
   if (step.modalSpec && modalOverride) {
@@ -297,13 +126,8 @@ const TutorialOverlay: React.FC = () => {
 
   const primaryLabel = isSingle || isLast ? getLabel('tutorialGotIt') : getLabel('continue');
 
-  // Footer layout:
-  //  - Normal: single primary (isSingle) or Back + primary grid
-  //  - Auto-conclude + single step: no footer buttons (hint alone drives the step)
-  //  - Auto-conclude + multi-step: Back stays (so users can revisit earlier steps);
-  //    the primary cell is empty because the spotlighted button concludes the step.
   const renderFooter = () => {
-    if (autoConcludeOnEvent) {
+    if (isTargetOnlyStep) {
       if (isSingle) return null;
       return (
         <div className={styles.footer}>
@@ -358,14 +182,6 @@ const TutorialOverlay: React.FC = () => {
 
   const ui = (
     <div className={styles.root} role="presentation">
-      <SpotlightShutters spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
-      {spotlightLeavesViewportHole ? (
-        <SpotlightGlow spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
-      ) : null}
-      {blockClicksBehindModal ? (
-        <div className={styles.clickBlocker} aria-hidden role="presentation" />
-      ) : null}
-
       <div className={styles.dialogWrap}>
         <div
           className={cn(shared.trialModalFontScope, styles.dialog)}
@@ -386,14 +202,9 @@ const TutorialOverlay: React.FC = () => {
               </h2>
             </div>
           </div>
-          <ScrollFadeContainer isModal ignoreTutorialScrollLock className={styles.dialogBody}>
+          <ScrollFadeContainer isModal className={styles.dialogBody}>
             <TutorialModalRichBody message={step.message} />
           </ScrollFadeContainer>
-          {autoConcludeOnEvent ? (
-            <p className={styles.spotlightHint} role="status" aria-live="polite">
-              {getLabel('tutorialSpotlightHint')}
-            </p>
-          ) : null}
           {renderFooter()}
         </div>
       </div>

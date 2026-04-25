@@ -1,22 +1,21 @@
 import { create } from 'zustand';
-import type { DebateTutorialArea, TutorialArtificialInteraction } from '../types/debateEntities';
-import { FULL_STAGE_SPOTLIGHT_RATIOS } from '../react/tutorial/spotlightRect';
+import type {
+  DebateTutorialArea,
+  TutorialArtificialInteraction,
+  TutorialInteractionMode,
+  TutorialTargetRef,
+} from '../types/debateEntities';
 import { debateEventBus } from '../react/trial/utils/debateEventBus';
+import { tutorialTargetEquals } from '../react/tutorial/tutorialTarget';
 
-export type { TutorialSpotlightRect } from '../react/tutorial/spotlightRect';
-
-/** One tutorial step after open; spotlight stays as stage ratios until the overlay resolves to px. */
+/** One tutorial step after open. */
 export interface TutorialStepResolved {
   message: string;
-  spotlightSpec: DebateTutorialArea;
   /** Optional stage-normalized rect for the dialog itself; when absent, the overlay uses its CSS default. */
   modalSpec?: DebateTutorialArea;
-  /**
-   * When `true`, keep the Continue / Got it button even if the step has a
-   * spotlight. Without this flag, spotlighted steps hide the button and
-   * auto-conclude on the next `EventTrigger` fired from the debate event bus.
-   */
-  showContinueWithSpotlight?: boolean;
+  targetComponent?: TutorialTargetRef;
+  interactionMode?: TutorialInteractionMode;
+  targetClassName?: string;
   /**
    * Ordered sequence of synthetic UI interactions to fire while this step is
    * active. Consumed by `TutorialOverlay`, which schedules each entry's
@@ -28,9 +27,10 @@ export interface TutorialStepResolved {
 
 export type TutorialStepInput = {
   message: string;
-  spotlight?: DebateTutorialArea;
   modal?: DebateTutorialArea;
-  showContinueWithSpotlight?: boolean;
+  targetComponent?: TutorialTargetRef;
+  interactionMode?: TutorialInteractionMode;
+  targetClassName?: string;
   artificialInteractions?: readonly TutorialArtificialInteraction[];
 };
 
@@ -65,6 +65,12 @@ interface TutorialStore extends TutorialState {
   setStepIndex: (index: number) => void;
   stepForward: () => void;
   stepBack: () => void;
+  /** True only when the current step allows this specific in-app target action. */
+  canRunTargetAction: (target: TutorialTargetRef) => boolean;
+  /** True when generic in-app actions are allowed for the current step. */
+  canRunUntargetedAction: () => boolean;
+  /** Called after a permitted in-app action executes; advances `target_only` steps. */
+  notifyTargetAction: (target: TutorialTargetRef) => void;
 }
 
 const initial: TutorialState = {
@@ -82,9 +88,10 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
     const steps: TutorialStepResolved[] = payload.steps
       .map((step) => ({
         message: step.message.trim(),
-        spotlightSpec: step.spotlight ?? FULL_STAGE_SPOTLIGHT_RATIOS,
         modalSpec: step.modal,
-        showContinueWithSpotlight: step.showContinueWithSpotlight,
+        targetComponent: step.targetComponent,
+        interactionMode: step.interactionMode ?? 'modal_only',
+        targetClassName: step.targetClassName,
         artificialInteractions: step.artificialInteractions,
       }))
       .filter((s) => s.message.length > 0);
@@ -148,4 +155,35 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
       if (!s.isOpen) return s;
       return { stepIndex: Math.max(0, s.stepIndex - 1) };
     }),
+
+  canRunTargetAction: (target) => {
+    const s = get();
+    if (!s.isOpen || s.steps.length === 0) return true;
+    const step = s.steps[s.stepIndex];
+    if (!step) return true;
+    if (!step.targetComponent) return false;
+    if (step.interactionMode !== 'target_only') return false;
+    return tutorialTargetEquals(step.targetComponent, target);
+  },
+
+  canRunUntargetedAction: () => {
+    const s = get();
+    if (!s.isOpen || s.steps.length === 0) return true;
+    return false;
+  },
+
+  notifyTargetAction: (target) => {
+    const s = get();
+    if (!s.isOpen || s.steps.length === 0) return;
+    const step = s.steps[s.stepIndex];
+    if (!step?.targetComponent) return;
+    if (step.interactionMode !== 'target_only') return;
+    if (!tutorialTargetEquals(step.targetComponent, target)) return;
+    const isLast = s.stepIndex >= s.steps.length - 1;
+    if (isLast) {
+      get().finishTutorial();
+      return;
+    }
+    get().stepForward();
+  },
 }));

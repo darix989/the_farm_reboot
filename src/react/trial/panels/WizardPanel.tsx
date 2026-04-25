@@ -18,6 +18,7 @@ interface WizardPanelProps {
 
 const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail }) => (
   <div
+    data-tutorial-panel="wizard"
     style={{
       display: 'flex',
       height: '100%',

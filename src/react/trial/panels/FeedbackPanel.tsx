@@ -157,7 +157,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
         // debate log scroll container (e.g. `debate_log:scroll_to_top`).
         scrollElementDataKey="debateLogScroll"
       >
-        <div className={styles.debateLogRoundList}>
+        <div className={styles.debateLogRoundList} data-tutorial-panel="debate_log">
           {wf.scenario.introduction?.trim() && (
             <IntroDebateLogCard
               wf={wf}

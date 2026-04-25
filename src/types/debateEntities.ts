@@ -245,7 +245,23 @@ export interface TutorialArtificialInteraction {
   action: TutorialArtificialInteractionAction;
 }
 
-/** One panel in the intro tutorial; optional spotlight defaults to full stage when omitted. */
+export type TutorialInteractionMode = 'modal_only' | 'target_only';
+
+/**
+ * Typed reference to a UI element that can be highlighted (and optionally be
+ * the only interactable control) during a tutorial step.
+ */
+export type TutorialTargetRef =
+  | { kind: 'panel'; panel: 'debate_log' | 'wizard' | 'interactive' }
+  | { kind: 'interactive_action'; action: 'back' | 'continue' | 'confirm' }
+  | { kind: 'interactive_option'; optionId: string }
+  | { kind: 'debate_log_round_analyze'; roundId: string }
+  | { kind: 'debate_log_round_toggle'; roundId: string }
+  | { kind: 'analysis_sentence'; sentenceId: string }
+  | { kind: 'analysis_fallacy'; fallacyId: LogicalFallacyId }
+  | { kind: 'analysis_action'; action: 'submit_guess' | 'no_fallacies' | 'close' };
+
+/** One panel in the intro tutorial. */
 export interface DebateTutorialStep {
   modal?: DebateTutorialArea;
   /**
@@ -258,19 +274,23 @@ export interface DebateTutorialStep {
    * - A blank line (two or more consecutive newlines) starts a new paragraph; a single newline inside a paragraph becomes a line break.
    */
   message: string;
-  spotlight?: DebateTutorialArea;
   /**
-   * When a step has a (non-full-stage) `spotlight`, the default is that the step
-   * concludes as soon as any new `EventTrigger` fires (assumed to originate from
-   * the spotlighted button) — no Continue / Got it button is shown; a hint
-   * ("Click the highlighted button to continue") is rendered instead.
+   * Optional target component to highlight during this step.
    *
-   * Set this to `true` to opt out of that default and keep the normal
-   * Continue / Got it button behavior even when a spotlight is defined.
-   *
-   * Ignored when the step has no spotlight (or a full-stage spotlight).
+   * - Omitted: only tutorial overlay buttons can progress (`scenario 1`).
+   * - Present + `interactionMode: 'modal_only'`: target is highlighted but not
+   *   interactable (`scenario 2.1`).
+   * - Present + `interactionMode: 'target_only'`: target is the only allowed
+   *   in-app interaction (`scenario 2.2`).
    */
-  showContinueWithSpotlight?: boolean;
+  targetComponent?: TutorialTargetRef;
+  /** Behavior used when `targetComponent` is present. Defaults to `modal_only`. */
+  interactionMode?: TutorialInteractionMode;
+  /**
+   * Optional custom class name applied to the highlighted target element.
+   * When omitted, the tutorial default highlight class is used.
+   */
+  targetClassName?: string;
   /**
    * Optional ordered sequence of synthetic UI interactions fired while this
    * step is visible. Each entry's `delayTimeMs` is measured from the moment

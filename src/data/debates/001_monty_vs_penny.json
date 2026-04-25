@@ -691,17 +691,12 @@
           },
           {
             "message": "**First**, read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**, then **[success]Continue[/success]**.",
-            "showContinueWithSpotlight": true,
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "debate_log" },
             "modal": {
               "x": 0.125,
               "y": 0.06,
               "width": 0.4,
-              "height": 0.4
-            },
-            "spotlight": {
-              "x": 0.61,
-              "y": 0.11,
-              "width": 0.37,
               "height": 0.4
             }
           }
@@ -735,19 +730,14 @@
         "steps": [
           {
             "message": "Round 1 is about the **[warning]proposition's opening constructive[/warning]** which is spoken by (**[warning]the other side[/warning]**). Read it in the **[accent]Wizard Panel[/accent]**.",
-            "showContinueWithSpotlight": true,
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
             "artificialInteractions": [
               {
                 "delayTimeMs": 500,
                 "action": { "type": "wizard:scroll_to_bottom" }
               }
             ],
-            "spotlight": {
-              "x": 0.02,
-              "y": 0.6,
-              "width": 0.55,
-              "height": 0.35
-            },
             "modal": {
               "x": 0.225,
               "y": 0.06,
@@ -757,13 +747,8 @@
           },
           {
             "message": "Each round is logged in the **[accent]Debate Log Panel[/accent]**.",
-            "showContinueWithSpotlight": true,
-            "spotlight": {
-              "x": 0.6,
-              "y": 0.03,
-              "width": 0.373,
-              "height": 0.46
-            },
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "debate_log" },
             "modal": {
               "x": 0.225,
               "y": 0.06,
@@ -773,13 +758,8 @@
           },
           {
             "message": "Use **[accent]Analyze[/accent]** (magnifying glass) on statements from either side.",
-            "showContinueWithSpotlight": true,
-            "spotlight": {
-              "x": 0.6,
-              "y": 0.22,
-              "width": 0.4,
-              "height": 0.3
-            },
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
             "modal": {
               "x": 0.225,
               "y": 0.06,
@@ -789,12 +769,8 @@
           },
           {
             "message": "Inspect their opening: click the **[accent]magnifying glass[/accent]** to **analyze**.",
-            "spotlight": {
-              "x": 0.925,
-              "y": 0.225,
-              "width": 0.045,
-              "height": 0.075
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
             "modal": {
               "x": 0.225,
               "y": 0.06,
@@ -819,28 +795,19 @@
         "steps": [
           {
             "message": "**[accent]Your turn[/accent]** — pick **[info]one of three[/info]** replies for the moderator.",
-            "spotlight": {
-              "x": 0.63,
-              "y": 0.6,
-              "width": 0.34,
-              "height": 0.26
-            },
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "interactive" },
             "modal": {
               "x": 0.125,
               "y": 0.06,
               "width": 0.4,
               "height": 0.4
-            },
-            "showContinueWithSpotlight": true
+            }
           },
           {
             "message": "Click **[accent]Option A[/accent]** — the full text appears in the **[accent]Wizard Panel[/accent]**.",
-            "spotlight": {
-              "x": 0.63,
-              "y": 0.6,
-              "width": 0.095,
-              "height": 0.26
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-a" },
             "modal": {
               "x": 0.125,
               "y": 0.06,
@@ -850,19 +817,14 @@
           },
           {
             "message": "In the **[accent]Interactive Area[/accent]**, **[warning]Option C[/warning]** stays locked until you analyze a **[warning]logical fallacy[/warning]** from your opponent in **[info]Round 1[/info]** that you have not resolved yet.",
-            "spotlight": {
-              "x": 0.87,
-              "y": 0.6,
-              "width": 0.095,
-              "height": 0.26
-            },
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-c" },
             "modal": {
               "x": 0.125,
               "y": 0.06,
               "width": 0.4,
               "height": 0.4
-            },
-            "showContinueWithSpotlight": true
+            }
           },
           {
             "artificialInteractions": [
@@ -878,13 +840,8 @@
               "width": 0.4,
               "height": 0.4
             },
-            "spotlight": {
-              "x": 0.6,
-              "y": 0.23,
-              "width": 0.38,
-              "height": 0.14
-            },
-            "showContinueWithSpotlight": true
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" }
           },
           {
             "message": "**[info]Expand[/info]** the round card if **[accent]Analyze[/accent]** is hidden, then open it.",
@@ -894,12 +851,8 @@
               "width": 0.4,
               "height": 0.4
             },
-            "spotlight": {
-              "x": 0.92,
-              "y": 0.245,
-              "width": 0.05,
-              "height": 0.1
-            }
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "debate_log_round_toggle", "roundId": "round-1" }
           },
           {
             "message": "Click **[accent]Analyze[/accent]** on Round 1.",
@@ -909,12 +862,8 @@
               "width": 0.4,
               "height": 0.4
             },
-            "spotlight": {
-              "x": 0.62,
-              "y": 0.3,
-              "width": 0.35,
-              "height": 0.2
-            }
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" }
           }
         ]
       }
@@ -926,12 +875,8 @@
         "steps": [
           {
             "message": "**[accent]Statement analysis[/accent]** — **[accent]select a sentence[/accent]** you think hides a **[warning]logical fallacy[/warning]**.",
-            "spotlight": {
-              "x": 0.117,
-              "y": 0.425,
-              "width": 0.41,
-              "height": 0.15
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-1" },
             "modal": {
               "x": 0.6,
               "y": 0.2,
@@ -941,12 +886,8 @@
           },
           {
             "message": "Pick **[info]false dilemma[/info]** for that sentence.",
-            "spotlight": {
-              "x": 0.54,
-              "y": 0.2,
-              "width": 0.2,
-              "height": 0.3
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "false-dilemma" },
             "modal": {
               "x": 0.05,
               "y": 0.2,
@@ -956,12 +897,8 @@
           },
           {
             "message": "**[accent]Spot Fallacies[/accent]** to submit.",
-            "spotlight": {
-              "x": 0.715,
-              "y": 0.78,
-              "width": 0.18,
-              "height": 0.1
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
             "modal": {
               "x": 0.15,
               "y": 0.3,
@@ -991,18 +928,11 @@
           },
           {
             "message": "You get **[info]3 attempts[/info]** per statement to spot fallacies.",
-            "showContinueWithSpotlight": true,
             "modal": {
               "x": 0.6,
               "y": 0.2,
               "width": 0.35,
               "height": 0.5
-            },
-            "spotlight": {
-              "x": 0.43,
-              "y": 0.22,
-              "width": 0.1,
-              "height": 0.1
             }
           },
           {
@@ -1013,12 +943,8 @@
               "width": 0.35,
               "height": 0.5
             },
-            "spotlight": {
-              "x": 0.848,
-              "y": 0.12,
-              "width": 0.05,
-              "height": 0.07
-            }
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "close" }
           }
         ]
       }
@@ -1033,12 +959,8 @@
         "steps": [
           {
             "message": "**[accent]Continue[/accent]** to the **[success]next round[/success]**.",
-            "spotlight": {
-              "x": 0.805,
-              "y": 0.85,
-              "width": 0.18,
-              "height": 0.12
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": {
               "x": 0.05,
               "y": 0.25,
@@ -1062,21 +984,13 @@
               "width": 0.36,
               "height": 0.5
             },
-            "spotlight": {
-              "x": 0.117,
-              "y": 0.65,
-              "width": 0.41,
-              "height": 0.14
-            }
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-2" }
           },
           {
             "message": "**[accent]Pick the fallacy[/accent]**.",
-            "spotlight": {
-              "x": 0.54,
-              "y": 0.2,
-              "width": 0.2,
-              "height": 0.3
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "false-dilemma" },
             "modal": {
               "x": 0.05,
               "y": 0.2,
@@ -1086,12 +1000,8 @@
           },
           {
             "message": "**[accent]Spot Fallacies[/accent]** to submit.",
-            "spotlight": {
-              "x": 0.715,
-              "y": 0.78,
-              "width": 0.18,
-              "height": 0.1
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
             "modal": {
               "x": 0.15,
               "y": 0.3,
@@ -1107,21 +1017,13 @@
               "width": 0.35,
               "height": 0.5
             },
-            "spotlight": {
-              "x": 0.848,
-              "y": 0.12,
-              "width": 0.05,
-              "height": 0.07
-            }
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "close" }
           },
           {
             "message": "**[accent]Option C[/accent]** — **[success]Click to unlock![/success]**.",
-            "spotlight": {
-              "x": 0.87,
-              "y": 0.6,
-              "width": 0.095,
-              "height": 0.26
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-c" },
             "modal": {
               "x": 0.125,
               "y": 0.06,
@@ -1131,12 +1033,8 @@
           },
           {
             "message": "Click again to read the full line in the **[accent]Wizard Panel[/accent]**.",
-            "spotlight": {
-              "x": 0.87,
-              "y": 0.6,
-              "width": 0.095,
-              "height": 0.26
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-c" },
             "modal": {
               "x": 0.125,
               "y": 0.06,
@@ -1146,12 +1044,8 @@
           },
           {
             "message": "**[success]Confirm[/success]** to play it.",
-            "spotlight": {
-              "x": 0.8,
-              "y": 0.865,
-              "width": 0.172,
-              "height": 0.1
-            },
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_action", "action": "confirm" },
             "modal": {
               "x": 0.125,
               "y": 0.06,

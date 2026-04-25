@@ -32,6 +32,7 @@ const AnalyzeButton: React.FC<AnalyzeButtonProps> = ({
     title={title}
     onClick={onClick}
     data-debate-log-analyze-round-id={dataRoundId}
+    data-tutorial-debate-log-analyze-round-id={dataRoundId}
   >
     <img src={magnifyingIcon} alt={getLabel('analyzeImageAlt')} />
   </button>
