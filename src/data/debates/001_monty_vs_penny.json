@@ -681,7 +681,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Here starts your first debate! There are a few rules in a debate, and with this tutorial you will learn how to: **analyze statements**; **spot logical fallacies**; and select the best statements to **[success]win the debate[/success]**!",
+            "message": "**Welcome!** You'll **analyze statements**, **spot logical fallacies**, and pick lines that **[success]win the debate[/success]**.\n\n**[info]10 rounds[/info]**, alternating sides. On **[accent]your turn[/accent]**, choose the reply that sways the moderator. Be more convincing than your opponent overall to **[success]win[/success]**.",
             "modal": {
               "x": 0.35,
               "y": 0.35,
@@ -690,16 +690,7 @@
             }
           },
           {
-            "message": "Every debate runs for **[info]10 rounds[/info]**, alternating between your side and your opponent's. Whenever **[accent]it's your turn[/accent]**, choose the statement you believe will work best to win the favour of the moderator. If, along these 10 rounds, you will be more convincing than your opponent, you will **[success]win the debate[/success]**!",
-            "modal": {
-              "x": 0.35,
-              "y": 0.35,
-              "width": 0.35,
-              "height": 0.5
-            }
-          },
-          {
-            "message": "As first thing, read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**. Then click **[success]Continue[/success]** to get started.",
+            "message": "**First**, read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**, then **[success]Continue[/success]**.",
             "showContinueWithSpotlight": true,
             "modal": {
               "x": 0.125,
@@ -723,7 +714,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Right before **[info]Round 1[/info]** starts, you will read the introduction summary and what side you are on. Click **[accent]Begin Round 1[/accent]** to get started.",
+            "message": "Before **[info]Round 1[/info]**, read the summary and your side, then **[accent]Begin Round 1[/accent]**.",
             "modal": {
               "x": 0.62,
               "y": 0.02,
@@ -743,7 +734,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Round 1 has the opening constructive of the proposition side (the other side!). You can read the whole statement from the **[accent]Wizard Panel[/accent]**.",
+            "message": "Round 1 is the proposition's opening constructive (the other side). Read it in the **[accent]Wizard Panel[/accent]**.",
             "showContinueWithSpotlight": true,
             "artificialInteractions": [
               {
@@ -765,7 +756,7 @@
             }
           },
           {
-            "message": "Every round's statement is logged in the **[accent]Debate Log Panel[/accent]**.",
+            "message": "Each round is logged in the **[accent]Debate Log Panel[/accent]**.",
             "showContinueWithSpotlight": true,
             "spotlight": {
               "x": 0.6,
@@ -781,7 +772,7 @@
             }
           },
           {
-            "message": "During a debate, it's important to **[accent]analyze[/accent]** the statements of both sides.",
+            "message": "Use **[accent]Analyze[/accent]** (magnifying glass) on statements from either side.",
             "showContinueWithSpotlight": true,
             "spotlight": {
               "x": 0.6,
@@ -797,7 +788,7 @@
             }
           },
           {
-            "message": "Let's inspect the opening constructive statement of the proposition side and check if there is something off! Click the **[accent]magnifying glass[/accent]** icon to **analyze**!",
+            "message": "Inspect their opening: click the **[accent]magnifying glass[/accent]** to **analyze**.",
             "spotlight": {
               "x": 0.925,
               "y": 0.225,
@@ -827,7 +818,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Opening Constructive: now, this is **[accent]your turn[/accent]**! You can choose **[info]1 out of 3[/info]** possible statements to convince the moderator about your thesis.",
+            "message": "**[accent]Your turn[/accent]** — pick **[info]one of three[/info]** replies for the moderator.",
             "spotlight": {
               "x": 0.63,
               "y": 0.6,
@@ -843,7 +834,7 @@
             "showContinueWithSpotlight": true
           },
           {
-            "message": "For example, if you click on **[accent]Option A[/accent]**, you will see the whole statement in the **[accent]Wizard Panel[/accent]**.",
+            "message": "Click **[accent]Option A[/accent]** — the full text appears in the **[accent]Wizard Panel[/accent]**.",
             "spotlight": {
               "x": 0.63,
               "y": 0.6,
@@ -858,39 +849,7 @@
             }
           },
           {
-            "message": "See the **[accent]Wizard Panel[/accent]** — it now has the full statement for **[info]Option A[/info]**.",
-            "spotlight": {
-              "x": 0.02,
-              "y": 0.53,
-              "width": 0.55,
-              "height": 0.4
-            },
-            "modal": {
-              "x": 0.125,
-              "y": 0.06,
-              "width": 0.4,
-              "height": 0.4
-            },
-            "showContinueWithSpotlight": true
-          },
-          {
-            "message": "Now, let's look again at the **[accent]Interactive Area[/accent]**: Option C is **[warning]locked[/warning]**.",
-            "spotlight": {
-              "x": 0.87,
-              "y": 0.6,
-              "width": 0.095,
-              "height": 0.26
-            },
-            "modal": {
-              "x": 0.125,
-              "y": 0.06,
-              "width": 0.4,
-              "height": 0.4
-            },
-            "showContinueWithSpotlight": true
-          },
-          {
-            "message": "An option is locked when you are not considering every piece of information available to you — for example, a **[warning]logical fallacy[/warning]** used by your opponent that you have not yet analyzed.",
+            "message": "In the **[accent]Interactive Area[/accent]**, **[warning]Option C[/warning]** stays locked until you analyze a **[warning]logical fallacy[/warning]** from your opponent in **[info]Round 1[/info]** that you have not resolved yet.",
             "spotlight": {
               "x": 0.87,
               "y": 0.6,
@@ -912,7 +871,7 @@
                 "action": { "type": "debate_log:scroll_to_top" }
               }
             ],
-            "message": "Let's try again to find out whether your opponent used a **[warning]logical fallacy[/warning]** in his statement. Reach the **[accent]Analyze[/accent]** button for **[info]Round 1[/info]** again.",
+            "message": "Re-open **[accent]Analyze[/accent]** on **[info]Round 1[/info]** to hunt for a **[warning]fallacy[/warning]** (the log scrolls if needed).",
             "modal": {
               "x": 0.125,
               "y": 0.06,
@@ -928,7 +887,7 @@
             "showContinueWithSpotlight": true
           },
           {
-            "message": "To reach the **[accent]Analyze[/accent]** button for a specific round, first **[info]expand[/info]** that round's details — click the shrink/expand control.",
+            "message": "**[info]Expand[/info]** the round card if **[accent]Analyze[/accent]** is hidden, then open it.",
             "modal": {
               "x": 0.125,
               "y": 0.06,
@@ -943,7 +902,7 @@
             }
           },
           {
-            "message": "Now, click again on the **[accent]Analyze[/accent]** button.",
+            "message": "Click **[accent]Analyze[/accent]** on Round 1.",
             "modal": {
               "x": 0.125,
               "y": 0.06,
@@ -966,16 +925,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "This is the **[accent]statement analysis[/accent]** view.",
-            "modal": {
-              "x": 0.55,
-              "y": 0.45,
-              "width": 0.33,
-              "height": 0.33
-            }
-          },
-          {
-            "message": "First, **[accent]select a sentence[/accent]** that you think has a **[warning]logical fallacy[/warning]**.",
+            "message": "**[accent]Statement analysis[/accent]** — **[accent]select a sentence[/accent]** you think hides a **[warning]logical fallacy[/warning]**.",
             "spotlight": {
               "x": 0.117,
               "y": 0.425,
@@ -990,7 +940,7 @@
             }
           },
           {
-            "message": "You are spotting the **[info]false dilemma[/info]** fallacy on the selected sentence — click **[accent]Spot Fallacies[/accent]** to submit your guess.",
+            "message": "Pick **[info]false dilemma[/info]** for that sentence.",
             "spotlight": {
               "x": 0.54,
               "y": 0.2,
@@ -1005,7 +955,7 @@
             }
           },
           {
-            "message": "Let's click **[accent]Spot Fallacies[/accent]** to submit your guess.",
+            "message": "**[accent]Spot Fallacies[/accent]** to submit.",
             "spotlight": {
               "x": 0.715,
               "y": 0.78,
@@ -1031,7 +981,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "[danger]Argh![/danger] This sentence does **[muted]not[/muted]** appear to contain a logical fallacy.",
+            "message": "[danger]Not quite.[/danger] This sentence **[muted]doesn't[/muted]** look like a fallacy.",
             "modal": {
               "x": 0.6,
               "y": 0.2,
@@ -1040,7 +990,7 @@
             }
           },
           {
-            "message": "You generally have **[info]3 attempts[/info]** to spot logical fallacies in the whole statement.",
+            "message": "You get **[info]3 attempts[/info]** per statement to spot fallacies.",
             "showContinueWithSpotlight": true,
             "modal": {
               "x": 0.6,
@@ -1056,7 +1006,7 @@
             }
           },
           {
-            "message": "Although you can use all attempts in a row, we'll save that for later — **[accent]close[/accent]** the modal for now.",
+            "message": "**[accent]Close[/accent]** the analysis for now — more attempts later.",
             "modal": {
               "x": 0.6,
               "y": 0.3,
@@ -1082,7 +1032,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Let's go to the **[success]next round[/success]** — click **[accent]Continue[/accent]**.",
+            "message": "**[accent]Continue[/accent]** to the **[success]next round[/success]**.",
             "spotlight": {
               "x": 0.805,
               "y": 0.85,
@@ -1105,7 +1055,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "We have **[info]2 more chances[/info]** to analyze this statement correctly. This time I have a good feeling about the **[accent]second sentence[/accent]**.",
+            "message": "**[info]Two tries left[/info]** on this statement — try the **[accent]second sentence[/accent]**.",
             "modal": {
               "x": 0.6,
               "y": 0.4,
@@ -1120,7 +1070,7 @@
             }
           },
           {
-            "message": "OK — now **[accent]pick the fallacy[/accent]**.",
+            "message": "**[accent]Pick the fallacy[/accent]**.",
             "spotlight": {
               "x": 0.54,
               "y": 0.2,
@@ -1135,7 +1085,7 @@
             }
           },
           {
-            "message": "**[accent]Submit your guess[/accent]**.",
+            "message": "**[accent]Spot Fallacies[/accent]** to submit.",
             "spotlight": {
               "x": 0.715,
               "y": 0.78,
@@ -1150,7 +1100,7 @@
             }
           },
           {
-            "message": "**[success]Correct![/success]** Now you can **[accent]close[/accent]** the analysis modal.",
+            "message": "**[success]Correct![/success]** **[accent]Close[/accent]** the analysis.",
             "modal": {
               "x": 0.6,
               "y": 0.3,
@@ -1165,7 +1115,7 @@
             }
           },
           {
-            "message": "Look at **[accent]Option C[/accent]** — it now says **[success]Click to unlock![/success]**.",
+            "message": "**[accent]Option C[/accent]** — **[success]Click to unlock![/success]**.",
             "spotlight": {
               "x": 0.87,
               "y": 0.6,
@@ -1180,7 +1130,7 @@
             }
           },
           {
-            "message": "Now its content is visible — click it again to read the full statement in the **[accent]Wizard Panel[/accent]**.",
+            "message": "Click again to read the full line in the **[accent]Wizard Panel[/accent]**.",
             "spotlight": {
               "x": 0.87,
               "y": 0.6,
@@ -1195,7 +1145,7 @@
             }
           },
           {
-            "message": "Use this statement by clicking **[success]Confirm[/success]**.",
+            "message": "**[success]Confirm[/success]** to play it.",
             "spotlight": {
               "x": 0.8,
               "y": 0.865,
