@@ -1043,9 +1043,9 @@
             }
           },
           {
-            "message": "**[success]Confirm[/success]** to play it.",
+            "message": "**[success]Continue[/success]** to play it.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "confirm" },
+            "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": {
               "x": 0.125,
               "y": 0.06,
