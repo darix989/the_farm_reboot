@@ -11,8 +11,17 @@ import {
 } from '../../types/tutorialModalLayout';
 import { clampSpotlightRatios } from './spotlightRect';
 
-const STAGE_MARGIN_X = 0.04;
-const STAGE_MARGIN_Y = 0.04;
+/** Minimum gap from the stage edge to the modal box (placement + top-left pivot). */
+const STAGE_MARGIN_X = 0.082;
+const STAGE_MARGIN_Y = 0.082;
+
+/**
+ * Extra inset applied only when computing the 3×3 anchor lattice for **center** pivot,
+ * so cell centers (and thus whole modals) sit farther from the physical edges than the
+ * raw margin alone would allow.
+ */
+const PLACEMENT_ANCHOR_GUTTER_X = 0.048;
+const PLACEMENT_ANCHOR_GUTTER_Y = 0.048;
 
 /** Minimum width/height for readable tutorial copy (see tutorial AGENTS.md). */
 export const TUTORIAL_MODAL_SIZE_RATIOS: Record<
@@ -30,22 +39,22 @@ const PRESET_PLACEMENT: Record<
 > = {
   [TutorialModalPreset.AnalysisSentencesSelection]: {
     size: TutorialModalSize.Small,
-    position: TutorialModalPosition.CenterLeft,
+    position: TutorialModalPosition.CenterRight,
     pivot: TutorialModalAnchor.Center,
   },
   [TutorialModalPreset.AnalysisFallacySelection]: {
     size: TutorialModalSize.Small,
-    position: TutorialModalPosition.CenterRight,
+    position: TutorialModalPosition.CenterLeft,
     pivot: TutorialModalAnchor.Center,
   },
   [TutorialModalPreset.AnalysisSubmit]: {
     size: TutorialModalSize.Small,
-    position: TutorialModalPosition.BottomCenter,
+    position: TutorialModalPosition.CenterLeft,
     pivot: TutorialModalAnchor.Center,
   },
   [TutorialModalPreset.AnalysisExit]: {
     size: TutorialModalSize.Small,
-    position: TutorialModalPosition.TopRight,
+    position: TutorialModalPosition.CenterLeft,
     pivot: TutorialModalAnchor.Center,
   },
 };
@@ -72,7 +81,7 @@ function isPositionKey(v: unknown): v is TutorialModalPosition {
   return typeof v === 'string' && POSITION_VALUES.has(v);
 }
 
-/** Anchor (ax, ay) in stage space for center pivot — cell centers inside the inset frame. */
+/** Anchor (ax, ay) in stage space for center pivot — cell centers inside a doubly inset frame. */
 function placementAnchor(
   position: TutorialModalPosition,
   mx: number,
@@ -81,10 +90,14 @@ function placementAnchor(
   ax: number;
   ay: number;
 } {
-  const rw = 1 - 2 * mx;
-  const rh = 1 - 2 * my;
-  const col = (k: 0 | 1 | 2) => mx + (rw * (k + 0.5)) / 3;
-  const row = (k: 0 | 1 | 2) => my + (rh * (k + 0.5)) / 3;
+  const gx0 = mx + PLACEMENT_ANCHOR_GUTTER_X;
+  const gx1 = 1 - mx - PLACEMENT_ANCHOR_GUTTER_X;
+  const gy0 = my + PLACEMENT_ANCHOR_GUTTER_Y;
+  const gy1 = 1 - my - PLACEMENT_ANCHOR_GUTTER_Y;
+  const spanX = Math.max(0, gx1 - gx0);
+  const spanY = Math.max(0, gy1 - gy0);
+  const col = (k: 0 | 1 | 2) => gx0 + (spanX * (k + 0.5)) / 3;
+  const row = (k: 0 | 1 | 2) => gy0 + (spanY * (k + 0.5)) / 3;
 
   switch (position) {
     case TutorialModalPosition.TopLeft:

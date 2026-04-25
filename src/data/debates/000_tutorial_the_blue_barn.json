@@ -704,18 +704,6 @@
       }
     },
     {
-      "id": "intro-summary",
-      "trigger": { "event": "introduction:summary" },
-      "tutorial": {
-        "steps": [
-          {
-            "message": "Read the summary and your side, then start **[info]Round 1[/info]**.",
-            "modal": { "size": "medium", "position": "topCenter" }
-          }
-        ]
-      }
-    },
-    {
       "id": "round-1-opening-constructive-analyze",
       "trigger": {
         "event": "round:start",
@@ -737,15 +725,9 @@
           },
           {
             "message": "Use **[accent]Analyze[/accent]** (magnifying glass) to inspect statements.",
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
-            "modal": { "size": "medium", "position": "centerLeft" }
-          },
-          {
-            "message": "Click the highlighted **[accent]Analyze[/accent]** button on Round 1.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
-            "modal": { "size": "small", "position": "centerLeft" }
+            "modal": { "size": "medium", "position": "topLeft" }
           }
         ]
       }
