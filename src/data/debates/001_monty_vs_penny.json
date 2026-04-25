@@ -681,7 +681,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Here starts your first debate! To partecipate a debate there are few rules you need to follow, and with this tutorial you will learn how to: analyze statements; spot logical fallacies and select the best statements to win the debate!",
+            "message": "Here starts your first debate! There are a few rules in a debate, and with this tutorial you will learn how to: analyze statements; spot logical fallacies and select the best statements to win the debate!",
             "modal": {
               "x": 0.35,
               "y": 0.35,
@@ -723,7 +723,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "You can see what side you are on. Click Begin Round 1 to get started.",
+            "message": "Right before Round 1 starts, you will read the introduction summary and what side you are on. Click Begin Round 1 to get started.",
             "modal": {
               "x": 0.62,
               "y": 0.02,

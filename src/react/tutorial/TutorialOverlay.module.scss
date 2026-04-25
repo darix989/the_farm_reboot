@@ -198,8 +198,39 @@ $tutorial-modal-glow: rgba(22, 163, 74, 0.45);
 
 /* Body copy: `trialWizardGuidanceText` supplies uiTypography `--ui-font-body` sizing; portal needs `.dialog` font-scale mixin. */
 .messageBody {
-  white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+.messageParagraph {
+  margin: 0;
+
+  &:not(:first-child) {
+    margin-top: 0.75rem;
+  }
+}
+
+.toneAccent {
+  color: var(--ui-color-accent);
+}
+
+.toneDanger {
+  color: var(--ui-color-danger);
+}
+
+.toneWarning {
+  color: var(--ui-color-warning);
+}
+
+.toneSuccess {
+  color: var(--ui-color-success);
+}
+
+.toneInfo {
+  color: var(--ui-color-info);
+}
+
+.toneMuted {
+  color: var(--ui-color-text-muted);
 }
 
 /* Shown in place of the primary button when a spotlighted step auto-concludes on the next event.

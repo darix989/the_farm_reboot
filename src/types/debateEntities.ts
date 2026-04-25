@@ -248,6 +248,15 @@ export interface TutorialArtificialInteraction {
 /** One panel in the intro tutorial; optional spotlight defaults to full stage when omitted. */
 export interface DebateTutorialStep {
   modal?: DebateTutorialArea;
+  /**
+   * Tutorial body copy. Plain text works as before. Rich inline markup (optional):
+   * - `**bold**`
+   * - `[accent]…[/accent]`, `[danger]…[/danger]`, `[warning]…[/warning]`,
+   *   `[success]…[/success]`, `[info]…[/info]`, `[muted]…[/muted]` for coloured spans
+   * - Nesting is allowed (e.g. `[accent]**bold**[/accent]`). Unclosed tags are shown literally.
+   * - `[[` → a literal `[`.
+   * - A blank line (two or more consecutive newlines) starts a new paragraph; a single newline inside a paragraph becomes a line break.
+   */
   message: string;
   spotlight?: DebateTutorialArea;
   /**

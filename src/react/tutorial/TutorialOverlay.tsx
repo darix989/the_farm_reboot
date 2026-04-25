@@ -17,6 +17,7 @@ import getLabel from '../../data/labels';
 import { debateEventBus } from '../trial/utils/debateEventBus';
 import { scheduleArtificialInteractions } from './artificialInteractions';
 import styles from './TutorialOverlay.module.scss';
+import { TutorialModalRichBody } from './tutorialRichMessage';
 
 declare global {
   interface Window {
@@ -227,7 +228,6 @@ const TutorialOverlay: React.FC = () => {
     return null;
   }
 
-  const body = step.message;
   // Merge dev-time `window.spotlightOverride` (partial) over the step's spec so
   // individual fractions can be tweaked live from the browser console.
   const override = window.spotlightOverride;
@@ -387,7 +387,7 @@ const TutorialOverlay: React.FC = () => {
             </div>
           </div>
           <ScrollFadeContainer isModal ignoreTutorialScrollLock className={styles.dialogBody}>
-            <p className={cn(panelStyles.trialWizardGuidanceText, styles.messageBody)}>{body}</p>
+            <TutorialModalRichBody message={step.message} />
           </ScrollFadeContainer>
           {autoConcludeOnEvent ? (
             <p className={styles.spotlightHint} role="status" aria-live="polite">
