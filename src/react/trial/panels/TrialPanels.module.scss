@@ -1,4 +1,5 @@
 @use 'sass:math';
+@use '../../breakpoints' as bp;
 @use '../debateLogIconSizing' as debate-log-icon;
 
 /* =========================================================================
@@ -49,13 +50,10 @@
   gap: 1rem;
   padding: 0 0.5rem;
 
-  @media (min-width: 640px) {
-    gap: 1.5rem;
-    padding: 0 1rem;
-  }
-
-  @media (min-width: 768px) {
+  /* Single uniform breakpoint — keep the largest gap & padding for expanded viewports. */
+  @include bp.expanded {
     gap: 2rem;
+    padding: 0 1rem;
   }
 }
 
@@ -136,7 +134,7 @@
     display: none;
   }
 
-  @media (min-width: 768px) {
+  @include bp.expanded {
     padding: 0.75rem;
   }
 }
@@ -571,16 +569,13 @@
 .trialChoices {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
   align-items: stretch;
 
-  @media (max-width: 639px) {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
+  /* Both branches set the same gap; only the column count toggles between compact and expanded. */
+  gap: 1.25rem;
 
-  @media (min-width: 640px) {
-    gap: 1.25rem;
+  @include bp.compact {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -635,7 +630,7 @@
     }
   }
 
-  @media (min-width: 768px) {
+  @include bp.expanded {
     padding: 1rem;
   }
 }

@@ -2,6 +2,7 @@
    Trial Layout — grid & panels
    ========================================================================= */
 
+@use '../breakpoints' as bp;
 @use './trialPanelFontScale' as trial-font;
 
 .trialLayoutGrid {
@@ -38,7 +39,7 @@
   box-shadow: inset 0 1px 0 var(--ui-color-border-inset);
   pointer-events: auto;
 
-  @media (min-width: 768px) {
+  @include bp.expanded {
     padding: 1.5rem;
   }
 }
@@ -55,7 +56,7 @@
   background: var(--ui-color-overlay-card);
   padding: 1rem;
 
-  @media (min-width: 768px) {
+  @include bp.expanded {
     padding: 1.25rem;
   }
 }

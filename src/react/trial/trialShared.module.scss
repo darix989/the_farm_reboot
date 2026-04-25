@@ -2,6 +2,7 @@
    Shared styles used by both TrialUI and RoundAnalysisModal
    ========================================================================= */
 
+@use '../breakpoints' as bp;
 @use './trialPanelFontScale' as trial-font;
 
 /* Root for trial modals (portaled / outside `TrialLayout`); sets `--ui-trial-panel-font-scale`. */
@@ -69,7 +70,7 @@
   padding: 1rem;
   box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
 
-  @media (min-width: 768px) {
+  @include bp.expanded {
     padding: 1.25rem;
   }
 }

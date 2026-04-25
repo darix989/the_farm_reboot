@@ -1,5 +1,7 @@
 /* Text-only trial actions (footer rows, modal primaries). Scoped to `.trialModalFontScope` via --ui-trial-panel-font-scale. */
 
+@use '../../breakpoints' as bp;
+
 .root {
   box-sizing: border-box;
   display: flex;
@@ -15,7 +17,7 @@
   line-height: 1.375;
   font-size: calc(var(--ui-font-footer) * var(--ui-trial-panel-font-scale, 1));
 
-  @media (min-width: 640px) {
+  @include bp.expanded {
     padding: 1rem 0.75rem;
     font-size: calc(var(--ui-font-footer-wide) * var(--ui-trial-panel-font-scale, 1));
   }

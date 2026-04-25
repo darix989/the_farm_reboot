@@ -1,0 +1,26 @@
+/* =========================================================================
+   Single source of truth for the viewport breakpoint that toggles between
+   "compact" (phones, tablets, smaller laptops) and "expanded" (large
+   desktops) layouts. Keeping every responsive rule on the same threshold
+   guarantees the whole UI scales uniformly — anything that adapts to width
+   should funnel through the `compact` / `expanded` mixins below.
+
+   To change the threshold app-wide, edit `$ui-breakpoint-compact` only.
+   ========================================================================= */
+
+/* Width (inclusive) at which the layout is still "compact". */
+$ui-breakpoint-compact: 1080px;
+
+/* Compact viewports: width <= $ui-breakpoint-compact. */
+@mixin compact {
+  @media (max-width: $ui-breakpoint-compact) {
+    @content;
+  }
+}
+
+/* Expanded viewports: width > $ui-breakpoint-compact. */
+@mixin expanded {
+  @media (min-width: ($ui-breakpoint-compact + 1)) {
+    @content;
+  }
+}

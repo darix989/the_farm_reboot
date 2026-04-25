@@ -1,3 +1,4 @@
+@use '../breakpoints' as bp;
 @use '../uiTypography' as ui-typography;
 
 /* Green spotlight + primary tutorial CTA glow: distinct from `--ui-color-accent` (cyan) on focused controls. */
@@ -69,7 +70,7 @@ $tutorial-modal-glow: rgba(22, 163, 74, 0.45);
   flex-shrink: 0;
   margin: 1rem 1.25rem 0;
 
-  @media (min-width: 640px) {
+  @include bp.expanded {
     margin: 1.25rem 1.5rem 0;
   }
 }
@@ -189,7 +190,7 @@ $tutorial-modal-glow: rgba(22, 163, 74, 0.45);
   background: var(--ui-color-overlay-medium);
 }
 
-@media (min-width: 640px) {
+@include bp.expanded {
   .dialogBody {
     padding: 1.25rem 1.5rem;
   }
@@ -218,7 +219,7 @@ $tutorial-modal-glow: rgba(22, 163, 74, 0.45);
   opacity: 0.9;
 }
 
-@media (min-width: 640px) {
+@include bp.expanded {
   .spotlightHint {
     padding: 1rem 1.25rem;
   }
@@ -230,7 +231,7 @@ $tutorial-modal-glow: rgba(22, 163, 74, 0.45);
   background: var(--ui-color-overlay-medium);
 }
 
-@media (min-width: 640px) {
+@include bp.expanded {
   .footer {
     padding: 1rem 1.25rem;
   }
