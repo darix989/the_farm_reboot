@@ -23,6 +23,13 @@ const MainMenuUI: React.FC = () => {
           <button
             className={styles.menuButton}
             type="button"
+            onClick={() => startTrial('000_tutorial_the_blue_barn')}
+          >
+            {getLabel('tutorialBlueBarn')}
+          </button>
+          <button
+            className={styles.menuButton}
+            type="button"
             onClick={() => startTrial('sample-debate')}
           >
             {getLabel('sampleDebate')}

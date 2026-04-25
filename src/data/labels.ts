@@ -7,6 +7,7 @@ const LABELS = {
   loadingGame: 'Loading Game...',
   mainMenu: 'Main Menu',
   sampleDebate: 'Sample debate',
+  tutorialBlueBarn: 'Tutorial: The Blue Barn',
   montyVsPenny: 'Monty vs Penny',
   bellaVsWoolsey: 'Bella vs Woolsey',
   currentScene: 'Current Scene:',
