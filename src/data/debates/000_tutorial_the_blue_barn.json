@@ -685,11 +685,11 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**Welcome!** You'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the debate[/success]**.\n\nIn this debate, Barnaby pushes the blue-barn plan while you argue for fixing the leaking roof first.",
+            "message": "**Welcome!** You'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the debate[/success]**.\n\nIn this debate, Barnaby pushes the blue-barn plan while you argue for fixing the leaking roof first.\n\n Press **[accent]Continue[/accent]**  and **[accent]Got it[/accent]** to go forward in the tutorial.\n Press **[accent]Back[/accent]** to go one step back in the tutorial.",
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "**First**, read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**, then press **[success]Continue[/success]**.",
+            "message": "For this round, just read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**, then press **[accent]Continue[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "debate_log" },
             "modal": {
@@ -712,21 +712,15 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Round 1 is Barnaby's opening statement. Read it in the **[accent]Wizard Panel[/accent]**.",
+            "message": "Round 1 is Barnaby's opening statement.\n\n Read it in the **[accent]Wizard Panel[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "Each round is tracked in the **[accent]Debate Log Panel[/accent]**.",
+            "message": "\n You can rely on **[accent]Debate Log Panel[/accent]** to read everything happened so far, ordered by **[accent]round[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "debate_log" },
-            "modal": { "size": "medium", "position": "topLeft" }
-          },
-          {
-            "message": "Use **[accent]Analyze[/accent]** (magnifying glass) to inspect statements.",
-            "interactionMode": "target_only",
-            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
             "modal": { "size": "medium", "position": "topLeft" }
           }
         ]
@@ -745,22 +739,28 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**[accent]Your turn[/accent]**. Choose your reply in the interactive panel.",
+            "message": "**[accent]Your turn[/accent]**. You have **[accent]3 options[/accent]** to choose from in the interactive panel.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "interactive" },
-            "modal": { "size": "medium", "position": "topRight" }
+            "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "Click your available option to review and select it.",
+            "message": "Click **[accent]Option A[/accent]** to review it.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-a" },
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "Now press **[success]Confirm[/success]** to commit your choice.",
-            "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "confirm" },
+            "message": "You can read the full text of the option in the **[accent]Wizard Panel[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": { "size": "small", "position": "bottomRight" }
+          },
+          {
+            "message": "Now press **[accent]Continue[/accent]** to confirm your choice.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_action", "action": "continue" },
+            "modal": { "size": "small", "position": "topRight" }
           }
         ]
       }
@@ -771,7 +771,15 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**[accent]Statement analysis[/accent]**: select a sentence you want to inspect.",
+            "message": "In this **[accent]analysis[/accent]** view you **choose a sentence** to inspect, then **pick fallacies** from the grid that might apply to it. You can tag **[info]up to two[/info]** fallacies on the same sentence (click again to remove one).",
+            "modal": { "size": "medium", "position": "bottomRight" }
+          },
+          {
+            "message": "When you are satisfied, **[accent]Spot Fallacies[/accent]** submits your guess, or **[muted]No Fallacies[/muted]** if you think the whole statement is fallacy free. Those are the two actions that **[success]finalize[/success]** this pass through the analysis.",
+            "modal": { "size": "medium", "position": "bottomLeft" }
+          },
+          {
+            "message": "As first thing, select the **[accent]sentence[/accent]** you want to tag with fallacies.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-1" },
             "modal": { "preset": "analysisSentencesSelection" }
@@ -796,24 +804,6 @@
       "trigger": {
         "event": "tutorial:end",
         "where": { "tutorialId": "analysis-select-sentence-first-wrong-guess" }
-      },
-      "tutorial": {
-        "steps": [
-          {
-            "message": "[danger]Not quite.[/danger] This line is not a false dilemma.",
-            "modal": { "size": "small", "position": "topCenter" }
-          },
-          {
-            "message": "You have multiple attempts per statement. We'll use that soon.",
-            "modal": { "size": "small", "position": "center" }
-          },
-          {
-            "message": "Close the analysis for now.",
-            "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "close" },
-            "modal": { "preset": "analysisExit" }
-          }
-        ]
       }
     },
     {
