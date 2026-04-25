@@ -691,19 +691,14 @@
           },
           {
             "message": "**First**, read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**, then **[success]Continue[/success]**.",
-            "showContinueWithSpotlight": true,
+            "showContinueWithTarget": true,
             "modal": {
               "x": 0.125,
               "y": 0.06,
               "width": 0.4,
               "height": 0.4
             },
-            "spotlight": {
-              "x": 0.61,
-              "y": 0.11,
-              "width": 0.37,
-              "height": 0.4
-            }
+            "targetComponent": { "kind": "panel:debate_log" }
           }
         ]
       }
@@ -735,19 +730,14 @@
         "steps": [
           {
             "message": "Round 1 is about the **[warning]proposition's opening constructive[/warning]** which is spoken by (**[warning]the other side[/warning]**). Read it in the **[accent]Wizard Panel[/accent]**.",
-            "showContinueWithSpotlight": true,
+            "showContinueWithTarget": true,
             "artificialInteractions": [
               {
                 "delayTimeMs": 500,
                 "action": { "type": "wizard:scroll_to_bottom" }
               }
             ],
-            "spotlight": {
-              "x": 0.02,
-              "y": 0.6,
-              "width": 0.55,
-              "height": 0.35
-            },
+            "targetComponent": { "kind": "panel:wizard" },
             "modal": {
               "x": 0.225,
               "y": 0.06,
@@ -757,13 +747,8 @@
           },
           {
             "message": "Each round is logged in the **[accent]Debate Log Panel[/accent]**.",
-            "showContinueWithSpotlight": true,
-            "spotlight": {
-              "x": 0.6,
-              "y": 0.03,
-              "width": 0.373,
-              "height": 0.46
-            },
+            "showContinueWithTarget": true,
+            "targetComponent": { "kind": "panel:debate_log" },
             "modal": {
               "x": 0.225,
               "y": 0.06,
@@ -773,13 +758,8 @@
           },
           {
             "message": "Use **[accent]Analyze[/accent]** (magnifying glass) on statements from either side.",
-            "showContinueWithSpotlight": true,
-            "spotlight": {
-              "x": 0.6,
-              "y": 0.22,
-              "width": 0.4,
-              "height": 0.3
-            },
+            "showContinueWithTarget": true,
+            "targetComponent": { "kind": "debate_log:round", "roundId": "round-1" },
             "modal": {
               "x": 0.225,
               "y": 0.06,
@@ -789,12 +769,7 @@
           },
           {
             "message": "Inspect their opening: click the **[accent]magnifying glass[/accent]** to **analyze**.",
-            "spotlight": {
-              "x": 0.925,
-              "y": 0.225,
-              "width": 0.045,
-              "height": 0.075
-            },
+            "targetComponent": { "kind": "debate_log:analyze", "roundId": "round-1" },
             "modal": {
               "x": 0.225,
               "y": 0.06,

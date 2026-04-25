@@ -15,6 +15,7 @@ import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/option
 import { debateEventBus } from '../utils/debateEventBus';
 import styles from './TrialPanels.module.scss';
 import getLabel from '../../../data/labels';
+import { useTutorialHighlight, useTutorialTarget } from '../../tutorial/tutorialTarget';
 
 interface InteractiveFooter {
   submitLabel: string;
@@ -41,6 +42,7 @@ interface InteractivePanelProps {
 // ---------------------------------------------------------------------------
 
 function ChoiceButton({
+  optionId,
   optionLetter,
   statementText,
   accessibilityStatement,
@@ -50,6 +52,8 @@ function ChoiceButton({
   unlockHint,
   revealFlash,
 }: {
+  /** Stable id of the option this button represents — drives tutorial targeting. */
+  optionId: string;
   optionLetter: string;
   /** Truncated label shown in the button */
   statementText: string;
@@ -69,6 +73,7 @@ function ChoiceButton({
       statement: accessibilityStatement ?? statementText,
     },
   });
+  const tutorial = useTutorialTarget({ kind: 'interactive:option', optionId });
   return (
     <button
       type="button"
@@ -77,9 +82,16 @@ function ChoiceButton({
         selected && styles.trialChoiceBtnSelected,
         unlockHint && styles.trialChoiceBtnUnlockHint,
         revealFlash && styles.trialChoiceBtnRevealFlash,
+        tutorial.highlightClass,
       )}
       aria-label={ariaLabel}
-      onClick={onClick}
+      onClick={() => {
+        // Tutorial guard: while a tutorial step is active and this option is
+        // not its target, ignore the click entirely. The user is meant to
+        // interact with the highlighted target (or use the dialog buttons).
+        if (tutorial.isBlocked) return;
+        onClick();
+      }}
       disabled={disabled}
     >
       <span className={styles.trialChoiceBtnRow}>
@@ -136,6 +148,10 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     return () => window.clearTimeout(t);
   }, [revealAnimOptionId]);
 
+  // Container highlights for tutorial steps anchored to whole panel regions.
+  const panelHighlight = useTutorialHighlight({ kind: 'panel:interactive' });
+  const optionsHighlight = useTutorialHighlight({ kind: 'panel:interactive_options' });
+
   const renderContent = () => {
     /** Only the player-choice grid belongs here; intro / NPC / responses live elsewhere. */
     if (wf.gamePhase !== 'player_choosing') return null;
@@ -145,7 +161,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div className={styles.trialChoices}>
+        <div className={cn(styles.trialChoices, optionsHighlight.highlightClass)}>
           {choosingOptionsOrder.map((opt, idx) => {
             const guessUnlocked = isPlayerOptionUnlocked(opt, fallacyGuesses);
             const revealed = !opt.unlockCondition || revealedLockedOptionIds.has(opt.id);
@@ -164,6 +180,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
             return (
               <ChoiceButton
                 key={opt.id}
+                optionId={opt.id}
                 optionLetter={optionLetter}
                 statementText={truncateStatementPreview(body)}
                 accessibilityStatement={body}
@@ -207,8 +224,12 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     );
   };
 
+  // Tutorial guards for the interactive footer's two singleton buttons.
+  const backTutorial = useTutorialTarget({ kind: 'interactive:back' });
+  const submitTutorial = useTutorialTarget({ kind: 'interactive:submit' });
+
   return (
-    <div className={styles.trialInteractiveBody}>
+    <div className={cn(styles.trialInteractiveBody, panelHighlight.highlightClass)}>
       <div className={styles.trialAreaTitle}>
         <h2 className={styles.trialPanelHeading}>{getLabel('interactive')}</h2>
       </div>
@@ -221,11 +242,13 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         <div className={styles.trialInteractiveFooter}>
           <div className={styles.trialFooterGrid}>
             <TrialTextButton
+              className={backTutorial.highlightClass}
               disabled={
                 wf.gamePhase === 'debate_intro' ||
                 (wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo)
               }
               onClick={() => {
+                if (backTutorial.isBlocked) return;
                 debateEventBus.emit('interactive:back', {
                   fromPhase: wf.gamePhase,
                   roundNumber: wf.currentRound?.roundNumber ?? null,
@@ -240,8 +263,12 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
               {getLabel('back')}
             </TrialTextButton>
             <TrialTextButton
+              className={submitTutorial.highlightClass}
               disabled={interactiveFooter.submitDisabled || !interactiveFooter.onSubmit}
-              onClick={() => interactiveFooter.onSubmit?.()}
+              onClick={() => {
+                if (submitTutorial.isBlocked) return;
+                interactiveFooter.onSubmit?.();
+              }}
             >
               {interactiveFooter.submitLabel}
             </TrialTextButton>

@@ -1,22 +1,32 @@
 import { create } from 'zustand';
-import type { DebateTutorialArea, TutorialArtificialInteraction } from '../types/debateEntities';
-import { FULL_STAGE_SPOTLIGHT_RATIOS } from '../react/tutorial/spotlightRect';
+import type {
+  DebateTutorialArea,
+  TutorialArtificialInteraction,
+  TutorialTargetComponent,
+} from '../types/debateEntities';
 import { debateEventBus } from '../react/trial/utils/debateEventBus';
 
-export type { TutorialSpotlightRect } from '../react/tutorial/spotlightRect';
-
-/** One tutorial step after open; spotlight stays as stage ratios until the overlay resolves to px. */
+/**
+ * One tutorial step after open. The store keeps the author-supplied target
+ * verbatim — the overlay and individual buttons compare against it via
+ * `targetComponentMatches` (see `react/tutorial/tutorialTarget.ts`).
+ */
 export interface TutorialStepResolved {
   message: string;
-  spotlightSpec: DebateTutorialArea;
+  /**
+   * When set, identifies the single component this step anchors to (visual
+   * highlight + click-allowance). When absent, no underlying control is
+   * clickable and the user must advance via the dialog.
+   */
+  targetComponent?: TutorialTargetComponent;
   /** Optional stage-normalized rect for the dialog itself; when absent, the overlay uses its CSS default. */
   modalSpec?: DebateTutorialArea;
   /**
    * When `true`, keep the Continue / Got it button even if the step has a
-   * spotlight. Without this flag, spotlighted steps hide the button and
+   * `targetComponent`. Without this flag, targeted steps hide the button and
    * auto-conclude on the next `EventTrigger` fired from the debate event bus.
    */
-  showContinueWithSpotlight?: boolean;
+  showContinueWithTarget?: boolean;
   /**
    * Ordered sequence of synthetic UI interactions to fire while this step is
    * active. Consumed by `TutorialOverlay`, which schedules each entry's
@@ -28,9 +38,9 @@ export interface TutorialStepResolved {
 
 export type TutorialStepInput = {
   message: string;
-  spotlight?: DebateTutorialArea;
+  targetComponent?: TutorialTargetComponent;
   modal?: DebateTutorialArea;
-  showContinueWithSpotlight?: boolean;
+  showContinueWithTarget?: boolean;
   artificialInteractions?: readonly TutorialArtificialInteraction[];
 };
 
@@ -82,9 +92,9 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
     const steps: TutorialStepResolved[] = payload.steps
       .map((step) => ({
         message: step.message.trim(),
-        spotlightSpec: step.spotlight ?? FULL_STAGE_SPOTLIGHT_RATIOS,
+        targetComponent: step.targetComponent,
         modalSpec: step.modal,
-        showContinueWithSpotlight: step.showContinueWithSpotlight,
+        showContinueWithTarget: step.showContinueWithTarget,
         artificialInteractions: step.artificialInteractions,
       }))
       .filter((s) => s.message.length > 0);

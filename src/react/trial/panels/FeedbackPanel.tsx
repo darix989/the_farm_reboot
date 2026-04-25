@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import cn from 'classnames';
 import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
@@ -10,6 +11,7 @@ import { debateTotalScoreBounds } from '../utils/trialHelpers';
 import styles from './TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
+import { useTutorialHighlight } from '../../tutorial/tutorialTarget';
 
 interface FeedbackPanelProps {
   wf: ReturnType<typeof useTrialRoundWorkflow>;
@@ -134,8 +136,11 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
     });
   }, [wf.currentRoundIndex, wf.scenario.rounds]);
 
+  // Tutorial: highlight the whole debate-log panel when targeted as a container.
+  const panelHighlight = useTutorialHighlight({ kind: 'panel:debate_log' });
+
   return (
-    <div className={styles.trialPanelContent}>
+    <div className={cn(styles.trialPanelContent, panelHighlight.highlightClass)}>
       <div className={styles.trialAreaTitle}>
         <h2 className={styles.trialPanelHeading}>{getLabel('debateLog')}</h2>
         <p

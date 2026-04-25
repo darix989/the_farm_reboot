@@ -35,6 +35,7 @@ import styles from './RoundAnalysisModal.module.scss';
 import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
+import { useTutorialHighlight, useTutorialTarget } from '../../tutorial/tutorialTarget';
 
 export type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
 export { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from '../utils/fallacyGuessTypes';
@@ -69,6 +70,90 @@ interface RoundAnalysisModalProps {
 // FallacyPicker
 // ---------------------------------------------------------------------------
 
+/**
+ * Single sentence card inside the analysis modal's left column.
+ *
+ * Extracted out of the parent's `.map` so it can call the tutorial-target
+ * hook directly — hooks must run unconditionally per render, which the
+ * inline mapping form doesn't allow.
+ */
+function SentenceCard({
+  sentence,
+  isSelected,
+  canGuess,
+  showTruthRow,
+  onClick,
+  children,
+}: {
+  sentence: Sentence;
+  isSelected: boolean;
+  canGuess: boolean;
+  showTruthRow: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  const tutorial = useTutorialTarget({ kind: 'analysis:sentence', sentenceId: sentence.id });
+  return (
+    <button
+      type="button"
+      className={cn(
+        styles.trialSentenceCard,
+        {
+          [styles.selected]: isSelected,
+          [styles.clickable]: canGuess,
+          [styles.static]: !canGuess,
+          [styles.hasFallacyRevealed]: showTruthRow,
+        },
+        tutorial.highlightClass,
+      )}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (tutorial.isBlocked) return;
+        onClick();
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function FallacyItemButton({
+  fallacy,
+  selected,
+  onSelect,
+  disabled,
+}: {
+  fallacy: LogicalFallacy;
+  selected: boolean;
+  onSelect: (id: string) => void;
+  disabled?: boolean;
+}) {
+  const tutorial = useTutorialTarget({ kind: 'analysis:fallacy', fallacyId: fallacy.id });
+  return (
+    <button
+      type="button"
+      className={cn(
+        styles.trialFallacyItem,
+        { [styles.selected]: selected },
+        tutorial.highlightClass,
+      )}
+      onClick={() => {
+        if (tutorial.isBlocked) return;
+        onSelect(fallacy.id);
+      }}
+      title={fallacy.description}
+      disabled={disabled}
+    >
+      <img
+        src={getLogicalFallacyIconSrc(fallacy.id)}
+        alt=""
+        className={styles.trialFallacyItemIcon}
+      />
+      <span className={styles.trialFallacyItemLabel}>{fallacy.label}</span>
+    </button>
+  );
+}
+
 function FallacyPicker({
   fallacies,
   selectedIds,
@@ -83,30 +168,24 @@ function FallacyPicker({
   /** Denser 3-column grid for the modal right-hand column. */
   compactGrid?: boolean;
 }) {
+  // Container highlight when a tutorial step targets the whole fallacy grid.
+  const gridHighlight = useTutorialHighlight({ kind: 'analysis:fallacy_list' });
   return (
     <div
-      className={cn(styles.trialFallacyGrid, {
-        [styles.trialFallacyGridAside]: compactGrid,
-      })}
+      className={cn(
+        styles.trialFallacyGrid,
+        { [styles.trialFallacyGridAside]: compactGrid },
+        gridHighlight.highlightClass,
+      )}
     >
       {fallacies.map((f) => (
-        <button
+        <FallacyItemButton
           key={f.id}
-          type="button"
-          className={cn(styles.trialFallacyItem, {
-            [styles.selected]: selectedIds.includes(f.id),
-          })}
-          onClick={() => onSelect(f.id)}
-          title={f.description}
+          fallacy={f}
+          selected={selectedIds.includes(f.id)}
+          onSelect={onSelect}
           disabled={disabled}
-        >
-          <img
-            src={getLogicalFallacyIconSrc(f.id)}
-            alt=""
-            className={styles.trialFallacyItemIcon}
-          />
-          <span className={styles.trialFallacyItemLabel}>{f.label}</span>
-        </button>
+        />
       ))}
     </div>
   );
@@ -531,6 +610,12 @@ function NpcRoundAnalysis({
     });
   }, [lastAttempt, guessSession?.attempts.length]);
 
+  // Tutorial guards / highlights for the analysis-modal action buttons and the
+  // sentence list container.
+  const sentenceListHighlight = useTutorialHighlight({ kind: 'analysis:sentence_list' });
+  const submitTutorial = useTutorialTarget({ kind: 'analysis:submit' });
+  const noFallaciesTutorial = useTutorialTarget({ kind: 'analysis:no_fallacies' });
+
   return (
     <div className={cn(styles.trialAnalysisBody, styles.trialAnalysisBodyFill)}>
       <div
@@ -545,7 +630,7 @@ function NpcRoundAnalysis({
               className={styles.trialAnalysisColumnScroll}
               scrollRef={sentenceScrollRef}
             >
-              <div className={styles.trialSentenceList}>
+              <div className={cn(styles.trialSentenceList, sentenceListHighlight.highlightClass)}>
                 {lastAttempt ? (
                   <div className={styles.trialSentenceFeedback}>
                     <GuessResultBanner
@@ -601,19 +686,13 @@ function NpcRoundAnalysis({
                       : [];
 
                   return (
-                    <button
+                    <SentenceCard
                       key={s.id}
-                      type="button"
-                      className={cn(styles.trialSentenceCard, {
-                        [styles.selected]: isSelected,
-                        [styles.clickable]: canGuess,
-                        [styles.static]: !canGuess,
-                        [styles.hasFallacyRevealed]: showTruthRow,
-                      })}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleSentenceClick(s);
-                      }}
+                      sentence={s}
+                      isSelected={isSelected}
+                      canGuess={canGuess}
+                      showTruthRow={showTruthRow}
+                      onClick={() => handleSentenceClick(s)}
                     >
                       <p className={styles.trialSentenceText}>{s.text}</p>
                       {canGuess && playerPickIds.length > 0 && (
@@ -690,7 +769,7 @@ function NpcRoundAnalysis({
                           })}
                         </div>
                       )}
-                    </button>
+                    </SentenceCard>
                   );
                 })}
               </div>
@@ -756,12 +835,24 @@ function NpcRoundAnalysis({
           <div className={styles.trialRightFooter}>
             {canGuess && (
               <div className={styles.trialGuessActionsRow}>
-                <TrialTextButton variant="dashed" widthMode="flexGrow" onClick={handleNoFallacies}>
+                <TrialTextButton
+                  variant="dashed"
+                  widthMode="flexGrow"
+                  className={noFallaciesTutorial.highlightClass}
+                  onClick={() => {
+                    if (noFallaciesTutorial.isBlocked) return;
+                    handleNoFallacies();
+                  }}
+                >
                   {getLabel('noFallaciesInStatement')}
                 </TrialTextButton>
                 <TrialTextButton
                   widthMode="flexGrow"
-                  onClick={handleSubmitGuess}
+                  className={submitTutorial.highlightClass}
+                  onClick={() => {
+                    if (submitTutorial.isBlocked) return;
+                    handleSubmitGuess();
+                  }}
                   disabled={totalPickCount === 0}
                 >
                   {getLabel('submitGuess')}
@@ -847,11 +938,17 @@ function NoFallaciesConfirmDialog({
   onConfirm: () => void;
   onCancel: () => void;
 }) {
+  const cancelTutorial = useTutorialTarget({ kind: 'analysis:no_fallacies_cancel' });
+  const confirmTutorial = useTutorialTarget({ kind: 'analysis:no_fallacies_confirm' });
   return (
     <div
       className={styles.trialConfirmOverlay}
       onClick={(e) => {
-        if (e.target === e.currentTarget) onCancel();
+        if (e.target !== e.currentTarget) return;
+        // Only the explicit Cancel button advances the tutorial; backdrop
+        // dismissal is silenced while a step is anchored elsewhere.
+        if (cancelTutorial.isBlocked) return;
+        onCancel();
       }}
     >
       <div
@@ -863,10 +960,24 @@ function NoFallaciesConfirmDialog({
         <p className={styles.trialConfirmTitle}>{getLabel('noFallaciesConfirmTitle')}</p>
         <p className={styles.trialConfirmBody}>{getLabel('noFallaciesConfirmBody')}</p>
         <div className={styles.trialConfirmActions}>
-          <TrialTextButton size="compact" onClick={onCancel}>
+          <TrialTextButton
+            size="compact"
+            className={cancelTutorial.highlightClass}
+            onClick={() => {
+              if (cancelTutorial.isBlocked) return;
+              onCancel();
+            }}
+          >
             {getLabel('cancel')}
           </TrialTextButton>
-          <TrialTextButton size="compact" onClick={onConfirm}>
+          <TrialTextButton
+            size="compact"
+            className={confirmTutorial.highlightClass}
+            onClick={() => {
+              if (confirmTutorial.isBlocked) return;
+              onConfirm();
+            }}
+          >
             {getLabel('confirm')}
           </TrialTextButton>
         </div>
@@ -1006,15 +1117,28 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
         ? getLabel('opponentsResponse', { replacements: { speakerName } })
         : speakerName;
 
+  // Tutorial guards / highlights for the modal container and its close button.
+  const modalHighlight = useTutorialHighlight({ kind: 'analysis:modal' });
+  const closeTutorial = useTutorialTarget({ kind: 'analysis:close' });
+
   return (
     <div
       className={styles.trialModalOverlay}
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target !== e.currentTarget) return;
+        // Backdrop dismissal goes through the same guard as the ✕ button —
+        // a tutorial step that doesn't target close shouldn't be cancellable
+        // by clicking outside the modal.
+        if (closeTutorial.isBlocked) return;
+        onClose();
       }}
     >
       <div
-        className={cn(shared.trialModalFontScope, styles.trialModalBox)}
+        className={cn(
+          shared.trialModalFontScope,
+          styles.trialModalBox,
+          modalHighlight.highlightClass,
+        )}
         role="dialog"
         aria-modal="true"
         onClick={(e) => e.stopPropagation()}
@@ -1036,8 +1160,11 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
           </div>
           <button
             type="button"
-            className={styles.trialModalCloseBtn}
-            onClick={onClose}
+            className={cn(styles.trialModalCloseBtn, closeTutorial.highlightClass)}
+            onClick={() => {
+              if (closeTutorial.isBlocked) return;
+              onClose();
+            }}
             aria-label={getLabel('close')}
           >
             ✕

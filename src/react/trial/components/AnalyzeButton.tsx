@@ -3,17 +3,19 @@ import cn from 'classnames';
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
 import getLabel from '../../../data/labels';
 import styles from '../panels/TrialPanels.module.scss';
+import { useTutorialTarget } from '../../tutorial/tutorialTarget';
 
 interface AnalyzeButtonProps {
   onClick: () => void;
   guessState?: 'correct' | 'partial' | 'wrong' | null;
   title?: string;
   /**
-   * Optional debate-log round id the button belongs to. Emitted as
-   * `data-debate-log-analyze-round-id` so tutorial `artificialInteractions`
-   * can synthetically click the analyze button for a specific round.
+   * Round id the button belongs to. Drives both the tutorial target identity
+   * (`{ kind: 'debate_log:analyze', roundId }`) and the
+   * `data-debate-log-analyze-round-id` data attribute used by the tutorial's
+   * artificial-interaction system to synthetically click the button.
    */
-  dataRoundId?: string;
+  dataRoundId: string;
 }
 
 const AnalyzeButton: React.FC<AnalyzeButtonProps> = ({
@@ -21,20 +23,30 @@ const AnalyzeButton: React.FC<AnalyzeButtonProps> = ({
   guessState,
   title = getLabel('analyzeThisRound'),
   dataRoundId,
-}) => (
-  <button
-    type="button"
-    className={cn(styles.trialAnalyzeBtn, {
-      [styles.correct]: guessState === 'correct',
-      [styles.partial]: guessState === 'partial',
-      [styles.wrong]: guessState === 'wrong',
-    })}
-    title={title}
-    onClick={onClick}
-    data-debate-log-analyze-round-id={dataRoundId}
-  >
-    <img src={magnifyingIcon} alt={getLabel('analyzeImageAlt')} />
-  </button>
-);
+}) => {
+  const tutorial = useTutorialTarget({ kind: 'debate_log:analyze', roundId: dataRoundId });
+  return (
+    <button
+      type="button"
+      className={cn(
+        styles.trialAnalyzeBtn,
+        {
+          [styles.correct]: guessState === 'correct',
+          [styles.partial]: guessState === 'partial',
+          [styles.wrong]: guessState === 'wrong',
+        },
+        tutorial.highlightClass,
+      )}
+      title={title}
+      onClick={() => {
+        if (tutorial.isBlocked) return;
+        onClick();
+      }}
+      data-debate-log-analyze-round-id={dataRoundId}
+    >
+      <img src={magnifyingIcon} alt={getLabel('analyzeImageAlt')} />
+    </button>
+  );
+};
 
 export default AnalyzeButton;

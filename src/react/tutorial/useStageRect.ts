@@ -1,16 +1,30 @@
 import { useLayoutEffect, useState } from 'react';
-import { STAGE_ELEMENT_ID, type StageRect } from './spotlightRect';
+
+/**
+ * Stage's measured rect in viewport pixels. Shape is compatible with `DOMRect`,
+ * so callers can pass `el.getBoundingClientRect()` directly — but for reactive
+ * UI prefer `useStageRect()`, which produces a snapshot that updates on every
+ * known cause of stage layout change (resize, fullscreen, orientation, …).
+ */
+export type StageRect = {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+};
+
+export const STAGE_ELEMENT_ID = 'app-stage-16x9';
 
 /**
  * Coherent snapshot of the stage rect and the viewport, updated together.
  *
  * `stageRect` is the live `#app-stage-16x9` rect (letterbox-safe — `left`/`top`
  * already include the letterbox offset). When the stage isn't laid out yet,
- * it falls back to a viewport-sized rect rooted at the origin so spotlight
- * conversion degrades to "cover the whole screen" instead of NaN / zero output.
+ * it falls back to a viewport-sized rect rooted at the origin so the consumer
+ * can degrade gracefully (e.g. tutorial modal positioning lands on the
+ * viewport instead of NaN / zero output).
  *
- * `viewport` is the window/visualViewport size — used for shutter pane
- * dimensions (which must cover letterbox bars too, not just the stage).
+ * `viewport` is the window/visualViewport size.
  *
  * `isStageReady` lets callers distinguish the fallback case if needed.
  */

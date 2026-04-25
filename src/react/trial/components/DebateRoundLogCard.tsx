@@ -19,6 +19,7 @@ import { debateEventBus } from '../utils/debateEventBus';
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
+import { useTutorialHighlight, useTutorialTarget } from '../../tutorial/tutorialTarget';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -161,8 +162,16 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
 
   const roundNumDisplay = String(round.roundNumber).padStart(2, '0');
 
+  // Tutorial: container highlight for the round card; button guard for its
+  // expand / shrink toggle.
+  const cardHighlight = useTutorialHighlight({ kind: 'debate_log:round', roundId: round.id });
+  const expandTutorial = useTutorialTarget({ kind: 'debate_log:expand', roundId: round.id });
+
   return (
-    <div className={styles.debateLogRound} data-debate-log-round-index={roundIndex}>
+    <div
+      className={cn(styles.debateLogRound, cardHighlight.highlightClass)}
+      data-debate-log-round-index={roundIndex}
+    >
       <div className={styles.debateLogRoundHeader}>
         <div className={styles.debateLogRoundLead}>
           <div
@@ -195,12 +204,13 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
           </span>
           <button
             type="button"
-            className={styles.debateLogExpandBtn}
+            className={cn(styles.debateLogExpandBtn, expandTutorial.highlightClass)}
             aria-expanded={!isUpcoming && effectiveExpanded}
             aria-controls={bodyId}
             disabled={isUpcoming}
             data-debate-log-toggle-expand-round-id={round.id}
             onClick={() => {
+              if (expandTutorial.isBlocked) return;
               // `effectiveExpanded` reflects the state before the toggle fires, so the
               // event we emit is the *intended transition*: if it is currently expanded
               // the click will shrink it, and vice versa.

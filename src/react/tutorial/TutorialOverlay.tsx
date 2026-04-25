@@ -2,12 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import { useTutorialStore } from '../../store/tutorialStore';
-import {
-  isFullStageSpotlight,
-  resolveStageSpotlightToViewport,
-  spotlightCoversEntireViewport,
-  type TutorialSpotlightRect,
-} from './spotlightRect';
 import { useStageRect } from './useStageRect';
 import TrialTextButton from '../trial/components/TrialTextButton';
 import ScrollFadeContainer from '../trial/components/ScrollFadeContainer';
@@ -18,12 +12,13 @@ import { debateEventBus } from '../trial/utils/debateEventBus';
 import { scheduleArtificialInteractions } from './artificialInteractions';
 import styles from './TutorialOverlay.module.scss';
 import { TutorialModalRichBody } from './tutorialRichMessage';
+import { isButtonTutorialTarget } from '../../types/debateEntities';
 
 declare global {
   interface Window {
     /**
      * Dev-only: force `TutorialOverlay` to re-render so any change to
-     * `window.spotlightOverride` is picked up immediately. Only defined while
+     * `window.modalOverride` is picked up immediately. Only defined while
      * the overlay is mounted.
      */
     forceTutorialRender?: () => void;
@@ -31,20 +26,6 @@ declare global {
      * Reset all tutorial render overrides to their default values.
      */
     resetTutorialRenderOverrides?: () => void;
-    /**
-     * Dev-only: partial spotlight rect (stage-normalized fractions, 0–1) merged
-     * over the current step's `spotlight`. Missing keys inherit from the step.
-     */
-    spotlightOverride?: {
-      /** Left edge / stage width. */
-      x?: number;
-      /** Top edge / stage height. */
-      y?: number;
-      /** Width / stage width. */
-      width?: number;
-      /** Height / stage height. */
-      height?: number;
-    };
     /**
      * Dev-only: partial modal rect (stage-normalized fractions, 0–1) merged
      * over the current step's `modal`. Missing keys inherit from the step; if
@@ -64,77 +45,6 @@ declare global {
   }
 }
 
-/** Dim everything outside `spotlight`; the hole stays bright and receives clicks through to the UI below. */
-function SpotlightShutters({
-  spotlight,
-  vw,
-  vh,
-}: {
-  spotlight: TutorialSpotlightRect;
-  vw: number;
-  vh: number;
-}) {
-  const { x, y, width: spotW, height: spotH } = spotlight;
-  const holeTop = Math.max(0, Math.min(vh, y));
-  const holeBottom = Math.max(0, Math.min(vh, y + spotH));
-  const holeLeft = Math.max(0, Math.min(vw, x));
-  const holeRight = Math.max(0, Math.min(vw, x + spotW));
-  const midH = Math.max(0, holeBottom - holeTop);
-  const topH = holeTop;
-  const bottomTop = holeBottom;
-  const bottomH = Math.max(0, vh - holeBottom);
-  const leftW = holeLeft;
-  const rightLeft = holeRight;
-  const rightW = Math.max(0, vw - holeRight);
-
-  return (
-    <>
-      <div className={cn(styles.shutter, styles.shutterTop)} style={{ height: topH }} aria-hidden />
-      <div
-        className={cn(styles.shutter, styles.shutterBottom)}
-        style={{ top: bottomTop, height: bottomH }}
-        aria-hidden
-      />
-      <div
-        className={cn(styles.shutter, styles.shutterLeft)}
-        style={{ top: holeTop, width: leftW, height: midH }}
-        aria-hidden
-      />
-      <div
-        className={cn(styles.shutter, styles.shutterRight)}
-        style={{ top: holeTop, left: rightLeft, width: rightW, height: midH }}
-        aria-hidden
-      />
-    </>
-  );
-}
-
-/**
- * Pulsing amber glow traced around the spotlight hole. Rendered as a separate,
- * click-through overlay so it can sit above the shutter panes (and therefore
- * blend its outer glow into the dimmed area) without interfering with clicks
- * on the underlying UI. Uses tutorial-only colors (not the cyan UI accent) so
- * focused controls are not mistaken for the tutorial chrome.
- */
-function SpotlightGlow({
-  spotlight,
-  vw,
-  vh,
-}: {
-  spotlight: TutorialSpotlightRect;
-  vw: number;
-  vh: number;
-}) {
-  const left = Math.max(0, Math.min(vw, spotlight.x));
-  const top = Math.max(0, Math.min(vh, spotlight.y));
-  const right = Math.max(0, Math.min(vw, spotlight.x + spotlight.width));
-  const bottom = Math.max(0, Math.min(vh, spotlight.y + spotlight.height));
-  const width = Math.max(0, right - left);
-  const height = Math.max(0, bottom - top);
-  if (width <= 0 || height <= 0) return null;
-  return <div className={styles.spotlightGlow} style={{ left, top, width, height }} aria-hidden />;
-}
-
 const TutorialOverlay: React.FC = () => {
   const isOpen = useTutorialStore((s) => s.isOpen);
   const steps = useTutorialStore((s) => s.steps);
@@ -143,20 +53,17 @@ const TutorialOverlay: React.FC = () => {
   const stepBack = useTutorialStore((s) => s.stepBack);
   const finishTutorial = useTutorialStore((s) => s.finishTutorial);
 
-  // Single coherent snapshot of the stage rect + viewport, observed reactively.
-  // Both spotlight conversion and shutter sizing read from this so they can't
-  // drift across frames (see `useStageRect.ts` for the full list of layout
-  // signals it watches).
-  const { stageRect, viewport } = useStageRect();
+  // Stage rect is still consulted for converting `modalSpec` ratios into pixel
+  // coordinates; the spotlight system has been retired.
+  const { stageRect } = useStageRect();
 
-  // Dev-only: bump a render tick from the console so `window.spotlightOverride`
-  // can be tweaked live. The spotlight spec is derived on every render, so
+  // Dev-only: bump a render tick from the console so `window.modalOverride`
+  // can be tweaked live. The modal spec is derived on every render, so
   // triggering a re-render is enough to merge in the latest override values.
   const [, setRenderTick] = useState(0);
   useEffect(() => {
     window.forceTutorialRender = () => setRenderTick((n) => n + 1);
     window.resetTutorialRenderOverrides = () => {
-      window.spotlightOverride = undefined;
       window.modalOverride = undefined;
     };
     return () => {
@@ -168,27 +75,17 @@ const TutorialOverlay: React.FC = () => {
   const isLast = stepIndex >= lastIndex;
   const isSingle = steps.length === 1;
   const step = isOpen && steps.length > 0 ? steps[stepIndex]! : null;
-  const hasFocusedSpotlight = step ? !isFullStageSpotlight(step.spotlightSpec) : false;
+  // Scenario 2.2: a *button* target is defined and the author has not asked
+  // for the dialog's primary button to remain. The step concludes when the
+  // targeted button emits its event onto the bus. Container targets (panels,
+  // sections, cards) never auto-conclude — they only highlight, and the user
+  // advances via the dialog Continue / Got it.
   const autoConcludeOnEvent =
-    step !== null && hasFocusedSpotlight && !step.showContinueWithSpotlight;
+    step !== null &&
+    !!step.targetComponent &&
+    isButtonTutorialTarget(step.targetComponent) &&
+    !step.showContinueWithTarget;
 
-  // When the current step auto-concludes on any debate event, advance or finish
-  // on the next emit. The hint text takes the place of the Continue / Got it
-  // button, so the spotlighted button in the underlying UI drives the flow.
-  //
-  // Ignore the tutorial's own lifecycle events (`tutorial:start/next/end`) —
-  // `stepForward` / `finishTutorial` below emit them synchronously, so without
-  // this guard we would recursively advance/finish on our own emission before
-  // React reruns this effect with the new `stepIndex`.
-  //
-  // Stale-listener guard (see `armedFor` below): a single user click can emit
-  // several debate events synchronously (e.g. `analysis:guess_submitted` →
-  // `analysis:guess_partially_correct`). Once the first event auto-concludes
-  // the current tutorial, the React effect cleanup hasn't run yet, so this
-  // listener is still live when the second event arrives. Without a guard it
-  // would re-enter `finishTutorial` / `stepForward` against whatever tutorial
-  // / step the store has since moved to — which manifests as a chained
-  // `tutorial:end → openTutorial(...)` tutorial immediately closing itself.
   // Schedule the step's artificial interactions (scroll / click the debate log)
   // when the step becomes active. Cumulative `delayTimeMs` values are honored by
   // `scheduleArtificialInteractions`. The cleanup clears every still-pending
@@ -201,6 +98,21 @@ const TutorialOverlay: React.FC = () => {
     return scheduleArtificialInteractions(interactions);
   }, [isOpen, step, stepIndex]);
 
+  // Auto-conclude listener.
+  //
+  // Ignore the tutorial's own lifecycle events (`tutorial:start/next/end`) —
+  // `stepForward` / `finishTutorial` below emit them synchronously, so without
+  // this guard we would recursively advance/finish on our own emission before
+  // React reruns this effect with the new `stepIndex`.
+  //
+  // Stale-listener guard (`armedFor`): a single user click can emit several
+  // debate events synchronously (e.g. `analysis:guess_submitted` →
+  // `analysis:guess_partially_correct`). Once the first event auto-concludes
+  // the current tutorial, the React effect cleanup hasn't run yet, so this
+  // listener is still live when the second event arrives. Without a guard it
+  // would re-enter `finishTutorial` / `stepForward` against whatever tutorial
+  // / step the store has since moved to — which manifests as a chained
+  // `tutorial:end → openTutorial(...)` tutorial immediately closing itself.
   useEffect(() => {
     if (!autoConcludeOnEvent) return;
     const armedFor = {
@@ -228,22 +140,6 @@ const TutorialOverlay: React.FC = () => {
     return null;
   }
 
-  // Merge dev-time `window.spotlightOverride` (partial) over the step's spec so
-  // individual fractions can be tweaked live from the browser console.
-  const override = window.spotlightOverride;
-  const effectiveSpotlightSpec = override
-    ? {
-        x: override.x ?? step.spotlightSpec.x,
-        y: override.y ?? step.spotlightSpec.y,
-        width: override.width ?? step.spotlightSpec.width,
-        height: override.height ?? step.spotlightSpec.height,
-      }
-    : step.spotlightSpec;
-  const spotlightPx = resolveStageSpotlightToViewport(effectiveSpotlightSpec, stageRect);
-  const spotlightLeavesViewportHole =
-    !isFullStageSpotlight(effectiveSpotlightSpec) &&
-    !spotlightCoversEntireViewport(spotlightPx, viewport.w, viewport.h);
-  const blockClicksBehindModal = !spotlightLeavesViewportHole || step.showContinueWithSpotlight;
   // Merge dev-time `window.modalOverride` (partial) over the step's `modalSpec`
   // when present. If the step has no `modalSpec`, the override only takes effect
   // when all four fractions are supplied — otherwise we fall through to the
@@ -272,16 +168,13 @@ const TutorialOverlay: React.FC = () => {
       height: modalOverride.height,
     };
   }
-  const modalPx = effectiveModalSpec
-    ? resolveStageSpotlightToViewport(effectiveModalSpec, stageRect)
-    : null;
-  const dialogStyle: React.CSSProperties | undefined = modalPx
+  const dialogStyle: React.CSSProperties | undefined = effectiveModalSpec
     ? {
         position: 'fixed',
-        left: modalPx.x,
-        top: modalPx.y,
-        width: modalPx.width,
-        height: modalPx.height,
+        left: stageRect.left + effectiveModalSpec.x * stageRect.width,
+        top: stageRect.top + effectiveModalSpec.y * stageRect.height,
+        width: effectiveModalSpec.width * stageRect.width,
+        height: effectiveModalSpec.height * stageRect.height,
         maxWidth: 'none',
         maxHeight: 'none',
       }
@@ -298,10 +191,10 @@ const TutorialOverlay: React.FC = () => {
   const primaryLabel = isSingle || isLast ? getLabel('tutorialGotIt') : getLabel('continue');
 
   // Footer layout:
-  //  - Normal: single primary (isSingle) or Back + primary grid
   //  - Auto-conclude + single step: no footer buttons (hint alone drives the step)
   //  - Auto-conclude + multi-step: Back stays (so users can revisit earlier steps);
-  //    the primary cell is empty because the spotlighted button concludes the step.
+  //    the primary cell is empty because the targeted button concludes the step.
+  //  - Otherwise: single primary (isSingle) or Back + primary grid
   const renderFooter = () => {
     if (autoConcludeOnEvent) {
       if (isSingle) return null;
@@ -356,16 +249,12 @@ const TutorialOverlay: React.FC = () => {
     );
   };
 
+  // The overlay no longer dims the screen or blocks pointer events outside the
+  // dialog. Click-blocking responsibility moved to each interactive button via
+  // `useTutorialTarget` (`tutorial/tutorialTarget.ts`), so the user can scroll
+  // and explore freely; only the targeted control reacts.
   const ui = (
     <div className={styles.root} role="presentation">
-      <SpotlightShutters spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
-      {spotlightLeavesViewportHole ? (
-        <SpotlightGlow spotlight={spotlightPx} vw={viewport.w} vh={viewport.h} />
-      ) : null}
-      {blockClicksBehindModal ? (
-        <div className={styles.clickBlocker} aria-hidden role="presentation" />
-      ) : null}
-
       <div className={styles.dialogWrap}>
         <div
           className={cn(shared.trialModalFontScope, styles.dialog)}

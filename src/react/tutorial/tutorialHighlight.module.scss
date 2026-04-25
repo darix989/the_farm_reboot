@@ -1,0 +1,45 @@
+/* Reusable pulsing border applied to whichever element is the active
+   `targetComponent`. Imported by `tutorialTarget.ts` and re-exported as the
+   default `highlightClass`. Components may pass a custom class through the
+   hook's `highlightClass` option to use a different visual treatment. */
+
+$tutorial-target-ring: #22c55e;
+$tutorial-target-ring-strong: #4ade80;
+$tutorial-target-glow: rgba(34, 197, 94, 0.5);
+
+@keyframes tutorial-target-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px $tutorial-target-glow,
+      0 0 12px 2px $tutorial-target-glow;
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 2px $tutorial-target-ring-strong,
+      0 0 24px 6px $tutorial-target-glow;
+  }
+}
+
+/* Compose with whatever existing border-radius the host element uses by
+   relying on `outline-offset` instead of touching the box model. The pulse
+   is delivered via `box-shadow`, which doesn't perturb layout. */
+.highlight {
+  position: relative;
+  border-radius: inherit;
+  animation: tutorial-target-pulse 2.4s ease-in-out infinite;
+  will-change: box-shadow;
+
+  /* Make sure the pulse paints on top of any neighbours. */
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .highlight {
+    animation: none;
+    box-shadow:
+      0 0 0 2px $tutorial-target-ring,
+      0 0 18px 4px $tutorial-target-glow;
+  }
+}

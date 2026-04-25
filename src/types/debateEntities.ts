@@ -198,8 +198,11 @@ export type DebateTutorialLogic = {
 // ---------------------------------------------------------------------------
 
 /**
- * Spotlight rectangle as fractions of `#app-stage-16x9` (0 = start edge, 1 = full span).
+ * Modal rectangle as fractions of `#app-stage-16x9` (0 = start edge, 1 = full span).
  * Maps to viewport pixels at runtime via `getBoundingClientRect()` on the stage.
+ *
+ * Used for positioning the tutorial dialog itself; the spotlight system has
+ * been retired in favour of {@link TutorialTargetComponent}.
  */
 export type DebateTutorialArea = {
   /** Left edge / stage width. */
@@ -211,6 +214,108 @@ export type DebateTutorialArea = {
   /** Height / stage height. */
   height: number;
 };
+
+/**
+ * Identifies a single element in the trial UI that a tutorial step anchors to.
+ *
+ * Each kind belongs to one of two families:
+ *
+ *  - **Button targets** (`button: true` in `TUTORIAL_TARGET_BUTTON_KINDS`) — an
+ *    interactable control. While the step is active the element keeps a
+ *    pulsing border AND remains clickable. Every other trial button silences
+ *    its click handler. With `showContinueWithTarget: false` (default) the
+ *    button's emitted event auto-concludes the step; with
+ *    `showContinueWithTarget: true` the dialog Continue button advances and
+ *    the target click runs its normal action without advancing.
+ *  - **Container targets** — a non-interactable region (panel, section, card).
+ *    The element gets the highlight; nothing on the screen is clickable
+ *    except the dialog's Back / Continue / Got it. Auto-conclude is never
+ *    armed for container kinds — the user must advance via the dialog.
+ *
+ * Discriminated by `kind`. Variants without extra fields refer to a singleton
+ * element on the screen (e.g. the interactive footer's Submit button); variants
+ * carrying an id (`optionId`, `roundId`, `sentenceId`, `fallacyId`) refer to a
+ * specific instance among many siblings.
+ *
+ * Equality semantics: two `TutorialTargetComponent` values are considered the
+ * same target when their `kind` matches AND every extra field has the same
+ * primitive value (see `targetComponentMatches` in
+ * `react/tutorial/tutorialTarget.ts`).
+ */
+export type TutorialTargetComponent =
+  // -------------------------------------------------------------- Button targets
+  // Interactive panel
+  /** Choice button for a specific player option in the interactive panel. */
+  | { kind: 'interactive:option'; optionId: string }
+  /** The interactive panel's footer Back button. */
+  | { kind: 'interactive:back' }
+  /** The interactive panel's footer submit / continue button. */
+  | { kind: 'interactive:submit' }
+  // Debate log
+  /** Round card expand / shrink toggle. */
+  | { kind: 'debate_log:expand'; roundId: string }
+  /** Round card analyze (magnifying-glass) button. */
+  | { kind: 'debate_log:analyze'; roundId: string }
+  // Round analysis modal
+  /** Modal close (✕) button. */
+  | { kind: 'analysis:close' }
+  /** Sentence card inside the analysis modal's left column. */
+  | { kind: 'analysis:sentence'; sentenceId: string }
+  /** A specific logical-fallacy item in the FallacyPicker. */
+  | { kind: 'analysis:fallacy'; fallacyId: string }
+  /** "Spot Fallacies" submit button. */
+  | { kind: 'analysis:submit' }
+  /** "No fallacies in statement" button (opens the confirm dialog). */
+  | { kind: 'analysis:no_fallacies' }
+  /** Confirm button inside the no-fallacies confirm dialog. */
+  | { kind: 'analysis:no_fallacies_confirm' }
+  /** Cancel button inside the no-fallacies confirm dialog. */
+  | { kind: 'analysis:no_fallacies_cancel' }
+  // ----------------------------------------------------------- Container targets
+  /** The whole debate-log feedback panel. */
+  | { kind: 'panel:debate_log' }
+  /** The whole wizard panel. */
+  | { kind: 'panel:wizard' }
+  /** The whole interactive panel. */
+  | { kind: 'panel:interactive' }
+  /** The grid of choice buttons inside the interactive panel. */
+  | { kind: 'panel:interactive_options' }
+  /** A single debate-log round card (the card itself, not the expand / analyze controls). */
+  | { kind: 'debate_log:round'; roundId: string }
+  /** The round-analysis modal's outer box. */
+  | { kind: 'analysis:modal' }
+  /** The list of sentence cards inside the analysis modal. */
+  | { kind: 'analysis:sentence_list' }
+  /** The fallacy-picker grid inside the analysis modal. */
+  | { kind: 'analysis:fallacy_list' };
+
+export type TutorialTargetKind = TutorialTargetComponent['kind'];
+
+/**
+ * Set of `kind`s whose target represents an interactable button. Container
+ * kinds are intentionally excluded so the overlay never tries to auto-conclude
+ * a step on a non-clickable target.
+ */
+export const TUTORIAL_TARGET_BUTTON_KINDS: ReadonlySet<TutorialTargetKind> =
+  new Set<TutorialTargetKind>([
+    'interactive:option',
+    'interactive:back',
+    'interactive:submit',
+    'debate_log:expand',
+    'debate_log:analyze',
+    'analysis:close',
+    'analysis:sentence',
+    'analysis:fallacy',
+    'analysis:submit',
+    'analysis:no_fallacies',
+    'analysis:no_fallacies_confirm',
+    'analysis:no_fallacies_cancel',
+  ]);
+
+/** True for button kinds; false for container kinds. */
+export function isButtonTutorialTarget(target: TutorialTargetComponent): boolean {
+  return TUTORIAL_TARGET_BUTTON_KINDS.has(target.kind);
+}
 
 /**
  * Discriminated action performed by a synthetic UI interaction scheduled from
@@ -245,7 +350,7 @@ export interface TutorialArtificialInteraction {
   action: TutorialArtificialInteractionAction;
 }
 
-/** One panel in the intro tutorial; optional spotlight defaults to full stage when omitted. */
+/** One panel in a tutorial overlay. */
 export interface DebateTutorialStep {
   modal?: DebateTutorialArea;
   /**
@@ -258,19 +363,34 @@ export interface DebateTutorialStep {
    * - A blank line (two or more consecutive newlines) starts a new paragraph; a single newline inside a paragraph becomes a line break.
    */
   message: string;
-  spotlight?: DebateTutorialArea;
   /**
-   * When a step has a (non-full-stage) `spotlight`, the default is that the step
-   * concludes as soon as any new `EventTrigger` fires (assumed to originate from
-   * the spotlighted button) — no Continue / Got it button is shown; a hint
-   * ("Click the highlighted button to continue") is rendered instead.
+   * Optional component the step is anchored to. Behaviour:
+   *
+   *  - **Omitted (Scenario 1)** — every interactive control in the trial UI
+   *    early-returns from its click handler. The user advances via the Back /
+   *    Continue / Got it buttons inside the tutorial dialog itself.
+   *  - **Set + `showContinueWithTarget: true` (Scenario 2.1)** — the targeted
+   *    component is highlighted with a pulsing border AND remains clickable.
+   *    The dialog still shows Back / Continue so the user can advance either
+   *    via the dialog or by interacting with the target.
+   *  - **Set, no `showContinueWithTarget` (Scenario 2.2)** — the targeted
+   *    component is the only clickable thing on the page; the dialog hides
+   *    its primary button and a hint replaces it. Clicking the target emits
+   *    the corresponding debate event, which auto-concludes the step.
+   */
+  targetComponent?: TutorialTargetComponent;
+  /**
+   * When a step has a `targetComponent`, the default is that the step concludes
+   * as soon as any new `EventTrigger` fires (assumed to originate from the
+   * targeted button) — no Continue / Got it button is shown; a hint is
+   * rendered instead.
    *
    * Set this to `true` to opt out of that default and keep the normal
-   * Continue / Got it button behavior even when a spotlight is defined.
+   * Continue / Got it button alongside the highlighted target.
    *
-   * Ignored when the step has no spotlight (or a full-stage spotlight).
+   * Ignored when the step has no `targetComponent`.
    */
-  showContinueWithSpotlight?: boolean;
+  showContinueWithTarget?: boolean;
   /**
    * Optional ordered sequence of synthetic UI interactions fired while this
    * step is visible. Each entry's `delayTimeMs` is measured from the moment
