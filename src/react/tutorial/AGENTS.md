@@ -27,8 +27,8 @@ it will drift the moment the window aspect ratio stops being 16:9.
 
 Minimum values for the modal size:
 
-- `width` >= `0.33`;
-- `height` >= `0.33`
+- `width` >= `0.35`;
+- `height` >= `0.35`
 
 This will guarantee to have 2 lines of text without any scroll.
 
@@ -37,51 +37,3 @@ This will guarantee to have 2 lines of text without any scroll.
 - On game area (top left)
   - Centered inside the game area:
     `x: 0.125, y: 0.06, width: 0.4, height: 0.4`
-
-## Common spotlight areas
-
-- FeedbackPanel:
-  - Analyze button of the current round inside FeedbackPanel:
-
-  ```
-  "spotlight": {
-    "x": 0.6,
-    "y": 0.22,
-    "width": 0.4,
-    "height": 0.3
-  },
-  ```
-
-- RoundAnalysisModal:
-  - Sentences inside RoundAnalysisModal:
-
-  ```
-  "spotlight": {
-    "x": 0.02,
-    "y": 0.1,
-    "width": 0.52,
-    "height": 0.8
-  },
-  ```
-
-  - Logical Fallacies inside RoundAnalysisModal:
-
-- InteractivePanel:
-  - Back and Continue buttons inside InteractivePanel:
-  `x: 0.63, y: 0.85, width: 0.34, height: 0.12`
-  - Continue button inside InteractivePanel:
-  `x: 0.805, y: 0.85, width: 0.18, height: 0.12`
-  - Options inside InteractivePanel:
-    `x: 0.63, y: 0.6, width: 0.34, height: 0.26`
-  - Option A inside InteractivePanel:
-    `x: 0.63, y: 0.6, width: 0.095, height: 0.26`
-  - Option B inside InteractivePanel:
-    `x: 0.75, y: 0.6, width: 0.095, height: 0.26`
-  - Option C inside InteractivePanel:
-    `x: 0.87, y: 0.6, width: 0.095, height: 0.26`
-
-- WizardPanel:
-  - Whole area inside WizardPanel:
-
-- Debate Log Panel:
-  - `x: 0.61, y: 0.11, width: 0.37, height: 0.4`

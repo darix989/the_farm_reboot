@@ -677,5 +677,205 @@
         }
       ]
     }
+  ],
+  "tutorials": [
+    {
+      "id": "intro",
+      "trigger": { "event": "introduction:start" },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**Welcome!** You'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the debate[/success]**.\n\nIn this debate, Barnaby pushes the blue-barn plan while you argue for fixing the leaking roof first."
+          },
+          {
+            "message": "**First**, read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**, then press **[success]Continue[/success]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "debate_log" },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-summary",
+      "trigger": { "event": "introduction:summary" },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Read the summary and your side, then start **[info]Round 1[/info]**."
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-1-opening-constructive-analyze",
+      "trigger": {
+        "event": "round:start",
+        "where": { "roundId": "round-1" }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Round 1 is Barnaby's opening statement. Read it in the **[accent]Wizard Panel[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" }
+          },
+          {
+            "message": "Each round is tracked in the **[accent]Debate Log Panel[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "debate_log" }
+          },
+          {
+            "message": "Use **[accent]Analyze[/accent]** (magnifying glass) to inspect statements.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" }
+          },
+          {
+            "message": "Click the highlighted **[accent]Analyze[/accent]** button on Round 1.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-2-player-your-turn",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundNumber": 2,
+          "kind": "player",
+          "roundId": "round-2"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Your turn[/accent]**. Choose your reply in the interactive panel.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "interactive" }
+          },
+          {
+            "message": "Click your available option to review and select it.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-a" }
+          },
+          {
+            "message": "Now press **[success]Confirm[/success]** to commit your choice.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_action", "action": "confirm" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-select-sentence-first-wrong-guess",
+      "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 1 } },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Statement analysis[/accent]**: select a sentence you want to inspect.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-1" }
+          },
+          {
+            "message": "Pick **[info]false dilemma[/info]** for that sentence.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "false-dilemma" }
+          },
+          {
+            "message": "Press **[accent]Spot Fallacies[/accent]** to submit.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-post-submit-guess",
+      "trigger": {
+        "event": "tutorial:end",
+        "where": { "tutorialId": "analysis-select-sentence-first-wrong-guess" }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "[danger]Not quite.[/danger] This line is not a false dilemma."
+          },
+          {
+            "message": "You have multiple attempts per statement. We'll use that soon."
+          },
+          {
+            "message": "Close the analysis for now.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "close" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-next-round-continue",
+      "trigger": {
+        "event": "tutorial:end",
+        "where": { "tutorialId": "analysis-post-submit-guess" }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Press **[accent]Continue[/accent]** to proceed.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_action", "action": "continue" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-select-sentence-correct-guess",
+      "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 4 } },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Now inspect Barnaby's crossfire question and select the highlighted sentence.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r4q-1" }
+          },
+          {
+            "message": "Pick **[warning]ad hominem[/warning]**.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "ad-hominem" }
+          },
+          {
+            "message": "Submit your guess.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" }
+          },
+          {
+            "message": "**[success]Correct![/success]** Close the analysis.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "close" }
+          },
+          {
+            "message": "Option C is now unlockable. Click it once to unlock.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" }
+          },
+          {
+            "message": "Click Option C again to select the full response.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" }
+          },
+          {
+            "message": "Press **[success]Confirm[/success]** to play it.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_action", "action": "confirm" }
+          }
+        ]
+      }
+    }
   ]
 }
