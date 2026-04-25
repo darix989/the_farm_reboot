@@ -1,0 +1,876 @@
+{
+  "id": "debate-blue-barn-final",
+  "introduction": "Barnaby the Bunny insists we should paint the entire barn bright blue because 'blue is the happiest color' and it will make everyone feel like they are floating in the sky. As Pip the Mouse, you must explain that the farm's coins should go to fixing the leaking roof first. Listen carefully — Barnaby will reach for personal attacks and either-or traps when his idea is challenged.",
+  "playerSide": "opposition",
+  "characters": {
+    "barnaby": "Barnaby",
+    "pip": "Pip"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Attacking the person instead of the argument."
+    },
+    {
+      "id": "false-dilemma",
+      "explanation": "Presenting only two options when more alternatives exist."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem", "false-dilemma"],
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "opening_constructive",
+      "speakerId": "barnaby",
+      "statement": {
+        "id": "stmt-r1-barnaby",
+        "speakerId": "barnaby",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Friends of the farm, look up at the wide blue sky — that very shade is the color of joy itself.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "If we paint our barn that same beautiful blue, every animal will wake up feeling like they are floating among the clouds.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-3",
+            "text": "Blue is the happiest color, and a happy barn is a barn worth living in. Let us invest our savings in that vision.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "preventOptionsShuffle": true,
+      "type": "opening_constructive",
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "ineffective",
+          "impact": -5,
+          "reason": "Focuses on personal taste in colors instead of addressing the farm's real priority: a roof that actually keeps the rain out.",
+          "sentences": [
+            {
+              "id": "s-r2a-1",
+              "text": "I think the natural wood color of the barn already looks classic and warm.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r2a-2",
+              "text": "Bright blue would clash with the green fields and the yellow afternoon sun.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r2a-3",
+              "text": "Repainting just to change colors feels like a waste of a perfectly good afternoon.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Surrenders the argument before it has even started. Doesn't engage with the proposition or offer a real alternative.",
+          "sentences": [
+            {
+              "id": "s-r2b-1",
+              "text": "I am just a small mouse, and nobody really listens to me anyway.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r2b-2",
+              "text": "Maybe the rabbits know more about decorating than I do.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r2b-3",
+              "text": "If everyone wants the barn blue, who am I to argue with the whole farm?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "effective",
+          "impact": 20,
+          "reason": "Reframes the debate around survival and concrete needs. Anchors the audience to the leaking roof — a problem paint cannot solve.",
+          "sentences": [
+            {
+              "id": "s-r2c-1",
+              "text": "The barn's roof has three holes that drip water onto the hay every time it rains.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r2c-2",
+              "text": "Our savings should go toward patching that roof before the autumn storms arrive.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r2c-3",
+              "text": "A safe, dry barn protects every animal — and that has to come before a coat of paint.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r3-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Trivial logistical questions that let Barnaby duck the real issue: cost versus the roof.",
+          "sentences": [
+            {
+              "id": "s-r3a-1",
+              "text": "Will the blue match the door of the chicken coop?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r3a-2",
+              "text": "What shade of blue do you have in mind — sky, navy, or robin's egg?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r3a-3",
+              "text": "Will the cows be allowed to vote on the exact tone?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-b",
+          "quality": "ineffective",
+          "impact": -5,
+          "reason": "Vague philosophical jabs at Barnaby's premise. Doesn't pin him down on numbers or priorities.",
+          "sentences": [
+            {
+              "id": "s-r3b-1",
+              "text": "Are you really sure blue is the happiest color of them all?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r3b-2",
+              "text": "Who told you blue makes anyone feel like they're floating?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r3b-3",
+              "text": "Couldn't a different color do exactly the same thing for far less money?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "Forces Barnaby onto the financial battlefield. Either he produces a budget, or his proposal looks reckless to the jury.",
+          "sentences": [
+            {
+              "id": "s-r3c-1",
+              "text": "Barnaby, how many coins will the paint and brushes actually cost the farm?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r3c-2",
+              "text": "How does that compare to the cost of repairing the roof beams before winter?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r3c-3",
+              "text": "Have you written down a budget anywhere we can all see, or is this all in your head?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r3-opt-a",
+          "statement": {
+            "id": "stmt-r3-resp-a",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3ra-1",
+                "text": "All shades of blue are happy shades. The exact tone will reveal itself in the moment of inspiration!",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-b",
+          "statement": {
+            "id": "stmt-r3-resp-b",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3rb-1",
+                "text": "I have it on excellent authority from the sky itself, Pip. The sky never lies.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-c",
+          "statement": {
+            "id": "stmt-r3-resp-c",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3rc-1",
+                "text": "Coins are for accountants, Pip — I am painting the bigger picture, and that picture is BLUE!",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "crossfire",
+      "opponentPrompt": {
+        "id": "stmt-r4-barnaby-question",
+        "speakerId": "barnaby",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r4q-1",
+            "text": "Pip, why should anyone listen to a tiny mouse with such dull, gray fur and no sense of style at all? Isn't it obvious you only hate the blue plan because you yourself are too drab to appreciate true beauty?",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "Barnaby attacks Pip's appearance and personal taste instead of engaging with the argument about the leaking roof and the budget."
+              }
+            ]
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r4-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -15,
+          "reason": "This is a counter Ad Hominem — attacking Barnaby's species and looks instead of his argument. It makes Pip look just as petty as Barnaby.",
+          "sentences": [
+            {
+              "id": "s-r4a-1",
+              "text": "And why should anyone listen to a fluffy bunny who only thinks about carrots and parties?",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "Pip attacks Barnaby's species and lifestyle rather than answering the question about the proposal."
+                }
+              ]
+            },
+            {
+              "id": "s-r4a-2",
+              "text": "Your ears are far too long for any sensible argument to fit between them.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "Another personal attack — about Barnaby's body — rather than addressing the substance of the debate."
+                }
+              ]
+            },
+            {
+              "id": "s-r4a-3",
+              "text": "Maybe rabbits should stick to hopping and leave the planning to mice.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-b",
+          "quality": "ineffective",
+          "impact": -5,
+          "reason": "Defensive about appearance — exactly where Barnaby wants the conversation. Misses the chance to name the fallacy and pivot back to the roof.",
+          "sentences": [
+            {
+              "id": "s-r4b-1",
+              "text": "I am not drab! I groom my fur every single morning down by the pond.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r4b-2",
+              "text": "Gray is a very practical color for a mouse who lives in the shadows of the barn.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r4b-3",
+              "text": "You are being very mean and it is hurting my feelings in front of everyone.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-c",
+          "quality": "effective",
+          "impact": 22,
+          "reason": "Names the Ad Hominem out loud, refuses the personal bait, and drags the debate back to the roof and the budget — the questions Barnaby was trying to dodge.",
+          "unlockCondition": {
+            "npcRoundId": "round-4",
+            "sentenceId": "s-r4q-1",
+            "fallacyId": "ad-hominem"
+          },
+          "sentences": [
+            {
+              "id": "s-r4c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r4c-1",
+              "text": "Barnaby, the color of my fur has nothing to do with the holes in our roof.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r4c-2",
+              "text": "That is an Ad Hominem — attacking my appearance instead of answering my question about the budget.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r4c-3",
+              "text": "So let's stick to the real question: how do we pay for paint when the rafters are dripping rainwater onto the hay?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-5",
+      "roundNumber": 5,
+      "type": "rebuttal",
+      "speakerId": "barnaby",
+      "statement": {
+        "id": "stmt-r5-barnaby",
+        "speakerId": "barnaby",
+        "type": "rebuttal",
+        "sentences": [
+          {
+            "id": "s-r5-1",
+            "text": "Pip's so-called 'budget' is nothing but a smokescreen for a much darker truth about this farm.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-2",
+            "text": "Either we paint this barn blue today, or we all agree to live in a miserable, colorless world forever.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "Barnaby pretends there are only two options — his blue plan or eternal misery — when in reality the barn could simply stay its natural color and still be a happy place."
+              }
+            ]
+          },
+          {
+            "id": "s-r5-3",
+            "text": "There is no middle ground when the joy of the entire community is on the line.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-6",
+      "roundNumber": 6,
+      "type": "rebuttal",
+      "options": [
+        {
+          "id": "r6-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -15,
+          "reason": "Mirrors Barnaby's mistake by inventing a False Dilemma of Pip's own. Doesn't expose the bad logic — just adds more bad logic on top.",
+          "sentences": [
+            {
+              "id": "s-r6a-1",
+              "text": "Either we ignore Barnaby completely, or this whole farm collapses by the first frost!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Pip frames the choice as ignore-Barnaby-or-collapse, ignoring sensible middle paths."
+                }
+              ]
+            },
+            {
+              "id": "s-r6a-2",
+              "text": "There are only two paths here: a fixed roof, or every animal frozen by December!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Reduces a complex farm budget to two extreme outcomes."
+                }
+              ]
+            },
+            {
+              "id": "s-r6a-3",
+              "text": "Pick survival or pick paint — there is absolutely no other way!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Repeats the either-or framing instead of breaking out of it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-b",
+          "quality": "ineffective",
+          "impact": -5,
+          "reason": "Tries to soften Barnaby's premise but accepts the framing that life without blue is sad. Doesn't name or break the fallacy.",
+          "sentences": [
+            {
+              "id": "s-r6b-1",
+              "text": "I am not a smokescreen, I am just a mouse trying to be helpful.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r6b-2",
+              "text": "The world isn't really colorless if we just look at the green fields and the yellow hay.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r6b-3",
+              "text": "Maybe we can be a little bit happy without any paint at all, if we try.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-c",
+          "quality": "effective",
+          "impact": 25,
+          "reason": "Names the False Dilemma directly, opens up a third path (a dry, unpainted barn), and grounds the audience in the practical comparison: a leaky blue barn versus a dry plain one.",
+          "unlockCondition": {
+            "npcRoundId": "round-5",
+            "sentenceId": "s-r5-2",
+            "fallacyId": "false-dilemma"
+          },
+          "sentences": [
+            {
+              "id": "s-r6c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r6c-1",
+              "text": "Barnaby is offering a False Dilemma — paint blue or live in misery, as if those are the only two choices.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r6c-2",
+              "text": "We can keep the barn the color it already is and still be happy and still have a roof that doesn't leak.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r6c-3",
+              "text": "A dry wooden barn beats a blue barn full of puddles every single day of the year.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-7",
+      "roundNumber": 7,
+      "type": "crossfire",
+      "opponentPrompt": {
+        "id": "stmt-r7-barnaby-question",
+        "speakerId": "barnaby",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r7q-1",
+            "text": "Pip, if you don't let us paint the barn blue, aren't you simply choosing to keep us all sad and gray forever?",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "Barnaby is again pretending the only two outcomes are 'paint blue' or 'eternal sadness', leaving out every reasonable alternative."
+              }
+            ]
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r7-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "Answers Barnaby's False Dilemma with another False Dilemma. The audience hears two animals trapped in either-or thinking instead of one of them breaking out of it.",
+          "sentences": [
+            {
+              "id": "s-r7a-1",
+              "text": "Either Barnaby admits he is wrong, or none of us should ever speak to him again!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Reduces a disagreement to silence-or-surrender with no middle ground."
+                }
+              ]
+            },
+            {
+              "id": "s-r7a-2",
+              "text": "The choice is happiness or honesty — pick one, Barnaby!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Falsely treats happiness and honesty as opposites."
+                }
+              ]
+            },
+            {
+              "id": "s-r7a-3",
+              "text": "Either you fix the roof yourself, or you stop talking nonsense forever!",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Wanders away from the question. Doesn't refute the trap or offer a real third option.",
+          "sentences": [
+            {
+              "id": "s-r7b-1",
+              "text": "Sadness comes from many places, not just from the color of a wall.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r7b-2",
+              "text": "Some animals are sad even on bright sunny days for reasons I don't fully understand.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r7b-3",
+              "text": "Is there a mouse counselor on this farm we could maybe ask about feelings?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-c",
+          "quality": "effective",
+          "impact": 20,
+          "reason": "Refuses Barnaby's binary, offers a clear third path (a dry, repaired barn = a different kind of happiness), and even leaves room to talk about color later — fair, calm, and persuasive.",
+          "sentences": [
+            {
+              "id": "s-r7c-1",
+              "text": "No, because a dry, repaired barn makes everyone feel safe — and safety is its own kind of happiness.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r7c-2",
+              "text": "Saving for the roof doesn't choose sadness; it chooses sensible care for the whole farm.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r7c-3",
+              "text": "Once the roof is fixed, we can absolutely talk about cheerful decorations next spring.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-8",
+      "roundNumber": 8,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r8-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "Personal attack on Barnaby's character and species. Even if it lands a laugh, it abandons the substance of the debate.",
+          "sentences": [
+            {
+              "id": "s-r8a-1",
+              "text": "Barnaby, are you a real leader, or just a fluffy daydreamer with no practical sense at all?",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "Goes after Barnaby's character ('fluffy daydreamer') rather than the merits of his plan."
+                }
+              ]
+            },
+            {
+              "id": "s-r8a-2",
+              "text": "Have you ever fixed anything on this farm with your own paws, or do you just talk?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r8a-3",
+              "text": "Or is your entire plan based on staring at the sky for too long?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r8-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Logistical small-talk. Doesn't expose the flaw in painting first and fixing later.",
+          "sentences": [
+            {
+              "id": "s-r8b-1",
+              "text": "How many cans of paint do you think we'll actually need for the whole barn?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r8b-2",
+              "text": "Will the brushes come from Mr. Hedgehog's shop or from Old Mrs. Vole's?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r8b-3",
+              "text": "Should we use rollers, or just brushes for the high parts up under the eaves?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r8-opt-c",
+          "quality": "effective",
+          "impact": 22,
+          "reason": "Brutally practical: paint on damp, rotting wood is wasted paint. Forces Barnaby to either concede the roof must come first or look reckless.",
+          "sentences": [
+            {
+              "id": "s-r8c-1",
+              "text": "If we paint over damp, rotting wood, won't the paint just bubble and peel within a single month?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r8c-2",
+              "text": "Why coat a building that needs structural repair before any decoration even makes sense?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r8c-3",
+              "text": "Wouldn't fixing the roof first actually protect any future paint job we eventually do?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r8-opt-a",
+          "statement": {
+            "id": "stmt-r8-resp-a",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r8ra-1",
+                "text": "I am a VISIONARY, Pip, which is far above 'practical'! My paws are perfect for holding inspirational color swatches.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r8-opt-b",
+          "statement": {
+            "id": "stmt-r8-resp-b",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r8rb-1",
+                "text": "We will need ALL the paint! Every can on the farm! The hedgehog will be absolutely delighted.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r8-opt-c",
+          "statement": {
+            "id": "stmt-r8-resp-c",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r8rc-1",
+                "text": "Either we paint NOW while the spirit moves us, or this beautiful moment of inspiration passes forever! Why hesitate?",
+                "logicalFallacies": [
+                  {
+                    "id": "false-dilemma",
+                    "explanation": "Barnaby presents a fake either-or: paint right now or lose the chance forever, ignoring the option of painting later after the roof is fixed."
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-9",
+      "roundNumber": 9,
+      "type": "closing_constructive",
+      "speakerId": "barnaby",
+      "statement": {
+        "id": "stmt-r9-barnaby",
+        "speakerId": "barnaby",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r9-1",
+            "text": "Animals of the farm, the moment is here. Look at our barn and imagine the entire sky descending upon it in glorious blue.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r9-2",
+            "text": "You must choose now: a barn of joy and color, or a lifetime of dull, dripping despair.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "Barnaby once again presents only two extremes — a blue paradise or eternal despair — leaving out every reasonable middle ground."
+              }
+            ]
+          },
+          {
+            "id": "s-r9-3",
+            "text": "There are no other paths, my friends. Vote for the blue dream, or vote for gray misery.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "The 'no other paths' framing is the heart of the False Dilemma — it pretends compromise and alternatives simply don't exist."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-10",
+      "roundNumber": 10,
+      "type": "closing_constructive",
+      "options": [
+        {
+          "id": "r10-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -15,
+          "reason": "Closes with a False Dilemma of Pip's own. After spending the whole debate exposing Barnaby's bad logic, this throws away that progress at the most important moment.",
+          "sentences": [
+            {
+              "id": "s-r10a-1",
+              "text": "In conclusion, we either ban paint forever, or this farm is doomed!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Reduces a complex decision to ban-paint-or-doom, ignoring the obvious option of fixing the roof first and painting later."
+                }
+              ]
+            },
+            {
+              "id": "s-r10a-2",
+              "text": "Choose between Barnaby's nonsense or my sensible roof — there is no third way!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Mirrors Barnaby's bad framing instead of breaking it."
+                }
+              ]
+            },
+            {
+              "id": "s-r10a-3",
+              "text": "Vote for the roof, or vote for ruin!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Another either-or with no middle ground."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Wishy-washy and forgettable. The audience needs a clear ask before they vote.",
+          "sentences": [
+            {
+              "id": "s-r10b-1",
+              "text": "Maybe we should all just go to bed and decide tomorrow when we're well rested.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10b-2",
+              "text": "The moon will probably give us all better advice in the morning.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10b-3",
+              "text": "Or maybe we could ask the owl for help, but the owl is asleep at this hour.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-c",
+          "quality": "effective",
+          "impact": 30,
+          "reason": "The perfect close: names both fallacies the audience just watched in real time, replaces Barnaby's either-or with a real third path, and ties it back to safety as the foundation of any real happiness.",
+          "sentences": [
+            {
+              "id": "s-r10c-1",
+              "text": "Barnaby has tried to attack my fur and trap us all between two extreme choices.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10c-2",
+              "text": "But we don't have to choose between joy and survival — fixing the roof is what makes joy possible in the first place.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10c-3",
+              "text": "Vote to fix the roof first, because a safe barn is the foundation every cheerful color is painted on.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
