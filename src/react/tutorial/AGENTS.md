@@ -4,10 +4,15 @@
 
 All `spotlight` / `modal` ratios in debate JSON are expressed as fractions of
 `#app-stage-16x9` (the letterboxed 16:9 stage), **not** of the browser viewport.
-`resolveStageSpotlightToViewport` (see `spotlightRect.ts`) reads the stage's
-live `getBoundingClientRect()` and adds the letterbox offset, so a spotlight
-defined at 1920×1080 lands on the same UI at any aspect ratio (e.g. 874×402
-landscape iPhone, where the stage is 714.67×402 centred in the viewport).
+The conversion happens in two pieces: `useStageRect` (see `useStageRect.ts`)
+tracks the stage's live `getBoundingClientRect()` reactively — observing
+`ResizeObserver` on the stage element plus `window.resize`, `visualViewport`
+events, `fullscreenchange`, and `orientationchange`, all coalesced through
+`requestAnimationFrame`. `resolveStageSpotlightToViewport` (see
+`spotlightRect.ts`) is then a pure function that takes that stage rect and
+adds the letterbox offset, so a spotlight defined at 1920×1080 lands on the
+same UI at any aspect ratio (e.g. 874×402 landscape iPhone, where the stage
+is 714.67×402 centred in the viewport).
 
 For this to hold, **every UI element a spotlight can target must also live in
 stage coordinates**. In practice that means trial modals

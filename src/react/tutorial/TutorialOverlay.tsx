@@ -8,6 +8,7 @@ import {
   spotlightCoversEntireViewport,
   type TutorialSpotlightRect,
 } from './spotlightRect';
+import { useStageRect } from './useStageRect';
 import TrialTextButton from '../trial/components/TrialTextButton';
 import ScrollFadeContainer from '../trial/components/ScrollFadeContainer';
 import panelStyles from '../trial/panels/TrialPanels.module.scss';
@@ -141,31 +142,11 @@ const TutorialOverlay: React.FC = () => {
   const stepBack = useTutorialStore((s) => s.stepBack);
   const finishTutorial = useTutorialStore((s) => s.finishTutorial);
 
-  const [viewport, setViewport] = useState(() => ({
-    w: typeof window !== 'undefined' ? window.innerWidth : 1920,
-    h: typeof window !== 'undefined' ? window.innerHeight : 1080,
-  }));
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const sync = () => {
-      const vv = window.visualViewport;
-      setViewport({
-        w: vv?.width ?? window.innerWidth,
-        h: vv?.height ?? window.innerHeight,
-      });
-    };
-    sync();
-    window.addEventListener('resize', sync);
-    const vv = window.visualViewport;
-    vv?.addEventListener('resize', sync);
-    vv?.addEventListener('scroll', sync);
-    return () => {
-      window.removeEventListener('resize', sync);
-      vv?.removeEventListener('resize', sync);
-      vv?.removeEventListener('scroll', sync);
-    };
-  }, [isOpen]);
+  // Single coherent snapshot of the stage rect + viewport, observed reactively.
+  // Both spotlight conversion and shutter sizing read from this so they can't
+  // drift across frames (see `useStageRect.ts` for the full list of layout
+  // signals it watches).
+  const { stageRect, viewport } = useStageRect();
 
   // Dev-only: bump a render tick from the console so `window.spotlightOverride`
   // can be tweaked live. The spotlight spec is derived on every render, so
@@ -258,7 +239,7 @@ const TutorialOverlay: React.FC = () => {
         height: override.height ?? step.spotlightSpec.height,
       }
     : step.spotlightSpec;
-  const spotlightPx = resolveStageSpotlightToViewport(effectiveSpotlightSpec);
+  const spotlightPx = resolveStageSpotlightToViewport(effectiveSpotlightSpec, stageRect);
   const spotlightLeavesViewportHole =
     !isFullStageSpotlight(effectiveSpotlightSpec) &&
     !spotlightCoversEntireViewport(spotlightPx, viewport.w, viewport.h);
@@ -291,7 +272,9 @@ const TutorialOverlay: React.FC = () => {
       height: modalOverride.height,
     };
   }
-  const modalPx = effectiveModalSpec ? resolveStageSpotlightToViewport(effectiveModalSpec) : null;
+  const modalPx = effectiveModalSpec
+    ? resolveStageSpotlightToViewport(effectiveModalSpec, stageRect)
+    : null;
   const dialogStyle: React.CSSProperties | undefined = modalPx
     ? {
         position: 'fixed',

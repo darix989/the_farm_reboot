@@ -8,7 +8,20 @@ export type TutorialSpotlightRect = {
   height: number;
 };
 
-const STAGE_ELEMENT_ID = 'app-stage-16x9';
+/**
+ * Stage's measured rect in viewport pixels. Shape is compatible with `DOMRect`,
+ * so callers can pass `el.getBoundingClientRect()` directly — but for reactive
+ * UI prefer `useStageRect()`, which produces a snapshot that updates on every
+ * known cause of stage layout change (resize, fullscreen, orientation, …).
+ */
+export type StageRect = {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+};
+
+export const STAGE_ELEMENT_ID = 'app-stage-16x9';
 
 /** Default when a step omits `spotlight` in JSON — entire `#app-stage-16x9`. */
 export const FULL_STAGE_SPOTLIGHT_RATIOS: DebateTutorialArea = {
@@ -60,22 +73,26 @@ export function spotlightCoversEntireViewport(
 }
 
 /**
- * Converts stage-normalized spotlight ratios to viewport pixels for fixed overlays.
- * Uses the stage element’s current `getBoundingClientRect()` (letterbox-safe).
+ * Converts stage-normalized spotlight ratios to viewport pixels for fixed
+ * overlays. Pure: pass in the stage's measured rect (typically from
+ * `useStageRect()`) and the function deterministically produces the viewport
+ * pixel rect, including the letterbox offset baked into `stageRect.left/top`.
+ *
+ * Callers that have a "stage not laid out yet" case should pass a
+ * viewport-sized fallback (`{ left: 0, top: 0, width: vw, height: vh }`) so
+ * the resulting spotlight covers the screen — that trips
+ * `spotlightCoversEntireViewport` downstream and the overlay degrades to
+ * "no hole, click blocker only" instead of NaN / zero-sized output.
  */
 export function resolveStageSpotlightToViewport(
   spec: DebateTutorialArea | undefined | null,
+  stageRect: StageRect,
 ): TutorialSpotlightRect {
-  const el = document.getElementById(STAGE_ELEMENT_ID);
-  const s = el?.getBoundingClientRect();
-  if (!s || s.width <= 0 || s.height <= 0) {
-    return { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
-  }
   const r = clampSpotlightRatios(spec ?? FULL_STAGE_SPOTLIGHT_RATIOS);
   return {
-    x: s.left + r.x * s.width,
-    y: s.top + r.y * s.height,
-    width: r.width * s.width,
-    height: r.height * s.height,
+    x: stageRect.left + r.x * stageRect.width,
+    y: stageRect.top + r.y * stageRect.height,
+    width: r.width * stageRect.width,
+    height: r.height * stageRect.height,
   };
 }
