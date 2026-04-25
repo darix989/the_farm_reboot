@@ -5,6 +5,7 @@
 // Type-only import — avoids a runtime cycle with the bus module. The bus depends
 // on `EventTrigger` from this file, and we depend on the trigger type it defines.
 import type { DebateTutorialTrigger } from '../react/trial/utils/debateEventBus';
+import type { TutorialModalSpec } from './tutorialModalLayout';
 
 /** Always exactly two sides in a debate. */
 export type Side = 'proposition' | 'opposition';
@@ -263,7 +264,8 @@ export type TutorialTargetRef =
 
 /** One panel in the intro tutorial. */
 export interface DebateTutorialStep {
-  modal?: DebateTutorialArea;
+  /** Modal box layout: explicit rect, size+position grid, or analysis modal presets. */
+  modal?: TutorialModalSpec;
   /**
    * Tutorial body copy. Plain text works as before. Rich inline markup (optional):
    * - `**bold**`

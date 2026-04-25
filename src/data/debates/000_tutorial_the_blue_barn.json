@@ -685,7 +685,8 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**Welcome!** You'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the debate[/success]**.\n\nIn this debate, Barnaby pushes the blue-barn plan while you argue for fixing the leaking roof first."
+            "message": "**Welcome!** You'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the debate[/success]**.\n\nIn this debate, Barnaby pushes the blue-barn plan while you argue for fixing the leaking roof first.",
+            "modal": { "size": "large", "position": "center" }
           },
           {
             "message": "**First**, read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**, then press **[success]Continue[/success]**.",
@@ -695,7 +696,8 @@
               "x": 0.125,
               "y": 0.06,
               "width": 0.4,
-              "height": 0.4
+              "height": 0.4,
+              "pivot": "topLeft"
             }
           }
         ]
@@ -707,7 +709,8 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Read the summary and your side, then start **[info]Round 1[/info]**."
+            "message": "Read the summary and your side, then start **[info]Round 1[/info]**.",
+            "modal": { "size": "medium", "position": "topCenter" }
           }
         ]
       }
@@ -723,22 +726,26 @@
           {
             "message": "Round 1 is Barnaby's opening statement. Read it in the **[accent]Wizard Panel[/accent]**.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" }
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "modal": { "size": "medium", "position": "topLeft" }
           },
           {
             "message": "Each round is tracked in the **[accent]Debate Log Panel[/accent]**.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "debate_log" }
+            "targetComponent": { "kind": "panel", "panel": "debate_log" },
+            "modal": { "size": "medium", "position": "topLeft" }
           },
           {
             "message": "Use **[accent]Analyze[/accent]** (magnifying glass) to inspect statements.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" }
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
+            "modal": { "size": "medium", "position": "centerLeft" }
           },
           {
             "message": "Click the highlighted **[accent]Analyze[/accent]** button on Round 1.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" }
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
+            "modal": { "size": "small", "position": "centerLeft" }
           }
         ]
       }
@@ -758,17 +765,20 @@
           {
             "message": "**[accent]Your turn[/accent]**. Choose your reply in the interactive panel.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "interactive" }
+            "targetComponent": { "kind": "panel", "panel": "interactive" },
+            "modal": { "size": "medium", "position": "topRight" }
           },
           {
             "message": "Click your available option to review and select it.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-a" }
+            "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-a" },
+            "modal": { "size": "small", "position": "topRight" }
           },
           {
             "message": "Now press **[success]Confirm[/success]** to commit your choice.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "confirm" }
+            "targetComponent": { "kind": "interactive_action", "action": "confirm" },
+            "modal": { "size": "small", "position": "bottomRight" }
           }
         ]
       }
@@ -781,17 +791,20 @@
           {
             "message": "**[accent]Statement analysis[/accent]**: select a sentence you want to inspect.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-1" }
+            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-1" },
+            "modal": { "preset": "analysisSentencesSelection" }
           },
           {
             "message": "Pick **[info]false dilemma[/info]** for that sentence.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "false-dilemma" }
+            "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "false-dilemma" },
+            "modal": { "preset": "analysisFallacySelection" }
           },
           {
             "message": "Press **[accent]Spot Fallacies[/accent]** to submit.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" }
+            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
+            "modal": { "preset": "analysisSubmit" }
           }
         ]
       }
@@ -805,15 +818,18 @@
       "tutorial": {
         "steps": [
           {
-            "message": "[danger]Not quite.[/danger] This line is not a false dilemma."
+            "message": "[danger]Not quite.[/danger] This line is not a false dilemma.",
+            "modal": { "size": "small", "position": "topCenter" }
           },
           {
-            "message": "You have multiple attempts per statement. We'll use that soon."
+            "message": "You have multiple attempts per statement. We'll use that soon.",
+            "modal": { "size": "small", "position": "center" }
           },
           {
             "message": "Close the analysis for now.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "close" }
+            "targetComponent": { "kind": "analysis_action", "action": "close" },
+            "modal": { "preset": "analysisExit" }
           }
         ]
       }
@@ -829,7 +845,8 @@
           {
             "message": "Press **[accent]Continue[/accent]** to proceed.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "continue" }
+            "targetComponent": { "kind": "interactive_action", "action": "continue" },
+            "modal": { "size": "small", "position": "bottomCenter" }
           }
         ]
       }
@@ -842,37 +859,44 @@
           {
             "message": "Now inspect Barnaby's crossfire question and select the highlighted sentence.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r4q-1" }
+            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r4q-1" },
+            "modal": { "preset": "analysisSentencesSelection" }
           },
           {
             "message": "Pick **[warning]ad hominem[/warning]**.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "ad-hominem" }
+            "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "ad-hominem" },
+            "modal": { "preset": "analysisFallacySelection" }
           },
           {
             "message": "Submit your guess.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" }
+            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
+            "modal": { "preset": "analysisSubmit" }
           },
           {
             "message": "**[success]Correct![/success]** Close the analysis.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "close" }
+            "targetComponent": { "kind": "analysis_action", "action": "close" },
+            "modal": { "preset": "analysisExit" }
           },
           {
             "message": "Option C is now unlockable. Click it once to unlock.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" }
+            "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" },
+            "modal": { "size": "small", "position": "topRight" }
           },
           {
             "message": "Click Option C again to select the full response.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" }
+            "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" },
+            "modal": { "size": "small", "position": "topRight" }
           },
           {
             "message": "Press **[success]Confirm[/success]** to play it.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "confirm" }
+            "targetComponent": { "kind": "interactive_action", "action": "confirm" },
+            "modal": { "size": "small", "position": "bottomRight" }
           }
         ]
       }

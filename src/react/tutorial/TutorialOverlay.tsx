@@ -14,6 +14,11 @@ import { resolveTutorialTargetElement } from './tutorialTarget';
 import highlightStyles from './tutorialHighlight.module.scss';
 import styles from './TutorialOverlay.module.scss';
 import { TutorialModalRichBody } from './tutorialRichMessage';
+import type { TutorialModalAnchor } from '../../types/tutorialModalLayout';
+import {
+  mergeTutorialModalSpecWithDevOverride,
+  normalizeTutorialModalSpecToArea,
+} from './tutorialModalLayout';
 
 declare global {
   interface Window {
@@ -24,6 +29,7 @@ declare global {
       y?: number;
       width?: number;
       height?: number;
+      pivot?: TutorialModalAnchor;
     };
   }
 }
@@ -77,33 +83,12 @@ const TutorialOverlay: React.FC = () => {
     return null;
   }
 
-  const modalOverride = window.modalOverride;
-  let effectiveModalSpec = step.modalSpec;
-  if (step.modalSpec && modalOverride) {
-    effectiveModalSpec = {
-      x: modalOverride.x ?? step.modalSpec.x,
-      y: modalOverride.y ?? step.modalSpec.y,
-      width: modalOverride.width ?? step.modalSpec.width,
-      height: modalOverride.height ?? step.modalSpec.height,
-    };
-  } else if (
-    !step.modalSpec &&
-    modalOverride &&
-    modalOverride.x !== undefined &&
-    modalOverride.y !== undefined &&
-    modalOverride.width !== undefined &&
-    modalOverride.height !== undefined
-  ) {
-    effectiveModalSpec = {
-      x: modalOverride.x,
-      y: modalOverride.y,
-      width: modalOverride.width,
-      height: modalOverride.height,
-    };
-  }
-  const modalPx = effectiveModalSpec
-    ? resolveStageSpotlightToViewport(effectiveModalSpec, stageRect)
-    : null;
+  const mergedModalSpec = mergeTutorialModalSpecWithDevOverride(
+    step.modalSpec,
+    window.modalOverride,
+  );
+  const modalArea = mergedModalSpec ? normalizeTutorialModalSpecToArea(mergedModalSpec) : null;
+  const modalPx = modalArea ? resolveStageSpotlightToViewport(modalArea, stageRect) : null;
   const dialogStyle: React.CSSProperties | undefined = modalPx
     ? {
         position: 'fixed',

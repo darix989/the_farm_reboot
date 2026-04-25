@@ -1,18 +1,18 @@
 import { create } from 'zustand';
 import type {
-  DebateTutorialArea,
   TutorialArtificialInteraction,
   TutorialInteractionMode,
   TutorialTargetRef,
 } from '../types/debateEntities';
+import type { TutorialModalSpec } from '../types/tutorialModalLayout';
 import { debateEventBus } from '../react/trial/utils/debateEventBus';
 import { tutorialTargetEquals } from '../react/tutorial/tutorialTarget';
 
 /** One tutorial step after open. */
 export interface TutorialStepResolved {
   message: string;
-  /** Optional stage-normalized rect for the dialog itself; when absent, the overlay uses its CSS default. */
-  modalSpec?: DebateTutorialArea;
+  /** Optional stage-normalized modal layout; when absent, the overlay uses its CSS default. */
+  modalSpec?: TutorialModalSpec;
   targetComponent?: TutorialTargetRef;
   interactionMode?: TutorialInteractionMode;
   targetClassName?: string;
@@ -27,7 +27,7 @@ export interface TutorialStepResolved {
 
 export type TutorialStepInput = {
   message: string;
-  modal?: DebateTutorialArea;
+  modal?: TutorialModalSpec;
   targetComponent?: TutorialTargetRef;
   interactionMode?: TutorialInteractionMode;
   targetClassName?: string;
