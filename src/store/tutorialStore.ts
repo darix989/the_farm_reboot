@@ -13,6 +13,7 @@ export interface TutorialStepResolved {
   message: string;
   /** Optional stage-normalized modal layout; when absent, the overlay uses its CSS default. */
   modalSpec?: TutorialModalSpec;
+  onlyForward?: boolean;
   targetComponent?: TutorialTargetRef;
   interactionMode?: TutorialInteractionMode;
   targetClassName?: string;
@@ -28,6 +29,7 @@ export interface TutorialStepResolved {
 export type TutorialStepInput = {
   message: string;
   modal?: TutorialModalSpec;
+  onlyForward?: boolean;
   targetComponent?: TutorialTargetRef;
   interactionMode?: TutorialInteractionMode;
   targetClassName?: string;
@@ -89,6 +91,7 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
       .map((step) => ({
         message: step.message.trim(),
         modalSpec: step.modal,
+        onlyForward: step.onlyForward,
         targetComponent: step.targetComponent,
         interactionMode: step.interactionMode ?? 'modal_only',
         targetClassName: step.targetClassName,

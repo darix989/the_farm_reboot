@@ -712,6 +712,7 @@
         "steps": [
           {
             "message": "**Welcome!** You'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the debate[/success]**.\n\nIn this debate, Barnaby pushes the blue-barn plan while you argue for fixing the leaking roof first.\n\n Press **[accent]Continue[/accent]**  and **[accent]Got it[/accent]** to go forward in the tutorial.\n Press **[accent]Back[/accent]** to go one step back in the tutorial.",
+            "onlyForward": true,
             "modal": { "size": "large", "position": "center" }
           },
           {
@@ -827,26 +828,31 @@
         "steps": [
           {
             "message": "In this **[accent]analysis[/accent]** view you **choose a sentence** to inspect, then **pick fallacies** from the grid that might apply to it. You can tag **[info]up to two[/info]** fallacies on the same sentence (click again to remove one).",
+            "onlyForward": true,
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
             "message": "When you are satisfied, **[accent]Spot Fallacies[/accent]** submits your guess, or **[muted]No Fallacies[/muted]** if you think the whole statement is fallacy free. Those are the two actions that **[success]finalize[/success]** this pass through the analysis.",
+            "onlyForward": true,
             "modal": { "size": "medium", "position": "bottomLeft" }
           },
           {
             "message": "As first thing, select the **[accent]sentence[/accent]** you want to tag with fallacies.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-1" },
             "modal": { "preset": "analysisSentencesSelection" }
           },
           {
             "message": "Pick **[info]false dilemma[/info]** for that sentence.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "false-dilemma" },
             "modal": { "preset": "analysisFallacySelection" }
           },
           {
             "message": "Press **[accent]Spot Fallacies[/accent]** to submit.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
             "modal": { "preset": "analysisSubmit" }
@@ -904,6 +910,7 @@
           },
           {
             "message": "When you find a **[warning]locked statement[/warning]**, it means you need to **[accent]analyze a prior statement[/accent]** of this debate. \n\n Once you successfully analyze the fallacious statement, the locked statement will become **[success]unlockable[/success]**. \n\n Click the analysis button to spot the fallacy in Barnaby question.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-4" },
             "modal": { "size": "large", "position": "topLeft" }
@@ -918,24 +925,28 @@
         "steps": [
           {
             "message": "Now inspect Barnaby's crossfire question and select the highlighted sentence.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r4q-1" },
             "modal": { "preset": "analysisSentencesSelection" }
           },
           {
             "message": "Pick **[warning]ad hominem[/warning]**.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "ad-hominem" },
             "modal": { "preset": "analysisFallacySelection" }
           },
           {
             "message": "Submit your guess.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
             "modal": { "preset": "analysisSubmit" }
           },
           {
             "message": "**[success]Correct![/success]** Close the analysis.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "close" },
             "modal": { "preset": "analysisExit" }

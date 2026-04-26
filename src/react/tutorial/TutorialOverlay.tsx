@@ -60,6 +60,7 @@ const TutorialOverlay: React.FC = () => {
   const isSingle = steps.length === 1;
   const step = isOpen && steps.length > 0 ? steps[stepIndex]! : null;
   const isTargetOnlyStep = !!(step?.targetComponent && step.interactionMode === 'target_only');
+  const disableBackButton = !!step?.onlyForward;
 
   useEffect(() => {
     if (!isOpen || !step) return;
@@ -121,7 +122,7 @@ const TutorialOverlay: React.FC = () => {
               type="button"
               variant="solid"
               onClick={stepBack}
-              disabled={stepIndex === 0}
+              disabled={disableBackButton || stepIndex === 0}
             >
               {getLabel('back')}
             </TrialTextButton>
@@ -147,7 +148,7 @@ const TutorialOverlay: React.FC = () => {
               type="button"
               variant="solid"
               onClick={stepBack}
-              disabled={stepIndex === 0}
+              disabled={disableBackButton || stepIndex === 0}
             >
               {getLabel('back')}
             </TrialTextButton>

@@ -278,6 +278,11 @@ export interface DebateTutorialStep {
    */
   message: string;
   /**
+   * When `true`, the tutorial modal renders only forward progression controls.
+   * The Back button is not mounted for this step.
+   */
+  onlyForward?: boolean;
+  /**
    * Optional target component to highlight during this step.
    *
    * - Omitted: only tutorial overlay buttons can progress (`scenario 1`).

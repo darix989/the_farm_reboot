@@ -81,6 +81,7 @@ export function useScenarioTutorials(
             steps: entry.tutorial.steps.map((step) => ({
               message: step.message,
               modal: step.modal,
+              onlyForward: step.onlyForward,
               targetComponent: step.targetComponent,
               interactionMode: step.interactionMode,
               targetClassName: step.targetClassName,
