@@ -254,6 +254,7 @@ export type TutorialInteractionMode = 'modal_only' | 'target_only';
  */
 export type TutorialTargetRef =
   | { kind: 'panel'; panel: 'debate_log' | 'wizard' | 'interactive' }
+  | { kind: 'modal_round_recap_score' }
   | { kind: 'interactive_action'; action: 'back' | 'continue' | 'confirm' }
   | { kind: 'interactive_option'; optionId: string }
   | { kind: 'debate_log_round_analyze'; roundId: string }

@@ -144,7 +144,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                 </div>
               ) : null}
 
-              <div className={styles.recapSection}>
+              <div className={styles.recapSection} data-tutorial-recap-section="main">
                 <p className={styles.recapSectionLabel}>{getLabel('activeRoundImpact')}</p>
                 <p className={styles.recapBody}>
                   <span aria-label={activeRoundImpactAriaLabel}>
