@@ -812,7 +812,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "At the end of your rounds you will get a sneak peek of how the moderator was influenced by your statement.",
+            "message": "At the end of your rounds you will get a sneak peek of **[accent]how the moderator was influenced by your statement[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "modal_round_recap_score" },
             "modal": { "size": "small", "position": "bottomRight" }
