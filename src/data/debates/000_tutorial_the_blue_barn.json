@@ -138,6 +138,7 @@
       "id": "round-4",
       "roundNumber": 4,
       "type": "crossfire",
+      "preventOptionsShuffle": true,
       "opponentPrompt": {
         "id": "stmt-r4-barnaby-question",
         "speakerId": "barnaby",
@@ -784,7 +785,7 @@
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "Click **[accent]Option A[/accent]** to review it.",
+            "message": "Click **[accent]Option B[/accent]** to review it.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-a" },
             "modal": { "size": "small", "position": "topRight" }
@@ -897,19 +898,19 @@
       "tutorial": {
         "steps": [
           {
-            "message": "This round the other side asks a question.",
+            "message": "This round is up to the **[accent]other side[/accent]** to ask a **[warning]question[/warning]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": { "size": "small", "position": "topLeft" }
           },
           {
-            "message": "We can choose an answer among the 3 options, but one option looks locked!",
+            "message": "We can choose a **[accent]statement to answer[/accent]** among the 3 options.\n One option looks **[warning]locked[/warning]**!",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "interactive" },
             "modal": { "size": "small", "position": "bottomLeft" }
           },
           {
-            "message": "When you find a **[warning]locked statement[/warning]**, it means you need to **[accent]analyze a prior statement[/accent]** of this debate. \n\n Once you successfully analyze the fallacious statement, the locked statement will become **[success]unlockable[/success]**. \n\n Click the analysis button to spot the fallacy in Barnaby question.",
+            "message": "When you find a **[warning]locked statement[/warning]**, it means you need to **[accent]analyze a prior statement[/accent]** of this debate. \n\n Once you **[success]successfully analyze[/success]** the fallacious statement, the locked statement will become **[success]unlockable[/success]**. \n\n Click the **[accent]analysis button[/accent]** to spot the fallacy in Barnaby question.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-4" },
@@ -952,19 +953,22 @@
             "modal": { "preset": "analysisExit" }
           },
           {
-            "message": "Option C is now unlockable. Click it once to unlock.",
+            "message": "Option B is now unlockable. Click it once to unlock.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" },
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "Click Option C again to select the full response.",
+            "message": "Click Option B again to select the full response.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" },
             "modal": { "size": "small", "position": "topRight" }
           },
           {
             "message": "Press **[success]Continue[/success]** to play it.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": { "size": "small", "position": "bottomCenter" }

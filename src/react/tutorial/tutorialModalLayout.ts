@@ -63,6 +63,34 @@ const PRESET_VALUES = new Set<string>(Object.values(TutorialModalPreset));
 const SIZE_VALUES = new Set<string>(Object.values(TutorialModalSize));
 const POSITION_VALUES = new Set<string>(Object.values(TutorialModalPosition));
 
+function clamp(n: number, lo: number, hi: number): number {
+  return Math.max(lo, Math.min(hi, n));
+}
+
+/**
+ * Ensures the modal always keeps a minimum inset from stage edges.
+ * If the modal is larger than the available safe frame, it is shrunk to fit.
+ */
+function enforceModalEdgeInsets(
+  area: DebateTutorialArea,
+  marginX: number,
+  marginY: number,
+): DebateTutorialArea {
+  const safeX = clamp(marginX, 0, 0.5);
+  const safeY = clamp(marginY, 0, 0.5);
+  const maxWidth = Math.max(0, 1 - 2 * safeX);
+  const maxHeight = Math.max(0, 1 - 2 * safeY);
+  const width = clamp(area.width, 0, maxWidth);
+  const height = clamp(area.height, 0, maxHeight);
+  const minX = safeX;
+  const maxX = Math.max(minX, 1 - safeX - width);
+  const minY = safeY;
+  const maxY = Math.max(minY, 1 - safeY - height);
+  const x = clamp(area.x, minX, maxX);
+  const y = clamp(area.y, minY, maxY);
+  return { x, y, width, height };
+}
+
 function warnInvalidModalSpec(message: string): void {
   if (import.meta.env.DEV) {
     console.warn(`[tutorial modal] ${message}`);
@@ -175,7 +203,11 @@ function normalizePlacement(spec: TutorialModalPlacementSpec): DebateTutorialAre
   const pivot = spec.pivot ?? TutorialModalAnchor.Center;
   const { width: w, height: h } = TUTORIAL_MODAL_SIZE_RATIOS[spec.size];
   const { x, y } = placementTopLeft(spec.position, w, h, pivot, STAGE_MARGIN_X, STAGE_MARGIN_Y);
-  return clampSpotlightRatios({ x, y, width: w, height: h });
+  return enforceModalEdgeInsets(
+    clampSpotlightRatios({ x, y, width: w, height: h }),
+    STAGE_MARGIN_X,
+    STAGE_MARGIN_Y,
+  );
 }
 
 function normalizeExplicit(spec: TutorialModalExplicitSpec): DebateTutorialArea | null {
@@ -193,7 +225,11 @@ function normalizeExplicit(spec: TutorialModalExplicitSpec): DebateTutorialArea 
   const pivot = spec.pivot ?? TutorialModalAnchor.TopLeft;
   const tlX = pivot === TutorialModalAnchor.Center ? x - w / 2 : x;
   const tlY = pivot === TutorialModalAnchor.Center ? y - h / 2 : y;
-  return clampSpotlightRatios({ x: tlX, y: tlY, width: w, height: h });
+  return enforceModalEdgeInsets(
+    clampSpotlightRatios({ x: tlX, y: tlY, width: w, height: h }),
+    STAGE_MARGIN_X,
+    STAGE_MARGIN_Y,
+  );
 }
 
 function normalizePreset(spec: TutorialModalPresetSpec): DebateTutorialArea | null {
