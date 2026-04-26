@@ -49,6 +49,7 @@ export function useScenarioTutorials(
     // dispatch O(entries-for-event) rather than O(all-entries).
     const byEvent = new Map<EventTrigger, GroupedEntry[]>();
     tutorials.forEach((entry, idx) => {
+      if (entry.disabled) return;
       const dedupKey = entry.id ?? `__idx_${idx}`;
       const bucket = byEvent.get(entry.trigger.event) ?? [];
       bucket.push({ entry, dedupKey });

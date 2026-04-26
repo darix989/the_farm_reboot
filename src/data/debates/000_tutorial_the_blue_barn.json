@@ -709,6 +709,7 @@
     {
       "id": "intro",
       "trigger": { "event": "introduction:start" },
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -734,6 +735,7 @@
     {
       "id": "intro-summary",
       "trigger": { "event": "introduction:summary" },
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -751,6 +753,7 @@
         "event": "round:start",
         "where": { "roundId": "round-1" }
       },
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -778,6 +781,7 @@
           "roundId": "round-2"
         }
       },
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -816,6 +820,7 @@
         "event": "round:recap:open",
         "where": { "roundNumber": 2, "roundId": "round-2" }
       },
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -830,6 +835,7 @@
     {
       "id": "analysis-select-sentence-first-wrong-guess",
       "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 1 } },
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -879,6 +885,7 @@
         "event": "tutorial:end",
         "where": { "tutorialId": "analysis-post-submit-guess" }
       },
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -900,6 +907,7 @@
           "roundId": "round-4"
         }
       },
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -927,6 +935,7 @@
     {
       "id": "analysis-select-sentence-correct-guess",
       "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 4 } },
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -991,6 +1000,7 @@
           "roundId": "round-5"
         }
       },
+      "disabled": false,
       "tutorial": {
         "steps": [
           {

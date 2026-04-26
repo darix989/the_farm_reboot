@@ -340,6 +340,8 @@ export interface DebateTutorialJson {
 export interface DebateScenarioTutorialEntry {
   /** Optional stable id; used as the dedup key. Falls back to array index. */
   id?: string;
+  /** When true, this tutorial entry is ignored and never triggered. */
+  disabled?: boolean;
   trigger: DebateTutorialTrigger;
   tutorial: DebateTutorialJson;
 }
