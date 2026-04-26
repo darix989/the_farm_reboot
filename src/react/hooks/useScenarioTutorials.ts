@@ -82,6 +82,7 @@ export function useScenarioTutorials(
               message: step.message,
               modal: step.modal,
               onlyForward: step.onlyForward,
+              onFinish: step.onFinish,
               targetComponent: step.targetComponent,
               interactionMode: step.interactionMode,
               targetClassName: step.targetClassName,
