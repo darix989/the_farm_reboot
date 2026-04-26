@@ -13,7 +13,9 @@ import { clampSpotlightRatios } from './spotlightRect';
 
 /** Minimum gap from the stage edge to the modal box (placement + top-left pivot). */
 const STAGE_MARGIN_X = 0.082;
-const STAGE_MARGIN_Y = 0.082;
+const STAGE_MARGIN_Y = 0.05;
+const STAGE_MARGIN_TIGHT_X = 0.04;
+const STAGE_MARGIN_TIGHT_Y = 0.06;
 
 /**
  * Extra inset applied only when computing the 3×3 anchor lattice for **center** pivot,
@@ -22,16 +24,24 @@ const STAGE_MARGIN_Y = 0.082;
  */
 const PLACEMENT_ANCHOR_GUTTER_X = 0.048;
 const PLACEMENT_ANCHOR_GUTTER_Y = 0.048;
+const PLACEMENT_ANCHOR_GUTTER_TIGHT_X = -0.1;
+const PLACEMENT_ANCHOR_GUTTER_TIGHT_Y = 0.032;
 
 /** Minimum width/height for readable tutorial copy (see tutorial AGENTS.md). */
 export const TUTORIAL_MODAL_SIZE_RATIOS: Record<
   TutorialModalSize,
   { width: number; height: number }
 > = {
+  [TutorialModalSize.SmallTight]: { width: 0.2, height: 0.36 },
+  [TutorialModalSize.SmallTightTall]: { width: 0.2, height: 0.65 },
   [TutorialModalSize.Small]: { width: 0.34, height: 0.38 },
   [TutorialModalSize.Medium]: { width: 0.4, height: 0.42 },
   [TutorialModalSize.Large]: { width: 0.52, height: 0.55 },
 };
+
+function isTightModalSize(size: TutorialModalSize): boolean {
+  return size === TutorialModalSize.SmallTight || size === TutorialModalSize.SmallTightTall;
+}
 
 const PRESET_PLACEMENT: Record<
   TutorialModalPreset,
@@ -114,14 +124,16 @@ function placementAnchor(
   position: TutorialModalPosition,
   mx: number,
   my: number,
+  gutterX: number,
+  gutterY: number,
 ): {
   ax: number;
   ay: number;
 } {
-  const gx0 = mx + PLACEMENT_ANCHOR_GUTTER_X;
-  const gx1 = 1 - mx - PLACEMENT_ANCHOR_GUTTER_X;
-  const gy0 = my + PLACEMENT_ANCHOR_GUTTER_Y;
-  const gy1 = 1 - my - PLACEMENT_ANCHOR_GUTTER_Y;
+  const gx0 = mx + gutterX;
+  const gx1 = 1 - mx - gutterX;
+  const gy0 = my + gutterY;
+  const gy1 = 1 - my - gutterY;
   const spanX = Math.max(0, gx1 - gx0);
   const spanY = Math.max(0, gy1 - gy0);
   const col = (k: 0 | 1 | 2) => gx0 + (spanX * (k + 0.5)) / 3;
@@ -161,12 +173,14 @@ function placementTopLeft(
   pivot: TutorialModalAnchor,
   mx: number,
   my: number,
+  gutterX: number,
+  gutterY: number,
 ): { x: number; y: number } {
   const rw = 1 - 2 * mx;
   const rh = 1 - 2 * my;
 
   if (pivot === TutorialModalAnchor.Center) {
-    const { ax, ay } = placementAnchor(position, mx, my);
+    const { ax, ay } = placementAnchor(position, mx, my, gutterX, gutterY);
     return { x: ax - w / 2, y: ay - h / 2 };
   }
 
@@ -202,11 +216,16 @@ function placementTopLeft(
 function normalizePlacement(spec: TutorialModalPlacementSpec): DebateTutorialArea | null {
   const pivot = spec.pivot ?? TutorialModalAnchor.Center;
   const { width: w, height: h } = TUTORIAL_MODAL_SIZE_RATIOS[spec.size];
-  const { x, y } = placementTopLeft(spec.position, w, h, pivot, STAGE_MARGIN_X, STAGE_MARGIN_Y);
+  const useTightPlacement = isTightModalSize(spec.size);
+  const marginX = useTightPlacement ? STAGE_MARGIN_TIGHT_X : STAGE_MARGIN_X;
+  const marginY = useTightPlacement ? STAGE_MARGIN_TIGHT_Y : STAGE_MARGIN_Y;
+  const gutterX = useTightPlacement ? PLACEMENT_ANCHOR_GUTTER_TIGHT_X : PLACEMENT_ANCHOR_GUTTER_X;
+  const gutterY = useTightPlacement ? PLACEMENT_ANCHOR_GUTTER_TIGHT_Y : PLACEMENT_ANCHOR_GUTTER_Y;
+  const { x, y } = placementTopLeft(spec.position, w, h, pivot, marginX, marginY, gutterX, gutterY);
   return enforceModalEdgeInsets(
     clampSpotlightRatios({ x, y, width: w, height: h }),
-    STAGE_MARGIN_X,
-    STAGE_MARGIN_Y,
+    marginX,
+    marginY,
   );
 }
 

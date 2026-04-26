@@ -86,6 +86,7 @@ const LABELS = {
 
   // --- Tutorial overlay ---
   tutorialGotIt: 'Got it',
+  tutorialDialogTitleSingle: 'Tutorial',
   tutorialDialogTitle: 'Tutorial ({currentStep} of {totalSteps})',
   tutorialSpotlightHint: 'Click the button in the highlighted area to continue',
 

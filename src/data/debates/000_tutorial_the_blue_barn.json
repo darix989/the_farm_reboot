@@ -738,7 +738,7 @@
         "steps": [
           {
             "message": "Each round has its recap.",
-            "modal": { "size": "small", "position": "bottomRight" }
+            "modal": { "size": "smallTight", "position": "bottomRight" }
           }
         ]
       }
@@ -785,19 +785,22 @@
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "Click **[accent]Option B[/accent]** to review it.",
+            "message": "Click **[accent]Option X[/accent]** to review it.",
             "interactionMode": "target_only",
+            "onlyForward": true,
             "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-a" },
             "modal": { "size": "small", "position": "topRight" }
           },
           {
             "message": "You can read the full text of the option in the **[accent]Wizard Panel[/accent]**.",
+            "onlyForward": true,
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": { "size": "small", "position": "bottomRight" }
           },
           {
             "message": "Now press **[accent]Continue[/accent]** to confirm your choice.",
+            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": { "size": "small", "position": "topRight" }
@@ -817,7 +820,7 @@
             "message": "At the end of your rounds you will get a sneak peek of **[accent]how the moderator was influenced by your statement[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "modal_round_recap_score" },
-            "modal": { "size": "small", "position": "bottomRight" }
+            "modal": { "size": "smallTightTall", "position": "bottomRight" }
           }
         ]
       }
@@ -898,10 +901,10 @@
       "tutorial": {
         "steps": [
           {
-            "message": "This round is up to the **[accent]other side[/accent]** to ask a **[warning]question[/warning]**.",
+            "message": "This round is up to the **[accent]other side[/accent]** to ask you a **[warning]question[/warning]**. \n Check the **[accent]Debate Log Panel[/accent]** to read the question.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "small", "position": "topLeft" }
+            "targetComponent": { "kind": "panel", "panel": "debate_log" },
+            "modal": { "size": "medium", "position": "topLeft" }
           },
           {
             "message": "We can choose a **[accent]statement to answer[/accent]** among the 3 options.\n One option looks **[warning]locked[/warning]**!",

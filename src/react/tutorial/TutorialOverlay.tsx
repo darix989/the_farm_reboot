@@ -111,6 +111,14 @@ const TutorialOverlay: React.FC = () => {
   };
 
   const primaryLabel = isSingle || isLast ? getLabel('tutorialGotIt') : getLabel('continue');
+  const dialogTitle = isSingle
+    ? getLabel('tutorialDialogTitleSingle')
+    : getLabel('tutorialDialogTitle', {
+        replacements: {
+          currentStep: stepIndex + 1,
+          totalSteps: steps.length,
+        },
+      });
 
   const renderFooter = () => {
     if (isTargetOnlyStep) {
@@ -179,12 +187,7 @@ const TutorialOverlay: React.FC = () => {
           <div className={styles.dialogTitleWrap}>
             <div className={panelStyles.trialAreaTitle}>
               <h2 id="tutorial-dialog-title" className={panelStyles.trialPanelHeading}>
-                {getLabel('tutorialDialogTitle', {
-                  replacements: {
-                    currentStep: stepIndex + 1,
-                    totalSteps: steps.length,
-                  },
-                })}
+                {dialogTitle}
               </h2>
             </div>
           </div>

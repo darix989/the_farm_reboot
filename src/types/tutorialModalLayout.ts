@@ -9,6 +9,8 @@ export const TutorialModalAnchor = {
 export type TutorialModalAnchor = (typeof TutorialModalAnchor)[keyof typeof TutorialModalAnchor];
 
 export const TutorialModalSize = {
+  SmallTight: 'smallTight',
+  SmallTightTall: 'smallTightTall',
   Small: 'small',
   Medium: 'medium',
   Large: 'large',
