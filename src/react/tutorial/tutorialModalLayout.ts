@@ -54,7 +54,7 @@ const PRESET_PLACEMENT: Record<
   },
   [TutorialModalPreset.AnalysisExit]: {
     size: TutorialModalSize.Small,
-    position: TutorialModalPosition.CenterLeft,
+    position: TutorialModalPosition.BottomRight,
     pivot: TutorialModalAnchor.Center,
   },
 };

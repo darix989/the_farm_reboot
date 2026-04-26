@@ -879,6 +879,39 @@
       }
     },
     {
+      "id": "round-4-start-question-and-analysis",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundNumber": 4,
+          "kind": "player",
+          "roundId": "round-4"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This round the other side asks a question.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "modal": { "size": "small", "position": "topLeft" }
+          },
+          {
+            "message": "We can choose an answer among the 3 options, but one option looks locked!",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "interactive" },
+            "modal": { "size": "small", "position": "bottomLeft" }
+          },
+          {
+            "message": "Click the analysis button to spot the fallacy in Barnaby question.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-4" },
+            "modal": { "size": "small", "position": "topLeft" }
+          }
+        ]
+      }
+    },
+    {
       "id": "analysis-select-sentence-correct-guess",
       "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 4 } },
       "tutorial": {
@@ -920,10 +953,10 @@
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "Press **[success]Confirm[/success]** to play it.",
+            "message": "Press **[success]Continue[/success]** to play it.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "confirm" },
-            "modal": { "size": "small", "position": "bottomRight" }
+            "targetComponent": { "kind": "interactive_action", "action": "continue" },
+            "modal": { "size": "small", "position": "bottomCenter" }
           }
         ]
       }
