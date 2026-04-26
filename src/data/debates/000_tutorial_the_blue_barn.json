@@ -903,10 +903,10 @@
             "modal": { "size": "small", "position": "bottomLeft" }
           },
           {
-            "message": "Click the analysis button to spot the fallacy in Barnaby question.",
+            "message": "When you find a **[warning]locked statement[/warning]**, it means you need to **[accent]analyze a prior statement[/accent]** of this debate. \n\n Once you successfully analyze the fallacious statement, the locked statement will become **[success]unlockable[/success]**. \n\n Click the analysis button to spot the fallacy in Barnaby question.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-4" },
-            "modal": { "size": "small", "position": "topLeft" }
+            "modal": { "size": "large", "position": "topLeft" }
           }
         ]
       }
