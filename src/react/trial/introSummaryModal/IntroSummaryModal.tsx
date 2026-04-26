@@ -3,6 +3,10 @@ import type { DebateScenarioJson } from '../../../types/debateEntities';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TrialTextButton from '../components/TrialTextButton';
 import { sideDisplayLabel } from '../utils/trialHelpers';
+import {
+  canRunTutorialTargetAction,
+  notifyTutorialTargetAction,
+} from '../../tutorial/tutorialInteractionGuard';
 import shared from '../trialShared.module.scss';
 import cn from 'classnames';
 import recapStyles from '../roundRecapModal/RoundRecapModal.module.scss';
@@ -31,12 +35,17 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
   );
 
   const sideLabel = sideDisplayLabel(debate.playerSide);
+  const closeTarget = { kind: 'intro_summary_action', action: 'close' } as const;
+  const beginRoundTarget = { kind: 'intro_summary_action', action: 'begin_round_1' } as const;
 
   return (
     <div
       className={recapStyles.recapOverlay}
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target !== e.currentTarget) return;
+        if (!canRunTutorialTargetAction(closeTarget)) return;
+        onClose();
+        notifyTutorialTargetAction(closeTarget);
       }}
     >
       <div
@@ -56,8 +65,13 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
           <button
             type="button"
             className={recapStyles.recapCloseBtn}
-            onClick={onClose}
+            onClick={() => {
+              if (!canRunTutorialTargetAction(closeTarget)) return;
+              onClose();
+              notifyTutorialTargetAction(closeTarget);
+            }}
             aria-label={getLabel('close')}
+            data-tutorial-intro-summary-action="close"
           >
             ✕
           </button>
@@ -78,7 +92,16 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
         </ScrollFadeContainer>
 
         <div className={recapStyles.recapFooter}>
-          <TrialTextButton onClick={onClose}>{getLabel('beginRound1')}</TrialTextButton>
+          <TrialTextButton
+            onClick={() => {
+              if (!canRunTutorialTargetAction(beginRoundTarget)) return;
+              onClose();
+              notifyTutorialTargetAction(beginRoundTarget);
+            }}
+            data-tutorial-intro-summary-action="begin_round_1"
+          >
+            {getLabel('beginRound1')}
+          </TrialTextButton>
         </div>
       </div>
     </div>

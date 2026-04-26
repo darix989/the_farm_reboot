@@ -738,6 +738,8 @@
         "steps": [
           {
             "message": "Each round has its recap.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "intro_summary_action", "action": "begin_round_1" },
             "modal": { "size": "smallTight", "position": "bottomRight" }
           }
         ]
