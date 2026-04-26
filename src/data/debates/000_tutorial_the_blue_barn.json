@@ -66,6 +66,32 @@
               "logicalFallacies": []
             }
           ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "effective",
+          "impact": 8,
+          "reason": "Keeps the argument focused on immediate safety, which is stronger than cosmetic improvements.",
+          "sentences": [
+            {
+              "id": "s-r2b-1",
+              "text": "Before changing color, we should fix the roof first so every animal stays dry and safe.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "States a practical concern but does not strongly explain why the roof should be the first priority.",
+          "sentences": [
+            {
+              "id": "s-r2c-1",
+              "text": "Let us postpone painting until next season and use this budget for repairs.",
+              "logicalFallacies": []
+            }
+          ]
         }
       ]
     },
