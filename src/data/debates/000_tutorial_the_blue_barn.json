@@ -787,7 +787,7 @@
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "Click **[accent]Option X[/accent]** to review it.",
+            "message": "Click **[accent]Option A[/accent]** to review it.",
             "interactionMode": "target_only",
             "onlyForward": true,
             "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-a" },
