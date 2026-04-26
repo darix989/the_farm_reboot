@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type {
   TutorialArtificialInteraction,
   TutorialInteractionMode,
+  TutorialStepOnFinish,
   TutorialTargetRef,
 } from '../types/debateEntities';
 import type { TutorialModalSpec } from '../types/tutorialModalLayout';
@@ -14,6 +15,7 @@ export interface TutorialStepResolved {
   /** Optional stage-normalized modal layout; when absent, the overlay uses its CSS default. */
   modalSpec?: TutorialModalSpec;
   onlyForward?: boolean;
+  onFinish?: TutorialStepOnFinish;
   targetComponent?: TutorialTargetRef;
   interactionMode?: TutorialInteractionMode;
   targetClassName?: string;
@@ -30,6 +32,7 @@ export type TutorialStepInput = {
   message: string;
   modal?: TutorialModalSpec;
   onlyForward?: boolean;
+  onFinish?: TutorialStepOnFinish;
   targetComponent?: TutorialTargetRef;
   interactionMode?: TutorialInteractionMode;
   targetClassName?: string;
@@ -92,6 +95,7 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
         message: step.message.trim(),
         modalSpec: step.modal,
         onlyForward: step.onlyForward,
+        onFinish: step.onFinish,
         targetComponent: step.targetComponent,
         interactionMode: step.interactionMode ?? 'modal_only',
         targetClassName: step.targetClassName,

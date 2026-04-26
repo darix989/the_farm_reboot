@@ -980,6 +980,27 @@
           }
         ]
       }
+    },
+    {
+      "id": "round-5-start-false-dilemma",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundNumber": 5,
+          "kind": "npc",
+          "roundId": "round-5"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This is the **[success]end of the tutorial![/success]**\n\nYou learnt how to **[accent]choose a statement[/accent]**, how to **[accent]spot a fallacy[/accent]**, and how to **[accent]unlock statements[/accent]**.\n\nActual debates last longer and reach **[accent]round 10[/accent]**.\n\n Play a debate and challenge debaters!",
+            "interactionMode": "modal_only",
+            "onFinish": "exit",
+            "modal": { "size": "large", "position": "center" }
+          }
+        ]
+      }
     }
   ]
 }

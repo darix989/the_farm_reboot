@@ -14,6 +14,7 @@ import { resolveTutorialTargetElement } from './tutorialTarget';
 import highlightStyles from './tutorialHighlight.module.scss';
 import styles from './TutorialOverlay.module.scss';
 import { TutorialModalRichBody } from './tutorialRichMessage';
+import { GameManager } from '../../utils/gameManager';
 import type { TutorialModalAnchor } from '../../types/tutorialModalLayout';
 import {
   mergeTutorialModalSpecWithDevOverride,
@@ -61,6 +62,7 @@ const TutorialOverlay: React.FC = () => {
   const step = isOpen && steps.length > 0 ? steps[stepIndex]! : null;
   const isTargetOnlyStep = !!(step?.targetComponent && step.interactionMode === 'target_only');
   const disableBackButton = !!step?.onlyForward;
+  const exitsToMainMenu = step?.onFinish === 'exit';
 
   useEffect(() => {
     if (!isOpen || !step) return;
@@ -103,6 +105,11 @@ const TutorialOverlay: React.FC = () => {
     : undefined;
 
   const onPrimary = () => {
+    if (exitsToMainMenu) {
+      finishTutorial();
+      GameManager.switchScene('MainMenu');
+      return;
+    }
     if (isSingle || isLast) {
       finishTutorial();
     } else {
@@ -110,7 +117,11 @@ const TutorialOverlay: React.FC = () => {
     }
   };
 
-  const primaryLabel = isSingle || isLast ? getLabel('tutorialGotIt') : getLabel('continue');
+  const primaryLabel = exitsToMainMenu
+    ? getLabel('tutorialFinish')
+    : isSingle || isLast
+      ? getLabel('tutorialGotIt')
+      : getLabel('continue');
   const dialogTitle = isSingle
     ? getLabel('tutorialDialogTitleSingle')
     : getLabel('tutorialDialogTitle', {
@@ -121,6 +132,20 @@ const TutorialOverlay: React.FC = () => {
       });
 
   const renderFooter = () => {
+    if (exitsToMainMenu) {
+      return (
+        <div className={cn(styles.footer, styles.footerSingle)}>
+          <TrialTextButton
+            type="button"
+            variant="solid"
+            className={styles.primaryActionGlow}
+            onClick={onPrimary}
+          >
+            {primaryLabel}
+          </TrialTextButton>
+        </div>
+      );
+    }
     if (isTargetOnlyStep) {
       if (isSingle) return null;
       return (

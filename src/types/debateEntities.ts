@@ -247,6 +247,7 @@ export interface TutorialArtificialInteraction {
 }
 
 export type TutorialInteractionMode = 'modal_only' | 'target_only';
+export type TutorialStepOnFinish = 'exit';
 
 /**
  * Typed reference to a UI element that can be highlighted (and optionally be
@@ -283,6 +284,11 @@ export interface DebateTutorialStep {
    * The Back button is not mounted for this step.
    */
   onlyForward?: boolean;
+  /**
+   * Optional behavior executed when the primary button is clicked on this step.
+   * - `exit`: closes tutorial and routes the player to the Main Menu.
+   */
+  onFinish?: TutorialStepOnFinish;
   /**
    * Optional target component to highlight during this step.
    *
