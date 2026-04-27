@@ -721,7 +721,19 @@
             "modal": { "size": "medium", "position": "center" }
           },
           {
-            "message": "For this round, just read the **[accent]moderator's introduction[/accent]** in the **[accent]Debate Log Panel[/accent]**.",
+            "message": "For this round, just read the **[accent]moderator's introduction[/accent]** in the **[accent]Wizard Panel[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4,
+              "pivot": "topLeft"
+            }
+          },
+          {
+            "message": "The Introduction details, like every future round's details, will be available in the **[accent]Debate Log Panel[/accent]**.\n\n This represents the **[accent]full history of the debate[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "debate_log" },
             "modal": {
@@ -733,7 +745,7 @@
             }
           },
           {
-            "message": "Once you have a clear picture of the debate's main topic, pass to the actual debate's beginning by pressing **[accent]Continue[/accent]**.",
+            "message": "Once you have a clear picture of the debate's main topic, start the actual debateby pressing **[accent]Continue[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": {
@@ -772,13 +784,13 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Round 1 is Barnaby's opening statement.\n\n Read it in the **[accent]Wizard Panel[/accent]**.",
+            "message": "Round 1 is about **[warning]Barnaby's opening statement[/warning]**.\n\n Read it in the **[accent]Wizard Panel[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "\n You can rely on **[accent]Debate Log Panel[/accent]** to read everything happened so far, ordered by **[accent]round[/accent]**.",
+            "message": "\n Remember, you can rely on **[accent]Debate Log Panel[/accent]** to read everything happened so far, ordered by **[accent]round[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "debate_log" },
             "modal": { "size": "medium", "position": "topLeft" }
