@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTutorialStore } from '../../store/tutorialStore';
 import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../types/debateEntities';
 import logicalFallaciesData from '../../data/logicalFallacies.json';
@@ -53,6 +53,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     () => new Set(),
   );
   const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
+  const introStartEmittedRef = useRef(false);
   const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds);
 
   // Opens scenario-defined tutorial overlays in response to bus events,
@@ -66,6 +67,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
   useEffect(() => {
     setIntroSummaryOpen(false);
+    introStartEmittedRef.current = false;
     useTutorialStore.getState().resetTutorial();
   }, [debate.id]);
 
@@ -74,7 +76,21 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // `trigger.event === 'introduction:start'` matches.
   useEffect(() => {
     if (wf.gamePhase !== 'debate_intro') return;
-    debateEventBus.emit('introduction:start', { debateId: debate.id });
+    if (introStartEmittedRef.current) return;
+
+    // In React StrictMode (dev), mount effects run in a probe cycle and are then
+    // immediately cleaned up before the real mount. Deferring to a microtask and
+    // cancelling on cleanup prevents a duplicate `introduction:start` emit.
+    let cancelled = false;
+    Promise.resolve().then(() => {
+      if (cancelled || introStartEmittedRef.current) return;
+      introStartEmittedRef.current = true;
+      debateEventBus.emit('introduction:start', { debateId: debate.id });
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, [wf.gamePhase, debate.id]);
 
   // Emit when `IntroSummaryModal` is shown (same condition as its render guard).
