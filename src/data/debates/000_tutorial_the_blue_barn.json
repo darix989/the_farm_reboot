@@ -946,7 +946,7 @@
             "message": "We can choose a **[accent]statement to answer[/accent]** among the 3 options.\n One option looks **[warning]locked[/warning]**!",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "interactive" },
-            "modal": { "size": "small", "position": "bottomLeft" }
+            "modal": { "size": "small", "position": "topLeft" }
           },
           {
             "message": "When you find a **[warning]locked statement[/warning]**, it means you need to **[accent]analyze a prior statement[/accent]** of this debate. \n\n Once you **[success]successfully analyze[/success]** the fallacious statement, the locked statement will become **[success]unlockable[/success]**. \n\n Click the **[accent]analysis button[/accent]** to spot the fallacy in Barnaby question.",
@@ -1007,11 +1007,18 @@
             "modal": { "size": "small", "position": "topRight" }
           },
           {
+            "message": "You can now read the full text of the **[success]unlocked option[/success]** in the **[accent]Wizard Panel[/accent]**.",
+            "onlyForward": true,
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "modal": { "size": "small", "position": "topLeft" }
+          },
+          {
             "message": "Press **[success]Continue[/success]** to play it.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": { "size": "small", "position": "bottomCenter" }
+            "modal": { "size": "small", "position": "topLeft" }
           }
         ]
       }
