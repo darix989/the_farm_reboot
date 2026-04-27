@@ -717,8 +717,8 @@
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "In this tutorial debate, **[warning]Barnaby[/warning]** pushes the **[warning]blue-barn plan[/warning]**. \n\n On the other hand, **[accent]Pip (you)[/accent]** argue to use the farm's savings for **[accent]something more urgent[/accent]** first.",
-            "modal": { "size": "medium", "position": "center" }
+            "message": "In this tutorial debate:\n\n **[warning]Barnaby[/warning]** represents the **[warning]Proposition side[/warning]** and pushes the **[warning]blue-barn plan[/warning]** to make the farm more colorful and happy. \n\n On the other hand, **[accent]Pip (you)[/accent]** represents the **[accent]Opposition side[/accent]** and argue to use the farm's savings for **[accent]something more urgent[/accent]** first.",
+            "modal": { "size": "large", "position": "center" }
           },
           {
             "message": "For this round, just read the **[accent]moderator's introduction[/accent]** in the **[accent]Wizard Panel[/accent]**.",
@@ -784,7 +784,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Round 1 is about **[warning]Barnaby's opening statement[/warning]**.\n\n Read it in the **[accent]Wizard Panel[/accent]**.",
+            "message": "Round 1 is about **[warning]Barnaby's opening statement[/warning]**.\n\n Read it in the **[accent]Wizard Panel[/accent]**. \n\n Round 1 always belongs to the **[accent]Proposition side[/accent]**, so once you play this role in any debate, you will play Round 1.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": { "size": "medium", "position": "topLeft" }
@@ -820,16 +820,15 @@
           {
             "message": "Click **[accent]Option A[/accent]** to review it.",
             "interactionMode": "target_only",
-            "onlyForward": true,
             "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-a" },
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "You can read the full text of the option in the **[accent]Wizard Panel[/accent]**.",
+            "message": "You can read the full text of the **[accent]selected option[/accent]** in the **[accent]Wizard Panel[/accent]**.",
             "onlyForward": true,
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "small", "position": "bottomRight" }
+            "modal": { "size": "small", "position": "topLeft" }
           },
           {
             "message": "Now press **[accent]Continue[/accent]** to confirm your choice.",
@@ -851,7 +850,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "At the end of your rounds you will get a sneak peek of **[accent]how the moderator was influenced by your statement[/accent]**.",
+            "message": "At the end of your rounds you will get a sneak peek of **[accent]how the moderator was influenced by your statement[/accent]**. \n\n Currently, the moderator is **[warning]neutral[/warning]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "modal_round_recap_score" },
             "modal": { "size": "smallTightTall", "position": "bottomRight" }
@@ -866,7 +865,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "In this **[accent]analysis[/accent]** view you **choose a sentence** to inspect, then **pick fallacies** from the grid that might apply to it. You can tag **[info]up to two[/info]** fallacies on the same sentence (click again to remove one).",
+            "message": "In this **[accent]Analysis[/accent]** view you **choose a sentence** to inspect, then **pick fallacies** from the grid that might apply to it. You can tag **[info]up to two[/info]** fallacies on the same sentence (click again to remove one).",
             "onlyForward": true,
             "modal": { "size": "medium", "position": "bottomRight" }
           },
