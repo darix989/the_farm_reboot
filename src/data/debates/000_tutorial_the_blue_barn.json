@@ -713,14 +713,29 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**Welcome!** You'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the debate[/success]**.\n\nIn this debate, Barnaby pushes the blue-barn plan while you argue for fixing the leaking roof first.\n\n Press **[accent]Continue[/accent]**  and **[accent]Got it[/accent]** to go forward in the tutorial.\n Press **[accent]Back[/accent]** to go one step back in the tutorial.",
-            "onlyForward": true,
+            "message": "**Welcome!** This is the beginning of the **[accent]debate's tutorial[/accent]**. You'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the moderator's favour[/success]**.\n\n Press **[accent]Continue[/accent]** and **[accent]Got it[/accent]** to go forward in the tutorial.\n Press **[accent]Back[/accent]** to go one step back in the tutorial (when available).",
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "For this round, just read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**, then press **[accent]Continue[/accent]**.",
+            "message": "In this tutorial debate, **[warning]Barnaby[/warning]** pushes the **[warning]blue-barn plan[/warning]**. \n\n On the other hand, **[accent]Pip (you)[/accent]** argue to use the farm's savings for **[accent]something more urgent[/accent]** first.",
+            "modal": { "size": "medium", "position": "center" }
+          },
+          {
+            "message": "For this round, just read the **[accent]moderator's introduction[/accent]** in the **[accent]Debate Log Panel[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "debate_log" },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4,
+              "pivot": "topLeft"
+            }
+          },
+          {
+            "message": "Once you have a clear picture of the debate's main topic, pass to the actual debate's beginning by pressing **[accent]Continue[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": {
               "x": 0.125,
               "y": 0.06,
