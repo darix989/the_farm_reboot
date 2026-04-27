@@ -288,6 +288,8 @@ class DebateEventBus {
 
   /** Emit `event` with its payload. Listener exceptions are isolated per listener. */
   emit<E extends EventTrigger>(event: E, payload: DebateEventPayloads[E]): void {
+    // Uncomment to log all events and payloads.
+    // console.log(`[debateEventBus] triggered "${event}"`, payload);
     const bucket = this.listeners[event] as Set<DebateEventListener<E>> | undefined;
     if (bucket && bucket.size > 0) {
       // Iterate a copy so listeners can unsubscribe themselves without mutating during iteration.

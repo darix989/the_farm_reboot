@@ -461,7 +461,18 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       }
       case 'player_choosing': {
         const opt = wf.selectedOption;
-        if (!opt) return null;
+        if (!opt) {
+          const prompt = wf.currentPlayerRound?.opponentPrompt;
+          if (!prompt) return null;
+          return {
+            title: getLabel('wizardDetailSpeaks', {
+              replacements: {
+                name: getSpeakerName(debate, prompt.speakerId),
+              },
+            }),
+            body: statementText(prompt.sentences),
+          };
+        }
         const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
         return {
           title: getLabel('wizardDetailSelectedStatement'),
