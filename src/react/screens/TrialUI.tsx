@@ -61,8 +61,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   useScenarioTutorials(debate.tutorials);
 
   // While any tutorial overlay is visible, we gate the `debate_intro` Continue
-  // button and hide the intro body in the wizard panel — the same treatment the
-  // legacy `introTutorial` field used to get.
+  // button until the tutorial is finished.
   const isTutorialOpen = useTutorialStore((s) => s.isOpen);
 
   useEffect(() => {
@@ -446,9 +445,6 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_intro': {
         const intro = debate.introduction?.trim();
         if (!intro) return null;
-        if (isTutorialOpen) {
-          return null;
-        }
         return { title: getLabel('wizardDetailIntroduction'), body: intro };
       }
       case 'npc_speaking': {
@@ -529,7 +525,6 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     wf.totalScore,
     debate,
     fallacyGuesses,
-    isTutorialOpen,
   ]);
 
   return (
