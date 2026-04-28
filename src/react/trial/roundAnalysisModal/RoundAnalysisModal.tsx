@@ -892,7 +892,7 @@ function NoFallaciesConfirmDialog({
           <TrialTextButton
             size="compact"
             onClick={onConfirm}
-            data-tutorial-analysis-action="no_fallacies"
+            data-tutorial-analysis-action="no_fallacies_confirm"
           >
             {getLabel('confirm')}
           </TrialTextButton>
@@ -1015,7 +1015,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   }, [guessSession?.attempts.length, analysisTargetKey]);
 
   const handleNoFallaciesConfirm = () => {
-    const target = { kind: 'analysis_action', action: 'no_fallacies' } as const;
+    const target = { kind: 'analysis_action', action: 'no_fallacies_confirm' } as const;
     if (!canRunTutorialTargetAction(target)) return;
     onGuess({ type: 'no_fallacies' });
     setShowNoFallaciesConfirm(false);

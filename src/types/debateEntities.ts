@@ -263,7 +263,10 @@ export type TutorialTargetRef =
   | { kind: 'debate_log_round_toggle'; roundId: string }
   | { kind: 'analysis_sentence'; sentenceId: string }
   | { kind: 'analysis_fallacy'; fallacyId: LogicalFallacyId }
-  | { kind: 'analysis_action'; action: 'submit_guess' | 'no_fallacies' | 'close' };
+  | {
+      kind: 'analysis_action';
+      action: 'submit_guess' | 'no_fallacies' | 'no_fallacies_confirm' | 'close';
+    };
 
 /** One panel in the intro tutorial. */
 export interface DebateTutorialStep {
