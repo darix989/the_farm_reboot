@@ -147,20 +147,39 @@ const TutorialOverlay: React.FC = () => {
       );
     }
     if (isTargetOnlyStep) {
-      if (isSingle) return null;
       return (
-        <div className={styles.footer}>
-          <div className={panelStyles.trialFooterGrid}>
+        <div className={cn(styles.footer, isSingle && styles.footerSingle)}>
+          {isSingle ? (
             <TrialTextButton
               type="button"
               variant="solid"
-              onClick={stepBack}
-              disabled={disableBackButton || stepIndex === 0}
+              className={styles.primaryActionGlow}
+              onClick={onPrimary}
+              disabled
             >
-              {getLabel('back')}
+              {primaryLabel}
             </TrialTextButton>
-            <span aria-hidden />
-          </div>
+          ) : (
+            <div className={panelStyles.trialFooterGrid}>
+              <TrialTextButton
+                type="button"
+                variant="solid"
+                onClick={stepBack}
+                disabled={disableBackButton || stepIndex === 0}
+              >
+                {getLabel('back')}
+              </TrialTextButton>
+              <TrialTextButton
+                type="button"
+                variant="solid"
+                className={styles.primaryActionGlow}
+                onClick={onPrimary}
+                disabled
+              >
+                {primaryLabel}
+              </TrialTextButton>
+            </div>
+          )}
         </div>
       );
     }
