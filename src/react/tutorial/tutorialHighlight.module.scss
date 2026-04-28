@@ -1,7 +1,8 @@
 .tutorialTargetHighlight {
-  border: 10px solid var(--ui-color-tutorial-guidance) !important;
+  /* Scale highlight with root rem (set from stage width in App.tsx), not fixed px. */
+  border: clamp(0.3rem, 0.52vw, 0.63rem) solid var(--ui-color-tutorial-guidance) !important;
   box-shadow:
-    0 0 0 1px var(--ui-color-tutorial-guidance-border),
-    0 0 14px var(--ui-color-tutorial-guidance-glow) !important;
+    0 0 0 clamp(0.03rem, 0.08vw, 0.07rem) var(--ui-color-tutorial-guidance-border),
+    0 0 clamp(0.4rem, 0.8vw, 0.88rem) var(--ui-color-tutorial-guidance-glow) !important;
   border-radius: 0.4rem;
 }
