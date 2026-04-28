@@ -778,7 +778,12 @@ function NpcRoundAnalysis({
           <div className={styles.trialRightFooter}>
             {canGuess && (
               <div className={styles.trialGuessActionsRow}>
-                <TrialTextButton variant="dashed" widthMode="flexGrow" onClick={handleNoFallacies}>
+                <TrialTextButton
+                  variant="dashed"
+                  widthMode="flexGrow"
+                  onClick={handleNoFallacies}
+                  data-tutorial-analysis-action="no_fallacies"
+                >
                   {getLabel('noFallaciesInStatement')}
                 </TrialTextButton>
                 <TrialTextButton
