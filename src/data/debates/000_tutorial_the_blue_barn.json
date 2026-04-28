@@ -919,7 +919,7 @@
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "**[success]Correct![/success]** Close the analysis, and continue the tutorial.",
+            "message": "**[success]Correct![/success]** To continue the tutorial, **[accent]close the analysis view[/accent]**.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "close" },
