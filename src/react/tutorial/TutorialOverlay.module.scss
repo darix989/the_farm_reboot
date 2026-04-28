@@ -184,10 +184,16 @@ $tutorial-modal-glow: var(--ui-color-tutorial-guidance-glow);
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
   padding: 1rem 1.25rem;
   border-bottom: 1px solid var(--ui-color-border-muted);
   background: var(--ui-color-overlay-medium);
+}
+
+.dialogBody::-webkit-scrollbar {
+  display: none;
 }
 
 @include bp.expanded {
