@@ -790,9 +790,15 @@
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "\n Remember, you can rely on **[accent]Debate Log Panel[/accent]** to read everything happened so far, ordered by **[accent]round[/accent]**.",
+            "message": "Remember, you can rely on **[accent]Debate Log Panel[/accent]** to read everything happened so far, ordered by **[accent]round[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "debate_log" },
+            "modal": { "size": "medium", "position": "topLeft" }
+          },
+          {
+            "message": "Now, let's analyze a statement. Click the **[accent]Magnifying Glass Icon[/accent]**, which we will call **[accent]Analyze button[/accent]**.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
             "modal": { "size": "medium", "position": "topLeft" }
           }
         ]
@@ -865,24 +871,27 @@
       "tutorial": {
         "steps": [
           {
-            "message": "In this **[accent]Analysis[/accent]** view you **choose a sentence** to inspect, then **pick fallacies** from the grid that might apply to it. You can tag **[info]up to two[/info]** fallacies on the same sentence (click again to remove one).",
-            "onlyForward": true,
+            "message": "A statement is made of **[accent]one or more sentences[/accent]**. \n A sentence can have up to **[warning]two fallacies[/warning]**. \n But it's also possible that the **[accent]whole statement is fallacy free[/accent]**.",
+            "modal": { "size": "medium", "position": "bottomRight" }
+          },
+          {
+            "message": "In this **[accent]Analysis[/accent]** view you **[warning]choose a sentence[/warning]** to inspect, then **[warning]pick fallacies[/warning]** from the grid that might apply to it. You can tag **[accent]up to two[/accent]** fallacies on the same sentence (click again to remove one).",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
             "message": "When you are satisfied, **[accent]Spot Fallacies[/accent]** submits your guess, or **[muted]No Fallacies[/muted]** if you think the whole statement is fallacy free. Those are the two actions that **[success]finalize[/success]** this pass through the analysis.",
-            "onlyForward": true,
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
             "modal": { "size": "medium", "position": "bottomLeft" }
           },
           {
             "message": "As first thing, select the **[accent]sentence[/accent]** you want to tag with fallacies.",
-            "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-1" },
             "modal": { "preset": "analysisSentencesSelection" }
           },
           {
-            "message": "Pick **[info]false dilemma[/info]** for that sentence.",
+            "message": "Pick **[warning]false dilemma[/warning]** for that sentence.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "false-dilemma" },
@@ -893,6 +902,20 @@
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
+            "modal": { "preset": "analysisSubmit" }
+          },
+          {
+            "message": "Mmmm ... **[warning]that's not quite right.[/warning]** Thinking again... Maybe the whole statement is **[accent]fallacy free[/accent]?** \nTry **[accent]No Fallacies[/accent]** this time.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "no_fallacies" },
+            "modal": { "preset": "analysisSubmit" }
+          },
+          {
+            "message": "A confirmation is asked. Press **[accent]Confirm[/accent]** to proceed.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "no_fallacies" },
             "modal": { "preset": "analysisSubmit" }
           }
         ]
@@ -965,7 +988,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Now inspect Barnaby's crossfire question and select the highlighted sentence.",
+            "message": "Now inspect **[warning]Barnaby's crossfire question[/warning]** and select the **[accent]highlighted sentence[/accent]**.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r4q-1" },
