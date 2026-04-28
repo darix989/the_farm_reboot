@@ -916,7 +916,7 @@
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "no_fallacies_confirm" },
-            "modal": { "preset": "analysisSubmit" }
+            "modal": { "size": "small", "position": "topRight" }
           },
           {
             "message": "**[success]Correct![/success]** Close the analysis.",

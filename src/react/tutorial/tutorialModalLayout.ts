@@ -14,6 +14,7 @@ import { clampSpotlightRatios } from './spotlightRect';
 /** Minimum gap from the stage edge to the modal box (placement + top-left pivot). */
 const STAGE_MARGIN_X = 0.082;
 const STAGE_MARGIN_Y = 0.05;
+const STAGE_MARGIN_SMALL_X = 0.005;
 const STAGE_MARGIN_TIGHT_X = 0.04;
 const STAGE_MARGIN_TIGHT_Y = 0.06;
 
@@ -24,6 +25,7 @@ const STAGE_MARGIN_TIGHT_Y = 0.06;
  */
 const PLACEMENT_ANCHOR_GUTTER_X = 0.048;
 const PLACEMENT_ANCHOR_GUTTER_Y = 0.048;
+const PLACEMENT_ANCHOR_GUTTER_SMALL_X = -0.016;
 const PLACEMENT_ANCHOR_GUTTER_TIGHT_X = -0.1;
 const PLACEMENT_ANCHOR_GUTTER_TIGHT_Y = 0.032;
 
@@ -41,6 +43,10 @@ export const TUTORIAL_MODAL_SIZE_RATIOS: Record<
 
 function isTightModalSize(size: TutorialModalSize): boolean {
   return size === TutorialModalSize.SmallTight || size === TutorialModalSize.SmallTightTall;
+}
+
+function isSmallModalSize(size: TutorialModalSize): boolean {
+  return size === TutorialModalSize.Small;
 }
 
 const PRESET_PLACEMENT: Record<
@@ -217,9 +223,18 @@ function normalizePlacement(spec: TutorialModalPlacementSpec): DebateTutorialAre
   const pivot = spec.pivot ?? TutorialModalAnchor.Center;
   const { width: w, height: h } = TUTORIAL_MODAL_SIZE_RATIOS[spec.size];
   const useTightPlacement = isTightModalSize(spec.size);
-  const marginX = useTightPlacement ? STAGE_MARGIN_TIGHT_X : STAGE_MARGIN_X;
+  const useSmallPlacement = isSmallModalSize(spec.size);
+  const marginX = useTightPlacement
+    ? STAGE_MARGIN_TIGHT_X
+    : useSmallPlacement
+      ? STAGE_MARGIN_SMALL_X
+      : STAGE_MARGIN_X;
   const marginY = useTightPlacement ? STAGE_MARGIN_TIGHT_Y : STAGE_MARGIN_Y;
-  const gutterX = useTightPlacement ? PLACEMENT_ANCHOR_GUTTER_TIGHT_X : PLACEMENT_ANCHOR_GUTTER_X;
+  const gutterX = useTightPlacement
+    ? PLACEMENT_ANCHOR_GUTTER_TIGHT_X
+    : useSmallPlacement
+      ? PLACEMENT_ANCHOR_GUTTER_SMALL_X
+      : PLACEMENT_ANCHOR_GUTTER_X;
   const gutterY = useTightPlacement ? PLACEMENT_ANCHOR_GUTTER_TIGHT_Y : PLACEMENT_ANCHOR_GUTTER_Y;
   const { x, y } = placementTopLeft(spec.position, w, h, pivot, marginX, marginY, gutterX, gutterY);
   return enforceModalEdgeInsets(
