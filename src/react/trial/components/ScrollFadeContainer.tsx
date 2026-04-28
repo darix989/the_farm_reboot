@@ -42,6 +42,13 @@ const ScrollFadeContainer: React.FC<ScrollFadeContainerProps> = ({
   return (
     <div className={shared.trialScrollFadeWrap}>
       <div
+        aria-hidden="true"
+        className={cn(shared.scrollDirectionIndicator, shared.scrollDirectionTop, {
+          [shared.scrollDirectionVisible]: fade.top,
+          [shared.scrollDirectionModal]: isModal,
+        })}
+      />
+      <div
         className={cn(shared.scrollFadeOverlay, shared.fadeTop, {
           [shared.fadeModal]: isModal,
         })}
@@ -55,6 +62,13 @@ const ScrollFadeContainer: React.FC<ScrollFadeContainerProps> = ({
           [shared.fadeModal]: isModal,
         })}
         style={{ opacity: fade.bottom ? 1 : 0 }}
+      />
+      <div
+        aria-hidden="true"
+        className={cn(shared.scrollDirectionIndicator, shared.scrollDirectionBottom, {
+          [shared.scrollDirectionVisible]: fade.bottom,
+          [shared.scrollDirectionModal]: isModal,
+        })}
       />
     </div>
   );
