@@ -41,13 +41,48 @@ export const TUTORIAL_MODAL_SIZE_RATIOS: Record<
   [TutorialModalSize.Large]: { width: 0.52, height: 0.55 },
 };
 
-function isTightModalSize(size: TutorialModalSize): boolean {
-  return size === TutorialModalSize.SmallTight || size === TutorialModalSize.SmallTightTall;
-}
+type TutorialModalPlacementSizeConfig = {
+  marginX: number;
+  marginY: number;
+  gutterX: number;
+  gutterY: number;
+};
 
-function isSmallModalSize(size: TutorialModalSize): boolean {
-  return size === TutorialModalSize.Small;
-}
+const TUTORIAL_MODAL_SIZE_PLACEMENT_CONFIG: Record<
+  TutorialModalSize,
+  TutorialModalPlacementSizeConfig
+> = {
+  [TutorialModalSize.SmallTight]: {
+    marginX: STAGE_MARGIN_TIGHT_X,
+    marginY: STAGE_MARGIN_TIGHT_Y,
+    gutterX: PLACEMENT_ANCHOR_GUTTER_TIGHT_X,
+    gutterY: PLACEMENT_ANCHOR_GUTTER_TIGHT_Y,
+  },
+  [TutorialModalSize.SmallTightTall]: {
+    marginX: STAGE_MARGIN_TIGHT_X,
+    marginY: STAGE_MARGIN_TIGHT_Y,
+    gutterX: PLACEMENT_ANCHOR_GUTTER_TIGHT_X,
+    gutterY: PLACEMENT_ANCHOR_GUTTER_TIGHT_Y,
+  },
+  [TutorialModalSize.Small]: {
+    marginX: STAGE_MARGIN_SMALL_X,
+    marginY: STAGE_MARGIN_Y,
+    gutterX: PLACEMENT_ANCHOR_GUTTER_SMALL_X,
+    gutterY: PLACEMENT_ANCHOR_GUTTER_Y,
+  },
+  [TutorialModalSize.Medium]: {
+    marginX: STAGE_MARGIN_X,
+    marginY: STAGE_MARGIN_Y,
+    gutterX: PLACEMENT_ANCHOR_GUTTER_X,
+    gutterY: PLACEMENT_ANCHOR_GUTTER_Y,
+  },
+  [TutorialModalSize.Large]: {
+    marginX: STAGE_MARGIN_X,
+    marginY: STAGE_MARGIN_Y,
+    gutterX: PLACEMENT_ANCHOR_GUTTER_X,
+    gutterY: PLACEMENT_ANCHOR_GUTTER_Y,
+  },
+};
 
 const PRESET_PLACEMENT: Record<
   TutorialModalPreset,
@@ -222,20 +257,8 @@ function placementTopLeft(
 function normalizePlacement(spec: TutorialModalPlacementSpec): DebateTutorialArea | null {
   const pivot = spec.pivot ?? TutorialModalAnchor.Center;
   const { width: w, height: h } = TUTORIAL_MODAL_SIZE_RATIOS[spec.size];
-  const useTightPlacement = isTightModalSize(spec.size);
-  const useSmallPlacement = isSmallModalSize(spec.size);
-  const marginX = useTightPlacement
-    ? STAGE_MARGIN_TIGHT_X
-    : useSmallPlacement
-      ? STAGE_MARGIN_SMALL_X
-      : STAGE_MARGIN_X;
-  const marginY = useTightPlacement ? STAGE_MARGIN_TIGHT_Y : STAGE_MARGIN_Y;
-  const gutterX = useTightPlacement
-    ? PLACEMENT_ANCHOR_GUTTER_TIGHT_X
-    : useSmallPlacement
-      ? PLACEMENT_ANCHOR_GUTTER_SMALL_X
-      : PLACEMENT_ANCHOR_GUTTER_X;
-  const gutterY = useTightPlacement ? PLACEMENT_ANCHOR_GUTTER_TIGHT_Y : PLACEMENT_ANCHOR_GUTTER_Y;
+  const sizePlacement = TUTORIAL_MODAL_SIZE_PLACEMENT_CONFIG[spec.size];
+  const { marginX, marginY, gutterX, gutterY } = sizePlacement;
   const { x, y } = placementTopLeft(spec.position, w, h, pivot, marginX, marginY, gutterX, gutterY);
   return enforceModalEdgeInsets(
     clampSpotlightRatios({ x, y, width: w, height: h }),

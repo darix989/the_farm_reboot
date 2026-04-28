@@ -919,10 +919,11 @@
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "**[success]Correct![/success]** Close the analysis.",
+            "message": "**[success]Correct![/success]** Close the analysis, and continue the tutorial.",
             "onlyForward": true,
-            "interactionMode": "modal_only",
-            "modal": { "preset": "analysisSubmit" }
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "close" },
+            "modal": { "size": "small", "position": "bottomCenter" }
           }
         ]
       }
