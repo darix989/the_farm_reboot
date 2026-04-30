@@ -837,7 +837,7 @@
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "Now press **[accent]Continue[/accent]** to confirm your choice.",
+            "message": "After you **[accent]review each option[/accent]** and you are make you mind, just press **[accent]Continue[/accent]** to confirm your choice.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
@@ -923,6 +923,12 @@
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "close" },
+            "modal": { "size": "small", "position": "bottomCenter" }
+          },
+          {
+            "message": "Press **[accent]Continue[/accent]** to proceed.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": { "size": "small", "position": "bottomCenter" }
           }
         ]
