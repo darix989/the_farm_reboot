@@ -834,14 +834,14 @@
             "onlyForward": true,
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "small", "position": "topLeft" }
+            "modal": { "size": "medium", "position": "topLeft" }
           },
           {
             "message": "Now press **[accent]Continue[/accent]** to confirm your choice.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": { "size": "small", "position": "topRight" }
+            "modal": { "size": "medium", "position": "topRight" }
           }
         ]
       }

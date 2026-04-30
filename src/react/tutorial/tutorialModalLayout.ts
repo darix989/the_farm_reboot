@@ -89,22 +89,22 @@ const PRESET_PLACEMENT: Record<
   Pick<TutorialModalPlacementSpec, 'size' | 'position'> & { pivot: TutorialModalAnchor }
 > = {
   [TutorialModalPreset.AnalysisSentencesSelection]: {
-    size: TutorialModalSize.Small,
+    size: TutorialModalSize.Medium,
     position: TutorialModalPosition.CenterRight,
     pivot: TutorialModalAnchor.Center,
   },
   [TutorialModalPreset.AnalysisFallacySelection]: {
-    size: TutorialModalSize.Small,
+    size: TutorialModalSize.Medium,
     position: TutorialModalPosition.CenterLeft,
     pivot: TutorialModalAnchor.Center,
   },
   [TutorialModalPreset.AnalysisSubmit]: {
-    size: TutorialModalSize.Small,
-    position: TutorialModalPosition.CenterLeft,
+    size: TutorialModalSize.Medium,
+    position: TutorialModalPosition.BottomLeft,
     pivot: TutorialModalAnchor.Center,
   },
   [TutorialModalPreset.AnalysisExit]: {
-    size: TutorialModalSize.Small,
+    size: TutorialModalSize.Medium,
     position: TutorialModalPosition.BottomRight,
     pivot: TutorialModalAnchor.Center,
   },
