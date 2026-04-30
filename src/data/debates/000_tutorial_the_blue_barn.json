@@ -865,9 +865,87 @@
       }
     },
     {
+      "id": "round-3-crossfire-intro",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundNumber": 3,
+          "roundId": "round-3",
+          "kind": "player",
+          "type": "crossfire"
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Now let's see a different kind of round: **[accent]crossfire[/accent]**. \n\n In a crossfire, there is an **[accent]interaction between the 2 sides[/accent]**. One side asks a question, the other answers.",
+            "modal": { "size": "medium", "position": "topLeft" },
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" }
+          },
+          {
+            "message": "In this round, you as the **[accent]Opposition side[/accent]** will ask a **[accent]question[/accent]** to the **[warning]Proposition side[/warning]**. \n\n Read the possible questions in the **[accent]Interactive Panel[/accent]**.",
+            "modal": { "size": "medium", "position": "topLeft" },
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "interactive" }
+          },
+          {
+            "message": "Let's pick the **[accent]first question[/accent]**.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_option", "optionId": "r3-opt-a" },
+            "modal": { "size": "small", "position": "topRight" }
+          },
+          {
+            "message": "You can read the full text of the **[accent]selected question[/accent]** in the **[accent]Wizard Panel[/accent]**.",
+            "onlyForward": true,
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "modal": { "size": "medium", "position": "topLeft" }
+          },
+          {
+            "message": "Press **[accent]Continue[/accent]** to ask the selected question.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_action", "action": "continue" },
+            "modal": { "size": "small", "position": "bottomCenter" }
+          },
+          {
+            "message": "Round 3 is not finished yet. Now, we can also read the **[warning]answer[/warning]** from the **[accent]Wizard Panel[/accent]**. ",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "modal": { "size": "medium", "position": "topLeft" }
+          },
+          {
+            "message": "At this point, you start to have a few possible actions to do. \n You can analyze both your own question and the answer from the **[warning]Proposition side[/warning]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "interactive" },
+            "modal": { "size": "medium", "position": "topLeft" }
+          },
+          {
+            "message": "Indeed, you can see **[accent]2 magnifying glass icons[/accent]** in the **[accent]Debate Log Panel[/accent]**. One for your own question, one for the answer from the **[warning]Proposition side[/warning]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "interactive" },
+            "modal": { "size": "medium", "position": "topLeft" }
+          },
+          {
+            "message": "Spotting fallacies, or just reading correctly a statement as fallacy-free will give you **[accent]bonuses[/accent]** that will contribute to **[success]win the debate[/success]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "interactive" },
+            "modal": { "size": "medium", "position": "topLeft" }
+          },
+          {
+            "message": "For the sake of the tutorial, let's just proceed to the next round.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_action", "action": "continue" },
+            "modal": { "size": "small", "position": "bottomCenter" }
+          }
+        ]
+      }
+    },
+    {
       "id": "analysis-select-sentence-first-wrong-guess",
       "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 1 } },
-      "disabled": false,
+      "disabled": true,
       "tutorial": {
         "steps": [
           {
