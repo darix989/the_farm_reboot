@@ -713,7 +713,15 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**Welcome!** This is the beginning of the **[accent]debate's tutorial[/accent]**. You'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the moderator's favour[/success]**.\n\n Press **[accent]Continue[/accent]** and **[accent]Got it[/accent]** to go forward in the tutorial.\n Press **[accent]Back[/accent]** to go one step back in the tutorial (when available).",
+            "message": "**Welcome!** This is the beginning of the **[accent]debate's tutorial[/accent]**. \n\nA debate has 3 main actors: the **[accent]1) moderator[/accent]**, the **[accent]2) proposition side[/accent]**, and the **[accent]3) opposition side[/accent]**.\n\n In a debate, the **[accent]proposition side[/accent]** is the one who proposes the idea, and the **[accent]opposition side[/accent]** is the one who argues against it. \n\n**[success]The moderator is the one who decides who wins the debate.[/success]**",
+            "modal": { "size": "large", "position": "center" }
+          },
+          {
+            "message": "For this tutorial, we will play as the **[accent]opposition side[/accent]**. \n\n In order to win the moderator's favour, you need to bring on the table the most convincing arguments in order to make the proposition idea look less convincing and not worth it.\n\n To do that, you'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the moderator's favour[/success]**.",
+            "modal": { "size": "large", "position": "center" }
+          },
+          {
+            "message": "You will be guided through the process. \n\n Press **[accent]Continue[/accent]** and **[accent]Got it[/accent]** to go forward in the tutorial.\n Press **[accent]Back[/accent]** to go one step back in the tutorial (when available).",
             "modal": { "size": "large", "position": "center" }
           },
           {
@@ -721,7 +729,7 @@
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "For this round, just read the **[accent]moderator's introduction[/accent]** in the **[accent]Wizard Panel[/accent]**.",
+            "message": "The debate always starts with the **[accent]moderator's introduction[/accent]**, which you will read in the **[accent]Wizard Panel[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": {
@@ -733,7 +741,7 @@
             }
           },
           {
-            "message": "The Introduction details, like every future round's details, will be available in the **[accent]Debate Log Panel[/accent]**.\n\n This represents the **[accent]full history of the debate[/accent]**.",
+            "message": "The Introduction details (like every future round's details) will be available in the **[accent]Debate Log Panel[/accent]**, which represents the **[accent]full history of the debate[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "debate_log" },
             "modal": {
@@ -745,7 +753,7 @@
             }
           },
           {
-            "message": "Once you have a clear picture of the debate's main topic, start the actual debateby pressing **[accent]Continue[/accent]**.",
+            "message": "Once you have a clear picture of the debate's main topic, start the actual debate by pressing **[accent]Continue[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": {
@@ -766,7 +774,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Each round has its recap.",
+            "message": "Introduction and rounds will have their recap just after they finish.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "intro_summary_action", "action": "begin_round_1" },
             "modal": { "size": "smallTight", "position": "bottomRight" }
@@ -784,7 +792,19 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Round 1 is about **[warning]Barnaby's opening statement[/warning]**.\n\n Read it in the **[accent]Wizard Panel[/accent]**. \n\n Round 1 always belongs to the **[accent]Proposition side[/accent]**, so once you play this role in any debate, you will play Round 1.",
+            "message": "**[accent]Round 1[/accent]** is about **[accent]Proposition side's opening statement[/accent]**.\n\n Proposition side just shares the idea they want to promote.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "modal": { "size": "medium", "position": "topLeft" }
+          },
+          {
+            "message": "For this debate, we are going to have **[warning]Barnaby's opening statement[/warning]**.\n\n Read it in the **[accent]Wizard Panel[/accent]**. ",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "modal": { "size": "medium", "position": "topLeft" }
+          },
+          {
+            "message": "Round 1 always belongs to the **[accent]Proposition side[/accent]**, so once you play this role in any debate, you will play Round 1.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": { "size": "medium", "position": "topLeft" }
@@ -796,7 +816,7 @@
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "Now, let's analyze a statement. Click the **[accent]Magnifying Glass Icon[/accent]**, which we will call **[accent]Analyze button[/accent]**.",
+            "message": "Now, let's **[accent]analyze a statement[/accent]**. \n\n Click the **[accent]Magnifying Glass Icon[/accent]**, which we will call **[accent]Analyze button[/accent]**.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
             "modal": { "size": "medium", "position": "topLeft" }
@@ -817,6 +837,12 @@
       "disabled": false,
       "tutorial": {
         "steps": [
+          {
+            "message": "**[accent]Round 2[/accent]** is about **[accent]Opposition side's opening statement[/accent]**.\n\n Opposition side just shares their arguments against the proposition.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "modal": { "size": "medium", "position": "topLeft" }
+          },
           {
             "message": "**[accent]Your turn[/accent]**. You have **[accent]3 options[/accent]** to choose from in the interactive panel.",
             "interactionMode": "modal_only",
@@ -949,21 +975,37 @@
       "tutorial": {
         "steps": [
           {
-            "message": "A statement is made of **[accent]one or more sentences[/accent]**. \n A sentence can have up to **[warning]two fallacies[/warning]**. \n But it's also possible that the **[accent]whole statement is fallacy free[/accent]**.",
+            "message": "This is the **[accent]Statement Analysis View[/accent]**. \n\n**[accent]Successfully analyzing a statement[/accent]** will give you **[success]bonuses[/success]** that will contribute to **[success]win the debate[/success]**.",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "In this **[accent]Analysis View[/accent]** you **[warning]choose a sentence[/warning]** to inspect, then **[warning]pick fallacies[/warning]** from the grid that might apply to it. You can tag **[accent]up to two[/accent]** fallacies on the same sentence (click again to remove one).",
+            "message": "A statement is made of **[accent]one or more sentences[/accent]**. \n **[accent]Each sentence[/accent]** can have up to **[warning]two fallacies[/warning]**. \n It's also possible that the **[accent]whole statement does not contain any fallacy at all[/accent]**.",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "When you are satisfied, **[accent]Spot Fallacies[/accent]** submits your guess, or **[muted]No Fallacies[/muted]** if you think the whole statement is fallacy free. Those are the two actions that **[success]finalize[/success]** this pass through the analysis.",
+            "message": "**[accent]Spotting fallacies[/accent]** will give you a deeper understanding of what's going on within the other side's statements, which also means a way to **[success]weaken the other's side statements[/success]**.",
+            "modal": { "size": "medium", "position": "bottomRight" }
+          },
+          {
+            "message": "How does that happen? Once it will be your turn to speak you will be able to **[success]use your bonus statements[/success]** on top of regular statements, and these will **[success]influence more effectively the moderator's opinion[/success]**.",
+            "modal": { "size": "medium", "position": "bottomRight" }
+          },
+          {
+            "message": "**[accent]Choosing statements[/accent]** will be clarifier **[accent]later[/accent]** in the tutorial.",
+            "modal": { "size": "medium", "position": "bottomRight" }
+          },
+          {
+            "message": "Let's start! \nIn this **[accent]Analysis View[/accent]** you **[warning]first choose a sentence[/warning]** to inspect, then **[warning]pick fallacies[/warning]** from the grid that might apply to it. You can tag **[accent]up to two[/accent]** fallacies on the same sentence (click again to remove one).",
+            "modal": { "size": "medium", "position": "bottomRight" }
+          },
+          {
+            "message": "When you are satisfied, click **[accent]Spot Fallacies[/accent]** button to submit your guess, or use the **[muted]No Fallacies[/muted]** button if you think the whole statement is fallacy free. \nThose are the two actions that **[success]finalize[/success]** the analysis.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
             "modal": { "size": "medium", "position": "bottomLeft" }
           },
           {
-            "message": "As first thing, select the **[accent]sentence[/accent]** you want to tag with fallacies.",
+            "message": "As first thing, select the **[accent]sentence[/accent]** you want to tag with fallacies. (click the highlighted sentence)",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-1" },
             "modal": { "preset": "analysisSentencesSelection" }
@@ -997,14 +1039,14 @@
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "**[success]Correct![/success]** To continue the tutorial, **[accent]close the analysis view[/accent]**.",
+            "message": "**[success]Correct![/success]**\n We will come back to this Analysis View later in the tutorial. \nFor now, continue the tutorial by **[accent]closing the analysis view[/accent]**.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "close" },
             "modal": { "size": "small", "position": "bottomCenter" }
           },
           {
-            "message": "Press **[accent]Continue[/accent]** to proceed.",
+            "message": "Press **[accent]Continue[/accent]** to proceed to **[accent]Round 2[/accent]**.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": { "size": "small", "position": "bottomCenter" }
