@@ -62,6 +62,7 @@ export function useScenarioTutorials(
       const handler: DebateEventListener<EventTrigger> = (payload) => {
         for (const { entry, dedupKey } of group) {
           if (firedRef.current.has(dedupKey)) continue;
+          if (!entry.tutorial?.steps?.length) continue;
           if (
             !debateTutorialTriggerMatches(
               entry.trigger,
