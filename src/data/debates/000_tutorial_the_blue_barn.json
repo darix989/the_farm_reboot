@@ -945,7 +945,7 @@
     {
       "id": "analysis-select-sentence-first-wrong-guess",
       "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 1 } },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
