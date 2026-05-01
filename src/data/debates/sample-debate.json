@@ -1,5 +1,6 @@
 {
   "id": "debate-owl-eye-act",
+  "startingInsightPoints": 2,
   "introduction": "The animals of Green Meadows Farm must decide whether to pass the Owl-Eye Surveillance Act, which would place owls throughout the barn to watch for grain theft. Play as Pip the Field Mouse (Opposition) and defeat Barnaby the Border Collie's (Proposition) surveillance proposal.",
   "playerSide": "opposition",
   "characters": {

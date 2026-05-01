@@ -30,6 +30,7 @@ import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
 import {
   getSpeakerName,
+  getStartingInsightPoints,
   moderatorOpinionPlainText,
   statementText,
 } from '../trial/utils/trialHelpers';
@@ -53,9 +54,12 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
     () => new Set(),
   );
-  // Insight Points (per-debate, transient): +1 awarded on the first fully-correct analysis of each
-  // analysis target; spendable to reveal which sentences contain fallacies on the active target.
-  const [insightPoints, setInsightPoints] = useState<number>(0);
+  // Insight Points (per-debate, transient): seeded from the scenario's `startingInsightPoints`
+  // (fallback 0). +1 awarded on the first fully-correct analysis of each analysis target;
+  // spendable to reveal which sentences contain fallacies on the active target.
+  const [insightPoints, setInsightPoints] = useState<number>(() =>
+    getStartingInsightPoints(debate),
+  );
   const [awardedInsightTargetIds, setAwardedInsightTargetIds] = useState<Set<string>>(
     () => new Set(),
   );
@@ -77,10 +81,14 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   useEffect(() => {
     setIntroSummaryOpen(false);
     introStartEmittedRef.current = false;
-    setInsightPoints(0);
+    setInsightPoints(getStartingInsightPoints(debate));
     setAwardedInsightTargetIds(new Set());
     setInsightRevealedTargetIds(new Set());
     useTutorialStore.getState().resetTutorial();
+    // Reset is keyed on scenario identity, not reference equality — the parent may
+    // re-create the `debate` object on each render. `getStartingInsightPoints` reads
+    // from `debate` but is pure, so capturing it via closure is intentional.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debate.id]);
 
   // Emit `introduction:start` once per scenario when we enter `debate_intro`.

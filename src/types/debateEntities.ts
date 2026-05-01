@@ -362,6 +362,8 @@ export interface DebateScenarioJson {
   characters?: Record<string, string>;
   logicalFallacies: LogicalFallacyScenario[];
   availableLogicalFallacies: LogicalFallacyId[];
+  /** Initial Insight Points balance the player starts the debate with. Defaults to 0. */
+  startingInsightPoints?: number;
   rounds: RoundEntry[];
   /**
    * Overlay tutorials wired to specific debate events via the typed event bus.
