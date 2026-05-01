@@ -12,6 +12,7 @@ import type {
 } from '../../../types/debateEntities';
 
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
+import genericFallacyIcon from '../../../static/icons/fallacies/generic_fallacy.svg';
 import { getLogicalFallacyIconSrc } from '../utils/logicalFallacyIcons';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TrialTextButton from '../components/TrialTextButton';
@@ -740,7 +741,7 @@ function NpcRoundAnalysis({
                           })}
                         >
                           <img
-                            src={magnifyingIcon}
+                            src={genericFallacyIcon}
                             alt=""
                             className={styles.trialSentenceHelpMarkIcon}
                           />
