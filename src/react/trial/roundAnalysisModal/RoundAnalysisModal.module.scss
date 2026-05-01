@@ -388,8 +388,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 999px;
   border: 1px solid var(--ui-color-warning-border);
   background: var(--ui-color-warning-bg-faint);
@@ -397,8 +397,8 @@
 }
 
 .trialSentenceHelpMarkIcon {
-  width: 1rem;
-  height: 1rem;
+  width: 2rem;
+  height: 2rem;
   object-fit: contain;
   opacity: 0.85;
   filter: invert(1);
