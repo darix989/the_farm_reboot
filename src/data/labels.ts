@@ -148,6 +148,10 @@ const LABELS = {
   noFallaciesConfirmTitle: 'No Fallacies?',
   noFallaciesConfirmBody:
     "You're about to submit that this statement contains no logical fallacies. This uses one attempt and cannot be undone.",
+  helpButton: 'Help ({count}/{cost})',
+  helpConfirmTitle: 'Use {cost} Insight Points?',
+  helpConfirmBody:
+    'Spending {cost} Insight points will reveal which sentences in this statement contain logical fallacies. This cannot be undone.',
   cancel: 'Cancel',
   modalRoundTitle: 'Round {roundNumber} — {tail}',
   opponentsQuestion: "{speakerName}'s question",

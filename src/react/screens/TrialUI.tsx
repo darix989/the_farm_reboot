@@ -5,6 +5,7 @@ import logicalFallaciesData from '../../data/logicalFallacies.json';
 import TrialLayout from '../trial/TrialLayout';
 import { useTrialRoundWorkflow } from '../hooks/useTrialRoundWorkflow';
 import RoundAnalysisModal, {
+  HELP_INSIGHT_COST,
   type AnalysisTarget,
 } from '../trial/roundAnalysisModal/RoundAnalysisModal';
 import type {
@@ -52,6 +53,15 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
     () => new Set(),
   );
+  // Insight Points (per-debate, transient): +1 awarded on the first fully-correct analysis of each
+  // analysis target; spendable to reveal which sentences contain fallacies on the active target.
+  const [insightPoints, setInsightPoints] = useState<number>(0);
+  const [awardedInsightTargetIds, setAwardedInsightTargetIds] = useState<Set<string>>(
+    () => new Set(),
+  );
+  const [insightRevealedTargetIds, setInsightRevealedTargetIds] = useState<Set<string>>(
+    () => new Set(),
+  );
   const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
   const introStartEmittedRef = useRef(false);
   const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds);
@@ -67,6 +77,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   useEffect(() => {
     setIntroSummaryOpen(false);
     introStartEmittedRef.current = false;
+    setInsightPoints(0);
+    setAwardedInsightTargetIds(new Set());
+    setInsightRevealedTargetIds(new Set());
     useTutorialStore.getState().resetTutorial();
   }, [debate.id]);
 
@@ -322,6 +335,19 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     const isPartial = record.kind === 'multi' && record.outcome === 'partial';
 
     if (isCorrect) {
+      // Award 1 Insight point the first time this analysis target is solved correctly.
+      // Reading `awardedInsightTargetIds` from closure (latest render snapshot) — using a
+      // flag captured inside the functional updater is unreliable because React does not
+      // guarantee the updater runs synchronously during dispatch (concurrent mode).
+      if (!awardedInsightTargetIds.has(targetId)) {
+        setAwardedInsightTargetIds((prev) => {
+          if (prev.has(targetId)) return prev;
+          const next = new Set(prev);
+          next.add(targetId);
+          return next;
+        });
+        setInsightPoints((p) => p + 1);
+      }
       debateEventBus.emit('analysis:guess_correct', outcomePayload);
     } else if (isPartial) {
       debateEventBus.emit('analysis:guess_partially_correct', outcomePayload);
@@ -439,6 +465,27 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const revealLockedOption = useCallback((optionId: string) => {
     setRevealedLockedOptionIds((prev) => new Set(prev).add(optionId));
   }, []);
+
+  // Spend `HELP_INSIGHT_COST` Insight points to mark the active analysis target as
+  // "fallacy-revealed". No-op when the player can't afford it or this target has already
+  // been revealed.
+  const handleSpendInsightPoint = useCallback(() => {
+    if (!analysisStatementTargetId) return;
+    if (insightPoints < HELP_INSIGHT_COST) return;
+    if (insightRevealedTargetIds.has(analysisStatementTargetId)) return;
+    setInsightRevealedTargetIds((prev) => {
+      if (prev.has(analysisStatementTargetId)) return prev;
+      const next = new Set(prev);
+      next.add(analysisStatementTargetId);
+      return next;
+    });
+    setInsightPoints((p) => Math.max(0, p - HELP_INSIGHT_COST));
+  }, [analysisStatementTargetId, insightPoints, insightRevealedTargetIds]);
+
+  const insightRevealedForCurrentTarget = useMemo(() => {
+    if (!analysisStatementTargetId) return false;
+    return insightRevealedTargetIds.has(analysisStatementTargetId);
+  }, [analysisStatementTargetId, insightRevealedTargetIds]);
 
   const wizardDetail = useMemo((): WizardPanelDetail | null => {
     switch (wf.gamePhase) {
@@ -576,6 +623,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           onGuess={handleGuess}
           onClose={() => setAnalysisTarget(null)}
           activeRoundNumber={fallacyGuessBucketRoundNumber}
+          insightPoints={insightPoints}
+          insightRevealed={insightRevealedForCurrentTarget}
+          onSpendInsightPoint={handleSpendInsightPoint}
         />
       )}
       {introSummaryOpen && wf.gamePhase === 'debate_intro' && (

@@ -330,6 +330,7 @@
 }
 
 .trialSentenceCard {
+  position: relative;
   width: 100%;
   border-radius: 0.5rem;
   border: 1px solid var(--ui-color-border-default);
@@ -377,6 +378,30 @@
   line-height: 1.5;
   color: inherit;
   margin: 0;
+}
+
+/* Bottom-right marker shown on fallacious sentences after the player spends an Insight point. */
+.trialSentenceHelpMark {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--ui-color-warning-border);
+  background: var(--ui-color-warning-bg-faint);
+  pointer-events: none;
+}
+
+.trialSentenceHelpMarkIcon {
+  width: 1rem;
+  height: 1rem;
+  object-fit: contain;
+  opacity: 0.85;
+  filter: invert(1);
 }
 
 /* =========================================================================
