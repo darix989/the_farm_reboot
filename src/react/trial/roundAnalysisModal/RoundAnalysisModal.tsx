@@ -542,8 +542,11 @@ function NpcRoundAnalysis({
   };
 
   const handleHelp = () => {
+    const target = { kind: 'analysis_action', action: 'help' } as const;
+    if (!canRunTutorialTargetAction(target)) return;
     if (insightPoints < HELP_INSIGHT_COST || insightRevealed) return;
     onHelpRequest();
+    notifyTutorialTargetAction(target);
   };
 
   const selectedIdsForPicker = selectedSentenceId ? (bySentence[selectedSentenceId] ?? []) : [];
