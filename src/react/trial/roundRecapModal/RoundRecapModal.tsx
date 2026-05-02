@@ -7,7 +7,6 @@ import TrialTextButton from '../components/TrialTextButton';
 import { debateEventBus } from '../utils/debateEventBus';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import {
-  debateTotalScoreBounds,
   getSpeakerName,
   moderatorOpinionEmoji,
   statementText,
@@ -54,8 +53,6 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
     // Open/close must fire exactly once per mount lifecycle of this specific recap.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [round?.id]);
-
-  const totalScoreBounds = useMemo(() => debateTotalScoreBounds(debate), [debate]);
 
   const choicePreview = useMemo(() => {
     if (!chosen) return '';
@@ -157,11 +154,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                   {getLabel('overallScore')}
                 </p>
                 <p className={styles.recapBody}>
-                  <ModeratorOpinionInline
-                    score={wf.totalScore}
-                    min={totalScoreBounds.min}
-                    max={totalScoreBounds.max}
-                  />
+                  <ModeratorOpinionInline score={wf.totalScore} />
                 </p>
               </div>
             </>

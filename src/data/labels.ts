@@ -120,7 +120,7 @@ const LABELS = {
   chooseFallaciesForSentence:
     'Choose fallacies for this sentence (up to two, click again to remove):',
   attemptRecapCompact: 'Attempts: {attemptsUsed}/{maxAttempts}',
-  insightPointsRecapCompact: 'Insight Points: {count}',
+  insightPointsRecapCompact: 'Insights: {count}',
   guessAwaitingHeadline: 'Ready to analyze',
   guessAwaitingBody: 'Analyze the statement, split by sentences. Spot any fallacies, if any.',
   submitGuess: 'Spot',
@@ -151,9 +151,9 @@ const LABELS = {
     "You're about to submit that this statement contains no logical fallacies. This uses one attempt and cannot be undone.",
   helpButton: '({count}/{cost})',
   helpButtonAria: 'Help ({count}/{cost})',
-  helpConfirmTitle: 'Use {cost} Insight Points?',
+  helpConfirmTitle: 'Use {cost} Insights?',
   helpConfirmBody:
-    'Spending {cost} Insight points will reveal which sentences in this statement contain logical fallacies. This cannot be undone.',
+    'Spending {cost} Insights will reveal which sentences in this statement contain logical fallacies. This cannot be undone.',
   cancel: 'Cancel',
   modalRoundTitle: 'Round {roundNumber} — {tail}',
   opponentsQuestion: "{speakerName}'s question",

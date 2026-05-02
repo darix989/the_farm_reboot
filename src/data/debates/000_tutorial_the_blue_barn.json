@@ -988,17 +988,17 @@
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "**[accent]Analyzing correctly a statement[/accent]** will give you **[accent]Insight Points[/accent]**.\n\n Once you have at least **[success]2 Insight Points[/success]**, you can **[accent]reveal which sentences contain fallacies[/accent]** on the active statement.\n\n Insight Points are gathered during the debate and can be used for future analyses.",
+            "message": "**[accent]Analyzing correctly a statement[/accent]** will give you **[accent]Insights[/accent]**.\n\n Once you have at least **[success]2 Insights[/success]**, you can **[accent]reveal which sentences contain fallacies[/accent]** on the active statement.\n\n Insights are gathered during the debate and can be used for future analyses.",
             "modal": { "size": "large", "position": "topRight" }
           },
           {
-            "message": "By Clicking the **[accent]Help button[/accent]** it will be revealed which sentences contain fallacies, if any. \n\n The Help button label will show you how many Insight Points you currently have and how many are required to reveal the fallacies.\n\n Currently you have **[accent]0 Insight Points[/accent]**.",
+            "message": "By Clicking the **[accent]Help button[/accent]** it will be revealed which sentences contain fallacies, if any. \n\n The Help button label will show you how many Insights you currently have and how many are required to reveal the fallacies.\n\n Currently you have **[accent]0 Insights[/accent]**.",
             "modal": { "size": "large", "position": "topRight" },
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "analysis_action", "action": "help" }
           },
           {
-            "message": "The amount of **[accent]Insight Points[/accent]** and the **[accent]available Attempts[/accent]** are displayed in the bottom right corner of the Analysis View.",
+            "message": "The amount of **[accent]Insights[/accent]** and the **[accent]available Attempts[/accent]** are displayed in the bottom right corner of the Analysis View.",
             "modal": { "size": "medium", "position": "bottomRight" },
             "targetComponent": { "kind": "analysis_resources" }
           },
@@ -1059,7 +1059,7 @@
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "**[success]Correct![/success]**\n You have earned **[accent]1 Insight Point[/accent]** now.",
+            "message": "**[success]Correct![/success]**\n You have earned **[accent]1 Insight[/accent]** now.",
             "onlyForward": true,
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "analysis_resources" },

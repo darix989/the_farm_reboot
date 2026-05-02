@@ -129,3 +129,30 @@
   min-width: 0;
   vertical-align: middle;
 }
+
+.moderatorOpinionInsights {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.moderatorOpinionInsightsIcon {
+  display: block;
+  height: 1em;
+  width: auto;
+  flex-shrink: 0;
+  opacity: 0.9;
+
+  /* Source SVG is black; match `trialActionButtonIcon` in analysis modal for dark trial chrome. */
+  filter: invert(1);
+}
+
+.moderatorOpinionInsightsCount {
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.moderatorOpinionSeparator {
+  color: var(--ui-color-text-muted-2);
+  user-select: none;
+}

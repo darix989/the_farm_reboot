@@ -600,6 +600,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           <FeedbackPanel
             wf={wf}
             debate={debate}
+            insightPoints={insightPoints}
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
           />
