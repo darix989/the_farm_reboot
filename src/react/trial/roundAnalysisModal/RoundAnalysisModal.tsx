@@ -603,7 +603,10 @@ function NpcRoundAnalysis({
                       shouldRevealFullSolution={revealFull}
                       fallacyById={fallacyById}
                     />
-                    <div className={styles.trialSentenceFeedbackMeta}>
+                    <div
+                      className={styles.trialSentenceFeedbackMeta}
+                      data-tutorial-analysis-resources
+                    >
                       <p className={styles.trialSentenceMetaPill}>
                         {getLabel('attemptRecapCompact', {
                           replacements: {
@@ -634,7 +637,10 @@ function NpcRoundAnalysis({
                         </p>
                       </div>
                     </div>
-                    <div className={styles.trialSentenceFeedbackMeta}>
+                    <div
+                      className={styles.trialSentenceFeedbackMeta}
+                      data-tutorial-analysis-resources
+                    >
                       <p className={styles.trialSentenceMetaPill}>
                         {getLabel('attemptRecapCompact', {
                           replacements: {

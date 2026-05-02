@@ -27,6 +27,8 @@ export function tutorialTargetEquals(a: TutorialTargetRef, b: TutorialTargetRef)
       return a.fallacyId === (b as TutorialTargetRef & { kind: 'analysis_fallacy' }).fallacyId;
     case 'analysis_action':
       return a.action === (b as TutorialTargetRef & { kind: 'analysis_action' }).action;
+    case 'analysis_resources':
+      return true;
     default: {
       const _never: never = a;
       return _never;
@@ -56,6 +58,8 @@ export function tutorialTargetSelector(target: TutorialTargetRef): string {
       return `[data-tutorial-analysis-fallacy-id="${esc(target.fallacyId)}"]`;
     case 'analysis_action':
       return `[data-tutorial-analysis-action="${esc(target.action)}"]`;
+    case 'analysis_resources':
+      return '[data-tutorial-analysis-resources]';
     default: {
       const _never: never = target;
       return _never;

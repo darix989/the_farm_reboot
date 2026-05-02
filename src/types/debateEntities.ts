@@ -266,7 +266,9 @@ export type TutorialTargetRef =
   | {
       kind: 'analysis_action';
       action: 'help' | 'submit_guess' | 'no_fallacies' | 'no_fallacies_confirm' | 'close';
-    };
+    }
+  /** Attempts remaining + Insight Points recap row in the analysis modal body. */
+  | { kind: 'analysis_resources' };
 
 /** One panel in the intro tutorial. */
 export interface DebateTutorialStep {
