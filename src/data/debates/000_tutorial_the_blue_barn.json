@@ -988,11 +988,19 @@
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "**[accent]Spotting fallacies[/accent]** will give you a deeper understanding of what's going on within the other side's statements, which also means a way to **[success]weaken the other's side statements[/success]**.",
+            "message": "**[accent]Analyzing correctly a statement[/accent]** will give you **[accent]Insight Points[/accent]**.\n\n Once you have at least **[success]2 Insight Points[/success]**, you can **[accent]reveal which sentences contain fallacies[/accent]** on the active statement.\n\n Insight Points are gathered during the debate and can be used for future analyses.",
+            "modal": { "size": "large", "position": "topRight" }
+          },
+          {
+            "message": "By Clicking the **[accent]Help button[/accent]** it will be revealed which sentences contain fallacies, if any. \n\n The Help button label will show you how many Insight Points you currently have and how many are required to reveal the fallacies.\n\n Currently you have **[accent]0 Insight Points[/accent]**.",
+            "modal": { "size": "large", "position": "topRight" }
+          },
+          {
+            "message": "**[accent]Spotting fallacies[/accent]** will also give you a deeper understanding of what's going on within the other side's statements, which also means a way to **[success]weaken the other's side statements[/success]**.",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "How does that happen? Once it will be your turn to speak you will be able to **[success]use your bonus statements[/success]** on top of regular statements, and these will **[success]influence more effectively the moderator's opinion[/success]**.",
+            "message": "How does that happen? Once it will be your turn to speak you will be able to **[success]use bonus-locked statements[/success]** on top of regular statements, and these will **[success]influence more effectively the moderator's opinion[/success]**.",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
