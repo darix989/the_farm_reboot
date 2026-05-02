@@ -12,6 +12,7 @@ import type {
 } from '../../../types/debateEntities';
 
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
+import inspectIcon from '../../../static/icons/inspect.svg';
 import genericFallacyIcon from '../../../static/icons/fallacies/generic_fallacy.svg';
 import { getLogicalFallacyIconSrc } from '../utils/logicalFallacyIcons';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
@@ -822,7 +823,11 @@ function NpcRoundAnalysis({
                   onClick={handleHelp}
                   disabled={insightPoints < HELP_INSIGHT_COST || insightRevealed}
                   data-tutorial-analysis-action="help"
+                  aria-label={getLabel('helpButtonAria', {
+                    replacements: { count: insightPoints, cost: HELP_INSIGHT_COST.toString() },
+                  })}
                 >
+                  <img src={inspectIcon} alt="" className={styles.trialHelpButtonIcon} />
                   {getLabel('helpButton', {
                     replacements: { count: insightPoints, cost: HELP_INSIGHT_COST.toString() },
                   })}

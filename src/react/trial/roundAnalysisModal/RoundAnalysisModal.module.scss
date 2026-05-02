@@ -319,6 +319,17 @@
   padding-top: 0;
 }
 
+/* Icon nested inside the Help button, sitting to the left of the (count/cost) text. */
+.trialHelpButtonIcon {
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+  margin-right: 0.4rem;
+  opacity: 0.85;
+  filter: invert(1);
+  flex-shrink: 0;
+}
+
 /* =========================================================================
    Sentence cards
    ========================================================================= */
