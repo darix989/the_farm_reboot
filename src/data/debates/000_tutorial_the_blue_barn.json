@@ -713,11 +713,25 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**Welcome!** This is the beginning of the **[accent]debate's tutorial[/accent]**. \n\nA debate has **[accent]3 main actors[/accent]**:\n\n the **[accent]1) moderator[/accent]**, the **[accent]2) proposition side[/accent]**, and the **[accent]3) opposition side[/accent]**.\n\n In a debate, the **[accent]proposition side[/accent]** is the one who proposes the idea, and the **[accent]opposition side[/accent]** is the one who argues against it. \n\n**[success]The moderator is the one who decides who wins the debate.[/success]**",
+            "message": "**Welcome!** This is the beginning of the **[accent]debate's tutorial[/accent]**. \n\nA debate has **[accent]3 main actors[/accent]**:\n\n the **[accent]1) proposition side[/accent]**, and the **[accent]2) opposition side[/accent]** and the **[accent]3) moderator[/accent]**.",
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "For this tutorial, **[accent]you[/accent]** will play as the **[accent]opposition side[/accent]**. \n\n In order to win the moderator's favour, you need to bring on the table the most **[accent]convincing arguments[/accent]** that make the proposition idea look less convincing and not worth it.\n\n To do that, you'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the moderator's favour[/success]**.\n\n The **[accent]emoji score[/accent]** next to **Debate Log** tracks how the moderator leans toward your side as you play.",
+            "message": "The **[accent]Proposition side[/accent]** is the one who proposes the idea.\n\n The **[accent]Opposition side[/accent]** is the one who argues against it. \n\n**[success]The moderator is the one who decides who wins the debate.[/success]**",
+            "modal": { "size": "large", "position": "center" }
+          },
+          {
+            "message": "For this tutorial, **[accent]you[/accent]** will play as the **[accent]opposition side[/accent]**. \n\n In order to win the moderator's favour, you need to bring on the table the most **[accent]convincing arguments[/accent]** that make the proposition idea look less convincing and not worth it.",
+            "interactionMode": "modal_only",
+            "modal": { "size": "large", "position": "center" }
+          },
+          {
+            "message": "To win a debate, you'll **[accent]analyze statements[/accent]**; **[accent]spot logical fallacies[/accent]**; and choose **[accent]statements[/accent]** that **[success]win the moderator's favour[/success]**.",
+            "interactionMode": "modal_only",
+            "modal": { "size": "large", "position": "center" }
+          },
+          {
+            "message": "The **[accent]emoji score[/accent]** next to **Debate Log** tracks how the moderator leans toward your side as you play.\n\n To its left is the number of **[accent]Insights[/accent]** you have earned so far (we will explain this later in the tutorial).",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "debate_log_moderator_score" },
             "modal": { "size": "large", "position": "center" }
@@ -758,13 +772,7 @@
             "message": "Once you have a clear picture of the debate's main topic, start the actual debate by pressing **[accent]Continue[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": {
-              "x": 0.125,
-              "y": 0.06,
-              "width": 0.4,
-              "height": 0.4,
-              "pivot": "topLeft"
-            }
+            "modal": { "size": "medium", "position": "topLeft" }
           }
         ]
       }
@@ -806,7 +814,7 @@
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "An Opening Constructive consists of a statement where that side presents their arguments.\n\n **[accent]Rebuttal[/accent]** rounds and a **[accent]Closing Constructive[/accent]** final round are played in a very similar way.",
+            "message": "An Opening Constructive consists of a statement where that side presents their arguments.\n\n **[accent]Rebuttal[/accent]** and **[accent]Closing Constructive[/accent]** rounds are played in a very similar way.",
             "interactionMode": "modal_only",
             "modal": { "size": "medium", "position": "topLeft" }
           },
@@ -1021,7 +1029,7 @@
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "When you are satisfied, click **[accent]Spot Fallacies[/accent]** button to submit your guess, or use the **[muted]No Fallacies[/muted]** button if you think the whole statement is fallacy free. \nThose are the two actions that **[success]finalize[/success]** the analysis.",
+            "message": "When you are satisfied, click **[accent]Spot[/accent]** button to submit your guess, or use the **[muted]No Fallacies[/muted]** button if you think the whole statement is fallacy free. \nThose are the two actions that **[success]finalize[/success]** the analysis.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
             "modal": { "size": "medium", "position": "bottomLeft" }
@@ -1047,7 +1055,7 @@
             "modal": { "preset": "analysisSubmit" }
           },
           {
-            "message": "Mmmm ... **[warning]that's not quite right.[/warning]** You still have 2 attempts left.\n\n Thinking again... Maybe the whole statement is **[accent]fallacy free[/accent]?** \nTry **[accent]No Fallacies[/accent]** this time.",
+            "message": "Mmmm ... **[warning]that's not quite right.[/warning]** You still have 2 attempts left.\n\n Thinking again... Maybe the whole statement is **[accent]fallacy free[/accent]?** \nTry **[accent]Clean[/accent]** button this time.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "no_fallacies" },
@@ -1072,6 +1080,12 @@
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "close" },
+            "modal": { "size": "small", "position": "bottomCenter" }
+          },
+          {
+            "message": "The newly earned Insights balance is visible in the **[accent]Debate Log Panel[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "debate_log_moderator_score" },
             "modal": { "size": "small", "position": "bottomCenter" }
           },
           {
