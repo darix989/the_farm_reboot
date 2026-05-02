@@ -714,7 +714,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**Welcome!** This is the beginning of the **[accent]debate's tutorial[/accent]**. \n\nA debate has **[accent]3 main actors[/accent]**:\n\n the **[accent]1) proposition side[/accent]**, and the **[accent]2) opposition side[/accent]** and the **[accent]3) moderator[/accent]**.",
+            "message": "**Welcome!** This is the beginning of the **[accent]debate's tutorial[/accent]**. \n\nA debate has **[accent]3 main actors[/accent]**:\n\n the **[accent]1) proposition side[/accent]**, the **[accent]2) opposition side[/accent]** and the **[accent]3) moderator[/accent]**.",
             "modal": { "size": "large", "position": "center" }
           },
           {
@@ -991,7 +991,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "This is the **[accent]Statement Analysis View[/accent]**. \n\n**[accent]Successfully analyzing a statement[/accent]** will give you **[success]bonuses[/success]** that will contribute to **[success]win the debate[/success]**.",
+            "message": "This is the **[accent]Statement Analysis View[/accent]**. \n\n**[accent]Successfully analyzing a statement[/accent]** will give you **[success]Insights Points[/success]** that will contribute to **[success]win the debate[/success]**.",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
@@ -1003,7 +1003,7 @@
             "modal": { "size": "large", "position": "topRight" }
           },
           {
-            "message": "By Clicking the **[accent]Help button[/accent]** it will be revealed which sentences contain fallacies, if any. \n\n The Help button label will show you how many Insights you currently have and how many are required to reveal the fallacies.\n\n Currently you have **[accent]0 Insights[/accent]**.",
+            "message": "By Clicking the **[accent]Insights/Help button[/accent]** it will be revealed which sentences contain fallacies, if any. \n\n The Insights/Help button label will show you how many Insights you currently have and how many are required to reveal the fallacies.\n\n Currently you have **[accent]0 Insights[/accent]**.",
             "modal": { "size": "large", "position": "topRight" },
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "analysis_action", "action": "help" }
@@ -1026,7 +1026,7 @@
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "Let's start! \nIn this **[accent]Analysis View[/accent]** you **[warning]first choose a sentence[/warning]** to inspect, then **[warning]pick fallacies[/warning]** from the grid that might apply to it. You can tag **[accent]up to two[/accent]** fallacies on the same sentence (click again to remove one).",
+            "message": "In this **[accent]Analysis View[/accent]** you **[warning]first choose a sentence[/warning]** to inspect, then **[warning]pick fallacies[/warning]** from the grid that might apply to it. You can tag **[accent]up to two[/accent]** fallacies on the same sentence (click again to remove one).",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
@@ -1049,14 +1049,14 @@
             "modal": { "preset": "analysisFallacySelection" }
           },
           {
-            "message": "Press **[accent]Spot Fallacies[/accent]** to submit your match (sentence 1 with false dilemma fallacy).",
+            "message": "Press **[accent]Spot button[/accent]** to submit your match (sentence 1 with false dilemma fallacy).",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
             "modal": { "preset": "analysisSubmit" }
           },
           {
-            "message": "Mmmm ... **[warning]that's not quite right.[/warning]** You still have 2 attempts left.\n\n Thinking again... Maybe the whole statement is **[accent]fallacy free[/accent]?** \nTry **[accent]Clean[/accent]** button this time.",
+            "message": "Mmmm ... **[warning]that's not quite right.[/warning]** You still have **[accent]2 attempts left[/accent]**.\n\n Thinking again... Maybe the whole statement is **[accent]fallacy free[/accent]?** \nTry **[accent]Clean[/accent]** button this time.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "no_fallacies" },
