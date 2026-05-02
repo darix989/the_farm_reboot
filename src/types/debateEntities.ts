@@ -255,6 +255,8 @@ export type TutorialStepOnFinish = 'exit';
  */
 export type TutorialTargetRef =
   | { kind: 'panel'; panel: 'debate_log' | 'wizard' | 'interactive' }
+  /** Moderator opinion emoji (+ insight strip) in the debate log panel header. */
+  | { kind: 'debate_log_moderator_score' }
   | { kind: 'modal_round_recap_score' }
   | { kind: 'intro_summary_action'; action: 'begin_round_1' | 'close' }
   | { kind: 'interactive_action'; action: 'back' | 'continue' | 'confirm' }

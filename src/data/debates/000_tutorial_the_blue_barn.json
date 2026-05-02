@@ -717,7 +717,9 @@
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "For this tutorial, **[accent]you[/accent]** will play as the **[accent]opposition side[/accent]**. \n\n In order to win the moderator's favour, you need to bring on the table the most **[accent]convincing arguments[/accent]** that make the proposition idea look less convincing and not worth it.\n\n To do that, you'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the moderator's favour[/success]**.",
+            "message": "For this tutorial, **[accent]you[/accent]** will play as the **[accent]opposition side[/accent]**. \n\n In order to win the moderator's favour, you need to bring on the table the most **[accent]convincing arguments[/accent]** that make the proposition idea look less convincing and not worth it.\n\n To do that, you'll **analyze statements**, **spot logical fallacies**, and choose replies that **[success]win the moderator's favour[/success]**.\n\n The **[accent]emoji score[/accent]** next to **Debate Log** tracks how the moderator leans toward your side as you play.",
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "debate_log_moderator_score" },
             "modal": { "size": "large", "position": "center" }
           },
           {

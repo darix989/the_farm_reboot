@@ -9,6 +9,8 @@ export function tutorialTargetEquals(a: TutorialTargetRef, b: TutorialTargetRef)
   switch (a.kind) {
     case 'panel':
       return a.panel === (b as TutorialTargetRef & { kind: 'panel' }).panel;
+    case 'debate_log_moderator_score':
+      return true;
     case 'modal_round_recap_score':
       return true;
     case 'intro_summary_action':
@@ -40,6 +42,8 @@ export function tutorialTargetSelector(target: TutorialTargetRef): string {
   switch (target.kind) {
     case 'panel':
       return `[data-tutorial-panel="${esc(target.panel)}"]`;
+    case 'debate_log_moderator_score':
+      return '[data-tutorial-debate-log-moderator-score]';
     case 'modal_round_recap_score':
       return '[data-tutorial-recap-section="main"]';
     case 'intro_summary_action':

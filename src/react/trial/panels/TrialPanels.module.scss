@@ -89,6 +89,12 @@
   white-space: nowrap;
 }
 
+/* Tutorial spotlight hook: border paints correctly on the emoji score row. */
+.debateLogModeratorScoreTutorialHook {
+  display: inline-flex;
+  align-items: center;
+}
+
 .trialPanelHeading {
   font-size: calc(var(--ui-font-display) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 600;

@@ -141,7 +141,12 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
           className={styles.trialDebateLogTitleScore}
           style={{ margin: 0, color: uiColor.textBody }}
         >
-          <ModeratorOpinionInline score={wf.totalScore} insightPoints={insightPoints} />
+          <span
+            className={styles.debateLogModeratorScoreTutorialHook}
+            data-tutorial-debate-log-moderator-score
+          >
+            <ModeratorOpinionInline score={wf.totalScore} insightPoints={insightPoints} />
+          </span>
         </p>
       </div>
 
