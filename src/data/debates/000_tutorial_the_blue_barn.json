@@ -975,10 +975,10 @@
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "For the sake of the tutorial, let's just proceed to the next round.",
+            "message": "Let's analyze your own question.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": { "size": "small", "position": "bottomCenter" }
+            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-3" },
+            "modal": { "size": "medium", "position": "topLeft" }
           }
         ]
       }
