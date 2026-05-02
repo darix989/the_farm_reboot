@@ -101,6 +101,7 @@
       "id": "round-3",
       "roundNumber": 3,
       "type": "crossfire",
+      "preventOptionsShuffle": true,
       "options": [
         {
           "id": "r3-opt-a",
@@ -111,6 +112,32 @@
             {
               "id": "s-r3a-1",
               "text": "How much of the money should we spend on the paint and brushes?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Fixates on who does the work instead of whether the budget should go to paint or to the leaking roof.",
+          "sentences": [
+            {
+              "id": "s-r3b-1",
+              "text": "Who exactly will climb up there to do all that painting?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-c",
+          "quality": "effective",
+          "impact": 8,
+          "reason": "Forces the tradeoff Barnaby keeps dodging: spending on blue paint versus money still available for roof repairs.",
+          "sentences": [
+            {
+              "id": "s-r3c-1",
+              "text": "If we spend this budget on paint, how much is left to fix the roof before the next storm?",
               "logicalFallacies": []
             }
           ]
@@ -127,6 +154,36 @@
               {
                 "id": "s-r3ra-1",
                 "text": "Almost all of the money will go to the paint and brushes.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-b",
+          "statement": {
+            "id": "stmt-r3-resp-b",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3rb-1",
+                "text": "I will hire the bravest swallows in the county — leave the ladders to them!",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-c",
+          "statement": {
+            "id": "stmt-r3-resp-c",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3rc-1",
+                "text": "There will always be another bucket for leaks — but there is only one first coat of joy-blue!",
                 "logicalFallacies": []
               }
             ]
@@ -1215,7 +1272,7 @@
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "When you find a **[warning]locked statement[/warning]**, it means you need to **[accent]analyze a prior statement[/accent]** of this debate. \n\n Once you **[success]successfully analyze[/success]** the fallacious statement, the locked statement will become **[success]unlockable[/success]**. \n\n Click the **[accent]analysis button[/accent]** to spot the fallacy in Barnaby question.",
+            "message": "When you find a **[warning]locked statement[/warning]**, it means you need to **[accent]analyze a prior statement[/accent]** of this debate. \n\n Once you **[success]successfully analyze[/success]** a fallacious statement, the related locked statement will become **[success]unlockable[/success]**. \n\n Click the **[accent]analysis button[/accent]** to spot the fallacy in Barnaby question.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-4" },
@@ -1337,7 +1394,17 @@
       "tutorial": {
         "steps": [
           {
-            "message": "This is the **[success]end of the tutorial![/success]**\n\nYou learnt how to **[accent]choose a statement[/accent]**, how to **[accent]spot a fallacy[/accent]**, and how to **[accent]unlock statements[/accent]**.\n\nActual debates last longer and reach **[accent]round 10[/accent]**.\n\n Play a debate and challenge debaters!",
+            "message": "This is the **[success]end of the tutorial![/success]**\n\nYou learnt how to **[accent]choose a statement[/accent]**, how to **[accent]spot a fallacy[/accent]**, and how to **[accent]unlock statements[/accent]**.",
+            "interactionMode": "modal_only",
+            "modal": { "size": "large", "position": "center" }
+          },
+          {
+            "message": "Remember:\n1) **[accent]analyzing statements[/accent]** is key to winning the debate as it gives you Insight Points and it may also unlock bonus statements, \n2) Once you gather **[accent]enough Insights[/accent]**, you can **[accent]get help to reveal which sentences hide fallacies[/accent]**; \n3) Choosing the best statement will **[accent]influence the Moderator's favour[/accent]**;\n4) **[accent]unlocked bonus statements[/accent]** are **[accent]usually more effective[/accent]** than regular statements.",
+            "interactionMode": "modal_only",
+            "modal": { "size": "large", "position": "center" }
+          },
+          {
+            "message": "Actual debates last longer and reach **[accent]round 10[/accent]**.\n\n Play a debate and challenge debaters!",
             "interactionMode": "modal_only",
             "onFinish": "exit",
             "modal": { "size": "large", "position": "center" }
