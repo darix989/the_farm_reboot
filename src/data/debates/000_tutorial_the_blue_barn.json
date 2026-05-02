@@ -721,7 +721,7 @@
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "For this tutorial, **[accent]you[/accent]** will play as the **[accent]opposition side[/accent]**. \n\n In order to win the moderator's favour, you need to bring on the table the most **[accent]convincing arguments[/accent]** that make the proposition idea look less convincing and not worth it.",
+            "message": "For this tutorial, **[accent]you[/accent]** will play as the **[accent]opposition side[/accent]**. \n\n So, the **[warning]other side[/warning]** will be the **[warning]proposition side[/warning]**. \n\n In order to win the moderator's favour, you need to bring on the table the most **[accent]convincing arguments[/accent]** that make the proposition idea look less convincing and not worth it.",
             "interactionMode": "modal_only",
             "modal": { "size": "large", "position": "center" }
           },
@@ -1112,7 +1112,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**[accent]Analyzing your own words[/accent] is important as well.**\n\nYour **[accent]question[/accent]** is still a statement, and it can be **[success]clear and fair[/success]**, or it can **[warning]hide a logical fallacy[/warning]** just like the other side's lines.",
+            "message": "**[accent]Analyzing your own words[/accent] is important as well.**\n\nYour **[accent]question[/accent]** is still a statement, and it can be **[success]clear and fair[/success]**, or it can **[warning]hide a logical fallacy[/warning]** just like some of the other side's lines.",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
@@ -1120,11 +1120,7 @@
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "Select the only sentence in your question.",
-            "modal": { "size": "medium", "position": "bottomRight" }
-          },
-          {
-            "message": "It seems this statement is **[accent]fallacy-free[/accent]**. \n\nPress **[accent]Clean[/accent]** to record that there are no fallacies here.",
+            "message": "It seems your own statement is actually **[accent]fallacy-free[/accent]**. \n\nPress **[accent]Clean[/accent]** to record that there are no fallacies here.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "no_fallacies" },
@@ -1149,6 +1145,19 @@
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "close" },
+            "modal": { "size": "small", "position": "bottomCenter" }
+          },
+          {
+            "message": "Now you can see you have an updated balance of **[accent]2 Insights[/accent]**.",
+            "onlyForward": true,
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "debate_log_moderator_score" },
+            "modal": { "size": "medium", "position": "topLeft" }
+          },
+          {
+            "message": "Press **[accent]Continue[/accent]** to proceed.",
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": { "size": "small", "position": "bottomCenter" }
           }
         ]
