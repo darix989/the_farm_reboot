@@ -1098,6 +1098,63 @@
       }
     },
     {
+      "id": "analysis-round-3-own-statement-clean",
+      "trigger": {
+        "event": "analysis:open",
+        "where": {
+          "analysisRoundNumber": 3,
+          "activeRoundNumber": 3,
+          "targetKind": "player",
+          "targetId": "r3-opt-a"
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Analyzing your own words[/accent] is important as well.**\n\nYour **[accent]question[/accent]** is still a statement, and it can be **[success]clear and fair[/success]**, or it can **[warning]hide a logical fallacy[/warning]** just like the other side's lines.",
+            "modal": { "size": "medium", "position": "bottomRight" }
+          },
+          {
+            "message": "Double checking yourself is part of debating — and a correct read **[success]earns Insights[/success]** the same way as analyzing Barnaby's statements.",
+            "modal": { "size": "medium", "position": "bottomRight" }
+          },
+          {
+            "message": "Select the only sentence in your question.",
+            "modal": { "size": "medium", "position": "bottomRight" }
+          },
+          {
+            "message": "It seems this statement is **[accent]fallacy-free[/accent]**. \n\nPress **[accent]Clean[/accent]** to record that there are no fallacies here.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "no_fallacies" },
+            "modal": { "preset": "analysisSubmit" }
+          },
+          {
+            "message": "Confirm with **[accent]Confirm[/accent]**.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "no_fallacies_confirm" },
+            "modal": { "size": "small", "position": "topRight" }
+          },
+          {
+            "message": "**[success]Nice![/success]**\n You earned **[accent]another Insight[/accent]** for correctly judging your own question.",
+            "onlyForward": true,
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "analysis_resources" },
+            "modal": { "size": "small", "position": "bottomCenter" }
+          },
+          {
+            "message": "**[accent]Close[/accent]** the Analysis View when you are ready to keep going.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "close" },
+            "modal": { "size": "small", "position": "bottomCenter" }
+          }
+        ]
+      }
+    },
+    {
       "id": "analysis-post-submit-guess",
       "trigger": {
         "event": "tutorial:end",
