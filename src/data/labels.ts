@@ -120,6 +120,7 @@ const LABELS = {
   chooseFallaciesForSentence:
     'Choose fallacies for this sentence (up to two, click again to remove):',
   attemptRecapCompact: 'Attempts: {attemptsUsed}/{maxAttempts}',
+  insightPointsRecapCompact: 'Insight Points: {count}',
   guessAwaitingHeadline: 'Ready to analyze',
   guessAwaitingBody: 'Analyze the statement, split by sentences. Spot any fallacies, if any.',
   submitGuess: 'Spot',

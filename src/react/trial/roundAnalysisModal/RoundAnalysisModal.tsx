@@ -603,14 +603,21 @@ function NpcRoundAnalysis({
                       shouldRevealFullSolution={revealFull}
                       fallacyById={fallacyById}
                     />
-                    <p className={styles.trialSentenceAttemptRecap}>
-                      {getLabel('attemptRecapCompact', {
-                        replacements: {
-                          attemptsUsed,
-                          maxAttempts,
-                        },
-                      })}
-                    </p>
+                    <div className={styles.trialSentenceFeedbackMeta}>
+                      <p className={styles.trialSentenceMetaPill}>
+                        {getLabel('attemptRecapCompact', {
+                          replacements: {
+                            attemptsUsed,
+                            maxAttempts,
+                          },
+                        })}
+                      </p>
+                      <p className={styles.trialSentenceMetaPill}>
+                        {getLabel('insightPointsRecapCompact', {
+                          replacements: { count: insightPoints },
+                        })}
+                      </p>
+                    </div>
                   </div>
                 ) : (
                   <div
@@ -627,14 +634,21 @@ function NpcRoundAnalysis({
                         </p>
                       </div>
                     </div>
-                    <p className={styles.trialSentenceAttemptRecap}>
-                      {getLabel('attemptRecapCompact', {
-                        replacements: {
-                          attemptsUsed,
-                          maxAttempts,
-                        },
-                      })}
-                    </p>
+                    <div className={styles.trialSentenceFeedbackMeta}>
+                      <p className={styles.trialSentenceMetaPill}>
+                        {getLabel('attemptRecapCompact', {
+                          replacements: {
+                            attemptsUsed,
+                            maxAttempts,
+                          },
+                        })}
+                      </p>
+                      <p className={styles.trialSentenceMetaPill}>
+                        {getLabel('insightPointsRecapCompact', {
+                          replacements: { count: insightPoints },
+                        })}
+                      </p>
+                    </div>
                   </div>
                 )}
                 {statement.sentences.map((s) => {
