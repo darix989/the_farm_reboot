@@ -1054,7 +1054,14 @@
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "**[success]Correct![/success]**\n We will come back to this Analysis View later in the tutorial. \nFor now, continue the tutorial by **[accent]closing the analysis view[/accent]**.",
+            "message": "**[success]Correct![/success]**\n You have earned **[accent]1 Insight Point[/accent]** now.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": { "kind": "analysis_action", "action": "close" },
+            "modal": { "size": "small", "position": "bottomCenter" }
+          },
+          {
+            "message": "We will come back to this Analysis View later in the tutorial. \nFor now, continue the tutorial by **[accent]closing the analysis view[/accent]**.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "close" },
