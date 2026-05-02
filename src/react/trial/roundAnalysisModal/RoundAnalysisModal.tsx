@@ -1013,7 +1013,11 @@ function HelpConfirmDialog({
           <TrialTextButton size="compact" onClick={onCancel}>
             {getLabel('cancel')}
           </TrialTextButton>
-          <TrialTextButton size="compact" onClick={onConfirm}>
+          <TrialTextButton
+            size="compact"
+            onClick={onConfirm}
+            data-tutorial-analysis-action="help_confirm"
+          >
             {getLabel('confirm')}
           </TrialTextButton>
         </div>
@@ -1147,8 +1151,11 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   };
 
   const handleHelpConfirm = () => {
+    const t = { kind: 'analysis_action', action: 'help_confirm' } as const;
+    if (!canRunTutorialTargetAction(t)) return;
     onSpendInsightPoint();
     setShowHelpConfirm(false);
+    notifyTutorialTargetAction(t);
   };
 
   const statType =

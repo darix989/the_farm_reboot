@@ -267,7 +267,13 @@ export type TutorialTargetRef =
   | { kind: 'analysis_fallacy'; fallacyId: LogicalFallacyId }
   | {
       kind: 'analysis_action';
-      action: 'help' | 'submit_guess' | 'no_fallacies' | 'no_fallacies_confirm' | 'close';
+      action:
+        | 'help'
+        | 'help_confirm'
+        | 'submit_guess'
+        | 'no_fallacies'
+        | 'no_fallacies_confirm'
+        | 'close';
     }
   /** Attempts remaining + Insight Points recap row in the analysis modal body. */
   | { kind: 'analysis_resources' };
