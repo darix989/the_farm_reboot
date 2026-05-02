@@ -213,6 +213,11 @@
   height: 100%;
 }
 
+/* Extra separation from the fallacy picker column (two-column layout only). */
+.trialAnalysisSplit:not(.trialAnalysisSplitSingle) .trialLeftMain {
+  padding-right: 1rem;
+}
+
 .trialRightMain {
   grid-area: rightMain;
   display: flex;

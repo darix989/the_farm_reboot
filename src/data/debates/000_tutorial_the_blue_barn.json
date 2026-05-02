@@ -998,6 +998,10 @@
             "targetComponent": { "kind": "analysis_action", "action": "help" }
           },
           {
+            "message": "The amount of Insight Points and the available Attempts are displayed in the bottom right corner of the Analysis View.",
+            "modal": { "size": "medium", "position": "bottomRight" }
+          },
+          {
             "message": "**[accent]Spotting fallacies[/accent]** will also give you a deeper understanding of what's going on within the other side's statements, which also means a way to **[success]weaken the other's side statements[/success]**.",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
