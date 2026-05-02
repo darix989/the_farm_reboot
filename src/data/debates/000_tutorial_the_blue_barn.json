@@ -710,7 +710,7 @@
     {
       "id": "intro",
       "trigger": { "event": "introduction:start" },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -781,7 +781,7 @@
     {
       "id": "intro-summary",
       "trigger": { "event": "introduction:summary" },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -799,7 +799,7 @@
         "event": "round:start",
         "where": { "roundId": "round-1" }
       },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -850,7 +850,7 @@
           "roundId": "round-2"
         }
       },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -894,7 +894,7 @@
         "event": "round:recap:open",
         "where": { "roundNumber": 2, "roundId": "round-2" }
       },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -917,7 +917,7 @@
           "type": "crossfire"
         }
       },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -987,7 +987,7 @@
     {
       "id": "analysis-select-sentence-first-wrong-guess",
       "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 1 } },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -1109,7 +1109,7 @@
           "targetId": "r3-opt-a"
         }
       },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -1177,7 +1177,7 @@
         "event": "tutorial:end",
         "where": { "tutorialId": "analysis-post-submit-guess" }
       },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -1199,7 +1199,7 @@
           "roundId": "round-4"
         }
       },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
@@ -1231,7 +1231,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Whenever you need help while analyzing a statement, you can click the **[accent]Insights/Help[/accent]** button.\n\n This is how you spend **[success]Insights[/success]** during analysis.\n\n When you have at least **[success]2 Insights[/success]**, you can trade them to **[accent]reveal which sentences hide fallacies[/accent]** on the statement you are inspecting.\n\n The same button label shows **[accent]your balance[/accent]** and the **[accent]cost[/accent]** (for example **[muted](2/2)[/muted]** when you are ready to spend both).",
+            "message": "Whenever you need help while analyzing a statement, you can click the **[accent]Insights/Help[/accent]** button.\n\n This is how you spend **[success]Insights Points[/success]** during analysis.\n\n When you have at least **[success]2 Insights[/success]**, you can trade them to **[accent]reveal which sentences hide fallacies[/accent]** on the statement you are inspecting.\n\n The same button label shows **[accent]your balance[/accent]** and the **[accent]cost[/accent]** (for example **[muted](2/2)[/muted]** when you are ready to spend both).",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "analysis_action", "action": "help" },
             "modal": { "size": "large", "position": "topRight" }
@@ -1251,7 +1251,7 @@
             "modal": { "size": "smallTight", "position": "topRight" }
           },
           {
-            "message": "This will **[success]highlight[/success]** which sentences (if any) that hide fallacies — see the mark on bottom right corner of **[warning]Barnaby's crossfire question[/warning]**.",
+            "message": "This will **[success]highlight[/success]** which sentences (if any) that hide fallacies — see the **[warning]mark[/warning]** on bottom right corner of **[warning]Barnaby's crossfire question[/warning]**.",
             "onlyForward": true,
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r4q-1" },
@@ -1265,7 +1265,7 @@
             "modal": { "preset": "analysisSentencesSelection" }
           },
           {
-            "message": "Pick **[warning]ad hominem[/warning]**.",
+            "message": "Pick **[warning]Ad Hominem[/warning]**.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "ad-hominem" },
@@ -1333,7 +1333,7 @@
           "roundId": "round-5"
         }
       },
-      "disabled": true,
+      "disabled": false,
       "tutorial": {
         "steps": [
           {
