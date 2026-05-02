@@ -64,7 +64,7 @@
 .trialAreaTitle {
   box-sizing: border-box;
   display: flex;
-  height: 5vh;
+  height: calc(5vh * 1.5);
   flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
@@ -83,7 +83,7 @@
 
 .trialDebateLogTitleScore {
   flex-shrink: 0;
-  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1) * 1.5);
   line-height: 1.375;
   text-align: right;
   white-space: nowrap;
