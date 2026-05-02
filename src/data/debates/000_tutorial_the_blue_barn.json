@@ -1061,8 +1061,8 @@
           {
             "message": "**[success]Correct![/success]**\n You have earned **[accent]1 Insight Point[/accent]** now.",
             "onlyForward": true,
-            "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "close" },
+            "interactionMode": "modal_only",
+            "targetComponent": { "kind": "analysis_resources" },
             "modal": { "size": "small", "position": "bottomCenter" }
           },
           {
