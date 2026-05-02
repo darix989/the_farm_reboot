@@ -13,6 +13,8 @@ import type {
 
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
 import inspectIcon from '../../../static/icons/inspect.svg';
+import cleanIcon from '../../../static/icons/clean.svg';
+import spotIcon from '../../../static/icons/spot.svg';
 import genericFallacyIcon from '../../../static/icons/fallacies/generic_fallacy.svg';
 import { getLogicalFallacyIconSrc } from '../utils/logicalFallacyIcons';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
@@ -827,7 +829,7 @@ function NpcRoundAnalysis({
                     replacements: { count: insightPoints, cost: HELP_INSIGHT_COST.toString() },
                   })}
                 >
-                  <img src={inspectIcon} alt="" className={styles.trialHelpButtonIcon} />
+                  <img src={inspectIcon} alt="" className={styles.trialActionButtonIcon} />
                   {getLabel('helpButton', {
                     replacements: { count: insightPoints, cost: HELP_INSIGHT_COST.toString() },
                   })}
@@ -838,6 +840,7 @@ function NpcRoundAnalysis({
                   onClick={handleNoFallacies}
                   data-tutorial-analysis-action="no_fallacies"
                 >
+                  <img src={cleanIcon} alt="" className={styles.trialActionButtonIcon} />
                   {getLabel('noFallaciesInStatement')}
                 </TrialTextButton>
                 <TrialTextButton
@@ -846,6 +849,7 @@ function NpcRoundAnalysis({
                   disabled={totalPickCount === 0}
                   data-tutorial-analysis-action="submit_guess"
                 >
+                  <img src={spotIcon} alt="" className={styles.trialActionButtonIcon} />
                   {getLabel('submitGuess')}
                 </TrialTextButton>
               </div>
