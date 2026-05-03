@@ -4,6 +4,10 @@ import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TrialTextButton from '../components/TrialTextButton';
+import {
+  canRunTutorialTargetAction,
+  notifyTutorialTargetAction,
+} from '../../tutorial/tutorialInteractionGuard';
 import { debateEventBus } from '../utils/debateEventBus';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import {
@@ -164,7 +168,21 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
         </ScrollFadeContainer>
 
         <div className={styles.recapFooter}>
-          <TrialTextButton onClick={onClose}>{getLabel('continue')}</TrialTextButton>
+          <TrialTextButton
+            onClick={() => {
+              const target = { kind: 'round_recap_action', action: 'continue' } as const;
+              // Block dismissal while a tutorial step has `interactionMode: 'modal_only'`
+              // (or targets a different control). `canRunTutorialTargetAction` returns true
+              // when no tutorial is open, or when the active `target_only` step points at
+              // this same Continue button. See `tutorialStore.canRunTargetAction`.
+              if (!canRunTutorialTargetAction(target)) return;
+              onClose();
+              notifyTutorialTargetAction(target);
+            }}
+            data-tutorial-round-recap-action="continue"
+          >
+            {getLabel('continue')}
+          </TrialTextButton>
         </div>
       </div>
     </div>

@@ -13,6 +13,8 @@ export function tutorialTargetEquals(a: TutorialTargetRef, b: TutorialTargetRef)
       return true;
     case 'modal_round_recap_score':
       return true;
+    case 'round_recap_action':
+      return a.action === (b as TutorialTargetRef & { kind: 'round_recap_action' }).action;
     case 'intro_summary_action':
       return a.action === (b as TutorialTargetRef & { kind: 'intro_summary_action' }).action;
     case 'interactive_action':
@@ -46,6 +48,8 @@ export function tutorialTargetSelector(target: TutorialTargetRef): string {
       return '[data-tutorial-debate-log-moderator-score]';
     case 'modal_round_recap_score':
       return '[data-tutorial-recap-section="main"]';
+    case 'round_recap_action':
+      return `[data-tutorial-round-recap-action="${esc(target.action)}"]`;
     case 'intro_summary_action':
       return `[data-tutorial-intro-summary-action="${esc(target.action)}"]`;
     case 'interactive_action':

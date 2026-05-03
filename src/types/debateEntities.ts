@@ -258,6 +258,7 @@ export type TutorialTargetRef =
   /** Moderator opinion emoji (+ insight strip) in the debate log panel header. */
   | { kind: 'debate_log_moderator_score' }
   | { kind: 'modal_round_recap_score' }
+  | { kind: 'round_recap_action'; action: 'continue' }
   | { kind: 'intro_summary_action'; action: 'begin_round_1' | 'close' }
   | { kind: 'interactive_action'; action: 'back' | 'continue' | 'confirm' }
   | { kind: 'interactive_option'; optionId: string }
