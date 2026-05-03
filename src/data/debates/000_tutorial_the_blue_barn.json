@@ -775,7 +775,7 @@
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "The **[accent]Proposition side[/accent]** is the one who proposes the idea.\n\n The **[accent]Opposition side[/accent]** is the one who argues against it. \n\n**[success]The moderator is the one who decides who wins the debate.[/success]**",
+            "message": "The **[accent]Proposition side[/accent]** is the one who proposes the idea.\n\n The **[accent]Opposition side[/accent]** is the one who argues against it. \n\nYou will play as one of these sides during a debate.\n\n**[success]The moderator is the one who decides who wins the debate.[/success]**",
             "modal": { "size": "large", "position": "center" }
           },
           {
@@ -789,7 +789,7 @@
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "The **[accent]emoji score[/accent]** next to **Debate Log** tracks how the moderator leans toward your side as you play.\n\n To its left is the number of **[accent]Insights[/accent]** you have earned so far (we will explain this later in the tutorial).",
+            "message": "The **[accent]emoji score[/accent]** next to **Debate Log** tracks how the moderator leans toward your side as you play.\n\n To its left there is the number of **[accent]Insights Points[/accent]** you have earned so far (we will explain this later in the tutorial).",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "debate_log_moderator_score" },
             "modal": { "size": "large", "position": "center" }
