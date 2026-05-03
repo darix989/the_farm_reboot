@@ -1180,34 +1180,20 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Whenever you need help while analyzing a statement, you can click the **[accent]Insights/Help[/accent]** button.\n\n This is how you spend **[success]Insights Points[/success]** during analysis.\n\n When you have at least **[success]2 Insights[/success]**, you can trade them to **[accent]reveal which sentences hide fallacies[/accent]** on the statement you are inspecting.\n\n The same button label shows **[accent]your balance[/accent]** and the **[accent]cost[/accent]** (for example **[muted](2/2)[/muted]** when you are ready to spend both).",
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "analysis_action", "action": "help" },
-            "modal": { "size": "large", "position": "topRight" }
-          },
-          {
-            "message": "Click the **[accent]Insights button[/accent]** to open the confirmation dialog.",
-            "onlyForward": true,
+            "message": "**[accent]Inspecting a statement[/accent]** spends **[success]Insights[/success]** during analysis. **[accent]By paying the cost of 2 Insights[/accent]** you can reveal which sentences hide fallacies on the statement you are viewing. The label shows your balance and the cost, for example **[muted]2/2[/muted]** means you have 2 Insights and the cost is also of 2 Insights.\n\nTap **[accent]Inspect button[/accent]** to open the confirmation dialog.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "help" },
-            "modal": { "size": "medium", "position": "topRight" }
+            "modal": { "size": "large", "position": "topRight" }
           },
           {
             "message": "Confirm to spend **[success]2 Insights[/success]** and **[accent]reveal fallacious sentences[/accent]** for this statement.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "help_confirm" },
-            "modal": { "size": "smallTight", "position": "topRight" }
+            "modal": { "size": "smallTight", "position": "bottomCenter" }
           },
           {
-            "message": "This will **[success]highlight[/success]** which sentences (if any) that hide fallacies — see the **[warning]mark[/warning]** on bottom right corner of **[warning]Barnaby's crossfire question[/warning]**.",
-            "onlyForward": true,
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r4q-1" },
-            "modal": { "preset": "analysisSentencesSelection" }
-          },
-          {
-            "message": "**[accent]Select[/accent]** that **[warning]highlighted sentence[/warning]** to inspect it and tag fallacies.",
+            "message": "Fallacious lines now show a **[warning]mark[/warning]**. On **[warning]Barnaby's crossfire question[/warning]**, **[accent]select that flagged sentence[/accent]** to inspect it and tag fallacies.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r4q-1" },
@@ -1228,42 +1214,35 @@
             "modal": { "preset": "analysisSubmit" }
           },
           {
-            "message": "**[success]Correct![/success]** \n The question raised by Barnaby hides an **[warning]Ad Hominem fallacy[/warning]**.\n Now that you are aware of that, you will be able to provide a sharper answer! \n Close the analysis.",
+            "message": "**[success]Correct![/success]** Barnaby's question carries **[warning]Ad Hominem[/warning]**. Knowing that helps you answer more sharply.\n\n**[accent]Close[/accent]** the analysis when you are ready.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "close" },
             "modal": { "size": "medium", "position": "bottomCenter" }
           },
           {
-            "message": "Option B is now **[success]unlockable[/success]**. \n\n Click to unlock it.",
+            "message": "**[success]Option B[/success]** is **[success]unlockable[/success]** — tap it once to unlock.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" },
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "**[accent]Click again Option B[/accent]** to select it and read the full response.",
+            "message": "Tap **[accent]Option B[/accent]** again to select it and load that reply.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" },
             "modal": { "size": "small", "position": "topRight" }
           },
           {
-            "message": "You can now read the full text of the **[success]unlocked option[/success]** in the **[accent]Wizard Panel[/accent]**.",
-            "onlyForward": true,
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "small", "position": "topLeft" }
-          },
-          {
-            "message": "Press **[success]Continue[/success]** to play it.",
+            "message": "Read the full **[success]unlocked option[/success]** in the **[accent]Wizard Panel[/accent]**, then **[accent]Continue[/accent]** to play it.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": { "size": "small", "position": "topLeft" }
           },
           {
-            "message": "This round was more effective. We can see **[success]Moderator's favor[/success]** has increased for you!",
+            "message": "This round was effective! We can see **[success]Moderator's favor[/success]** has increased for you!",
             "onlyForward": true,
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "modal_round_recap_score" },
