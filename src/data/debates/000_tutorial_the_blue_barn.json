@@ -1073,15 +1073,11 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**[accent]Analyzing your own words[/accent] is important as well.**\n\nYour **[accent]question[/accent]** is still a statement, and it can be **[success]clear and fair[/success]**, or it can **[warning]hide a logical fallacy[/warning]** just like some of the other side's lines.",
+            "message": "**[accent]Analyzing your own words[/accent]** still counts: your **[accent]question[/accent]** is a statement that can stay **[success]clear and fair[/success]** or **[warning]hide a fallacy[/warning]** like the other side's lines.\n\nSelf-checking is part of debating, and a correct read **[success]earns Insights[/success]** the same way as analyzing **[warning]Barnaby's[/warning]** wording.",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "Double checking yourself is part of debating — and a correct read **[success]earns Insights[/success]** the same way as analyzing Barnaby's statements.",
-            "modal": { "size": "medium", "position": "bottomRight" }
-          },
-          {
-            "message": "It seems your own statement is actually **[accent]fallacy-free[/accent]**. \n\nPress **[accent]Clean[/accent]** to record that there are no fallacies here.",
+            "message": "Here your line is **[accent]fallacy-free[/accent]**. Press **[accent]Clean[/accent]** to record **[accent]no fallacies[/accent]** for this statement.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "no_fallacies" },
@@ -1109,14 +1105,7 @@
             "modal": { "size": "small", "position": "bottomCenter" }
           },
           {
-            "message": "Now you can see you have an updated balance of **[accent]2 Insights[/accent]**.",
-            "onlyForward": true,
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "debate_log_moderator_score" },
-            "modal": { "size": "medium", "position": "topLeft" }
-          },
-          {
-            "message": "Press **[accent]Continue[/accent]** to proceed.",
+            "message": "You now have **[accent]2 Insights[/accent]** beside **Debate Log**. **[accent]Continue[/accent]** when you are ready.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": { "size": "small", "position": "bottomCenter" }
