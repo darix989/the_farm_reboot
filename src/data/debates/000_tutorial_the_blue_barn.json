@@ -831,36 +831,19 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**[accent]Round 1[/accent]** is about **[accent]Proposition side's Constructive Opening[/accent]**.\n\n Proposition side just shares the idea they want to promote.",
+            "message": "**[accent]Round 1[/accent]** is the **[accent]Proposition side's Opening Constructive[/accent]** — that side presents the idea they want to promote. In this debate, read **[warning]Barnaby's opening statement[/warning]** in the **[accent]Wizard Panel[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "For this debate, we are going to have **[warning]Barnaby's opening statement[/warning]**.\n\n Read it in the **[accent]Wizard Panel[/accent]**. ",
+            "message": "An opening constructive is that side's argument pass; **[accent]Rebuttal[/accent]** and **[accent]Closing Constructive[/accent]** work in a similar way. **[accent]Round 1 always belongs to the Proposition side[/accent]** — when you play proposition elsewhere, **[accent]you[/accent]** take Round 1.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "An Opening Constructive consists of a statement where that side presents their arguments.\n\n **[accent]Rebuttal[/accent]** and **[accent]Closing Constructive[/accent]** rounds are played in a very similar way.",
-            "interactionMode": "modal_only",
-            "modal": { "size": "medium", "position": "topLeft" }
-          },
-          {
-            "message": "Round 1 always belongs to the **[accent]Proposition side[/accent]**, so once you play this role in any debate, you will play Round 1.",
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "medium", "position": "topLeft" }
-          },
-          {
-            "message": "Remember, you can rely on **[accent]Debate Log Panel[/accent]** to read everything happened so far, ordered by **[accent]round[/accent]**.",
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "debate_log" },
-            "modal": { "size": "medium", "position": "topLeft" }
-          },
-          {
-            "message": "Now, let's **[accent]analyze the opening statement[/accent]**. \n\n Click the **[accent]Magnifying Glass Icon[/accent]**, which we will call **[accent]Analyze button[/accent]**.",
+            "message": "The **[accent]Debate Log[/accent]** holds everything so far, **[accent]ordered by round[/accent]**. When you're ready, click the **[accent]Analyze[/accent]** control (**[accent]magnifying glass[/accent]**) on Round 1.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
             "modal": { "size": "medium", "position": "topLeft" }
