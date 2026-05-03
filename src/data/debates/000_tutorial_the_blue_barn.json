@@ -1190,7 +1190,7 @@
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "help_confirm" },
-            "modal": { "size": "smallTight", "position": "bottomRight" }
+            "modal": { "size": "smallTightTall", "position": "bottomRight" }
           },
           {
             "message": "Fallacious lines now show a **[warning]mark[/warning]**. On **[warning]Barnaby's crossfire question[/warning]**, **[accent]select that flagged sentence[/accent]** to inspect it and tag fallacies.",
