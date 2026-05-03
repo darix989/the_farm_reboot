@@ -771,39 +771,22 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**Welcome!** This is the beginning of the **[accent]debate's tutorial[/accent]**. \n\nA debate has **[accent]3 main actors[/accent]**:\n\n the **[accent]1) proposition side[/accent]**, the **[accent]2) opposition side[/accent]** and the **[accent]3) moderator[/accent]**.",
+            "message": "**Welcome!** This is the **[accent]debate tutorial[/accent]**.\n\nA debate has **[accent]three roles[/accent]**: the **[accent]Proposition side[/accent]** proposes the idea; the **[accent]Opposition side[/accent]** argues against it; and the **[accent]moderator[/accent]** picks the winner. **[success]You always play one of the two sides.[/success]**",
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "The **[accent]Proposition side[/accent]** is the one who proposes the idea.\n\n The **[accent]Opposition side[/accent]** is the one who argues against it. \n\nYou will play as one of these sides during a debate.\n\n**[success]The moderator is the one who decides who wins the debate.[/success]**",
-            "modal": { "size": "large", "position": "center" }
-          },
-          {
-            "message": "For this tutorial, **[accent]you[/accent]** will play as the **[accent]opposition side[/accent]**. \n\n So, the **[warning]other side[/warning]** will be the **[warning]proposition side[/warning]**. \n\n In order to win the moderator's favour, you need to bring on the table the most **[accent]convincing arguments[/accent]** that make the proposition idea look less convincing and not worth it.",
+            "message": "You are **[accent]Pip[/accent]** on the **[accent]Opposition side[/accent]**, arguing the farm should cover **[accent]something more urgent[/accent]** first, while **[warning]Barnaby[/warning]** on the **[warning]Proposition side[/warning]** pushes the **[warning]blue-barn plan[/warning]** to make the farm more colorful and happy.\n\nTo sway the moderator, **[accent]analyze statements[/accent]**, **[accent]spot logical fallacies[/accent]**, and choose **[accent]responses[/accent]** that **[success]undercut the rival case[/success]**.",
             "interactionMode": "modal_only",
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "To win a debate, you'll **[accent]analyze statements[/accent]**; **[accent]spot logical fallacies[/accent]**; and choose **[accent]statements[/accent]** that **[success]win the moderator's favour[/success]**.",
-            "interactionMode": "modal_only",
-            "modal": { "size": "large", "position": "center" }
-          },
-          {
-            "message": "The **[accent]emoji score[/accent]** next to **Debate Log** tracks how the moderator leans toward your side as you play.\n\n To its left there is the number of **[accent]Insights Points[/accent]** you have earned so far (we will explain this later in the tutorial).",
+            "message": "The **[accent]emoji score[/accent]** beside **Debate Log** shows how the moderator leans; **[accent]Insights Points[/accent]** sit just to its left (explained later).\n\nThe match runs **[accent]10 rounds[/accent]** — introduction, opening constructive, rebuttal, crossfire, closing constructive — and the tutorial will walk you through them.\n\nUse **[accent]Continue[/accent]** / **[accent]Got it[/accent]** to advance and **[accent]Back[/accent]** to revisit a step when it appears.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "debate_log_moderator_score" },
             "modal": { "size": "large", "position": "center" }
           },
           {
-            "message": "A debate is made of **[accent]10 rounds[/accent]**.\n Rounds are of different types: **[accent]introduction; opening constructive; rebuttal; crossfire; closing constructive.[/accent]**\n\n You will be guided through the process. \n\n Press **[accent]Continue[/accent]** and **[accent]Got it[/accent]** to go forward in the tutorial.\n Press **[accent]Back[/accent]** to go one step back in the tutorial (when available).",
-            "modal": { "size": "large", "position": "center" }
-          },
-          {
-            "message": "In this tutorial debate:\n\n **[warning]Barnaby[/warning]** represents the **[warning]Proposition side[/warning]** and pushes the **[warning]blue-barn plan[/warning]** to make the farm more colorful and happy. \n\n On the other hand, **[accent]Pip (you)[/accent]** represents the **[accent]Opposition side[/accent]** and argue to use the farm's savings for **[accent]something more urgent[/accent]** first.",
-            "modal": { "size": "large", "position": "center" }
-          },
-          {
-            "message": "The debate always starts with the **[accent]Moderator's Introduction[/accent]**, which you will read in the **[accent]Wizard Panel[/accent]**.",
+            "message": "The debate opens with the **[accent]Moderator's Introduction[/accent]** in the **[accent]Wizard Panel[/accent]** — the same text is stored in the **[accent]Debate Log[/accent]** as the **[accent]full round-by-round history[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "wizard" },
             "modal": {
@@ -815,19 +798,7 @@
             }
           },
           {
-            "message": "The Introduction details will also be available in the **[accent]Debate Log Panel[/accent]**, which represents the **[accent]full history of the debate[/accent]**.",
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "debate_log" },
-            "modal": {
-              "x": 0.125,
-              "y": 0.06,
-              "width": 0.4,
-              "height": 0.4,
-              "pivot": "topLeft"
-            }
-          },
-          {
-            "message": "Once you have a clear picture of the debate's main topic, start the actual debate by pressing **[accent]Continue[/accent]**.",
+            "message": "When you're ready, start the debate with **[accent]Continue[/accent]**.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": { "size": "medium", "position": "topLeft" }
