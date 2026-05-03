@@ -932,19 +932,13 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Now let's see a different kind of round: **[accent]crossfire[/accent]**. \n\n In a crossfire, there is an **[accent]interaction between the 2 sides[/accent]**. One side asks a question, the other answers.",
-            "modal": { "size": "medium", "position": "topLeft" },
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" }
-          },
-          {
-            "message": "In this round, you as the **[accent]Opposition side[/accent]** will ask a **[accent]question[/accent]** to the **[warning]Proposition side[/warning]**. \n\n Read the possible questions in the **[accent]Interactive Panel[/accent]**.",
+            "message": "**[accent]Crossfire[/accent]** is a back-and-forth: one side **[accent]asks[/accent]**, the other **[accent]answers[/accent]**. Here **[accent]you[/accent]** on the **[accent]Opposition side[/accent]** put a **[accent]question[/accent]** to the **[warning]Proposition side[/warning]** — review the options in the **[accent]Interactive Panel[/accent]**.",
             "modal": { "size": "medium", "position": "topLeft" },
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "panel", "panel": "interactive" }
           },
           {
-            "message": "Let's pick the **[accent]first question[/accent]**.",
+            "message": "Choose the **[accent]first question[/accent]**.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_option", "optionId": "r3-opt-a" },
             "modal": { "size": "small", "position": "topRight" }
@@ -963,31 +957,13 @@
             "modal": { "size": "small", "position": "bottomCenter" }
           },
           {
-            "message": "Round 3 is not finished yet. Now, we can also read the **[warning]answer[/warning]** from the **[accent]Wizard Panel[/accent]**. ",
+            "message": "Read **[warning]Barnaby's answer[/warning]** in the **[accent]Wizard Panel[/accent]**. The **[accent]Debate Log[/accent]** now lists **[accent]two Analyze icons[/accent]** for this round — your question and that reply. A careful read still earns **[accent]bonuses[/accent]** toward **[success]winning the debate[/success]**.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "targetComponent": { "kind": "panel", "panel": "debate_log" },
             "modal": { "size": "medium", "position": "topLeft" }
           },
           {
-            "message": "At this point, you start to have a few possible actions to do. \n You can analyze both your own question and the answer from the **[warning]Proposition side[/warning]**.",
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "interactive" },
-            "modal": { "size": "medium", "position": "topLeft" }
-          },
-          {
-            "message": "Indeed, you can see **[accent]2 magnifying glass icons[/accent]** in the **[accent]Debate Log Panel[/accent]**. One for your own question, one for the answer from the **[warning]Proposition side[/warning]**.",
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "interactive" },
-            "modal": { "size": "medium", "position": "topLeft" }
-          },
-          {
-            "message": "Spotting fallacies, or just reading correctly a statement as fallacy-free will give you **[accent]bonuses[/accent]** that will contribute to **[success]win the debate[/success]**.",
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "interactive" },
-            "modal": { "size": "medium", "position": "topLeft" }
-          },
-          {
-            "message": "Let's analyze your own question.",
+            "message": "Open analysis on **[accent]your own question[/accent]** first.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-3" },
             "modal": { "size": "medium", "position": "topLeft" }
