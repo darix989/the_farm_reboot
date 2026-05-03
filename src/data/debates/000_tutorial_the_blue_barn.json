@@ -1002,52 +1002,31 @@
       "tutorial": {
         "steps": [
           {
-            "message": "This is the **[accent]Statement Analysis View[/accent]**. \n\n**[accent]Successfully analyzing a statement[/accent]** will give you **[success]Insights Points[/success]** that will contribute to **[success]win the debate[/success]**.",
+            "message": "This is the **[accent]Statement Analysis View[/accent]**, where every **[accent]statement[/accent]** unfolds as **[accent]one or more sentences[/accent]** that may include up to **[warning]two fallacies[/warning]** or **[accent]no fallacies[/accent]**.",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "A statement is made of **[accent]one or more sentences[/accent]**. \n **[accent]Each sentence[/accent]** can have up to **[warning]two fallacies[/warning]**. \n It's also possible that the **[accent]whole statement does not contain any fallacy at all[/accent]**.",
+            "message": "The **[accent]whole statement[/accent]** may also contain **[accent]no fallacies[/accent]** at all. Every sentence in it can be clean together, so there is nowhere in the text that needs a fallacy tag.",
             "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "**[accent]Analyzing correctly a statement[/accent]** will give you **[accent]Insights[/accent]**.\n\n Once you have at least **[success]2 Insights[/success]**, you can **[accent]reveal which sentences contain fallacies[/accent]** on the active statement.\n\n Insights are gathered during the debate and can be used for future analyses.",
-            "modal": { "size": "large", "position": "topRight" }
+            "message": "Perfect Analysis earns **[success]Insights[/success]**. Spotting fallacies in sentences also helps you to access **[accent]bonus-locked statement options[/accent]** when it is your turn to speak.",
+            "modal": { "size": "medium", "position": "bottomRight" }
           },
           {
-            "message": "By Clicking the **[accent]Insights/Help button[/accent]** it will be revealed which sentences contain fallacies, if any. \n\n The Insights/Help button label will show you how many Insights you currently have and how many are required to reveal the fallacies.\n\n Currently you have **[accent]0 Insights[/accent]**.",
+            "message": "Use the **[accent]Inspect button[/accent]** when you can afford the Inspect Points cost: this will flag fallacy-bearing sentences, if any. The Inspect button label shows your balance to the price; you currently have **[accent]0 Insights[/accent]**, and analizying this statement would cost 2 Insights. \n\nBut now, let's see how to analyze a statement.",
             "modal": { "size": "large", "position": "topRight" },
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "analysis_action", "action": "help" }
           },
           {
-            "message": "The amount of **[accent]Insights[/accent]** and the **[accent]available Attempts[/accent]** are displayed in the bottom right corner of the Analysis View.",
-            "modal": { "size": "medium", "position": "bottomRight" },
-            "targetComponent": { "kind": "analysis_resources" }
-          },
-          {
-            "message": "**[accent]Spotting fallacies[/accent]** will also give you a deeper understanding of what's going on within the other side's statements, which also means a way to **[success]weaken the other's side statements[/success]**.",
-            "modal": { "size": "medium", "position": "bottomRight" }
-          },
-          {
-            "message": "How does that happen? Once it will be your turn to speak you will be able to **[success]use bonus-locked statements[/success]** on top of regular statements, and these will **[success]influence more effectively the moderator's opinion[/success]**.",
-            "modal": { "size": "medium", "position": "bottomRight" }
-          },
-          {
-            "message": "**[accent]Choosing statements[/accent]** will be clarified **[accent]later[/accent]** in the tutorial.",
-            "modal": { "size": "medium", "position": "bottomRight" }
-          },
-          {
-            "message": "In this **[accent]Analysis View[/accent]** you **[warning]first choose a sentence[/warning]** to inspect, then **[warning]pick fallacies[/warning]** from the grid that might apply to it. You can tag **[accent]up to two[/accent]** fallacies on the same sentence (click again to remove one).",
-            "modal": { "size": "medium", "position": "bottomRight" }
-          },
-          {
-            "message": "When you are satisfied, click **[accent]Spot[/accent]** button to submit your guess, or use the **[muted]No Fallacies[/muted]** button if you think the whole statement is fallacy free. \nThose are the two actions that **[success]finalize[/success]** the analysis.",
+            "message": "**[warning]Select a sentence[/warning]**, then **[warning]pick fallacies[/warning]** from the grid (up to **[accent]two[/accent]** per sentence; click again to clear a tag). Finish with **[accent]Spot[/accent]** or **[muted]No Fallacies[/muted]** if the whole statement is clean — those **[success]finalize[/success]** the analysis.",
             "interactionMode": "modal_only",
             "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
             "modal": { "size": "medium", "position": "bottomLeft" }
           },
           {
-            "message": "As first thing, select the **[accent]sentence[/accent]** you want to tag with fallacies. (click the highlighted sentence)",
+            "message": "Click the highlighted **[accent]sentence[/accent]** to begin.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-1" },
             "modal": { "preset": "analysisSentencesSelection" }
@@ -1067,7 +1046,7 @@
             "modal": { "preset": "analysisSubmit" }
           },
           {
-            "message": "Mmmm ... **[warning]that's not quite right.[/warning]** You still have **[accent]2 attempts left[/accent]**.\n\n Thinking again... Maybe the whole statement is **[accent]fallacy free[/accent]?** \nTry **[accent]Clean[/accent]** button this time.",
+            "message": "Mmmm ... **[warning]that's not quite right.[/warning]** You still have **[accent]2 attempts left[/accent]**.\n\n Thinking again... Maybe the whole statement is **[accent]fallacy free[/accent]?** Try **[accent]Clean[/accent]** button this time.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "no_fallacies" },
@@ -1088,20 +1067,14 @@
             "modal": { "size": "small", "position": "bottomCenter" }
           },
           {
-            "message": "We will come back to this Analysis View later in the tutorial. \nFor now, continue the tutorial by **[accent]closing the analysis view[/accent]**.",
+            "message": "We will come back to this Analysis View later in the tutorial. For now, continue the tutorial by **[accent]closing the analysis view[/accent]**.",
             "onlyForward": true,
             "interactionMode": "target_only",
             "targetComponent": { "kind": "analysis_action", "action": "close" },
             "modal": { "size": "small", "position": "bottomCenter" }
           },
           {
-            "message": "The newly earned Insights balance is visible in the **[accent]Debate Log Panel[/accent]**.",
-            "interactionMode": "modal_only",
-            "targetComponent": { "kind": "debate_log_moderator_score" },
-            "modal": { "size": "small", "position": "bottomCenter" }
-          },
-          {
-            "message": "Press **[accent]Continue[/accent]** to proceed to **[accent]Round 2[/accent]**.",
+            "message": "Your new **[accent]Insights[/accent]** balance shows beside **Debate Log**. **[accent]Continue[/accent]** to **[accent]Round 2[/accent]**.",
             "interactionMode": "target_only",
             "targetComponent": { "kind": "interactive_action", "action": "continue" },
             "modal": { "size": "small", "position": "bottomCenter" }
