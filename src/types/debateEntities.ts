@@ -110,6 +110,14 @@ export interface NpcRoundEntry {
   type: StatementType;
   speakerId: string;
   statement: Statement;
+  /**
+   * Integer delta in [-PLAYER_OPTION_IMPACT_ABS_MAX, PLAYER_OPTION_IMPACT_ABS_MAX] applied
+   * to the moderator score from the player's perspective. Negative when the NPC's
+   * statement is effective for the opposing side (the moderator drifts away from the
+   * player), 0 when ineffective, positive when self-defeating (e.g. dense with fallacies)
+   * and the moderator drifts toward the player.
+   */
+  impact: number;
 }
 
 /** Links one NPC response to the player option that triggered it. */

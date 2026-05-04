@@ -174,10 +174,35 @@ function reduceWorkflow(
   const currentRound = scenario.rounds[state.currentRoundIndex];
   if (!currentRound) return state;
 
-  // --- NPC speaking: player clicks Continue to advance ---
+  // --- NPC speaking: player clicks Continue to enter the round recap ---
   if (state.gamePhase === 'npc_speaking') {
     if (action.type !== 'continue') return state;
-    return advanceToNextRound(state, scenario, state.completedRounds, state.totalScore);
+    if (currentRound.kind !== 'npc') return state;
+
+    // Record the NPC round impact (player-perspective signed delta) the same way we
+    // record a player round, so the recap and the overall score show a consistent
+    // history regardless of round kind.
+    const newCompleted: CompletedRound[] = [
+      ...state.completedRounds,
+      {
+        roundId: currentRound.id,
+        roundNumber: currentRound.roundNumber,
+        // No player option was chosen on an NPC round; use the round id as a stable
+        // marker (no consumer treats this as a PlayerOption id, but keeping the field
+        // populated avoids leaking optional types into the recap rendering path).
+        optionId: currentRound.id,
+        impact: currentRound.impact,
+      },
+    ];
+    const newScore = state.totalScore + currentRound.impact;
+
+    return {
+      ...state,
+      past: pushHistory(state),
+      gamePhase: 'round_recap',
+      completedRounds: newCompleted,
+      totalScore: newScore,
+    };
   }
 
   // --- Player choosing: player selects one of the 3 options ---

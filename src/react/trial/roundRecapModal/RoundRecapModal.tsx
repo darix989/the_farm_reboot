@@ -74,19 +74,30 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
     ? statementText(wf.activeOpponentResponse.statement.sentences)
     : '';
 
-  const roundHeading =
-    round && round.kind === 'player'
-      ? getLabel('roundHeadingWithStatementType', {
-          replacements: {
-            roundNumber: round.roundNumber,
-            statementType: statementTypeLabel(round.type),
-          },
-        })
-      : getLabel('roundRecap');
+  const roundHeading = round
+    ? getLabel('roundHeadingWithStatementType', {
+        replacements: {
+          roundNumber: round.roundNumber,
+          statementType: statementTypeLabel(round.type),
+        },
+      })
+    : getLabel('roundRecap');
 
+  // NPC round body: speaker name + statement text shown in place of "Your statement".
+  const npcSpeakerName =
+    round && round.kind === 'npc' ? getSpeakerName(debate, round.speakerId) : '';
+  const npcStatementBody =
+    round && round.kind === 'npc' ? statementText(round.statement.sentences) : '';
+
+  // `recap` describes a completed round we can render impact for. Both player and NPC
+  // rounds qualify now; the modal opens after every round (introduction excluded).
   const recap =
-    round && round.kind === 'player' && chosen && lastCompleted
-      ? { round, chosen, lastCompleted }
+    round && lastCompleted
+      ? round.kind === 'player' && chosen
+        ? { kind: 'player' as const, round, chosen, lastCompleted }
+        : round.kind === 'npc'
+          ? { kind: 'npc' as const, round, lastCompleted }
+          : null
       : null;
 
   const activeRoundImpactAriaLabel = recap
@@ -129,12 +140,23 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
         <ScrollFadeContainer isModal className={styles.recapContent}>
           {recap ? (
             <>
-              <div className={styles.recapSection}>
-                <p className={styles.recapSectionLabel}>{getLabel('yourStatement')}</p>
-                <p className={styles.recapBody}>{choicePreview}</p>
-              </div>
+              {recap.kind === 'player' ? (
+                <div className={styles.recapSection}>
+                  <p className={styles.recapSectionLabel}>{getLabel('yourStatement')}</p>
+                  <p className={styles.recapBody}>{choicePreview}</p>
+                </div>
+              ) : (
+                <div className={styles.recapSection}>
+                  <p className={styles.recapSectionLabel}>
+                    {getLabel('wizardDetailSpeaks', {
+                      replacements: { name: npcSpeakerName },
+                    })}
+                  </p>
+                  <p className={styles.recapBody}>{npcStatementBody}</p>
+                </div>
+              )}
 
-              {responseBody ? (
+              {recap.kind === 'player' && responseBody ? (
                 <div className={styles.recapSection}>
                   <p className={styles.recapSectionLabel}>
                     {getLabel('opponentResponseHeading', {

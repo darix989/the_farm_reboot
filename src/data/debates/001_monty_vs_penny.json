@@ -20,6 +20,7 @@
       "roundNumber": 1,
       "type": "opening_constructive",
       "speakerId": "monty",
+      "impact": 0,
       "statement": {
         "id": "stmt-r1-monty",
         "speakerId": "monty",
@@ -302,6 +303,7 @@
       "roundNumber": 5,
       "type": "rebuttal",
       "speakerId": "monty",
+      "impact": 0,
       "statement": {
         "id": "stmt-r5-monty",
         "speakerId": "monty",
@@ -578,6 +580,7 @@
       "roundNumber": 9,
       "type": "closing_constructive",
       "speakerId": "monty",
+      "impact": 0,
       "statement": {
         "id": "stmt-r9-monty",
         "speakerId": "monty",

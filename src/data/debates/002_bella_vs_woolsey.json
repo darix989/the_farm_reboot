@@ -83,6 +83,7 @@
       "roundNumber": 2,
       "type": "opening_constructive",
       "speakerId": "woolsey",
+      "impact": 0,
       "statement": {
         "id": "stmt-r2-woolsey",
         "speakerId": "woolsey",
@@ -295,6 +296,7 @@
       "roundNumber": 5,
       "type": "rebuttal",
       "speakerId": "woolsey",
+      "impact": 0,
       "statement": {
         "id": "stmt-r5-woolsey",
         "speakerId": "woolsey",
@@ -571,6 +573,7 @@
       "roundNumber": 9,
       "type": "closing_constructive",
       "speakerId": "woolsey",
+      "impact": 0,
       "statement": {
         "id": "stmt-r9-woolsey",
         "speakerId": "woolsey",

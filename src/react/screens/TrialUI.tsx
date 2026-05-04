@@ -569,6 +569,20 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             body: statementText(response.statement.sentences),
           };
         }
+        // NPC rounds also pass through `round_recap` now (after the player clicks
+        // Continue on `npc_speaking`). Surface the NPC's line in the wizard so the
+        // player can re-read what the moderator just reacted to.
+        const npc = wf.currentNpcRound;
+        if (npc) {
+          return {
+            title: getLabel('wizardDetailSpeaks', {
+              replacements: {
+                name: getSpeakerName(debate, npc.speakerId),
+              },
+            }),
+            body: statementText(npc.statement.sentences),
+          };
+        }
         return {
           title: getLabel('roundRecap'),
           body: getLabel('wizardDetailRoundRecapBody'),

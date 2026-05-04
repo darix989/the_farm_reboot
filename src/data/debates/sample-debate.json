@@ -83,6 +83,7 @@
       "roundNumber": 1,
       "type": "opening_constructive",
       "speakerId": "barnaby",
+      "impact": 0,
       "statement": {
         "id": "stmt-r1-barnaby",
         "speakerId": "barnaby",
@@ -435,6 +436,7 @@
       "roundNumber": 5,
       "type": "rebuttal",
       "speakerId": "barnaby",
+      "impact": 0,
       "statement": {
         "id": "stmt-r5-barnaby",
         "speakerId": "barnaby",
@@ -721,6 +723,7 @@
       "roundNumber": 9,
       "type": "closing_constructive",
       "speakerId": "barnaby",
+      "impact": 0,
       "statement": {
         "id": "stmt-r9-barnaby",
         "speakerId": "barnaby",
