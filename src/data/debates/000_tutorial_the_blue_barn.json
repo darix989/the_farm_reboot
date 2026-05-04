@@ -158,7 +158,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r3-opt-b",
@@ -173,7 +174,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r3-opt-c",
@@ -188,7 +190,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         }
       ]
     },
@@ -215,6 +218,7 @@
           }
         ]
       },
+      "opponentPromptImpact": 0,
       "options": [
         {
           "id": "r4-opt-b",
@@ -417,6 +421,7 @@
           }
         ]
       },
+      "opponentPromptImpact": 0,
       "options": [
         {
           "id": "r7-opt-a",
@@ -594,7 +599,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r8-opt-b",
@@ -609,7 +615,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r8-opt-c",
@@ -629,7 +636,8 @@
                 ]
               }
             ]
-          }
+          },
+          "impact": 0
         }
       ]
     },
@@ -769,29 +777,45 @@
   "tutorials": [
     {
       "id": "intro",
-      "trigger": { "event": "introduction:start" },
+      "trigger": {
+        "event": "introduction:start"
+      },
       "disabled": false,
       "tutorial": {
         "steps": [
           {
             "message": "**Welcome!** This is the **[accent]debate tutorial[/accent]**.\n\nA debate has **[accent]three roles[/accent]**: the **[accent]Proposition side[/accent]** proposes the idea; the **[accent]Opposition side[/accent]** argues against it; and the **[accent]moderator[/accent]** picks the winner. **[success]You always play one of the two sides.[/success]**",
-            "modal": { "size": "large", "position": "center" }
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
           },
           {
             "message": "You are **[accent]Pip[/accent]** on the **[accent]Opposition side[/accent]**, arguing the farm should cover **[accent]something more urgent[/accent]** first, while **[warning]Barnaby[/warning]** on the **[warning]Proposition side[/warning]** pushes the **[warning]blue-barn plan[/warning]** to make the farm more colorful and happy.\n\nTo sway the moderator, **[accent]analyze statements[/accent]**, **[accent]spot logical fallacies[/accent]**, and choose **[accent]responses[/accent]** that **[success]undercut the rival case[/success]**.",
             "interactionMode": "modal_only",
-            "modal": { "size": "large", "position": "center" }
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
           },
           {
             "message": "The **[accent]emoji score[/accent]** beside **Debate Log** shows how the moderator leans; **[accent]Insights Points[/accent]** sit just to its left (explained later).\n\nThe match runs **[accent]10 rounds[/accent]** — introduction, opening constructive, rebuttal, crossfire, closing constructive — and the tutorial will walk you through them.\n\nUse **[accent]Continue[/accent]** / **[accent]Got it[/accent]** to advance and **[accent]Back[/accent]** to revisit a step when it appears.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "debate_log_moderator_score" },
-            "modal": { "size": "large", "position": "center" }
+            "targetComponent": {
+              "kind": "debate_log_moderator_score"
+            },
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
           },
           {
             "message": "The debate opens with the **[accent]Moderator's Introduction[/accent]** in the **[accent]Wizard Panel[/accent]** — the same text is stored in the **[accent]Debate Log[/accent]** as the **[accent]full round-by-round history[/accent]**.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
             "modal": {
               "x": 0.125,
               "y": 0.06,
@@ -803,23 +827,37 @@
           {
             "message": "When you're ready, start the debate with **[accent]Continue[/accent]**.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           }
         ]
       }
     },
     {
       "id": "intro-summary",
-      "trigger": { "event": "introduction:summary" },
+      "trigger": {
+        "event": "introduction:summary"
+      },
       "disabled": false,
       "tutorial": {
         "steps": [
           {
             "message": "Introduction and rounds will have their recap just after they finish.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "intro_summary_action", "action": "begin_round_1" },
-            "modal": { "size": "smallTight", "position": "bottomRight" }
+            "targetComponent": {
+              "kind": "intro_summary_action",
+              "action": "begin_round_1"
+            },
+            "modal": {
+              "size": "smallTight",
+              "position": "bottomRight"
+            }
           }
         ]
       }
@@ -828,7 +866,9 @@
       "id": "round-1-opening-constructive-analyze",
       "trigger": {
         "event": "round:start",
-        "where": { "roundId": "round-1" }
+        "where": {
+          "roundId": "round-1"
+        }
       },
       "disabled": false,
       "tutorial": {
@@ -836,20 +876,38 @@
           {
             "message": "**[accent]Round 1[/accent]** is the **[accent]Proposition side's Opening Constructive[/accent]** — that side presents the idea they want to promote. In this debate, read **[warning]Barnaby's opening statement[/warning]** in the **[accent]Wizard Panel[/accent]**.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           },
           {
             "message": "An opening constructive is that side's argument pass; **[accent]Rebuttal[/accent]** and **[accent]Closing Constructive[/accent]** work in a similar way. **[accent]Round 1 always belongs to the Proposition side[/accent]** — when you play proposition elsewhere, **[accent]you[/accent]** take Round 1.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           },
           {
             "message": "The **[accent]Debate Log[/accent]** holds everything so far, **[accent]ordered by round[/accent]**. When you're ready, click the **[accent]Analyze[/accent]** control (**[accent]magnifying glass[/accent]**) on Round 1.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-1" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-1"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           }
         ]
       }
@@ -870,34 +928,64 @@
           {
             "message": "**[accent]Round 2[/accent]** is about **[accent]Opposition side's constructive opening[/accent]**.\n\n Opposition side just shares their arguments against the proposition.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           },
           {
             "message": "**[accent]Your turn[/accent]**. You have **[accent]3 options[/accent]** to choose from in the interactive panel.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "interactive" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           },
           {
             "message": "Click **[accent]Option A[/accent]** to review it.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_option", "optionId": "r2-opt-a" },
-            "modal": { "size": "small", "position": "topRight" }
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r2-opt-a"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
           },
           {
             "message": "You can read the full text of the **[accent]selected option[/accent]** in the **[accent]Wizard Panel[/accent]**.",
             "onlyForward": true,
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           },
           {
             "message": "After you **[accent]review each option[/accent]** and choose what's best for the debate, just press **[accent]Continue[/accent]** to confirm your choice.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": { "size": "medium", "position": "topRight" }
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topRight"
+            }
           }
         ]
       }
@@ -906,7 +994,10 @@
       "id": "round-2-recap-moderator-sneak-peek",
       "trigger": {
         "event": "round:recap:open",
-        "where": { "roundNumber": 2, "roundId": "round-2" }
+        "where": {
+          "roundNumber": 2,
+          "roundId": "round-2"
+        }
       },
       "disabled": false,
       "tutorial": {
@@ -914,8 +1005,13 @@
           {
             "message": "At the end of your rounds you will get a sneak peek of **[accent]how the moderator was influenced by your statement[/accent]**. \n\n Currently, the moderator is **[warning]neutral[/warning]**.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "modal_round_recap_score" },
-            "modal": { "size": "smallTightTall", "position": "bottomRight" }
+            "targetComponent": {
+              "kind": "modal_round_recap_score"
+            },
+            "modal": {
+              "size": "smallTightTall",
+              "position": "bottomRight"
+            }
           }
         ]
       }
@@ -936,127 +1032,232 @@
         "steps": [
           {
             "message": "**[accent]Crossfire[/accent]** is a back-and-forth: one side **[accent]asks[/accent]**, the other **[accent]answers[/accent]**. Here **[accent]you[/accent]** on the **[accent]Opposition side[/accent]** put a **[accent]question[/accent]** to the **[warning]Proposition side[/warning]** — review the options in the **[accent]Interactive Panel[/accent]**.",
-            "modal": { "size": "medium", "position": "topLeft" },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            },
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "interactive" }
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            }
           },
           {
             "message": "Choose the **[accent]first question[/accent]**.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_option", "optionId": "r3-opt-a" },
-            "modal": { "size": "small", "position": "topRight" }
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r3-opt-a"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
           },
           {
             "message": "You can read the full text of the **[accent]selected question[/accent]** in the **[accent]Wizard Panel[/accent]**.",
             "onlyForward": true,
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           },
           {
             "message": "Press **[accent]Continue[/accent]** to ask the selected question.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": { "size": "small", "position": "bottomCenter" }
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
           },
           {
             "message": "Read **[warning]Barnaby's answer[/warning]** in the **[accent]Wizard Panel[/accent]**. The **[accent]Debate Log[/accent]** now lists **[accent]two Analyze icons[/accent]** for this round — your question and that reply. A careful read still earns **[accent]bonuses[/accent]** toward **[success]winning the debate[/success]**.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "debate_log" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "debate_log"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           },
           {
             "message": "Open analysis on **[accent]your own question[/accent]** first.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-3" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-3"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           }
         ]
       }
     },
     {
       "id": "analysis-select-sentence-first-wrong-guess",
-      "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 1 } },
+      "trigger": {
+        "event": "analysis:open",
+        "where": {
+          "activeRoundNumber": 1
+        }
+      },
       "disabled": false,
       "tutorial": {
         "steps": [
           {
             "message": "This is the **[accent]Statement Analysis View[/accent]**, where every **[accent]statement[/accent]** unfolds as **[accent]one or more sentences[/accent]** that may include up to **[warning]two fallacies[/warning]** or **[accent]no fallacies[/accent]**.",
-            "modal": { "size": "medium", "position": "bottomRight" }
+            "modal": {
+              "size": "medium",
+              "position": "bottomRight"
+            }
           },
           {
             "message": "The **[accent]whole statement[/accent]** may also contain **[accent]no fallacies[/accent]** at all. Every sentence in it can be clean together, so there is nowhere in the text that needs a fallacy tag.",
-            "modal": { "size": "medium", "position": "bottomRight" }
+            "modal": {
+              "size": "medium",
+              "position": "bottomRight"
+            }
           },
           {
             "message": "Perfect Analysis earns **[success]Insights[/success]**. Spotting fallacies in sentences also helps you to access **[accent]bonus-locked statement options[/accent]** when it is your turn to speak.",
-            "modal": { "size": "medium", "position": "bottomRight" }
+            "modal": {
+              "size": "medium",
+              "position": "bottomRight"
+            }
           },
           {
             "message": "Use the **[accent]Inspect button[/accent]** when you can afford the Inspect Points cost: this will flag fallacy-bearing sentences, if any. The Inspect button label shows your balance to the price; you currently have **[accent]0 Insights[/accent]**, and analizying this statement would cost 2 Insights. \n\nBut now, let's see how to analyze a statement.",
-            "modal": { "size": "large", "position": "topRight" },
+            "modal": {
+              "size": "large",
+              "position": "topRight"
+            },
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "analysis_action", "action": "help" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "help"
+            }
           },
           {
             "message": "**[warning]Select a sentence[/warning]**, then **[warning]pick fallacies[/warning]** from the grid (up to **[accent]two[/accent]** per sentence; click again to clear a tag). Finish with **[accent]Spot[/accent]** or **[muted]No Fallacies[/muted]** if the whole statement is clean — those **[success]finalize[/success]** the analysis.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
-            "modal": { "size": "medium", "position": "bottomLeft" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "submit_guess"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "bottomLeft"
+            }
           },
           {
             "message": "Click the highlighted **[accent]sentence[/accent]** to begin.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r1-1" },
-            "modal": { "preset": "analysisSentencesSelection" }
+            "targetComponent": {
+              "kind": "analysis_sentence",
+              "sentenceId": "s-r1-1"
+            },
+            "modal": {
+              "preset": "analysisSentencesSelection"
+            }
           },
           {
             "message": "Pick **[warning]false dilemma[/warning]** from the fallacies list.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "false-dilemma" },
-            "modal": { "preset": "analysisFallacySelection" }
+            "targetComponent": {
+              "kind": "analysis_fallacy",
+              "fallacyId": "false-dilemma"
+            },
+            "modal": {
+              "preset": "analysisFallacySelection"
+            }
           },
           {
             "message": "Press **[accent]Spot button[/accent]** to submit your match (sentence 1 with false dilemma fallacy).",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
-            "modal": { "preset": "analysisSubmit" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "submit_guess"
+            },
+            "modal": {
+              "preset": "analysisSubmit"
+            }
           },
           {
             "message": "Mmmm ... **[warning]that's not quite right.[/warning]** You still have **[accent]2 attempts left[/accent]**.\n\n Thinking again... Maybe the whole statement is **[accent]fallacy free[/accent]?** Try **[accent]Clean[/accent]** button this time.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "no_fallacies" },
-            "modal": { "preset": "analysisSubmit" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "no_fallacies"
+            },
+            "modal": {
+              "preset": "analysisSubmit"
+            }
           },
           {
             "message": "A confirmation is asked. Press **[accent]Confirm[/accent]** to proceed.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "no_fallacies_confirm" },
-            "modal": { "size": "small", "position": "topRight" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "no_fallacies_confirm"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
           },
           {
             "message": "**[success]Correct![/success]**\n You have earned **[accent]1 Insight[/accent]** now.",
             "onlyForward": true,
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "analysis_resources" },
-            "modal": { "size": "small", "position": "bottomCenter" }
+            "targetComponent": {
+              "kind": "analysis_resources"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
           },
           {
             "message": "We will come back to this Analysis View later in the tutorial. For now, continue the tutorial by **[accent]closing the analysis view[/accent]**.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "close" },
-            "modal": { "size": "small", "position": "bottomCenter" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "close"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
           },
           {
             "message": "Your new **[accent]Insights[/accent]** balance shows beside **Debate Log**. **[accent]Continue[/accent]** to **[accent]Round 2[/accent]**.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": { "size": "small", "position": "bottomCenter" }
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
           }
         ]
       }
@@ -1077,41 +1278,72 @@
         "steps": [
           {
             "message": "**[accent]Analyzing your own words[/accent]** still counts: your **[accent]question[/accent]** is a statement that can stay **[success]clear and fair[/success]** or **[warning]hide a fallacy[/warning]** like the other side's lines.\n\nSelf-checking is part of debating, and a correct read **[success]earns Insights[/success]** the same way as analyzing **[warning]Barnaby's[/warning]** wording.",
-            "modal": { "size": "medium", "position": "bottomRight" }
+            "modal": {
+              "size": "medium",
+              "position": "bottomRight"
+            }
           },
           {
             "message": "Here your line is **[accent]fallacy-free[/accent]**. Press **[accent]Clean[/accent]** to record **[accent]no fallacies[/accent]** for this statement.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "no_fallacies" },
-            "modal": { "preset": "analysisSubmit" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "no_fallacies"
+            },
+            "modal": {
+              "preset": "analysisSubmit"
+            }
           },
           {
             "message": "Confirm with **[accent]Confirm[/accent]**.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "no_fallacies_confirm" },
-            "modal": { "size": "small", "position": "topRight" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "no_fallacies_confirm"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
           },
           {
             "message": "**[success]Nice![/success]**\n You earned **[accent]another Insight[/accent]** for correctly judging your own question.",
             "onlyForward": true,
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "analysis_resources" },
-            "modal": { "size": "small", "position": "bottomCenter" }
+            "targetComponent": {
+              "kind": "analysis_resources"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
           },
           {
             "message": "**[accent]Close[/accent]** the Analysis View when you are ready to keep going.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "close" },
-            "modal": { "size": "small", "position": "bottomCenter" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "close"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
           },
           {
             "message": "You now have **[accent]2 Insights[/accent]** beside **Debate Log**. **[accent]Continue[/accent]** when you are ready.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": { "size": "small", "position": "bottomCenter" }
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
           }
         ]
       }
@@ -1120,14 +1352,18 @@
       "id": "analysis-post-submit-guess",
       "trigger": {
         "event": "tutorial:end",
-        "where": { "tutorialId": "analysis-select-sentence-first-wrong-guess" }
+        "where": {
+          "tutorialId": "analysis-select-sentence-first-wrong-guess"
+        }
       }
     },
     {
       "id": "analysis-next-round-continue",
       "trigger": {
         "event": "tutorial:end",
-        "where": { "tutorialId": "analysis-post-submit-guess" }
+        "where": {
+          "tutorialId": "analysis-post-submit-guess"
+        }
       },
       "disabled": false,
       "tutorial": {
@@ -1135,8 +1371,14 @@
           {
             "message": "Press **[accent]Continue[/accent]** to proceed.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": { "size": "small", "position": "bottomCenter" }
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
           }
         ]
       }
@@ -1157,99 +1399,178 @@
           {
             "message": "Round 4 is the **[accent]other side crossfire[/accent]** that asks you a **[warning]question[/warning]**. \n Check the **[accent]Wizard Panel[/accent]** to read the **[warning]question[/warning]**. \n Remember, the question is also loggen in the **[accent]Debate Log Panel[/accent]**.",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "wizard" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           },
           {
             "message": "We can choose a **[accent]statement to answer[/accent]** among the 3 options.\n One option looks **[warning]locked[/warning]**!",
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "panel", "panel": "interactive" },
-            "modal": { "size": "medium", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           },
           {
             "message": "When you find a **[warning]locked statement[/warning]**, it means you need to **[accent]analyze a prior statement[/accent]** of this debate. \n\n Once you **[success]successfully analyze[/success]** a fallacious statement, the related locked statement will become **[success]unlockable[/success]**. \n\n Click the **[accent]analysis button[/accent]** to spot the fallacy in Barnaby question.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "debate_log_round_analyze", "roundId": "round-4" },
-            "modal": { "size": "large", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-4"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
           }
         ]
       }
     },
     {
       "id": "analysis-select-sentence-correct-guess",
-      "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 4 } },
+      "trigger": {
+        "event": "analysis:open",
+        "where": {
+          "activeRoundNumber": 4
+        }
+      },
       "disabled": false,
       "tutorial": {
         "steps": [
           {
             "message": "**[accent]Inspecting a statement[/accent]** spends **[success]Insights[/success]** during analysis. **[accent]By paying the cost of 2 Insights[/accent]** you can reveal which sentences hide fallacies on the statement you are viewing. The label shows your balance and the cost, for example **[muted]2/2[/muted]** means you have 2 Insights and the cost is also of 2 Insights.\n\nTap **[accent]Inspect button[/accent]** to open the confirmation dialog.",
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "help" },
-            "modal": { "size": "large", "position": "topRight" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "help"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topRight"
+            }
           },
           {
             "message": "Confirm to spend **[success]2 Insights[/success]** and **[accent]reveal fallacious sentences[/accent]** for this statement.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "help_confirm" },
-            "modal": { "size": "smallTightTall", "position": "bottomRight" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "help_confirm"
+            },
+            "modal": {
+              "size": "smallTightTall",
+              "position": "bottomRight"
+            }
           },
           {
             "message": "Fallacious lines now show a **[warning]mark[/warning]**. On **[warning]Barnaby's crossfire question[/warning]**, **[accent]select that flagged sentence[/accent]** to inspect it and tag fallacies.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_sentence", "sentenceId": "s-r4q-1" },
-            "modal": { "preset": "analysisSentencesSelection" }
+            "targetComponent": {
+              "kind": "analysis_sentence",
+              "sentenceId": "s-r4q-1"
+            },
+            "modal": {
+              "preset": "analysisSentencesSelection"
+            }
           },
           {
             "message": "Pick **[warning]Ad Hominem[/warning]**.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_fallacy", "fallacyId": "ad-hominem" },
-            "modal": { "preset": "analysisFallacySelection" }
+            "targetComponent": {
+              "kind": "analysis_fallacy",
+              "fallacyId": "ad-hominem"
+            },
+            "modal": {
+              "preset": "analysisFallacySelection"
+            }
           },
           {
             "message": "Submit your guess.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "submit_guess" },
-            "modal": { "preset": "analysisSubmit" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "submit_guess"
+            },
+            "modal": {
+              "preset": "analysisSubmit"
+            }
           },
           {
             "message": "**[success]Correct![/success]** Barnaby's question carries **[warning]Ad Hominem[/warning]**. Knowing that helps you answer more sharply.\n\n**[accent]Close[/accent]** the analysis when you are ready.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "analysis_action", "action": "close" },
-            "modal": { "size": "medium", "position": "bottomCenter" }
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "close"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "bottomCenter"
+            }
           },
           {
             "message": "**[success]Option B[/success]** is **[success]unlockable[/success]** — tap it once to unlock.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" },
-            "modal": { "size": "small", "position": "topRight" }
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r4-opt-c"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
           },
           {
             "message": "Tap **[accent]Option B[/accent]** again to select it and load that reply.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_option", "optionId": "r4-opt-c" },
-            "modal": { "size": "small", "position": "topRight" }
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r4-opt-c"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
           },
           {
             "message": "Read the full **[success]unlocked option[/success]** in the **[accent]Wizard Panel[/accent]**, then **[accent]Continue[/accent]** to play it.",
             "onlyForward": true,
             "interactionMode": "target_only",
-            "targetComponent": { "kind": "interactive_action", "action": "continue" },
-            "modal": { "size": "small", "position": "topLeft" }
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topLeft"
+            }
           },
           {
             "message": "This round was effective! We can see **[success]Moderator's favor[/success]** has increased for you!",
             "onlyForward": true,
             "interactionMode": "modal_only",
-            "targetComponent": { "kind": "modal_round_recap_score" },
-            "modal": { "size": "smallTightTall", "position": "bottomRight" }
+            "targetComponent": {
+              "kind": "modal_round_recap_score"
+            },
+            "modal": {
+              "size": "smallTightTall",
+              "position": "bottomRight"
+            }
           }
         ]
       }
@@ -1270,18 +1591,27 @@
           {
             "message": "This is the **[success]end of the tutorial![/success]**\n\nYou learnt how to **[accent]choose a statement[/accent]**, how to **[accent]spot a fallacy[/accent]**, and how to **[accent]unlock statements[/accent]**.",
             "interactionMode": "modal_only",
-            "modal": { "size": "large", "position": "center" }
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
           },
           {
             "message": "Remember:\n1) **[accent]analyzing statements[/accent]** is key to winning the debate as it gives you Insight Points and it may also unlock bonus statements, \n2) Once you gather **[accent]enough Insights[/accent]**, you can **[accent]get help to reveal which sentences hide fallacies[/accent]**; \n3) Choosing the best statement will **[accent]influence the Moderator's favour[/accent]**;\n4) **[accent]unlocked bonus statements[/accent]** are **[accent]usually more effective[/accent]** than regular statements.",
             "interactionMode": "modal_only",
-            "modal": { "size": "large", "position": "center" }
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
           },
           {
             "message": "Actual debates last longer and reach **[accent]round 10[/accent]**.\n\n Play a debate and challenge debaters!",
             "interactionMode": "modal_only",
             "onFinish": "exit",
-            "modal": { "size": "large", "position": "center" }
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
           }
         ]
       }

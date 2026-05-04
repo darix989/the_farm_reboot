@@ -125,6 +125,13 @@ export interface OpponentResponse {
   /** Id of the PlayerOption that triggers this response. */
   forOptionId: string;
   statement: Statement;
+  /**
+   * Integer delta in [-PLAYER_OPTION_IMPACT_ABS_MAX, PLAYER_OPTION_IMPACT_ABS_MAX] applied
+   * to the moderator score from the player's perspective. Negative when the NPC's reply
+   * lands a clean rebuttal against the picked option. Used to compute the round's
+   * net "moderator's favor" delta = `playerOption.impact + opponentResponse.impact`.
+   */
+  impact: number;
 }
 
 /**
@@ -143,6 +150,13 @@ export interface PlayerRoundEntry {
   type: StatementType;
   /** NPC speaks first (crossfire question) before the player responds. */
   opponentPrompt?: Statement;
+  /**
+   * Player-perspective signed impact for `opponentPrompt` (only meaningful when
+   * `opponentPrompt` is set). Negative when the NPC's question lands hard. Combined
+   * with the chosen option's impact to compute the round's net "moderator's favor"
+   * delta = `opponentPromptImpact + playerOption.impact`. Defaults to 0 when omitted.
+   */
+  opponentPromptImpact?: number;
   options: readonly [PlayerOption, PlayerOption, PlayerOption];
   /**
    * One NPC response per player option (exactly 3 elements, each with `forOptionId`

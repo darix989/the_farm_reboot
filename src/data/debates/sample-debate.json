@@ -317,7 +317,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r3-opt-b",
@@ -328,11 +329,12 @@
             "sentences": [
               {
                 "id": "s-r3rb-1",
-                "text": "The owls serve out of duty to the farm. Grain compensation is a minor logistical detail \u2014 it does not change the urgency of the crisis.",
+                "text": "The owls serve out of duty to the farm. Grain compensation is a minor logistical detail — it does not change the urgency of the crisis.",
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r3-opt-c",
@@ -352,7 +354,8 @@
                 ]
               }
             ]
-          }
+          },
+          "impact": 0
         }
       ]
     },
@@ -378,6 +381,7 @@
           }
         ]
       },
+      "opponentPromptImpact": 0,
       "options": [
         {
           "id": "r4-opt-a",
@@ -414,7 +418,7 @@
           "id": "r4-opt-c",
           "quality": "effective",
           "impact": 18,
-          "reason": "This response accepts the emotional premise (the lamb's wellbeing matters) and then redirects it \u2014 protecting everyone means fixing the infrastructure, not surveilling the neighbors. It counters Barnaby's Appeal to Pity without dismissing it, showing empathy while staying on message.",
+          "reason": "This response accepts the emotional premise (the lamb's wellbeing matters) and then redirects it — protecting everyone means fixing the infrastructure, not surveilling the neighbors. It counters Barnaby's Appeal to Pity without dismissing it, showing empathy while staying on message.",
           "sentences": [
             {
               "id": "s-r4c-1",
@@ -480,7 +484,7 @@
           "id": "r6-opt-a",
           "quality": "logical_fallacy",
           "impact": -15,
-          "reason": "This is a pure Ad Hominem attack \u2014 insulting Barnaby's species instead of refuting his straw-man rebuttal. Not only does it abandon the argument entirely, it lowers the tone of the debate and hands Barnaby the moral high ground, making the jury less sympathetic to the Opposition.",
+          "reason": "This is a pure Ad Hominem attack — insulting Barnaby's species instead of refuting his straw-man rebuttal. Not only does it abandon the argument entirely, it lowers the tone of the debate and hands Barnaby the moral high ground, making the jury less sympathetic to the Opposition.",
           "sentences": [
             {
               "id": "s-r6a-1",
@@ -561,12 +565,13 @@
           }
         ]
       },
+      "opponentPromptImpact": 0,
       "options": [
         {
           "id": "r7-opt-a",
           "quality": "logical_fallacy",
           "impact": -10,
-          "reason": "This uses a Weak Analogy. Comparing farm surveillance policy to 'jumping off a cliff' is rhetorically vivid but logically hollow \u2014 the situations are not comparable. The jury will notice the exaggeration and it undermines the credibility of the Opposition's argument against Barnaby's Appeal to Popularity.",
+          "reason": "This uses a Weak Analogy. Comparing farm surveillance policy to 'jumping off a cliff' is rhetorically vivid but logically hollow — the situations are not comparable. The jury will notice the exaggeration and it undermines the credibility of the Opposition's argument against Barnaby's Appeal to Popularity.",
           "sentences": [
             {
               "id": "s-r7a-1",
@@ -584,7 +589,7 @@
           "id": "r7-opt-b",
           "quality": "ineffective",
           "impact": 0,
-          "reason": "Pointing out that neighboring farms use different owl species is too narrow a rebuttal. It raises a technical distinction that the jury may not find relevant, and it doesn't address why popularity alone is not a sound reason to adopt a policy \u2014 the real flaw in Barnaby's question.",
+          "reason": "Pointing out that neighboring farms use different owl species is too narrow a rebuttal. It raises a technical distinction that the jury may not find relevant, and it doesn't address why popularity alone is not a sound reason to adopt a policy — the real flaw in Barnaby's question.",
           "sentences": [
             {
               "id": "s-r7b-1",
@@ -597,7 +602,7 @@
           "id": "r7-opt-c",
           "quality": "effective",
           "impact": 18,
-          "reason": "This answer counters the Appeal to Popularity by challenging the moral authority of the comparison \u2014 human-run farms represent oppression, not a model to emulate. It frames the farm's identity as fundamentally different and elevates the debate to a question of values, which resonates strongly with an animal jury.",
+          "reason": "This answer counters the Appeal to Popularity by challenging the moral authority of the comparison — human-run farms represent oppression, not a model to emulate. It frames the farm's identity as fundamentally different and elevates the debate to a question of values, which resonates strongly with an animal jury.",
           "sentences": [
             {
               "id": "s-r7c-1",
@@ -623,7 +628,7 @@
           "id": "r8-opt-a",
           "quality": "logical_fallacy",
           "impact": -10,
-          "reason": "This is a Hasty Generalization \u2014 concluding that all dogs are power-hungry based on no evidence. The intended crossfire question should probe the accountability gap in Barnaby's proposal; instead it launches an unfair species-wide insult that will alienate any dog-sympathetic jury member.",
+          "reason": "This is a Hasty Generalization — concluding that all dogs are power-hungry based on no evidence. The intended crossfire question should probe the accountability gap in Barnaby's proposal; instead it launches an unfair species-wide insult that will alienate any dog-sympathetic jury member.",
           "sentences": [
             {
               "id": "s-r8a-1",
@@ -678,7 +683,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r8-opt-b",
@@ -693,7 +699,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r8-opt-c",
@@ -704,7 +711,7 @@
             "sentences": [
               {
                 "id": "s-r8rc-1",
-                "text": "Safety is a constant duty. We will keep the owls as long as a threat exists \u2014 which, as we see, is every night.",
+                "text": "Safety is a constant duty. We will keep the owls as long as a threat exists — which, as we see, is every night.",
                 "logicalFallacies": [
                   {
                     "id": "hasty-generalization",
@@ -713,7 +720,8 @@
                 ]
               }
             ]
-          }
+          },
+          "impact": 0
         }
       ]
     },
@@ -741,7 +749,7 @@
           },
           {
             "id": "s-r9-2",
-            "text": "Support the Owl-Eye Act to ensure that every animal \u2014 big or small \u2014 has a full belly and a safe winter.",
+            "text": "Support the Owl-Eye Act to ensure that every animal — big or small — has a full belly and a safe winter.",
             "logicalFallacies": []
           },
           {
@@ -772,7 +780,7 @@
           "id": "r10-opt-a",
           "quality": "logical_fallacy",
           "impact": -15,
-          "reason": "This is a textbook Appeal to Fear. The claim that voting for Barnaby means 'being eaten by owls by next Tuesday' is a wildly exaggerated threat designed to frighten rather than persuade. In a closing statement it is especially damaging \u2014 the jury expects principled arguments, not scare tactics, and this undermines all of Pip's credibility.",
+          "reason": "This is a textbook Appeal to Fear. The claim that voting for Barnaby means 'being eaten by owls by next Tuesday' is a wildly exaggerated threat designed to frighten rather than persuade. In a closing statement it is especially damaging — the jury expects principled arguments, not scare tactics, and this undermines all of Pip's credibility.",
           "sentences": [
             {
               "id": "s-r10a-1",

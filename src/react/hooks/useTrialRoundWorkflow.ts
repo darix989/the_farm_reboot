@@ -85,6 +85,31 @@ function initialPhaseForRound(round: RoundEntry): GamePhase {
   return round.kind === 'npc' ? 'npc_speaking' : 'player_choosing';
 }
 
+/**
+ * Net "moderator's favor" delta for a completed player round.
+ *
+ * Both the question and the answer count: when an NPC line is part of the round,
+ * its impact is summed with the chosen option's impact (all values are signed in
+ * player-perspective, so a strong NPC line pulls the total negative).
+ *
+ * - NPC-led crossfire / NPC rebuttal-or-constructive (round has `opponentPrompt`):
+ *   adds `opponentPromptImpact` (defaults to 0 if not authored).
+ * - Player-led crossfire (round has `opponentResponses`): adds the matching
+ *   response's `impact` (the response paired with the chosen `optionId`).
+ * - Plain player round with neither prompt nor responses: returns `option.impact`.
+ */
+function computePlayerRoundImpact(round: PlayerRoundEntry, option: PlayerOption): number {
+  let total = option.impact;
+  if (round.opponentPrompt) {
+    total += round.opponentPromptImpact ?? 0;
+  }
+  if (round.opponentResponses) {
+    const response = round.opponentResponses.find((r) => r.forOptionId === option.id);
+    if (response) total += response.impact;
+  }
+  return total;
+}
+
 function scenarioHasIntroduction(scenario: DebateScenarioJson): boolean {
   return Boolean(scenario.introduction?.trim());
 }
@@ -238,16 +263,17 @@ function reduceWorkflow(
     const option = currentRound.options.find((o) => o.id === state.selectedOptionId);
     if (!option) return state;
 
+    const roundImpact = computePlayerRoundImpact(currentRound, option);
     const newCompleted: CompletedRound[] = [
       ...state.completedRounds,
       {
         roundId: currentRound.id,
         roundNumber: currentRound.roundNumber,
         optionId: option.id,
-        impact: option.impact,
+        impact: roundImpact,
       },
     ];
-    const newScore = state.totalScore + option.impact;
+    const newScore = state.totalScore + roundImpact;
 
     // If the round has opponent responses, enter responding; else go straight to recap.
     const hasResponses = Boolean(currentRound.opponentResponses?.length);
@@ -268,16 +294,17 @@ function reduceWorkflow(
     const option = currentRound.options.find((o) => o.id === state.selectedOptionId);
     if (!option) return state;
 
+    const roundImpact = computePlayerRoundImpact(currentRound, option);
     const newCompleted: CompletedRound[] = [
       ...state.completedRounds,
       {
         roundId: currentRound.id,
         roundNumber: currentRound.roundNumber,
         optionId: option.id,
-        impact: option.impact,
+        impact: roundImpact,
       },
     ];
-    const newScore = state.totalScore + option.impact;
+    const newScore = state.totalScore + roundImpact;
 
     // If the round has opponentResponses, show the matched one before advancing
     if (currentRound.opponentResponses) {

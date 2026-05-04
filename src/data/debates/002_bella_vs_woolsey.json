@@ -182,7 +182,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r3-opt-b",
@@ -197,7 +198,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r3-opt-c",
@@ -217,7 +219,8 @@
                 ]
               }
             ]
-          }
+          },
+          "impact": 0
         }
       ]
     },
@@ -243,6 +246,7 @@
           }
         ]
       },
+      "opponentPromptImpact": 0,
       "options": [
         {
           "id": "r4-opt-a",
@@ -459,7 +463,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r7-opt-b",
@@ -474,7 +479,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r7-opt-c",
@@ -494,7 +500,8 @@
                 ]
               }
             ]
-          }
+          },
+          "impact": 0
         }
       ]
     },
@@ -520,6 +527,7 @@
           }
         ]
       },
+      "opponentPromptImpact": 0,
       "options": [
         {
           "id": "r4-opt-a",
