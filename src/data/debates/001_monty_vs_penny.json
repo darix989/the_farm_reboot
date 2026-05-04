@@ -20,7 +20,7 @@
       "roundNumber": 1,
       "type": "opening_constructive",
       "speakerId": "monty",
-      "impact": 0,
+      "impact": 15,
       "statement": {
         "id": "stmt-r1-monty",
         "speakerId": "monty",
@@ -64,7 +64,7 @@
         {
           "id": "r2-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "This response uses a False Dilemma itself, suggesting that if we don't listen to Penny, the farm will literally explode. It doesn't fix the logic; it just adds more bad logic.",
           "sentences": [
             {
@@ -227,7 +227,7 @@
               }
             ]
           },
-          "impact": 0
+          "impact": 15
         }
       ]
     },
@@ -253,7 +253,7 @@
           }
         ]
       },
-      "opponentPromptImpact": 0,
+      "opponentPromptImpact": 15,
       "options": [
         {
           "id": "r4-opt-a",
@@ -289,7 +289,7 @@
         {
           "id": "r4-opt-c",
           "quality": "effective",
-          "impact": 18,
+          "impact": 15,
           "reason": "This rejects the 'either-or' framing and provides a solution that benefits everyone, not just the pigs.",
           "sentences": [
             {
@@ -307,7 +307,7 @@
       "roundNumber": 5,
       "type": "rebuttal",
       "speakerId": "monty",
-      "impact": 0,
+      "impact": 15,
       "statement": {
         "id": "stmt-r5-monty",
         "speakerId": "monty",
@@ -345,7 +345,7 @@
         {
           "id": "r6-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "This is a False Dilemma. It limits the barn's choices to only Penny's way or Monty's way.",
           "sentences": [
             {
@@ -376,7 +376,7 @@
         {
           "id": "r6-opt-c",
           "quality": "effective",
-          "impact": 22,
+          "impact": 20,
           "reason": "This explicitly names the fallacy and explains why the 'with me or against me' logic is false.",
           "unlockCondition": {
             "npcRoundId": "round-5",
@@ -427,7 +427,7 @@
           }
         ]
       },
-      "opponentPromptImpact": 0,
+      "opponentPromptImpact": 15,
       "options": [
         {
           "id": "r7-opt-a",
@@ -463,7 +463,7 @@
         {
           "id": "r7-opt-c",
           "quality": "effective",
-          "impact": 18,
+          "impact": 15,
           "reason": "Reiterates the existence of more options (drying/trading).",
           "sentences": [
             {
@@ -515,7 +515,7 @@
         {
           "id": "r8-opt-c",
           "quality": "effective",
-          "impact": 20,
+          "impact": 15,
           "reason": "Forces Monty to address a specific alternative, breaking the two-option trap.",
           "sentences": [
             {
@@ -578,7 +578,7 @@
               }
             ]
           },
-          "impact": 0
+          "impact": 15
         }
       ]
     },
@@ -588,7 +588,7 @@
       "roundNumber": 9,
       "type": "closing_constructive",
       "speakerId": "monty",
-      "impact": 0,
+      "impact": 15,
       "statement": {
         "id": "stmt-r9-monty",
         "speakerId": "monty",
@@ -631,7 +631,7 @@
         {
           "id": "r10-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "Final False Dilemma. It mimics Monty's bad logic.",
           "sentences": [
             {
@@ -662,7 +662,7 @@
         {
           "id": "r10-opt-c",
           "quality": "effective",
-          "impact": 25,
+          "impact": 15,
           "reason": "The perfect tutorial conclusion. It names the fallacy one last time, reminds the jury of the 'third way' (preservation), and asks for a vote based on logic rather than fear.",
           "sentences": [
             {

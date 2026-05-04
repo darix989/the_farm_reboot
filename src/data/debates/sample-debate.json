@@ -83,7 +83,7 @@
       "roundNumber": 1,
       "type": "opening_constructive",
       "speakerId": "barnaby",
-      "impact": 0,
+      "impact": 15,
       "statement": {
         "id": "stmt-r1-barnaby",
         "speakerId": "barnaby",
@@ -136,7 +136,7 @@
         {
           "id": "r2-opt-a",
           "quality": "logical_fallacy",
-          "impact": -12,
+          "impact": -10,
           "reason": "This is a Slippery Slope fallacy. It jumps from a reasonable concern about surveillance to the extreme conclusion that owls will control every aspect of life, without providing any evidence for those intermediate steps. Each escalation is treated as inevitable when it is not.",
           "sentences": [
             {
@@ -280,7 +280,7 @@
         {
           "id": "r3-opt-c",
           "quality": "effective",
-          "impact": 18,
+          "impact": 20,
           "reason": "This directly exposes Barnaby's False Dilemma by naming it ('surveillance or starvation') and immediately offering a concrete alternative (fixing the silo). It forces Barnaby to defend his framing, demonstrates the Opposition has practical solutions, and keeps the debate grounded in evidence.",
           "unlockCondition": {
             "npcRoundId": "round-1",
@@ -355,7 +355,7 @@
               }
             ]
           },
-          "impact": 0
+          "impact": 15
         }
       ]
     },
@@ -381,7 +381,7 @@
           }
         ]
       },
-      "opponentPromptImpact": 0,
+      "opponentPromptImpact": 15,
       "options": [
         {
           "id": "r4-opt-a",
@@ -417,7 +417,7 @@
         {
           "id": "r4-opt-c",
           "quality": "effective",
-          "impact": 18,
+          "impact": 15,
           "reason": "This response accepts the emotional premise (the lamb's wellbeing matters) and then redirects it — protecting everyone means fixing the infrastructure, not surveilling the neighbors. It counters Barnaby's Appeal to Pity without dismissing it, showing empathy while staying on message.",
           "sentences": [
             {
@@ -440,7 +440,7 @@
       "roundNumber": 5,
       "type": "rebuttal",
       "speakerId": "barnaby",
-      "impact": 0,
+      "impact": 15,
       "statement": {
         "id": "stmt-r5-barnaby",
         "speakerId": "barnaby",
@@ -483,7 +483,7 @@
         {
           "id": "r6-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "This is a pure Ad Hominem attack — insulting Barnaby's species instead of refuting his straw-man rebuttal. Not only does it abandon the argument entirely, it lowers the tone of the debate and hands Barnaby the moral high ground, making the jury less sympathetic to the Opposition.",
           "sentences": [
             {
@@ -514,7 +514,7 @@
         {
           "id": "r6-opt-c",
           "quality": "effective",
-          "impact": 22,
+          "impact": 20,
           "reason": "This is the ideal rebuttal to a Straw Man. It first corrects the record on what the Opposition actually argued, then explicitly names what Barnaby did ('attacking a version of my argument I never made'), and pivots back to the real issue (autonomy vs. surveillance). Naming the fallacy is persuasive and educational for the jury.",
           "unlockCondition": {
             "npcRoundId": "round-5",
@@ -565,7 +565,7 @@
           }
         ]
       },
-      "opponentPromptImpact": 0,
+      "opponentPromptImpact": 15,
       "options": [
         {
           "id": "r7-opt-a",
@@ -601,7 +601,7 @@
         {
           "id": "r7-opt-c",
           "quality": "effective",
-          "impact": 18,
+          "impact": 15,
           "reason": "This answer counters the Appeal to Popularity by challenging the moral authority of the comparison — human-run farms represent oppression, not a model to emulate. It frames the farm's identity as fundamentally different and elevates the debate to a question of values, which resonates strongly with an animal jury.",
           "sentences": [
             {
@@ -658,7 +658,7 @@
         {
           "id": "r8-opt-c",
           "quality": "effective",
-          "impact": 20,
+          "impact": 15,
           "reason": "This is a laser-focused accountability question that exposes the permanent nature of the Act. By asking for a specific removal date, Pip forces Barnaby to either admit there is no exit plan (revealing a permanent surveillance state) or make a commitment he cannot keep. Either answer damages the Proposition's case.",
           "sentences": [
             {
@@ -721,7 +721,7 @@
               }
             ]
           },
-          "impact": 0
+          "impact": 15
         }
       ]
     },
@@ -731,7 +731,7 @@
       "roundNumber": 9,
       "type": "closing_constructive",
       "speakerId": "barnaby",
-      "impact": 0,
+      "impact": 15,
       "statement": {
         "id": "stmt-r9-barnaby",
         "speakerId": "barnaby",
@@ -779,7 +779,7 @@
         {
           "id": "r10-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "This is a textbook Appeal to Fear. The claim that voting for Barnaby means 'being eaten by owls by next Tuesday' is a wildly exaggerated threat designed to frighten rather than persuade. In a closing statement it is especially damaging — the jury expects principled arguments, not scare tactics, and this undermines all of Pip's credibility.",
           "sentences": [
             {
@@ -810,7 +810,7 @@
         {
           "id": "r10-opt-c",
           "quality": "effective",
-          "impact": 25,
+          "impact": 15,
           "reason": "This closing perfectly synthesizes the Opposition's entire case into three memorable sentences. It reframes the choice as freedom vs. captivity ('a barn where you are always watched is a cage'), offers a positive alternative (community effort + infrastructure), and ends on a punchy slogan ('Vote for trust, not talons') that the jury will remember when they deliberate.",
           "sentences": [
             {

@@ -72,7 +72,7 @@
         {
           "id": "r2-opt-b",
           "quality": "effective",
-          "impact": 8,
+          "impact": 15,
           "reason": "Keeps the argument focused on immediate safety, which is stronger than cosmetic improvements.",
           "sentences": [
             {
@@ -133,7 +133,7 @@
         {
           "id": "r3-opt-c",
           "quality": "effective",
-          "impact": 8,
+          "impact": 15,
           "reason": "Forces the tradeoff Barnaby keeps dodging: spending on blue paint versus money still available for roof repairs.",
           "sentences": [
             {
@@ -218,7 +218,7 @@
           }
         ]
       },
-      "opponentPromptImpact": 0,
+      "opponentPromptImpact": 15,
       "options": [
         {
           "id": "r4-opt-b",
@@ -236,7 +236,7 @@
         {
           "id": "r4-opt-c",
           "quality": "effective",
-          "impact": 22,
+          "impact": 20,
           "reason": "Names the Ad Hominem out loud, refuses the personal bait, and drags the debate back to the roof and the budget — the questions Barnaby was trying to dodge.",
           "unlockCondition": {
             "npcRoundId": "stmt-r4-barnaby-question",
@@ -266,7 +266,7 @@
       "roundNumber": 5,
       "type": "rebuttal",
       "speakerId": "barnaby",
-      "impact": 0,
+      "impact": 15,
       "statement": {
         "id": "stmt-r5-barnaby",
         "speakerId": "barnaby",
@@ -304,7 +304,7 @@
         {
           "id": "r6-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "Mirrors Barnaby's mistake by inventing a False Dilemma of Pip's own. Doesn't expose the bad logic — just adds more bad logic on top.",
           "sentences": [
             {
@@ -342,7 +342,7 @@
         {
           "id": "r6-opt-b",
           "quality": "ineffective",
-          "impact": -5,
+          "impact": 0,
           "reason": "Tries to soften Barnaby's premise but accepts the framing that life without blue is sad. Doesn't name or break the fallacy.",
           "sentences": [
             {
@@ -365,7 +365,7 @@
         {
           "id": "r6-opt-c",
           "quality": "effective",
-          "impact": 25,
+          "impact": 20,
           "reason": "Names the False Dilemma directly, opens up a third path (a dry, unpainted barn), and grounds the audience in the practical comparison: a leaky blue barn versus a dry plain one.",
           "unlockCondition": {
             "npcRoundId": "round-5",
@@ -421,7 +421,7 @@
           }
         ]
       },
-      "opponentPromptImpact": 0,
+      "opponentPromptImpact": 15,
       "options": [
         {
           "id": "r7-opt-a",
@@ -482,7 +482,7 @@
         {
           "id": "r7-opt-c",
           "quality": "effective",
-          "impact": 20,
+          "impact": 15,
           "reason": "Refuses Barnaby's binary, offers a clear third path (a dry, repaired barn = a different kind of happiness), and even leaves room to talk about color later — fair, calm, and persuasive.",
           "sentences": [
             {
@@ -564,7 +564,7 @@
         {
           "id": "r8-opt-c",
           "quality": "effective",
-          "impact": 22,
+          "impact": 15,
           "reason": "Brutally practical: paint on damp, rotting wood is wasted paint. Forces Barnaby to either concede the roof must come first or look reckless.",
           "sentences": [
             {
@@ -637,7 +637,7 @@
               }
             ]
           },
-          "impact": 0
+          "impact": 15
         }
       ]
     },
@@ -647,7 +647,7 @@
       "roundNumber": 9,
       "type": "closing_constructive",
       "speakerId": "barnaby",
-      "impact": 0,
+      "impact": 15,
       "statement": {
         "id": "stmt-r9-barnaby",
         "speakerId": "barnaby",
@@ -690,7 +690,7 @@
         {
           "id": "r10-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "Closes with a False Dilemma of Pip's own. After spending the whole debate exposing Barnaby's bad logic, this throws away that progress at the most important moment.",
           "sentences": [
             {
@@ -751,7 +751,7 @@
         {
           "id": "r10-opt-c",
           "quality": "effective",
-          "impact": 30,
+          "impact": 15,
           "reason": "The perfect close: names both fallacies the audience just watched in real time, replaces Barnaby's either-or with a real third path, and ties it back to safety as the foundation of any real happiness.",
           "sentences": [
             {
