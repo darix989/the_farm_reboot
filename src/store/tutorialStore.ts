@@ -169,7 +169,11 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
     const step = s.steps[s.stepIndex];
     if (!step) return true;
     if (!step.targetComponent) return false;
-    if (step.interactionMode !== 'target_only') return false;
+    // A missing `interactionMode` falls back to 'modal_only' (see `openTutorial`
+    // and the field's JSDoc on `DebateTutorialStep`), so anything that is not
+    // explicitly `'target_only'` blocks the in-app action.
+    const mode = step.interactionMode ?? 'modal_only';
+    if (mode !== 'target_only') return false;
     return tutorialTargetEquals(step.targetComponent, target);
   },
 
@@ -184,7 +188,10 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
     if (!s.isOpen || s.steps.length === 0) return;
     const step = s.steps[s.stepIndex];
     if (!step?.targetComponent) return;
-    if (step.interactionMode !== 'target_only') return;
+    // Same fallback as `canRunTargetAction`: undefined `interactionMode` is
+    // treated as `'modal_only'`, so it does not advance the tutorial.
+    const mode = step.interactionMode ?? 'modal_only';
+    if (mode !== 'target_only') return;
     if (!tutorialTargetEquals(step.targetComponent, target)) return;
     const isLast = s.stepIndex >= s.steps.length - 1;
     if (isLast) {

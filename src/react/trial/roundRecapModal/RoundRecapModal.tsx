@@ -171,10 +171,11 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
           <TrialTextButton
             onClick={() => {
               const target = { kind: 'round_recap_action', action: 'continue' } as const;
-              // Block dismissal while a tutorial step has `interactionMode: 'modal_only'`
-              // (or targets a different control). `canRunTutorialTargetAction` returns true
-              // when no tutorial is open, or when the active `target_only` step points at
-              // this same Continue button. See `tutorialStore.canRunTargetAction`.
+              // Block dismissal while a tutorial step is open unless the step has
+              // `interactionMode: 'target_only'` and targets this Continue button.
+              // A missing `interactionMode` field falls back to `'modal_only'` (see
+              // `tutorialStore.openTutorial` / `canRunTargetAction`), so an authored
+              // step without the field also blocks the click.
               if (!canRunTutorialTargetAction(target)) return;
               onClose();
               notifyTutorialTargetAction(target);

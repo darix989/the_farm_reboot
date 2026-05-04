@@ -60,7 +60,11 @@ const TutorialOverlay: React.FC = () => {
   const isLast = stepIndex >= lastIndex;
   const isSingle = steps.length === 1;
   const step = isOpen && steps.length > 0 ? steps[stepIndex]! : null;
-  const isTargetOnlyStep = !!(step?.targetComponent && step.interactionMode === 'target_only');
+  // Missing `interactionMode` is treated as `'modal_only'` (matches the resolve
+  // step in `tutorialStore.openTutorial` and the JSDoc on `DebateTutorialStep`),
+  // so an authored step without the field never enters target-only mode.
+  const stepInteractionMode = step?.interactionMode ?? 'modal_only';
+  const isTargetOnlyStep = !!(step?.targetComponent && stepInteractionMode === 'target_only');
   const disableBackButton = !!step?.onlyForward;
   const exitsToMainMenu = step?.onFinish === 'exit';
 
