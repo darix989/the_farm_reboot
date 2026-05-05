@@ -784,14 +784,14 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**Welcome!** This is the **[accent]debate tutorial[/accent]**.\n\nA debate has **[accent]three roles[/accent]**: the **[accent]Proposition side[/accent]** proposes the idea; the **[accent]Opposition side[/accent]** argues against it; and the **[accent]moderator[/accent]** picks the winner. **[success]You always play one of the two sides.[/success]**",
+            "message": "**Welcome!** This is the **[accent]debate tutorial[/accent]**.\n\nA debate has **[accent]three roles[/accent]**: the **[accent]Proposition side[/accent]** proposes the idea; the **[accent]Opposition side[/accent]** argues against it; and the **[accent]moderator[/accent]** picks the winner. You always play one of the two sides.",
             "modal": {
               "size": "large",
               "position": "center"
             }
           },
           {
-            "message": "You are **[accent]Pip[/accent]** on the **[accent]Opposition side[/accent]**, arguing the farm should cover **[accent]something more urgent[/accent]** first, while **[warning]Barnaby[/warning]** on the **[warning]Proposition side[/warning]** pushes the **[warning]blue-barn plan[/warning]** to make the farm more colorful and happy.\n\nTo sway the moderator, **[accent]analyze statements[/accent]**, **[accent]spot logical fallacies[/accent]**, and choose **[accent]responses[/accent]** that **[success]undercut the rival case[/success]**.",
+            "message": "Specifically, in this tutorial, you are **[accent]Pip[/accent]** on the **[accent]Opposition side[/accent]**, arguing the farm should cover **[accent]something more urgent[/accent]** first, while **[warning]Barnaby[/warning]** on the **[warning]Proposition side[/warning]** pushes the **[warning]blue-barn plan[/warning]** to make the farm more colorful and happy.\n\nTo sway the moderator, **[accent]analyze statements[/accent]**, **[accent]spot logical fallacies[/accent]**, and choose **[accent]responses[/accent]** that undercut the rival case.",
             "interactionMode": "modal_only",
             "modal": {
               "size": "large",
@@ -799,7 +799,18 @@
             }
           },
           {
-            "message": "The **[accent]emoji score[/accent]** beside **Debate Log** shows how the moderator leans; **[accent]Insights Points[/accent]** sit just to its left (explained later).\n\nThe match runs **[accent]10 rounds[/accent]** — introduction, opening constructive, rebuttal, crossfire, closing constructive — and the tutorial will walk you through them.\n\nUse **[accent]Continue[/accent]** / **[accent]Got it[/accent]** to advance and **[accent]Back[/accent]** to revisit a step when it appears.",
+            "message": "The **[accent]emoji score[/accent]** beside **Debate Log** shows how the moderator leans; **[accent]Insights Points[/accent]** sit just to its left (explained later).\n\nThe match runs **[accent]10 rounds[/accent]** (plus introduction): 1) proposition's opening constructive; 2) opposition's  opening constructive; 3) opposition crossfire; 4) proposition crossfire; 5) proposition's rebuttal; 6) opposition's rebuttal; 7) proposition's crossfire 8) opposition's crossfire 9) proposition's closing constructive and 10) opposition's closing constructive.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_moderator_score"
+            },
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
+          },
+          {
+            "message": "The tutorial will walk you through the essential steps to learn how lead a debate. Some types of rounds are similar with each other, for example opening, closing and rebuttal are played the same way, while the crossfire is a bit different.\n\n Use **[accent]Continue[/accent]** / **[accent]Got it[/accent]** to advance and **[accent]Back[/accent]** to revisit a step when it appears.",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "debate_log_moderator_score"
