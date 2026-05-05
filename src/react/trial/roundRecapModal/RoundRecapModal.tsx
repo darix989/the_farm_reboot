@@ -168,20 +168,24 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
               ) : null}
 
               <div className={styles.recapSection} data-tutorial-recap-section="main">
-                <p className={styles.recapSectionLabel}>{getLabel('activeRoundImpact')}</p>
-                <p className={styles.recapBody}>
-                  <span aria-label={activeRoundImpactAriaLabel}>
-                    <span aria-hidden="true">
-                      {moderatorOpinionEmoji(recap.lastCompleted.impact)}
-                    </span>
-                  </span>
-                </p>
-                <p className={styles.recapSectionLabel} style={{ marginTop: '1rem' }}>
-                  {getLabel('overallScore')}
-                </p>
-                <p className={styles.recapBody}>
-                  <ModeratorOpinionInline score={wf.totalScore} />
-                </p>
+                <div className={styles.recapScoreRow}>
+                  <div className={styles.recapScoreColumn}>
+                    <p className={styles.recapSectionLabel}>{getLabel('activeRoundImpact')}</p>
+                    <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
+                      <span aria-label={activeRoundImpactAriaLabel}>
+                        <span aria-hidden="true">
+                          {moderatorOpinionEmoji(recap.lastCompleted.impact)}
+                        </span>
+                      </span>
+                    </p>
+                  </div>
+                  <div className={styles.recapScoreColumn}>
+                    <p className={styles.recapSectionLabel}>{getLabel('overallScore')}</p>
+                    <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
+                      <ModeratorOpinionInline score={wf.totalScore} />
+                    </p>
+                  </div>
+                </div>
               </div>
             </>
           ) : (

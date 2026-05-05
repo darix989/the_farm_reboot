@@ -83,7 +83,7 @@
 
 .trialDebateLogTitleScore {
   flex-shrink: 0;
-  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1) * 1.5);
+  font-size: calc(var(--ui-font-moderator-opinion) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.375;
   text-align: right;
   white-space: nowrap;

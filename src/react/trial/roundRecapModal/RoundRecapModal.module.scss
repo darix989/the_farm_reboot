@@ -128,6 +128,27 @@
   margin: 0;
 }
 
+.recapScoreRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.recapScoreColumn {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.recapScoreEmoji {
+  font-size: calc(var(--ui-font-moderator-opinion) * var(--ui-trial-panel-font-scale, 1));
+  text-align: center;
+  line-height: 1.2;
+}
+
 .recapFooter {
   flex-shrink: 0;
   display: flex;

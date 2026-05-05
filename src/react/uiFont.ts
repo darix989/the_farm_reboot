@@ -12,4 +12,5 @@ export const uiFont = {
   footer: 'var(--ui-font-footer)',
   footerWide: 'var(--ui-font-footer-wide)',
   control: 'var(--ui-font-control)',
+  moderatorOpinion: 'var(--ui-font-moderator-opinion)',
 } as const;
