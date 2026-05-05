@@ -74,6 +74,15 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
     ? statementText(wf.activeOpponentResponse.statement.sentences)
     : '';
 
+  const currentPlayerRound = round?.kind === 'player' ? round : null;
+  const opponentPromptStatement = currentPlayerRound?.opponentPrompt;
+  const crossfirePromptSpeaker = opponentPromptStatement
+    ? getSpeakerName(debate, opponentPromptStatement.speakerId)
+    : '';
+  const crossfirePromptBody = opponentPromptStatement
+    ? statementText(opponentPromptStatement.sentences)
+    : '';
+
   const roundHeading = round
     ? getLabel('roundHeadingWithStatementType', {
         replacements: {
@@ -99,6 +108,22 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
           ? { kind: 'npc' as const, round, lastCompleted }
           : null
       : null;
+
+  const playerRecapContributionLabel =
+    recap?.kind === 'player'
+      ? recap.round.opponentPrompt
+        ? getLabel('roundRecapYourAnswer')
+        : recap.round.opponentResponses
+          ? getLabel('roundRecapYourQuestion')
+          : getLabel('yourStatement')
+      : getLabel('yourStatement');
+
+  const opponentReplyRecapLabel =
+    recap?.kind === 'player' && recap.round.opponentResponses && responseSpeaker
+      ? getLabel('responds', { replacements: { name: responseSpeaker } })
+      : responseSpeaker
+        ? getLabel('opponentResponseHeading', { replacements: { name: responseSpeaker } })
+        : '';
 
   const activeRoundImpactAriaLabel = recap
     ? `${getLabel('activeRoundImpact')}: ${
@@ -141,10 +166,22 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
           {recap ? (
             <>
               {recap.kind === 'player' ? (
-                <div className={styles.recapSection}>
-                  <p className={styles.recapSectionLabel}>{getLabel('yourStatement')}</p>
-                  <p className={styles.recapBody}>{choicePreview}</p>
-                </div>
+                <>
+                  {opponentPromptStatement ? (
+                    <div className={styles.recapSection}>
+                      <p className={styles.recapSectionLabel}>
+                        {getLabel('debaterQuestion', {
+                          replacements: { name: crossfirePromptSpeaker },
+                        })}
+                      </p>
+                      <p className={styles.recapBody}>{crossfirePromptBody}</p>
+                    </div>
+                  ) : null}
+                  <div className={styles.recapSection}>
+                    <p className={styles.recapSectionLabel}>{playerRecapContributionLabel}</p>
+                    <p className={styles.recapBody}>{choicePreview}</p>
+                  </div>
+                </>
               ) : (
                 <div className={styles.recapSection}>
                   <p className={styles.recapSectionLabel}>
@@ -156,13 +193,9 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                 </div>
               )}
 
-              {recap.kind === 'player' && responseBody ? (
+              {recap.kind === 'player' && responseBody && opponentReplyRecapLabel ? (
                 <div className={styles.recapSection}>
-                  <p className={styles.recapSectionLabel}>
-                    {getLabel('opponentResponseHeading', {
-                      replacements: { name: responseSpeaker },
-                    })}
-                  </p>
+                  <p className={styles.recapSectionLabel}>{opponentReplyRecapLabel}</p>
                   <p className={styles.recapBody}>{responseBody}</p>
                 </div>
               ) : null}

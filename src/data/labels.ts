@@ -102,6 +102,8 @@ const LABELS = {
   // --- Round recap modal ---
   roundRecap: 'Round recap',
   yourStatement: 'Your statement',
+  roundRecapYourQuestion: 'Your question',
+  roundRecapYourAnswer: 'Your answer',
   activeRoundImpact: 'Active Round Impact',
   overallScore: 'Overall Score',
   roundComplete: 'Round complete.',
