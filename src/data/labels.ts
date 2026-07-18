@@ -7,6 +7,7 @@ const LABELS = {
   loadingGame: 'Loading Game...',
   mainMenu: 'Main Menu',
   sampleDebate: 'Sample debate',
+  tutorialBlueBarn: 'Tutorial: The Blue Barn',
   montyVsPenny: 'Monty vs Penny',
   bellaVsWoolsey: 'Bella vs Woolsey',
   currentScene: 'Current Scene:',
@@ -83,6 +84,13 @@ const LABELS = {
   workflowNpcResponding: '{opponentName} responds to your statement. Read it, then continue.',
   workflowRoundRecap: 'Review the round summary, then close the dialog to continue.',
 
+  // --- Tutorial overlay ---
+  tutorialGotIt: 'Got it',
+  tutorialFinish: 'Finish',
+  tutorialDialogTitleSingle: 'Tutorial',
+  tutorialDialogTitle: 'Tutorial ({currentStep} of {totalSteps})',
+  tutorialSpotlightHint: 'Click the button in the highlighted area to continue',
+
   // --- Intro summary modal ---
   beforeTheDebate: 'Before the debate',
   introductionSummary: 'Introduction summary',
@@ -94,6 +102,8 @@ const LABELS = {
   // --- Round recap modal ---
   roundRecap: 'Round recap',
   yourStatement: 'Your statement',
+  roundRecapYourQuestion: 'Your question',
+  roundRecapYourAnswer: 'Your answer',
   activeRoundImpact: 'Active Round Impact',
   overallScore: 'Overall Score',
   roundComplete: 'Round complete.',
@@ -112,10 +122,11 @@ const LABELS = {
   chooseFallaciesForSentence:
     'Choose fallacies for this sentence (up to two, click again to remove):',
   attemptRecapCompact: 'Attempts: {attemptsUsed}/{maxAttempts}',
+  insightPointsRecapCompact: 'Insights: {count}',
   guessAwaitingHeadline: 'Ready to analyze',
   guessAwaitingBody: 'Analyze the statement, split by sentences. Spot any fallacies, if any.',
-  submitGuess: 'Spot Fallacies',
-  noFallaciesInStatement: 'No Fallacies',
+  submitGuess: 'Spot',
+  noFallaciesInStatement: 'Clean',
   yourLastGuessReadOnly: 'Your last guess (read-only):',
   sentenceReference: '(sentence {sentenceIndex})',
   guessHeadlineCorrect: 'Correct!',
@@ -140,6 +151,11 @@ const LABELS = {
   noFallaciesConfirmTitle: 'No Fallacies?',
   noFallaciesConfirmBody:
     "You're about to submit that this statement contains no logical fallacies. This uses one attempt and cannot be undone.",
+  helpButton: '({count}/{cost})',
+  helpButtonAria: 'Help ({count}/{cost})',
+  helpConfirmTitle: 'Use {cost} Insights?',
+  helpConfirmBody:
+    'Spending {cost} Insights will reveal which sentences in this statement contain logical fallacies. This cannot be undone.',
   cancel: 'Cancel',
   modalRoundTitle: 'Round {roundNumber} — {tail}',
   opponentsQuestion: "{speakerName}'s question",

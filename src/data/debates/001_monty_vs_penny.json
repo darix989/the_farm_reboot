@@ -12,6 +12,7 @@
       "explanation": "TBD"
     }
   ],
+  "availableLogicalFallacies": ["false-dilemma"],
   "rounds": [
     {
       "kind": "npc",
@@ -19,6 +20,7 @@
       "roundNumber": 1,
       "type": "opening_constructive",
       "speakerId": "monty",
+      "impact": 15,
       "statement": {
         "id": "stmt-r1-monty",
         "speakerId": "monty",
@@ -56,12 +58,13 @@
       "kind": "player",
       "id": "round-2",
       "roundNumber": 2,
+      "preventOptionsShuffle": true,
       "type": "opening_constructive",
       "options": [
         {
           "id": "r2-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "This response uses a False Dilemma itself, suggesting that if we don't listen to Penny, the farm will literally explode. It doesn't fix the logic; it just adds more bad logic.",
           "sentences": [
             {
@@ -186,7 +189,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r3-opt-b",
@@ -201,7 +205,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r3-opt-c",
@@ -221,7 +226,8 @@
                 ]
               }
             ]
-          }
+          },
+          "impact": 15
         }
       ]
     },
@@ -247,6 +253,7 @@
           }
         ]
       },
+      "opponentPromptImpact": 15,
       "options": [
         {
           "id": "r4-opt-a",
@@ -282,7 +289,7 @@
         {
           "id": "r4-opt-c",
           "quality": "effective",
-          "impact": 18,
+          "impact": 15,
           "reason": "This rejects the 'either-or' framing and provides a solution that benefits everyone, not just the pigs.",
           "sentences": [
             {
@@ -300,6 +307,7 @@
       "roundNumber": 5,
       "type": "rebuttal",
       "speakerId": "monty",
+      "impact": 15,
       "statement": {
         "id": "stmt-r5-monty",
         "speakerId": "monty",
@@ -337,7 +345,7 @@
         {
           "id": "r6-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "This is a False Dilemma. It limits the barn's choices to only Penny's way or Monty's way.",
           "sentences": [
             {
@@ -368,7 +376,7 @@
         {
           "id": "r6-opt-c",
           "quality": "effective",
-          "impact": 22,
+          "impact": 20,
           "reason": "This explicitly names the fallacy and explains why the 'with me or against me' logic is false.",
           "unlockCondition": {
             "npcRoundId": "round-5",
@@ -419,6 +427,7 @@
           }
         ]
       },
+      "opponentPromptImpact": 15,
       "options": [
         {
           "id": "r7-opt-a",
@@ -454,7 +463,7 @@
         {
           "id": "r7-opt-c",
           "quality": "effective",
-          "impact": 18,
+          "impact": 15,
           "reason": "Reiterates the existence of more options (drying/trading).",
           "sentences": [
             {
@@ -506,7 +515,7 @@
         {
           "id": "r8-opt-c",
           "quality": "effective",
-          "impact": 20,
+          "impact": 15,
           "reason": "Forces Monty to address a specific alternative, breaking the two-option trap.",
           "sentences": [
             {
@@ -531,7 +540,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r8-opt-b",
@@ -546,7 +556,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r8-opt-c",
@@ -566,7 +577,8 @@
                 ]
               }
             ]
-          }
+          },
+          "impact": 15
         }
       ]
     },
@@ -576,6 +588,7 @@
       "roundNumber": 9,
       "type": "closing_constructive",
       "speakerId": "monty",
+      "impact": 15,
       "statement": {
         "id": "stmt-r9-monty",
         "speakerId": "monty",
@@ -618,7 +631,7 @@
         {
           "id": "r10-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "Final False Dilemma. It mimics Monty's bad logic.",
           "sentences": [
             {
@@ -649,7 +662,7 @@
         {
           "id": "r10-opt-c",
           "quality": "effective",
-          "impact": 25,
+          "impact": 15,
           "reason": "The perfect tutorial conclusion. It names the fallacy one last time, reminds the jury of the 'third way' (preservation), and asks for a vote based on logic rather than fear.",
           "sentences": [
             {
@@ -670,6 +683,482 @@
           ]
         }
       ]
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "intro",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**Welcome!** You'll **analyze statements**, **spot logical fallacies**, and pick lines that **[success]win the debate[/success]**.\n\n**[info]10 rounds[/info]**, alternating sides. On **[accent]your turn[/accent]**, choose the reply that sways the moderator. Be more convincing than your opponent overall to **[success]win[/success]**.",
+            "modal": {
+              "x": 0.35,
+              "y": 0.35,
+              "width": 0.35,
+              "height": 0.5
+            }
+          },
+          {
+            "message": "**First**, read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**, then **[success]Continue[/success]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "debate_log"
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-summary",
+      "trigger": {
+        "event": "introduction:summary"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Before Round 1, read the summary and **[accent]your side[/accent]**. Once you are ready, click **[accent]Begin Round 1[/accent]**.",
+            "modal": {
+              "x": 0.62,
+              "y": 0.02,
+              "width": 0.35,
+              "height": 0.4
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-1-opening-constructive-analyze",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-1"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Round 1 is about the **[warning]proposition's opening constructive[/warning]** which is spoken by (**[warning]the other side[/warning]**). Read it in the **[accent]Wizard Panel[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "artificialInteractions": [
+              {
+                "delayTimeMs": 500,
+                "action": {
+                  "type": "wizard:scroll_to_bottom"
+                }
+              }
+            ],
+            "modal": {
+              "x": 0.225,
+              "y": 0.06,
+              "width": 0.35,
+              "height": 0.48
+            }
+          },
+          {
+            "message": "Each round is logged in the **[accent]Debate Log Panel[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "debate_log"
+            },
+            "modal": {
+              "x": 0.225,
+              "y": 0.06,
+              "width": 0.35,
+              "height": 0.48
+            }
+          },
+          {
+            "message": "Use **[accent]Analyze[/accent]** (magnifying glass) on statements from either side.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-1"
+            },
+            "modal": {
+              "x": 0.225,
+              "y": 0.06,
+              "width": 0.35,
+              "height": 0.48
+            }
+          },
+          {
+            "message": "Inspect their opening: click the **[accent]magnifying glass[/accent]** to **analyze**.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-1"
+            },
+            "modal": {
+              "x": 0.225,
+              "y": 0.06,
+              "width": 0.35,
+              "height": 0.55
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-2-player-your-turn",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundNumber": 2,
+          "kind": "player",
+          "roundId": "round-2"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Your turn[/accent]** — pick **[info]one of three[/info]** replies for the moderator.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            }
+          },
+          {
+            "message": "Click **[accent]Option A[/accent]** — the full text appears in the **[accent]Wizard Panel[/accent]**.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r2-opt-a"
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            }
+          },
+          {
+            "message": "In the **[accent]Interactive Area[/accent]**, **[warning]Option C[/warning]** stays locked until you analyze a **[warning]logical fallacy[/warning]** from your opponent in **[info]Round 1[/info]** that you have not resolved yet.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r2-opt-c"
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            }
+          },
+          {
+            "artificialInteractions": [
+              {
+                "delayTimeMs": 500,
+                "action": {
+                  "type": "debate_log:scroll_to_top"
+                }
+              }
+            ],
+            "message": "Re-open **[accent]Analyze[/accent]** on **[info]Round 1[/info]** to hunt for a **[warning]fallacy[/warning]** (the log scrolls if needed).",
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            },
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-1"
+            }
+          },
+          {
+            "message": "**[info]Expand[/info]** the round card if **[accent]Analyze[/accent]** is hidden, then open it.",
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            },
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "debate_log_round_toggle",
+              "roundId": "round-1"
+            }
+          },
+          {
+            "message": "Click **[accent]Analyze[/accent]** on Round 1.",
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            },
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-select-sentence-first-wrong-guess",
+      "trigger": {
+        "event": "analysis:open",
+        "where": {
+          "activeRoundNumber": 1
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Statement analysis[/accent]** — **[accent]select a sentence[/accent]** you think hides a **[warning]logical fallacy[/warning]**.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_sentence",
+              "sentenceId": "s-r1-1"
+            },
+            "modal": {
+              "x": 0.6,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.5
+            }
+          },
+          {
+            "message": "Pick **[info]false dilemma[/info]** for that sentence.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_fallacy",
+              "fallacyId": "false-dilemma"
+            },
+            "modal": {
+              "x": 0.05,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.5
+            }
+          },
+          {
+            "message": "**[accent]Spot Fallacies[/accent]** to submit.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "submit_guess"
+            },
+            "modal": {
+              "x": 0.15,
+              "y": 0.3,
+              "width": 0.35,
+              "height": 0.5
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-post-submit-guess",
+      "trigger": {
+        "event": "tutorial:end",
+        "where": {
+          "tutorialId": "analysis-select-sentence-first-wrong-guess"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "[danger]Not quite.[/danger] This sentence **[muted]doesn't[/muted]** look like a fallacy.",
+            "modal": {
+              "x": 0.6,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.5
+            }
+          },
+          {
+            "message": "You get **[info]3 attempts[/info]** per statement to spot fallacies.",
+            "modal": {
+              "x": 0.6,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.5
+            }
+          },
+          {
+            "message": "**[accent]Close[/accent]** the analysis for now — more attempts later.",
+            "modal": {
+              "x": 0.6,
+              "y": 0.3,
+              "width": 0.35,
+              "height": 0.5
+            },
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "close"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-next-round-continue",
+      "trigger": {
+        "event": "tutorial:end",
+        "where": {
+          "tutorialId": "analysis-post-submit-guess"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Continue[/accent]** to the **[success]next round[/success]**.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "x": 0.05,
+              "y": 0.25,
+              "width": 0.35,
+              "height": 0.45
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-select-sentence-correct-guess",
+      "trigger": {
+        "event": "analysis:open",
+        "where": {
+          "activeRoundNumber": 2
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[info]Two tries left[/info]** on this statement — try the **[accent]second sentence[/accent]**.",
+            "modal": {
+              "x": 0.6,
+              "y": 0.4,
+              "width": 0.36,
+              "height": 0.5
+            },
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_sentence",
+              "sentenceId": "s-r1-2"
+            }
+          },
+          {
+            "message": "**[accent]Pick the fallacy[/accent]**.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_fallacy",
+              "fallacyId": "false-dilemma"
+            },
+            "modal": {
+              "x": 0.05,
+              "y": 0.2,
+              "width": 0.35,
+              "height": 0.5
+            }
+          },
+          {
+            "message": "**[accent]Spot Fallacies[/accent]** to submit.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "submit_guess"
+            },
+            "modal": {
+              "x": 0.15,
+              "y": 0.3,
+              "width": 0.35,
+              "height": 0.5
+            }
+          },
+          {
+            "message": "**[success]Correct![/success]** **[accent]Close[/accent]** the analysis.",
+            "modal": {
+              "x": 0.6,
+              "y": 0.3,
+              "width": 0.35,
+              "height": 0.5
+            },
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "close"
+            }
+          },
+          {
+            "message": "**[accent]Option C[/accent]** — **[success]Click to unlock![/success]**.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r2-opt-c"
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            }
+          },
+          {
+            "message": "Click again to read the full line in the **[accent]Wizard Panel[/accent]**.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r2-opt-c"
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            }
+          },
+          {
+            "message": "**[success]Continue[/success]** to play it.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4
+            }
+          }
+        ]
+      }
     }
   ]
 }

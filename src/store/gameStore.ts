@@ -2,7 +2,11 @@ import { create } from 'zustand';
 import { EventBus } from '../phaser/EventBus';
 
 /** Keys map to debate JSON files under `src/data/debates/`. */
-export type DebateScenarioKey = 'sample-debate' | '001_monty_vs_penny' | '002_bella_vs_woolsey';
+export type DebateScenarioKey =
+  | '000_tutorial_the_blue_barn'
+  | 'sample-debate'
+  | '001_monty_vs_penny'
+  | '002_bella_vs_woolsey';
 
 // Simple game state interface
 interface GameState {
@@ -61,7 +65,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     position: { x: 0, y: 0 },
   },
   currentScene: 'MainMenu',
-  activeDebateId: 'sample-debate',
+  activeDebateId: '000_tutorial_the_blue_barn',
   isPaused: false,
   spritePositions: {},
 

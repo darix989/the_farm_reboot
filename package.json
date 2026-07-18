@@ -31,6 +31,7 @@
     "lint:styles:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,scss,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,scss,json}\"",
+    "export:gem": "node scripts/export-gem.js",
     "prepare": "husky"
   },
   "lint-staged": {

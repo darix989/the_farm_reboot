@@ -1,0 +1,1631 @@
+{
+  "id": "debate-blue-barn-final",
+  "startingInsightPoints": 2,
+  "introduction": "Barnaby the Bunny propose we should paint the entire barn bright blue because 'blue is the happiest color.",
+  "playerSide": "opposition",
+  "characters": {
+    "barnaby": "Barnaby",
+    "pip": "Pip"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Attacking the person instead of the argument."
+    },
+    {
+      "id": "false-dilemma",
+      "explanation": "Presenting only two options when more alternatives exist."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem", "false-dilemma"],
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "opening_constructive",
+      "speakerId": "barnaby",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r1-barnaby",
+        "speakerId": "barnaby",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Friends of the farm, look up at the wide blue sky — that very shade is the color of joy itself.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "If we paint our barn that same beautiful blue, every animal will wake up feeling like they are floating among the clouds.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "preventOptionsShuffle": true,
+      "type": "opening_constructive",
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Focuses on personal taste in colors instead of addressing the farm's real priority: a roof that actually keeps the rain out.",
+          "sentences": [
+            {
+              "id": "s-r2a-1",
+              "text": "I think the natural wood color of the barn already looks classic and warm.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r2a-2",
+              "text": "We should spend more money to repair the holes on the roof, safety is more important than painting the barn.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "effective",
+          "impact": 15,
+          "reason": "Keeps the argument focused on immediate safety, which is stronger than cosmetic improvements.",
+          "sentences": [
+            {
+              "id": "s-r2b-1",
+              "text": "Before changing color, we should fix the roof first so every animal stays dry and safe.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "States a practical concern but does not strongly explain why the roof should be the first priority.",
+          "sentences": [
+            {
+              "id": "s-r2c-1",
+              "text": "Let us postpone painting until next season and use this budget for repairs.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "crossfire",
+      "preventOptionsShuffle": true,
+      "options": [
+        {
+          "id": "r3-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Trivial logistical questions that let Barnaby duck the real issue: cost versus the roof.",
+          "sentences": [
+            {
+              "id": "s-r3a-1",
+              "text": "How much of the money should we spend on the paint and brushes?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Fixates on who does the work instead of whether the budget should go to paint or to the leaking roof.",
+          "sentences": [
+            {
+              "id": "s-r3b-1",
+              "text": "Who exactly will climb up there to do all that painting?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-c",
+          "quality": "effective",
+          "impact": 15,
+          "reason": "Forces the tradeoff Barnaby keeps dodging: spending on blue paint versus money still available for roof repairs.",
+          "sentences": [
+            {
+              "id": "s-r3c-1",
+              "text": "If we spend this budget on paint, how much is left to fix the roof before the next storm?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r3-opt-a",
+          "statement": {
+            "id": "stmt-r3-resp-a",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3ra-1",
+                "text": "Almost all of the money will go to the paint and brushes.",
+                "logicalFallacies": []
+              }
+            ]
+          },
+          "impact": 0
+        },
+        {
+          "forOptionId": "r3-opt-b",
+          "statement": {
+            "id": "stmt-r3-resp-b",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3rb-1",
+                "text": "I will hire the bravest swallows in the county — leave the ladders to them!",
+                "logicalFallacies": []
+              }
+            ]
+          },
+          "impact": 0
+        },
+        {
+          "forOptionId": "r3-opt-c",
+          "statement": {
+            "id": "stmt-r3-resp-c",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r3rc-1",
+                "text": "There will always be another bucket for leaks — but there is only one first coat of joy-blue!",
+                "logicalFallacies": []
+              }
+            ]
+          },
+          "impact": 0
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "crossfire",
+      "preventOptionsShuffle": true,
+      "opponentPrompt": {
+        "id": "stmt-r4-barnaby-question",
+        "speakerId": "barnaby",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r4q-1",
+            "text": "Pip, why should anyone listen to a tiny mouse with such dull, gray fur and no sense of style at all? Isn't it obvious you only hate the blue plan because you yourself are too drab to appreciate true beauty?",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "Barnaby attacks Pip's appearance and personal taste instead of engaging with the argument about the leaking roof and the budget."
+              }
+            ]
+          }
+        ]
+      },
+      "opponentPromptImpact": 15,
+      "options": [
+        {
+          "id": "r4-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Defensive about appearance — exactly where Barnaby wants the conversation. Misses the chance to name the fallacy and pivot back to the roof.",
+          "sentences": [
+            {
+              "id": "s-r4b-1",
+              "text": "I am not drab! I groom my fur every single morning down by the pond.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-c",
+          "quality": "effective",
+          "impact": 20,
+          "reason": "Names the Ad Hominem out loud, refuses the personal bait, and drags the debate back to the roof and the budget — the questions Barnaby was trying to dodge.",
+          "unlockCondition": {
+            "npcRoundId": "stmt-r4-barnaby-question",
+            "sentenceId": "s-r4q-1",
+            "fallacyId": "ad-hominem"
+          },
+          "sentences": [
+            {
+              "id": "s-r4c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r4c-1",
+              "text": "Barnaby, the color of my fur has nothing to do with the holes in our roof.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-5",
+      "roundNumber": 5,
+      "type": "rebuttal",
+      "speakerId": "barnaby",
+      "impact": 15,
+      "statement": {
+        "id": "stmt-r5-barnaby",
+        "speakerId": "barnaby",
+        "type": "rebuttal",
+        "sentences": [
+          {
+            "id": "s-r5-1",
+            "text": "Pip's so-called 'budget' is nothing but a smokescreen for a much darker truth about this farm.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-2",
+            "text": "Either we paint this barn blue today, or we all agree to live in a miserable, colorless world forever.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "Barnaby pretends there are only two options — his blue plan or eternal misery — when in reality the barn could simply stay its natural color and still be a happy place."
+              }
+            ]
+          },
+          {
+            "id": "s-r5-3",
+            "text": "There is no middle ground when the joy of the entire community is on the line.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-6",
+      "roundNumber": 6,
+      "type": "rebuttal",
+      "options": [
+        {
+          "id": "r6-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "Mirrors Barnaby's mistake by inventing a False Dilemma of Pip's own. Doesn't expose the bad logic — just adds more bad logic on top.",
+          "sentences": [
+            {
+              "id": "s-r6a-1",
+              "text": "Either we ignore Barnaby completely, or this whole farm collapses by the first frost!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Pip frames the choice as ignore-Barnaby-or-collapse, ignoring sensible middle paths."
+                }
+              ]
+            },
+            {
+              "id": "s-r6a-2",
+              "text": "There are only two paths here: a fixed roof, or every animal frozen by December!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Reduces a complex farm budget to two extreme outcomes."
+                }
+              ]
+            },
+            {
+              "id": "s-r6a-3",
+              "text": "Pick survival or pick paint — there is absolutely no other way!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Repeats the either-or framing instead of breaking out of it."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Tries to soften Barnaby's premise but accepts the framing that life without blue is sad. Doesn't name or break the fallacy.",
+          "sentences": [
+            {
+              "id": "s-r6b-1",
+              "text": "I am not a smokescreen, I am just a mouse trying to be helpful.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r6b-2",
+              "text": "The world isn't really colorless if we just look at the green fields and the yellow hay.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r6b-3",
+              "text": "Maybe we can be a little bit happy without any paint at all, if we try.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-c",
+          "quality": "effective",
+          "impact": 20,
+          "reason": "Names the False Dilemma directly, opens up a third path (a dry, unpainted barn), and grounds the audience in the practical comparison: a leaky blue barn versus a dry plain one.",
+          "unlockCondition": {
+            "npcRoundId": "round-5",
+            "sentenceId": "s-r5-2",
+            "fallacyId": "false-dilemma"
+          },
+          "sentences": [
+            {
+              "id": "s-r6c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r6c-1",
+              "text": "Barnaby is offering a False Dilemma — paint blue or live in misery, as if those are the only two choices.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r6c-2",
+              "text": "We can keep the barn the color it already is and still be happy and still have a roof that doesn't leak.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r6c-3",
+              "text": "A dry wooden barn beats a blue barn full of puddles every single day of the year.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-7",
+      "roundNumber": 7,
+      "type": "crossfire",
+      "opponentPrompt": {
+        "id": "stmt-r7-barnaby-question",
+        "speakerId": "barnaby",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r7q-1",
+            "text": "Pip, if you don't let us paint the barn blue, aren't you simply choosing to keep us all sad and gray forever?",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "Barnaby is again pretending the only two outcomes are 'paint blue' or 'eternal sadness', leaving out every reasonable alternative."
+              }
+            ]
+          }
+        ]
+      },
+      "opponentPromptImpact": 15,
+      "options": [
+        {
+          "id": "r7-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "Answers Barnaby's False Dilemma with another False Dilemma. The audience hears two animals trapped in either-or thinking instead of one of them breaking out of it.",
+          "sentences": [
+            {
+              "id": "s-r7a-1",
+              "text": "Either Barnaby admits he is wrong, or none of us should ever speak to him again!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Reduces a disagreement to silence-or-surrender with no middle ground."
+                }
+              ]
+            },
+            {
+              "id": "s-r7a-2",
+              "text": "The choice is happiness or honesty — pick one, Barnaby!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Falsely treats happiness and honesty as opposites."
+                }
+              ]
+            },
+            {
+              "id": "s-r7a-3",
+              "text": "Either you fix the roof yourself, or you stop talking nonsense forever!",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Wanders away from the question. Doesn't refute the trap or offer a real third option.",
+          "sentences": [
+            {
+              "id": "s-r7b-1",
+              "text": "Sadness comes from many places, not just from the color of a wall.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r7b-2",
+              "text": "Some animals are sad even on bright sunny days for reasons I don't fully understand.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r7b-3",
+              "text": "Is there a mouse counselor on this farm we could maybe ask about feelings?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-c",
+          "quality": "effective",
+          "impact": 15,
+          "reason": "Refuses Barnaby's binary, offers a clear third path (a dry, repaired barn = a different kind of happiness), and even leaves room to talk about color later — fair, calm, and persuasive.",
+          "sentences": [
+            {
+              "id": "s-r7c-1",
+              "text": "No, because a dry, repaired barn makes everyone feel safe — and safety is its own kind of happiness.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r7c-2",
+              "text": "Saving for the roof doesn't choose sadness; it chooses sensible care for the whole farm.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r7c-3",
+              "text": "Once the roof is fixed, we can absolutely talk about cheerful decorations next spring.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-8",
+      "roundNumber": 8,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r8-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "Personal attack on Barnaby's character and species. Even if it lands a laugh, it abandons the substance of the debate.",
+          "sentences": [
+            {
+              "id": "s-r8a-1",
+              "text": "Barnaby, are you a real leader, or just a fluffy daydreamer with no practical sense at all?",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "Goes after Barnaby's character ('fluffy daydreamer') rather than the merits of his plan."
+                }
+              ]
+            },
+            {
+              "id": "s-r8a-2",
+              "text": "Have you ever fixed anything on this farm with your own paws, or do you just talk?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r8a-3",
+              "text": "Or is your entire plan based on staring at the sky for too long?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r8-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Logistical small-talk. Doesn't expose the flaw in painting first and fixing later.",
+          "sentences": [
+            {
+              "id": "s-r8b-1",
+              "text": "How many cans of paint do you think we'll actually need for the whole barn?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r8b-2",
+              "text": "Will the brushes come from Mr. Hedgehog's shop or from Old Mrs. Vole's?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r8b-3",
+              "text": "Should we use rollers, or just brushes for the high parts up under the eaves?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r8-opt-c",
+          "quality": "effective",
+          "impact": 15,
+          "reason": "Brutally practical: paint on damp, rotting wood is wasted paint. Forces Barnaby to either concede the roof must come first or look reckless.",
+          "sentences": [
+            {
+              "id": "s-r8c-1",
+              "text": "If we paint over damp, rotting wood, won't the paint just bubble and peel within a single month?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r8c-2",
+              "text": "Why coat a building that needs structural repair before any decoration even makes sense?",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r8c-3",
+              "text": "Wouldn't fixing the roof first actually protect any future paint job we eventually do?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r8-opt-a",
+          "statement": {
+            "id": "stmt-r8-resp-a",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r8ra-1",
+                "text": "I am a VISIONARY, Pip, which is far above 'practical'! My paws are perfect for holding inspirational color swatches.",
+                "logicalFallacies": []
+              }
+            ]
+          },
+          "impact": 0
+        },
+        {
+          "forOptionId": "r8-opt-b",
+          "statement": {
+            "id": "stmt-r8-resp-b",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r8rb-1",
+                "text": "We will need ALL the paint! Every can on the farm! The hedgehog will be absolutely delighted.",
+                "logicalFallacies": []
+              }
+            ]
+          },
+          "impact": 0
+        },
+        {
+          "forOptionId": "r8-opt-c",
+          "statement": {
+            "id": "stmt-r8-resp-c",
+            "speakerId": "barnaby",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-r8rc-1",
+                "text": "Either we paint NOW while the spirit moves us, or this beautiful moment of inspiration passes forever! Why hesitate?",
+                "logicalFallacies": [
+                  {
+                    "id": "false-dilemma",
+                    "explanation": "Barnaby presents a fake either-or: paint right now or lose the chance forever, ignoring the option of painting later after the roof is fixed."
+                  }
+                ]
+              }
+            ]
+          },
+          "impact": 15
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-9",
+      "roundNumber": 9,
+      "type": "closing_constructive",
+      "speakerId": "barnaby",
+      "impact": 15,
+      "statement": {
+        "id": "stmt-r9-barnaby",
+        "speakerId": "barnaby",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r9-1",
+            "text": "Animals of the farm, the moment is here. Look at our barn and imagine the entire sky descending upon it in glorious blue.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r9-2",
+            "text": "You must choose now: a barn of joy and color, or a lifetime of dull, dripping despair.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "Barnaby once again presents only two extremes — a blue paradise or eternal despair — leaving out every reasonable middle ground."
+              }
+            ]
+          },
+          {
+            "id": "s-r9-3",
+            "text": "There are no other paths, my friends. Vote for the blue dream, or vote for gray misery.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "The 'no other paths' framing is the heart of the False Dilemma — it pretends compromise and alternatives simply don't exist."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-10",
+      "roundNumber": 10,
+      "type": "closing_constructive",
+      "options": [
+        {
+          "id": "r10-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "Closes with a False Dilemma of Pip's own. After spending the whole debate exposing Barnaby's bad logic, this throws away that progress at the most important moment.",
+          "sentences": [
+            {
+              "id": "s-r10a-1",
+              "text": "In conclusion, we either ban paint forever, or this farm is doomed!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Reduces a complex decision to ban-paint-or-doom, ignoring the obvious option of fixing the roof first and painting later."
+                }
+              ]
+            },
+            {
+              "id": "s-r10a-2",
+              "text": "Choose between Barnaby's nonsense or my sensible roof — there is no third way!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Mirrors Barnaby's bad framing instead of breaking it."
+                }
+              ]
+            },
+            {
+              "id": "s-r10a-3",
+              "text": "Vote for the roof, or vote for ruin!",
+              "logicalFallacies": [
+                {
+                  "id": "false-dilemma",
+                  "explanation": "Another either-or with no middle ground."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Wishy-washy and forgettable. The audience needs a clear ask before they vote.",
+          "sentences": [
+            {
+              "id": "s-r10b-1",
+              "text": "Maybe we should all just go to bed and decide tomorrow when we're well rested.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10b-2",
+              "text": "The moon will probably give us all better advice in the morning.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10b-3",
+              "text": "Or maybe we could ask the owl for help, but the owl is asleep at this hour.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-c",
+          "quality": "effective",
+          "impact": 15,
+          "reason": "The perfect close: names both fallacies the audience just watched in real time, replaces Barnaby's either-or with a real third path, and ties it back to safety as the foundation of any real happiness.",
+          "sentences": [
+            {
+              "id": "s-r10c-1",
+              "text": "Barnaby has tried to attack my fur and trap us all between two extreme choices.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10c-2",
+              "text": "But we don't have to choose between joy and survival — fixing the roof is what makes joy possible in the first place.",
+              "logicalFallacies": []
+            },
+            {
+              "id": "s-r10c-3",
+              "text": "Vote to fix the roof first, because a safe barn is the foundation every cheerful color is painted on.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "intro",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**Welcome!** This is the **[accent]debate tutorial[/accent]**.\n\nA debate has **[accent]three roles[/accent]**: the **[accent]Proposition side[/accent]** proposes the idea; the **[accent]Opposition side[/accent]** argues against it; and the **[accent]moderator[/accent]** picks the winner. You always play one of the two sides.",
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
+          },
+          {
+            "message": "Specifically, in this tutorial, you are **[accent]Pip[/accent]** on the **[accent]Opposition side[/accent]**, arguing the farm should cover **[accent]something more urgent[/accent]** first, while **[warning]Barnaby[/warning]** on the **[warning]Proposition side[/warning]** pushes the **[warning]blue-barn plan[/warning]** to make the farm more colorful and happy.\n\nTo sway the moderator, **[accent]analyze statements[/accent]**, **[accent]spot logical fallacies[/accent]**, and choose **[accent]responses[/accent]** that undercut the rival case.",
+            "interactionMode": "modal_only",
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
+          },
+          {
+            "message": "The **[accent]emoji score[/accent]** beside **Debate Log** shows how the moderator leans; **[accent]Insights Points[/accent]** sit just to its left (explained later).\n\nThe match runs **[accent]10 rounds[/accent]** (plus introduction): 1) proposition's opening constructive; 2) opposition's  opening constructive; 3) opposition crossfire; 4) proposition crossfire; 5) proposition's rebuttal; 6) opposition's rebuttal; 7) proposition's crossfire 8) opposition's crossfire 9) proposition's closing constructive and 10) opposition's closing constructive.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_moderator_score"
+            },
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
+          },
+          {
+            "message": "The tutorial will walk you through the essential steps to learn how lead a debate. Some types of rounds are similar with each other, for example opening, closing and rebuttal are played the same way, while the crossfire is a bit different.\n\n Use **[accent]Continue[/accent]** / **[accent]Got it[/accent]** to advance and **[accent]Back[/accent]** to revisit a step when it appears.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_moderator_score"
+            },
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
+          },
+          {
+            "message": "The debate opens with the **[accent]Moderator's Introduction[/accent]** in the **[accent]Wizard Panel[/accent]** — the same text is stored in the **[accent]Debate Log[/accent]** as the **[accent]full round-by-round history[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "x": 0.125,
+              "y": 0.06,
+              "width": 0.4,
+              "height": 0.4,
+              "pivot": "topLeft"
+            }
+          },
+          {
+            "message": "When you're ready, start the debate with **[accent]Continue[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "intro-summary",
+      "trigger": {
+        "event": "introduction:summary"
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Introduction and rounds will have their recap just after they finish.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "intro_summary_action",
+              "action": "begin_round_1"
+            },
+            "modal": {
+              "size": "smallTight",
+              "position": "bottomRight"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-1-opening-constructive-analyze",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-1"
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Round 1[/accent]** is the **[accent]Proposition side's Opening Constructive[/accent]** — that side presents the idea they want to promote. In this debate, read **[warning]Barnaby's opening statement[/warning]** in the **[accent]Wizard Panel[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "An opening constructive is that side's argument pass; **[accent]Rebuttal[/accent]** and **[accent]Closing Constructive[/accent]** work in a similar way. **[accent]Round 1 always belongs to the Proposition side[/accent]** — when you play proposition elsewhere, **[accent]you[/accent]** take Round 1.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "The **[accent]Debate Log[/accent]** holds everything so far, **[accent]ordered by round[/accent]**. When you're ready, click the **[accent]Analyze[/accent]** control (**[accent]magnifying glass[/accent]**) on Round 1.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-1"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-2-player-your-turn",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundNumber": 2,
+          "kind": "player",
+          "roundId": "round-2"
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Round 2[/accent]** is about **[accent]Opposition side's constructive opening[/accent]**.\n\n Opposition side just shares their arguments against the proposition.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "**[accent]Your turn[/accent]**. You have **[accent]3 options[/accent]** to choose from in the interactive panel.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "Click **[accent]Option A[/accent]** to review it.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r2-opt-a"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
+          },
+          {
+            "message": "You can read the full text of the **[accent]selected option[/accent]** in the **[accent]Wizard Panel[/accent]**.",
+            "onlyForward": true,
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "After you **[accent]review each option[/accent]** and choose what's best for the debate, just press **[accent]Continue[/accent]** to confirm your choice.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topRight"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-2-recap-moderator-sneak-peek",
+      "trigger": {
+        "event": "round:recap:open",
+        "where": {
+          "roundNumber": 2,
+          "roundId": "round-2"
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "At the end of your rounds you will get a sneak peek of **[accent]how the moderator was influenced by your statement[/accent]**. \n\n Currently, the moderator is **[warning]neutral[/warning]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "modal_round_recap_score"
+            },
+            "modal": {
+              "size": "smallTightTall",
+              "position": "bottomRight"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-3-crossfire-intro",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundNumber": 3,
+          "roundId": "round-3",
+          "kind": "player",
+          "type": "crossfire"
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Crossfire[/accent]** is a back-and-forth: one side **[accent]asks[/accent]**, the other **[accent]answers[/accent]**. Here **[accent]you[/accent]** on the **[accent]Opposition side[/accent]** put a **[accent]question[/accent]** to the **[warning]Proposition side[/warning]** — review the options in the **[accent]Interactive Panel[/accent]**.",
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            },
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            }
+          },
+          {
+            "message": "Choose the **[accent]first question[/accent]**.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r3-opt-a"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
+          },
+          {
+            "message": "You can read the full text of the **[accent]selected question[/accent]** in the **[accent]Wizard Panel[/accent]**.",
+            "onlyForward": true,
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "Press **[accent]Continue[/accent]** to ask the selected question.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
+          },
+          {
+            "message": "Read **[warning]Barnaby's answer[/warning]** in the **[accent]Wizard Panel[/accent]**. The **[accent]Debate Log[/accent]** now lists **[accent]two Analyze icons[/accent]** for this round — your question and that reply. A careful read still earns **[accent]bonuses[/accent]** toward **[success]winning the debate[/success]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "debate_log"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "Open analysis on **[accent]your own question[/accent]** first.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-3"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-select-sentence-first-wrong-guess",
+      "trigger": {
+        "event": "analysis:open",
+        "where": {
+          "activeRoundNumber": 1
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This is the **[accent]Statement Analysis View[/accent]**, where every **[accent]statement[/accent]** unfolds as **[accent]one or more sentences[/accent]** that may include up to **[warning]two fallacies[/warning]** or **[accent]no fallacies[/accent]**.",
+            "modal": {
+              "size": "medium",
+              "position": "bottomRight"
+            }
+          },
+          {
+            "message": "The **[accent]whole statement[/accent]** may also contain **[accent]no fallacies[/accent]** at all. Every sentence in it can be clean together, so there is nowhere in the text that needs a fallacy tag.",
+            "modal": {
+              "size": "medium",
+              "position": "bottomRight"
+            }
+          },
+          {
+            "message": "Perfect Analysis earns **[success]Insights[/success]**. Spotting fallacies in sentences also helps you to access **[accent]bonus-locked statement options[/accent]** when it is your turn to speak.",
+            "modal": {
+              "size": "medium",
+              "position": "bottomRight"
+            }
+          },
+          {
+            "message": "Use the **[accent]Inspect button[/accent]** when you can afford the Inspect Points cost: this will flag fallacy-bearing sentences, if any. The Inspect button label shows your balance to the price; you currently have **[accent]0 Insights[/accent]**, and analizying this statement would cost 2 Insights. \n\nBut now, let's see how to analyze a statement.",
+            "modal": {
+              "size": "large",
+              "position": "topRight"
+            },
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "help"
+            }
+          },
+          {
+            "message": "**[warning]Select a sentence[/warning]**, then **[warning]pick fallacies[/warning]** from the grid (up to **[accent]two[/accent]** per sentence; click again to clear a tag). Finish with **[accent]Spot[/accent]** or **[muted]No Fallacies[/muted]** if the whole statement is clean — those **[success]finalize[/success]** the analysis.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "submit_guess"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "bottomLeft"
+            }
+          },
+          {
+            "message": "Click the highlighted **[accent]sentence[/accent]** to begin.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_sentence",
+              "sentenceId": "s-r1-1"
+            },
+            "modal": {
+              "preset": "analysisSentencesSelection"
+            }
+          },
+          {
+            "message": "Pick **[warning]false dilemma[/warning]** from the fallacies list.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_fallacy",
+              "fallacyId": "false-dilemma"
+            },
+            "modal": {
+              "preset": "analysisFallacySelection"
+            }
+          },
+          {
+            "message": "Press **[accent]Spot button[/accent]** to submit your match (sentence 1 with false dilemma fallacy).",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "submit_guess"
+            },
+            "modal": {
+              "preset": "analysisSubmit"
+            }
+          },
+          {
+            "message": "Mmmm ... **[warning]that's not quite right.[/warning]** You still have **[accent]2 attempts left[/accent]**.\n\n Thinking again... Maybe the whole statement is **[accent]fallacy free[/accent]?** Try **[accent]Clean[/accent]** button this time.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "no_fallacies"
+            },
+            "modal": {
+              "preset": "analysisSubmit"
+            }
+          },
+          {
+            "message": "A confirmation is asked. Press **[accent]Confirm[/accent]** to proceed.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "no_fallacies_confirm"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
+          },
+          {
+            "message": "**[success]Correct![/success]**\n You have earned **[accent]1 Insight[/accent]** now.",
+            "onlyForward": true,
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "analysis_resources"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
+          },
+          {
+            "message": "We will come back to this Analysis View later in the tutorial. For now, continue the tutorial by **[accent]closing the analysis view[/accent]**.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "close"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
+          },
+          {
+            "message": "Your new **[accent]Insights[/accent]** balance shows beside **Debate Log**. **[accent]Continue[/accent]** to **[accent]Round 2[/accent]**.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-round-3-own-statement-clean",
+      "trigger": {
+        "event": "analysis:open",
+        "where": {
+          "analysisRoundNumber": 3,
+          "activeRoundNumber": 3,
+          "targetKind": "player",
+          "targetId": "r3-opt-a"
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Analyzing your own words[/accent]** still counts: your **[accent]question[/accent]** is a statement that can stay **[success]clear and fair[/success]** or **[warning]hide a fallacy[/warning]** like the other side's lines.\n\nSelf-checking is part of debating, and a correct read **[success]earns Insights[/success]** the same way as analyzing **[warning]Barnaby's[/warning]** wording.",
+            "modal": {
+              "size": "medium",
+              "position": "bottomRight"
+            }
+          },
+          {
+            "message": "Here your line is **[accent]fallacy-free[/accent]**. Press **[accent]Clean[/accent]** to record **[accent]no fallacies[/accent]** for this statement.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "no_fallacies"
+            },
+            "modal": {
+              "preset": "analysisSubmit"
+            }
+          },
+          {
+            "message": "Confirm with **[accent]Confirm[/accent]**.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "no_fallacies_confirm"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
+          },
+          {
+            "message": "**[success]Nice![/success]**\n You earned **[accent]another Insight[/accent]** for correctly judging your own question.",
+            "onlyForward": true,
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "analysis_resources"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
+          },
+          {
+            "message": "**[accent]Close[/accent]** the Analysis View when you are ready to keep going.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "close"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
+          },
+          {
+            "message": "You now have **[accent]2 Insights[/accent]** beside **Debate Log**. **[accent]Continue[/accent]** when you are ready.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-post-submit-guess",
+      "trigger": {
+        "event": "tutorial:end",
+        "where": {
+          "tutorialId": "analysis-select-sentence-first-wrong-guess"
+        }
+      }
+    },
+    {
+      "id": "analysis-next-round-continue",
+      "trigger": {
+        "event": "tutorial:end",
+        "where": {
+          "tutorialId": "analysis-post-submit-guess"
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Press **[accent]Continue[/accent]** to proceed.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "small",
+              "position": "bottomCenter"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-4-start-question-and-analysis",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundNumber": 4,
+          "kind": "player",
+          "roundId": "round-4"
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Round 4 is the **[accent]other side crossfire[/accent]** that asks you a **[warning]question[/warning]**. \n Check the **[accent]Wizard Panel[/accent]** to read the **[warning]question[/warning]**. \n Remember, the question is also loggen in the **[accent]Debate Log Panel[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "We can choose a **[accent]statement to answer[/accent]** among the 3 options.\n One option looks **[warning]locked[/warning]**!",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "When you find a **[warning]locked statement[/warning]**, it means you need to **[accent]analyze a prior statement[/accent]** of this debate. \n\n Once you **[success]successfully analyze[/success]** a fallacious statement, the related locked statement will become **[success]unlockable[/success]**. \n\n Click the **[accent]analysis button[/accent]** to spot the fallacy in Barnaby question.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-4"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "analysis-select-sentence-correct-guess",
+      "trigger": {
+        "event": "analysis:open",
+        "where": {
+          "activeRoundNumber": 4
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Inspecting a statement[/accent]** spends **[success]Insights[/success]** during analysis. **[accent]By paying the cost of 2 Insights[/accent]** you can reveal which sentences hide fallacies on the statement you are viewing. The label shows your balance and the cost, for example **[muted]2/2[/muted]** means you have 2 Insights and the cost is also of 2 Insights.\n\nTap **[accent]Inspect button[/accent]** to open the confirmation dialog.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "help"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topRight"
+            }
+          },
+          {
+            "message": "Confirm to spend **[success]2 Insights[/success]** and **[accent]reveal fallacious sentences[/accent]** for this statement.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "help_confirm"
+            },
+            "modal": {
+              "size": "smallTightTall",
+              "position": "bottomRight"
+            }
+          },
+          {
+            "message": "Fallacious lines now show a **[warning]mark[/warning]**. On **[warning]Barnaby's crossfire question[/warning]**, **[accent]select that flagged sentence[/accent]** to inspect it and tag fallacies.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_sentence",
+              "sentenceId": "s-r4q-1"
+            },
+            "modal": {
+              "preset": "analysisSentencesSelection"
+            }
+          },
+          {
+            "message": "Pick **[warning]Ad Hominem[/warning]**.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_fallacy",
+              "fallacyId": "ad-hominem"
+            },
+            "modal": {
+              "preset": "analysisFallacySelection"
+            }
+          },
+          {
+            "message": "Submit your guess.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "submit_guess"
+            },
+            "modal": {
+              "preset": "analysisSubmit"
+            }
+          },
+          {
+            "message": "**[success]Correct![/success]** Barnaby's question carries **[warning]Ad Hominem[/warning]**. Knowing that helps you answer more sharply.\n\n**[accent]Close[/accent]** the analysis when you are ready.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "close"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "bottomCenter"
+            }
+          },
+          {
+            "message": "**[success]Option B[/success]** is **[success]unlockable[/success]** — tap it once to unlock.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r4-opt-c"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
+          },
+          {
+            "message": "Tap **[accent]Option B[/accent]** again to select it and load that reply.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r4-opt-c"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topRight"
+            }
+          },
+          {
+            "message": "Read the full **[success]unlocked option[/success]** in the **[accent]Wizard Panel[/accent]**, then **[accent]Continue[/accent]** to play it.",
+            "onlyForward": true,
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "This round was effective! We can see **[success]Moderator's favor[/success]** has increased for you!",
+            "onlyForward": true,
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "modal_round_recap_score"
+            },
+            "modal": {
+              "size": "smallTightTall",
+              "position": "bottomRight"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "round-5-start-false-dilemma",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundNumber": 5,
+          "kind": "npc",
+          "roundId": "round-5"
+        }
+      },
+      "disabled": false,
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This is the **[success]end of the tutorial![/success]**\n\nYou learnt how to **[accent]choose a statement[/accent]**, how to **[accent]spot a fallacy[/accent]**, and how to **[accent]unlock statements[/accent]**.",
+            "interactionMode": "modal_only",
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
+          },
+          {
+            "message": "Remember:\n1) **[accent]analyzing statements[/accent]** is key to winning the debate as it gives you Insight Points and it may also unlock bonus statements, \n2) Once you gather **[accent]enough Insights[/accent]**, you can **[accent]get help to reveal which sentences hide fallacies[/accent]**; \n3) Choosing the best statement will **[accent]influence the Moderator's favour[/accent]**;\n4) **[accent]unlocked bonus statements[/accent]** are **[accent]usually more effective[/accent]** than regular statements.",
+            "interactionMode": "modal_only",
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
+          },
+          {
+            "message": "Actual debates last longer and reach **[accent]round 10[/accent]**.\n\n Play a debate and challenge debaters!",
+            "interactionMode": "modal_only",
+            "onFinish": "exit",
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

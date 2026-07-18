@@ -1,6 +1,10 @@
 import React, { useId } from 'react';
 import cn from 'classnames';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
+import {
+  canRunTutorialTargetAction,
+  notifyTutorialTargetAction,
+} from '../../tutorial/tutorialInteractionGuard';
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -72,7 +76,21 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
             className={styles.debateLogExpandBtn}
             aria-expanded={effectiveExpanded}
             aria-controls={bodyId}
-            onClick={onExpandToggle}
+            data-tutorial-debate-log-toggle-round-id={INTRO_DEBATE_LOG_CARD_ID}
+            onClick={() => {
+              // Reuse the existing `debate_log_round_toggle` target kind with the
+              // intro card's synthetic id so the tutorial guard treats this button
+              // the same way as a per-round toggle: a missing `interactionMode`
+              // (or `'modal_only'`) blocks the click; only a `'target_only'` step
+              // pointing at this same id is allowed through.
+              const target = {
+                kind: 'debate_log_round_toggle',
+                roundId: INTRO_DEBATE_LOG_CARD_ID,
+              } as const;
+              if (!canRunTutorialTargetAction(target)) return;
+              onExpandToggle();
+              notifyTutorialTargetAction(target);
+            }}
             title={effectiveExpanded ? getLabel('minimize') : getLabel('expand')}
           >
             {effectiveExpanded ? '▼' : '▶'}

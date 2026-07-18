@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type {
   DebateScenarioJson,
   NpcRoundEntry,
@@ -13,6 +13,7 @@ import {
   resolvedOptionSentences,
   type GuessSessionForUnlock,
 } from '../trial/utils/optionUnlock';
+import { debateEventBus, type RoundLifecyclePayload } from '../trial/utils/debateEventBus';
 import getLabel from '../../data/labels';
 
 // ---------------------------------------------------------------------------
@@ -82,6 +83,31 @@ function pushHistory(state: WorkflowState): WorkflowSnapshot[] {
 
 function initialPhaseForRound(round: RoundEntry): GamePhase {
   return round.kind === 'npc' ? 'npc_speaking' : 'player_choosing';
+}
+
+/**
+ * Net "moderator's favor" delta for a completed player round.
+ *
+ * Both the question and the answer count: when an NPC line is part of the round,
+ * its impact is summed with the chosen option's impact (all values are signed in
+ * player-perspective, so a strong NPC line pulls the total negative).
+ *
+ * - NPC-led crossfire / NPC rebuttal-or-constructive (round has `opponentPrompt`):
+ *   adds `opponentPromptImpact` (defaults to 0 if not authored).
+ * - Player-led crossfire (round has `opponentResponses`): adds the matching
+ *   response's `impact` (the response paired with the chosen `optionId`).
+ * - Plain player round with neither prompt nor responses: returns `option.impact`.
+ */
+function computePlayerRoundImpact(round: PlayerRoundEntry, option: PlayerOption): number {
+  let total = option.impact;
+  if (round.opponentPrompt) {
+    total += round.opponentPromptImpact ?? 0;
+  }
+  if (round.opponentResponses) {
+    const response = round.opponentResponses.find((r) => r.forOptionId === option.id);
+    if (response) total += response.impact;
+  }
+  return total;
 }
 
 function scenarioHasIntroduction(scenario: DebateScenarioJson): boolean {
@@ -173,10 +199,35 @@ function reduceWorkflow(
   const currentRound = scenario.rounds[state.currentRoundIndex];
   if (!currentRound) return state;
 
-  // --- NPC speaking: player clicks Continue to advance ---
+  // --- NPC speaking: player clicks Continue to enter the round recap ---
   if (state.gamePhase === 'npc_speaking') {
     if (action.type !== 'continue') return state;
-    return advanceToNextRound(state, scenario, state.completedRounds, state.totalScore);
+    if (currentRound.kind !== 'npc') return state;
+
+    // Record the NPC round impact (player-perspective signed delta) the same way we
+    // record a player round, so the recap and the overall score show a consistent
+    // history regardless of round kind.
+    const newCompleted: CompletedRound[] = [
+      ...state.completedRounds,
+      {
+        roundId: currentRound.id,
+        roundNumber: currentRound.roundNumber,
+        // No player option was chosen on an NPC round; use the round id as a stable
+        // marker (no consumer treats this as a PlayerOption id, but keeping the field
+        // populated avoids leaking optional types into the recap rendering path).
+        optionId: currentRound.id,
+        impact: currentRound.impact,
+      },
+    ];
+    const newScore = state.totalScore + currentRound.impact;
+
+    return {
+      ...state,
+      past: pushHistory(state),
+      gamePhase: 'round_recap',
+      completedRounds: newCompleted,
+      totalScore: newScore,
+    };
   }
 
   // --- Player choosing: player selects one of the 3 options ---
@@ -212,16 +263,17 @@ function reduceWorkflow(
     const option = currentRound.options.find((o) => o.id === state.selectedOptionId);
     if (!option) return state;
 
+    const roundImpact = computePlayerRoundImpact(currentRound, option);
     const newCompleted: CompletedRound[] = [
       ...state.completedRounds,
       {
         roundId: currentRound.id,
         roundNumber: currentRound.roundNumber,
         optionId: option.id,
-        impact: option.impact,
+        impact: roundImpact,
       },
     ];
-    const newScore = state.totalScore + option.impact;
+    const newScore = state.totalScore + roundImpact;
 
     // If the round has opponent responses, enter responding; else go straight to recap.
     const hasResponses = Boolean(currentRound.opponentResponses?.length);
@@ -242,16 +294,17 @@ function reduceWorkflow(
     const option = currentRound.options.find((o) => o.id === state.selectedOptionId);
     if (!option) return state;
 
+    const roundImpact = computePlayerRoundImpact(currentRound, option);
     const newCompleted: CompletedRound[] = [
       ...state.completedRounds,
       {
         roundId: currentRound.id,
         roundNumber: currentRound.roundNumber,
         optionId: option.id,
-        impact: option.impact,
+        impact: roundImpact,
       },
     ];
-    const newScore = state.totalScore + option.impact;
+    const newScore = state.totalScore + roundImpact;
 
     // If the round has opponentResponses, show the matched one before advancing
     if (currentRound.opponentResponses) {
@@ -355,6 +408,56 @@ export function useTrialRoundWorkflow(
   }, []);
 
   const undo = useCallback(() => dispatch({ type: 'undo' }), [dispatch]);
+
+  // ---------------------------------------------------------------------
+  // Round lifecycle events (round:start / round:end)
+  // ---------------------------------------------------------------------
+  // `lastStartedRoundIndexRef` tracks the round we have most recently emitted
+  // `round:start` for, so we can detect advances (-> end + start) and the
+  // final transition into `debate_complete` (-> end only).
+  const lastStartedRoundIndexRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const rounds = scenarioRef.current.rounds;
+
+    const payloadFor = (index: number): RoundLifecyclePayload | null => {
+      const round = rounds[index];
+      if (!round) return null;
+      return {
+        roundNumber: round.roundNumber,
+        roundId: round.id,
+        kind: round.kind,
+        type: round.type,
+      };
+    };
+
+    // While the intro screen is up, no round is active yet — wait.
+    if (state.gamePhase === 'debate_intro') return;
+
+    const prevIndex = lastStartedRoundIndexRef.current;
+
+    if (state.gamePhase === 'debate_complete') {
+      if (prevIndex !== null) {
+        const endPayload = payloadFor(prevIndex);
+        if (endPayload) debateEventBus.emit('round:end', endPayload);
+        lastStartedRoundIndexRef.current = null;
+      }
+      return;
+    }
+
+    if (prevIndex === state.currentRoundIndex) return;
+
+    if (prevIndex !== null) {
+      const endPayload = payloadFor(prevIndex);
+      if (endPayload) debateEventBus.emit('round:end', endPayload);
+    }
+
+    const startPayload = payloadFor(state.currentRoundIndex);
+    if (startPayload) {
+      debateEventBus.emit('round:start', startPayload);
+      lastStartedRoundIndexRef.current = state.currentRoundIndex;
+    }
+  }, [state.currentRoundIndex, state.gamePhase]);
 
   const currentRound = scenario.rounds[state.currentRoundIndex] ?? null;
 

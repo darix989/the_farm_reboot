@@ -15,6 +15,11 @@ import {
   statementTypeLabel,
 } from '../utils/trialHelpers';
 import { resolvedOptionSentences } from '../utils/optionUnlock';
+import { debateEventBus } from '../utils/debateEventBus';
+import {
+  canRunTutorialTargetAction,
+  notifyTutorialTargetAction,
+} from '../../tutorial/tutorialInteractionGuard';
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -161,7 +166,11 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   const roundNumDisplay = String(round.roundNumber).padStart(2, '0');
 
   return (
-    <div className={styles.debateLogRound} data-debate-log-round-index={roundIndex}>
+    <div
+      className={styles.debateLogRound}
+      data-debate-log-round-index={roundIndex}
+      data-tutorial-panel="debate_log"
+    >
       <div className={styles.debateLogRoundHeader}>
         <div className={styles.debateLogRoundLead}>
           <div
@@ -198,7 +207,23 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
             aria-expanded={!isUpcoming && effectiveExpanded}
             aria-controls={bodyId}
             disabled={isUpcoming}
-            onClick={onExpandToggle}
+            data-debate-log-toggle-expand-round-id={round.id}
+            data-tutorial-debate-log-toggle-round-id={round.id}
+            onClick={() => {
+              const target = { kind: 'debate_log_round_toggle', roundId: round.id } as const;
+              if (!canRunTutorialTargetAction(target)) return;
+              // `effectiveExpanded` reflects the state before the toggle fires, so the
+              // event we emit is the *intended transition*: if it is currently expanded
+              // the click will shrink it, and vice versa.
+              if (!isUpcoming) {
+                debateEventBus.emit(
+                  effectiveExpanded ? 'debate_log:round:shrink' : 'debate_log:round:expand',
+                  { roundNumber: round.roundNumber, roundId: round.id },
+                );
+              }
+              onExpandToggle();
+              notifyTutorialTargetAction(target);
+            }}
             title={
               isUpcoming
                 ? getLabel('notAvailableUntilRoundStarts')
@@ -235,7 +260,20 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                       <AnalyzeButton
                         guessState={getNpcGuessState(round.id)}
                         title={getLabel('analyzeThisStatement')}
-                        onClick={() => onOpenAnalysis({ kind: 'npc', round })}
+                        dataRoundId={round.id}
+                        onClick={() => {
+                          const target = {
+                            kind: 'debate_log_round_analyze',
+                            roundId: round.id,
+                          } as const;
+                          if (!canRunTutorialTargetAction(target)) return;
+                          debateEventBus.emit('debate_log:round:analyze', {
+                            roundNumber: round.roundNumber,
+                            roundId: round.id,
+                          });
+                          onOpenAnalysis({ kind: 'npc', round });
+                          notifyTutorialTargetAction(target);
+                        }}
                       />
                     </div>
                   </div>
@@ -266,13 +304,24 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         <AnalyzeButton
                           guessState={getNpcGuessState(round.opponentPrompt.id)}
                           title={getLabel('analyzeThisQuestion')}
-                          onClick={() =>
+                          dataRoundId={round.id}
+                          onClick={() => {
+                            const target = {
+                              kind: 'debate_log_round_analyze',
+                              roundId: round.id,
+                            } as const;
+                            if (!canRunTutorialTargetAction(target)) return;
+                            debateEventBus.emit('debate_log:round:analyze', {
+                              roundNumber: round.roundNumber,
+                              roundId: round.id,
+                            });
                             onOpenAnalysis({
                               kind: 'opponent_prompt',
                               statement: round.opponentPrompt!,
                               playerRound: round,
-                            })
-                          }
+                            });
+                            notifyTutorialTargetAction(target);
+                          }}
                         />
                       </div>
                     )}
@@ -302,13 +351,24 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                       <AnalyzeButton
                         guessState={getNpcGuessState(chosenOption.id)}
                         title={getLabel('analyzeThisStatement')}
-                        onClick={() =>
+                        dataRoundId={round.id}
+                        onClick={() => {
+                          const target = {
+                            kind: 'debate_log_round_analyze',
+                            roundId: round.id,
+                          } as const;
+                          if (!canRunTutorialTargetAction(target)) return;
+                          debateEventBus.emit('debate_log:round:analyze', {
+                            roundNumber: round.roundNumber,
+                            roundId: round.id,
+                          });
                           onOpenAnalysis({
                             kind: 'player',
                             round,
                             chosenOption: chosenOption!,
-                          })
-                        }
+                          });
+                          notifyTutorialTargetAction(target);
+                        }}
                       />
                     </div>
                   </div>
@@ -339,13 +399,24 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         <AnalyzeButton
                           guessState={getNpcGuessState(displayResponse.statement.id)}
                           title={getLabel('analyzeThisResponse')}
-                          onClick={() =>
+                          dataRoundId={round.id}
+                          onClick={() => {
+                            const target = {
+                              kind: 'debate_log_round_analyze',
+                              roundId: round.id,
+                            } as const;
+                            if (!canRunTutorialTargetAction(target)) return;
+                            debateEventBus.emit('debate_log:round:analyze', {
+                              roundNumber: round.roundNumber,
+                              roundId: round.id,
+                            });
                             onOpenAnalysis({
                               kind: 'opponent_response',
                               statement: displayResponse.statement,
                               playerRound: round,
-                            })
-                          }
+                            });
+                            notifyTutorialTargetAction(target);
+                          }}
                         />
                       </div>
                     )}

@@ -15,9 +15,11 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `trial/panels/FeedbackPanel.tsx` | Left column: introduction, round counter, score, history, live crossfire prompt. |
 | `trial/panels/WizardPanel.tsx` | Centre column: `wizardMessage` only. |
 | `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and footer (Back / Continue / Confirm). |
-| `hooks/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. |
-| `trial/roundRecapModal/RoundRecapModal.tsx` | Post–player-round summary modal; closing it dispatches `continue` and advances the workflow. |
-| `trial/roundAnalysisModal/RoundAnalysisModal.tsx` | Modal overlay for per-round analysis and fallacy guessing (see below). |
+| `hooks/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. Also emits `round:start` / `round:end` on the debate event bus. |
+| `hooks/useScenarioTutorials.ts` | Subscribes to bus events declared by `scenario.tutorials` and opens the matching overlay via `useTutorialStore` (see "Scenario tutorials" below). |
+| `trial/utils/debateEventBus.ts` | Typed pub/sub singleton keyed on `EventTrigger`, plus the `useDebateEvent` React hook and tutorial-trigger helpers (`DebateTutorialTrigger`, `debatePayloadSatisfies`, `debateTutorialTriggerMatches`). |
+| `trial/roundRecapModal/RoundRecapModal.tsx` | Post–player-round summary modal; closing it dispatches `continue` and advances the workflow. Emits `round:recap:open` / `round:recap:close` on mount/unmount. |
+| `trial/roundAnalysisModal/RoundAnalysisModal.tsx` | Modal overlay for per-round analysis and fallacy guessing (see below). Emits `analysis:*` events for every open/close, sentence toggle, fallacy toggle, and guess outcome. |
 | `hooks/useScrollFade.ts` | Hook that tracks scroll edge state; drives animated fade overlays on scrollable containers. |
 | `trial/utils/trialHelpers.ts` | Shared helpers: speaker names, quality/score colours, statement text, statement type labels. |
 | `trial/utils/optionUnlock.ts` | Player-option unlock rules and resolved sentence text for locked choices. |
@@ -69,6 +71,7 @@ Implementation split:
 | `characters` | `Record<string, string>?` | Maps a `speakerId` to a display name; falls back to capitalising the id. |
 | `logicalFallacies` | `LogicalFallacy[]` | Master catalogue of all fallacies usable in this scenario. Displayed in the analysis modal's fallacy picker. |
 | `rounds` | `RoundEntry[]` | Ordered list of NPC and player turns (see below). |
+| `tutorials` | `DebateScenarioTutorialEntry[]?` | Bus-driven overlays triggered by specific `EventTrigger` emissions with optional payload filters. See "Scenario tutorials" below. The onboarding overlay that used to live on `introTutorial` is now just an entry here triggered by `introduction:start`. |
 
 ---
 
@@ -190,6 +193,8 @@ The panel footer always shows **Back** (enabled only in `player_confirming`) and
 
 A full-screen overlay opened by clicking the magnifying glass button on any history entry. Closed by clicking the backdrop or the ✕ button.
 
+`analysis:open` / `analysis:close` carry **`analysisRoundNumber`** (the `RoundEntry.roundNumber` of the row under inspection) and **`activeRoundNumber`** (workflow round from `TrialUI`, same phase gate as `fallacyGuessBucketRoundNumber`, or `null` during `debate_intro` / `debate_complete`). Tutorials that should run only while the player is still “in” round N should filter on `activeRoundNumber`, not `analysisRoundNumber`, so opening analysis on an older log line during a later round does not match.
+
 ### NPC round view
 
 - Lists each sentence of the NPC's statement as an individual clickable card.
@@ -220,6 +225,200 @@ interface GuessRecord {
 // Stored in TrialUI as:
 // fallacyGuesses: Map<playerRoundNumber, GuessRecord>
 ```
+
+---
+
+## Debate event bus (`trial/utils/debateEventBus.ts`)
+
+A typed pub/sub singleton used across the trial layer to broadcast user interactions and debate lifecycle beats. Every event name is a literal from the `EventTrigger` union in `src/types/debateEntities.ts`, and each event has a dedicated payload type in `DebateEventPayloads`. The bus enforces the pair at compile time — you cannot emit `analysis:guess_correct` with the payload shape of `round:start`.
+
+A compile-time assertion (`_AssertKeysMatch`) keeps `EventTrigger` and `DebateEventPayloads` in lockstep: add or remove a key on one side without the other and the type check fails immediately.
+
+### Events, payloads, and emit sites
+
+| Event | Payload | Emitted from |
+|-------|---------|--------------|
+| `introduction:start` | `IntroductionStartPayload` | `TrialUI` — fires once per scenario when the `debate_intro` phase begins. Drives the onboarding tutorial overlay via `scenario.tutorials`. |
+| `round:start` / `round:end` | `RoundLifecyclePayload` | `useTrialRoundWorkflow` — on `currentRoundIndex` / `gamePhase` transitions, including the step into `debate_complete`. |
+| `interactive:continue` | `InteractiveContinuePayload` | `TrialUI` — the Continue footer in `debate_intro`, `npc_speaking`, `npc_responding`. |
+| `interactive:confirm` | `InteractiveConfirmPayload` | `TrialUI` — the Confirm footer in `player_choosing` / `player_confirming`. |
+| `interactive:statement_selected` | `InteractiveStatementSelectedPayload` | `InteractivePanel` — option click (selection only, not unselect). |
+| `interactive:back` | `InteractiveBackPayload` | `InteractivePanel` — Back button. |
+| `round:recap:open` / `round:recap:close` | `RoundRecapTogglePayload` | `RoundRecapModal` — mount/unmount effect so any dismissal path stays balanced. |
+| `debate_log:round:analyze` | `DebateLogRoundPayload` | `DebateRoundLogCard` — every `AnalyzeButton` click site. |
+| `debate_log:round:shrink` / `debate_log:round:expand` | `DebateLogRoundPayload` | `DebateRoundLogCard` — expand/collapse toggle. |
+| `analysis:open` / `analysis:close` | `AnalysisOpenClosePayload` (`analysisRoundNumber`, `activeRoundNumber`, `targetKind`, `targetId`) | `RoundAnalysisModal` — mount/unmount effect; `activeRoundNumber` is passed from `TrialUI` (`fallacyGuessBucketRoundNumber`). |
+| `analysis:sentence_selected` / `analysis:sentence_deselected` | `AnalysisSentenceTogglePayload` | `RoundAnalysisModal` — sentence click in the NPC view. |
+| `analysis:fallacy_selected` / `analysis:fallacy_deselected` | `AnalysisFallacyTogglePayload` | `RoundAnalysisModal` — fallacy picker click. |
+| `analysis:guess_submitted` | `AnalysisGuessSubmittedPayload` | `TrialUI.handleGuess` — always fires first when a guess lands. |
+| `analysis:guess_correct` / `analysis:guess_incorrect` / `analysis:guess_partially_correct` | `AnalysisGuessOutcomePayload` | `TrialUI.handleGuess` — derived from the `GuessRecord`. |
+| `analysis:guess_max_attempts_reached` | `AnalysisGuessMaxAttemptsPayload` | `TrialUI.handleGuess` — only when attempts run out on a non-correct guess. |
+| `tutorial:start` / `tutorial:next` / `tutorial:end` | `TutorialLifecyclePayload` | `useTutorialStore` — `openTutorial` emits `tutorial:start`, `stepForward` emits `tutorial:next` when the index actually advances, `finishTutorial` emits `tutorial:end`. Payload carries `tutorialId` (from `DebateScenarioTutorialEntry.id`) and `stepIndex` so listeners can pin a specific tutorial/step via `where`. |
+
+### API
+
+```ts
+import { debateEventBus, useDebateEvent } from '../trial/utils/debateEventBus';
+
+// Non-React consumer (returns an unsubscribe):
+const off = debateEventBus.on('round:start', (p) => {
+  // p is typed as RoundLifecyclePayload
+});
+
+// Emit — payload is type-checked against the event name:
+debateEventBus.emit('round:start', {
+  roundNumber: 1, roundId: 'r1', kind: 'npc', type: 'opening_constructive',
+});
+
+// React consumer — inline arrows are fine (see next section):
+useDebateEvent('round:start', (p) => { /* p: RoundLifecyclePayload */ });
+```
+
+`debateEventBus.once(event, listener)` fires only on the next matching emission. `debateEventBus.clear()` and `debateEventBus.listenerCount(event)` exist for tests.
+
+### `useDebateEvent` — stable subscription under listener churn
+
+The hook keeps exactly one bus subscription per `event` and routes calls through a `useRef`, so an inline arrow that changes identity on every render does not cause a cleanup / resubscribe cycle.
+
+Why this matters: if a listener was re-subscribed every render, then on any render that also changed `gamePhase` or `currentRoundIndex` you would see:
+
+1. React runs effect cleanups in source order → the listener is unsubscribed.
+2. React runs effects in source order → `useTrialRoundWorkflow` emits `round:start` with zero listeners attached.
+3. `useDebateEvent`'s effect finally re-adds the listener — one render too late.
+
+Routing through a ref means the subscription is installed once on mount and the latest closure is always visible via `listenerRef.current`. No caller-side `useCallback` is required.
+
+### Emitting safely — never emit from a render-phase callback
+
+`debateEventBus.emit(...)` is synchronous: every subscriber runs on the emitter's stack before `emit` returns. Some of those subscribers (notably `useScenarioTutorials`) synchronously call `useTutorialStore.getState().openTutorial(...)`, which in turn triggers a zustand `set(...)` and schedules a re-render of `TutorialOverlay`. If you emit from somewhere that React considers "render phase", that downstream re-render schedule lands while a different component is still rendering and React logs:
+
+> Cannot update a component (`TutorialOverlay`) while rendering a different component (`NpcRoundAnalysis`). To locate the bad setState() call inside `NpcRoundAnalysis`, follow the stack trace as described in https://react.dev/link/setstate-in-render
+
+Render-phase callbacks include:
+
+- **The body of a component function** — anything that runs top-to-bottom during `render`.
+- **`useMemo` / `useCallback` factories**.
+- **Functional `setState` updaters** — the `(prev) => next` form. React may re-run these during render (e.g. on concurrent bail-out or under `StrictMode` double-invocation), so they must be pure.
+- **`useReducer` reducers**, for the same reason.
+- **Render-time side effects inside JSX** (e.g. calling `emit` from a `.map` callback that runs in render).
+
+Safe places to emit:
+
+- **DOM event handlers** (`onClick`, `onChange`, …) — they run after render has committed.
+- **`useEffect` / `useLayoutEffect` bodies and their cleanups** — same.
+- **Timers, promises, bus callbacks, and other async continuations**.
+- **Imperative code in non-React modules** (e.g. `useTrialRoundWorkflow` transitioning a round).
+
+#### Pattern: if you need both a state update and an emit, emit *outside* the updater
+
+```ts
+// BAD — emit runs inside a functional updater, i.e. during render.
+const handleFallacySelect = useCallback((fallacyId: string) => {
+  setBySentence((prev) => {
+    // ...compute copy...
+    debateEventBus.emit('analysis:fallacy_selected', { /* ... */ }); // ❌ render-phase emit
+    return copy;
+  });
+}, [/* deps */]);
+```
+
+```ts
+// GOOD — compute from the closure, call setState with the result, then emit.
+const handleFallacySelect = useCallback((fallacyId: string) => {
+  const cur = bySentence[sid] ?? [];
+  // ...decide the transition from `cur`...
+  setBySentence({ ...bySentence, [sid]: [...cur, fallacyId] });
+  debateEventBus.emit('analysis:fallacy_selected', { /* ... */ }); // ✅ event-handler scope
+}, [bySentence, /* ...other deps */]);
+```
+
+Trade-off to accept: dropping the functional updater means adding the state value (here `bySentence`) to the `useCallback` dependency list, so the handler re-creates when that state changes. That is cheaper than a render-phase violation, and in practice the identity change is invisible to unmemoized children.
+
+If a functional updater is genuinely required (e.g. to coalesce rapid updates against the latest state), stage the emit as data during the updater and fire it from the surrounding scope once `setState` returns — but prefer the simple shape above.
+
+This rule is not tutorial-specific. It applies to any emit whose listener chain ends in a React state update — including future zustand stores, context providers, or `useState` consumers wired through `useDebateEvent`.
+
+---
+
+## Scenario tutorials (`DebateScenarioJson.tutorials`)
+
+The `tutorials` field on `DebateScenarioJson` declares overlay tutorials that are wired to bus events. Each entry pairs a `DebateTutorialJson` with a typed trigger — an event name plus an optional payload filter — and is opened via `useTutorialStore` when its condition matches.
+
+### Types
+
+```ts
+// From src/react/trial/utils/debateEventBus.ts
+export type DebateTutorialTrigger = {
+  [E in EventTrigger]: {
+    event: E;
+    where?: DeepPartial<DebateEventPayloads[E]>;
+  };
+}[EventTrigger];
+
+// From src/types/debateEntities.ts
+export interface DebateScenarioTutorialEntry {
+  id?: string;                      // dedup key (falls back to array index)
+  trigger: DebateTutorialTrigger;
+  tutorial: DebateTutorialJson;
+}
+```
+
+`DebateTutorialTrigger` is a mapped discriminated union over every `EventTrigger` literal. Once you pick `event`, the `where` field is typed strictly against the corresponding payload — a wrong key or a mismatched value red-squiggles at author time. `DeepPartial` recurses into nested objects, so filters can pin any subset of keys at any depth.
+
+### Matching semantics
+
+`debatePayloadSatisfies(spec, actual)` is the structural subset matcher used by the runtime:
+
+- Primitives compare with `===`.
+- Objects match when every explicitly-set key in `spec` matches; omitted keys and `undefined` values are wildcards.
+- Arrays require identical length and per-index match.
+
+`debateTutorialTriggerMatches(trigger, event, payload)` first checks the event name, then calls `debatePayloadSatisfies` when `where` is present.
+
+### Runtime — `useScenarioTutorials(debate.tutorials)`
+
+Called from `TrialUI`. It subscribes once per unique event referenced in the tutorials array. On each emission it walks the entries for that event in author order, runs the matcher, and opens the first match via `useTutorialStore.getState().openTutorial(...)`.
+
+- **Fires once per scenario run.** After an entry fires, its dedup key (either `entry.id` or `__idx_<n>`) is stored in a ref-backed `Set` that lives for the hook's mount. Swapping to a different `tutorials` reference (e.g. loading another scenario) resets the set.
+- **First match wins per emission.** If several entries target the same event and all pass their `where` filters, only the first in author order opens.
+- **Does not stomp an open overlay.** If any tutorial is already on screen, matches are dropped rather than queued.
+- **No duplicate subscriptions.** One bus listener per unique `event` name, installed on mount and torn down on unmount.
+
+### Authoring example
+
+```json
+"tutorials": [
+  {
+    "id": "analysis-select-sentence",
+    "trigger": { "event": "analysis:open", "where": { "activeRoundNumber": 1 } },
+    "tutorial": {
+      "steps": [
+        { "message": "Select first a sentence that you think has a logical fallacy." }
+      ]
+    }
+  },
+  {
+    "id": "spot-false-dilemma",
+    "trigger": {
+      "event": "analysis:fallacy_selected",
+      "where": { "fallacyId": "false-dilemma" }
+    },
+    "tutorial": {
+      "steps": [
+        { "message": "You are spotting the false dilemma fallacy on the selected sentence. Click 'Spot Fallacies' to submit your guess." }
+      ]
+    }
+  }
+]
+```
+
+### Onboarding tutorial (`introduction:start`)
+
+The onboarding overlay that used to live on a dedicated `introTutorial` field is now authored as a regular `tutorials` entry with `trigger.event === 'introduction:start'`. `TrialUI` emits `introduction:start` (with the scenario id as payload) once per scenario when the `debate_intro` phase begins, and `useScenarioTutorials` opens the matching entry via `useTutorialStore`. While any tutorial overlay is open during `debate_intro`, the Continue footer is disabled and the wizard panel hides the intro body — the same gating that was previously tied to the legacy `introTutorial` field.
+
+### Gotcha: emits that trigger tutorials run synchronously
+
+`useScenarioTutorials` handles bus events synchronously and calls `openTutorial(...)` on the tutorial store in the same tick. That scheduling hits `TutorialOverlay` immediately, so any emit at the authoring site must come from event-handler or effect scope — not from a render-phase callback (function component body, `useMemo` / `useCallback` factory, functional `setState` updater, `useReducer` reducer). See **Debate event bus → Emitting safely** above for the full rule and an example pattern.
 
 ---
 

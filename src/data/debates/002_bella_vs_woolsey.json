@@ -16,6 +16,14 @@
       "explanation": "Presenting only two options when more alternatives exist."
     }
   ],
+  "availableLogicalFallacies": [
+    "false-dilemma",
+    "nothing-to-hide",
+    "slippery-slope",
+    "ad-hominem",
+    "loaded-question",
+    "appeal-to-pity"
+  ],
   "rounds": [
     {
       "kind": "player",
@@ -57,7 +65,7 @@
         {
           "id": "r1-opt-c",
           "quality": "effective",
-          "impact": 20,
+          "impact": 15,
           "reason": "This provides a clear, evidence-based reason for the proposal, focusing on productivity and health.",
           "sentences": [
             {
@@ -75,6 +83,7 @@
       "roundNumber": 2,
       "type": "opening_constructive",
       "speakerId": "woolsey",
+      "impact": 15,
       "statement": {
         "id": "stmt-r2-woolsey",
         "speakerId": "woolsey",
@@ -173,7 +182,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r3-opt-b",
@@ -188,7 +198,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r3-opt-c",
@@ -208,7 +219,8 @@
                 ]
               }
             ]
-          }
+          },
+          "impact": 15
         }
       ]
     },
@@ -234,11 +246,12 @@
           }
         ]
       },
+      "opponentPromptImpact": 15,
       "options": [
         {
           "id": "r4-opt-a",
           "quality": "logical_fallacy",
-          "impact": -12,
+          "impact": -10,
           "reason": "This uses the 'nothing-to-hide' fallacy, implying only lazy animals fear his logic.",
           "sentences": [
             {
@@ -269,7 +282,7 @@
         {
           "id": "r4-opt-c",
           "quality": "effective",
-          "impact": 18,
+          "impact": 15,
           "reason": "This rejects his false choice and explains that the rest is exactly what ensures the 'grain' gets produced.",
           "sentences": [
             {
@@ -287,6 +300,7 @@
       "roundNumber": 5,
       "type": "rebuttal",
       "speakerId": "woolsey",
+      "impact": 15,
       "statement": {
         "id": "stmt-r5-woolsey",
         "speakerId": "woolsey",
@@ -324,7 +338,7 @@
         {
           "id": "r6-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "This uses an Ad Hominem attack on the Sheep species.",
           "sentences": [
             {
@@ -355,7 +369,7 @@
         {
           "id": "r6-opt-c",
           "quality": "effective",
-          "impact": 22,
+          "impact": 20,
           "reason": "This identifies the Slippery Slope and points out that one step does not lead to the extreme conclusion without proof.",
           "unlockCondition": {
             "npcRoundId": "round-5",
@@ -424,7 +438,7 @@
         {
           "id": "r7-opt-c",
           "quality": "effective",
-          "impact": 20,
+          "impact": 15,
           "reason": "This forces him to explain the actual mechanism of his 'slope' or admit it's just a guess.",
           "sentences": [
             {
@@ -449,7 +463,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r7-opt-b",
@@ -464,7 +479,8 @@
                 "logicalFallacies": []
               }
             ]
-          }
+          },
+          "impact": 0
         },
         {
           "forOptionId": "r7-opt-c",
@@ -484,7 +500,8 @@
                 ]
               }
             ]
-          }
+          },
+          "impact": 15
         }
       ]
     },
@@ -510,6 +527,7 @@
           }
         ]
       },
+      "opponentPromptImpact": 15,
       "options": [
         {
           "id": "r4-opt-a",
@@ -545,7 +563,7 @@
         {
           "id": "r4-opt-c",
           "quality": "effective",
-          "impact": 18,
+          "impact": 15,
           "reason": "This points out that a reasonable rule for one group doesn't automatically mean an unreasonable rule for another.",
           "sentences": [
             {
@@ -563,6 +581,7 @@
       "roundNumber": 9,
       "type": "closing_constructive",
       "speakerId": "woolsey",
+      "impact": 15,
       "statement": {
         "id": "stmt-r9-woolsey",
         "speakerId": "woolsey",
@@ -605,7 +624,7 @@
         {
           "id": "r10-opt-a",
           "quality": "logical_fallacy",
-          "impact": -15,
+          "impact": -10,
           "reason": "Using an Appeal to Pity.",
           "sentences": [
             {
@@ -636,7 +655,7 @@
         {
           "id": "r10-opt-c",
           "quality": "effective",
-          "impact": 25,
+          "impact": 15,
           "reason": "A perfect closing that names both fallacies and refocuses on the practical benefits of the proposal.",
           "sentences": [
             {

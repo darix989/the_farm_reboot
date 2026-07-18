@@ -2,6 +2,7 @@
    Shared styles used by both TrialUI and RoundAnalysisModal
    ========================================================================= */
 
+@use '../breakpoints' as bp;
 @use './trialPanelFontScale' as trial-font;
 
 /* Root for trial modals (portaled / outside `TrialLayout`); sets `--ui-trial-panel-font-scale`. */
@@ -60,6 +61,53 @@
   }
 }
 
+/* --- Scroll direction corner indicators ---------------------------------- */
+
+.scrollDirectionIndicator {
+  position: absolute;
+  right: 0.8rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-right: 0.14rem solid var(--ui-color-text-muted);
+    border-bottom: 0.14rem solid var(--ui-color-text-muted);
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &.scrollDirectionTop {
+    top: 0.75rem;
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(-135deg);
+    }
+  }
+
+  &.scrollDirectionBottom {
+    bottom: 0.75rem;
+  }
+
+  &.scrollDirectionVisible {
+    opacity: 1;
+  }
+
+  /* Slightly stronger contrast on dark modal surfaces */
+  &.scrollDirectionModal::before {
+    border-right-color: var(--ui-color-text-secondary);
+    border-bottom-color: var(--ui-color-text-secondary);
+  }
+}
+
 /* --- Section box --------------------------------------------------------- */
 
 .trialSectionBox {
@@ -69,54 +117,8 @@
   padding: 1rem;
   box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
 
-  @media (min-width: 768px) {
+  @include bp.expanded {
     padding: 1.25rem;
-  }
-}
-
-/* --- Footer button ------------------------------------------------------- */
-
-.trialFooterBtn {
-  box-sizing: border-box;
-  display: flex;
-  min-height: 5.5rem;
-  width: 100%;
-  min-width: 0;
-  align-items: center;
-  justify-content: center;
-  white-space: normal;
-  border-radius: 0.5rem;
-  border: 2px solid var(--ui-color-border-ring);
-  background: var(--ui-color-overlay-panel);
-  padding: 0.75rem 0.5rem;
-  text-align: center;
-  font-size: calc(var(--ui-font-footer) * var(--ui-trial-panel-font-scale, 1));
-  font-weight: 500;
-  line-height: 1.375;
-  color: var(--ui-color-text-emphasis);
-  box-shadow: 0 1px 2px 0 var(--ui-color-shadow-soft);
-  transition:
-    border-color 0.15s ease-in-out,
-    color 0.15s ease-in-out;
-
-  @media (min-width: 640px) {
-    padding: 1rem 0.75rem;
-    font-size: calc(var(--ui-font-footer-wide) * var(--ui-trial-panel-font-scale, 1));
-  }
-
-  &:hover {
-    border-color: var(--ui-color-info-border-active);
-    color: var(--ui-color-info-text);
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    opacity: 0.4;
-
-    &:hover {
-      border-color: var(--ui-color-border-ring);
-      color: var(--ui-color-text-emphasis);
-    }
   }
 }
 
@@ -126,4 +128,31 @@
   gap: 0.4rem;
   min-width: 0;
   vertical-align: middle;
+}
+
+.moderatorOpinionInsights {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.moderatorOpinionInsightsIcon {
+  display: block;
+  height: 1em;
+  width: auto;
+  flex-shrink: 0;
+  opacity: 0.9;
+
+  /* Source SVG is black; match `trialActionButtonIcon` in analysis modal for dark trial chrome. */
+  filter: invert(1);
+}
+
+.moderatorOpinionInsightsCount {
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.moderatorOpinionSeparator {
+  color: var(--ui-color-text-muted-2);
+  user-select: none;
 }

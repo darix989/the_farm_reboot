@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTutorialStore } from '../../store/tutorialStore';
 import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../types/debateEntities';
 import logicalFallaciesData from '../../data/logicalFallacies.json';
 import TrialLayout from '../trial/TrialLayout';
 import { useTrialRoundWorkflow } from '../hooks/useTrialRoundWorkflow';
 import RoundAnalysisModal, {
+  HELP_INSIGHT_COST,
   type AnalysisTarget,
 } from '../trial/roundAnalysisModal/RoundAnalysisModal';
 import type {
@@ -28,14 +30,23 @@ import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
 import {
   getSpeakerName,
+  getStartingInsightPoints,
   moderatorOpinionPlainText,
   statementText,
 } from '../trial/utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
+import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
+import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
 import getLabel from '../../data/labels';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
+}
+
+/** Map key for `fallacyGuesses`: the player round that owns this analysis target, not the workflow's current round. */
+function guessStorageRoundNumberForTarget(target: AnalysisTarget): number {
+  if (target.kind === 'npc' || target.kind === 'player') return target.round.roundNumber;
+  return target.playerRound.roundNumber;
 }
 
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
@@ -43,12 +54,70 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
     () => new Set(),
   );
+  // Insight Points (per-debate, transient): seeded from the scenario's `startingInsightPoints`
+  // (fallback 0). +1 awarded on the first fully-correct analysis of each analysis target;
+  // spendable to reveal which sentences contain fallacies on the active target.
+  const [insightPoints, setInsightPoints] = useState<number>(() =>
+    getStartingInsightPoints(debate),
+  );
+  const [awardedInsightTargetIds, setAwardedInsightTargetIds] = useState<Set<string>>(
+    () => new Set(),
+  );
+  const [insightRevealedTargetIds, setInsightRevealedTargetIds] = useState<Set<string>>(
+    () => new Set(),
+  );
   const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
+  const introStartEmittedRef = useRef(false);
   const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds);
+
+  // Opens scenario-defined tutorial overlays in response to bus events,
+  // including the onboarding overlay wired to `introduction:start`.
+  useScenarioTutorials(debate.tutorials);
+
+  // While any tutorial overlay is visible, we gate the `debate_intro` Continue
+  // button until the tutorial is finished.
+  const isTutorialOpen = useTutorialStore((s) => s.isOpen);
 
   useEffect(() => {
     setIntroSummaryOpen(false);
+    introStartEmittedRef.current = false;
+    setInsightPoints(getStartingInsightPoints(debate));
+    setAwardedInsightTargetIds(new Set());
+    setInsightRevealedTargetIds(new Set());
+    useTutorialStore.getState().resetTutorial();
+    // Reset is keyed on scenario identity, not reference equality — the parent may
+    // re-create the `debate` object on each render. `getStartingInsightPoints` reads
+    // from `debate` but is pure, so capturing it via closure is intentional.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debate.id]);
+
+  // Emit `introduction:start` once per scenario when we enter `debate_intro`.
+  // `useScenarioTutorials` listens for this and opens any tutorial entry whose
+  // `trigger.event === 'introduction:start'` matches.
+  useEffect(() => {
+    if (wf.gamePhase !== 'debate_intro') return;
+    if (introStartEmittedRef.current) return;
+
+    // In React StrictMode (dev), mount effects run in a probe cycle and are then
+    // immediately cleaned up before the real mount. Deferring to a microtask and
+    // cancelling on cleanup prevents a duplicate `introduction:start` emit.
+    let cancelled = false;
+    Promise.resolve().then(() => {
+      if (cancelled || introStartEmittedRef.current) return;
+      introStartEmittedRef.current = true;
+      debateEventBus.emit('introduction:start', { debateId: debate.id });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [wf.gamePhase, debate.id]);
+
+  // Emit when `IntroSummaryModal` is shown (same condition as its render guard).
+  useEffect(() => {
+    if (!introSummaryOpen || wf.gamePhase !== 'debate_intro') return;
+    debateEventBus.emit('introduction:summary', { debateId: debate.id });
+  }, [introSummaryOpen, wf.gamePhase, debate.id]);
 
   useEffect(() => {
     setRevealedLockedOptionIds(new Set());
@@ -89,16 +158,22 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     return analysisTarget.kind === 'npc' ? analysisTarget.round.id : analysisTarget.statement.id;
   }, [analysisTarget]);
 
+  const analysisGuessStorageRoundNumber = useMemo((): number | null => {
+    return analysisTarget ? guessStorageRoundNumberForTarget(analysisTarget) : null;
+  }, [analysisTarget]);
+
   const activeSession = useMemo((): FallacyGuessSession | null => {
-    if (!analysisStatementTargetId) return null;
+    if (!analysisStatementTargetId || analysisGuessStorageRoundNumber === null) return null;
+    const byKey = fallacyGuesses.get(analysisGuessStorageRoundNumber);
+    if (byKey && byKey.npcRoundId === analysisStatementTargetId) return byKey;
     for (const sess of fallacyGuesses.values()) {
       if (sess.npcRoundId === analysisStatementTargetId) return sess;
     }
     return null;
-  }, [analysisStatementTargetId, fallacyGuesses]);
+  }, [analysisStatementTargetId, analysisGuessStorageRoundNumber, fallacyGuesses]);
 
   const canGuess = useMemo(() => {
-    if (fallacyGuessBucketRoundNumber === null || !analysisStatementTargetId) return false;
+    if (!analysisStatementTargetId || analysisGuessStorageRoundNumber === null) return false;
 
     if (
       wf.gamePhase === 'npc_speaking' &&
@@ -110,13 +185,13 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       return false;
     }
 
-    const sess = fallacyGuesses.get(fallacyGuessBucketRoundNumber);
+    const sess = fallacyGuesses.get(analysisGuessStorageRoundNumber);
     if (!sess) return true;
     if (sess.npcRoundId !== analysisStatementTargetId) return true;
     if (isSessionTerminal(sess)) return false;
     return sess.attempts.length < sess.maxAttempts;
   }, [
-    fallacyGuessBucketRoundNumber,
+    analysisGuessStorageRoundNumber,
     analysisStatementTargetId,
     analysisTarget,
     wf.gamePhase,
@@ -137,7 +212,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
   const handleGuess = (payload: GuessPayload) => {
     if (!analysisTarget) return;
-    if (fallacyGuessBucketRoundNumber === null) return;
+    const guessStorageRoundNumber = guessStorageRoundNumberForTarget(analysisTarget);
 
     if (analysisTarget.kind !== 'player') {
       if (
@@ -209,9 +284,13 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       };
     }
 
+    // Bus emits must not run inside the `setFallacyGuesses` updater: React treats that
+    // updater as TrialUI render work, and synchronous listeners call `openTutorial` /
+    // `stepForward` on the tutorial store → "Cannot update TutorialOverlay while rendering TrialUI".
+    let sessionAfterCommit: FallacyGuessSession | null = null;
     setFallacyGuesses((prev) => {
       const next = new Map(prev);
-      const existing = prev.get(fallacyGuessBucketRoundNumber);
+      const existing = prev.get(guessStorageRoundNumber);
       let session: FallacyGuessSession;
 
       if (!existing || existing.npcRoundId !== targetId) {
@@ -226,9 +305,75 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           attempts: [...existing.attempts, record],
         };
       }
-      next.set(fallacyGuessBucketRoundNumber, session);
+      next.set(guessStorageRoundNumber, session);
+      sessionAfterCommit = session;
       return next;
     });
+
+    // `useState` functional updaters run synchronously for this dispatch; the assignment
+    // above always runs before we continue (TS does not model that flow).
+    const session = sessionAfterCommit!;
+
+    const targetKind: AnalysisTargetKind = analysisTarget.kind;
+    const roundNumberForEvent =
+      analysisTarget.kind === 'opponent_prompt' || analysisTarget.kind === 'opponent_response'
+        ? analysisTarget.playerRound.roundNumber
+        : analysisTarget.round.roundNumber;
+
+    debateEventBus.emit('analysis:guess_submitted', {
+      targetId,
+      targetKind,
+      roundNumber: roundNumberForEvent,
+      payload,
+    });
+
+    const attemptsUsed = session.attempts.length;
+    const maxAttempts = session.maxAttempts;
+    const outcomePayload = {
+      targetId,
+      targetKind,
+      roundNumber: roundNumberForEvent,
+      record,
+      attemptsUsed,
+      maxAttempts,
+    };
+
+    const isCorrect =
+      record.kind === 'no_fallacies' ? record.correct : record.outcome === 'perfect';
+    const isPartial = record.kind === 'multi' && record.outcome === 'partial';
+
+    if (isCorrect) {
+      // Award 1 Insight point the first time this analysis target is solved correctly.
+      // Reading `awardedInsightTargetIds` from closure (latest render snapshot) — using a
+      // flag captured inside the functional updater is unreliable because React does not
+      // guarantee the updater runs synchronously during dispatch (concurrent mode).
+      if (!awardedInsightTargetIds.has(targetId)) {
+        setAwardedInsightTargetIds((prev) => {
+          if (prev.has(targetId)) return prev;
+          const next = new Set(prev);
+          next.add(targetId);
+          return next;
+        });
+        setInsightPoints((p) => p + 1);
+      }
+      debateEventBus.emit('analysis:guess_correct', outcomePayload);
+    } else if (isPartial) {
+      debateEventBus.emit('analysis:guess_partially_correct', outcomePayload);
+    } else {
+      debateEventBus.emit('analysis:guess_incorrect', outcomePayload);
+    }
+
+    // Terminal success (correct) doesn't count as "max attempts reached" — only emit
+    // when the player exhausted attempts without landing a perfect / correct guess.
+    if (!isCorrect && attemptsUsed >= maxAttempts) {
+      debateEventBus.emit('analysis:guess_max_attempts_reached', {
+        targetId,
+        targetKind,
+        roundNumber: roundNumberForEvent,
+        attemptsUsed,
+        maxAttempts,
+      });
+    }
   };
 
   // -----------------------------------------------------------------------
@@ -239,27 +384,67 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     let submitDisabled = true;
     let onSubmit: (() => void) | undefined;
 
+    const currentRoundNumber = wf.currentRound?.roundNumber ?? null;
+
     switch (wf.gamePhase) {
-      case 'debate_intro':
+      case 'debate_intro': {
+        const introGated = isTutorialOpen;
         submitLabel = getLabel('continue');
-        submitDisabled = false;
-        onSubmit = () => setIntroSummaryOpen(true);
+        submitDisabled = introGated;
+        onSubmit = introGated
+          ? undefined
+          : () => {
+              debateEventBus.emit('interactive:continue', {
+                fromPhase: 'debate_intro',
+                roundNumber: null,
+              });
+              setIntroSummaryOpen(true);
+            };
         break;
+      }
       case 'npc_speaking':
       case 'npc_responding':
         submitLabel = getLabel('continue');
         submitDisabled = false;
-        onSubmit = () => wf.dispatch({ type: 'continue' });
+        onSubmit = () => {
+          debateEventBus.emit('interactive:continue', {
+            fromPhase: wf.gamePhase,
+            roundNumber: currentRoundNumber,
+          });
+          wf.dispatch({ type: 'continue' });
+        };
         break;
       case 'player_choosing':
         submitLabel = getLabel('continue');
         submitDisabled = !wf.selectedOption;
-        onSubmit = () => wf.dispatch({ type: 'confirm_option' });
+        onSubmit = () => {
+          const option = wf.selectedOption;
+          const round = wf.currentPlayerRound;
+          if (option && round) {
+            debateEventBus.emit('interactive:confirm', {
+              roundNumber: round.roundNumber,
+              roundId: round.id,
+              optionId: option.id,
+            });
+          }
+          wf.dispatch({ type: 'confirm_option' });
+        };
         break;
       case 'player_confirming':
         submitLabel = getLabel('confirm');
         submitDisabled = false;
-        onSubmit = () => wf.dispatch({ type: 'confirm_option' });
+        onSubmit = () => {
+          const option = wf.selectedOption;
+          const round = wf.currentPlayerRound;
+          if (option && round) {
+            debateEventBus.emit('interactive:confirm', {
+              roundNumber: round.roundNumber,
+              roundId: round.id,
+              optionId: option.id,
+            });
+          }
+          wf.dispatch({ type: 'confirm_option' });
+        };
         break;
       default:
         submitDisabled = true;
@@ -267,7 +452,14 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
     return { submitLabel, submitDisabled, onSubmit };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- wf.gamePhase + wf.dispatch cover footer behavior; setIntroSummaryOpen is stable
-  }, [wf.gamePhase, wf.dispatch, wf.selectedOption]);
+  }, [
+    wf.gamePhase,
+    wf.dispatch,
+    wf.selectedOption,
+    wf.currentRound,
+    wf.currentPlayerRound,
+    isTutorialOpen,
+  ]);
 
   const modalSpeakerName = useMemo(() => {
     if (!analysisTarget) return '';
@@ -281,6 +473,27 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const revealLockedOption = useCallback((optionId: string) => {
     setRevealedLockedOptionIds((prev) => new Set(prev).add(optionId));
   }, []);
+
+  // Spend `HELP_INSIGHT_COST` Insight points to mark the active analysis target as
+  // "fallacy-revealed". No-op when the player can't afford it or this target has already
+  // been revealed.
+  const handleSpendInsightPoint = useCallback(() => {
+    if (!analysisStatementTargetId) return;
+    if (insightPoints < HELP_INSIGHT_COST) return;
+    if (insightRevealedTargetIds.has(analysisStatementTargetId)) return;
+    setInsightRevealedTargetIds((prev) => {
+      if (prev.has(analysisStatementTargetId)) return prev;
+      const next = new Set(prev);
+      next.add(analysisStatementTargetId);
+      return next;
+    });
+    setInsightPoints((p) => Math.max(0, p - HELP_INSIGHT_COST));
+  }, [analysisStatementTargetId, insightPoints, insightRevealedTargetIds]);
+
+  const insightRevealedForCurrentTarget = useMemo(() => {
+    if (!analysisStatementTargetId) return false;
+    return insightRevealedTargetIds.has(analysisStatementTargetId);
+  }, [analysisStatementTargetId, insightRevealedTargetIds]);
 
   const wizardDetail = useMemo((): WizardPanelDetail | null => {
     switch (wf.gamePhase) {
@@ -303,7 +516,18 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       }
       case 'player_choosing': {
         const opt = wf.selectedOption;
-        if (!opt) return null;
+        if (!opt) {
+          const prompt = wf.currentPlayerRound?.opponentPrompt;
+          if (!prompt) return null;
+          return {
+            title: getLabel('wizardDetailSpeaks', {
+              replacements: {
+                name: getSpeakerName(debate, prompt.speakerId),
+              },
+            }),
+            body: statementText(prompt.sentences),
+          };
+        }
         const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
         return {
           title: getLabel('wizardDetailSelectedStatement'),
@@ -345,6 +569,20 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             body: statementText(response.statement.sentences),
           };
         }
+        // NPC rounds also pass through `round_recap` now (after the player clicks
+        // Continue on `npc_speaking`). Surface the NPC's line in the wizard so the
+        // player can re-read what the moderator just reacted to.
+        const npc = wf.currentNpcRound;
+        if (npc) {
+          return {
+            title: getLabel('wizardDetailSpeaks', {
+              replacements: {
+                name: getSpeakerName(debate, npc.speakerId),
+              },
+            }),
+            body: statementText(npc.statement.sentences),
+          };
+        }
         return {
           title: getLabel('roundRecap'),
           body: getLabel('wizardDetailRoundRecapBody'),
@@ -376,6 +614,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           <FeedbackPanel
             wf={wf}
             debate={debate}
+            insightPoints={insightPoints}
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
           />
@@ -399,12 +638,17 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         <RoundAnalysisModal
           target={analysisTarget}
           allFallacies={allFallacies}
+          availableLogicalFallacies={debate.availableLogicalFallacies}
           fallacyById={fallacyById}
           speakerName={modalSpeakerName}
           canGuess={canGuess}
           guessSession={activeSession}
           onGuess={handleGuess}
           onClose={() => setAnalysisTarget(null)}
+          activeRoundNumber={fallacyGuessBucketRoundNumber}
+          insightPoints={insightPoints}
+          insightRevealed={insightRevealedForCurrentTarget}
+          onSpendInsightPoint={handleSpendInsightPoint}
         />
       )}
       {introSummaryOpen && wf.gamePhase === 'debate_intro' && (

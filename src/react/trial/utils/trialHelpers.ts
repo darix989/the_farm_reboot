@@ -13,6 +13,17 @@ export function getSpeakerName(debate: DebateScenarioJson, speakerId: string): s
   return debate.characters?.[speakerId] ?? speakerId.charAt(0).toUpperCase() + speakerId.slice(1);
 }
 
+/**
+ * Resolves the player's starting Insight Points balance for a debate.
+ * Reads `startingInsightPoints` from the scenario JSON, falling back to 0 when omitted
+ * or set to a negative value.
+ */
+export function getStartingInsightPoints(debate: DebateScenarioJson): number {
+  const value = debate.startingInsightPoints;
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) return 0;
+  return Math.floor(value);
+}
+
 export function qualityColor(quality: PlayerOption['quality']): string {
   if (quality === 'effective') return uiColor.info;
   if (quality === 'logical_fallacy') return uiColor.danger;

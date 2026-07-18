@@ -17,21 +17,42 @@ export function useScrollFade(ref: React.RefObject<HTMLDivElement | null>): Scro
     const el = ref.current;
     if (!el) return;
 
+    let rafId: number | null = null;
+
     const update = () => {
-      setFade({
-        top: el.scrollTop > 2,
-        bottom: el.scrollTop + el.clientHeight < el.scrollHeight - 2,
+      const nextTop = el.scrollTop > 2;
+      const nextBottom = el.scrollTop + el.clientHeight < el.scrollHeight - 2;
+
+      setFade((prev) => {
+        if (prev.top === nextTop && prev.bottom === nextBottom) return prev;
+        return { top: nextTop, bottom: nextBottom };
+      });
+    };
+
+    const scheduleUpdate = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        update();
       });
     };
 
     el.addEventListener('scroll', update, { passive: true });
-    const ro = new ResizeObserver(update);
+    const ro = new ResizeObserver(scheduleUpdate);
     ro.observe(el);
-    update();
+    const mo = new MutationObserver(scheduleUpdate);
+    mo.observe(el, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+    scheduleUpdate();
 
     return () => {
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
       el.removeEventListener('scroll', update);
       ro.disconnect();
+      mo.disconnect();
     };
   }, [ref]);
 

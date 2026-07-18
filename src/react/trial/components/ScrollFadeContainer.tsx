@@ -11,6 +11,13 @@ interface ScrollFadeContainerProps {
   className?: string;
   /** When true, applies the modal-variant fade gradient colours. */
   isModal?: boolean;
+  /**
+   * Optional stable identifier emitted as `data-scroll-key` on the inner
+   * scrollable div. Used by tutorial `artificialInteractions` and other
+   * external automation to locate the right scroll container without
+   * relying on hashed CSS-module class names.
+   */
+  scrollElementDataKey?: string;
   children: React.ReactNode;
 }
 
@@ -18,11 +25,14 @@ interface ScrollFadeContainerProps {
  * Wraps children in the standard scroll-fade shell:
  * a fade overlay at the top, the scrollable content div, and a fade overlay at the bottom.
  * Fade opacity is driven by `useScrollFade` so it transitions automatically.
+ *
+ * Used across panels and modal bodies to keep scroll behavior consistent.
  */
 const ScrollFadeContainer: React.FC<ScrollFadeContainerProps> = ({
   scrollRef: externalRef,
   className,
   isModal,
+  scrollElementDataKey,
   children,
 }) => {
   const internalRef = useRef<HTMLDivElement>(null);
@@ -32,12 +42,19 @@ const ScrollFadeContainer: React.FC<ScrollFadeContainerProps> = ({
   return (
     <div className={shared.trialScrollFadeWrap}>
       <div
+        aria-hidden="true"
+        className={cn(shared.scrollDirectionIndicator, shared.scrollDirectionTop, {
+          [shared.scrollDirectionVisible]: fade.top,
+          [shared.scrollDirectionModal]: isModal,
+        })}
+      />
+      <div
         className={cn(shared.scrollFadeOverlay, shared.fadeTop, {
           [shared.fadeModal]: isModal,
         })}
         style={{ opacity: fade.top ? 1 : 0 }}
       />
-      <div className={className} ref={activeRef}>
+      <div className={className} ref={activeRef} data-scroll-key={scrollElementDataKey}>
         {children}
       </div>
       <div
@@ -45,6 +62,13 @@ const ScrollFadeContainer: React.FC<ScrollFadeContainerProps> = ({
           [shared.fadeModal]: isModal,
         })}
         style={{ opacity: fade.bottom ? 1 : 0 }}
+      />
+      <div
+        aria-hidden="true"
+        className={cn(shared.scrollDirectionIndicator, shared.scrollDirectionBottom, {
+          [shared.scrollDirectionVisible]: fade.bottom,
+          [shared.scrollDirectionModal]: isModal,
+        })}
       />
     </div>
   );

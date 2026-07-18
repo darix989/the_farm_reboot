@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import cn from 'classnames';
 import type {
   LogicalFallacy,
+  LogicalFallacyId,
   LogicalFallacyScenario,
   NpcRoundEntry,
   PlayerOption,
@@ -11,9 +12,14 @@ import type {
 } from '../../../types/debateEntities';
 
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
+import inspectIcon from '../../../static/icons/inspect.svg';
+import cleanIcon from '../../../static/icons/clean.svg';
+import spotIcon from '../../../static/icons/spot.svg';
+import genericFallacyIcon from '../../../static/icons/fallacies/generic_fallacy.svg';
 import { getLogicalFallacyIconSrc } from '../utils/logicalFallacyIcons';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
-import { perRoundImpactScoreBounds, statementTypeLabel } from '../utils/trialHelpers';
+import TrialTextButton from '../components/TrialTextButton';
+import { statementTypeLabel } from '../utils/trialHelpers';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { resolvedOptionSentences } from '../utils/optionUnlock';
 import type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
@@ -28,6 +34,11 @@ import {
   truthMultisetFromSentences,
   correctIntersectionMultiset,
 } from '../utils/fallacyGuessUtils';
+import { debateEventBus, type AnalysisTargetKind } from '../utils/debateEventBus';
+import {
+  canRunTutorialTargetAction,
+  notifyTutorialTargetAction,
+} from '../../tutorial/tutorialInteractionGuard';
 import styles from './RoundAnalysisModal.module.scss';
 import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
@@ -35,6 +46,9 @@ import getLabel from '../../../data/labels';
 
 export type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
 export { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from '../utils/fallacyGuessTypes';
+
+/** Insight points required to reveal which sentences contain fallacies on the active target. */
+export const HELP_INSIGHT_COST = 2;
 
 // ---------------------------------------------------------------------------
 // Types
@@ -49,6 +63,8 @@ export type AnalysisTarget =
 interface RoundAnalysisModalProps {
   target: AnalysisTarget;
   allFallacies: LogicalFallacy[];
+  /** Fallacy ids the player may choose in this scenario (catalog order preserved). */
+  availableLogicalFallacies: readonly LogicalFallacyId[];
   fallacyById: Map<string, LogicalFallacy>;
   speakerName: string;
   /** True when the player may still submit for this analysis target. */
@@ -56,6 +72,14 @@ interface RoundAnalysisModalProps {
   guessSession: FallacyGuessSession | null;
   onGuess: (payload: GuessPayload) => void;
   onClose: () => void;
+  /** Workflow round from `TrialUI` (null when intro/complete); see `analysis:open` payload. */
+  activeRoundNumber: number | null;
+  /** Current Insight point balance — drives the `Help (n)` button label and enabled state. */
+  insightPoints: number;
+  /** True when an Insight point has already been spent on the current analysis target. */
+  insightRevealed: boolean;
+  /** Spend 1 Insight point to reveal which sentences contain logical fallacies. */
+  onSpendInsightPoint: () => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -92,6 +116,7 @@ function FallacyPicker({
           onClick={() => onSelect(f.id)}
           title={f.description}
           disabled={disabled}
+          data-tutorial-analysis-fallacy-id={f.id}
         >
           <img
             src={getLogicalFallacyIconSrc(f.id)}
@@ -336,20 +361,31 @@ function pinnedPickFlags(pickIds: string[], pinnedRow: string[]): boolean[] {
 
 function NpcRoundAnalysis({
   statement,
-  allFallacies,
+  pickerFallacies,
   fallacyById,
   canGuess,
   guessSession,
   onGuess,
   onNoFallaciesRequest,
+  analysisTargetKind,
+  analysisTargetId,
+  insightPoints,
+  insightRevealed,
+  onHelpRequest,
 }: {
   statement: Statement;
-  allFallacies: LogicalFallacy[];
+  pickerFallacies: LogicalFallacy[];
   fallacyById: Map<string, LogicalFallacy>;
   canGuess: boolean;
   guessSession: FallacyGuessSession | null;
   onGuess: (payload: GuessPayload) => void;
   onNoFallaciesRequest: () => void;
+  /** Target metadata forwarded to sentence/fallacy toggle events. */
+  analysisTargetKind: AnalysisTargetKind;
+  analysisTargetId: string;
+  insightPoints: number;
+  insightRevealed: boolean;
+  onHelpRequest: () => void;
 }) {
   const [selectedSentenceId, setSelectedSentenceId] = useState<string | null>(null);
   const [bySentence, setBySentence] = useState<Record<string, string[]>>({});
@@ -420,42 +456,100 @@ function NpcRoundAnalysis({
 
   const handleSentenceClick = (s: Sentence) => {
     if (!canGuess) return;
-    setSelectedSentenceId(s.id === selectedSentenceId ? null : s.id);
+    const isSelecting = s.id !== selectedSentenceId;
+    const target = { kind: 'analysis_sentence', sentenceId: s.id } as const;
+    if (!canRunTutorialTargetAction(target)) return;
+    debateEventBus.emit(
+      isSelecting ? 'analysis:sentence_selected' : 'analysis:sentence_deselected',
+      {
+        sentenceId: s.id,
+        targetId: analysisTargetId,
+        targetKind: analysisTargetKind,
+      },
+    );
+    setSelectedSentenceId(isSelecting ? s.id : null);
+    notifyTutorialTargetAction(target);
   };
 
   const handleFallacySelect = useCallback(
     (fallacyId: string) => {
       if (!selectedSentenceId || !canGuess) return;
-      setBySentence((prev) => {
-        const sid = selectedSentenceId;
-        const cur = prev[sid] ?? [];
-        const pinnedRow = pinnedBySentence[sid] ?? [];
-        const idx = cur.indexOf(fallacyId);
-        if (idx >= 0) {
-          if (countIdInRow(cur, fallacyId) <= countIdInRow(pinnedRow, fallacyId)) {
-            return prev;
-          }
-          const next = cur.filter((_, i) => i !== idx);
-          const copy = { ...prev };
-          if (next.length === 0) delete copy[sid];
-          else copy[sid] = next;
-          return copy;
+      const target = {
+        kind: 'analysis_fallacy',
+        fallacyId: fallacyId as LogicalFallacyId,
+      } as const;
+      if (!canRunTutorialTargetAction(target)) return;
+      const sid = selectedSentenceId;
+      const cur = bySentence[sid] ?? [];
+      const pinnedRow = pinnedBySentence[sid] ?? [];
+      const idx = cur.indexOf(fallacyId);
+      // Compute the next state and decide which event to emit *before* calling
+      // setState. Emitting from inside a functional updater runs during React's
+      // render phase — and the tutorial bus listener synchronously calls
+      // `useTutorialStore.getState().openTutorial(...)`, which would schedule
+      // an update to `TutorialOverlay` while `NpcRoundAnalysis` is still
+      // rendering (triggers "Cannot update a component while rendering a
+      // different component").
+      if (idx >= 0) {
+        if (countIdInRow(cur, fallacyId) <= countIdInRow(pinnedRow, fallacyId)) {
+          return;
         }
-        if (cur.length >= 2) return prev;
-        return { ...prev, [sid]: [...cur, fallacyId] };
+        const next = cur.filter((_, i) => i !== idx);
+        const copy = { ...bySentence };
+        if (next.length === 0) delete copy[sid];
+        else copy[sid] = next;
+        setBySentence(copy);
+        debateEventBus.emit('analysis:fallacy_deselected', {
+          fallacyId,
+          sentenceId: sid,
+          targetId: analysisTargetId,
+          targetKind: analysisTargetKind,
+        });
+        notifyTutorialTargetAction(target);
+        return;
+      }
+      if (cur.length >= 2) return;
+      setBySentence({ ...bySentence, [sid]: [...cur, fallacyId] });
+      debateEventBus.emit('analysis:fallacy_selected', {
+        fallacyId,
+        sentenceId: sid,
+        targetId: analysisTargetId,
+        targetKind: analysisTargetKind,
       });
+      notifyTutorialTargetAction(target);
     },
-    [canGuess, selectedSentenceId, pinnedBySentence],
+    [
+      canGuess,
+      selectedSentenceId,
+      pinnedBySentence,
+      bySentence,
+      analysisTargetId,
+      analysisTargetKind,
+    ],
   );
 
   const handleSubmitGuess = () => {
+    const target = { kind: 'analysis_action', action: 'submit_guess' } as const;
+    if (!canRunTutorialTargetAction(target)) return;
     const picks = flattenPicks(bySentence);
     if (picks.length === 0) return;
     onGuess({ type: 'picks', picks });
+    notifyTutorialTargetAction(target);
   };
 
   const handleNoFallacies = () => {
+    const target = { kind: 'analysis_action', action: 'no_fallacies' } as const;
+    if (!canRunTutorialTargetAction(target)) return;
     onNoFallaciesRequest();
+    notifyTutorialTargetAction(target);
+  };
+
+  const handleHelp = () => {
+    const target = { kind: 'analysis_action', action: 'help' } as const;
+    if (!canRunTutorialTargetAction(target)) return;
+    if (insightPoints < HELP_INSIGHT_COST || insightRevealed) return;
+    onHelpRequest();
+    notifyTutorialTargetAction(target);
   };
 
   const selectedIdsForPicker = selectedSentenceId ? (bySentence[selectedSentenceId] ?? []) : [];
@@ -509,14 +603,24 @@ function NpcRoundAnalysis({
                       shouldRevealFullSolution={revealFull}
                       fallacyById={fallacyById}
                     />
-                    <p className={styles.trialSentenceAttemptRecap}>
-                      {getLabel('attemptRecapCompact', {
-                        replacements: {
-                          attemptsUsed,
-                          maxAttempts,
-                        },
-                      })}
-                    </p>
+                    <div
+                      className={styles.trialSentenceFeedbackMeta}
+                      data-tutorial-analysis-resources
+                    >
+                      <p className={styles.trialSentenceMetaPill}>
+                        {getLabel('attemptRecapCompact', {
+                          replacements: {
+                            attemptsUsed,
+                            maxAttempts,
+                          },
+                        })}
+                      </p>
+                      <p className={styles.trialSentenceMetaPill}>
+                        {getLabel('insightPointsRecapCompact', {
+                          replacements: { count: insightPoints },
+                        })}
+                      </p>
+                    </div>
                   </div>
                 ) : (
                   <div
@@ -533,14 +637,24 @@ function NpcRoundAnalysis({
                         </p>
                       </div>
                     </div>
-                    <p className={styles.trialSentenceAttemptRecap}>
-                      {getLabel('attemptRecapCompact', {
-                        replacements: {
-                          attemptsUsed,
-                          maxAttempts,
-                        },
-                      })}
-                    </p>
+                    <div
+                      className={styles.trialSentenceFeedbackMeta}
+                      data-tutorial-analysis-resources
+                    >
+                      <p className={styles.trialSentenceMetaPill}>
+                        {getLabel('attemptRecapCompact', {
+                          replacements: {
+                            attemptsUsed,
+                            maxAttempts,
+                          },
+                        })}
+                      </p>
+                      <p className={styles.trialSentenceMetaPill}>
+                        {getLabel('insightPointsRecapCompact', {
+                          replacements: { count: insightPoints },
+                        })}
+                      </p>
+                    </div>
                   </div>
                 )}
                 {statement.sentences.map((s) => {
@@ -568,12 +682,13 @@ function NpcRoundAnalysis({
                         e.stopPropagation();
                         handleSentenceClick(s);
                       }}
+                      data-tutorial-analysis-sentence-id={s.id}
                     >
                       <p className={styles.trialSentenceText}>{s.text}</p>
                       {canGuess && playerPickIds.length > 0 && (
                         <div className={styles.trialPlayerPickRow}>
                           {playerPickIds.map((fid, pillIdx) => {
-                            const f = allFallacies.find((x) => x.id === fid);
+                            const f = fallacyById.get(fid);
                             if (!f) return null;
                             const isPinned = pinnedFlags[pillIdx] ?? false;
                             return (
@@ -599,7 +714,7 @@ function NpcRoundAnalysis({
                       {!canGuess && playerPickIds.length > 0 && !showTruthRow && (
                         <div className={styles.trialPlayerPickRow}>
                           {playerPickIds.map((fid, pillIdx) => {
-                            const f = allFallacies.find((x) => x.id === fid);
+                            const f = fallacyById.get(fid);
                             if (!f) return null;
                             const isPinned = readonlyPinnedFlags[pillIdx] ?? false;
                             return (
@@ -644,6 +759,20 @@ function NpcRoundAnalysis({
                           })}
                         </div>
                       )}
+                      {insightRevealed && s.logicalFallacies.length > 0 && (
+                        <span
+                          className={styles.trialSentenceHelpMark}
+                          aria-label={getLabel('helpConfirmTitle', {
+                            replacements: { cost: HELP_INSIGHT_COST },
+                          })}
+                        >
+                          <img
+                            src={genericFallacyIcon}
+                            alt=""
+                            className={styles.trialSentenceHelpMarkIcon}
+                          />
+                        </span>
+                      )}
                     </button>
                   );
                 })}
@@ -669,7 +798,7 @@ function NpcRoundAnalysis({
                   <div className={styles.trialScrollSlot}>
                     <ScrollFadeContainer isModal className={styles.trialAnalysisColumnScroll}>
                       <FallacyPicker
-                        fallacies={allFallacies}
+                        fallacies={pickerFallacies}
                         selectedIds={selectedIdsForPicker}
                         onSelect={handleFallacySelect}
                         disabled={!selectedSentenceId}
@@ -692,7 +821,7 @@ function NpcRoundAnalysis({
                   <div className={styles.trialScrollSlot}>
                     <ScrollFadeContainer isModal className={styles.trialAnalysisColumnScroll}>
                       <FallacyPicker
-                        fallacies={allFallacies}
+                        fallacies={pickerFallacies}
                         selectedIds={wasNoFallaciesGuess ? [] : readOnlySelectedIds}
                         onSelect={() => {}}
                         disabled
@@ -710,21 +839,39 @@ function NpcRoundAnalysis({
           <div className={styles.trialRightFooter}>
             {canGuess && (
               <div className={styles.trialGuessActionsRow}>
-                <button
-                  type="button"
-                  className={styles.trialNoFallaciesBtn}
-                  onClick={handleNoFallacies}
+                <TrialTextButton
+                  variant="dashed"
+                  widthMode="flexGrow"
+                  onClick={handleHelp}
+                  disabled={insightPoints < HELP_INSIGHT_COST || insightRevealed}
+                  data-tutorial-analysis-action="help"
+                  aria-label={getLabel('helpButtonAria', {
+                    replacements: { count: insightPoints, cost: HELP_INSIGHT_COST.toString() },
+                  })}
                 >
+                  <img src={inspectIcon} alt="" className={styles.trialActionButtonIcon} />
+                  {getLabel('helpButton', {
+                    replacements: { count: insightPoints, cost: HELP_INSIGHT_COST.toString() },
+                  })}
+                </TrialTextButton>
+                <TrialTextButton
+                  variant="dashed"
+                  widthMode="flexGrow"
+                  onClick={handleNoFallacies}
+                  data-tutorial-analysis-action="no_fallacies"
+                >
+                  <img src={cleanIcon} alt="" className={styles.trialActionButtonIcon} />
                   {getLabel('noFallaciesInStatement')}
-                </button>
-                <button
-                  type="button"
-                  className={cn(shared.trialFooterBtn, styles.submitFooterBtn)}
+                </TrialTextButton>
+                <TrialTextButton
+                  widthMode="flexGrow"
                   onClick={handleSubmitGuess}
                   disabled={totalPickCount === 0}
+                  data-tutorial-analysis-action="submit_guess"
                 >
+                  <img src={spotIcon} alt="" className={styles.trialActionButtonIcon} />
                   {getLabel('submitGuess')}
-                </button>
+                </TrialTextButton>
               </div>
             )}
           </div>
@@ -739,7 +886,6 @@ function NpcRoundAnalysis({
 // ---------------------------------------------------------------------------
 
 function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
-  const impactBounds = perRoundImpactScoreBounds();
   return (
     <div className={styles.trialAnalysisBody} style={{ marginTop: '1rem' }}>
       <div className={shared.trialSectionBox} style={{ marginBottom: '0' }}>
@@ -759,12 +905,7 @@ function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
             color: uiColor.textBody,
           }}
         >
-          <ModeratorOpinionInline
-            score={option.impact}
-            min={impactBounds.min}
-            max={impactBounds.max}
-            variant="compact"
-          />
+          <ModeratorOpinionInline score={option.impact} />
         </p>
         {option.reason && (
           <p
@@ -822,20 +963,63 @@ function NoFallaciesConfirmDialog({
         <p className={styles.trialConfirmTitle}>{getLabel('noFallaciesConfirmTitle')}</p>
         <p className={styles.trialConfirmBody}>{getLabel('noFallaciesConfirmBody')}</p>
         <div className={styles.trialConfirmActions}>
-          <button
-            type="button"
-            className={cn(shared.trialFooterBtn, styles.confirmFooterBtn)}
-            onClick={onCancel}
-          >
+          <TrialTextButton size="compact" onClick={onCancel}>
             {getLabel('cancel')}
-          </button>
-          <button
-            type="button"
-            className={cn(shared.trialFooterBtn, styles.confirmFooterBtn)}
+          </TrialTextButton>
+          <TrialTextButton
+            size="compact"
             onClick={onConfirm}
+            data-tutorial-analysis-action="no_fallacies_confirm"
           >
             {getLabel('confirm')}
-          </button>
+          </TrialTextButton>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Help (Insight Point) confirmation dialog
+// ---------------------------------------------------------------------------
+
+function HelpConfirmDialog({
+  onConfirm,
+  onCancel,
+}: {
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  return (
+    <div
+      className={styles.trialConfirmOverlay}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onCancel();
+      }}
+    >
+      <div
+        className={styles.trialConfirmBox}
+        role="dialog"
+        aria-modal="true"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p className={styles.trialConfirmTitle}>
+          {getLabel('helpConfirmTitle', { replacements: { cost: HELP_INSIGHT_COST } })}
+        </p>
+        <p className={styles.trialConfirmBody}>
+          {getLabel('helpConfirmBody', { replacements: { cost: HELP_INSIGHT_COST } })}
+        </p>
+        <div className={styles.trialConfirmActions}>
+          <TrialTextButton size="compact" onClick={onCancel}>
+            {getLabel('cancel')}
+          </TrialTextButton>
+          <TrialTextButton
+            size="compact"
+            onClick={onConfirm}
+            data-tutorial-analysis-action="help_confirm"
+          >
+            {getLabel('confirm')}
+          </TrialTextButton>
         </div>
       </div>
     </div>
@@ -849,14 +1033,20 @@ function NoFallaciesConfirmDialog({
 const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   target,
   allFallacies,
+  availableLogicalFallacies,
   fallacyById,
   speakerName,
   canGuess,
   guessSession,
   onGuess,
   onClose,
+  activeRoundNumber,
+  insightPoints,
+  insightRevealed,
+  onSpendInsightPoint,
 }) => {
   const [showNoFallaciesConfirm, setShowNoFallaciesConfirm] = useState(false);
+  const [showHelpConfirm, setShowHelpConfirm] = useState(false);
   const modalScrollRef = useRef<HTMLDivElement>(null);
   const analysisTargetKeyRef = useRef<string>('');
   const prevAttemptsLenRef = useRef(0);
@@ -867,6 +1057,38 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
       : target.kind === 'npc'
         ? target.round.id
         : target.statement.id;
+
+  /** Narrow the bus enum alongside `target.kind`. */
+  const analysisTargetKind: AnalysisTargetKind = target.kind;
+  const analysisTargetId: string = analysisTargetKey;
+
+  const analysisRoundNumber =
+    target.kind === 'opponent_prompt' || target.kind === 'opponent_response'
+      ? target.playerRound.roundNumber
+      : target.round.roundNumber;
+
+  // Emit `analysis:open` when the modal mounts for a new target; `analysis:close` on unmount /
+  // target change. Balances open/close regardless of how the modal is dismissed (backdrop,
+  // ✕ button, ESC wiring, parent state change).
+  useEffect(() => {
+    const payload = {
+      targetKind: analysisTargetKind,
+      targetId: analysisTargetId,
+      analysisRoundNumber,
+      activeRoundNumber,
+    };
+    debateEventBus.emit('analysis:open', payload);
+    return () => {
+      debateEventBus.emit('analysis:close', payload);
+    };
+    // Open/close paired once per target key — `activeRoundNumber` is captured when the target changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [analysisTargetKey]);
+
+  const pickerFallacies = useMemo(() => {
+    const allowed = new Set(availableLogicalFallacies);
+    return allFallacies.filter((f) => allowed.has(f.id as LogicalFallacyId));
+  }, [allFallacies, availableLogicalFallacies]);
 
   const playerSyntheticStatement = useMemo((): Statement | null => {
     if (target.kind !== 'player') return null;
@@ -921,14 +1143,20 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   }, [guessSession?.attempts.length, analysisTargetKey]);
 
   const handleNoFallaciesConfirm = () => {
+    const target = { kind: 'analysis_action', action: 'no_fallacies_confirm' } as const;
+    if (!canRunTutorialTargetAction(target)) return;
     onGuess({ type: 'no_fallacies' });
     setShowNoFallaciesConfirm(false);
+    notifyTutorialTargetAction(target);
   };
 
-  const roundNumber =
-    target.kind === 'opponent_prompt' || target.kind === 'opponent_response'
-      ? target.playerRound.roundNumber
-      : target.round.roundNumber;
+  const handleHelpConfirm = () => {
+    const t = { kind: 'analysis_action', action: 'help_confirm' } as const;
+    if (!canRunTutorialTargetAction(t)) return;
+    onSpendInsightPoint();
+    setShowHelpConfirm(false);
+    notifyTutorialTargetAction(t);
+  };
 
   const statType =
     target.kind === 'npc'
@@ -948,7 +1176,11 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
     <div
       className={styles.trialModalOverlay}
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target !== e.currentTarget) return;
+        const target = { kind: 'analysis_action', action: 'close' } as const;
+        if (!canRunTutorialTargetAction(target)) return;
+        onClose();
+        notifyTutorialTargetAction(target);
       }}
     >
       <div
@@ -964,7 +1196,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               <p className={styles.trialModalTitle}>
                 {getLabel('modalRoundTitle', {
                   replacements: {
-                    roundNumber,
+                    roundNumber: analysisRoundNumber,
                     tail: target.kind === 'player' ? getLabel('you') : titleSuffix,
                   },
                 })}
@@ -975,8 +1207,14 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
           <button
             type="button"
             className={styles.trialModalCloseBtn}
-            onClick={onClose}
+            onClick={() => {
+              const target = { kind: 'analysis_action', action: 'close' } as const;
+              if (!canRunTutorialTargetAction(target)) return;
+              onClose();
+              notifyTutorialTargetAction(target);
+            }}
             aria-label={getLabel('close')}
+            data-tutorial-analysis-action="close"
           >
             ✕
           </button>
@@ -992,12 +1230,17 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               <>
                 <NpcRoundAnalysis
                   statement={playerSyntheticStatement}
-                  allFallacies={allFallacies}
+                  pickerFallacies={pickerFallacies}
                   fallacyById={fallacyById}
                   canGuess={canGuess}
                   guessSession={guessSession}
                   onGuess={onGuess}
                   onNoFallaciesRequest={() => setShowNoFallaciesConfirm(true)}
+                  analysisTargetKind={analysisTargetKind}
+                  analysisTargetId={analysisTargetId}
+                  insightPoints={insightPoints}
+                  insightRevealed={insightRevealed}
+                  onHelpRequest={() => setShowHelpConfirm(true)}
                 />
                 {playerRevealAssessment ? (
                   <PlayerAssessmentSection option={target.chosenOption} />
@@ -1007,12 +1250,17 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
           ) : (
             <NpcRoundAnalysis
               statement={target.kind === 'npc' ? target.round.statement : target.statement}
-              allFallacies={allFallacies}
+              pickerFallacies={pickerFallacies}
               fallacyById={fallacyById}
               canGuess={canGuess}
               guessSession={guessSession}
               onGuess={onGuess}
               onNoFallaciesRequest={() => setShowNoFallaciesConfirm(true)}
+              analysisTargetKind={analysisTargetKind}
+              analysisTargetId={analysisTargetId}
+              insightPoints={insightPoints}
+              insightRevealed={insightRevealed}
+              onHelpRequest={() => setShowHelpConfirm(true)}
             />
           )}
         </ScrollFadeContainer>
@@ -1021,6 +1269,13 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
           <NoFallaciesConfirmDialog
             onConfirm={handleNoFallaciesConfirm}
             onCancel={() => setShowNoFallaciesConfirm(false)}
+          />
+        )}
+
+        {showHelpConfirm && (
+          <HelpConfirmDialog
+            onConfirm={handleHelpConfirm}
+            onCancel={() => setShowHelpConfirm(false)}
           />
         )}
       </div>
