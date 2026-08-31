@@ -129,6 +129,7 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 
 ## Extra docs in repo
 
+- `docs/farm_overworld.md` — the Phaser overworld: architecture, the Phaser/React split, the placeholder-art texture contract, how encounters are launched and returned from, and how to add an animal.
 - `docs/level_01_the_pond_motion.md` — Level 1 story bible, cast, scenario ladder and authored dialog.
 - `PHASER_ZUSTAND_INTEGRATION.md`, `SIMPLE_ZUSTAND_INTEGRATION.md` — integration notes (may overlap with this file).
 - `src/react/AGENT.md` — detailed guide to the React overlay layer and the Trial/debate workflow.
@@ -137,7 +138,7 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 
 - New **shared UI colour or font step** → extend `uiColors.scss` / `uiColor.ts` or `uiTypography.scss` / `uiFont.ts`, then use `var(--ui-*)` or the TS mirrors in components.
 - New **overlay or menu** → `src/react/`, wire via `ReactApp.tsx` if scene-specific.
-- New **scene or game logic** → `src/phaser/scenes/` (and register in `main.ts`).
+- New **scene or game logic** → `src/phaser/scenes/` (and register in `main.ts`). For overworld work — new locations, animals, or anything touching the `Farm` scene — read `docs/farm_overworld.md` first; it documents the Phaser/React split and two collision/scene-switch gotchas that do not surface as type or lint errors.
 - **Cross-layer signals** → `EventBus` + optional `gameStore` actions.
 - Keep **`PHASER_PARENT_ID`** in sync between the Phaser parent div and `ReactRoot` layout logic.
 - New **debate content** → author a `DebateScenarioJson` JSON file under `src/data/debates/` and register it once in `src/data/levels.ts` (that file owns the `DebateScenarioKey` union, the `DEBATES` lookup and the main-menu ordering). No engine changes required.
