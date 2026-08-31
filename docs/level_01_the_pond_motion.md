@@ -60,7 +60,7 @@ Each rung adds exactly one thing. Quickest gameplay first, boss last.
 | 1.5 | `014_skirmish_bram_fenceline` | Skirmish | Speaking **and** spotting together | ad-hominem, appeal-to-popularity | Insight, the moderator gauge, an unlock-gated option. |
 | 1.6 | `015_duchess_vs_rue` | Boss debate | Everything, over 10 beats | + false-dilemma (distractor) | Full Public Farm. |
 
-Rung 1.6 follows the 10-beat order in [plan_002.md](./plan_002.md) exactly; Rue is the **opposition** (Duchess proposes).
+Rung 1.6 follows the 10-beat order in [plan_002.md](./to_process/plan_002.md) exactly; Rue is the **opposition** (Duchess proposes).
 
 ---
 
@@ -189,7 +189,7 @@ This is the authoring source of truth; it gets committed as `docs/level_01_the_p
 
 **Motion:** *The Old Pond shall be reserved for the Flock; hoofed animals shall water at the road trough.*
 
-Beat sheet for the 10 rounds of [plan_002.md](./plan_002.md). The full 3-option prose for every player round is authored in `src/data/debates/015_duchess_vs_rue.json`, following the A/B/C pattern above; the table below is the structure and the intent of each beat.
+Beat sheet for the 10 rounds of [plan_002.md](./to_process/plan_002.md). The full 3-option prose for every player round is authored in `src/data/debates/015_duchess_vs_rue.json`, following the A/B/C pattern above; the table below is the structure and the intent of each beat.
 
 | # | Beat | Content |
 |---|---|---|

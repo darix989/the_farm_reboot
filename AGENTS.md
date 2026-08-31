@@ -85,7 +85,7 @@ React overlays share a small token system (mirrored SCSS + TypeScript so CSS mod
 - **Colors** — [`src/react/uiColors.scss`](src/react/uiColors.scss) defines `@mixin color-palette` with `--ui-color-*` (neutrals, borders, brand accent, status colours). It is included on **`html`** in `index.scss` so `body` and all descendants inherit tokens. [`src/react/uiColor.ts`](src/react/uiColor.ts) exports `var(--ui-color-*)` for TSX (e.g. `trialHelpers.qualityColor`, panels).
 - **Per-file only** — colours or values used in a single SCSS module can stay as **`$variables` at the top** of that file instead of growing the global palette.
 
-Details and Trial-specific styling notes: [`src/react/AGENT.md`](src/react/AGENT.md).
+Details and Trial-specific styling notes: [`src/react/AGENTS.md`](src/react/AGENTS.md).
 
 ## UI copy (`getLabel`)
 
@@ -122,7 +122,7 @@ Default `npm run dev` / `build` run `log.js`, which performs an anonymous GET to
 The Trial scene uses a turn-based debate loop driven entirely by React state (no Phaser logic):
 
 - All debate content is declared in a **`DebateScenarioJson`** value (see `src/types/debateEntities.ts`).
-- The `TrialUI` overlay (see `src/react/AGENT.md`) reads this value and drives the full interaction.
+- The `TrialUI` overlay (see `src/react/AGENTS.md`) reads this value and drives the full interaction.
 - The game state machine lives in `src/react/hooks/useTrialRoundWorkflow.ts`.
 - A **Round Analysis Modal** (`src/react/trial/roundAnalysisModal/RoundAnalysisModal.tsx`) lets the player inspect any completed round: guess logical fallacies in NPC statements (one guess per player turn), or review why their own choice was effective/flawed.
 - **⚠️ Pointer-events gotcha:** `.react-ui-overlay` has `pointer-events: none` which inherits to all descendants. Any new interactive element outside an existing panel (modal, tooltip, etc.) **must** set `pointer-events: auto` on its root — otherwise clicks and hover silently fall through to the Phaser canvas.
@@ -131,8 +131,9 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 
 - `docs/farm_overworld.md` — the Phaser overworld: architecture, the Phaser/React split, the placeholder-art texture contract, how encounters are launched and returned from, and how to add an animal.
 - `docs/level_01_the_pond_motion.md` — Level 1 story bible, cast, scenario ladder and authored dialog.
-- `PHASER_ZUSTAND_INTEGRATION.md`, `SIMPLE_ZUSTAND_INTEGRATION.md` — integration notes (may overlap with this file).
-- `src/react/AGENT.md` — detailed guide to the React overlay layer and the Trial/debate workflow.
+- `docs/README.md` — index of the docs folder; start there.
+- `docs/to_process/` — older design notes and integration write-ups kept for reference, not yet reconciled with what shipped (`plan_001.md`, `plan_002.md`, the two Zustand integration notes, `random_notes.md`).
+- `src/react/AGENTS.md` — detailed guide to the React overlay layer and the Trial/debate workflow.
 
 ## Quick checklist for changes
 
