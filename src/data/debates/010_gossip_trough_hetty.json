@@ -1,6 +1,7 @@
 {
   "id": "level1-gossip-hetty",
   "introduction": "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is. She has not quite worked out yet that you are the donkey she is talking about.",
+  "introductionSummary": "Hetty has a theory about the pond, and no idea she is telling it to the donkey in it.",
   "playerSide": "opposition",
   "characters": {
     "hetty": "Hetty",
@@ -54,7 +55,8 @@
             "text": "Anyway, the pond's been going brown since before the frost.",
             "logicalFallacies": []
           }
-        ]
+        ],
+        "summary": "Hetty dismisses the donkey's drain complaint by his arrival, not his argument."
       }
     },
     {
@@ -85,7 +87,8 @@
             "text": "Someone ought to tell the Flock. They don't much listen to hens.",
             "logicalFallacies": []
           }
-        ]
+        ],
+        "summary": "Hetty has seen the real cause — a bent outflow grate — and assumes no one will listen to a hen."
       }
     }
   ],

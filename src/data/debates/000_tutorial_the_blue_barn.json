@@ -2,6 +2,7 @@
   "id": "debate-blue-barn-final",
   "startingInsightPoints": 2,
   "introduction": "Barnaby the Bunny propose we should paint the entire barn bright blue because 'blue is the happiest color.",
+  "introductionSummary": "Barnaby wants the whole barn painted bright blue, on the grounds that blue is the happiest colour.",
   "playerSide": "opposition",
   "characters": {
     "barnaby": "Barnaby",
@@ -41,7 +42,8 @@
             "text": "If we paint our barn that same beautiful blue, every animal will wake up feeling like they are floating among the clouds.",
             "logicalFallacies": []
           }
-        ]
+        ],
+        "summary": "Barnaby opens on the colour of the sky, and promises every animal will wake up feeling like it is floating."
       }
     },
     {
@@ -56,6 +58,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Focuses on personal taste in colors instead of addressing the farm's real priority: a roof that actually keeps the rain out.",
+          "summary": "You prefer the bare wood and put the roof holes ahead of the paint.",
           "sentences": [
             {
               "id": "s-r2a-1",
@@ -74,6 +77,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "Keeps the argument focused on immediate safety, which is stronger than cosmetic improvements.",
+          "summary": "You put the roof first: dry and safe animals before any change of colour.",
           "sentences": [
             {
               "id": "s-r2b-1",
@@ -87,6 +91,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "States a practical concern but does not strongly explain why the roof should be the first priority.",
+          "summary": "You ask to hold the painting until next season and spend the budget on repairs.",
           "sentences": [
             {
               "id": "s-r2c-1",
@@ -109,6 +114,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Trivial logistical questions that let Barnaby duck the real issue: cost versus the roof.",
+          "summary": "You ask how much of the money the paint and brushes would take.",
           "sentences": [
             {
               "id": "s-r3a-1",
@@ -122,6 +128,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Fixates on who does the work instead of whether the budget should go to paint or to the leaking roof.",
+          "summary": "You ask who would actually climb up and do the painting.",
           "sentences": [
             {
               "id": "s-r3b-1",
@@ -135,6 +142,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "Forces the tradeoff Barnaby keeps dodging: spending on blue paint versus money still available for roof repairs.",
+          "summary": "You ask what would be left for the roof after the paint, with the next storm coming.",
           "sentences": [
             {
               "id": "s-r3c-1",
@@ -157,7 +165,8 @@
                 "text": "Almost all of the money will go to the paint and brushes.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Barnaby admits almost all of the money goes to paint and brushes."
           },
           "impact": 0
         },
@@ -173,7 +182,8 @@
                 "text": "I will hire the bravest swallows in the county — leave the ladders to them!",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Barnaby would hire the county's bravest swallows and leave the ladders to them."
           },
           "impact": 0
         },
@@ -189,7 +199,8 @@
                 "text": "There will always be another bucket for leaks — but there is only one first coat of joy-blue!",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Barnaby shrugs off leaks as endless, and the first coat of joy-blue as unrepeatable."
           },
           "impact": 0
         }
@@ -216,7 +227,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Barnaby turns on Pip's grey fur and says the objection is really just a drab mouse's poor taste."
       },
       "opponentPromptImpact": 15,
       "options": [
@@ -225,6 +237,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Defensive about appearance — exactly where Barnaby wants the conversation. Misses the chance to name the fallacy and pivot back to the roof.",
+          "summary": "You defend your grooming and let the debate stay on your fur.",
           "sentences": [
             {
               "id": "s-r4b-1",
@@ -238,6 +251,7 @@
           "quality": "effective",
           "impact": 20,
           "reason": "Names the Ad Hominem out loud, refuses the personal bait, and drags the debate back to the roof and the budget — the questions Barnaby was trying to dodge.",
+          "summary": "You refuse the bait: the colour of your fur has nothing to do with the roof.",
           "unlockCondition": {
             "npcRoundId": "stmt-r4-barnaby-question",
             "sentenceId": "s-r4q-1",
@@ -292,7 +306,8 @@
             "text": "There is no middle ground when the joy of the entire community is on the line.",
             "logicalFallacies": []
           }
-        ]
+        ],
+        "summary": "Barnaby calls the budget a smokescreen and offers blue paint today or a colourless world forever."
       }
     },
     {
@@ -306,6 +321,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "Mirrors Barnaby's mistake by inventing a False Dilemma of Pip's own. Doesn't expose the bad logic — just adds more bad logic on top.",
+          "summary": "You answer his trap with your own: a fixed roof or every animal frozen by December.",
           "sentences": [
             {
               "id": "s-r6a-1",
@@ -344,6 +360,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Tries to soften Barnaby's premise but accepts the framing that life without blue is sad. Doesn't name or break the fallacy.",
+          "summary": "You object to being called a smokescreen and look for colour in the fields and hay.",
           "sentences": [
             {
               "id": "s-r6b-1",
@@ -367,6 +384,7 @@
           "quality": "effective",
           "impact": 20,
           "reason": "Names the False Dilemma directly, opens up a third path (a dry, unpainted barn), and grounds the audience in the practical comparison: a leaky blue barn versus a dry plain one.",
+          "summary": "You name the False Dilemma and show the third option: the barn's own colour, dry.",
           "unlockCondition": {
             "npcRoundId": "round-5",
             "sentenceId": "s-r5-2",
@@ -419,7 +437,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Barnaby asks whether refusing the blue is simply choosing to keep everyone sad and grey."
       },
       "opponentPromptImpact": 15,
       "options": [
@@ -428,6 +447,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "Answers Barnaby's False Dilemma with another False Dilemma. The audience hears two animals trapped in either-or thinking instead of one of them breaking out of it.",
+          "summary": "You demand he admit he is wrong or be cut off, and trap him the way he trapped you.",
           "sentences": [
             {
               "id": "s-r7a-1",
@@ -461,6 +481,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Wanders away from the question. Doesn't refute the trap or offer a real third option.",
+          "summary": "You reflect that sadness has many sources and wonder whether the farm has a counsellor.",
           "sentences": [
             {
               "id": "s-r7b-1",
@@ -484,6 +505,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "Refuses Barnaby's binary, offers a clear third path (a dry, repaired barn = a different kind of happiness), and even leaves room to talk about color later — fair, calm, and persuasive.",
+          "summary": "You answer that a dry barn is its own kind of happiness, and put decorations after the repair.",
           "sentences": [
             {
               "id": "s-r7c-1",
@@ -515,6 +537,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "Personal attack on Barnaby's character and species. Even if it lands a laugh, it abandons the substance of the debate.",
+          "summary": "You ask whether Barnaby has ever fixed anything, or only stared at the sky.",
           "sentences": [
             {
               "id": "s-r8a-1",
@@ -543,6 +566,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Logistical small-talk. Doesn't expose the flaw in painting first and fixing later.",
+          "summary": "You ask about can counts, which shop, and rollers or brushes.",
           "sentences": [
             {
               "id": "s-r8b-1",
@@ -566,6 +590,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "Brutally practical: paint on damp, rotting wood is wasted paint. Forces Barnaby to either concede the roof must come first or look reckless.",
+          "summary": "You ask what paint on damp rotting wood does, and put the repair before the decoration.",
           "sentences": [
             {
               "id": "s-r8c-1",
@@ -598,7 +623,8 @@
                 "text": "I am a VISIONARY, Pip, which is far above 'practical'! My paws are perfect for holding inspirational color swatches.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Barnaby declares himself a visionary, well above practical."
           },
           "impact": 0
         },
@@ -614,7 +640,8 @@
                 "text": "We will need ALL the paint! Every can on the farm! The hedgehog will be absolutely delighted.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Barnaby wants every can on the farm, to the hedgehog's delight."
           },
           "impact": 0
         },
@@ -635,7 +662,8 @@
                   }
                 ]
               }
-            ]
+            ],
+            "summary": "Barnaby answers urgency instead of rot: paint now or lose the moment forever."
           },
           "impact": 15
         }
@@ -678,7 +706,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Barnaby closes on a last choice between a barn of joy and a lifetime of dripping despair."
       }
     },
     {
@@ -692,6 +721,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "Closes with a False Dilemma of Pip's own. After spending the whole debate exposing Barnaby's bad logic, this throws away that progress at the most important moment.",
+          "summary": "You close by banning paint forever or dooming the farm.",
           "sentences": [
             {
               "id": "s-r10a-1",
@@ -730,6 +760,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Wishy-washy and forgettable. The audience needs a clear ask before they vote.",
+          "summary": "You suggest sleeping on it and asking the owl in the morning.",
           "sentences": [
             {
               "id": "s-r10b-1",
@@ -753,6 +784,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "The perfect close: names both fallacies the audience just watched in real time, replaces Barnaby's either-or with a real third path, and ties it back to safety as the foundation of any real happiness.",
+          "summary": "You close by naming the attack on your fur and the two-choice trap, and put the roof under every future colour.",
           "sentences": [
             {
               "id": "s-r10c-1",

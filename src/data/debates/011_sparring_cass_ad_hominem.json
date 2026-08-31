@@ -1,6 +1,7 @@
 {
   "id": "level1-sparring-cass",
   "introduction": "Cass ran the Public Farm floor for nine seasons before his voice went. Now he runs a post in the yard and shouts at whoever stands at it. Today that is you. No magnifying glass, no moderator, no score. One question: which line actually answers him?",
+  "introductionSummary": "Cass drills you at the yard post. No tools, no score — only whether your line actually answers the attack.",
   "playerSide": "opposition",
   "characters": {
     "cass": "Cass",
@@ -48,7 +49,8 @@
             "text": "Well? Answer me.",
             "logicalFallacies": []
           }
-        ]
+        ],
+        "summary": "Cass plays the Flock and rules that six weeks on the farm means you have no standing on the water."
       },
       "options": [
         {
@@ -56,6 +58,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "You answered an Ad Hominem with an Ad Hominem. Now there are two attacks on the floor and still nothing about the water.",
+          "summary": "You insult Cass back, and let the exchange become a contest about who the two of you are.",
           "sentences": [
             {
               "id": "s-r1-opt-a-1",
@@ -74,6 +77,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "True, and beside the point. Correcting the detail concedes that time served is what matters.",
+          "summary": "You correct the date and let the argument settle on the calendar.",
           "sentences": [
             {
               "id": "s-r1-opt-b-1",
@@ -87,6 +91,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "Names the swap — the attack was about you, the question is about the water — and moves the floor to something anyone can check.",
+          "summary": "You set your arrival aside and put the drain in front of him instead.",
           "sentences": [
             {
               "id": "s-r1-opt-c-1",
@@ -110,7 +115,8 @@
                 "text": "Ha! Good sting, terrible answer. You've just agreed this is a contest about who we are. You'll lose that one — they're prettier than you.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Cass enjoys the sting, then warns you have accepted a fight about character — the one you lose."
           }
         },
         {
@@ -126,7 +132,8 @@
                 "text": "Six weeks and two days! Marvellous. Now they'll argue about the calendar and never about the drain.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Cass mocks the correction: now the yard argues dates and never reaches the drain."
           }
         },
         {
@@ -142,7 +149,8 @@
                 "text": "That's it. You didn't defend yourself — you made me look at the drain. Never defend yourself, Rue. Redirect.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Cass approves — you redirected instead of defending yourself."
           }
         }
       ]
@@ -173,7 +181,8 @@
             "text": "She has just insulted every hoofed animal on this farm and made it sound like weather. Answer.",
             "logicalFallacies": []
           }
-        ]
+        ],
+        "summary": "Cass plays Duchess: a gentle line that blames hooves as though it were weather rather than an insult."
       },
       "options": [
         {
@@ -181,6 +190,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "A group attack answered with a group attack. The drain has left the room.",
+          "summary": "You answer the slur with one of your own, about what geese do in ponds.",
           "sentences": [
             {
               "id": "s-r2-opt-a-1",
@@ -199,6 +209,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "It was rude. But now the debate is about her manners, not about whether hooves are the cause.",
+          "summary": "You call the remark rude and ask for an apology.",
           "sentences": [
             {
               "id": "s-r2-opt-b-1",
@@ -212,6 +223,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "Spots a soft Ad Hominem inside a polite sentence and converts it into a question that can actually be settled.",
+          "summary": "You name it as a claim about what you are, and trade hoofprints for the bent grate.",
           "sentences": [
             {
               "id": "s-r2-opt-c-1",
@@ -235,7 +247,8 @@
                 "text": "Now it's geese against donkeys and nobody's fixing anything. She'd let you win that one, and you'd still lose the vote.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Cass: geese against donkeys fixes nothing, and the vote is lost anyway."
           }
         },
         {
@@ -251,7 +264,8 @@
                 "text": "You'll get your apology. She's marvellous at apologies. You'll also get the trough by the road.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Cass: Duchess apologises beautifully, and you still get the trough by the road."
           }
         },
         {
@@ -267,7 +281,8 @@
                 "text": "Good. She dresses it up, so you undress it. 'What I am' against 'what happened.' Say that in front of Tobias and he'll write it down.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Cass approves — 'what I am' against 'what happened' is a line Tobias will write down."
           }
         }
       ]

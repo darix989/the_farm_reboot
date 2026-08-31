@@ -1,6 +1,7 @@
 {
   "id": "debate-apple-surplus",
   "introduction": "The north orchard has produced a massive surplus of apples. Mayor Monty (the Pig) argues that either the pigs eat them all immediately or the farm will be overrun by a plague of fruit flies. As Penny the Goat, you must show the farm that there are other ways to handle the harvest.",
+  "introductionSummary": "The orchard has more apples than the cellar can hold. Monty says pigs or fruit flies; as Penny you have to show the farm a third road.",
   "playerSide": "opposition",
   "characters": {
     "monty": "Mayor Monty",
@@ -51,7 +52,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Monty opens with two paths only: the pigs eat the surplus today, or the barn belongs to the flies."
       }
     },
     {
@@ -66,6 +68,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "This response uses a False Dilemma itself, suggesting that if we don't listen to Penny, the farm will literally explode. It doesn't fix the logic; it just adds more bad logic.",
+          "summary": "You answer his two paths with two of your own, ending in a farm destroyed by sunset.",
           "sentences": [
             {
               "id": "s-r2a-1",
@@ -84,6 +87,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "This is factually true but ignores the debate. Talking about the color of the apples doesn't address the 'eat them or rot' dilemma Monty presented.",
+          "summary": "You remark on how red and delicious the apples look this year.",
           "sentences": [
             {
               "id": "s-r2b-1",
@@ -97,6 +101,7 @@
           "quality": "effective",
           "impact": 20,
           "reason": "This is the best response because it immediately points out that there are more than two choices, which is the core way to defeat a False Dilemma.",
+          "summary": "You break the two-path frame and name real alternatives: dry the apples, or trade them for wool.",
           "unlockCondition": {
             "npcRoundId": "round-1",
             "sentenceId": "s-r1-2",
@@ -135,6 +140,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "This creates another False Dilemma by implying Monty is either a genius or a total failure.",
+          "summary": "You ask whether Monty is a brilliant leader or a failure who wants the farm to starve.",
           "sentences": [
             {
               "id": "s-r3a-1",
@@ -153,6 +159,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "A minor detail that doesn't challenge his logic.",
+          "summary": "You ask which pigs exactly would be doing the eating.",
           "sentences": [
             {
               "id": "s-r3b-1",
@@ -166,6 +173,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "This directly questions why Monty is ignoring the third and fourth options, forcing him to defend his limited view.",
+          "summary": "You ask why drying and trading were left out of his proposal.",
           "sentences": [
             {
               "id": "s-r3c-1",
@@ -188,7 +196,8 @@
                 "text": "I am a leader who makes hard choices while you just ask silly questions!",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Monty casts himself as the one making hard choices while you ask silly questions."
           },
           "impact": 0
         },
@@ -204,7 +213,8 @@
                 "text": "All of them! It's a heavy burden, but the pigs are willing to sacrifice their waistlines for the farm.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Monty says all of them, and calls it a sacrifice of pig waistlines."
           },
           "impact": 0
         },
@@ -225,7 +235,8 @@
                   }
                 ]
               }
-            ]
+            ],
+            "summary": "Monty dismisses drying as slow and trading as uncertain, and insists there is no middle ground."
           },
           "impact": 15
         }
@@ -251,7 +262,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Monty asks whether you want well-fed pigs or a barn full of flies and rot."
       },
       "opponentPromptImpact": 15,
       "options": [
@@ -260,6 +272,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "This is another False Dilemma. It suggests that there are only two outcomes for the barn's future.",
+          "summary": "You answer with paradise or a garbage dump, and put his plan in the dump.",
           "sentences": [
             {
               "id": "s-r4a-1",
@@ -278,6 +291,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "This doesn't answer the question or provide a solution.",
+          "summary": "You observe that flies are small but annoying.",
           "sentences": [
             {
               "id": "s-r4b-1",
@@ -291,6 +305,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "This rejects the 'either-or' framing and provides a solution that benefits everyone, not just the pigs.",
+          "summary": "You name what you actually want: food preserved so every animal eats in winter, not only the pigs today.",
           "sentences": [
             {
               "id": "s-r4c-1",
@@ -333,7 +348,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Monty calls your options a distraction and puts the farm on the pigs' side or the flies'."
       }
     },
     {
@@ -347,6 +363,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "This is a False Dilemma. It limits the barn's choices to only Penny's way or Monty's way.",
+          "summary": "You mirror his trap: do exactly as you say, or follow Monty into a pit of rot.",
           "sentences": [
             {
               "id": "s-r6a-1",
@@ -365,6 +382,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "This is a weak defense that doesn't tackle the logical flaw.",
+          "summary": "You object that you are a goat, not a distraction, and want to keep talking.",
           "sentences": [
             {
               "id": "s-r6b-1",
@@ -378,6 +396,7 @@
           "quality": "effective",
           "impact": 20,
           "reason": "This explicitly names the fallacy and explains why the 'with me or against me' logic is false.",
+          "summary": "You separate rejecting his plan from siding with the flies, and name the two-choice frame as a scare tactic.",
           "unlockCondition": {
             "npcRoundId": "round-5",
             "sentenceId": "s-r5-3",
@@ -425,7 +444,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Monty asks whether refusing the pigs now is simply choosing to waste the apples."
       },
       "opponentPromptImpact": 15,
       "options": [
@@ -434,6 +454,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "Using another False Dilemma.",
+          "summary": "You turn waste into a question of whose fault it is.",
           "sentences": [
             {
               "id": "s-r7a-1",
@@ -452,6 +473,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Does not address the binary choice Monty is forcing.",
+          "summary": "You suggest apples are never wasted once the worms have them.",
           "sentences": [
             {
               "id": "s-r7b-1",
@@ -465,6 +487,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "Reiterates the existence of more options (drying/trading).",
+          "summary": "You answer directly: drying preserves the crop, which is the opposite of waste.",
           "sentences": [
             {
               "id": "s-r7c-1",
@@ -486,6 +509,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "False Dilemma.",
+          "summary": "You ask whether Monty will help with the racks or just sit there being greedy.",
           "sentences": [
             {
               "id": "s-r8a-1",
@@ -504,6 +528,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Irrelevant question.",
+          "summary": "You ask how many apples a pig can eat in a minute.",
           "sentences": [
             {
               "id": "s-r8b-1",
@@ -517,6 +542,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "Forces Monty to address a specific alternative, breaking the two-option trap.",
+          "summary": "You put a concrete alternative on the floor: racks today, half the crop saved by tomorrow.",
           "sentences": [
             {
               "id": "s-r8c-1",
@@ -539,7 +565,8 @@
                 "text": "I am not greedy, I am efficient! You are just being difficult.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Monty says he is efficient, not greedy, and that you are being difficult."
           },
           "impact": 0
         },
@@ -555,7 +582,8 @@
                 "text": "More than you think, Penny. Many more.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Monty answers that it is many more than you would think."
           },
           "impact": 0
         },
@@ -576,7 +604,8 @@
                   }
                 ]
               }
-            ]
+            ],
+            "summary": "Monty calls racks complicated and returns to his simple solution or total chaos."
           },
           "impact": 15
         }
@@ -619,7 +648,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Monty closes on a setting sun and a last choice: a feast for the pigs or a famine for everyone."
       }
     },
     {
@@ -633,6 +663,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "Final False Dilemma. It mimics Monty's bad logic.",
+          "summary": "You close by banning pigs from the orchard or losing the farm forever.",
           "sentences": [
             {
               "id": "s-r10a-1",
@@ -651,6 +682,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Too vague and doesn't summarize the argument.",
+          "summary": "You suggest everyone sleep on it and decide tomorrow.",
           "sentences": [
             {
               "id": "s-r10b-1",
@@ -664,6 +696,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "The perfect tutorial conclusion. It names the fallacy one last time, reminds the jury of the 'third way' (preservation), and asks for a vote based on logic rather than fear.",
+          "summary": "You close by naming the trap he has used all debate, and asking the farm to vote for preservation over consumption.",
           "sentences": [
             {
               "id": "s-r10c-1",

@@ -27,6 +27,7 @@
     "build-nolog": "vite build --config vite/config.prod.mjs",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
+    "lint:scenarios": "node scripts/lint-scenarios.mjs",
     "lint:styles": "stylelint \"src/**/*.{css,scss}\"",
     "lint:styles:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,scss,json}\"",

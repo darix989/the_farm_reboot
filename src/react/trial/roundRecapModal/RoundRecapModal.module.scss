@@ -128,6 +128,19 @@
   margin: 0;
 }
 
+/*
+ * Authored recap summaries only (`RECAP_SUMMARY_MAX_LINES` in `debateEntities.ts`).
+ * The clamp is a guard rail, not the layout: `npm run lint:scenarios` fails a summary
+ * long enough to reach it, so in a healthy scenario nothing is ever cut here.
+ */
+.recapSummaryBody {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
 .recapScoreRow {
   display: flex;
   align-items: flex-start;

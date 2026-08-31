@@ -17,6 +17,8 @@ is the source of truth. This is the guide to using it. For the UI that renders i
 2. Register it once in [`src/data/levels.ts`](../src/data/levels.ts) — that file owns the
    `DebateScenarioKey` union, the `DEBATES` lookup and the menu ordering.
 3. Add its menu title to `labels.ts`.
+4. Run `npm run lint:scenarios` — it checks the recap summaries every scenario owes
+   ([Recap summaries](#recap-summaries)).
 
 To hang it on an animal in the overworld, add the key to that NPC's `scenarios` in
 `src/data/farmMap.ts`. No engine changes for any of this.
@@ -29,6 +31,7 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 |---|---|
 | `id` | Internal id — **not** the `DebateScenarioKey`. `015_duchess_vs_rue` is the key, `level1-boss-pond-motion` is the id. Progress is tracked by key. |
 | `introduction` | Sets the scene. Its presence is what creates the `debate_intro` phase. |
+| `introductionSummary` | Two-line paraphrase shown in the pre-round-1 briefing modal. **Required** whenever there is an `introduction` — see [Recap summaries](#recap-summaries). |
 | `playerSide` | `proposition` or `opposition`. |
 | `characters` | `speakerId` → display name. |
 | `logicalFallacies` | The fallacies this scenario uses, each with an `explanation` shown after a guess. **Write real prose** — several older scenarios still say `"TBD"`, and the player sees it. |
@@ -66,6 +69,7 @@ when position must be stable — scripted rounds, or a lab where the tutorial sa
 | `quality` | `effective` \| `ineffective` \| `logical_fallacy`. Presentation only — scoring comes from `impact`. |
 | `impact` | Signed integer, capped at ±50 (`PLAYER_OPTION_IMPACT_ABS_MAX`). |
 | `reason` | Why this line works or fails. Shown in the analysis modal, and in the recap when `revealChoiceAssessment` is on. **Always write one.** |
+| `summary` | Two-line paraphrase of the line, shown in the round recap. **Always write one** — see [Recap summaries](#recap-summaries). |
 | `unlockCondition` + `unlockedSentences` | Gate the line behind spotting a fallacy. Paired — set both or neither. |
 
 House style for the three options, from `pitch/001`: **A is a tempting fallacy** (it should
@@ -85,6 +89,36 @@ they click once to reveal, and again to select. `npcRoundId` also accepts a **st
 solved.
 
 This is the only mechanic where spotting and speaking touch. Use it for the payoff line.
+
+---
+
+## Recap summaries
+
+The briefing modal and the round recap exist to tell the player *what just happened*. If they
+quote the introduction and the round verbatim, they are a scroll-back, not a recap — the
+player reads the same paragraph twice and learns nothing the second time.
+
+So every line those two modals show has an authored paraphrase beside the spoken copy:
+
+| Field | Recapped surface |
+|---|---|
+| `introductionSummary` on the scenario | Briefing modal, under "Introduction". |
+| `summary` on a `Statement` | NPC round, `opponentPrompt`, and each `opponentResponses[].statement`. |
+| `summary` on a `PlayerOption` | The line the player picked. |
+
+Rules:
+
+- **Paraphrase, never trim.** Say what the statement *did* — "Duchess opens on the forty-one
+  who already agreed" — not what it said. Copying the wording back defeats the point, and
+  `lint:scenarios` rejects a summary that repeats or prefixes the spoken text.
+- **Two lines, ~160 characters** (`RECAP_SUMMARY_MAX_LINES` / `RECAP_SUMMARY_MAX_CHARS` in
+  `debateEntities.ts`). The recap clamps to two lines, so a longer one is silently cut.
+- A gated option's `summary` describes its **unlocked** copy. While the option is still
+  locked the recap keeps showing the placeholder `sentences` instead.
+- Both fields are optional in the type, and the modal falls back to the spoken text when one
+  is missing — that fallback exists so a half-written scenario still runs, not as a licence
+  to skip them. `npm run lint:scenarios` fails on any that are missing, and skips the ones a
+  scenario cannot reach (`showIntroSummary: false`, `showRoundRecap: false`).
 
 ---
 

@@ -1,6 +1,7 @@
 {
   "id": "level1-skirmish-bram",
   "introduction": "Bram has caught you at the fence line the evening before the Public Farm. He calls it a courtesy. You have one question to put to him before he waddles off.",
+  "introductionSummary": "Bram catches you at the fence the evening before the Public Farm, calls it a courtesy, and leaves you one question.",
   "playerSide": "opposition",
   "characters": {
     "bram": "Bram",
@@ -56,7 +57,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Bram says the motion goes ahead regardless: forty-one birds agreed, and you have only been here six weeks."
       }
     },
     {
@@ -70,6 +72,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "You answered a crowd with a smaller crowd. Now the argument is about how many animals are on each side, which is the one contest you cannot win.",
+          "summary": "You count donkeys back at him and turn it into a headcount you cannot win.",
           "sentences": [
             {
               "id": "s-r2-opt-a-1",
@@ -88,6 +91,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "A fair question about the arithmetic, but it accepts that the vote count is what settles the pond. Bram is happy to argue about numbers all evening.",
+          "summary": "You query whether forty-one is actually a majority.",
           "sentences": [
             {
               "id": "s-r2-opt-b-1",
@@ -101,6 +105,7 @@
           "quality": "effective",
           "impact": 20,
           "reason": "Names both moves — the crowd and the newcomer jab — as things that are not about the water, then offers a check anyone can run. Bram concedes the grate on the record.",
+          "summary": "You set the headcount and the six weeks aside, and offer to walk to the outflow and look at the grate.",
           "unlockCondition": {
             "npcRoundId": "round-1",
             "sentenceId": "s-r1-3",
@@ -136,7 +141,8 @@
                 "text": "Four donkeys against forty-one birds. Thank you, Rue. You've just made my argument for me.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Bram thanks you — four donkeys against forty-one birds makes his case for him."
           }
         },
         {
@@ -152,7 +158,8 @@
                 "text": "More than forty-one, I expect. But they didn't turn up, did they.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Bram concedes there are more animals, then notes they did not turn up."
           }
         },
         {
@@ -168,7 +175,8 @@
                 "text": "…It's bent. It's been bent since before the frost. That doesn't mean the hooves aren't also — look. Take it up with Duchess on Sunday.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Bram admits the grate is bent, then hands you off to Duchess on Sunday."
           }
         }
       ]
@@ -195,7 +203,8 @@
             "text": "And Rue — she's much better at this than I am.",
             "logicalFallacies": []
           }
-        ]
+        ],
+        "summary": "Bram sets the scene for Sunday and warns that Duchess is far better at this than he is."
       }
     }
   ],

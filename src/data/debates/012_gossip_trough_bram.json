@@ -1,6 +1,7 @@
 {
   "id": "level1-gossip-bram",
   "introduction": "Bram the Drake has come down to the trough to be fair to you. He genuinely thinks that is what he is doing.",
+  "introductionSummary": "Bram corners you at the trough, certain he is doing you a kindness.",
   "playerSide": "opposition",
   "characters": {
     "bram": "Bram",
@@ -63,7 +64,8 @@
             "text": "Duchess puts the motion to Tobias at the Public Farm.",
             "logicalFallacies": []
           }
-        ]
+        ],
+        "summary": "Bram counts heads instead of evidence: forty-one ducks agree, so the pond is settled before Sunday."
       }
     },
     {
@@ -104,7 +106,8 @@
             "text": "The grate at the outflow's bent, but that's been bent for ages.",
             "logicalFallacies": []
           }
-        ]
+        ],
+        "summary": "Bram waves off the one animal raising the drain, then drops the bent grate as old news."
       }
     }
   ],

@@ -56,11 +56,33 @@ export type StatementType =
   /** A line dropped outside the Public Farm floor (trough gossip, yard sparring). */
   | 'gossip';
 
+/**
+ * How many lines an authored recap summary may occupy. The recap renders summaries
+ * clamped to this many lines, so anything longer is silently cut — treat it as a hard
+ * authoring limit, not a suggestion.
+ */
+export const RECAP_SUMMARY_MAX_LINES = 2;
+
+/**
+ * Rough character budget for {@link RECAP_SUMMARY_MAX_LINES} lines at the recap's body
+ * width. Used by the authoring lint (`npm run lint:scenarios`), not at runtime.
+ */
+export const RECAP_SUMMARY_MAX_CHARS = 160;
+
 export interface Statement {
   id: string;
   speakerId: string;
   sentences: Sentence[];
   type: StatementType;
+  /**
+   * Authored paraphrase of `sentences`, shown wherever the line is *recapped* rather
+   * than spoken (the round recap modal). Recapping the statement verbatim reads as a
+   * copy-paste of the round the player just played, so write a fresh, shorter line —
+   * what this statement did, not what it said. Keep it to
+   * {@link RECAP_SUMMARY_MAX_LINES} lines (see {@link RECAP_SUMMARY_MAX_CHARS}).
+   * When omitted the recap falls back to the full text.
+   */
+  summary?: string;
 }
 
 export type JuryVerdict = 'proposition_accepted' | 'proposition_rejected';
@@ -93,6 +115,13 @@ export interface PlayerOption {
   impact: number;
   /** Explanation of why this option is effective, ineffective, or a logical fallacy. */
   reason?: string;
+  /**
+   * Authored paraphrase of the line, shown in the round recap in place of the verbatim
+   * sentences. Same rules as {@link Statement.summary}: a fresh, shorter line, at most
+   * {@link RECAP_SUMMARY_MAX_LINES} lines. Describes the *unlocked* copy — while the
+   * option is still locked the recap keeps showing the placeholder `sentences`.
+   */
+  summary?: string;
   /**
    * If set, `sentences` is placeholder copy until unlock; full content lives in `unlockedSentences`.
    */
@@ -447,6 +476,13 @@ export interface DebateScenarioJson {
   id: string;
   /** Brief summary of what the debate is about. */
   introduction?: string;
+  /**
+   * Authored paraphrase of `introduction`, shown in the pre-round-1 introduction summary
+   * modal. Without it that modal just repeats the introduction the player has already
+   * read (truncated at a word boundary), so write a fresh line: the stakes, not the scene.
+   * At most {@link RECAP_SUMMARY_MAX_LINES} lines.
+   */
+  introductionSummary?: string;
   playerSide: Side;
   /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
   characters?: Record<string, string>;

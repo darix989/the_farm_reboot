@@ -1,6 +1,7 @@
 {
   "id": "level1-boss-pond-motion",
   "introduction": "The Public Farm sits on Sunday, and old Tobias the Tortoise has the motion in front of him: the Old Pond shall be reserved for the Flock, and the hoofed animals shall water at the road trough. Duchess speaks for it, and forty-one birds have already said yes. You are Rue. You have been on this farm six weeks, you have no crowd behind you, and you know why the water is brown.",
+  "introductionSummary": "The Public Farm votes on reserving the Old Pond for the Flock. Duchess has forty-one birds; you have the reason the water is brown.",
   "playerSide": "opposition",
   "characters": {
     "duchess": "Duchess",
@@ -61,7 +62,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Duchess opens on the forty-one who already agreed, and on newcomers who were never raised near water."
       }
     },
     {
@@ -75,6 +77,7 @@
           "quality": "logical_fallacy",
           "impact": -12,
           "reason": "You answered a crowd with a crowd. The floor is now counting animals instead of looking at the water, and the Flock has more animals.",
+          "summary": "You answer her headcount with your own — every hoofed animal, and the ones who work the farm.",
           "sentences": [
             {
               "id": "s-r2-opt-a-1",
@@ -93,6 +96,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "True, and it will move nobody. Distance is an inconvenience; Duchess has claimed the pond is being fouled, and that claim is still standing.",
+          "summary": "You object to the road trough: a long walk, and dangerous at dusk.",
           "sentences": [
             {
               "id": "s-r2-opt-b-1",
@@ -106,6 +110,7 @@
           "quality": "effective",
           "impact": 18,
           "reason": "Concedes what is actually true — the pond is dirty — and then insists the debate be about the cause, which is the one thing that can be checked.",
+          "summary": "You grant that the pond is browning and ask the farm to agree on the cause before deciding who may drink.",
           "sentences": [
             {
               "id": "s-r2-opt-c-1",
@@ -127,6 +132,7 @@
           "quality": "logical_fallacy",
           "impact": -12,
           "reason": "Attacking Duchess's popularity is still attacking Duchess. The floor now hears a donkey being rude to a goose, not a question about the pond.",
+          "summary": "You suggest the Flock only agrees because Duchess is the prettiest bird on the farm.",
           "sentences": [
             {
               "id": "s-r3-opt-a-1",
@@ -145,6 +151,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "A reasonable procedural question, and Duchess will answer it comfortably. It does not touch whether the hooves are the cause.",
+          "summary": "You ask whether the Flock actually voted or simply said yes when asked.",
           "sentences": [
             {
               "id": "s-r3-opt-b-1",
@@ -158,6 +165,7 @@
           "quality": "effective",
           "impact": 18,
           "reason": "Turns the crowd into a question the crowd cannot answer. Forty-one agreeing animals become forty-one animals who have not looked.",
+          "summary": "You ask how many of the forty-one have been to the outflow and looked at the grate.",
           "sentences": [
             {
               "id": "s-r3-opt-c-1",
@@ -181,7 +189,8 @@
                 "text": "What a thing to say. I shall let the farm judge which of us is being unpleasant this evening, and we may return to the water when you are ready.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Duchess leaves the farm to judge who is being unpleasant, and steers back to the water."
           }
         },
         {
@@ -197,7 +206,8 @@
                 "text": "They said yes when I asked them, and I asked every one. That is how a flock agrees, Rue. It is not less agreement for being pleasant.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Duchess says she asked every one, and that pleasant agreement is agreement all the same."
           }
         },
         {
@@ -213,7 +223,8 @@
                 "text": "I… could not say. It is hardly the sort of thing one asks. We all know what the pond looks like without going to stare at a drain.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Duchess cannot say — nobody needs to stare at a drain to see what the pond looks like."
           }
         }
       ]
@@ -253,7 +264,8 @@
             "text": "Are we all mistaken, dear, or are you simply new?",
             "logicalFallacies": []
           }
-        ]
+        ],
+        "summary": "Duchess asks you plainly whether forty-one lifelong residents are mistaken, or you are simply new."
       },
       "options": [
         {
@@ -261,6 +273,7 @@
           "quality": "logical_fallacy",
           "impact": -12,
           "reason": "You took the bait and made it about the birds. Now the floor is watching two species insult each other and the grate has left the room.",
+          "summary": "You turn it back on the forty-one for never once cleaning the water they lived on.",
           "sentences": [
             {
               "id": "s-r4-opt-a-1",
@@ -279,6 +292,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Politeness is not an argument. Duchess will accept the compliment and the question will stand unanswered.",
+          "summary": "You defer to the Flock's long knowledge of the pond.",
           "sentences": [
             {
               "id": "s-r4-opt-b-1",
@@ -292,6 +306,7 @@
           "quality": "effective",
           "impact": 18,
           "reason": "Refuses the question as put — it offered a crowd and a newcomer instead of evidence — and answers the only part of it that is about the water.",
+          "summary": "You split her question — headcount and tenure — and answer the one she left out: the bent grate.",
           "sentences": [
             {
               "id": "s-r4-opt-c-1",
@@ -339,7 +354,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Duchess is gentle about the mud cart and the straw, then offers the pond or the mud with nothing in between."
       }
     },
     {
@@ -353,6 +369,7 @@
           "quality": "logical_fallacy",
           "impact": -12,
           "reason": "Answering an Ad Hominem with an Ad Hominem. Cass warned you about this at the post: now there are two attacks on the floor and still no answer about the grate.",
+          "summary": "You hit back at what Duchess has never carried, and ask who actually works the water.",
           "sentences": [
             {
               "id": "s-r6-opt-a-1",
@@ -371,6 +388,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Defending yourself accepts that you were the subject. The floor will decide whether you are a credible donkey instead of whether the grate is bent.",
+          "summary": "You list three farms of water-hauling to establish your standing.",
           "sentences": [
             {
               "id": "s-r6-opt-b-1",
@@ -384,6 +402,7 @@
           "quality": "effective",
           "impact": 25,
           "reason": "The payoff. Names the swap out loud — what I am against what happened — then puts the bent grate on the record with a witness from the other side.",
+          "summary": "You grant everything she said about you, then separate it from what happened — and put Bram's own words on the grate.",
           "unlockCondition": {
             "npcRoundId": "round-5",
             "sentenceId": "s-r5-2",
@@ -432,7 +451,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Duchess presses you to say outright that forty-one animals are wrong and one donkey is right."
       },
       "options": [
         {
@@ -440,6 +460,7 @@
           "quality": "logical_fallacy",
           "impact": -12,
           "reason": "The cliff line is a slogan, not an answer. It also tells forty-one animals they are sheep, which is both insulting and, unhelpfully, untrue.",
+          "summary": "You answer that crowds are usually wrong, cliffs and all.",
           "sentences": [
             {
               "id": "s-r7-opt-a-1",
@@ -458,6 +479,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Hedging. It sounds humble and settles nothing; Duchess will simply repeat the number.",
+          "summary": "You retreat to nobody being certain, yourself included.",
           "sentences": [
             {
               "id": "s-r7-opt-b-1",
@@ -471,6 +493,7 @@
           "quality": "effective",
           "impact": 18,
           "reason": "Separates agreeing from checking. It is the level's whole thesis, and it lets the forty-one be reasonable animals rather than fools.",
+          "summary": "You draw the line between agreeing and checking, and ask the farm to send a third animal to the outflow.",
           "sentences": [
             {
               "id": "s-r7-opt-c-1",
@@ -492,6 +515,7 @@
           "quality": "logical_fallacy",
           "impact": -12,
           "reason": "You have accused the Flock of wanting the pond all along. That may even be true, but it is a claim about their motives, not about the water, and it will cost you the room.",
+          "summary": "You suggest the mud is only the excuse for a pond the Flock has wanted for years.",
           "sentences": [
             {
               "id": "s-r8-opt-a-1",
@@ -510,6 +534,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "A detail. Duchess will answer it, and the farm will be no closer to knowing what is browning the water.",
+          "summary": "You ask who would police the pond once the motion passed.",
           "sentences": [
             {
               "id": "s-r8-opt-b-1",
@@ -523,6 +548,7 @@
           "quality": "effective",
           "impact": 18,
           "reason": "The exit question. It forces Duchess either to accept that the grate is the cause, or to admit her motion was never about the mud at all.",
+          "summary": "You ask whether the motion lapses if a straightened grate clears the pond by the frost.",
           "sentences": [
             {
               "id": "s-r8-opt-c-1",
@@ -546,7 +572,8 @@
                 "text": "That is an ugly thing to suggest and I will not dignify it. The farm may note that Rue has run out of argument and moved on to motives.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Duchess refuses to dignify it, and notes you have moved from argument to motives."
           }
         },
         {
@@ -562,7 +589,8 @@
                 "text": "The Flock would manage it among ourselves, of course. Gently. Nobody is proposing a fence with teeth in it.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Duchess says the Flock would manage it gently among themselves."
           }
         },
         {
@@ -578,7 +606,8 @@
                 "text": "I— that is not how a motion works, Rue. Once the farm has settled a thing it is settled. …No. No, it would not lapse.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Duchess stumbles, then concedes the motion would not lapse."
           }
         }
       ]
@@ -620,7 +649,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Duchess closes on forty-one lifetimes against one animal's theory, and asks the farm to vote with the Flock."
       }
     },
     {
@@ -634,6 +664,7 @@
           "quality": "logical_fallacy",
           "impact": -12,
           "reason": "You finished on an attack. Every animal in the barn will remember the insult and none of them will remember the grate.",
+          "summary": "You close on how the farm will explain the fence to its children.",
           "sentences": [
             {
               "id": "s-r10-opt-a-1",
@@ -652,6 +683,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "A committee is not an answer. The farm still does not know why the water is brown, and you have just asked them to wait to find out.",
+          "summary": "You propose a committee to look into the pond and report back.",
           "sentences": [
             {
               "id": "s-r10-opt-b-1",
@@ -665,6 +697,7 @@
           "quality": "effective",
           "impact": 25,
           "reason": "Concedes falsifiability — the opposite of both fallacies. It hands the farm a test instead of a crowd, and offers to lose in public if the test goes the other way.",
+          "summary": "You ask for no vote at all — fix the grate, and put the motion again at the frost if the pond is still brown.",
           "sentences": [
             {
               "id": "s-r10-opt-c-1",

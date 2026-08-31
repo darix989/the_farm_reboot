@@ -51,6 +51,19 @@ export function statementText(sentences: Sentence[]): string {
   return sentences.map((s) => s.text).join(' ');
 }
 
+/**
+ * One block of recap copy: the authored `summary` when there is one, the spoken text
+ * otherwise. `isSummary` tells the caller whether it may clamp the paragraph — the
+ * fallback is full-length prose and must not be cut.
+ */
+export function recapText(
+  summary: string | undefined,
+  fullText: string,
+): { text: string; isSummary: boolean } {
+  const authored = summary?.trim() ?? '';
+  return authored ? { text: authored, isSummary: true } : { text: fullText, isSummary: false };
+}
+
 /** Preview line for compact UI (e.g. choice buttons); full text stays in aria-label. */
 export function truncateStatementPreview(text: string, maxChars = 80): string {
   if (text.length <= maxChars) return text;
