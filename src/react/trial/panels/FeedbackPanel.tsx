@@ -25,23 +25,11 @@ interface FeedbackPanelProps {
 const DEBATE_LOG_BODY_TRANSITION_MS = 480;
 
 /**
- * Leaving `debate_intro` does not change `currentRoundIndex` (still 0), but the intro card and
- * round 1 both animate; scrolling immediately measures wrong heights — wait longer than a normal
- * round-only transition.
+ * Leaving `debate_intro` does not change `currentRoundIndex` (still 0), but round 1 gains its
+ * body and an intro card the player opened may still be animating; scrolling immediately
+ * measures wrong heights — wait longer than a normal round-only transition.
  */
 const DEBATE_LOG_LEAVE_INTRO_SCROLL_MS = 720;
-
-function roundExpandedDefault(
-  roundIndex: number,
-  gamePhase: ReturnType<typeof useTrialRoundWorkflow>['gamePhase'],
-  currentRoundIndex: number,
-): boolean {
-  if (gamePhase === 'debate_intro') return false;
-  if (gamePhase === 'debate_complete') return false;
-  if (roundIndex > currentRoundIndex) return false;
-  if (roundIndex === currentRoundIndex) return true;
-  return false;
-}
 
 const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   wf,
@@ -173,9 +161,8 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
               expandOverride={expandOverrideByRoundId[INTRO_DEBATE_LOG_CARD_ID]}
               onExpandToggle={() => {
                 setExpandOverrideByRoundId((prev) => {
-                  const o = prev[INTRO_DEBATE_LOG_CARD_ID];
-                  const def = wf.gamePhase === 'debate_intro';
-                  const current = o ?? def;
+                  // Mirrors `IntroDebateLogCard`: shrunk until the player opens it.
+                  const current = prev[INTRO_DEBATE_LOG_CARD_ID] ?? false;
                   return { ...prev, [INTRO_DEBATE_LOG_CARD_ID]: !current };
                 });
               }}
@@ -198,13 +185,8 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                     wf.gamePhase !== 'debate_complete' && roundIndex > wf.currentRoundIndex;
                   if (isUpcoming) return;
                   setExpandOverrideByRoundId((prev) => {
-                    const o = prev[round.id];
-                    const def = roundExpandedDefault(
-                      roundIndex,
-                      wf.gamePhase,
-                      wf.currentRoundIndex,
-                    );
-                    const current = o ?? def;
+                    // Mirrors `DebateRoundLogCard`: every round card defaults to shrunk.
+                    const current = prev[round.id] ?? false;
                     return { ...prev, [round.id]: !current };
                   });
                 }}

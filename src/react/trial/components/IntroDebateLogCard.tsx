@@ -39,8 +39,9 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
 }) => {
   const bodyId = useId();
   const status = introStatus(wf);
-  const defaultExpanded = status === 'active';
-  const effectiveExpanded = expandOverride ?? defaultExpanded;
+  // Like every round card, the intro row starts shrunk and stays that way until the player
+  // opens it — the full text is already in the wizard panel during `debate_intro`.
+  const effectiveExpanded = expandOverride ?? false;
 
   const statusLabel = status === 'active' ? getLabel('statusActive') : getLabel('statusCompleted');
 

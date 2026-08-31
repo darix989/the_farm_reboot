@@ -70,8 +70,9 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   const status = roundStatus(roundIndex, wf.gamePhase, wf.currentRoundIndex);
   const isUpcoming = status === 'upcoming';
 
-  const defaultExpanded = status === 'active';
-  const effectiveExpanded = isUpcoming ? false : (expandOverride ?? defaultExpanded);
+  // Every round card — the active one included — starts shrunk, so moving to a new round
+  // never pops a card open on its own. Expanding is always the player's explicit choice.
+  const effectiveExpanded = isUpcoming ? false : (expandOverride ?? false);
 
   const headerSide = sideForRoundHeader(debate, round);
   const sideLineClass =

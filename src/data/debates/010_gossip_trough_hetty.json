@@ -123,7 +123,19 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Open the **[accent]magnifying glass[/accent]** to read what was said, sentence by sentence.",
+            "message": "Round cards stay **[accent]minimized[/accent]**. Press **[accent]▶ Expand[/accent]** to open this one and read what Hetty said.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "debate_log_round_toggle",
+              "roundId": "round-1"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "Now open the **[accent]magnifying glass[/accent]** to read what was said, sentence by sentence.",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "debate_log_round_analyze",
