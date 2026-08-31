@@ -38,6 +38,9 @@ import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechan
 import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
 import getLabel from '../../data/labels';
+import { useGameStore } from '../../store/gameStore';
+import { useProgressStore } from '../../store/progressStore';
+import { GameManager } from '../../utils/gameManager';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
@@ -470,6 +473,20 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             });
           }
           wf.dispatch({ type: 'confirm_option' });
+        };
+        break;
+      case 'debate_complete':
+        // Until now a finished encounter was a dead end: this case fell through to
+        // `default`, leaving Continue disabled forever with no way out.
+        submitLabel = getLabel('leaveEncounter');
+        submitDisabled = false;
+        onSubmit = () => {
+          const { activeDebateId, returnSceneKey } = useGameStore.getState();
+          // Mark by the scenario *key*, not `debate.id` — those differ
+          // (`015_duchess_vs_rue` vs `level1-boss-pond-motion`) and only the key
+          // is a `DebateScenarioKey`.
+          useProgressStore.getState().markCompleted(activeDebateId);
+          GameManager.switchScene(returnSceneKey);
         };
         break;
       default:

@@ -6,15 +6,19 @@ import styles from './MainMenuUI.module.scss';
 import getLabel, { type Labels } from '../../data/labels';
 
 const MainMenuUI: React.FC = () => {
-  const { currentScene, setActiveDebate } = useGameStore();
+  const { currentScene, setActiveDebate, setReturnSceneKey } = useGameStore();
 
   const startTrial = (debateId: DebateScenarioKey) => {
     setActiveDebate(debateId);
+    // Launching straight from the menu returns to the menu, not the farm.
+    setReturnSceneKey('MainMenu');
     const scene = GameManager.getCurrentScene();
     if (scene) {
       scene.scene.start('Trial');
     }
   };
+
+  const enterFarm = () => GameManager.switchScene('Farm');
 
   const renderGroup = (headingLabel: Labels, entries: readonly ScenarioEntry[]) => (
     <>
@@ -38,6 +42,11 @@ const MainMenuUI: React.FC = () => {
     <div className={styles.mainMenuUi}>
       <div className={styles.menuContainer}>
         <h1 className={styles.menuTitle}>{getLabel('mainMenu')}</h1>
+        <div className={styles.buttonContainer}>
+          <button className={styles.menuButton} type="button" onClick={enterFarm}>
+            {getLabel('enterTheFarm')}
+          </button>
+        </div>
         {renderGroup('level1Heading', LEVEL_1_SCENARIOS)}
         {renderGroup('legacyScenariosHeading', LEGACY_SCENARIOS)}
         <div className={styles.sceneInfo}>

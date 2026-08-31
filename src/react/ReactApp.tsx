@@ -3,6 +3,7 @@ import './index.scss';
 import BoilerPlateUI from './screens/BoilerPlateUI';
 import MainMenuUI from './screens/MainMenuUI';
 import TrialUI from './screens/TrialUI';
+import FarmUI from './screens/FarmUI';
 import ReactRoot from './ReactRoot';
 import TutorialOverlay from './tutorial/TutorialOverlay';
 import { useGameStore } from '../store/gameStore';
@@ -29,6 +30,8 @@ const ReactApp: React.FC = () => {
         return <MainMenuUI />;
       case 'Trial':
         return <TrialUI debate={DEBATES[activeDebateId]} />;
+      case 'Farm':
+        return <FarmUI />;
       case 'Game':
       case 'GameOver':
       case 'Boot':

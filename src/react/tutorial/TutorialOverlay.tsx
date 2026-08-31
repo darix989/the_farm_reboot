@@ -15,6 +15,7 @@ import highlightStyles from './tutorialHighlight.module.scss';
 import styles from './TutorialOverlay.module.scss';
 import { TutorialModalRichBody } from './tutorialRichMessage';
 import { GameManager } from '../../utils/gameManager';
+import { useGameStore } from '../../store/gameStore';
 import type { TutorialModalAnchor } from '../../types/tutorialModalLayout';
 import {
   mergeTutorialModalSpecWithDevOverride,
@@ -111,7 +112,9 @@ const TutorialOverlay: React.FC = () => {
   const onPrimary = () => {
     if (exitsToMainMenu) {
       finishTutorial();
-      GameManager.switchScene('MainMenu');
+      // Return to whoever launched this encounter (the farm, or the main menu),
+      // so the tutorial exit and the finished-encounter button agree on "back".
+      GameManager.switchScene(useGameStore.getState().returnSceneKey);
       return;
     }
     if (isSingle || isLast) {

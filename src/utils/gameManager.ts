@@ -27,20 +27,29 @@ export class GameManager {
   }
 
   /**
-   * Switch to a different scene
+   * Switch to a different scene, stopping the one currently running.
+   *
+   * `game.scene.start()` (SceneManager) only *starts* the target — it leaves the
+   * previous scene alive, updating and rendering underneath. `scene.scene.start()`
+   * (ScenePlugin, called on the running scene) stops the caller first, which is what
+   * "switch" should mean: the old scene shuts down, fires its SHUTDOWN handlers, and
+   * stops drawing behind the new one.
    */
   static switchScene(sceneKey: string): void {
     const game = this.getGame();
-    if (game && game.scene.isActive(sceneKey)) {
-      console.warn(`Scene ${sceneKey} is already active`);
+    if (!game) {
+      console.error('Game instance not available');
       return;
     }
-    
-    if (game) {
-      game.scene.start(sceneKey);
-    } else {
-      console.error('Game instance not available');
+    if (game.scene.isActive(sceneKey)) return;
+
+    const current = this.getCurrentScene();
+    if (current) {
+      current.scene.start(sceneKey);
+      return;
     }
+    // No scene has reported ready yet (e.g. during boot) — nothing to stop.
+    game.scene.start(sceneKey);
   }
 
   /**
@@ -95,7 +104,7 @@ export class GameManager {
               unsubscribe();
             }
           }
-        }
+        },
       );
     }
   }
@@ -119,7 +128,7 @@ export class GameManager {
               unsubscribe();
             }
           }
-        }
+        },
       );
     }
   }
@@ -146,5 +155,5 @@ export const {
   getScene,
   whenReady,
   whenSceneReady,
-  destroyGame
+  destroyGame,
 } = GameManager;

@@ -1,0 +1,99 @@
+/* =========================================================================
+   Overworld overlay
+
+   Everything here sits inside `.react-ui-overlay`, which is `pointer-events:
+   none` so clicks fall through to the Phaser canvas. Each interactive element
+   must therefore re-enable pointer events for itself.
+   ========================================================================= */
+
+.farmUi {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.moveHint {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  background: var(--ui-color-overlay-backdrop);
+  color: var(--ui-color-text-muted-2);
+  font-size: var(--ui-font-caption);
+}
+
+.talkPrompt {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.2rem;
+  border: 2px solid var(--ui-color-accent);
+  border-radius: 999px;
+  background: var(--ui-color-overlay-backdrop);
+  color: var(--ui-color-text-emphasis);
+  font-size: var(--ui-font-subtitle);
+  font-weight: bold;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 0 18px var(--ui-color-accent-glow);
+
+  &:hover {
+    color: var(--ui-color-accent);
+  }
+}
+
+.talkPromptKey {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--ui-color-border-fade);
+  border-radius: 4px;
+  color: var(--ui-color-text-muted-2);
+  font-size: var(--ui-font-caption);
+  font-weight: normal;
+}
+
+.dialogueBackdrop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6%;
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+}
+
+.dialogueBox {
+  width: min(46rem, 86%);
+  padding: 1.4rem 1.6rem;
+  border: 2px solid var(--ui-color-border-emphasis);
+  border-radius: 12px;
+  background: var(--ui-color-bg-soft);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.dialogueSpeaker {
+  margin: 0 0 0.5rem;
+  color: var(--ui-color-accent);
+  font-size: var(--ui-font-subtitle);
+  font-weight: bold;
+}
+
+.dialogueBody {
+  margin: 0 0 1.2rem;
+  color: var(--ui-color-text-body);
+  font-size: var(--ui-font-body);
+  line-height: 1.45;
+}
+
+.dialogueActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.8rem;
+}

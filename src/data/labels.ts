@@ -200,6 +200,50 @@ const LABELS = {
   sideProposition: 'Proposition',
   sideOpposition: 'Opposition',
 
+  // --- Overworld (Green Meadows Farm) ---
+  enterTheFarm: 'Enter the Farm',
+  farmNpcHetty: 'Hetty',
+  farmNpcCass: 'Cass',
+  farmNpcBram: 'Bram',
+  farmNpcDuchess: 'Duchess',
+  farmNpcTobias: 'Tobias',
+  farmZoneBarn: 'THE BIG BARN',
+  farmZonePond: 'THE OLD POND',
+  farmTalkPrompt: 'Talk to {name}',
+  farmInteractHint: 'Space / E',
+  farmMoveHint: 'Arrows or WASD to move',
+  farmMoveHintTouch: 'Drag anywhere to move',
+  farmTalk: 'Talk',
+  farmNotNow: 'Not now',
+  farmLeave: 'Leave',
+  /** Shown on the finished-encounter footer; returns to wherever you came from. */
+  leaveEncounter: 'Leave',
+
+  // Dialogue: one line per animal per encounter they still owe you, plus a
+  // closing line for when they have nothing left. Keys are
+  // `farmDialog<Npc><n>` in the order the animal offers them.
+  farmDialogHetty1:
+    'Oh — hello. You are the donkey, are you not? Never mind. Stand there a moment, I have news.',
+  farmDialogHettyDone:
+    'I have told you everything I know, and a little that I do not. Go and see the rooster.',
+  farmDialogCass1:
+    'You. Stand at the post. I am going to say unpleasant things to you and you are going to answer them properly.',
+  farmDialogCass2:
+    'Back again. Good. This time you are going to be the unpleasant one, and you are going to enjoy it. That is the lesson.',
+  farmDialogCassDone:
+    'Nothing more from me. Save it for Sunday, and do not let her make it about you.',
+  farmDialogBram1:
+    'Rue, is it? A courtesy, before Sunday. You should hear how the Flock is voting.',
+  farmDialogBram2:
+    'One more word before the Public Farm. Ask me whatever you like — I will answer straight, which is more than most.',
+  farmDialogBramDone:
+    'I have said more than I should have. The grate is bent. You did not hear it from me.',
+  farmDialogDuchess1:
+    'Ah. The newcomer. Tobias has the motion, and the Flock is ready. Shall we settle the pond?',
+  farmDialogDuchessDone: 'The pond is settled, dear. For now.',
+  farmDialogTobiasDone:
+    'I moderate; I do not take sides. Speak to the others, and I shall see you on the floor.',
+
   // --- Phaser placeholder scenes ---
   gameOver: 'Game Over',
   gamePlaceholderBody: 'Make something fun!\nand share it with us:\nsupport@phaser.io',

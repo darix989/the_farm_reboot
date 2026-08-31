@@ -23,6 +23,12 @@ interface GameState {
   currentScene: string;
   /** Which debate JSON to use when `Trial` is shown. */
   activeDebateId: DebateScenarioKey;
+  /**
+   * Scene to return to when an encounter ends. Set by whoever launched the Trial —
+   * the main menu leaves it at `'MainMenu'`, the overworld sets `'Farm'` — so the
+   * same finished-encounter button works from both entry points.
+   */
+  returnSceneKey: string;
   isPaused: boolean;
   isGameReady: boolean;
 
@@ -40,6 +46,7 @@ interface GameStore extends GameState {
   // Game state actions
   setCurrentScene: (scene: string) => void;
   setActiveDebate: (id: DebateScenarioKey) => void;
+  setReturnSceneKey: (sceneKey: string) => void;
   updatePlayerPosition: (x: number, y: number) => void;
   updateSpritePosition: (id: string, x: number, y: number) => void;
   setPaused: (paused: boolean) => void;
@@ -64,6 +71,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   currentScene: 'MainMenu',
   activeDebateId: '000_tutorial_the_blue_barn',
+  returnSceneKey: 'MainMenu',
   isPaused: false,
   spritePositions: {},
 
@@ -75,6 +83,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Game state actions
   setCurrentScene: (scene) => set({ currentScene: scene }),
   setActiveDebate: (id) => set({ activeDebateId: id }),
+  setReturnSceneKey: (sceneKey) => set({ returnSceneKey: sceneKey }),
 
   updatePlayerPosition: (x, y) =>
     set((state) => ({
