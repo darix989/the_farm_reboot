@@ -1,0 +1,203 @@
+{
+  "id": "level1-skirmish-bram",
+  "introduction": "Bram has caught you at the fence line the evening before the Public Farm. He calls it a courtesy. You have one question to put to him before he waddles off.",
+  "playerSide": "opposition",
+  "characters": {
+    "bram": "Bram",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Attacking the animal instead of the argument. How long Rue has been here is not a fact about the water."
+    },
+    {
+      "id": "appeal-to-popularity",
+      "explanation": "Treating a crowd as a reason. Forty-one animals agreeing is not forty-one animals having checked."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
+  "startingInsightPoints": 1,
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "opening_constructive",
+      "speakerId": "bram",
+      "impact": -10,
+      "statement": {
+        "id": "stmt-r1-bram",
+        "speakerId": "bram",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Rue — a courtesy, before Sunday. The Flock is putting the motion regardless.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "Forty-one birds have already said yes, and forty-one is not a mistake.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The number of birds who said yes is offered as the reason the motion is right. None of them is said to have looked at the water."
+              }
+            ]
+          },
+          {
+            "id": "s-r1-3",
+            "text": "You'd be arguing against the whole pond, and you've been on this farm six weeks.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "Six weeks is a fact about Rue, not about the pond. It is used to retire his objection without answering it."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "You answered a crowd with a smaller crowd. Now the argument is about how many animals are on each side, which is the one contest you cannot win.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-a-1",
+              "text": "Every donkey on this farm thinks the grate is the problem — that's four of us, and we're the ones who carry the water.",
+              "logicalFallacies": [
+                {
+                  "id": "appeal-to-popularity",
+                  "explanation": "Counting donkeys is the same move Bram just made, only with a worse number. Whether the grate is the problem does not depend on who agrees."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "A fair question about the arithmetic, but it accepts that the vote count is what settles the pond. Bram is happy to argue about numbers all evening.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-b-1",
+              "text": "Is forty-one a majority, though? How many animals are on this farm altogether?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "effective",
+          "impact": 20,
+          "reason": "Names both moves — the crowd and the newcomer jab — as things that are not about the water, then offers a check anyone can run. Bram concedes the grate on the record.",
+          "unlockCondition": {
+            "npcRoundId": "round-1",
+            "sentenceId": "s-r1-3",
+            "fallacyId": "ad-hominem"
+          },
+          "sentences": [
+            {
+              "id": "s-r2-opt-c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r2-opt-c-1",
+              "text": "You said forty-one agreed, and that I've only been here six weeks. Neither of those is about the water. So let's do the one that is: come to the outflow with me now, and if the grate isn't bent, I'll drop it before Sunday.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r2-opt-a",
+          "impact": -5,
+          "statement": {
+            "id": "resp-r2-a",
+            "speakerId": "bram",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-a-1",
+                "text": "Four donkeys against forty-one birds. Thank you, Rue. You've just made my argument for me.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r2-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-b",
+            "speakerId": "bram",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-b-1",
+                "text": "More than forty-one, I expect. But they didn't turn up, did they.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r2-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-c",
+            "speakerId": "bram",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-c-1",
+                "text": "…It's bent. It's been bent since before the frost. That doesn't mean the hooves aren't also — look. Take it up with Duchess on Sunday.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "closing_constructive",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r3-bram",
+        "speakerId": "bram",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r3-1",
+            "text": "Sunday, then. Tobias has the motion. Duchess speaks first.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r3-2",
+            "text": "And Rue — she's much better at this than I am.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    }
+  ],
+  "tutorials": []
+}

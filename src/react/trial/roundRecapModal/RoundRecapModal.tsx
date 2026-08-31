@@ -13,9 +13,12 @@ import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/option
 import {
   getSpeakerName,
   moderatorOpinionEmoji,
+  qualityColor,
+  qualityLabel,
   statementText,
   statementTypeLabel,
 } from '../utils/trialHelpers';
+import type { ResolvedMechanics } from '../utils/scenarioMechanics';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import cn from 'classnames';
 import shared from '../trialShared.module.scss';
@@ -30,6 +33,8 @@ interface RoundRecapModalProps {
   fallacyGuesses: Map<number, FallacyGuessSession>;
   revealedLockedOptionIds: Set<string>;
   onClose: () => void;
+  /** Scenario mode flags — gate the impact row and the choice assessment block. */
+  mechanics: ResolvedMechanics;
 }
 
 const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
@@ -38,6 +43,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
   fallacyGuesses,
   revealedLockedOptionIds,
   onClose,
+  mechanics,
 }) => {
   const round = wf.currentRound;
   const chosen = wf.selectedOption;
@@ -125,6 +131,16 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
         ? getLabel('opponentResponseHeading', { replacements: { name: responseSpeaker } })
         : '';
 
+  /**
+   * The coach's verdict on the line just spoken. With `analysisEnabled: false` the
+   * option's `reason` is otherwise unreachable, so speaking-only scenarios would give
+   * the player no feedback at all.
+   */
+  const choiceAssessment =
+    mechanics.revealChoiceAssessment && round?.kind === 'player' && chosen
+      ? { quality: chosen.quality, reason: chosen.reason }
+      : null;
+
   const activeRoundImpactAriaLabel = recap
     ? `${getLabel('activeRoundImpact')}: ${
         recap.lastCompleted.impact > 0 ? '+' : ''
@@ -200,26 +216,45 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                 </div>
               ) : null}
 
-              <div className={styles.recapSection} data-tutorial-recap-section="main">
-                <div className={styles.recapScoreRow}>
-                  <div className={styles.recapScoreColumn}>
-                    <p className={styles.recapSectionLabel}>{getLabel('activeRoundImpact')}</p>
-                    <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
-                      <span aria-label={activeRoundImpactAriaLabel}>
-                        <span aria-hidden="true">
-                          {moderatorOpinionEmoji(recap.lastCompleted.impact)}
+              {choiceAssessment ? (
+                <div className={styles.recapSection}>
+                  <p className={styles.recapSectionLabel}>{getLabel('assessment')}</p>
+                  <p
+                    className={styles.recapBody}
+                    style={{
+                      color: qualityColor(choiceAssessment.quality, mechanics.targetQuality),
+                    }}
+                  >
+                    {qualityLabel(choiceAssessment.quality)}
+                  </p>
+                  {choiceAssessment.reason ? (
+                    <p className={styles.recapBody}>{choiceAssessment.reason}</p>
+                  ) : null}
+                </div>
+              ) : null}
+
+              {mechanics.showModeratorOpinion ? (
+                <div className={styles.recapSection} data-tutorial-recap-section="main">
+                  <div className={styles.recapScoreRow}>
+                    <div className={styles.recapScoreColumn}>
+                      <p className={styles.recapSectionLabel}>{getLabel('activeRoundImpact')}</p>
+                      <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
+                        <span aria-label={activeRoundImpactAriaLabel}>
+                          <span aria-hidden="true">
+                            {moderatorOpinionEmoji(recap.lastCompleted.impact)}
+                          </span>
                         </span>
-                      </span>
-                    </p>
-                  </div>
-                  <div className={styles.recapScoreColumn}>
-                    <p className={styles.recapSectionLabel}>{getLabel('overallScore')}</p>
-                    <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
-                      <ModeratorOpinionInline score={wf.totalScore} />
-                    </p>
+                      </p>
+                    </div>
+                    <div className={styles.recapScoreColumn}>
+                      <p className={styles.recapSectionLabel}>{getLabel('overallScore')}</p>
+                      <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
+                        <ModeratorOpinionInline score={wf.totalScore} />
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : null}
             </>
           ) : (
             <p className={styles.recapBody}>{getLabel('roundComplete')}</p>

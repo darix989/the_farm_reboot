@@ -1,0 +1,111 @@
+{
+  "id": "level1-gossip-bram",
+  "introduction": "Bram the Drake has come down to the trough to be fair to you. He genuinely thinks that is what he is doing.",
+  "playerSide": "opposition",
+  "characters": {
+    "bram": "Bram",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Attacking the animal instead of the argument. How long Rue has been on the farm is not evidence about the pond."
+    },
+    {
+      "id": "appeal-to-popularity",
+      "explanation": "Treating a crowd as a reason. Forty-one animals agreeing is not forty-one animals having checked."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
+  "startingInsightPoints": 0,
+  "mechanics": {
+    "showModeratorOpinion": false,
+    "showRoundRecap": false,
+    "showIntroSummary": false
+  },
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "gossip",
+      "speakerId": "bram",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r1-bram",
+        "speakerId": "bram",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "You'll want to hear this before Sunday: the whole Flock has already agreed the pond should be ours.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The Flock agreeing is offered as the reason the pond should be theirs. Agreement is not a reason — it is just a number of animals."
+              }
+            ]
+          },
+          {
+            "id": "s-r1-2",
+            "text": "Forty-one of us. You can't have forty-one animals be wrong about water.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "Forty-one animals absolutely can be wrong about water, especially if none of them has been to the outflow."
+              }
+            ]
+          },
+          {
+            "id": "s-r1-3",
+            "text": "Duchess puts the motion to Tobias at the Public Farm.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "gossip",
+      "speakerId": "bram",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r2-bram",
+        "speakerId": "bram",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r2-1",
+            "text": "And frankly, the only one making a fuss is the donkey, and nobody knew his name a month ago.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "How recently the farm learned Rue's name is a fact about Rue, not about the pond. The objection is dismissed without ever being answered."
+              }
+            ]
+          },
+          {
+            "id": "s-r2-2",
+            "text": "Everyone I've asked says the hooves are the problem.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "Everyone Bram asked is the Flock, and the Flock already agreed. Asking a crowd that shares a view is not evidence."
+              }
+            ]
+          },
+          {
+            "id": "s-r2-3",
+            "text": "The grate at the outflow's bent, but that's been bent for ages.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    }
+  ],
+  "tutorials": []
+}

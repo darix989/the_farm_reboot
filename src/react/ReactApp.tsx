@@ -5,21 +5,10 @@ import MainMenuUI from './screens/MainMenuUI';
 import TrialUI from './screens/TrialUI';
 import ReactRoot from './ReactRoot';
 import TutorialOverlay from './tutorial/TutorialOverlay';
-import { useGameStore, type DebateScenarioKey } from '../store/gameStore';
-import type { DebateScenarioJson } from '../types/debateEntities';
-import tutorialBlueBarnJson from '../data/debates/000_tutorial_the_blue_barn.json';
-import montyVsPennyJson from '../data/debates/001_monty_vs_penny.json';
-import bellaVsWoolseyJson from '../data/debates/002_bella_vs_woolsey.json';
-import sampleDebateJson from '../data/debates/sample-debate.json';
+import { useGameStore } from '../store/gameStore';
+import { DEBATES } from '../data/levels';
 import styles from './ReactApp.module.scss';
 import getLabel from '../data/labels';
-
-const DEBATES: Record<DebateScenarioKey, DebateScenarioJson> = {
-  '000_tutorial_the_blue_barn': tutorialBlueBarnJson as unknown as DebateScenarioJson,
-  'sample-debate': sampleDebateJson as unknown as DebateScenarioJson,
-  '001_monty_vs_penny': montyVsPennyJson as unknown as DebateScenarioJson,
-  '002_bella_vs_woolsey': bellaVsWoolseyJson as unknown as DebateScenarioJson,
-};
 
 const ReactApp: React.FC = () => {
   const { currentScene, isGameReady, activeDebateId } = useGameStore();

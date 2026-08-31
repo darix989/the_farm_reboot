@@ -80,6 +80,8 @@ interface RoundAnalysisModalProps {
   insightRevealed: boolean;
   /** Spend 1 Insight point to reveal which sentences contain logical fallacies. */
   onSpendInsightPoint: () => void;
+  /** Attempts allowed for this scenario; used before the first attempt creates a session. */
+  maxAnalysisAttempts?: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -372,6 +374,7 @@ function NpcRoundAnalysis({
   insightPoints,
   insightRevealed,
   onHelpRequest,
+  maxAnalysisAttempts,
 }: {
   statement: Statement;
   pickerFallacies: LogicalFallacy[];
@@ -386,6 +389,8 @@ function NpcRoundAnalysis({
   insightPoints: number;
   insightRevealed: boolean;
   onHelpRequest: () => void;
+  /** Scenario attempt budget; used until the first attempt creates a session. */
+  maxAnalysisAttempts?: number;
 }) {
   const [selectedSentenceId, setSelectedSentenceId] = useState<string | null>(null);
   const [bySentence, setBySentence] = useState<Record<string, string[]>>({});
@@ -394,7 +399,8 @@ function NpcRoundAnalysis({
 
   const lastAttempt = guessSession?.attempts[guessSession.attempts.length - 1] ?? null;
   const attemptsUsed = guessSession?.attempts.length ?? 0;
-  const maxAttempts = guessSession?.maxAttempts ?? DEFAULT_MAX_ANALYSIS_ATTEMPTS;
+  const maxAttempts =
+    guessSession?.maxAttempts ?? maxAnalysisAttempts ?? DEFAULT_MAX_ANALYSIS_ATTEMPTS;
   const hasAnyAttempt = attemptsUsed > 0;
   const revealFull = !!(guessSession && shouldRevealFullSolution(guessSession));
   const terminalSuccess =
@@ -1044,6 +1050,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   insightPoints,
   insightRevealed,
   onSpendInsightPoint,
+  maxAnalysisAttempts,
 }) => {
   const [showNoFallaciesConfirm, setShowNoFallaciesConfirm] = useState(false);
   const [showHelpConfirm, setShowHelpConfirm] = useState(false);
@@ -1241,6 +1248,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                   insightPoints={insightPoints}
                   insightRevealed={insightRevealed}
                   onHelpRequest={() => setShowHelpConfirm(true)}
+                  maxAnalysisAttempts={maxAnalysisAttempts}
                 />
                 {playerRevealAssessment ? (
                   <PlayerAssessmentSection option={target.chosenOption} />
@@ -1261,6 +1269,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               insightPoints={insightPoints}
               insightRevealed={insightRevealed}
               onHelpRequest={() => setShowHelpConfirm(true)}
+              maxAnalysisAttempts={maxAnalysisAttempts}
             />
           )}
         </ScrollFadeContainer>

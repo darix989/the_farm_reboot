@@ -1,0 +1,276 @@
+{
+  "id": "level1-sparring-cass",
+  "introduction": "Cass ran the Public Farm floor for nine seasons before his voice went. Now he runs a post in the yard and shouts at whoever stands at it. Today that is you. No magnifying glass, no moderator, no score. One question: which line actually answers him?",
+  "playerSide": "opposition",
+  "characters": {
+    "cass": "Cass",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Attacking the animal instead of the argument. Answering an Ad Hominem with another one concedes that the debate is about who you are."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem"],
+  "mechanics": {
+    "analysisEnabled": false,
+    "showInsightPoints": false,
+    "showModeratorOpinion": false,
+    "showIntroSummary": false,
+    "revealChoiceAssessment": true
+  },
+  "rounds": [
+    {
+      "kind": "player",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "crossfire",
+      "opponentPromptImpact": 0,
+      "opponentPrompt": {
+        "id": "stmt-r1-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r1-p1",
+            "text": "Let's start easy. I'll be the Flock. Ahem.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-p2",
+            "text": "'You've been on this farm six weeks, Rue. You haven't earned an opinion about the water.'",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-p3",
+            "text": "Well? Answer me.",
+            "logicalFallacies": []
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r1-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "You answered an Ad Hominem with an Ad Hominem. Now there are two attacks on the floor and still nothing about the water.",
+          "sentences": [
+            {
+              "id": "s-r1-opt-a-1",
+              "text": "And you've been here so long you've forgotten how to fly, you moulting old windbag.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "Cass's age and his feathers have nothing to do with the pond. Trading insults concedes that the debate is about who you both are."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r1-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "True, and beside the point. Correcting the detail concedes that time served is what matters.",
+          "sentences": [
+            {
+              "id": "s-r1-opt-b-1",
+              "text": "Six weeks and two days, actually.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r1-opt-c",
+          "quality": "effective",
+          "impact": 15,
+          "reason": "Names the swap — the attack was about you, the question is about the water — and moves the floor to something anyone can check.",
+          "sentences": [
+            {
+              "id": "s-r1-opt-c-1",
+              "text": "How long I've been here doesn't change what's in the pond. Come and look at the drain, and tell me I'm wrong.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r1-opt-a",
+          "impact": -5,
+          "statement": {
+            "id": "resp-r1-a",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r1-a-1",
+                "text": "Ha! Good sting, terrible answer. You've just agreed this is a contest about who we are. You'll lose that one — they're prettier than you.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r1-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r1-b",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r1-b-1",
+                "text": "Six weeks and two days! Marvellous. Now they'll argue about the calendar and never about the drain.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r1-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r1-c",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r1-c-1",
+                "text": "That's it. You didn't defend yourself — you made me look at the drain. Never defend yourself, Rue. Redirect.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "crossfire",
+      "opponentPromptImpact": 0,
+      "opponentPrompt": {
+        "id": "stmt-r2-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r2-p1",
+            "text": "Harder. This one's Duchess's favourite, so listen.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-p2",
+            "text": "'Nobody's blaming you, dear. It's simply that hooves and clean water don't mix. It isn't personal.'",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-p3",
+            "text": "She has just insulted every hoofed animal on this farm and made it sound like weather. Answer.",
+            "logicalFallacies": []
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "A group attack answered with a group attack. The drain has left the room.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-a-1",
+              "text": "Geese are filthy. Everyone knows what a goose does in a pond.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "This answers a claim about hooves by describing what geese are like. Neither side is talking about the pond any more."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "It was rude. But now the debate is about her manners, not about whether hooves are the cause.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-b-1",
+              "text": "That's a very rude thing to say, and I'd like an apology.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "effective",
+          "impact": 15,
+          "reason": "Spots a soft Ad Hominem inside a polite sentence and converts it into a question that can actually be settled.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-c-1",
+              "text": "It sounds gentle, but it's still a claim about what I am instead of what happened. If hooves foul the pond, show me the hoofprints. I'll show you the bent grate.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r2-opt-a",
+          "impact": -5,
+          "statement": {
+            "id": "resp-r2-a",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-a-1",
+                "text": "Now it's geese against donkeys and nobody's fixing anything. She'd let you win that one, and you'd still lose the vote.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r2-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-b",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-b-1",
+                "text": "You'll get your apology. She's marvellous at apologies. You'll also get the trough by the road.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r2-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-c",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-c-1",
+                "text": "Good. She dresses it up, so you undress it. 'What I am' against 'what happened.' Say that in front of Tobias and he'll write it down.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "tutorials": []
+}

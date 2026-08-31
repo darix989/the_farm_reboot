@@ -1,8 +1,9 @@
 import React from 'react';
 import { useGameStore, type DebateScenarioKey } from '../../store/gameStore';
+import { LEGACY_SCENARIOS, LEVEL_1_SCENARIOS, type ScenarioEntry } from '../../data/levels';
 import { GameManager } from '../../utils/gameManager';
 import styles from './MainMenuUI.module.scss';
-import getLabel from '../../data/labels';
+import getLabel, { type Labels } from '../../data/labels';
 
 const MainMenuUI: React.FC = () => {
   const { currentScene, setActiveDebate } = useGameStore();
@@ -15,40 +16,30 @@ const MainMenuUI: React.FC = () => {
     }
   };
 
+  const renderGroup = (headingLabel: Labels, entries: readonly ScenarioEntry[]) => (
+    <>
+      <h2 className={styles.menuGroupHeading}>{getLabel(headingLabel)}</h2>
+      <div className={styles.buttonContainer}>
+        {entries.map((entry) => (
+          <button
+            key={entry.key}
+            className={styles.menuButton}
+            type="button"
+            onClick={() => startTrial(entry.key)}
+          >
+            {getLabel(entry.titleLabel)}
+          </button>
+        ))}
+      </div>
+    </>
+  );
+
   return (
     <div className={styles.mainMenuUi}>
       <div className={styles.menuContainer}>
         <h1 className={styles.menuTitle}>{getLabel('mainMenu')}</h1>
-        <div className={styles.buttonContainer}>
-          <button
-            className={styles.menuButton}
-            type="button"
-            onClick={() => startTrial('000_tutorial_the_blue_barn')}
-          >
-            {getLabel('tutorialBlueBarn')}
-          </button>
-          <button
-            className={styles.menuButton}
-            type="button"
-            onClick={() => startTrial('sample-debate')}
-          >
-            {getLabel('sampleDebate')}
-          </button>
-          <button
-            className={styles.menuButton}
-            type="button"
-            onClick={() => startTrial('001_monty_vs_penny')}
-          >
-            {getLabel('montyVsPenny')}
-          </button>
-          <button
-            className={styles.menuButton}
-            type="button"
-            onClick={() => startTrial('002_bella_vs_woolsey')}
-          >
-            {getLabel('bellaVsWoolsey')}
-          </button>
-        </div>
+        {renderGroup('level1Heading', LEVEL_1_SCENARIOS)}
+        {renderGroup('legacyScenariosHeading', LEGACY_SCENARIOS)}
         <div className={styles.sceneInfo}>
           {getLabel('currentScene')} <strong>{currentScene}</strong>
         </div>

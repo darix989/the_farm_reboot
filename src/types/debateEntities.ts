@@ -52,7 +52,9 @@ export type StatementType =
   | 'opening_constructive'
   | 'rebuttal'
   | 'crossfire'
-  | 'closing_constructive';
+  | 'closing_constructive'
+  /** A line dropped outside the Public Farm floor (trough gossip, yard sparring). */
+  | 'gossip';
 
 export interface Statement {
   id: string;
@@ -118,6 +120,12 @@ export interface NpcRoundEntry {
    * and the moderator drifts toward the player.
    */
   impact: number;
+  /**
+   * When `true`, the Continue button stays disabled until the player has resolved this
+   * round's analysis (a correct guess, or all attempts spent). Used by spotting-only
+   * scenarios where analysing the statement *is* the gameplay.
+   */
+  requiresAnalysis?: boolean;
 }
 
 /** Links one NPC response to the player option that triggered it. */
@@ -383,6 +391,44 @@ export interface DebateScenarioTutorialEntry {
 }
 
 /**
+ * Feature flags that let a scenario ship as a *smaller mode* than a full Public Farm
+ * debate (see `pitch/002_gradual_mechanics_onboarding.md`). Each flag is consumed
+ * independently — there is deliberately no `mode` enum, so nothing in the engine
+ * branches on which rung a scenario belongs to.
+ *
+ * Every field is optional and defaults to full-debate behaviour, so scenarios that
+ * omit `mechanics` entirely keep working unchanged. Read these through
+ * `resolveMechanics()` rather than off the raw scenario.
+ */
+export interface DebateScenarioMechanics {
+  /** Analyze buttons and the analysis modal. Default `true`. */
+  analysisEnabled?: boolean;
+  /** Insight Points counter in the debate log header. Default `true`. */
+  showInsightPoints?: boolean;
+  /** Moderator gauge, opinion emoji and per-round impact numbers. Default `true`. */
+  showModeratorOpinion?: boolean;
+  /** The per-round recap modal. When `false`, rounds advance straight through. Default `true`. */
+  showRoundRecap?: boolean;
+  /** The pre-round-1 introduction summary modal. Default `true`. */
+  showIntroSummary?: boolean;
+  /**
+   * When `true`, the round recap shows the chosen option's quality badge and its
+   * `reason`. This is the only feedback a scenario with `analysisEnabled: false`
+   * can give the player, so speaking-only rungs rely on it. Default `false`.
+   */
+  revealChoiceAssessment?: boolean;
+  /**
+   * The option quality this scenario rewards. Inoculation scenarios set
+   * `'logical_fallacy'` so committing the fallacy on purpose reads as the win.
+   * Only affects presentation — scoring always comes from authored `impact`.
+   * Default `'effective'`.
+   */
+  targetQuality?: OptionQuality;
+  /** Analysis attempts per target. Default `DEFAULT_MAX_ANALYSIS_ATTEMPTS`. */
+  maxAnalysisAttempts?: number;
+}
+
+/**
  * Authoring shape for a single-player debate scenario loaded from JSON.
  * `rounds` defines the full sequential flow (NPC and player turns in order).
  */
@@ -397,6 +443,8 @@ export interface DebateScenarioJson {
   availableLogicalFallacies: LogicalFallacyId[];
   /** Initial Insight Points balance the player starts the debate with. Defaults to 0. */
   startingInsightPoints?: number;
+  /** Mode flags; omit for a full debate. See `DebateScenarioMechanics`. */
+  mechanics?: DebateScenarioMechanics;
   rounds: RoundEntry[];
   /**
    * Overlay tutorials wired to specific debate events via the typed event bus.

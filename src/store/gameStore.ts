@@ -1,12 +1,10 @@
 import { create } from 'zustand';
 import { EventBus } from '../phaser/EventBus';
+import type { DebateScenarioKey } from '../data/levels';
 
-/** Keys map to debate JSON files under `src/data/debates/`. */
-export type DebateScenarioKey =
-  | '000_tutorial_the_blue_barn'
-  | 'sample-debate'
-  | '001_monty_vs_penny'
-  | '002_bella_vs_woolsey';
+// The key union and the scenario registry live together in `src/data/levels.ts`, so
+// adding a scenario is one edit rather than one per consumer.
+export type { DebateScenarioKey } from '../data/levels';
 
 // Simple game state interface
 interface GameState {

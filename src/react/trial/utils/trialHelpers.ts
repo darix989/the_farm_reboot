@@ -24,8 +24,19 @@ export function getStartingInsightPoints(debate: DebateScenarioJson): number {
   return Math.floor(value);
 }
 
-export function qualityColor(quality: PlayerOption['quality']): string {
-  if (quality === 'effective') return uiColor.info;
+/**
+ * Colour for an option's quality badge.
+ *
+ * `targetQuality` is the quality the scenario rewards (see `DebateScenarioMechanics`).
+ * It is `'effective'` for every debate, so the default arm reproduces the original
+ * behaviour; inoculation scenarios pass `'logical_fallacy'` so the deliberately dirty
+ * line reads as the win rather than as a mistake.
+ */
+export function qualityColor(
+  quality: PlayerOption['quality'],
+  targetQuality: PlayerOption['quality'] = 'effective',
+): string {
+  if (quality === targetQuality) return uiColor.info;
   if (quality === 'logical_fallacy') return uiColor.danger;
   return uiColor.textHint;
 }

@@ -6,6 +6,7 @@ import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import DebateRoundLogCard from '../components/DebateRoundLogCard';
 import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/IntroDebateLogCard';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
+import type { ResolvedMechanics } from '../utils/scenarioMechanics';
 import styles from './TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -16,6 +17,8 @@ interface FeedbackPanelProps {
   insightPoints: number;
   onOpenAnalysis: (target: AnalysisTarget) => void;
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
+  /** Scenario mode flags — gate the header strip and the per-round analyze buttons. */
+  mechanics: ResolvedMechanics;
 }
 
 /** Match `grid-template-rows` transition on `.debateLogRoundBodyShell` (+ small buffer). */
@@ -46,6 +49,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   insightPoints,
   onOpenAnalysis,
   getNpcGuessState,
+  mechanics,
 }) => {
   const feedbackScrollRef = useRef<HTMLDivElement>(null);
   const [expandOverrideByRoundId, setExpandOverrideByRoundId] = useState<
@@ -145,7 +149,11 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
             className={styles.debateLogModeratorScoreTutorialHook}
             data-tutorial-debate-log-moderator-score
           >
-            <ModeratorOpinionInline score={wf.totalScore} insightPoints={insightPoints} />
+            <ModeratorOpinionInline
+              score={wf.totalScore}
+              insightPoints={mechanics.showInsightPoints ? insightPoints : undefined}
+              showOpinion={mechanics.showModeratorOpinion}
+            />
           </span>
         </p>
       </div>
@@ -202,6 +210,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                 }}
                 getNpcGuessState={getNpcGuessState}
                 onOpenAnalysis={onOpenAnalysis}
+                mechanics={mechanics}
               />
             );
           })}

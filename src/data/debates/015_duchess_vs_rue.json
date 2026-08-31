@@ -1,0 +1,680 @@
+{
+  "id": "level1-boss-pond-motion",
+  "introduction": "The Public Farm sits on Sunday, and old Tobias the Tortoise has the motion in front of him: the Old Pond shall be reserved for the Flock, and the hoofed animals shall water at the road trough. Duchess speaks for it, and forty-one birds have already said yes. You are Rue. You have been on this farm six weeks, you have no crowd behind you, and you know why the water is brown.",
+  "playerSide": "opposition",
+  "characters": {
+    "duchess": "Duchess",
+    "rue": "Rue",
+    "tobias": "Tobias"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Attacking the animal instead of the argument. Duchess never raises her voice — hers arrive as kindness, which is what makes them hard to name."
+    },
+    {
+      "id": "appeal-to-popularity",
+      "explanation": "Treating a crowd as a reason. Forty-one animals agreeing is not forty-one animals checking, and Duchess is careful never to say what any of them observed."
+    },
+    {
+      "id": "false-dilemma",
+      "explanation": "Presenting two options as the only ones available. The third arrangement — straighten the grate — is sitting in plain sight the whole evening."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity", "false-dilemma"],
+  "startingInsightPoints": 2,
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "opening_constructive",
+      "speakerId": "duchess",
+      "impact": -15,
+      "statement": {
+        "id": "stmt-round-1-duchess",
+        "speakerId": "duchess",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Friends, the motion is a simple one: the Old Pond shall be reserved for the Flock, and our hoofed neighbours shall water at the road trough.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "Forty-one of the Flock have already agreed, and I have never known forty-one animals to be wrong about water.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The number who agreed is offered as the reason the motion is right. Duchess never says what any of the forty-one actually observed."
+              }
+            ]
+          },
+          {
+            "id": "s-r1-3",
+            "text": "And no one blames the newcomers. They simply weren't raised near water, and it shows.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "A gentle Ad Hominem: the objection is retired by describing where the objectors were raised, not by answering anything they said."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "opening_constructive",
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "You answered a crowd with a crowd. The floor is now counting animals instead of looking at the water, and the Flock has more animals.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-a-1",
+              "text": "Every hoofed animal on this farm knows the pond is fine. That is a good deal of the farm, and we are the ones who work it.",
+              "logicalFallacies": [
+                {
+                  "id": "appeal-to-popularity",
+                  "explanation": "This offers the hoofed animals' agreement in place of a reason, which is exactly the move Duchess opened with."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "True, and it will move nobody. Distance is an inconvenience; Duchess has claimed the pond is being fouled, and that claim is still standing.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-b-1",
+              "text": "The road trough is a very long walk, and it is beside the road, which is dangerous at dusk.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "Concedes what is actually true — the pond is dirty — and then insists the debate be about the cause, which is the one thing that can be checked.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-c-1",
+              "text": "The pond is the only clean water on this farm, and it is going brown. That much we agree on. But something is making it brown, and before we decide who may drink, I would like us to agree on what that something is.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r3-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "Attacking Duchess's popularity is still attacking Duchess. The floor now hears a donkey being rude to a goose, not a question about the pond.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-a-1",
+              "text": "Duchess, is it not true that the Flock agrees with you because you are the prettiest bird on this farm and they would agree with anything you said?",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "This dismisses the Flock's position by describing Duchess rather than by testing what the Flock actually observed."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "A reasonable procedural question, and Duchess will answer it comfortably. It does not touch whether the hooves are the cause.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-b-1",
+              "text": "Duchess, when the Flock agreed, was there a vote, or did they simply say yes when you asked them?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "Turns the crowd into a question the crowd cannot answer. Forty-one agreeing animals become forty-one animals who have not looked.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-c-1",
+              "text": "Duchess, of the forty-one, how many have been to the outflow and looked at the grate?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r3-opt-a",
+          "impact": -8,
+          "statement": {
+            "id": "resp-r3-opt-a",
+            "speakerId": "duchess",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-opt-a-1",
+                "text": "What a thing to say. I shall let the farm judge which of us is being unpleasant this evening, and we may return to the water when you are ready.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-opt-b",
+            "speakerId": "duchess",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-opt-b-1",
+                "text": "They said yes when I asked them, and I asked every one. That is how a flock agrees, Rue. It is not less agreement for being pleasant.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-c",
+          "impact": -2,
+          "statement": {
+            "id": "resp-r3-opt-c",
+            "speakerId": "duchess",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-opt-c-1",
+                "text": "I… could not say. It is hardly the sort of thing one asks. We all know what the pond looks like without going to stare at a drain.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "crossfire",
+      "opponentPromptImpact": -8,
+      "opponentPrompt": {
+        "id": "stmt-r4-duchess",
+        "speakerId": "duchess",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r4-p1",
+            "text": "Then let me ask you, Rue, and do answer plainly.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-p2",
+            "text": "Forty-one animals who have lived on this water their whole lives say the hooves are fouling it, and one donkey who arrived six weeks ago says they are not.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The forty-one are offered as evidence purely by being forty-one."
+              },
+              {
+                "id": "ad-hominem",
+                "explanation": "'One donkey who arrived six weeks ago' is a description of Rue standing in for an answer to Rue."
+              }
+            ]
+          },
+          {
+            "id": "s-r4-p3",
+            "text": "Are we all mistaken, dear, or are you simply new?",
+            "logicalFallacies": []
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r4-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "You took the bait and made it about the birds. Now the floor is watching two species insult each other and the grate has left the room.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-a-1",
+              "text": "The forty-one have lived on that water their whole lives and never once cleaned it. Perhaps that is the problem.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "This answers a claim about hooves by describing the habits of geese. It is the same trick, pointed the other way."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Politeness is not an argument. Duchess will accept the compliment and the question will stand unanswered.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-b-1",
+              "text": "I would never say the Flock is mistaken. You all know this pond far better than I do.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "Refuses the question as put — it offered a crowd and a newcomer instead of evidence — and answers the only part of it that is about the water.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-c-1",
+              "text": "That question has two things in it and neither is about the pond: how many of you there are, and how long I have been here. Ask me the third thing. Ask me what is making the water brown, and I will tell you: the outflow grate is bent, and the mud that should be leaving is coming back.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-5",
+      "roundNumber": 5,
+      "type": "rebuttal",
+      "speakerId": "duchess",
+      "impact": -15,
+      "statement": {
+        "id": "stmt-round-5-duchess",
+        "speakerId": "duchess",
+        "type": "rebuttal",
+        "sentences": [
+          {
+            "id": "s-r5-1",
+            "text": "I want to be gentle about this, because I bear Rue no ill will at all.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-2",
+            "text": "But he arrived here in a mud cart, with straw in his ears, six weeks ago, and he is now instructing a flock of forty-one on the management of water.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "The mud cart, the straw and the six weeks are all facts about Rue. None of them touches whether the grate is bent."
+              }
+            ]
+          },
+          {
+            "id": "s-r5-3",
+            "text": "We must be practical. Either the pond belongs to the Flock, or we lose it entirely to the mud — there is no third arrangement.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "Two options are presented as the only ones available. Fixing the grate is a third arrangement, and it is sitting in plain sight."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-6",
+      "roundNumber": 6,
+      "type": "rebuttal",
+      "options": [
+        {
+          "id": "r6-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "Answering an Ad Hominem with an Ad Hominem. Cass warned you about this at the post: now there are two attacks on the floor and still no answer about the grate.",
+          "sentences": [
+            {
+              "id": "s-r6-opt-a-1",
+              "text": "And Duchess has never carried anything heavier than her own opinion. Perhaps the farm should ask who actually works this water before it decides who owns it.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "This dismisses Duchess by describing her rather than by addressing the claim that hooves foul the pond."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Defending yourself accepts that you were the subject. The floor will decide whether you are a credible donkey instead of whether the grate is bent.",
+          "sentences": [
+            {
+              "id": "s-r6-opt-b-1",
+              "text": "I have hauled water on three farms before this one, and I was not raised in a mud cart. I know a great deal about drains.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-c",
+          "quality": "effective",
+          "impact": 25,
+          "reason": "The payoff. Names the swap out loud — what I am against what happened — then puts the bent grate on the record with a witness from the other side.",
+          "unlockCondition": {
+            "npcRoundId": "round-5",
+            "sentenceId": "s-r5-2",
+            "fallacyId": "ad-hominem"
+          },
+          "sentences": [
+            {
+              "id": "s-r6-opt-c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r6-opt-c-1",
+              "text": "Everything you just said about me may be true. The mud cart, the straw, the six weeks — all of it is about what I am, and none of it is about what happened to the water. What happened is that the outflow grate is bent, so the mud that should be leaving the pond is washing back into it. Bram told me so himself at the fence line last night, before I asked him.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-7",
+      "roundNumber": 7,
+      "type": "crossfire",
+      "opponentPromptImpact": -8,
+      "opponentPrompt": {
+        "id": "stmt-r7-duchess",
+        "speakerId": "duchess",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r7-p1",
+            "text": "A bent grate. Very well. Then answer the farm this, Rue, and let them hear it plainly.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r7-p2",
+            "text": "Forty-one animals are wrong and one donkey is right. Is that what you are asking this farm to believe?",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The number is offered as though being outnumbered were the same as being mistaken."
+              }
+            ]
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r7-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "The cliff line is a slogan, not an answer. It also tells forty-one animals they are sheep, which is both insulting and, unhelpfully, untrue.",
+          "sentences": [
+            {
+              "id": "s-r7-opt-a-1",
+              "text": "Just because everyone jumps off the cliff, it doesn't make the cliff a good idea. Crowds are usually wrong, in my experience.",
+              "logicalFallacies": [
+                {
+                  "id": "appeal-to-popularity",
+                  "explanation": "Inverting the crowd is still arguing from the crowd. Whether the forty-one are right depends on the grate, not on how crowds usually behave."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Hedging. It sounds humble and settles nothing; Duchess will simply repeat the number.",
+          "sentences": [
+            {
+              "id": "s-r7-opt-b-1",
+              "text": "I would not say anyone is wrong, exactly. I would only say that I am not certain, and neither is anyone else.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "Separates agreeing from checking. It is the level's whole thesis, and it lets the forty-one be reasonable animals rather than fools.",
+          "sentences": [
+            {
+              "id": "s-r7-opt-c-1",
+              "text": "I am not asking the farm to believe anyone is wrong. I am pointing out that forty-one animals agreeing is not forty-one animals checking. You told us yourself that not one of you has been to the outflow. I have. So has Bram. Send a third and settle it.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-8",
+      "roundNumber": 8,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r8-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "You have accused the Flock of wanting the pond all along. That may even be true, but it is a claim about their motives, not about the water, and it will cost you the room.",
+          "sentences": [
+            {
+              "id": "s-r8-opt-a-1",
+              "text": "Duchess, isn't the truth that the Flock has wanted this pond for years, and the mud is simply the excuse you finally found?",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "This argues about what the Flock secretly wants rather than about whether hooves foul the pond."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r8-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "A detail. Duchess will answer it, and the farm will be no closer to knowing what is browning the water.",
+          "sentences": [
+            {
+              "id": "s-r8-opt-b-1",
+              "text": "Duchess, who exactly would be responsible for keeping the animals away from the pond once the motion passed?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r8-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "The exit question. It forces Duchess either to accept that the grate is the cause, or to admit her motion was never about the mud at all.",
+          "sentences": [
+            {
+              "id": "s-r8-opt-c-1",
+              "text": "Duchess, one question and I am finished. If we straighten the grate and the pond runs clear by the frost, does the motion lapse?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r8-opt-a",
+          "impact": -8,
+          "statement": {
+            "id": "resp-r8-opt-a",
+            "speakerId": "duchess",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r8-opt-a-1",
+                "text": "That is an ugly thing to suggest and I will not dignify it. The farm may note that Rue has run out of argument and moved on to motives.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r8-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r8-opt-b",
+            "speakerId": "duchess",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r8-opt-b-1",
+                "text": "The Flock would manage it among ourselves, of course. Gently. Nobody is proposing a fence with teeth in it.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r8-opt-c",
+          "impact": -2,
+          "statement": {
+            "id": "resp-r8-opt-c",
+            "speakerId": "duchess",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r8-opt-c-1",
+                "text": "I— that is not how a motion works, Rue. Once the farm has settled a thing it is settled. …No. No, it would not lapse.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-9",
+      "roundNumber": 9,
+      "type": "closing_constructive",
+      "speakerId": "duchess",
+      "impact": -12,
+      "statement": {
+        "id": "stmt-round-9-duchess",
+        "speakerId": "duchess",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r9-1",
+            "text": "The farm has heard a great deal about a drain this evening.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r9-2",
+            "text": "But forty-one of us have watched this water all our lives, and forty-one cannot simply be set aside because one animal has a theory.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The forty-one are put forward one last time as the reason to pass the motion. What they observed is still never said."
+              }
+            ]
+          },
+          {
+            "id": "s-r9-3",
+            "text": "Vote with the Flock, who have always been here — and not, I say this kindly, with a donkey who has been here since the frost.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "The closing appeal is to who Rue is rather than to anything Rue argued."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-10",
+      "roundNumber": 10,
+      "type": "closing_constructive",
+      "options": [
+        {
+          "id": "r10-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "You finished on an attack. Every animal in the barn will remember the insult and none of them will remember the grate.",
+          "sentences": [
+            {
+              "id": "s-r10-opt-a-1",
+              "text": "Vote for the Flock if you like, and enjoy explaining to your children why the prettiest bird on the farm was allowed to fence off the only clean water on it.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "The closing argument is about Duchess rather than about the pond, which surrenders everything the evening established."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "A committee is not an answer. The farm still does not know why the water is brown, and you have just asked them to wait to find out.",
+          "sentences": [
+            {
+              "id": "s-r10-opt-b-1",
+              "text": "In conclusion, I would suggest the farm form a small committee to look into the pond over the coming weeks and report back.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-c",
+          "quality": "effective",
+          "impact": 25,
+          "reason": "Concedes falsifiability — the opposite of both fallacies. It hands the farm a test instead of a crowd, and offers to lose in public if the test goes the other way.",
+          "sentences": [
+            {
+              "id": "s-r10-opt-c-1",
+              "text": "Forty-one animals agreeing is not forty-one animals checking. Bram checked — he told me the grate was bent before I asked him. So do not vote for me, and do not vote for the Flock. Fix the grate. If the pond has not run clear by the frost, put this motion again, and I will haul the fence posts myself.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tutorials": []
+}

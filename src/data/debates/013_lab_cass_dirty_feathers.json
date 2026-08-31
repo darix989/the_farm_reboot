@@ -1,0 +1,316 @@
+{
+  "id": "level1-lab-cass",
+  "introduction": "Cass wants you to do something you are not going to do again. 'You can't catch a thief without picking a pocket,' he says. In here, the dirty answer is the winning answer. In front of Tobias it will cost you the farm — and Cass will remind you. Loudly.",
+  "playerSide": "opposition",
+  "characters": {
+    "cass": "Cass",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Attacking the animal instead of the argument. In the Lab you commit it on purpose so you can feel how well it works — and recognise it when it is used on you."
+    },
+    {
+      "id": "appeal-to-popularity",
+      "explanation": "Treating a crowd as a reason. It gives the yard a place to stand instead of something to think about."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
+  "mechanics": {
+    "showModeratorOpinion": false,
+    "showIntroSummary": false,
+    "revealChoiceAssessment": true,
+    "targetQuality": "logical_fallacy"
+  },
+  "rounds": [
+    {
+      "kind": "player",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "crossfire",
+      "preventOptionsShuffle": true,
+      "opponentPromptImpact": 0,
+      "opponentPrompt": {
+        "id": "stmt-r1-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r1-p1",
+            "text": "Right. Make me not want to listen to Bram.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-p2",
+            "text": "Don't argue with him. I want you to make the yard dislike him. Go.",
+            "logicalFallacies": []
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r1-opt-a",
+          "quality": "logical_fallacy",
+          "impact": 15,
+          "reason": "That is Ad Hominem, and it worked — you moved the yard without touching his argument. Notice how good it felt.",
+          "sentences": [
+            {
+              "id": "s-r1-opt-a-1",
+              "text": "Bram spent all winter in the warm shed while the rest of us hauled feed. Why take water advice from a duck who's never been thirsty?",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "Where Bram spent the winter says nothing about whether he is right about the pond. It only makes the yard like him less."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r1-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Fair — but no yard has ever changed its mind because an argument was poorly structured. This is not the trick I asked for.",
+          "sentences": [
+            {
+              "id": "s-r1-opt-b-1",
+              "text": "Bram's argument about the pond isn't very well structured.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r1-opt-c",
+          "quality": "effective",
+          "impact": 0,
+          "reason": "Clean, honest and evidence-led. Correct — and not what this exercise is for. Save it for Sunday.",
+          "sentences": [
+            {
+              "id": "s-r1-opt-c-1",
+              "text": "Bram says hooves foul the pond, but the outflow grate is bent. That's where the mud comes from.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r1-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r1-a",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r1-a-1",
+                "text": "Filthy. Effective. Feel that little warm feeling? That's the feeling you'll get on Sunday when Duchess does it to you. Remember it.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r1-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r1-b",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r1-b-1",
+                "text": "Nobody's listening. You've bored them. Boring is its own kind of losing, but it isn't the lesson.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r1-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r1-c",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r1-c-1",
+                "text": "Good line. Wrong classroom. Put it in your pocket and give me the dirty one.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "crossfire",
+      "preventOptionsShuffle": true,
+      "opponentPromptImpact": 0,
+      "opponentPrompt": {
+        "id": "stmt-r2-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r2-p1",
+            "text": "Now the other one. I want the yard to believe the pond should be fenced.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-p2",
+            "text": "And I don't want a single reason. Not one. Just make it feel settled.",
+            "logicalFallacies": []
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "logical_fallacy",
+          "impact": 15,
+          "reason": "Appeal to Popularity. You gave them a crowd instead of a reason, and a crowd is easier to stand in than a reason is to check.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-a-1",
+              "text": "Every farm down the lane fenced their pond two summers ago. We're the only ones still arguing about it.",
+              "logicalFallacies": [
+                {
+                  "id": "appeal-to-popularity",
+                  "explanation": "What the other farms did is offered in place of any reason a fence would help. Nobody is asked what those farms actually found."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "logical_fallacy",
+          "impact": 8,
+          "reason": "Also dirty — but that is Ad Hominem. You attacked the objectors instead of inventing a crowd.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-b-1",
+              "text": "Only the donkeys are against the fence, and donkeys are famously stubborn.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "This dismisses the objection by describing the objectors. Whether donkeys are stubborn has nothing to do with whether a fence would clear the pond."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "An opinion with no crowd and no reason behind it. Nobody moves.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-c-1",
+              "text": "I think a fence would be sensible, personally.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r2-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-a",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-a-1",
+                "text": "Look at them nodding. Not one of them asked what the other farms actually did. That's the whole trick — it's a place to stand, not a thing to think.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r2-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-b",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-b-1",
+                "text": "Wrong dirt. Right instinct. Do that on Sunday and Tobias will name it before I do.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r2-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-c",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-c-1",
+                "text": "'Personally.' Nobody has ever won anything with 'personally.'",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "gossip",
+      "speakerId": "cass",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r3-cass",
+        "speakerId": "cass",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r3-1",
+            "text": "Right, that's enough of that. Wash your beak.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r3-2",
+            "text": "Now — the whole yard knows a donkey can't be trusted near a pond, so I don't see why we're still talking.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "'A donkey can't be trusted' dismisses Rue by what he is, not by anything he has said."
+              },
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "'The whole yard knows' offers the yard's agreement in place of a reason. Both tricks are packed into one sentence."
+              }
+            ]
+          },
+          {
+            "id": "s-r3-3",
+            "text": "Tag it. Both of them. If you can't name what I just did to you, you'll never see it coming.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    }
+  ],
+  "tutorials": []
+}

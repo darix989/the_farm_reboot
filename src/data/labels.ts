@@ -10,6 +10,16 @@ const LABELS = {
   tutorialBlueBarn: 'Tutorial: The Blue Barn',
   montyVsPenny: 'Monty vs Penny',
   bellaVsWoolsey: 'Bella vs Woolsey',
+
+  // --- Level 1: The Pond Motion ---
+  level1Heading: 'Level 1 — The Pond Motion',
+  legacyScenariosHeading: 'Other scenarios',
+  level1GossipHetty: '1.1 · Gossip at the Trough: What Hetty Heard',
+  level1SparringCass: '1.2 · The Sparring Post',
+  level1GossipBram: '1.3 · Gossip at the Trough: Everyone Says',
+  level1LabCass: '1.4 · The Cranky Rooster Lab: Dirty Feathers',
+  level1SkirmishBram: '1.5 · Fence-line Skirmish: The Bent Grate',
+  level1BossDuchess: '1.6 · The Public Farm: The Pond Motion',
   currentScene: 'Current Scene:',
   gameStatus: 'Game Status:',
   loadingEllipsis: 'Loading...',
@@ -74,6 +84,8 @@ const LABELS = {
     "We're about to play a debate. Read the introduction, and once you are ready, click Continue.",
   workflowRoundWithType: 'Round {roundNumber} — {typeDisplay}',
   workflowNpcSpeaking: "{roundLabel}. Read {opponentName}'s statement, then click Continue.",
+  workflowNpcSpeakingMustAnalyze:
+    'Analyze this statement before you move on. Open it with the magnifying glass, then tag any logical fallacies — or mark it Clean.',
   workflowPlayerChoosingQuestion:
     '{roundLabel}. {opponentName} has asked a question. Choose your response.',
   workflowPlayerChoosingStatement: '{roundLabel}. Choose your statement.',
