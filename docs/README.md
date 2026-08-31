@@ -21,7 +21,8 @@ Start here; each entry says what question it answers.
 
 | Doc | What it is |
 |---|---|
-| [mechanics.md](./mechanics.md) | Open questions about the debate systems: moderators with a weakness to particular fallacies, and what analysing your *own* statements should be worth. A brainstorm, not a spec — nothing here is built yet. |
+| [architecture.md](./architecture.md) | How the app fits together: Phaser and React as siblings over one stage, scene-key routing, the four stores and two event buses, how content flows from JSON to screen, and how to verify a change. **Start here.** |
+| [encounters.md](./encounters.md) | The authoring reference for everything the player plays — the scenario schema, rounds and options, unlock conditions, and the `mechanics` flags that let an encounter ship as something smaller than a full debate. |
 | [level_01_the_pond_motion.md](./level_01_the_pond_motion.md) | Level 1 in full: the story, the cast, the six-encounter ladder from a two-minute gossip up to the ten-beat boss debate, and the authored dialogue for every rung. The source of truth for `src/data/debates/010_*` … `015_*`. |
 | [farm_overworld.md](./farm_overworld.md) | How the Phaser gameplay works: the Phaser/React split, the placeholder-art texture contract, how an encounter is launched and returned from, and how to add an animal or a location. Read before touching the `Farm` scene. |
 
@@ -31,10 +32,12 @@ Start here; each entry says what question it answers.
 
 | I want to… | Read |
 |---|---|
-| Write a new encounter or debate | `level_01_the_pond_motion.md` for the pattern, `logical_fallacies_distribution.md` for which fallacy belongs where |
+| Understand how the app is put together | `architecture.md` |
+| Write a new encounter or debate | `encounters.md` for the schema, `level_01_the_pond_motion.md` for the pattern, `logical_fallacies_distribution.md` for which fallacy belongs where |
 | Add an animal, a location, or anything in the overworld | `farm_overworld.md` |
 | Understand a fallacy well enough to write a line for it | `logical_fallacies_intro.md` |
-| Know how the code is laid out | [`AGENTS.md`](../AGENTS.md) at the repo root, and `src/react/AGENTS.md` for the debate UI |
+| Change the debate UI itself | [`src/react/AGENTS.md`](../src/react/AGENTS.md) — the deep guide to panels, modals and the event bus |
+| Find a file | [`AGENTS.md`](../AGENTS.md) at the repo root |
 
 ---
 
@@ -50,6 +53,10 @@ history, not as the current design:
   into a proper mechanics doc.
 - `PHASER_ZUSTAND_INTEGRATION.md`, `SIMPLE_ZUSTAND_INTEGRATION.md` — integration write-ups
   that overlap with `AGENTS.md`.
+- `mechanics_brainstorm.md` — open questions about moderators with a weakness to particular
+  fallacies, and what analysing your *own* statements should be worth. Nothing in it is
+  built. It was called `mechanics.md`, which implied it described the shipped mechanics; those
+  are in `encounters.md`.
 - `random_notes.md` — scratch. Records that "PF" is Public Forum, and that the game calls
   its debates the **Public Farm**.
 

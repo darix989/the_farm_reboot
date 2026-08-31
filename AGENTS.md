@@ -132,6 +132,8 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 - `docs/farm_overworld.md` — the Phaser overworld: architecture, the Phaser/React split, the placeholder-art texture contract, how encounters are launched and returned from, and how to add an animal.
 - `docs/level_01_the_pond_motion.md` — Level 1 story bible, cast, scenario ladder and authored dialog.
 - `docs/README.md` — index of the docs folder; start there.
+- `docs/architecture.md` — how the app fits together: the Phaser/React sibling layout, scene-key routing, the four stores and two event buses, content flow, and how to verify a change without a test runner.
+- `docs/encounters.md` — the authoring reference for scenarios: schema, rounds, options, unlock conditions and the `mechanics` flags.
 - `docs/to_process/` — older design notes and integration write-ups kept for reference, not yet reconciled with what shipped (`plan_001.md`, `plan_002.md`, the two Zustand integration notes, `random_notes.md`).
 - `src/react/AGENTS.md` — detailed guide to the React overlay layer and the Trial/debate workflow.
 
@@ -143,5 +145,5 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 - **Cross-layer signals** → `EventBus` + optional `gameStore` actions.
 - Keep **`PHASER_PARENT_ID`** in sync between the Phaser parent div and `ReactRoot` layout logic.
 - New **debate content** → author a `DebateScenarioJson` JSON file under `src/data/debates/` and register it once in `src/data/levels.ts` (that file owns the `DebateScenarioKey` union, the `DEBATES` lookup and the main-menu ordering). No engine changes required.
-- A scenario can ship as a **smaller mode** than a full debate via the optional `mechanics` block (`analysisEnabled`, `showInsightPoints`, `showModeratorOpinion`, `showRoundRecap`, `showIntroSummary`, `revealChoiceAssessment`, `targetQuality`, `maxAnalysisAttempts`, and `encounterKind` — which swaps UI copy so a non-debate is not labelled "Debate Log") plus `requiresAnalysis` on an NPC round. Defaults reproduce full-debate behaviour; resolve them with `resolveMechanics()` (`src/react/trial/utils/scenarioMechanics.ts`), never off the raw scenario. See `docs/level_01_the_pond_motion.md` for a worked ladder.
+- A scenario can ship as a **smaller mode** than a full debate via the optional `mechanics` block (`analysisEnabled`, `showInsightPoints`, `showModeratorOpinion`, `showRoundRecap`, `showIntroSummary`, `revealChoiceAssessment`, `targetQuality`, `maxAnalysisAttempts`, and `encounterKind` — which swaps UI copy so a non-debate is not labelled "Debate Log") plus `requiresAnalysis` on an NPC round. Defaults reproduce full-debate behaviour; resolve them with `resolveMechanics()` (`src/react/trial/utils/scenarioMechanics.ts`), never off the raw scenario. Full reference in `docs/encounters.md`; `docs/level_01_the_pond_motion.md` is a worked ladder.
 - New **fixed UI string** (menus, modals, ARIA, Phaser labels) → add an entry in `src/data/labels.ts` and use `getLabel('yourKey', { replacements: { … } })` when the template has placeholders.
