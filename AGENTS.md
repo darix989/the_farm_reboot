@@ -1,11 +1,18 @@
-# AGENT.md — Repository guide for automated assistants
+# AGENTS.md — Repository guide for automated assistants
 
-This document summarizes how **the_farm_reboot** is structured, how React and Phaser interact, and where to put new code. It reflects the tree as of the `feature/upgrading_tech_stack` branch.
+**Where things are and where to put new code.** This is a lookup index, not an explanation.
+
+> **Read [`docs/architecture.md`](docs/architecture.md) first** if you need to understand
+> *how the app works* — the Phaser/React sibling layout, scene-key routing, the four stores
+> and two event buses, content flow, and how to verify a change with no test runner. That
+> document owns the conceptual model; this one owns the file map. Where they overlap, this
+> file defers to it.
 
 ## What this project is
 
-- A **browser game shell** built from the [Phaser React TypeScript + Vite template](https://github.com/phaserjs/template-react-ts), extended with **Zustand** and scene-specific React overlays (`MainMenu`, `Trial`, etc.).
-- `package.json` still names the package `template-react-ts` and points at the upstream template metadata; the working tree is the reboot project under `the_farm_reboot`.
+- **The Farm** — a browser game about spotting logical fallacies in a farmyard debate. The player walks an overworld (Phaser), talks to animals, and plays debate encounters (React). See the root [`README.md`](README.md).
+- Built from the [Phaser React TypeScript + Vite template](https://github.com/phaserjs/template-react-ts), extended with Zustand and scene-keyed React overlays (`MainMenu`, `Farm`, `Trial`).
+- `package.json` still names the package `template-react-ts` and carries upstream template metadata.
 
 ## Tech stack
 
@@ -39,42 +46,60 @@ See also the root **README.md** for commands, structure, and the React–Phaser 
 ```
 src/
   main.tsx              # React bootstrap
-  App.tsx               # PhaserGame + ReactApp siblings
+  App.tsx               # PhaserGame + ReactApp siblings on the 16:9 stage
   types/
-    debateEntities.ts   # DebateScenarioJson and all debate domain types
+    debateEntities.ts   # DebateScenarioJson + every content type (rounds, options,
+                        #   mechanics flags, tutorial triggers)
+    tutorialModalLayout.ts
   data/
     labels.ts           # Central UI strings + default export getLabel()
+    levels.ts           # Scenario registry: DebateScenarioKey, DEBATES, menu order
+    farmMap.ts          # Overworld zones + NPCs
+    debates/            # One JSON file per encounter
+    logicalFallacies.json
   phaser/
     PhaserGame.tsx      # Creates/destroys Phaser Game, wires Zustand + EventBus
-    main.ts             # Game config, scene list, scale (1920×1080 FIT)
-    EventBus.ts         # Phaser.Events.EventEmitter singleton
-    scenes/             # Boot, Preloader, MainMenu, Game, Trial, GameOver
+    main.ts             # Game config: scene list, scale, physics
+    EventBus.ts         # Phaser→React bus (3 events)
+    scenes/             # Boot, Preloader, MainMenu, Farm, Game, Trial, GameOver
+    farm/               # Overworld helpers: textures, palette, input, joystick
   react/
-    AGENT.md            # React-layer guide (TrialUI, debate workflow)
+    AGENTS.md           # React-layer guide (TrialUI, debate workflow, event bus)
     uiTypography.scss   # @mixin font-scale → --ui-font-* on `.react-root`
-    uiFont.ts             # var(--ui-font-*) for inline styles in TSX
-    uiColors.scss         # @mixin color-palette → --ui-color-* on `html`
-    uiColor.ts            # var(--ui-color-*) for inline styles in TSX
-    ReactApp.tsx        # Scene-based UI switch; loading gate on isGameReady
+    uiFont.ts           # var(--ui-font-*) for inline styles in TSX
+    uiColors.scss       # @mixin color-palette → --ui-color-* on `html`
+    uiColor.ts          # var(--ui-color-*) for inline styles in TSX
+    ReactApp.tsx        # Scene-key → overlay switch; loading gate on isGameReady
     ReactRoot.tsx       # Overlay aligned to Phaser canvas (resize sync)
-    screens/            # Scene-keyed overlays (imported by ReactApp)
+    screens/            # One overlay per scene key
       MainMenuUI.tsx
-      TrialUI.tsx       # Debate/trial overlay (rounds, player choices, score)
-      BoilerPlateUI.tsx # Fallback overlay for unmapped scenes
+      TrialUI.tsx       # The debate (rounds, choices, analysis, score)
+      FarmUI.tsx        # Overworld prompt + dialogue
+      BoilerPlateUI.tsx # Fallback for unmapped scenes
     hooks/
-      useGame.ts              # Hooks around GameManager + store
+      useGame.ts
       useTrialRoundWorkflow.ts # Reducer hook driving the debate state machine
-      useScrollFade.ts        # Scroll edges for animated fade overlays
+      useScenarioTutorials.ts  # Opens scenario tutorials off the debate bus
+      useScrollFade.ts
     trial/
-      TrialLayout.tsx           # Three-column layout (Feedback | Wizard | Interactive)
-      roundAnalysisModal/       # Round analysis modal (component + styles)
-      panels/                   # Feedback, Wizard, Interactive column components
-      components/               # Shared trial widgets (ScrollFadeContainer, etc.)
-      utils/                    # trialHelpers, optionUnlock, fallacy guess types/utils
-  store/gameStore.ts    # Zustand + EventBus listeners (current scene, game ref)
+      TrialLayout.tsx           # 2×2 grid: game hole | Feedback / Wizard | Interactive
+      panels/                   # Feedback, Wizard, Interactive
+      roundAnalysisModal/       # Fallacy spotting
+      roundRecapModal/          # Per-round summary
+      introSummaryModal/
+      components/               # Shared trial widgets
+      utils/                    # trialHelpers, optionUnlock, scenarioMechanics,
+                                #   fallacy guess types/utils, debateEventBus
+    tutorial/                   # Overlay, spotlight geometry, interaction gate
+    farm/                       # Overworld overlay: dialogue box + styles
+  store/
+    gameStore.ts        # Phaser refs, currentScene, activeDebateId, returnSceneKey
+    tutorialStore.ts    # Open tutorial overlay + its interaction gate
+    farmStore.ts        # Overworld ↔ React handoff
+    progressStore.ts    # Completed encounters (persisted to localStorage)
   utils/
-    constants.ts        # PHASER_PARENT_ID = "phaser-parent"
-    gameManager.ts      # Static helpers: switchScene, pause, whenReady, etc.
+    constants.ts        # PHASER_PARENT_ID, stage design size, rem scaling
+    gameManager.ts      # Static Phaser helpers (switchScene, getScene, …)
 ```
 
 ## React UI design tokens (fonts and colors)
@@ -97,15 +122,27 @@ User-visible strings for React overlays and Phaser scenes live in one place: [`s
 
 ## React ↔ Phaser integration
 
-1. **`PhaserGame`** (`src/phaser/PhaserGame.tsx`) mounts once, calls `StartGame(PHASER_PARENT_ID)`, stores the instance in Zustand, and emits **`game-ready`** / **`game-destroyed`** on `EventBus`.
-2. **`EventBus`** is a shared `EventEmitter`; scenes should emit **`current-scene-ready`** with the scene instance when React needs that scene (see upstream README pattern). `gameStore` subscribes and updates `currentScene` + `currentSceneInstance`.
-3. **`ReactApp`** reads `useGameStore()` (`isGameReady`, `currentScene`) and renders **`MainMenuUI`**, **`TrialUI`**, or **`BoilerPlateUI`** from `src/react/screens/` for the matching scene keys.
-4. **`ReactRoot`** positions the overlay to match the Phaser canvas margins/size on resize.
-5. **`GameManager`** (`src/utils/gameManager.ts`) centralizes imperative access (scene switch, pause, `whenReady` / `whenSceneReady`) using the store.
+The model — siblings over one stage, scene key drives the overlay — is explained in
+[`docs/architecture.md`](docs/architecture.md). The files involved:
+
+| File | Role |
+|---|---|
+| `src/phaser/PhaserGame.tsx` | Mounts the game once; emits `game-ready` / `game-destroyed`. |
+| `src/phaser/EventBus.ts` | The 3-event Phaser→React bus. Scenes emit `current-scene-ready` at the end of `create()`. |
+| `src/store/gameStore.ts` | Subscribes to those events; holds `currentScene` + `currentSceneInstance`. |
+| `src/react/ReactApp.tsx` | Switches on `currentScene` to pick the overlay. |
+| `src/react/ReactRoot.tsx` | Mirrors the canvas margins/size on resize. |
+| `src/utils/gameManager.ts` | Imperative access: `switchScene`, `getScene`, pause/resume. |
+
+⚠️ **`GameManager.whenReady` and `whenSceneReady` are broken** — they pass a zustand v3/v4
+`(selector, listener)` pair to a v5 `subscribe`, so the callback is silently dropped. Do not
+use them; read the store directly.
 
 ## Phaser scenes (registration order)
 
-Defined in `src/phaser/main.ts`: **Boot** → **Preloader** → **MainMenu** → **Game** → **Trial** → **GameOver**. Design resolution **1920×1080**, `Scale.FIT`, centered.
+Defined in `src/phaser/main.ts`: **Boot** → **Preloader** → **MainMenu** → **Farm** → **Game** → **Trial** → **GameOver**. Design resolution **1920×1080**, `Scale.FIT`, centered. Arcade physics is enabled with zero gravity (the overworld uses it; the debate scenes simply never create bodies).
+
+`Game` and `GameOver` are unused template stubs. The live scenes are **MainMenu**, **Farm** and **Trial**. Adding a scene means adding a matching `case` in `ReactApp.tsx`, or it falls through to `BoilerPlateUI` and paints over your scene — see [`docs/architecture.md`](docs/architecture.md).
 
 ## Assets and HTML
 
@@ -124,16 +161,17 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 - All debate content is declared in a **`DebateScenarioJson`** value (see `src/types/debateEntities.ts`).
 - The `TrialUI` overlay (see `src/react/AGENTS.md`) reads this value and drives the full interaction.
 - The game state machine lives in `src/react/hooks/useTrialRoundWorkflow.ts`.
-- A **Round Analysis Modal** (`src/react/trial/roundAnalysisModal/RoundAnalysisModal.tsx`) lets the player inspect any completed round: guess logical fallacies in NPC statements (one guess per player turn), or review why their own choice was effective/flawed.
-- **⚠️ Pointer-events gotcha:** `.react-ui-overlay` has `pointer-events: none` which inherits to all descendants. Any new interactive element outside an existing panel (modal, tooltip, etc.) **must** set `pointer-events: auto` on its root — otherwise clicks and hover silently fall through to the Phaser canvas.
+- A **Round Analysis Modal** (`src/react/trial/roundAnalysisModal/RoundAnalysisModal.tsx`) lets the player inspect any statement in the log: tag logical fallacies sentence by sentence, or review why their own line was effective or flawed. Three attempts per target by default; a correct solve pays 1 Insight, once per target.
+- Authoring reference — schema, rounds, options, unlock conditions, `mechanics` flags: [`docs/encounters.md`](docs/encounters.md).
+- **⚠️ Pointer-events gotcha:** `.react-ui-overlay` is `pointer-events: none`, which inherits to every descendant. Any new interactive element **must** set `pointer-events: auto` on its root, or clicks fall through to the Phaser canvas. This is the most common bug in the codebase — see [`docs/architecture.md`](docs/architecture.md) for why the layout works this way.
 
 ## Extra docs in repo
 
-- `docs/farm_overworld.md` — the Phaser overworld: architecture, the Phaser/React split, the placeholder-art texture contract, how encounters are launched and returned from, and how to add an animal.
+- **[`docs/architecture.md`](docs/architecture.md)** — how the app fits together. The conceptual companion to this file; read it before any structural change.
+- `docs/README.md` — index of the docs folder.
+- `docs/encounters.md` — authoring reference for scenarios: schema, rounds, options, unlock conditions, `mechanics` flags.
+- `docs/farm_overworld.md` — the Phaser overworld: the Phaser/React split, the placeholder-art texture contract, how encounters are launched and returned from, how to add an animal.
 - `docs/level_01_the_pond_motion.md` — Level 1 story bible, cast, scenario ladder and authored dialog.
-- `docs/README.md` — index of the docs folder; start there.
-- `docs/architecture.md` — how the app fits together: the Phaser/React sibling layout, scene-key routing, the four stores and two event buses, content flow, and how to verify a change without a test runner.
-- `docs/encounters.md` — the authoring reference for scenarios: schema, rounds, options, unlock conditions and the `mechanics` flags.
 - `docs/to_process/` — older design notes and integration write-ups kept for reference, not yet reconciled with what shipped (`plan_001.md`, `plan_002.md`, the two Zustand integration notes, `random_notes.md`).
 - `src/react/AGENTS.md` — detailed guide to the React overlay layer and the Trial/debate workflow.
 
