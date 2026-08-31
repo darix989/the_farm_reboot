@@ -199,5 +199,52 @@
       }
     }
   ],
-  "tutorials": []
+  "tutorials": [
+    {
+      "id": "skirmish-the-real-chrome",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "A **[accent]real debate[/accent]**, just a very short one. Everything is switched on.\n\nThe **[accent]emoji[/accent]** is how the moderator leans; the number is your **[success]Insights[/success]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_moderator_score"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "skirmish-locked-line",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-2"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "One of your three lines is **[warning]locked[/warning]**.\n\n**[accent]Spot the fallacy[/accent]** in what Bram just said and it opens. This is spotting and speaking working together.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    }
+  ]
 }

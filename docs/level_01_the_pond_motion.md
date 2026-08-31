@@ -239,6 +239,26 @@ It also swaps the opening guidance in the wizard, and the introduction card's st
 presentation only — it never changes behaviour. A skirmish stays a `debate` because it is
 one beat of one, using the same chrome.
 
+## Tutorials
+
+Only the **first** encounter of each mechanic type carries one, and each is deliberately
+tiny — 1–3 steps, all `modal_only`, no forced clicks:
+
+| Rung | Steps | Teaches |
+|---|---|---|
+| 1.1 gossip | 3 | This is not a debate; open the magnifying glass; Continue is locked until you judge the statement (including **Clean**). |
+| 1.2 sparring | 2 | Practice bout, nothing at stake; three lines, only one answers him. |
+| 1.4 lab | 2 | The dirty answer is the winning answer — and why, plus "never in front of Tobias". |
+| 1.5 skirmish | 2 | The moderator emoji and the Insight counter; one line is locked until you spot the fallacy. |
+
+1.3 and 1.6 carry none: they repeat a mechanic the player has already met. The lab's two
+steps are the one place the tutorial is load-bearing rather than convenience — a mode that
+rewards committing a fallacy needs its framing stated outright.
+
+Messages use the tutorial rich-text grammar, which supports only `**bold**` and the six
+colour tags (`accent`, `danger`, `warning`, `success`, `info`, `muted`). A lone `*` renders
+literally — there is no italic.
+
 ## Notes for future levels
 
 - **Tobias** names the tortoise moderator, who had been referred to only as "a tired old

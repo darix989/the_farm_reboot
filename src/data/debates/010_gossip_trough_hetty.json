@@ -89,5 +89,65 @@
       }
     }
   ],
-  "tutorials": []
+  "tutorials": [
+    {
+      "id": "gossip-what-this-is",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This is **[accent]not a debate[/accent]** — no sides, no moderator, no score.\n\nTwo animals are talking. Your only job is to **[accent]catch the bad reasoning[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "gossip-how-to-spot",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-1"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Open the **[accent]magnifying glass[/accent]** to read what was said, sentence by sentence.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-1"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "**[warning]Continue is locked[/warning]** until you judge it.\n\nTag a fallacy — or press **[accent]Clean[/accent]**. Not every sentence is a trap.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topRight"
+            }
+          }
+        ]
+      }
+    }
+  ]
 }

@@ -313,5 +313,35 @@
       }
     }
   ],
-  "tutorials": []
+  "tutorials": [
+    {
+      "id": "lab-the-warning",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[warning]Read this one carefully.[/warning]**\n\nIn here Cass wants you to **[danger]use the fallacy on purpose[/danger]**. The dirty answer is the winning answer.",
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
+          },
+          {
+            "message": "You learn the trick from the inside so you can **[success]spot it when Duchess uses it on you[/success]**.\n\n**[danger]Never do this in front of Tobias.[/danger]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "large",
+              "position": "center"
+            }
+          }
+        ]
+      }
+    }
+  ]
 }

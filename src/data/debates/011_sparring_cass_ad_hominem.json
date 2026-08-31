@@ -273,5 +273,53 @@
       ]
     }
   ],
-  "tutorials": []
+  "tutorials": [
+    {
+      "id": "sparring-what-this-is",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "A **[accent]practice bout[/accent]**. Cass throws a line; you pick the answer.\n\n**[muted]No magnifying glass, no moderator, no score.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sparring-pick-a-line",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-1"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Three lines[/accent]** — only one really answers him.\n\nPick one and press **[accent]Continue[/accent]**. Cass will say what he thinks.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    }
+  ]
 }
