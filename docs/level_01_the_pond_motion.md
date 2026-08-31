@@ -212,15 +212,32 @@ Round 10's C concedes falsifiability, which is the exact opposite of both fallac
 
 | Rung | File | Key mechanics |
 |---|---|---|
-| 1.1 | `src/data/debates/010_gossip_trough_hetty.json` | `requiresAnalysis` on both rounds; no moderator, no recap, no intro summary |
-| 1.2 | `src/data/debates/011_sparring_cass_ad_hominem.json` | `analysisEnabled: false`, `revealChoiceAssessment: true` |
+| 1.1 | `src/data/debates/010_gossip_trough_hetty.json` | `encounterKind: 'gossip'`; `requiresAnalysis` on both rounds; no moderator, no recap, no intro summary |
+| 1.2 | `src/data/debates/011_sparring_cass_ad_hominem.json` | `encounterKind: 'sparring'`; `analysisEnabled: false`, `revealChoiceAssessment: true` |
 | 1.3 | `src/data/debates/012_gossip_trough_bram.json` | as 1.1, with two fallacies on the picker |
-| 1.4 | `src/data/debates/013_lab_cass_dirty_feathers.json` | `targetQuality: 'logical_fallacy'`, `preventOptionsShuffle` on the two lab rounds |
+| 1.4 | `src/data/debates/013_lab_cass_dirty_feathers.json` | `encounterKind: 'lab'`; `targetQuality: 'logical_fallacy'`, `preventOptionsShuffle` on the two lab rounds |
 | 1.5 | `src/data/debates/014_skirmish_bram_fenceline.json` | full chrome; `unlockCondition` on option C of round 2 |
 | 1.6 | `src/data/debates/015_duchess_vs_rue.json` | full defaults; `unlockCondition` on option C of round 6 |
 
 The ladder order lives in `LEVEL_1_SCENARIOS` in [`src/data/levels.ts`](../src/data/levels.ts),
 which also drives the main menu. Nothing gates progression yet — any rung can be started.
+
+## Encounter framing
+
+Only rungs 1.5 and 1.6 are debates. The other four set `mechanics.encounterKind`, which
+swaps the UI copy so the game stops calling a water-trough conversation a debate:
+
+| kind | log panel | closing line | Proposition / Opposition badges |
+|---|---|---|---|
+| `debate` | Debate Log | "The debate is finished." | shown |
+| `gossip` | Trough Talk | "There is nothing more to overhear." | hidden |
+| `sparring` | Sparring Log | "That is the session done." | hidden |
+| `lab` | Lab Notes | "That is the exercise done." | hidden |
+
+It also swaps the opening guidance in the wizard, and the introduction card's stripe reads
+"Setting" instead of "Moderator" where there is no moderator. `encounterKind` is
+presentation only — it never changes behaviour. A skirmish stays a `debate` because it is
+one beat of one, using the same chrome.
 
 ## Notes for future levels
 

@@ -21,7 +21,8 @@
     "showModeratorOpinion": false,
     "showIntroSummary": false,
     "revealChoiceAssessment": true,
-    "targetQuality": "logical_fallacy"
+    "targetQuality": "logical_fallacy",
+    "encounterKind": "lab"
   },
   "rounds": [
     {

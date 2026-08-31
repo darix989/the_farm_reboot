@@ -31,7 +31,11 @@ const LABELS = {
   addNewSprite: 'Add New Sprite',
 
   // --- Trial layout panels ---
+  // Log panel heading, one per `EncounterKind` (see `encounterLabels`).
   debateLog: 'Debate Log',
+  gossipLog: 'Trough Talk',
+  sparringLog: 'Sparring Log',
+  labLog: 'Lab Notes',
   interactive: 'Interactive',
   wizard: 'Wizard',
   back: 'Back',
@@ -41,6 +45,8 @@ const LABELS = {
   // --- Debate log cards ---
   introduction: 'Introduction',
   moderator: 'Moderator',
+  /** Intro-card stripe label for encounters with no moderator (gossip, sparring, lab). */
+  setting: 'Setting',
   minimize: 'Minimize',
   expand: 'Expand',
   notAvailableUntilRoundStarts: 'Not available until this round starts',
@@ -50,6 +56,8 @@ const LABELS = {
   roundNotStartedYet: 'This round has not started yet.',
   roundAria: 'Round {roundNumber}',
   sideYouSuffix: ' · YOU',
+  /** Standalone "YOU" badge for encounters that have no Proposition / Opposition sides. */
+  youBadge: 'YOU',
   you: 'You',
   responds: '{name} responds',
   debaterQuestion: "{name}'s question",
@@ -77,11 +85,22 @@ const LABELS = {
   wizardDetailResponse: "{name}'s response:",
   wizardDetailRoundRecapBody:
     'Review the round summary in the dialog. Close it when you are ready to continue.',
+  // Closing line, one per `EncounterKind`.
   debateFinished: 'The debate is finished.',
+  gossipFinished: 'There is nothing more to overhear.',
+  sparringFinished: 'That is the session done.',
+  labFinished: 'That is the exercise done.',
 
   // --- useTrialRoundWorkflow (wizard strip) ---
+  // Opening guidance, one per `EncounterKind`.
   workflowDebateIntro:
     "We're about to play a debate. Read the introduction, and once you are ready, click Continue.",
+  workflowGossipIntro:
+    'Someone is talking. Read what they say, then open the magnifying glass and spot any logical fallacies.',
+  workflowSparringIntro:
+    'A practice bout — nothing is at stake. Read the line you are given, then pick the answer that actually addresses it.',
+  workflowLabIntro:
+    'A training exercise. Here the dirty answer is the one being asked for. Read the brief, then pick your line.',
   workflowRoundWithType: 'Round {roundNumber} — {typeDisplay}',
   workflowNpcSpeaking: "{roundLabel}. Read {opponentName}'s statement, then click Continue.",
   workflowNpcSpeakingMustAnalyze:

@@ -391,10 +391,19 @@ export interface DebateScenarioTutorialEntry {
 }
 
 /**
+ * What kind of encounter a scenario is. This selects UI copy only — the panel heading,
+ * the opening guidance and the closing line — so a trough conversation is not labelled
+ * "Debate Log". It never changes behaviour; the mechanics flags below do that.
+ *
+ * `'debate'` covers the full Public Farm and the one-beat skirmishes that use its chrome.
+ */
+export type EncounterKind = 'debate' | 'gossip' | 'sparring' | 'lab';
+
+/**
  * Feature flags that let a scenario ship as a *smaller mode* than a full Public Farm
  * debate (see `pitch/002_gradual_mechanics_onboarding.md`). Each flag is consumed
- * independently — there is deliberately no `mode` enum, so nothing in the engine
- * branches on which rung a scenario belongs to.
+ * independently — there is deliberately no behavioural `mode` enum, so nothing in the
+ * engine branches on which rung a scenario belongs to.
  *
  * Every field is optional and defaults to full-debate behaviour, so scenarios that
  * omit `mechanics` entirely keep working unchanged. Read these through
@@ -426,6 +435,8 @@ export interface DebateScenarioMechanics {
   targetQuality?: OptionQuality;
   /** Analysis attempts per target. Default `DEFAULT_MAX_ANALYSIS_ATTEMPTS`. */
   maxAnalysisAttempts?: number;
+  /** Selects the encounter's UI copy. Presentation only. Default `'debate'`. */
+  encounterKind?: EncounterKind;
 }
 
 /**

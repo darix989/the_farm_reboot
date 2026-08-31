@@ -14,7 +14,7 @@ import {
   type GuessSessionForUnlock,
 } from '../trial/utils/optionUnlock';
 import { debateEventBus, type RoundLifecyclePayload } from '../trial/utils/debateEventBus';
-import { resolveMechanics } from '../trial/utils/scenarioMechanics';
+import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import getLabel from '../../data/labels';
 
 // ---------------------------------------------------------------------------
@@ -517,9 +517,10 @@ export function useTrialRoundWorkflow(
   }, [scenario]);
 
   const wizardMessage = useMemo((): string => {
-    if (state.gamePhase === 'debate_complete') return getLabel('debateFinished');
+    const copy = encounterLabels(scenario);
+    if (state.gamePhase === 'debate_complete') return getLabel(copy.finished);
     if (state.gamePhase === 'debate_intro') {
-      return getLabel('workflowDebateIntro');
+      return getLabel(copy.intro);
     }
     if (!currentRound) return '';
 
@@ -553,7 +554,14 @@ export function useTrialRoundWorkflow(
       default:
         return '';
     }
-  }, [state.gamePhase, state.selectedOptionId, currentRound, currentPlayerRound, opponentName]);
+  }, [
+    state.gamePhase,
+    state.selectedOptionId,
+    currentRound,
+    currentPlayerRound,
+    opponentName,
+    scenario,
+  ]);
 
   const totalRounds = scenario.rounds.length;
   const playerRounds = scenario.rounds.filter((r) => r.kind === 'player');

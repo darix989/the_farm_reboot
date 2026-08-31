@@ -34,7 +34,7 @@ import {
   statementText,
 } from '../trial/utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
-import { resolveMechanics } from '../trial/utils/scenarioMechanics';
+import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
 import getLabel from '../../data/labels';
@@ -618,7 +618,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       }
       case 'debate_complete':
         return {
-          title: getLabel('debateFinished'),
+          title: getLabel(encounterLabels(debate).finished),
           body: moderatorOpinionPlainText(wf.totalScore),
         };
       default:

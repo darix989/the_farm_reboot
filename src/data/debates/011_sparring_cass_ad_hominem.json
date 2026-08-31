@@ -18,7 +18,8 @@
     "showInsightPoints": false,
     "showModeratorOpinion": false,
     "showIntroSummary": false,
-    "revealChoiceAssessment": true
+    "revealChoiceAssessment": true,
+    "encounterKind": "sparring"
   },
   "rounds": [
     {

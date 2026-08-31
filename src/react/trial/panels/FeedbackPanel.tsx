@@ -6,7 +6,7 @@ import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import DebateRoundLogCard from '../components/DebateRoundLogCard';
 import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/IntroDebateLogCard';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
-import type { ResolvedMechanics } from '../utils/scenarioMechanics';
+import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
 import styles from './TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -140,7 +140,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   return (
     <div className={styles.trialPanelContent}>
       <div className={styles.trialAreaTitle}>
-        <h2 className={styles.trialPanelHeading}>{getLabel('debateLog')}</h2>
+        <h2 className={styles.trialPanelHeading}>{getLabel(encounterLabels(debate).logTitle)}</h2>
         <p
           className={styles.trialDebateLogTitleScore}
           style={{ margin: 0, color: uiColor.textBody }}

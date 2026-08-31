@@ -1,5 +1,10 @@
-import type { DebateScenarioJson, DebateScenarioMechanics } from '../../../types/debateEntities';
+import type {
+  DebateScenarioJson,
+  DebateScenarioMechanics,
+  EncounterKind,
+} from '../../../types/debateEntities';
 import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './fallacyGuessTypes';
+import type { Labels } from '../../../data/labels';
 
 /** Every mode flag resolved to a concrete value — no `undefined` for consumers to handle. */
 export type ResolvedMechanics = Required<DebateScenarioMechanics>;
@@ -17,7 +22,51 @@ export const DEFAULT_MECHANICS: ResolvedMechanics = {
   revealChoiceAssessment: false,
   targetQuality: 'effective',
   maxAnalysisAttempts: DEFAULT_MAX_ANALYSIS_ATTEMPTS,
+  encounterKind: 'debate',
 };
+
+/**
+ * Presentation per encounter kind: the log panel heading, the opening guidance shown
+ * before round 1, the line shown once it is over, and whether Proposition / Opposition
+ * badges make sense. Keeps "Debate Log" and a side badge off a scenario that is two
+ * hens talking at a water trough.
+ */
+const ENCOUNTER_LABELS: Record<
+  EncounterKind,
+  { logTitle: Labels; intro: Labels; finished: Labels; showSides: boolean }
+> = {
+  debate: {
+    logTitle: 'debateLog',
+    intro: 'workflowDebateIntro',
+    finished: 'debateFinished',
+    showSides: true,
+  },
+  gossip: {
+    logTitle: 'gossipLog',
+    intro: 'workflowGossipIntro',
+    finished: 'gossipFinished',
+    // Nobody is arguing a side at a trough; they are just talking.
+    showSides: false,
+  },
+  sparring: {
+    logTitle: 'sparringLog',
+    intro: 'workflowSparringIntro',
+    finished: 'sparringFinished',
+    // A coach throwing lines at you is not a debate with two sides.
+    showSides: false,
+  },
+  lab: {
+    logTitle: 'labLog',
+    intro: 'workflowLabIntro',
+    finished: 'labFinished',
+    showSides: false,
+  },
+};
+
+/** Label keys for a scenario's encounter kind. Falls back to the debate copy. */
+export function encounterLabels(debate: DebateScenarioJson) {
+  return ENCOUNTER_LABELS[resolveMechanics(debate).encounterKind] ?? ENCOUNTER_LABELS.debate;
+}
 
 function boolOr(value: boolean | undefined, fallback: boolean): boolean {
   return typeof value === 'boolean' ? value : fallback;
@@ -52,5 +101,6 @@ export function resolveMechanics(debate: DebateScenarioJson): ResolvedMechanics 
     ),
     targetQuality: m.targetQuality ?? DEFAULT_MECHANICS.targetQuality,
     maxAnalysisAttempts,
+    encounterKind: m.encounterKind ?? DEFAULT_MECHANICS.encounterKind,
   };
 }

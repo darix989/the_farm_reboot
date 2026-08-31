@@ -4,7 +4,7 @@ import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import AnalyzeButton from './AnalyzeButton';
-import type { ResolvedMechanics } from '../utils/scenarioMechanics';
+import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
 import {
   getSpeakerName,
   MODERATOR_OPINION_LABEL,
@@ -82,10 +82,19 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   /** "· YOU" only when this player round opens with the player's line (not NPC-led crossfire). */
   const showSideYouOnRoundBadge = round.kind === 'player' && !round.opponentPrompt;
 
-  const stackedSideLabel =
-    round.kind === 'player'
-      ? `${sideDisplayLabel(headerSide).toUpperCase()}${showSideYouOnRoundBadge ? getLabel('sideYouSuffix') : ''}`
-      : sideDisplayLabel(headerSide).toUpperCase();
+  // Gossip / sparring / lab have no Proposition-vs-Opposition framing, so the badge
+  // shows only the "YOU" marker there (and nothing at all on an NPC round).
+  const { showSides } = encounterLabels(debate);
+  const stackedSideLabel = (() => {
+    if (!showSides) {
+      // No sides to name — the badge is either the "YOU" marker or nothing.
+      return round.kind === 'player' && showSideYouOnRoundBadge ? getLabel('youBadge') : '';
+    }
+    const side = sideDisplayLabel(headerSide).toUpperCase();
+    return round.kind === 'player' && showSideYouOnRoundBadge
+      ? `${side}${getLabel('sideYouSuffix')}`
+      : side;
+  })();
 
   const isThisPlayerRound = wf.currentPlayerRound?.id === round.id && round.kind === 'player';
 
@@ -266,8 +275,10 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
                     <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      {getSpeakerName(debate, round.speakerId)} —{' '}
-                      {sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}
+                      {getSpeakerName(debate, round.speakerId)}
+                      {showSides
+                        ? ` — ${sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}`
+                        : ''}
                     </p>
                     {mechanics.analysisEnabled && (
                       <div

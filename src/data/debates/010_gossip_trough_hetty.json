@@ -17,7 +17,8 @@
   "mechanics": {
     "showModeratorOpinion": false,
     "showRoundRecap": false,
-    "showIntroSummary": false
+    "showIntroSummary": false,
+    "encounterKind": "gossip"
   },
   "rounds": [
     {
