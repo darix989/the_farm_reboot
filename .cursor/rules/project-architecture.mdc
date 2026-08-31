@@ -2,14 +2,25 @@
 alwaysApply: true
 ---
 
-## Folder Structure
+## Folder structure
 
-All the source code should go inside `src`, then use the following rules for each file:
-- UI files implemneted with React must go inside src/react
-- Game files that use Phaser and do not create any React component must go inside src/phaser
-- ## Folder Structure
+All source code lives in `src/`:
 
-All the source code should go inside `src`, then use the following rules for each file:
-- UI files implemneted with React must go inside src/react
-- Game files that use Phaser and do not create any React component must go inside src/phaser
-- 
+- **`src/react/`** — anything that renders a React component: screens, panels, modals, hooks, SCSS modules.
+- **`src/phaser/`** — Phaser-only code with no React: game config, scenes, and scene helpers.
+- **`src/store/`** — Zustand stores. The only sanctioned way for the Phaser and React layers to share state.
+- **`src/data/`** — authored content and copy: `labels.ts`, the scenario registry, the farm map, encounter JSON.
+- **`src/types/`** — shared TypeScript types, chiefly the content schema.
+- **`src/utils/`** — framework-agnostic helpers and imperative Phaser access.
+
+## Before changing anything structural
+
+Read `docs/architecture.md` — it explains the Phaser/React split, scene-key routing,
+the four stores and two event buses. `AGENTS.md` at the repo root is the file map.
+
+## Two rules that are easy to get wrong
+
+- The React overlay is `pointer-events: none` and that **inherits**. Any new interactive
+  element must set `pointer-events: auto` on its root, or clicks fall through to the canvas.
+- All user-visible fixed strings go through `getLabel` in `src/data/labels.ts` — Phaser
+  scenes included. Scenario prose lives in the encounter JSON, not in labels.

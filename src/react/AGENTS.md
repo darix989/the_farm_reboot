@@ -1,4 +1,4 @@
-# AGENT.md — React overlay layer
+# AGENTS.md — React overlay layer
 
 This document describes the React UI layer under `src/react/` with a focus on the Trial/debate screen (`screens/TrialUI.tsx`) and its supporting files.
 
@@ -11,7 +11,7 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `screens/MainMenuUI.tsx` | Overlay shown while the `MainMenu` scene is active. |
 | `screens/BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
 | `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, `RoundRecapModal`, and `RoundAnalysisModal`. |
-| `trial/TrialLayout.tsx` | Three-column layout shell used by `TrialUI`. |
+| `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent "game hole" top-left, then Debate Log, Wizard and Interactive. |
 | `trial/panels/FeedbackPanel.tsx` | Left column: introduction, round counter, score, history, live crossfire prompt. |
 | `trial/panels/WizardPanel.tsx` | Centre column: `wizardMessage` only. |
 | `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and footer (Back / Continue / Confirm). |
