@@ -49,9 +49,11 @@ src/store/farmStore.ts          Phaser <-> React handoff
 src/store/progressStore.ts      which encounters are finished (persisted)
 src/react/screens/FarmUI.tsx    the overlay
 src/react/farm/
-  FarmDialogue.tsx              the conversation box
-  farmDialogueState.ts          which line an animal says right now
+  FarmDialogue.tsx              the conversation box (sequential beats)
+  farmDialogueState.ts          which conversation an animal offers right now
+  CharacterStage.tsx            placeholder busts (farm talk + Trial hole)
   FarmUI.module.scss
+src/data/farmTalk.ts            beat lists keyed by npc + offer slot
 ```
 
 `main.ts` gained a `physics` block (Arcade, zero gravity — it had none at all, so
@@ -171,10 +173,11 @@ Showing the farm inside the hole later would need
 Cass and Bram each own **two** encounters, so an animal has to know which one to offer next
 — it is load-bearing, not a nicety.
 
-`farmDialogueState.ts` derives the line from progress: an animal offers the first scenario
-the player has not finished, and the dialogue key is built from the animal's id plus how far
-down its list we are (`farmDialogHetty1`, `farmDialogCass2`, `farmDialogBramDone`). Adding
-an encounter to an animal means adding one label, not editing logic.
+`farmDialogueState.ts` derives the conversation from progress: an animal offers the first
+scenario the player has not finished, and the slot key is the animal's id plus how far
+down its list we are (`hetty1`, `cass2`, `bramDone`). Beats for that slot live in
+[`farmTalk.ts`](../src/data/farmTalk.ts). Adding an encounter to an animal means adding
+beats (and labels), not editing logic.
 
 Nothing is locked. The order is the animals' own, not a gate, so every rung stays testable
 out of sequence and the menu buttons still work.
@@ -228,8 +231,10 @@ class of bug obvious in one screenshot.
 1. Add `FarmZone` rects to `FARM_ZONES` (later entries paint over earlier ones; set
    `solid: true` to block the player; `label` draws a world caption).
 2. Add a `FarmNpc` to `FARM_NPCS` with its `scenarios` in the order it should offer them.
-3. Add labels: the name (`farmNpc<Name>`), one dialogue line per scenario
-   (`farmDialog<Name>1`, `2`, …) and a closing line (`farmDialog<Name>Done`).
+3. Add labels: the name (`farmNpc<Name>`), then sequential talk beats in
+   [`src/data/farmTalk.ts`](../src/data/farmTalk.ts) plus the copy in `labels.ts`
+   (`farmDialog<Name>1a`, `1b`, … and a `Done` conversation). A missing table row
+   still falls back to a single `farmDialog<Name>1` / `Done` line.
 
 No scene changes. Give an animal room to be approached — the interact radius is 170 and
 NPCs pinched between two solid zones are awkward to reach.

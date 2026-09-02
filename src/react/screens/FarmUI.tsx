@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import getLabel from '../../data/labels';
 import type { DebateScenarioKey } from '../../data/levels';
 import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
@@ -25,13 +25,19 @@ const FarmUI: React.FC = () => {
   const talkingToNpcId = useFarmStore((s) => s.talkingToNpcId);
   const openDialogue = useFarmStore((s) => s.openDialogue);
   const closeDialogue = useFarmStore((s) => s.closeDialogue);
+  const [beatIndex, setBeatIndex] = useState(0);
 
   const dialogue = useMemo(
     () => (talkingToNpcId ? farmDialogueFor(talkingToNpcId) : null),
     [talkingToNpcId],
   );
 
+  useEffect(() => {
+    setBeatIndex(0);
+  }, [talkingToNpcId, dialogue?.slotKey]);
+
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;
+  const currentBeat = dialogue?.beats[Math.min(beatIndex, Math.max(0, dialogue.beats.length - 1))];
 
   const startEncounter = useCallback((scenario: DebateScenarioKey) => {
     const store = useGameStore.getState();
@@ -42,6 +48,11 @@ const FarmUI: React.FC = () => {
     useFarmStore.getState().closeDialogue();
     GameManager.switchScene('Trial');
   }, []);
+
+  const advanceBeat = useCallback(() => {
+    if (!dialogue) return;
+    setBeatIndex((index) => Math.min(index + 1, dialogue.beats.length - 1));
+  }, [dialogue]);
 
   return (
     <div className={styles.farmUi}>
@@ -65,10 +76,16 @@ const FarmUI: React.FC = () => {
           <div className={styles.characterStage}>
             <CharacterStage
               participantIds={[PLAYER_CHARACTER_ID, dialogue.npcId]}
-              activeSpeakerId={dialogue.npcId}
+              activeSpeakerId={currentBeat?.speakerId ?? dialogue.npcId}
             />
           </div>
-          <FarmDialogue dialogue={dialogue} onStart={startEncounter} onClose={closeDialogue} />
+          <FarmDialogue
+            dialogue={dialogue}
+            beatIndex={beatIndex}
+            onAdvance={advanceBeat}
+            onStart={startEncounter}
+            onClose={closeDialogue}
+          />
         </>
       )}
     </div>

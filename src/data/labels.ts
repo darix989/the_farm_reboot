@@ -221,30 +221,58 @@ const LABELS = {
   /** Shown on the finished-encounter footer; returns to wherever you came from. */
   leaveEncounter: 'Leave',
 
-  // Dialogue: one line per animal per encounter they still owe you, plus a
-  // closing line for when they have nothing left. Keys are
-  // `farmDialog<Npc><n>` in the order the animal offers them.
+  // Farm talk beats. Fallback one-liners (`farmDialog<Npc><n|Done>`) still exist
+  // so a missing table row is never silent. Authored conversations live in
+  // `farmTalk.ts` and point at the `a`/`b`/`c` keys.
   farmDialogHetty1:
     'Oh — hello. You are the donkey, are you not? Never mind. Stand there a moment, I have news.',
+  farmDialogHetty1a: 'Oh — hello. You are the donkey, are you not?',
+  farmDialogHetty1b: 'I am. They call me Rue.',
+  farmDialogHetty1c: 'Never mind. Stand there a moment, I have news.',
   farmDialogHettyDone:
     'I have told you everything I know, and a little that I do not. Go and see the rooster.',
+  farmDialogHettyDoneA: 'I have told you everything I know, and a little that I do not.',
+  farmDialogHettyDoneB: 'Go and see the rooster.',
   farmDialogCass1:
     'You. Stand at the post. I am going to say unpleasant things to you and you are going to answer them properly.',
+  farmDialogCass1a: 'You. Stand at the post.',
+  farmDialogCass1b: 'I can stand.',
+  farmDialogCass1c:
+    'I am going to say unpleasant things to you and you are going to answer them properly.',
   farmDialogCass2:
     'Back again. Good. This time you are going to be the unpleasant one, and you are going to enjoy it. That is the lesson.',
+  farmDialogCass2a: 'Back again. Good.',
+  farmDialogCass2b: 'I came back.',
+  farmDialogCass2c:
+    'This time you are going to be the unpleasant one, and you are going to enjoy it. That is the lesson.',
   farmDialogCassDone:
     'Nothing more from me. Save it for Sunday, and do not let her make it about you.',
+  farmDialogCassDoneA: 'Nothing more from me.',
+  farmDialogCassDoneB: 'Save it for Sunday, and do not let her make it about you.',
   farmDialogBram1:
     'Rue, is it? A courtesy, before Sunday. You should hear how the Flock is voting.',
+  farmDialogBram1a: 'Rue, is it?',
+  farmDialogBram1b: 'I am.',
+  farmDialogBram1c: 'A courtesy, before Sunday. You should hear how the Flock is voting.',
   farmDialogBram2:
     'One more word before the Public Farm. Ask me whatever you like — I will answer straight, which is more than most.',
+  farmDialogBram2a: 'One more word before the Public Farm.',
+  farmDialogBram2b: 'Go on.',
+  farmDialogBram2c: 'Ask me whatever you like — I will answer straight, which is more than most.',
   farmDialogBramDone:
     'I have said more than I should have. The grate is bent. You did not hear it from me.',
+  farmDialogBramDoneA: 'I have said more than I should have.',
+  farmDialogBramDoneB: 'The grate is bent. You did not hear it from me.',
   farmDialogDuchess1:
     'Ah. The newcomer. Tobias has the motion, and the Flock is ready. Shall we settle the pond?',
+  farmDialogDuchess1a: 'Ah. The newcomer.',
+  farmDialogDuchess1b: 'Rue. I live here now.',
+  farmDialogDuchess1c: 'Tobias has the motion, and the Flock is ready. Shall we settle the pond?',
   farmDialogDuchessDone: 'The pond is settled, dear. For now.',
   farmDialogTobiasDone:
     'I moderate; I do not take sides. Speak to the others, and I shall see you on the floor.',
+  farmDialogTobiasDoneA: 'I moderate; I do not take sides.',
+  farmDialogTobiasDoneB: 'Speak to the others, and I shall see you on the floor.',
 
   // --- Phaser placeholder scenes ---
   gameOver: 'Game Over',
