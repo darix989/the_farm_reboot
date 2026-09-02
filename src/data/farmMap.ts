@@ -128,13 +128,15 @@ export const FARM_NPCS: readonly FarmNpc[] = [
   },
   {
     id: 'duchess',
-    x: 700,
+    x: 620,
     y: 620,
     scenarios: ['015_duchess_vs_rue'],
   },
   {
     id: 'tobias',
-    x: 880,
+    // Wider gap than the original placeholder-circle layout: the raccoon's idle pose is a
+    // wide crouch (~330px at farm scale), and the two overlapped badly at the old spacing.
+    x: 980,
     y: 640,
     // The moderator presides; he does not hand out encounters.
     scenarios: [],
