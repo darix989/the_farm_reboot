@@ -47,8 +47,9 @@ Three consequences that catch people out:
 | Debate rules, scoring, analysis grading | React (`useTrialRoundWorkflow`, `TrialUI`) |
 | Which screen is showing | Phaser scene key, mirrored into `gameStore` |
 
-The debate — the bulk of the game — is **entirely React**. The `Trial` Phaser scene draws a
-placeholder and nothing else. Phaser only started doing real work with the overworld.
+The debate rules, scoring and UI are **entirely React**. The `Trial` Phaser scene draws only
+a backdrop and the animated animal cast (`CharacterStage` in React labels it and reacts to
+who's speaking) — see [characters-and-animations.md](./characters-and-animations.md).
 
 ---
 
@@ -84,9 +85,9 @@ boilerplate over your scene.
 
 ---
 
-## State: four stores, two buses
+## State: five stores, two buses
 
-Nothing here is Redux or Context. Four zustand stores, plus two event emitters that do not
+Nothing here is Redux or Context. Five zustand stores, plus two event emitters that do not
 know about each other.
 
 | Store | Scope | Persisted |
@@ -94,6 +95,7 @@ know about each other.
 | `gameStore` | Phaser game/scene refs, `currentScene`, `activeDebateId`, `returnSceneKey`, player position | no |
 | `tutorialStore` | The open tutorial overlay: steps, index, and the interaction gate | no |
 | `farmStore` | Overworld ↔ React handoff: which animal is nearby, which one you are talking to | no |
+| `trialStageStore` | Debate ↔ Phaser handoff: which speaker the `Trial` scene's cast should react to | no |
 | `progressStore` | Which encounters are finished | **yes** — `localStorage`, `the-farm-progress` |
 
 Everything else in a debate — the chosen options, the fallacy guesses, the Insight balance —

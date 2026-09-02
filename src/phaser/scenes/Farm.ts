@@ -15,12 +15,20 @@ import { VirtualJoystick } from '../farm/VirtualJoystick';
 import { farmPalette } from '../farm/farmPalette';
 import { useGameStore } from '../../store/gameStore';
 import { useFarmStore } from '../../store/farmStore';
-import { resolveCharacter } from '../../data/characters';
+import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import getLabel from '../../data/labels';
+import { animalSetup } from '../animals/animalAnimations';
+import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
+import { ANIMAL_STAGING } from '../animals/animalStaging';
 
 const PLAYER_SPEED = 340;
 /** Player body is smaller than the sprite so Rue's feet, not his head, hit walls. */
 const PLAYER_BODY = { width: 38, height: 28, offsetX: 9, offsetY: 24 };
+/**
+ * Vertical offset from the (invisible) physics body's centre down to where the animated
+ * art's feet should sit. Half the body height plus its own top offset, tuned by eye.
+ */
+const PLAYER_ART_FEET_OFFSET = 18;
 
 /**
  * Green Meadows Farm — the Level 1 overworld.
@@ -34,10 +42,13 @@ const PLAYER_BODY = { width: 38, height: 28, offsetX: 9, offsetY: 24 };
  * Rue back where he stood.
  */
 export class Farm extends Scene {
+  /** Physics body only — invisible once animated art is available. See `spawnPlayer`. */
   private player!: Phaser.Physics.Arcade.Sprite;
+  private playerArt: Phaser.GameObjects.Sprite | null = null;
+  private playerAnimator: AnimalAnimator | null = null;
   private keys: FarmKeys | null = null;
   private joystick: VirtualJoystick | null = null;
-  private npcSprites: { npc: FarmNpc; sprite: Phaser.GameObjects.Image }[] = [];
+  private npcActors: { npc: FarmNpc; animator: AnimalAnimator | null }[] = [];
   private moveVector = new Phaser.Math.Vector2();
   private solids!: Phaser.Physics.Arcade.StaticGroup;
 
@@ -111,12 +122,31 @@ export class Farm extends Scene {
   }
 
   private spawnNpcs(): void {
-    this.npcSprites = FARM_NPCS.map((npc) => {
+    this.npcActors = FARM_NPCS.map((npc) => {
       const visual = resolveCharacter(npc.id);
-      this.add.image(npc.x, npc.y + 26, 'farm-shadow').setDepth(npc.y - 1);
-      const sprite = this.add.image(npc.x, npc.y, 'farm-npc').setTint(visual.tint).setDepth(npc.y);
+      const shadow = this.add.image(npc.x, npc.y + 6, 'farm-shadow').setDepth(npc.y - 1);
+
+      let animator: AnimalAnimator | null = null;
+      let nameY = npc.y + 44;
+
+      if (visual.animal && this.textures.exists(visual.animal)) {
+        const setup = animalSetup(visual.animal);
+        const sprite = this.add
+          .sprite(npc.x, npc.y, setup.textureKey, setup.restFrameName)
+          .setOrigin(0.5, 1) // y is the animal's feet
+          .setScale(ANIMAL_STAGING[visual.animal].farmScale)
+          .setDepth(npc.y);
+        shadow.setScale(sprite.displayWidth / 56, 1);
+        animator = attachAnimalAnimator(sprite, setup, { staging: 'farm' });
+        animator?.playIdle();
+        nameY = npc.y + 12;
+      } else {
+        // No art for this character: the original tinted placeholder.
+        this.add.image(npc.x, npc.y, 'farm-npc').setTint(visual.tint).setDepth(npc.y);
+      }
+
       this.add
-        .text(npc.x, npc.y + 44, visual.displayName, {
+        .text(npc.x, nameY, visual.displayName, {
           fontFamily: 'Arial Black',
           fontSize: 20,
           color: farmPalette.worldLabel,
@@ -125,7 +155,8 @@ export class Farm extends Scene {
         })
         .setOrigin(0.5)
         .setDepth(npc.y + 1);
-      return { npc, sprite };
+
+      return { npc, animator };
     });
   }
 
@@ -140,6 +171,24 @@ export class Farm extends Scene {
     this.player.setCollideWorldBounds(true);
     this.player.body?.setSize(PLAYER_BODY.width, PLAYER_BODY.height);
     this.player.body?.setOffset(PLAYER_BODY.offsetX, PLAYER_BODY.offsetY);
+
+    // Arcade bodies size themselves from the current frame, and these atlases' frames vary
+    // wildly in trimmed size — attaching the body straight to an animated sprite would make
+    // Rue's collider breathe with his animation. So the body stays on the invisible
+    // placeholder and the animated art follows it as a separate sprite. Do not "simplify"
+    // this by moving the body onto `playerArt`.
+    const visual = resolveCharacter(PLAYER_CHARACTER_ID);
+    if (visual.animal && this.textures.exists(visual.animal)) {
+      const setup = animalSetup(visual.animal);
+      this.player.setVisible(false);
+      this.playerArt = this.add
+        .sprite(x, y + PLAYER_ART_FEET_OFFSET, setup.textureKey, setup.restFrameName)
+        .setOrigin(0.5, 1)
+        .setScale(ANIMAL_STAGING[visual.animal].farmScale)
+        .setDepth(y);
+      this.playerAnimator = attachAnimalAnimator(this.playerArt, setup, { staging: 'farm' });
+      this.playerAnimator?.playIdle();
+    }
   }
 
   update(): void {
@@ -156,6 +205,12 @@ export class Farm extends Scene {
     // Depth-sort against NPCs so Rue walks behind animals standing further down.
     this.player.setDepth(this.player.y);
 
+    if (this.playerArt) {
+      this.playerArt.setPosition(this.player.x, this.player.y + PLAYER_ART_FEET_OFFSET);
+      this.playerArt.setDepth(this.player.y);
+      if (dir.x !== 0) this.playerArt.setFlipX(dir.x > 0); // art faces left by default
+    }
+
     this.updateNearbyNpc();
   }
 
@@ -163,7 +218,7 @@ export class Farm extends Scene {
     let closestId: string | null = null;
     let closestDist = FARM_INTERACT_RADIUS;
 
-    this.npcSprites.forEach(({ npc }) => {
+    this.npcActors.forEach(({ npc }) => {
       const d = Phaser.Math.Distance.Between(this.player.x, this.player.y, npc.x, npc.y);
       if (d < closestDist) {
         closestDist = d;
@@ -187,5 +242,8 @@ export class Farm extends Scene {
     useGameStore.getState().updatePlayerPosition(this.player.x, this.player.y);
     this.joystick?.destroy();
     this.joystick = null;
+    this.playerAnimator?.destroy();
+    this.playerAnimator = null;
+    this.npcActors.forEach(({ animator }) => animator?.destroy());
   }
 }

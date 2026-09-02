@@ -1,0 +1,2661 @@
+{
+  "textures": [
+    {
+      "image": "donkey-grey/donkey-grey-0.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1997,
+        "h": 1989
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_run-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 42,
+            "y": 78,
+            "w": 591,
+            "h": 563
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 591,
+            "h": 563
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 18,
+            "y": 158,
+            "w": 764,
+            "h": 408
+          },
+          "frame": {
+            "x": 1,
+            "y": 566,
+            "w": 764,
+            "h": 408
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 18,
+            "y": 158,
+            "w": 764,
+            "h": 408
+          },
+          "frame": {
+            "x": 594,
+            "y": 1,
+            "w": 764,
+            "h": 408
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 65,
+            "y": 8,
+            "w": 515,
+            "h": 636
+          },
+          "frame": {
+            "x": 767,
+            "y": 411,
+            "w": 515,
+            "h": 636
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 57,
+            "y": 30,
+            "w": 528,
+            "h": 613
+          },
+          "frame": {
+            "x": 1,
+            "y": 976,
+            "w": 528,
+            "h": 613
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 20,
+            "y": 149,
+            "w": 751,
+            "h": 428
+          },
+          "frame": {
+            "x": 531,
+            "y": 1049,
+            "w": 751,
+            "h": 428
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 18,
+            "y": 145,
+            "w": 750,
+            "h": 460
+          },
+          "frame": {
+            "x": 531,
+            "y": 1479,
+            "w": 750,
+            "h": 460
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 35,
+            "y": 134,
+            "w": 691,
+            "h": 509
+          },
+          "frame": {
+            "x": 1283,
+            "y": 1479,
+            "w": 691,
+            "h": 509
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 85,
+            "w": 546,
+            "h": 560
+          },
+          "frame": {
+            "x": 1284,
+            "y": 411,
+            "w": 546,
+            "h": 560
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 27,
+            "y": 257,
+            "w": 636,
+            "h": 388
+          },
+          "frame": {
+            "x": 1360,
+            "y": 1,
+            "w": 636,
+            "h": 388
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 25,
+            "y": 140,
+            "w": 674,
+            "h": 497
+          },
+          "frame": {
+            "x": 1284,
+            "y": 973,
+            "w": 674,
+            "h": 497
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-1.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1905,
+        "h": 2020
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_run-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 88,
+            "w": 582,
+            "h": 554
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 582,
+            "h": 554
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 24,
+            "y": 127,
+            "w": 689,
+            "h": 510
+          },
+          "frame": {
+            "x": 1,
+            "y": 557,
+            "w": 689,
+            "h": 510
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 29,
+            "y": 109,
+            "w": 665,
+            "h": 530
+          },
+          "frame": {
+            "x": 585,
+            "y": 1,
+            "w": 665,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 41,
+            "y": 89,
+            "w": 557,
+            "h": 553
+          },
+          "frame": {
+            "x": 692,
+            "y": 533,
+            "w": 557,
+            "h": 553
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 35,
+            "y": 92,
+            "w": 630,
+            "h": 547
+          },
+          "frame": {
+            "x": 1,
+            "y": 1069,
+            "w": 630,
+            "h": 547
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 34,
+            "y": 149,
+            "w": 651,
+            "h": 500
+          },
+          "frame": {
+            "x": 633,
+            "y": 1088,
+            "w": 651,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 30,
+            "y": 127,
+            "w": 650,
+            "h": 505
+          },
+          "frame": {
+            "x": 1251,
+            "y": 533,
+            "w": 650,
+            "h": 505
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 42,
+            "y": 160,
+            "w": 646,
+            "h": 488
+          },
+          "frame": {
+            "x": 1252,
+            "y": 1,
+            "w": 646,
+            "h": 488
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 56,
+            "y": 100,
+            "w": 580,
+            "h": 541
+          },
+          "frame": {
+            "x": 1286,
+            "y": 1040,
+            "w": 580,
+            "h": 541
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 22,
+            "y": 210,
+            "w": 618,
+            "h": 436
+          },
+          "frame": {
+            "x": 1286,
+            "y": 1583,
+            "w": 618,
+            "h": 436
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_to_eat-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 16,
+            "y": 240,
+            "w": 616,
+            "h": 405
+          },
+          "frame": {
+            "x": 633,
+            "y": 1590,
+            "w": 616,
+            "h": 405
+          }
+        },
+        {
+          "filename": "__grey_donkey_die-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 337,
+            "w": 619,
+            "h": 327
+          },
+          "frame": {
+            "x": 1,
+            "y": 1618,
+            "w": 619,
+            "h": 327
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-2.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1829,
+        "h": 1837
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_run-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 51,
+            "y": 165,
+            "w": 632,
+            "h": 481
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 632,
+            "h": 481
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 55,
+            "y": 152,
+            "w": 616,
+            "h": 489
+          },
+          "frame": {
+            "x": 1,
+            "y": 484,
+            "w": 616,
+            "h": 489
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_from_eat-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 66,
+            "y": 114,
+            "w": 566,
+            "h": 531
+          },
+          "frame": {
+            "x": 1,
+            "y": 975,
+            "w": 566,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 59,
+            "y": 139,
+            "w": 598,
+            "h": 498
+          },
+          "frame": {
+            "x": 635,
+            "y": 1,
+            "w": 598,
+            "h": 498
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_from_eat-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 66,
+            "y": 114,
+            "w": 566,
+            "h": 531
+          },
+          "frame": {
+            "x": 1235,
+            "y": 1,
+            "w": 566,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_to_eat-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 18,
+            "y": 243,
+            "w": 614,
+            "h": 402
+          },
+          "frame": {
+            "x": 619,
+            "y": 501,
+            "w": 614,
+            "h": 402
+          }
+        },
+        {
+          "filename": "__grey_donkey_die-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 29,
+            "y": 441,
+            "w": 593,
+            "h": 222
+          },
+          "frame": {
+            "x": 1235,
+            "y": 534,
+            "w": 593,
+            "h": 222
+          }
+        },
+        {
+          "filename": "__grey_donkey_die-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 378,
+            "w": 616,
+            "h": 289
+          },
+          "frame": {
+            "x": 1,
+            "y": 1508,
+            "w": 616,
+            "h": 289
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_from_eat-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 67,
+            "y": 114,
+            "w": 565,
+            "h": 531
+          },
+          "frame": {
+            "x": 1235,
+            "y": 758,
+            "w": 565,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_die-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 14,
+            "y": 261,
+            "w": 614,
+            "h": 398
+          },
+          "frame": {
+            "x": 619,
+            "y": 905,
+            "w": 614,
+            "h": 398
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_from_eat-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 68,
+            "y": 114,
+            "w": 564,
+            "h": 531
+          },
+          "frame": {
+            "x": 619,
+            "y": 1305,
+            "w": 564,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_from_eat-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 68,
+            "y": 114,
+            "w": 564,
+            "h": 531
+          },
+          "frame": {
+            "x": 1185,
+            "y": 1305,
+            "w": 564,
+            "h": 531
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1832,
+        "h": 1898
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_transition_from_eat-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 69,
+            "y": 114,
+            "w": 563,
+            "h": 531
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 563,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_from_eat-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 69,
+            "y": 114,
+            "w": 563,
+            "h": 531
+          },
+          "frame": {
+            "x": 1,
+            "y": 534,
+            "w": 563,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_from_eat-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 114,
+            "w": 562,
+            "h": 531
+          },
+          "frame": {
+            "x": 566,
+            "y": 1,
+            "w": 562,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_from_eat-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 114,
+            "w": 562,
+            "h": 531
+          },
+          "frame": {
+            "x": 1,
+            "y": 1067,
+            "w": 562,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 561,
+            "h": 531
+          },
+          "frame": {
+            "x": 566,
+            "y": 534,
+            "w": 561,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 561,
+            "h": 531
+          },
+          "frame": {
+            "x": 566,
+            "y": 534,
+            "w": 561,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_die-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 561,
+            "h": 531
+          },
+          "frame": {
+            "x": 1130,
+            "y": 1,
+            "w": 561,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_to_eat-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 561,
+            "h": 531
+          },
+          "frame": {
+            "x": 1130,
+            "y": 1,
+            "w": 561,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 45,
+            "y": 174,
+            "w": 603,
+            "h": 474
+          },
+          "frame": {
+            "x": 565,
+            "y": 1067,
+            "w": 603,
+            "h": 474
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_to_eat-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 28,
+            "y": 192,
+            "w": 604,
+            "h": 453
+          },
+          "frame": {
+            "x": 1129,
+            "y": 534,
+            "w": 604,
+            "h": 453
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_to_eat-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 27,
+            "y": 196,
+            "w": 605,
+            "h": 449
+          },
+          "frame": {
+            "x": 1170,
+            "y": 989,
+            "w": 605,
+            "h": 449
+          }
+        },
+        {
+          "filename": "__grey_donkey_die-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 16,
+            "y": 411,
+            "w": 607,
+            "h": 255
+          },
+          "frame": {
+            "x": 1,
+            "y": 1600,
+            "w": 607,
+            "h": 255
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_to_eat-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 22,
+            "y": 291,
+            "w": 610,
+            "h": 354
+          },
+          "frame": {
+            "x": 610,
+            "y": 1543,
+            "w": 610,
+            "h": 354
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_to_eat-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 23,
+            "y": 289,
+            "w": 609,
+            "h": 356
+          },
+          "frame": {
+            "x": 1222,
+            "y": 1440,
+            "w": 609,
+            "h": 356
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-4.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1752,
+        "h": 2030
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_walk_to_left-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 61,
+            "y": 124,
+            "w": 592,
+            "h": 514
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 592,
+            "h": 514
+          }
+        },
+        {
+          "filename": "__grey_donkey_die-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 46,
+            "y": 152,
+            "w": 585,
+            "h": 514
+          },
+          "frame": {
+            "x": 1,
+            "y": 517,
+            "w": 585,
+            "h": 514
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 561,
+            "h": 531
+          },
+          "frame": {
+            "x": 1,
+            "y": 1033,
+            "w": 561,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 65,
+            "y": 127,
+            "w": 586,
+            "h": 498
+          },
+          "frame": {
+            "x": 595,
+            "y": 1,
+            "w": 586,
+            "h": 498
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 561,
+            "h": 531
+          },
+          "frame": {
+            "x": 1183,
+            "y": 1,
+            "w": 561,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_die-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 27,
+            "y": 197,
+            "w": 602,
+            "h": 463
+          },
+          "frame": {
+            "x": 1,
+            "y": 1566,
+            "w": 602,
+            "h": 463
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_from_eat-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 561,
+            "h": 531
+          },
+          "frame": {
+            "x": 564,
+            "y": 1033,
+            "w": 561,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_to_eat-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 59,
+            "y": 148,
+            "w": 573,
+            "h": 497
+          },
+          "frame": {
+            "x": 588,
+            "y": 534,
+            "w": 573,
+            "h": 497
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_to_eat-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 44,
+            "y": 315,
+            "w": 588,
+            "h": 340
+          },
+          "frame": {
+            "x": 1163,
+            "y": 534,
+            "w": 588,
+            "h": 340
+          }
+        },
+        {
+          "filename": "__grey_donkey_die-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 47,
+            "y": 461,
+            "w": 573,
+            "h": 215
+          },
+          "frame": {
+            "x": 605,
+            "y": 1566,
+            "w": 573,
+            "h": 215
+          }
+        },
+        {
+          "filename": "__grey_donkey_die-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 47,
+            "y": 461,
+            "w": 573,
+            "h": 215
+          },
+          "frame": {
+            "x": 605,
+            "y": 1783,
+            "w": 573,
+            "h": 215
+          }
+        },
+        {
+          "filename": "__grey_donkey_transition_to_eat-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 58,
+            "y": 149,
+            "w": 574,
+            "h": 496
+          },
+          "frame": {
+            "x": 1163,
+            "y": 876,
+            "w": 574,
+            "h": 496
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 560,
+            "h": 531
+          },
+          "frame": {
+            "x": 1180,
+            "y": 1374,
+            "w": 560,
+            "h": 531
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-5.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1719,
+        "h": 1590
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_walk_to_left-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 40,
+            "y": 123,
+            "w": 575,
+            "h": 518
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 575,
+            "h": 518
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 35,
+            "y": 122,
+            "w": 579,
+            "h": 519
+          },
+          "frame": {
+            "x": 578,
+            "y": 1,
+            "w": 579,
+            "h": 519
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 114,
+            "w": 559,
+            "h": 531
+          },
+          "frame": {
+            "x": 1159,
+            "y": 1,
+            "w": 559,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 120,
+            "w": 578,
+            "h": 519
+          },
+          "frame": {
+            "x": 1,
+            "y": 522,
+            "w": 578,
+            "h": 519
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 560,
+            "h": 531
+          },
+          "frame": {
+            "x": 581,
+            "y": 522,
+            "w": 560,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 560,
+            "h": 531
+          },
+          "frame": {
+            "x": 1143,
+            "y": 534,
+            "w": 560,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 560,
+            "h": 531
+          },
+          "frame": {
+            "x": 1,
+            "y": 1043,
+            "w": 560,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-24.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 560,
+            "h": 531
+          },
+          "frame": {
+            "x": 563,
+            "y": 1055,
+            "w": 560,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 66,
+            "y": 120,
+            "w": 579,
+            "h": 522
+          },
+          "frame": {
+            "x": 1125,
+            "y": 1067,
+            "w": 579,
+            "h": 522
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-6.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1714,
+        "h": 1597
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_eating-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 559,
+            "h": 531
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 559,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 64,
+            "y": 109,
+            "w": 577,
+            "h": 529
+          },
+          "frame": {
+            "x": 1,
+            "y": 534,
+            "w": 577,
+            "h": 529
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 41,
+            "y": 117,
+            "w": 574,
+            "h": 522
+          },
+          "frame": {
+            "x": 562,
+            "y": 1,
+            "w": 574,
+            "h": 522
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 559,
+            "h": 531
+          },
+          "frame": {
+            "x": 580,
+            "y": 525,
+            "w": 559,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_run-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 574,
+            "h": 520
+          },
+          "frame": {
+            "x": 1138,
+            "y": 1,
+            "w": 574,
+            "h": 520
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 45,
+            "y": 123,
+            "w": 572,
+            "h": 521
+          },
+          "frame": {
+            "x": 580,
+            "y": 1058,
+            "w": 572,
+            "h": 521
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 46,
+            "y": 118,
+            "w": 571,
+            "h": 521
+          },
+          "frame": {
+            "x": 1141,
+            "y": 523,
+            "w": 571,
+            "h": 521
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 114,
+            "w": 559,
+            "h": 531
+          },
+          "frame": {
+            "x": 1,
+            "y": 1065,
+            "w": 559,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 559,
+            "h": 531
+          },
+          "frame": {
+            "x": 1154,
+            "y": 1046,
+            "w": 559,
+            "h": 531
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-7.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1701,
+        "h": 1583
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_walk_to_left-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 51,
+            "y": 120,
+            "w": 567,
+            "h": 524
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 567,
+            "h": 524
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-23.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 559,
+            "h": 531
+          },
+          "frame": {
+            "x": 1,
+            "y": 527,
+            "w": 559,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 50,
+            "y": 122,
+            "w": 568,
+            "h": 521
+          },
+          "frame": {
+            "x": 570,
+            "y": 1,
+            "w": 568,
+            "h": 521
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 55,
+            "y": 121,
+            "w": 566,
+            "h": 521
+          },
+          "frame": {
+            "x": 1,
+            "y": 1060,
+            "w": 566,
+            "h": 521
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-22.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 558,
+            "h": 531
+          },
+          "frame": {
+            "x": 1140,
+            "y": 1,
+            "w": 558,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 56,
+            "y": 124,
+            "w": 566,
+            "h": 516
+          },
+          "frame": {
+            "x": 570,
+            "y": 524,
+            "w": 566,
+            "h": 516
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 114,
+            "w": 558,
+            "h": 531
+          },
+          "frame": {
+            "x": 569,
+            "y": 1042,
+            "w": 558,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 69,
+            "y": 114,
+            "w": 555,
+            "h": 531
+          },
+          "frame": {
+            "x": 1138,
+            "y": 534,
+            "w": 555,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__grey_donkey_buck-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 40,
+            "y": 132,
+            "w": 571,
+            "h": 515
+          },
+          "frame": {
+            "x": 1129,
+            "y": 1067,
+            "w": 571,
+            "h": 515
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-8.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1688,
+        "h": 1594
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_eating-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 558,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 558,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 60,
+            "y": 118,
+            "w": 565,
+            "h": 524
+          },
+          "frame": {
+            "x": 1,
+            "y": 533,
+            "w": 565,
+            "h": 524
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 65,
+            "y": 116,
+            "w": 563,
+            "h": 528
+          },
+          "frame": {
+            "x": 561,
+            "y": 1,
+            "w": 563,
+            "h": 528
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 558,
+            "h": 530
+          },
+          "frame": {
+            "x": 568,
+            "y": 531,
+            "w": 558,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_walk_to_left-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 117,
+            "w": 561,
+            "h": 527
+          },
+          "frame": {
+            "x": 1126,
+            "y": 1,
+            "w": 561,
+            "h": 527
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 69,
+            "y": 115,
+            "w": 557,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 1059,
+            "w": 557,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 557,
+            "h": 530
+          },
+          "frame": {
+            "x": 560,
+            "y": 1063,
+            "w": 557,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 557,
+            "h": 530
+          },
+          "frame": {
+            "x": 1119,
+            "y": 1063,
+            "w": 557,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 557,
+            "h": 530
+          },
+          "frame": {
+            "x": 1128,
+            "y": 530,
+            "w": 557,
+            "h": 530
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-9.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1675,
+        "h": 1596
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_eating-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 557,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 557,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 69,
+            "y": 115,
+            "w": 557,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 533,
+            "w": 557,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-21.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 557,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 1065,
+            "w": 557,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 557,
+            "h": 530
+          },
+          "frame": {
+            "x": 560,
+            "y": 1,
+            "w": 557,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 555,
+            "h": 530
+          },
+          "frame": {
+            "x": 1119,
+            "y": 1,
+            "w": 555,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 69,
+            "y": 115,
+            "w": 556,
+            "h": 530
+          },
+          "frame": {
+            "x": 560,
+            "y": 533,
+            "w": 556,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_eating-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 69,
+            "y": 115,
+            "w": 556,
+            "h": 530
+          },
+          "frame": {
+            "x": 1118,
+            "y": 533,
+            "w": 556,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-20.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 556,
+            "h": 530
+          },
+          "frame": {
+            "x": 560,
+            "y": 1065,
+            "w": 556,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 556,
+            "h": 530
+          },
+          "frame": {
+            "x": 1118,
+            "y": 1065,
+            "w": 556,
+            "h": 530
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-10.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1664,
+        "h": 1596
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_idle-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 555,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 555,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 553,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 533,
+            "w": 553,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 553,
+            "h": 530
+          },
+          "frame": {
+            "x": 556,
+            "y": 533,
+            "w": 553,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 552,
+            "h": 530
+          },
+          "frame": {
+            "x": 558,
+            "y": 1,
+            "w": 552,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 552,
+            "h": 530
+          },
+          "frame": {
+            "x": 1111,
+            "y": 533,
+            "w": 552,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 551,
+            "h": 530
+          },
+          "frame": {
+            "x": 1112,
+            "y": 1,
+            "w": 551,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 551,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 1065,
+            "w": 551,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 551,
+            "h": 530
+          },
+          "frame": {
+            "x": 554,
+            "y": 1065,
+            "w": 551,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 115,
+            "w": 551,
+            "h": 530
+          },
+          "frame": {
+            "x": 1107,
+            "y": 1065,
+            "w": 551,
+            "h": 530
+          }
+        }
+      ]
+    },
+    {
+      "image": "donkey-grey/donkey-grey-11.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1102,
+        "h": 1596
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__grey_donkey_idle-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 550,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 550,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 550,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 533,
+            "w": 550,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 549,
+            "h": 530
+          },
+          "frame": {
+            "x": 1,
+            "y": 1065,
+            "w": 549,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__grey_donkey_idle-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 784,
+            "h": 702
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 115,
+            "w": 549,
+            "h": 530
+          },
+          "frame": {
+            "x": 552,
+            "y": 1065,
+            "w": 549,
+            "h": 530
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "3.0",
+    "smartupdate": "$TexturePacker:SmartUpdate:8cf0e4c9d04a8caeda46ef698f368e0a:548bc204f6f617c7992da1595f1ce2d2:61eb069a4d521f189e2ac06e99e1bdcd$"
+  }
+}

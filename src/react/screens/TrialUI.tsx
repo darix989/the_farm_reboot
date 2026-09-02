@@ -29,12 +29,12 @@ import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
 import {
   activeSpeakerIdForWorkflow,
-  debateParticipantIds,
   getSpeakerName,
   getStartingInsightPoints,
   moderatorOpinionPlainText,
   statementText,
 } from '../trial/utils/trialHelpers';
+import { debateParticipantIds, stageOrder } from '../../data/debateCast';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
 import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
@@ -43,6 +43,8 @@ import CharacterStage from '../farm/CharacterStage';
 import getLabel from '../../data/labels';
 import { useGameStore } from '../../store/gameStore';
 import { useProgressStore } from '../../store/progressStore';
+import { useTrialStageStore } from '../../store/trialStageStore';
+import { resolveCharacter } from '../../data/characters';
 import { GameManager } from '../../utils/gameManager';
 
 interface TrialUIProps {
@@ -661,7 +663,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     ? getLabel('workflowNpcSpeakingMustAnalyze')
     : wf.wizardMessage;
 
-  const participantIds = useMemo(() => debateParticipantIds(debate), [debate]);
+  // `stageOrder` matches the left-to-right order the Phaser `Trial` scene lays its sprites
+  // out in (player first, moderator centred in a 3+ cast) — the nameplates below must use
+  // the same order or they end up over the wrong sprite.
+  const participantIds = useMemo(() => stageOrder(debateParticipantIds(debate)), [debate]);
   const activeSpeakerId = useMemo(
     () =>
       activeSpeakerIdForWorkflow(
@@ -680,6 +685,25 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     ],
   );
 
+  // The Phaser `Trial` scene reacts to the active speaker through `trialStageStore` — see
+  // that store's docstring for why a store and not `EventBus`. The setter no-ops when the
+  // id is unchanged, so this is safe on every render, including StrictMode's double-mount.
+  useEffect(() => {
+    useTrialStageStore.getState().setActiveSpeaker(activeSpeakerId);
+  }, [activeSpeakerId]);
+
+  useEffect(() => {
+    return () => useTrialStageStore.getState().resetStage();
+  }, []);
+
+  // Only scenarios whose whole cast has sprite art get the nameplate-only stage; legacy
+  // debates (no `CHARACTERS.animal` entry for their speakers) keep their CSS busts, since
+  // the Phaser scene draws no cast for them.
+  const hasPhaserCast = useMemo(
+    () => participantIds.some((id) => resolveCharacter(id).animal !== null),
+    [participantIds],
+  );
+
   return (
     <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
       <TrialLayout
@@ -688,6 +712,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             participantIds={participantIds}
             activeSpeakerId={activeSpeakerId}
             layout="hole"
+            variant={hasPhaserCast ? 'nameplates' : 'busts'}
           />
         }
         feedback={

@@ -21,10 +21,11 @@ Start here; each entry says what question it answers.
 
 | Doc | What it is |
 |---|---|
-| [architecture.md](./architecture.md) | How the app fits together: Phaser and React as siblings over one stage, scene-key routing, the four stores and two event buses, how content flows from JSON to screen, and how to verify a change. **Start here.** |
+| [architecture.md](./architecture.md) | How the app fits together: Phaser and React as siblings over one stage, scene-key routing, the five stores and two event buses, how content flows from JSON to screen, and how to verify a change. **Start here.** |
 | [encounters.md](./encounters.md) | The authoring reference for everything the player plays — the scenario schema, rounds and options, unlock conditions, and the `mechanics` flags that let an encounter ship as something smaller than a full debate. |
 | [level_01_the_pond_motion.md](./level_01_the_pond_motion.md) | Level 1 in full: the story, the cast, the six-encounter ladder from a two-minute gossip up to the ten-beat boss debate, and the authored dialogue for every rung. The source of truth for `src/data/debates/010_*` … `015_*`. |
 | [farm_overworld.md](./farm_overworld.md) | How the Phaser gameplay works: the Phaser/React split, the placeholder-art texture contract, how an encounter is launched and returned from, and how to add an animal or a location. Read before touching the `Farm` scene. |
+| [characters-and-animations.md](./characters-and-animations.md) | How Level 1's cast became animated spritesheet sprites (Farm overworld and Trial debate stage alike): atlases, the weighted idle/alert behaviour model, and how to add a new animal. |
 
 ---
 
@@ -34,7 +35,7 @@ Start here; each entry says what question it answers.
 |---|---|
 | Understand how the app is put together | `architecture.md` |
 | Write a new encounter or debate | `encounters.md` for the schema, `level_01_the_pond_motion.md` for the pattern, `logical_fallacies_distribution.md` for which fallacy belongs where |
-| Add an animal, a location, or anything in the overworld | `farm_overworld.md` |
+| Add an animal, a location, or anything in the overworld | `farm_overworld.md`, then `characters-and-animations.md` for the sprite/animation part |
 | Understand a fallacy well enough to write a line for it | `logical_fallacies_intro.md` |
 | Change the debate UI itself | [`src/react/AGENTS.md`](../src/react/AGENTS.md) — the deep guide to panels, modals and the event bus |
 | Find a file | [`AGENTS.md`](../AGENTS.md) at the repo root |

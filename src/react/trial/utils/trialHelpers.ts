@@ -18,25 +18,6 @@ export function getSpeakerName(debate: DebateScenarioJson, speakerId: string): s
   return debate.characters?.[speakerId] ?? speakerId.charAt(0).toUpperCase() + speakerId.slice(1);
 }
 
-/** Who belongs on the character stage for this scenario. */
-export function debateParticipantIds(debate: DebateScenarioJson): string[] {
-  const fromMap = debate.characters ? Object.keys(debate.characters) : [];
-  if (fromMap.length > 0) return fromMap;
-
-  const ids = new Set<string>([PLAYER_CHARACTER_ID]);
-  for (const round of debate.rounds) {
-    if (round.kind === 'npc') {
-      ids.add(round.speakerId);
-      continue;
-    }
-    if (round.opponentPrompt) ids.add(round.opponentPrompt.speakerId);
-    for (const response of round.opponentResponses ?? []) {
-      ids.add(response.statement.speakerId);
-    }
-  }
-  return [...ids];
-}
-
 /** Current speaker for CharacterStage highlighting. Intro/complete/recap leave everyone equal. */
 export function activeSpeakerIdForWorkflow(
   gamePhase: GamePhase,

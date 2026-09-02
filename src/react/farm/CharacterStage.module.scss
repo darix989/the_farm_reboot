@@ -89,3 +89,25 @@ $player-outline: #2a2118;
 .stageHole .name {
   font-size: var(--ui-font-subtitle);
 }
+
+/* Nameplate-only variant: labels the Phaser `Trial` scene's animated cast instead of
+   drawing CSS busts. One evenly-spaced slot per participant, mirroring the sprite layout
+   `Trial.ts` computes for the same cast. */
+.nameplateRow {
+  justify-content: space-around;
+}
+
+.nameplateSlot {
+  flex: 1 1 0;
+  align-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .participant {
+    transition: none;
+  }
+
+  .active .bust {
+    transform: none;
+  }
+}

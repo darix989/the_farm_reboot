@@ -54,6 +54,8 @@ src/react/farm/
   CharacterStage.tsx            placeholder busts (farm talk + Trial hole)
   FarmUI.module.scss
 src/data/farmTalk.ts            beat lists keyed by npc + offer slot
+src/phaser/animals/              placeholder animal spritesheets — see
+                                  docs/characters-and-animations.md
 ```
 
 `main.ts` gained a `physics` block (Arcade, zero gravity — it had none at all, so
@@ -80,18 +82,19 @@ error, not a runtime shrug.
 
 ## Placeholder art and the texture contract
 
-The repo ships no character or terrain art — only the Phaser template's `bg/logo/star` and
-the fallacy SVGs. So every farm texture is drawn with `Graphics` and baked into the texture
+Terrain still ships no art of its own — only the Phaser template's `bg/logo/star` and the
+fallacy SVGs. Every zone texture is drawn with `Graphics` and baked into the texture
 manager by `ensureFarmTextures()`. Zero binary assets; it works the day it is written.
 
-The point is the **key contract**. Replacing placeholders with real art means loading images
-under these exact keys in `Preloader` and deleting `farmTextures.ts`. No scene code changes:
+The point is the **key contract**. Replacing a placeholder with real art means loading an
+image under its exact key in `Preloader` and deleting the matching line from
+`farmTextures.ts`. No scene code changes:
 
 | Key | Size | Placeholder |
 |---|---|---|
 | `farm-zone-<kind>` | 64×64, tiled | flat colour + fixed dither |
-| `farm-player` | 56×56 | rounded body with a nose |
-| `farm-npc` | 56×56 | circle, tinted per animal |
+| `farm-player` | 56×56 | rounded body with a nose (now hidden — see below) |
+| `farm-npc` | 56×56 | circle, tinted per animal (fallback when a character has no `animal`) |
 | `farm-shadow` | 56×16 | soft ellipse |
 | `farm-stick-base` / `farm-stick-thumb` | 160 / 72 | two rings |
 
@@ -101,8 +104,13 @@ because React StrictMode tears the whole game down and rebuilds it in dev.
 The tile dither is a **fixed** checker, not random — random noise makes tile seams visible
 where they repeat.
 
-> Be honest about what this looks like: coloured blocks and circles. The farm will not read
-> as a game until real art lands.
+**Rue and the six Level 1 animals are no longer placeholders.** Any character with an
+`animal` entry in `CHARACTERS` (`src/data/characters.ts`) is drawn as a real spritesheet
+sprite instead of a tinted circle — see
+[characters-and-animations.md](./characters-and-animations.md) for the whole pipeline. The
+`farm-player` / `farm-npc` textures still exist and are still the fallback for any character
+without an `animal` entry (today: none in Level 1, but the mechanism stays for whatever is
+added next). Terrain is still coloured blocks.
 
 ---
 
@@ -243,15 +251,16 @@ NPCs pinched between two solid zones are awkward to reach.
 
 ## What is not here
 
-No pathfinding, no NPC schedules, no day/night, no inventory, no animations, no audio. The
-player is a sprite with a velocity and a depth sort.
+No pathfinding, no NPC schedules, no day/night, no inventory, no audio. The player is a
+sprite with a velocity and a depth sort — animated, as of
+[characters-and-animations.md](./characters-and-animations.md), but not pathfinding.
 
 Known rough edges:
 
-- **The Trial scene's placeholder.** `Trial.ts` still draws "This is where the trial gameplay
-  would be implemented" across the whole canvas — visible through the top-left hole and,
-  dimmed, behind the panels. Increasingly odd next to a real overworld.
-- **Placeholder art**, as above.
+- **Terrain is still coloured blocks.** Only characters have real art.
+- **Rue only idles or eats on the farm** — there is no walk-cycle wired to movement yet
+  (`donkey-grey` has `run` / `walk_to_left` animations that go unused). See that doc's
+  "adding an animal" section for where a `move` behaviour would plug in.
 - **`GameManager.whenReady` / `whenSceneReady` are broken** and were left alone. They pass a
   `(selector, listener)` pair to `useGameStore.subscribe`, which is the zustand v3/v4
   signature; this repo is on v5 without `subscribeWithSelector`, so the selector is invoked

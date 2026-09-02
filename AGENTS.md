@@ -55,6 +55,8 @@ src/
     labels.ts           # Central UI strings + default export getLabel()
     levels.ts           # Scenario registry: DebateScenarioKey, DEBATES, menu order
     farmMap.ts          # Overworld zones + NPCs
+    characters.ts       # Cast roster: name, tint, and (if any) animated `animal` sprite
+    debateCast.ts        # Who's on the character stage for a scenario + their stage order
     debates/            # One JSON file per encounter
     logicalFallacies.json
   phaser/
@@ -63,6 +65,9 @@ src/
     EventBus.ts         # Phaser→React bus (3 events)
     scenes/             # Boot, Preloader, MainMenu, Farm, Game, Trial, GameOver
     farm/               # Overworld helpers: textures, palette, input, joystick
+    animals/            # Placeholder animal spritesheets: descriptors, animation
+                        #   builder, AnimalAnimator playback — see
+                        #   docs/characters-and-animations.md
   react/
     AGENTS.md           # React-layer guide (TrialUI, debate workflow, event bus)
     uiTypography.scss   # @mixin font-scale → --ui-font-* on `.react-root`
@@ -96,6 +101,7 @@ src/
     gameStore.ts        # Phaser refs, currentScene, activeDebateId, returnSceneKey
     tutorialStore.ts    # Open tutorial overlay + its interaction gate
     farmStore.ts        # Overworld ↔ React handoff
+    trialStageStore.ts  # Debate ↔ Phaser handoff: active speaker for the Trial cast
     progressStore.ts    # Completed encounters (persisted to localStorage)
   utils/
     constants.ts        # PHASER_PARENT_ID, stage design size, rem scaling
@@ -156,7 +162,9 @@ Default `npm run dev` / `build` run `log.js`, which performs an anonymous GET to
 
 ## Debate / Trial system
 
-The Trial scene uses a turn-based debate loop driven entirely by React state (no Phaser logic):
+The Trial scene uses a turn-based debate loop driven entirely by React state. Phaser's role
+is limited to drawing the animated cast behind the transparent game-hole panel — see
+[`docs/characters-and-animations.md`](docs/characters-and-animations.md):
 
 - All debate content is declared in a **`DebateScenarioJson`** value (see `src/types/debateEntities.ts`).
 - The `TrialUI` overlay (see `src/react/AGENTS.md`) reads this value and drives the full interaction.
@@ -171,6 +179,7 @@ The Trial scene uses a turn-based debate loop driven entirely by React state (no
 - `docs/README.md` — index of the docs folder.
 - `docs/encounters.md` — authoring reference for scenarios: schema, rounds, options, unlock conditions, `mechanics` flags.
 - `docs/farm_overworld.md` — the Phaser overworld: the Phaser/React split, the placeholder-art texture contract, how encounters are launched and returned from, how to add an animal.
+- `docs/characters-and-animations.md` — how the placeholder animal spritesheets work: atlases, the weighted idle/alert behaviour model, and how to add a new animal.
 - `docs/level_01_the_pond_motion.md` — Level 1 story bible, cast, scenario ladder and authored dialog.
 - `docs/to_process/` — older design notes and integration write-ups kept for reference, not yet reconciled with what shipped (`plan_001.md`, `plan_002.md`, the two Zustand integration notes, `random_notes.md`).
 - `src/react/AGENTS.md` — detailed guide to the React overlay layer and the Trial/debate workflow.
