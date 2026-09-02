@@ -21,7 +21,15 @@
 .trialGameHole {
   grid-column: 1;
   grid-row: 1;
+  display: flex;
   min-height: 0;
+  min-width: 0;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--ui-color-border-ring);
+  background: var(--ui-color-surface-trial-panel);
   pointer-events: none;
 }
 

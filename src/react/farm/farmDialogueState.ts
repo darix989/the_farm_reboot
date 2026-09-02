@@ -1,5 +1,6 @@
 import type { Labels } from '../../data/labels';
 import type { DebateScenarioKey } from '../../data/levels';
+import { characterById } from '../../data/characters';
 import { farmNpcById } from '../../data/farmMap';
 import { useProgressStore } from '../../store/progressStore';
 
@@ -25,7 +26,8 @@ function capitalize(id: string): string {
 
 export function farmDialogueFor(npcId: string): FarmDialogueState | null {
   const npc = farmNpcById(npcId);
-  if (!npc) return null;
+  const visual = characterById(npcId);
+  if (!npc || !visual) return null;
 
   const next = useProgressStore.getState().nextScenarioFor(npc.scenarios);
   const index = next ? npc.scenarios.indexOf(next) + 1 : 0;
@@ -33,7 +35,7 @@ export function farmDialogueFor(npcId: string): FarmDialogueState | null {
 
   return {
     npcId: npc.id,
-    nameLabel: npc.nameLabel,
+    nameLabel: visual.nameLabel,
     messageLabel: `farmDialog${capitalize(npc.id)}${suffix}` as Labels,
     scenario: next,
   };

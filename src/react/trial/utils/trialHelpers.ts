@@ -1,16 +1,65 @@
+import { PLAYER_CHARACTER_ID } from '../../../data/characters';
+import getLabel from '../../../data/labels';
+import type { GamePhase } from '../../hooks/useTrialRoundWorkflow';
 import {
   PLAYER_OPTION_IMPACT_ABS_MAX,
   type DebateScenarioJson,
+  type NpcRoundEntry,
+  type OpponentResponse,
   type PlayerOption,
+  type PlayerRoundEntry,
   type RoundEntry,
   type Sentence,
   type Side,
 } from '../../../types/debateEntities';
 import { uiColor } from '../../uiColor';
-import getLabel from '../../../data/labels';
 
 export function getSpeakerName(debate: DebateScenarioJson, speakerId: string): string {
   return debate.characters?.[speakerId] ?? speakerId.charAt(0).toUpperCase() + speakerId.slice(1);
+}
+
+/** Who belongs on the character stage for this scenario. */
+export function debateParticipantIds(debate: DebateScenarioJson): string[] {
+  const fromMap = debate.characters ? Object.keys(debate.characters) : [];
+  if (fromMap.length > 0) return fromMap;
+
+  const ids = new Set<string>([PLAYER_CHARACTER_ID]);
+  for (const round of debate.rounds) {
+    if (round.kind === 'npc') {
+      ids.add(round.speakerId);
+      continue;
+    }
+    if (round.opponentPrompt) ids.add(round.opponentPrompt.speakerId);
+    for (const response of round.opponentResponses ?? []) {
+      ids.add(response.statement.speakerId);
+    }
+  }
+  return [...ids];
+}
+
+/** Current speaker for CharacterStage highlighting. Intro/complete/recap leave everyone equal. */
+export function activeSpeakerIdForWorkflow(
+  gamePhase: GamePhase,
+  currentNpcRound: NpcRoundEntry | null,
+  currentPlayerRound: PlayerRoundEntry | null,
+  selectedOption: PlayerOption | null,
+  activeOpponentResponse: OpponentResponse | null,
+): string | null {
+  switch (gamePhase) {
+    case 'npc_speaking':
+      return currentNpcRound?.speakerId ?? null;
+    case 'player_choosing':
+      if (!selectedOption && currentPlayerRound?.opponentPrompt) {
+        return currentPlayerRound.opponentPrompt.speakerId;
+      }
+      return PLAYER_CHARACTER_ID;
+    case 'player_confirming':
+      return PLAYER_CHARACTER_ID;
+    case 'npc_responding':
+      return activeOpponentResponse?.statement.speakerId ?? null;
+    default:
+      return null;
+  }
 }
 
 /**

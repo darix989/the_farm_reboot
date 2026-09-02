@@ -15,6 +15,7 @@ import { VirtualJoystick } from '../farm/VirtualJoystick';
 import { farmPalette } from '../farm/farmPalette';
 import { useGameStore } from '../../store/gameStore';
 import { useFarmStore } from '../../store/farmStore';
+import { resolveCharacter } from '../../data/characters';
 import getLabel from '../../data/labels';
 
 const PLAYER_SPEED = 340;
@@ -111,10 +112,11 @@ export class Farm extends Scene {
 
   private spawnNpcs(): void {
     this.npcSprites = FARM_NPCS.map((npc) => {
+      const visual = resolveCharacter(npc.id);
       this.add.image(npc.x, npc.y + 26, 'farm-shadow').setDepth(npc.y - 1);
-      const sprite = this.add.image(npc.x, npc.y, 'farm-npc').setTint(npc.tint).setDepth(npc.y);
+      const sprite = this.add.image(npc.x, npc.y, 'farm-npc').setTint(visual.tint).setDepth(npc.y);
       this.add
-        .text(npc.x, npc.y + 44, getLabel(npc.nameLabel), {
+        .text(npc.x, npc.y + 44, visual.displayName, {
           fontFamily: 'Arial Black',
           fontSize: 20,
           color: farmPalette.worldLabel,

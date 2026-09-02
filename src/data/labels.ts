@@ -202,6 +202,7 @@ const LABELS = {
 
   // --- Overworld (Green Meadows Farm) ---
   enterTheFarm: 'Enter the Farm',
+  farmNpcRue: 'Rue',
   farmNpcHetty: 'Hetty',
   farmNpcCass: 'Cass',
   farmNpcBram: 'Bram',
@@ -216,6 +217,7 @@ const LABELS = {
   farmTalk: 'Talk',
   farmNotNow: 'Not now',
   farmLeave: 'Leave',
+  characterStage: 'Participants: {names}',
   /** Shown on the finished-encounter footer; returns to wherever you came from. */
   leaveEncounter: 'Leave',
 

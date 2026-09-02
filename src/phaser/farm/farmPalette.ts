@@ -10,6 +10,8 @@
  * Terrain colours are placeholder art. See `farmTextures.ts` for the texture-key
  * contract that lets real art replace them.
  */
+import { PLAYER_TINT } from '../../data/characters';
+
 export const farmPalette = {
   /** Terrain. */
   grass: 0x3f6b3a,
@@ -23,8 +25,8 @@ export const farmPalette = {
   trough: 0x6b7280,
   post: 0x8a6a3f,
 
-  /** Actors. */
-  player: 0xe8d8b0,
+  /** Actors. Tint lives on the shared cast so React busts stay in lockstep. */
+  player: PLAYER_TINT,
   playerOutline: 0x2a2118,
 
   /** Shared with the React palette. */

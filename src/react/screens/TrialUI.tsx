@@ -28,6 +28,8 @@ import InteractivePanel from '../trial/panels/InteractivePanel';
 import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
 import {
+  activeSpeakerIdForWorkflow,
+  debateParticipantIds,
   getSpeakerName,
   getStartingInsightPoints,
   moderatorOpinionPlainText,
@@ -37,6 +39,7 @@ import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/
 import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
+import CharacterStage from '../farm/CharacterStage';
 import getLabel from '../../data/labels';
 import { useGameStore } from '../../store/gameStore';
 import { useProgressStore } from '../../store/progressStore';
@@ -658,9 +661,35 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     ? getLabel('workflowNpcSpeakingMustAnalyze')
     : wf.wizardMessage;
 
+  const participantIds = useMemo(() => debateParticipantIds(debate), [debate]);
+  const activeSpeakerId = useMemo(
+    () =>
+      activeSpeakerIdForWorkflow(
+        wf.gamePhase,
+        wf.currentNpcRound,
+        wf.currentPlayerRound,
+        wf.selectedOption,
+        wf.activeOpponentResponse,
+      ),
+    [
+      wf.gamePhase,
+      wf.currentNpcRound,
+      wf.currentPlayerRound,
+      wf.selectedOption,
+      wf.activeOpponentResponse,
+    ],
+  );
+
   return (
     <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
       <TrialLayout
+        stage={
+          <CharacterStage
+            participantIds={participantIds}
+            activeSpeakerId={activeSpeakerId}
+            layout="hole"
+          />
+        }
         feedback={
           <FeedbackPanel
             wf={wf}

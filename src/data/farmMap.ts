@@ -46,12 +46,10 @@ export interface FarmZone {
 }
 
 export interface FarmNpc {
+  /** Must match a key in `CHARACTERS` (`src/data/characters.ts`). */
   id: string;
-  /** `labels.ts` key for the display name, drawn under the sprite. */
-  nameLabel: Labels;
   x: number;
   y: number;
-  tint: number;
   /**
    * Encounters this animal owns, in the order they should be offered. The player
    * is given the first one they have not completed. Typed as `DebateScenarioKey`,
@@ -112,42 +110,32 @@ export const FARM_ZONES: readonly FarmZone[] = [
 export const FARM_NPCS: readonly FarmNpc[] = [
   {
     id: 'hetty',
-    nameLabel: 'farmNpcHetty',
     x: 1800,
     y: 570,
-    tint: 0xf2c9a0,
     scenarios: ['010_gossip_trough_hetty'],
   },
   {
     id: 'cass',
-    nameLabel: 'farmNpcCass',
     x: 520,
     y: 860,
-    tint: 0xd4623f,
     scenarios: ['011_sparring_cass_ad_hominem', '013_lab_cass_dirty_feathers'],
   },
   {
     id: 'bram',
-    nameLabel: 'farmNpcBram',
     x: 1360,
     y: 1250,
-    tint: 0x5c8f6b,
     scenarios: ['012_gossip_trough_bram', '014_skirmish_bram_fenceline'],
   },
   {
     id: 'duchess',
-    nameLabel: 'farmNpcDuchess',
     x: 700,
     y: 620,
-    tint: 0xf5f2e8,
     scenarios: ['015_duchess_vs_rue'],
   },
   {
     id: 'tobias',
-    nameLabel: 'farmNpcTobias',
     x: 880,
     y: 640,
-    tint: 0x6b8f3f,
     // The moderator presides; he does not hand out encounters.
     scenarios: [],
   },

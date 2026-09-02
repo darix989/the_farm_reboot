@@ -1,12 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
 import getLabel from '../../data/labels';
 import type { DebateScenarioKey } from '../../data/levels';
+import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import { farmNpcById } from '../../data/farmMap';
 import { useFarmStore } from '../../store/farmStore';
 import { useGameStore } from '../../store/gameStore';
 import { GameManager } from '../../utils/gameManager';
 import { farmDialogueFor } from '../farm/farmDialogueState';
 import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
+import CharacterStage from '../farm/CharacterStage';
 import FarmDialogue from '../farm/FarmDialogue';
 import styles from '../farm/FarmUI.module.scss';
 
@@ -43,7 +45,7 @@ const FarmUI: React.FC = () => {
 
   return (
     <div className={styles.farmUi}>
-      <p className={styles.moveHint}>{getLabel(MOVE_HINT_LABEL)}</p>
+      {!dialogue && <p className={styles.moveHint}>{getLabel(MOVE_HINT_LABEL)}</p>}
 
       {nearbyNpc && !dialogue && (
         <button
@@ -51,13 +53,23 @@ const FarmUI: React.FC = () => {
           className={styles.talkPrompt}
           onClick={() => openDialogue(nearbyNpc.id)}
         >
-          {getLabel('farmTalkPrompt', { replacements: { name: getLabel(nearbyNpc.nameLabel) } })}
+          {getLabel('farmTalkPrompt', {
+            replacements: { name: resolveCharacter(nearbyNpc.id).displayName },
+          })}
           <span className={styles.talkPromptKey}>{getLabel('farmInteractHint')}</span>
         </button>
       )}
 
       {dialogue && (
-        <FarmDialogue dialogue={dialogue} onStart={startEncounter} onClose={closeDialogue} />
+        <>
+          <div className={styles.characterStage}>
+            <CharacterStage
+              participantIds={[PLAYER_CHARACTER_ID, dialogue.npcId]}
+              activeSpeakerId={dialogue.npcId}
+            />
+          </div>
+          <FarmDialogue dialogue={dialogue} onStart={startEncounter} onClose={closeDialogue} />
+        </>
       )}
     </div>
   );
