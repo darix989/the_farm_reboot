@@ -174,38 +174,51 @@ follower sprite positioned each frame from the body — see that file's `spawnPl
 
 ## 4. Scale and placement — `animalStaging.ts`
 
-The prototype's per-animal `scale` (0.4–1.0) was tuned for a Tiled world at camera zoom
-0.6–0.85. It does not transfer. `ANIMAL_STAGING` instead gives each animal a `farmScale`
-and a `trialScale`, each the smaller of a height-target and a width-target scale — not
-height alone. Measured visible pixel bounds of each animal's idle rest frame
-(`spriteSourceSize` in the descriptor JSON — what actually renders, not the shared
-`sourceSize` export canvas, which can hugely overstate a crouching or narrow pose):
+Two approaches were tried before this one and both looked wrong:
 
-| Animal | Idle frame visible (w×h) | Note |
-|---|---|---|
-| `donkey-grey` | 561×531 | roughly square, standing |
-| `owl` | 448×587 | narrow and tall |
-| `raccoon` | 896×373 | **wide all-fours crouch, ~2.4:1** |
-| `fox` | 598×391 | |
-| `white-sheep-1` | 311×267 | smallest box |
-| `brown-wolf` | 589×468 | |
+1. **The prototype's own `CharacterInfo.scale`** (donkey-grey 0.7, owl 0.4, raccoon 0.4,
+   fox 0.6, white-sheep-1 1.0, brown-wolf 0.7) applied directly. It was tuned against a
+   Tiled world with 256px tiles and a Trial camera that zooms between 0.6 and 0.85 —
+   nothing here has either, so the absolute numbers are meaningless in this repo.
+2. **Normalising every animal to the same apparent height**, ignoring the prototype's
+   scale entirely. This fights the art: a raccoon is small and a donkey is not, and the
+   prototype's scale already encodes that (donkey-grey/brown-wolf, at 0.7, are the two
+   biggest; owl/raccoon, at 0.4, the smallest). Forcing the raccoon's low, wide crouching
+   idle pose up to donkey height rendered it nearly as wide as an entire Trial stage slot,
+   overlapping its neighbours there.
 
-The width cap exists because height-only normalising was tried first: matching every
-animal's *height* made the raccoon's crouch — nearly 2.4× wider than tall — render almost
-as wide as an entire Trial stage slot, overlapping its neighbours. Capping width too
-(220px farm, 320px trial before the cast-size multiplier below) costs the raccoon, and at
-the tighter Trial cap several others, some height versus the rest of the cast, but nothing
-overlaps. Recompute both scales from this table if a target size changes.
+So `animalStaging.ts` **keeps the prototype's relative scale ratios** — they are the
+actual art direction — and applies one flat multiplier per surface:
+`farmScale = sourceScale * 0.377`, `trialScale = sourceScale * 0.807`, chosen so the
+donkey (the player, the most-seen animal) lands at roughly 140px tall on the farm (next to
+the 56px placeholder NPCs) and roughly 300px in the 1152×540 Trial hole. That preserves
+the designed size hierarchy — donkey/wolf biggest, sheep mid-sized, fox/owl smaller,
+raccoon smallest and widest — while fitting this repo's very different pixel budget.
+
+Measured visible pixel bounds of each animal's idle rest frame (`spriteSourceSize` in the
+descriptor JSON — what actually renders, not the shared `sourceSize` export canvas, which
+can hugely overstate a crouching or narrow pose — the raccoon's idle crouch fills only
+~40% of its canvas height) — multiplying by the prototype's scale gives the "as designed"
+apparent size the two multipliers above were fit to:
+
+| Animal | Source scale | Idle frame visible (w×h) | As-designed apparent (w×h) |
+|---|---|---|---|
+| `donkey-grey` | 0.7 | 561×531 | 393×372 |
+| `owl` | 0.4 | 448×587 | 179×235 |
+| `raccoon` | 0.4 | 896×373 | **358×149 — wide, low crouch** |
+| `fox` | 0.6 | 598×391 | 359×235 |
+| `white-sheep-1` | 1.0 | 311×267 | 311×267 |
+| `brown-wolf` | 0.7 | 589×468 | 412×328 |
+
+Recomputing: pick a target donkey height for the surface, divide by 372 (its as-designed
+apparent height above) to get that surface's multiplier, then multiply every animal's
+source scale by it.
 
 `TRIAL_SCALE_BY_CAST_SIZE` shrinks the whole cast a little further when three characters
 share the stage instead of one or two (Duchess vs Rue, moderated by Tobias, is the only
-three-character scenario today) — chosen so that even two *width-bound* neighbours (the
-worst case) clear the gap between adjacent stage slots.
-
-The farm NPC layout needed a nudge to match: Duchess and Tobias were originally placed
-180px apart, close enough to look fine as 56px placeholder circles but not once Tobias
-became a ~330px-wide raccoon crouch — see the comment on `FARM_NPCS` in
-[`farmMap.ts`](../src/data/farmMap.ts).
+three-character scenario today) — with the ratios above, even the tightest neighbouring
+pair (donkey next to raccoon) clears the gap between adjacent stage slots without it, but
+it also just reads better than three animals crowding the full width of the hole.
 
 All six atlases draw their animal facing **left**. A sprite placed on the left half of
 a scene should `setFlipX(true)` to face inward/right; one on the right keeps

@@ -1,25 +1,34 @@
 /**
  * Per-surface render scale and facing for the placeholder animal cast.
  *
- * NOT the source repo's `CharacterInfo.scale` (0.4-1.0), which was tuned against a Tiled
- * world at camera zoom 0.6-0.85. These target roughly 140px tall on the farm (placeholder
- * NPCs are 56px) and roughly 340px tall in the 1152x540 Trial hole — but capped by width
- * too (220px farm, 320px trial before `TRIAL_SCALE_BY_CAST_SIZE`), whichever is smaller.
+ * Two things were tried before this and both looked wrong:
  *
- * The scale is NOT derived from each atlas's `sourceSize` (the untrimmed export canvas) —
- * that canvas is shared across every animation of a character, so a crouching idle pose
- * (raccoon) or a wing-spreading one (owl) can occupy a very different fraction of it.
- * Instead this is measured from each character's actual *idle* rest frame's visible pixel
- * bounds (`spriteSourceSize` in the descriptor JSON) — what you actually see standing in
- * the world.
+ * 1. The source repo's own `CharacterInfo.scale` (donkey-grey 0.7, owl 0.4, raccoon 0.4,
+ *    fox 0.6, white-sheep-1 1.0, brown-wolf 0.7) directly. It was tuned against a Tiled
+ *    world with 256px tiles and a Trial camera that zooms between 0.6 and 0.85 — none of
+ *    which this repo has, so the absolute numbers don't transfer.
+ * 2. Normalising every animal to the *same apparent height*, ignoring the source scale
+ *    entirely. This actively fought the art: a real raccoon is small and a real donkey is
+ *    not, and the source scale already encodes that — donkey-grey/brown-wolf (0.7) are
+ *    the two biggest animals, white-sheep-1 (1.0) is nominally "biggest" but has by far the
+ *    smallest export canvas so nets out mid-sized, owl/raccoon (0.4) are the smallest.
+ *    Forcing the raccoon's low, wide crouching idle pose up to donkey height made it nearly
+ *    as wide as an entire Trial stage slot and overlap its neighbours there.
  *
- * The width cap exists because height-only normalising was tried first and broke down for
- * the raccoon: its idle is a wide all-fours crouch (896x373, a ~2.4:1 aspect ratio versus
- * ~1:1-1.3:1 for the others), so matching its height to the rest made it render nearly as
- * wide as an entire Trial stage slot and overlap its neighbours. Capping width too costs
- * the raccoon (and, at the tighter Trial cap, several others) some height versus the other
- * animals, but nothing overlaps. Recompute both from the measured `(width, height)` pairs
- * in `docs/characters-and-animations.md` if a target changes.
+ * So: **keep the source's relative scale ratios** (they are the actual art direction) and
+ * apply one flat multiplier per surface — `farmScale` / `trialScale` below are
+ * `sourceScale * surfaceMultiplier`, chosen so the donkey (the player, the most-seen
+ * animal) lands at roughly 140px tall on the farm (next to the 56px placeholder NPCs) and
+ * roughly 300px tall in the 1152x540 Trial hole. That preserves the designed size
+ * hierarchy — donkey/wolf biggest, sheep mid-sized, fox/owl smaller, raccoon smallest and
+ * widest — while fitting this repo's very different pixel budget.
+ *
+ * Recomputing: `docs/characters-and-animations.md` has each animal's measured idle rest
+ * frame's visible size (`spriteSourceSize` in the descriptor JSON, not the shared
+ * `sourceSize` export canvas — that's often much bigger than what's actually drawn, e.g.
+ * the raccoon's idle crouch fills only ~40% of its canvas height). Multiply that by the
+ * source scale to get the "as designed" apparent size, then pick one multiplier so the
+ * donkey lands at the target height and apply it to every animal's source scale.
  */
 import type { AnimalSpriteId } from '../../data/characters';
 
@@ -28,14 +37,28 @@ export interface AnimalStagingScale {
   trialScale: number;
 }
 
-export const ANIMAL_STAGING: Record<AnimalSpriteId, AnimalStagingScale> = {
-  'donkey-grey': { farmScale: 0.264, trialScale: 0.57 }, // idle rest frame visible 561x531
-  owl: { farmScale: 0.239, trialScale: 0.579 }, // idle rest frame visible 448x587
-  raccoon: { farmScale: 0.246, trialScale: 0.357 }, // idle rest frame visible 896x373 (wide crouch)
-  fox: { farmScale: 0.358, trialScale: 0.535 }, // idle rest frame visible 598x391
-  'white-sheep-1': { farmScale: 0.524, trialScale: 1.029 }, // idle rest frame visible 311x267
-  'brown-wolf': { farmScale: 0.299, trialScale: 0.543 }, // idle rest frame visible 589x468
+/** `the_farm/src/phaser/utils/animalDescriptors.ts`'s `CharacterInfo.scale` for these six. */
+const SOURCE_SCALE: Record<AnimalSpriteId, number> = {
+  'donkey-grey': 0.7,
+  owl: 0.4,
+  raccoon: 0.4,
+  fox: 0.6,
+  'white-sheep-1': 1.0,
+  'brown-wolf': 0.7,
 };
+
+const FARM_MULTIPLIER = 0.377; // donkey-grey -> ~140px tall next to the 56px placeholder NPCs
+const TRIAL_MULTIPLIER = 0.807; // donkey-grey -> ~300px tall in the 540px-tall Trial hole
+
+export const ANIMAL_STAGING: Record<AnimalSpriteId, AnimalStagingScale> = Object.fromEntries(
+  (Object.keys(SOURCE_SCALE) as AnimalSpriteId[]).map((id) => [
+    id,
+    {
+      farmScale: SOURCE_SCALE[id] * FARM_MULTIPLIER,
+      trialScale: SOURCE_SCALE[id] * TRIAL_MULTIPLIER,
+    },
+  ]),
+) as Record<AnimalSpriteId, AnimalStagingScale>;
 
 /** A cast of three needs to be smaller than a cast of one or two to fit the hole. */
 export const TRIAL_SCALE_BY_CAST_SIZE: Record<number, number> = { 1: 1.1, 2: 1, 3: 0.85 };
