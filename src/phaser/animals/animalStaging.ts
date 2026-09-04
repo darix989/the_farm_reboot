@@ -50,14 +50,26 @@ const SOURCE_SCALE: Record<AnimalSpriteId, number> = {
 const FARM_MULTIPLIER = 0.377; // donkey-grey -> ~140px tall next to the 56px placeholder NPCs
 const TRIAL_MULTIPLIER = 0.807; // donkey-grey -> ~300px tall in the 540px-tall Trial hole
 
+/**
+ * Per-animal fudge factor applied on top of the ratio-derived scale, for the rare case
+ * where the source ratio still doesn't read right once actually seen in this world.
+ * Defaults to 1 (no adjustment) for every animal not listed.
+ */
+const MANUAL_ADJUST: Partial<Record<AnimalSpriteId, number>> = {
+  'white-sheep-1': 0.8, // read a little large next to the rest of the cast; shrunk 20%
+};
+
 export const ANIMAL_STAGING: Record<AnimalSpriteId, AnimalStagingScale> = Object.fromEntries(
-  (Object.keys(SOURCE_SCALE) as AnimalSpriteId[]).map((id) => [
-    id,
-    {
-      farmScale: SOURCE_SCALE[id] * FARM_MULTIPLIER,
-      trialScale: SOURCE_SCALE[id] * TRIAL_MULTIPLIER,
-    },
-  ]),
+  (Object.keys(SOURCE_SCALE) as AnimalSpriteId[]).map((id) => {
+    const adjust = MANUAL_ADJUST[id] ?? 1;
+    return [
+      id,
+      {
+        farmScale: SOURCE_SCALE[id] * FARM_MULTIPLIER * adjust,
+        trialScale: SOURCE_SCALE[id] * TRIAL_MULTIPLIER * adjust,
+      },
+    ];
+  }),
 ) as Record<AnimalSpriteId, AnimalStagingScale>;
 
 /** A cast of three needs to be smaller than a cast of one or two to fit the hole. */
