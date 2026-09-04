@@ -58,7 +58,10 @@ export async function validateApiKey(apiKey) {
   const response = await fetch(`${BASE_URL}/auth/validate-api-key`, {
     headers: authHeaders(apiKey),
   });
-  if (response.status === 200) return;
+  // Any 2xx means valid. The OpenAPI document says 200, but the live endpoint answers a
+  // valid key with `204 No Content` — checking for 200 exactly rejected working keys.
+  // Rejection is a 403, which this correctly falls through to.
+  if (response.ok) return;
   throw new LudoError(
     `API key rejected (HTTP ${response.status}). Check LUDO_API_KEY — it is the key from app.ludo.ai, and the plan must include API access.`,
     { status: response.status, body: await readBody(response) },
