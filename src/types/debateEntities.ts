@@ -6,6 +6,9 @@
 // on `EventTrigger` from this file, and we depend on the trigger type it defines.
 import type { DebateTutorialTrigger } from '../react/trial/utils/debateEventBus';
 import type { TutorialModalSpec } from './tutorialModalLayout';
+// Type-only, and `animalEmotions` imports no Phaser — see its docstring for why the shared
+// emotion vocabulary lives under `src/phaser/animals/`.
+import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 
 /** Always exactly two sides in a debate. */
 export type Side = 'proposition' | 'opposition';
@@ -83,6 +86,14 @@ export interface Statement {
    * When omitted the recap falls back to the full text.
    */
   summary?: string;
+  /**
+   * Overrides the emotion the staged sprite plays while this line is spoken. Omit it and
+   * `activeEmotionForWorkflow()` derives one from the line itself (a statement carrying
+   * `logicalFallacies` reads as `sneaky`, for instance) — set it only where the derived
+   * emotion is wrong for the beat. An emotion the speaker's animal has no art for falls back
+   * to the generic reaction, so authoring one is never load-bearing.
+   */
+  emotion?: AnimalEmotion;
 }
 
 export type JuryVerdict = 'proposition_accepted' | 'proposition_rejected';
@@ -115,6 +126,11 @@ export interface PlayerOption {
   impact: number;
   /** Explanation of why this option is effective, ineffective, or a logical fallacy. */
   reason?: string;
+  /**
+   * Overrides the emotion Rue plays while delivering this line. Same rules as
+   * {@link Statement.emotion}; omitted, it is derived from `quality`.
+   */
+  emotion?: AnimalEmotion;
   /**
    * Authored paraphrase of the line, shown in the round recap in place of the verbatim
    * sentences. Same rules as {@link Statement.summary}: a fresh, shorter line, at most

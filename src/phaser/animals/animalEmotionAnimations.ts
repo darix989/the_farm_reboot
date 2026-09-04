@@ -1,0 +1,123 @@
+/**
+ * Loads the generated emotion spritesheets and registers one Phaser animation per clip.
+ *
+ * Deliberately parallel to `animalAtlases.ts` + `animalAnimations.ts` rather than folded
+ * into them, because the two asset families are loaded by different Phaser calls that share
+ * no code path: the ported cast ships as trimmed multiatlases (`load.multiatlas`, frame
+ * names from TexturePacker), the generated emotion clips as uniform grids
+ * (`load.spritesheet`, frames addressed by index). Keeping them apart means a failure in
+ * the generated art — a sheet that never got promoted, a stale entry — cannot take the base
+ * cast's animations down with it.
+ *
+ * Texture keys are namespaced `emotion/<animal>/<emotion>` so they can never collide with an
+ * atlas key (a bare `AnimalSpriteId`), and animation keys reuse `animalAnimKey`'s
+ * `<animal>/<name>` shape with an `emotion_` prefix on the name.
+ */
+import { EMOTION_SHEETS } from './emotionSheets.generated';
+import { animalAnimKey } from './animalAnimations';
+import { EMOTION_FRAME_RATE, type AnimalEmotion, type EmotionSheet } from './animalEmotions';
+import type { AnimalSpriteId } from '../../data/characters';
+
+export const EMOTION_ASSET_PATH = 'assets/characters/emotions';
+
+/** Texture key for one generated clip. */
+export function emotionTextureKey(animalId: AnimalSpriteId, emotion: AnimalEmotion): string {
+  return `emotion/${animalId}/${emotion}`;
+}
+
+/**
+ * The clip's *logical* name, in the same namespace as a descriptor's `baseAnimations[].name`.
+ * Prefixed so a generated clip can never shadow a hand-authored one, and exported because
+ * `AnimalAnimator` feeds it straight into an ordinary behaviour sequence — that is what lets
+ * emotions reuse the existing playback engine instead of needing a second one.
+ */
+export function emotionSequenceKey(emotion: AnimalEmotion): string {
+  return `emotion_${emotion}`;
+}
+
+/** Phaser animation key for one generated clip. */
+export function emotionAnimKey(animalId: AnimalSpriteId, emotion: AnimalEmotion): string {
+  return animalAnimKey(animalId, emotionSequenceKey(emotion));
+}
+
+/** Flattens the nested generated record into `[animal, emotion, sheet]` triples. */
+function eachSheet(
+  visit: (animalId: AnimalSpriteId, emotion: AnimalEmotion, sheet: EmotionSheet) => void,
+): void {
+  (Object.keys(EMOTION_SHEETS) as AnimalSpriteId[]).forEach((animalId) => {
+    const byEmotion = EMOTION_SHEETS[animalId];
+    if (!byEmotion) return;
+    (Object.keys(byEmotion) as AnimalEmotion[]).forEach((emotion) => {
+      const sheet = byEmotion[emotion];
+      if (sheet) visit(animalId, emotion, sheet);
+    });
+  });
+}
+
+/**
+ * Queues every promoted emotion sheet. Called from `Preloader` alongside
+ * `loadAnimalAtlases`; a no-op until the first `--promote` run writes entries into
+ * `emotionSheets.generated.ts`.
+ *
+ * The loader path is set and restored around the queueing rather than inherited from
+ * whatever `Preloader.preload` last called `setPath` with. `loadAnimalAtlases` gets this for
+ * free by passing `path` to `load.multiatlas`; `load.spritesheet` has no such argument (its
+ * `SpriteSheetFileConfig` accepts no `path`), so it has to be done by hand — and it is worth
+ * doing, because Phaser captures the current path at queue time and a call that leans on an
+ * earlier `setPath` silently 404s the day someone reorders `preload`. `sheet.file` is
+ * therefore a bare filename, not a path.
+ */
+export function loadAnimalEmotionSheets(scene: Phaser.Scene): void {
+  const previousPath = scene.load.path;
+  scene.load.setPath(EMOTION_ASSET_PATH);
+
+  eachSheet((animalId, emotion, sheet) => {
+    const key = emotionTextureKey(animalId, emotion);
+    if (scene.textures.exists(key)) return; // React StrictMode / scene restart
+    scene.load.spritesheet(key, sheet.file, {
+      frameWidth: sheet.frameWidth,
+      frameHeight: sheet.frameHeight,
+    });
+  });
+
+  scene.load.setPath(previousPath);
+}
+
+/**
+ * Creates one animation per loaded emotion sheet. Idempotent, and skips any clip whose
+ * texture is missing — a promoted entry whose PNG was deleted warns once and leaves the
+ * animal on its base behaviour instead of throwing during scene create.
+ */
+export function ensureAnimalEmotionAnimations(scene: Phaser.Scene): void {
+  eachSheet((animalId, emotion, sheet) => {
+    const textureKey = emotionTextureKey(animalId, emotion);
+    const animKey = emotionAnimKey(animalId, emotion);
+    if (scene.anims.exists(animKey)) return;
+
+    if (!scene.textures.exists(textureKey)) {
+      console.warn(`[animals] emotion sheet "${textureKey}" not loaded — skipping its animation`);
+      return;
+    }
+
+    scene.anims.create({
+      key: animKey,
+      // `end` is inclusive, and `frameCount` counts frames rather than indices — the grid's
+      // trailing cells are blank whenever cols*rows overshoots the generated frame count,
+      // and playing them would flash an empty frame mid-loop.
+      frames: scene.anims.generateFrameNumbers(textureKey, { start: 0, end: sheet.frameCount - 1 }),
+      frameRate: sheet.frameRate ?? EMOTION_FRAME_RATE,
+      // `repeat` is set per playback, matching the base animations' convention.
+    });
+  });
+}
+
+/**
+ * The generated clip for this pairing, or null when there is none — the animator's fallback
+ * test, and its source for the clip's `scale` / `origin` normalization.
+ */
+export function emotionSheet(
+  animalId: AnimalSpriteId,
+  emotion: AnimalEmotion,
+): EmotionSheet | null {
+  return EMOTION_SHEETS[animalId]?.[emotion] ?? null;
+}

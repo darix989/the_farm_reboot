@@ -1,0 +1,108 @@
+{
+  "$comment": [
+    "Authoring input for `npm run sprites:emotions`. Nothing here ships to the browser — it",
+    "is the prompt book for the Ludo.ai generator, and the record of what each clip was asked",
+    "to be, so a re-run reproduces the same intent.",
+    "",
+    "Prompt rules learned the hard way, keep to them:",
+    "  - Describe POSTURE, not expression. A Trial sprite's face is 50-80px on screen; a raised",
+    "    eyebrow is invisible and asking for one just wastes the model's attention.",
+    "  - Say 'in place', 'no travel'. Left unsaid, the model walks the animal out of frame and",
+    "    the clip cannot loop against a static stage slot.",
+    "  - Framing comes from each animal's `view`, never from the prompt text: the cast is NOT",
+    "    uniformly side-on. The owl is drawn front-facing and the raccoon's sitting pose is a",
+    "    three-quarter — telling either of them 'side view, facing left' asks the generator to",
+    "    turn the character, and the clip then will not cut against its own idle loop.",
+    "  - Keep the silhouette. The reference frame carries the character; the prompt should only",
+    "    ever move it."
+  ],
+
+  "defaults": {
+    "model": "blitz",
+    "frames": 16,
+    "frameSize": 256,
+    "duration": 2,
+    "loop": true,
+    "imageType": "sprite",
+    "frameRate": 12,
+    "marginRatioMode": "auto"
+  },
+
+  "emotions": {
+    "talking": {
+      "prompt": "{view}. The {species} stays in place and talks: head bobbing gently in time with speech, mouth opening and closing, body relaxed and weight even. Small, steady, conversational. Seamless loop, no travel, same silhouette throughout."
+    },
+    "doubtful": {
+      "prompt": "{view}. The {species} stays in place and reacts with skepticism: weight shifting back away from the listener, head drawing back and tilting slightly, a slow doubtful shake of the head. Unconvinced, guarded. Seamless loop, no travel, same silhouette throughout."
+    },
+    "angry": {
+      "prompt": "{view}. The {species} stays in place and is angry: weight driving forward, head lowered and thrust toward the target, body tensed and shoulders squared, sharp agitated movement. Seamless loop, no travel, same silhouette throughout."
+    },
+    "thinking": {
+      "prompt": "{view}. The {species} stays in place and thinks: nearly still, head lowered and turned slightly away, a slow considering nod, weight settled. Quiet and deliberate. Seamless loop, no travel, same silhouette throughout."
+    },
+    "sneaky": {
+      "prompt": "{view}. The {species} stays in place and speaks conspiratorially: body crouched low and drawn in, head extended forward and dipped, glancing furtively to the side mid-sentence. Sly, secretive, up to something. Seamless loop, no travel, same silhouette throughout."
+    }
+  },
+
+  "animals": {
+    "donkey-grey": {
+      "species": "grey donkey",
+      "view": "Side view, facing left",
+      "reference": "__grey_donkey_idle-0.png"
+    },
+    "white-sheep-1": {
+      "species": "white sheep",
+      "view": "Side view, facing left",
+      "reference": "__white_sheep_1_idle-0.png"
+    },
+    "fox": {
+      "species": "red fox",
+      "view": "Side view, facing left",
+      "reference": "__red_fox_idle-0.png"
+    },
+    "brown-wolf": {
+      "species": "brown wolf",
+      "view": "Side view, facing left",
+      "reference": "__wolf_brown_idle-0.png"
+    },
+    "raccoon": {
+      "species": "raccoon",
+      "view": "Three-quarter view, facing left",
+      "$comment": "Staged sitting up on the Trial stand (`idleTrial`), so the reference is the sitting pose, not the four-legged crouch — an emotion clip generated from the crouch would pop the moment the debate cuts to it.",
+      "reference": "__raccoon_sitting_up_idle-0.png",
+      "overrides": {
+        "angry": {
+          "prompt": "{view}. The raccoon stays sitting upright in place and is angry: chest thrust forward, head lowered and jabbing toward the target, forepaws gesturing sharply. Seamless loop, no travel, same silhouette throughout."
+        },
+        "sneaky": {
+          "prompt": "{view}. The raccoon stays sitting upright in place and speaks conspiratorially: hunching down over its forepaws, head dipped and craned forward, glancing furtively to the side. Sly and secretive. Seamless loop, no travel, same silhouette throughout."
+        }
+      }
+    },
+    "owl": {
+      "species": "owl",
+      "view": "Front view, facing the viewer",
+      "$comment": "A perched bird has no gait and no shoulders to square, so the generic four-legged posture prompts read as nonsense here. Every emotion is rewritten around what an owl actually has: head rotation, hunching, and wings.",
+      "reference": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_0.png",
+      "overrides": {
+        "talking": {
+          "prompt": "{view}. The perched owl stays in place and talks: beak opening and closing, head bobbing slightly with each phrase, body still and upright. Seamless loop, no travel, same silhouette throughout."
+        },
+        "doubtful": {
+          "prompt": "{view}. The perched owl stays in place and is skeptical: body leaning back, head rotating slowly away and tilting, a long unimpressed stare. Seamless loop, no travel, same silhouette throughout."
+        },
+        "angry": {
+          "prompt": "{view}. The perched owl stays in place and is angry: body hunched forward and low over its perch, wings flaring and snapping shut, head thrust out, beak open. Seamless loop, no travel, same silhouette throughout."
+        },
+        "thinking": {
+          "prompt": "{view}. The perched owl stays in place and thinks: almost motionless, head turning slowly to one side and back, a single slow blink. Seamless loop, no travel, same silhouette throughout."
+        },
+        "sneaky": {
+          "prompt": "{view}. The perched owl stays in place and speaks conspiratorially: body hunched down and drawn in, head craned forward and dipped low, rotating to glance furtively behind it. Seamless loop, no travel, same silhouette throughout."
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 
 /**
  * Handoff between the Trial React UI and the Phaser `Trial` scene's animated cast.
@@ -16,18 +17,34 @@ import { create } from 'zustand';
 interface TrialStageStore {
   /** Speaker id from `activeSpeakerIdForWorkflow`, or null (intro / recap / complete). */
   activeSpeakerId: string | null;
-  setActiveSpeaker: (id: string | null) => void;
+  /**
+   * How that speaker is delivering the line, from `activeEmotionForWorkflow`. Null when
+   * nobody holds the floor, or when the emotion could not be derived — the scene then plays
+   * its generic reaction, which is what it did before emotions existed.
+   */
+  activeEmotion: AnimalEmotion | null;
+  /**
+   * One setter for both fields, deliberately: they are derived from the same workflow
+   * snapshot, and two setters would let a render land the new speaker with the previous
+   * line's emotion for a frame — a wolf that snarls someone else's line.
+   */
+  setActiveSpeaker: (id: string | null, emotion: AnimalEmotion | null) => void;
   /** Clears the speaker, so a fresh Trial entry never opens on a stale reaction. */
   resetStage: () => void;
 }
 
 export const useTrialStageStore = create<TrialStageStore>((set) => ({
   activeSpeakerId: null,
+  activeEmotion: null,
 
   // No-op when unchanged (mirrors `farmStore.setNearbyNpc`), so a TrialUI re-render never
   // restarts an animation that is already correct.
-  setActiveSpeaker: (id) =>
-    set((s) => (s.activeSpeakerId === id ? s : { ...s, activeSpeakerId: id })),
+  setActiveSpeaker: (id, emotion) =>
+    set((s) =>
+      s.activeSpeakerId === id && s.activeEmotion === emotion
+        ? s
+        : { ...s, activeSpeakerId: id, activeEmotion: emotion },
+    ),
 
-  resetStage: () => set({ activeSpeakerId: null }),
+  resetStage: () => set({ activeSpeakerId: null, activeEmotion: null }),
 }));

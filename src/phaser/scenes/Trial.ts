@@ -9,15 +9,17 @@ import { resolveCharacter } from '../../data/characters';
 import { animalSetup } from '../animals/animalAnimations';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
 import { ANIMAL_STAGING, TRIAL_SCALE_BY_CAST_SIZE } from '../animals/animalStaging';
+import { ANIMAL_EMOTIONS, type AnimalEmotion } from '../animals/animalEmotions';
 
 /** Draws the `TRIAL_STAGE_HOLE` rect and a marker at each computed cast slot. Toggle to
  *  check the Phaser rect and the `.trialGameHole` CSS cell still agree — nothing else
  *  enforces that they do. */
 const DEBUG_TRIAL_STAGE = false;
 
-/** `A` / `S` force the whole cast to alert / idle, for tuning a descriptor's sequences
- *  without stepping through a whole debate. Off by default: the Trial screen has
- *  focusable React inputs, and an always-on handler would fire while typing. */
+/** `A` / `S` force the whole cast to alert / idle and `1`..`5` to each `ANIMAL_EMOTIONS`
+ *  entry, for tuning a descriptor's sequences or reviewing generated emotion clips without
+ *  stepping through a whole debate. Off by default: the Trial screen has focusable React
+ *  inputs, and an always-on handler would fire while typing. */
 const DEBUG_STAGE_KEYS = false;
 
 /** Matches `--ui-color-surface-trial-panel`, restoring the surface colour the (now
@@ -64,14 +66,18 @@ export class Trial extends Scene {
     if (DEBUG_TRIAL_STAGE) this.drawStageDebug();
 
     this.buildCast();
-    this.applyActiveSpeaker(useTrialStageStore.getState().activeSpeakerId);
+    const stage = useTrialStageStore.getState();
+    this.applyActiveSpeaker(stage.activeSpeakerId, stage.activeEmotion);
 
     // zustand v5's vanilla `subscribe` (no `subscribeWithSelector` middleware here) takes a
     // single listener receiving (state, previousState) — not a selector. Compare the field
     // yourself; see `gameManager.ts` for the selector-style call that does NOT type-check.
     this.unsubscribeSpeaker = useTrialStageStore.subscribe((state, prevState) => {
-      if (state.activeSpeakerId !== prevState.activeSpeakerId) {
-        this.applyActiveSpeaker(state.activeSpeakerId);
+      if (
+        state.activeSpeakerId !== prevState.activeSpeakerId ||
+        state.activeEmotion !== prevState.activeEmotion
+      ) {
+        this.applyActiveSpeaker(state.activeSpeakerId, state.activeEmotion);
       }
     });
 
@@ -122,10 +128,13 @@ export class Trial extends Scene {
     });
   }
 
-  private applyActiveSpeaker(speakerId: string | null): void {
+  private applyActiveSpeaker(speakerId: string | null, emotion: AnimalEmotion | null): void {
     this.cast.forEach(({ sprite, animator }, id) => {
       const isActive = id === speakerId;
-      if (isActive) animator.playAlert();
+      // `playEmotion` falls back to `playAlert()` itself when this animal has no generated
+      // clip, so an un-generated cast behaves exactly as it did before emotions existed.
+      if (isActive && emotion) animator.playEmotion(emotion);
+      else if (isActive) animator.playAlert();
       else animator.playIdle();
       sprite.setDepth(isActive ? 10 : 1);
       // Matches `CharacterStage`'s `.dimmed` treatment: full opacity while nobody (yet) has
@@ -152,6 +161,11 @@ export class Trial extends Scene {
       const key = event.key.toLowerCase();
       if (key === 'a') this.cast.forEach(({ animator }) => animator.playAlert());
       if (key === 's') this.cast.forEach(({ animator }) => animator.playIdle());
+      // 1..n cycle the whole cast through `ANIMAL_EMOTIONS`, for eyeballing a freshly
+      // generated clip without playing a debate up to the beat that triggers it.
+      const emotionIndex = Number.parseInt(key, 10) - 1;
+      const emotion = ANIMAL_EMOTIONS[emotionIndex];
+      if (emotion) this.cast.forEach(({ animator }) => animator.playEmotion(emotion));
     };
     window.addEventListener('keydown', this.stageKeysHandler);
   }

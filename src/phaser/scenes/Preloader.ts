@@ -1,6 +1,10 @@
 import { Scene } from 'phaser';
 import { loadAnimalAtlases } from '../animals/animalAtlases';
 import { ensureAnimalAnimations } from '../animals/animalAnimations';
+import {
+  ensureAnimalEmotionAnimations,
+  loadAnimalEmotionSheets,
+} from '../animals/animalEmotionAnimations';
 
 export class Preloader extends Scene {
   constructor() {
@@ -34,6 +38,7 @@ export class Preloader extends Scene {
     this.load.image('star', 'star.png');
 
     loadAnimalAtlases(this);
+    loadAnimalEmotionSheets(this);
   }
 
   create() {
@@ -41,6 +46,7 @@ export class Preloader extends Scene {
     //  per-scene — Farm and Trial both need them, and building on every scene entry
     //  would re-register every key each time (the source prototype's documented bug).
     ensureAnimalAnimations(this);
+    ensureAnimalEmotionAnimations(this);
 
     //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
     this.scene.start('MainMenu');

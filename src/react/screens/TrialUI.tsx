@@ -28,6 +28,7 @@ import InteractivePanel from '../trial/panels/InteractivePanel';
 import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
 import {
+  activeEmotionForWorkflow,
   activeSpeakerIdForWorkflow,
   getSpeakerName,
   getStartingInsightPoints,
@@ -685,12 +686,33 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     ],
   );
 
+  // Derived from the identical snapshot as `activeSpeakerId` above, and pushed in the same
+  // effect, so the scene never sees a new speaker wearing the previous line's emotion.
+  const activeEmotion = useMemo(
+    () =>
+      activeEmotionForWorkflow(
+        wf.gamePhase,
+        wf.currentNpcRound,
+        wf.currentPlayerRound,
+        wf.selectedOption,
+        wf.activeOpponentResponse,
+      ),
+    [
+      wf.gamePhase,
+      wf.currentNpcRound,
+      wf.currentPlayerRound,
+      wf.selectedOption,
+      wf.activeOpponentResponse,
+    ],
+  );
+
   // The Phaser `Trial` scene reacts to the active speaker through `trialStageStore` — see
-  // that store's docstring for why a store and not `EventBus`. The setter no-ops when the
-  // id is unchanged, so this is safe on every render, including StrictMode's double-mount.
+  // that store's docstring for why a store and not `EventBus`. The setter no-ops when
+  // neither field changed, so this is safe on every render, including StrictMode's
+  // double-mount.
   useEffect(() => {
-    useTrialStageStore.getState().setActiveSpeaker(activeSpeakerId);
-  }, [activeSpeakerId]);
+    useTrialStageStore.getState().setActiveSpeaker(activeSpeakerId, activeEmotion);
+  }, [activeSpeakerId, activeEmotion]);
 
   useEffect(() => {
     return () => useTrialStageStore.getState().resetStage();

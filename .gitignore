@@ -23,3 +23,6 @@ gemini_gem_export
 *.njsproj
 *.sln
 *.sw?
+
+# Ludo.ai generated art awaiting review (see scripts/generate-emotion-sprites.mjs)
+.ludo-review/

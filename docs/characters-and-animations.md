@@ -270,10 +270,11 @@ default:
   [`src/utils/constants.ts`](../src/utils/constants.ts)) and drops a marker at each
   computed cast slot. Nothing enforces that this rect and the `.trialGameHole` CSS grid
   cell agree — if they ever drift, turning this on shows it immediately.
-- **`DEBUG_STAGE_KEYS`** — `A` forces the whole Trial cast to alert, `S` back to idle.
-  Off by default because the Trial screen has focusable React inputs and an always-on
-  key handler would fire while typing; flip it on locally when tuning a descriptor's
-  sequences without stepping through a whole debate.
+- **`DEBUG_STAGE_KEYS`** — `A` forces the whole Trial cast to alert, `S` back to idle,
+  and `1`..`5` play each `ANIMAL_EMOTIONS` entry in order (§9). Off by default because
+  the Trial screen has focusable React inputs and an always-on key handler would fire
+  while typing; flip it on locally when tuning a descriptor's sequences, or to check a
+  freshly promoted emotion clip without playing a debate to the beat that triggers it.
 
 `arcade: { debug: true }` in [`main.ts`](../src/phaser/main.ts) still draws physics
 body outlines, which is how you confirm Rue's invisible collider is tracking correctly
@@ -304,3 +305,127 @@ underneath the animated follower sprite (see §3.3).
 **Verify.** `npm run dev-nolog`, enter the Farm, and look for the new sprite idling near
 its zone. If it is cast as a Trial participant, launch that scenario and check it lands
 in the right stage slot, faces the right way, and reacts to being the active speaker.
+
+---
+
+## 9. Emotions — generated clips
+
+`idle` and `alert` are all the ported cast knows. That is enough for a background herd and
+not enough for a debate: every speaker "reacts" identically whether they are conceding a
+point, sneering at one, or slipping a fallacy past the player. Emotions are the second
+register, and unlike everything in §1–§8 the art for them is **generated**, not exported
+from the source pack.
+
+### 9.1 The vocabulary
+
+[`animalEmotions.ts`](../src/phaser/animals/animalEmotions.ts) owns `ANIMAL_EMOTIONS`:
+`talking`, `doubtful`, `angry`, `thinking`, `sneaky`. Each names a **posture**, not a facial
+expression — a Trial sprite is ~300px tall, so its face is 50–80px and a raised eyebrow does
+not survive the downscale. Anything that has to read on the stage has to read in the
+silhouette.
+
+That module imports no Phaser deliberately: the vocabulary is shared. Scenarios author it,
+the React overlay derives it, `trialStageStore` carries it, and only then does Phaser play it.
+
+### 9.2 Which emotion plays, and when
+
+`activeEmotionForWorkflow()` in
+[`trialHelpers.ts`](../src/react/trial/utils/trialHelpers.ts) sits next to
+`activeSpeakerIdForWorkflow()` and takes the identical arguments, so both come off the same
+workflow snapshot — a speaker paired with the previous line's emotion is worse than no
+emotion. `TrialUI` pushes the pair through `trialStageStore` in one setter, for the same
+reason.
+
+Derivation over authoring, by default. No existing scenario has an `emotion` field, but the
+data already carries the intent:
+
+| Signal | Emotion |
+|---|---|
+| Statement whose sentences carry `logicalFallacies` | `sneaky` |
+| `crossfire` statement | `doubtful` |
+| Player round, nothing picked yet | `thinking` |
+| Player confirming a `logical_fallacy` option | `sneaky` |
+| Anything else | `talking` |
+
+An authored `Statement.emotion` / `PlayerOption.emotion` overrides all of it. Reach for one
+only where the derived emotion is wrong for the beat.
+
+### 9.3 Assets, and why they are not atlases
+
+Generated clips are uniform-grid spritesheets (`load.spritesheet`), not trimmed
+multiatlases. Ludo returns a fixed grid; repacking it into an atlas would buy nothing since
+the frames are already uniform, and two loaders side by side is less code than a repack step.
+So [`animalEmotionAnimations.ts`](../src/phaser/animals/animalEmotionAnimations.ts) sits
+parallel to `animalAtlases.ts` + `animalAnimations.ts` rather than inside them — a broken
+generated clip cannot take the base cast down with it.
+
+Keys are namespaced: texture `emotion/<animal>/<emotion>`, animation
+`<animal>/emotion_<emotion>`.
+
+[`emotionSheets.generated.ts`](../src/phaser/animals/emotionSheets.generated.ts) is written
+by the promote step and lists what actually exists on disk. **Empty is a valid state**, and
+so is a partly-generated cast: `AnimalAnimator.playEmotion()` falls back to `playAlert()`
+for any pairing with no clip, so callers never check first and an un-generated animal behaves
+exactly as it did before emotions existed.
+
+### 9.4 The scale trap
+
+A generated cell is **not** the atlas canvas. Rue's idle frame is a 784×702 export canvas
+with the donkey filling most of it; a generated clip is a grid of 256×256 cells with the
+donkey somewhere inside at whatever size the generator chose. `ANIMAL_STAGING` (§4) assumes
+the frame *is* the export canvas and `Trial` anchors with `setOrigin(0.5, 1)` assuming the
+feet are near the canvas bottom. Neither holds. Played unchanged, the animal shrinks by ~3×
+and floats off the floor line the moment it reacts.
+
+So `scripts/ludo/normalize.mjs` measures, at promote time, the character's alpha bounding box
+in the clip against the same box in the atlas frame it was generated from, and stores a
+`scale` multiplier and an `originX`/`originY` on the sheet. `AnimalAnimator` applies them on
+`playEmotion` and restores the staged values on `playIdle` / `playAlert`. The runtime measures
+nothing.
+
+The union box across all frames is used, not a per-frame box: a per-frame origin would make
+the character twitch as its box changed shape between frames.
+
+### 9.5 Generating a clip
+
+```
+export LUDO_API_KEY=...                                   # never a flag; argv leaks
+npm run sprites:emotions -- --dry-run                     # free: payloads + reference frames
+npm run sprites:emotions -- --animal donkey-grey          # generate into .ludo-review/
+open .ludo-review/index.html                              # every clip, at stage scale
+rm -rf .ludo-review/donkey-grey/angry                     # reject one
+npm run sprites:emotions -- --promote                     # ship what is left
+```
+
+Generation and promotion are two commands on purpose. Diffusion output is not deterministic
+and not always usable — Ludo's own docs warn that seamless looping is never guaranteed and
+that colour drifts between the input frame and the animation — so nothing reaches
+`public/assets/` without a human having watched it loop. Deleting a directory is the entire
+approval mechanism; there is no approval state to fall out of sync with the files.
+
+Prompts live in [`emotion-manifest.json`](../scripts/ludo/emotion-manifest.json), which
+carries its own authoring rules. The one that costs credits when ignored: **framing comes
+from each animal's `view`, never from the prompt text.** The cast is not uniformly side-on —
+the owl is drawn front-facing and the raccoon's staged pose is a three-quarter, and telling
+either "side view, facing left" asks the generator to turn the character, after which the
+clip will not cut against its own idle loop.
+
+Every clip is generated **from a frame of the animal's own shipped idle loop**
+(`scripts/ludo/referenceFrame.mjs` cuts it out of the atlas and un-trims it back onto its
+export canvas). That is what keeps a generated emotion on-model, and it is why the reference
+frame is un-trimmed first: handed a hard-cropped sprite, the generator composes as if the
+character filled the frame and clips its legs and ears.
+
+Asset URLs from the API **expire after 7 days**, so the pipeline downloads inside the run
+that generated them and the review directory holds bytes, never URLs.
+
+### 9.6 Adding an emotion
+
+1. Add the name to `ANIMAL_EMOTIONS` in `animalEmotions.ts`.
+2. Add a prompt for it under `emotions` in `emotion-manifest.json`, plus any per-animal
+   `overrides` where the generic posture makes no sense for that body (see the owl).
+3. Teach `activeEmotionForWorkflow()` when it fires, or author it on statements directly.
+4. Generate, review, promote.
+
+The generator refuses a manifest emotion that is not in `ANIMAL_EMOTIONS`, so step 1 cannot
+be skipped silently.

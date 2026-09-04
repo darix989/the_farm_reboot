@@ -18,10 +18,12 @@
  *   3. `prefers-reduced-motion` freezes the sprite on its rest frame instead of animating.
  */
 import { animalAnimKey, type AnimalSetup } from './animalAnimations';
+import { emotionSequenceKey, emotionSheet } from './animalEmotionAnimations';
+import type { AnimalEmotion } from './animalEmotions';
 import type { AnimalBehaviour } from './animalDescriptors';
 import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reducedMotion';
 
-export type AnimalStatus = 'none' | 'idle' | 'alert';
+export type AnimalStatus = 'none' | 'idle' | 'alert' | 'emotion';
 
 export interface AnimalAnimatorOptions {
   /** Use the `idleTrial` / `alertTrial` behaviour variants. Defaults to 'farm'. */
@@ -38,6 +40,22 @@ const DEFAULT_DESYNC_DELAY: readonly [number, number] = [100, 1500];
 
 export class AnimalAnimator {
   private status: AnimalStatus = 'none';
+  /** Which clip `status: 'emotion'` is holding, so a re-roll or a reduced-motion flip back
+   *  on can resume the same one instead of dropping to a generic reaction. */
+  private emotion: AnimalEmotion | null = null;
+  /**
+   * The scale and origin the scene staged this sprite with, captured once at construction.
+   *
+   * A generated emotion clip has to override both (see `EmotionSheet.scale`), and needs
+   * something to restore when it stops. Captured here rather than passed in because the two
+   * scenes stage sprites differently — `Trial` scales by cast size, `Farm` does not — and the
+   * animator's job is to leave the sprite exactly as it found it either way. This does assume
+   * the scene sets scale and origin before attaching the animator, which both do.
+   */
+  private readonly baseScaleX: number;
+  private readonly baseScaleY: number;
+  private readonly baseOriginX: number;
+  private readonly baseOriginY: number;
   private reducedMotionUnsubscribe: (() => void) | null = null;
   private destroyed = false;
 
@@ -46,12 +64,19 @@ export class AnimalAnimator {
     private readonly setup: AnimalSetup,
     private readonly options: AnimalAnimatorOptions = {},
   ) {
+    this.baseScaleX = sprite.scaleX;
+    this.baseScaleY = sprite.scaleY;
+    this.baseOriginX = sprite.originX;
+    this.baseOriginY = sprite.originY;
+
     this.sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onSequenceEnd, this);
     this.reducedMotionUnsubscribe = onReducedMotionChange(() => this.onReducedMotionChange());
   }
 
   playIdle(): void {
     this.status = 'idle';
+    this.emotion = null;
+    this.restoreBaseStaging();
     const trial = this.options.staging === 'trial';
     const behaviour =
       (trial ? this.setup.descriptor.idleTrial : undefined) ?? this.setup.descriptor.idle;
@@ -61,11 +86,44 @@ export class AnimalAnimator {
 
   playAlert(): void {
     this.status = 'alert';
+    this.emotion = null;
+    this.restoreBaseStaging();
     const trial = this.options.staging === 'trial';
     const behaviour =
       (trial ? this.setup.descriptor.alertTrial : undefined) ?? this.setup.descriptor.alert;
     if (!behaviour) return;
     this.playSequence(this.pickSequence(behaviour), /* playImmediately */ true);
+  }
+
+  /**
+   * Holds a generated emotion clip for as long as the character owns the moment — it loops
+   * rather than re-rolling, because an emotion is a *state* the debate UI enters and leaves,
+   * unlike `idle`/`alert` which re-roll a fresh weighted sequence each time they finish.
+   *
+   * Falls back to `playAlert()` when this animal has no art for the emotion, so a partly
+   * generated cast degrades to exactly the behaviour it had before emotions existed instead
+   * of freezing on a missing key. Callers therefore never need to check `hasEmotionClip`.
+   */
+  playEmotion(emotion: AnimalEmotion): void {
+    const sheet = emotionSheet(this.setup.textureKey, emotion);
+    if (!sheet) {
+      this.playAlert();
+      return;
+    }
+    this.status = 'emotion';
+    this.emotion = emotion;
+    this.sprite.setScale(this.baseScaleX * sheet.scale, this.baseScaleY * sheet.scale);
+    this.sprite.setOrigin(sheet.originX, sheet.originY);
+    this.playSequence(
+      [{ key: emotionSequenceKey(emotion), repeat: -1 }],
+      /* playImmediately */ true,
+    );
+  }
+
+  /** Undoes `playEmotion`'s scale/origin override. A no-op when none is in effect. */
+  private restoreBaseStaging(): void {
+    this.sprite.setScale(this.baseScaleX, this.baseScaleY);
+    this.sprite.setOrigin(this.baseOriginX, this.baseOriginY);
   }
 
   destroy(): void {
@@ -172,11 +230,15 @@ export class AnimalAnimator {
       if (this.destroyed) return;
       if (this.status === 'idle') this.playIdle();
       else if (this.status === 'alert') this.playAlert();
+      else if (this.status === 'emotion' && this.emotion) this.playEmotion(this.emotion);
     });
   }
 
   private applyRestFrame(): void {
     this.sprite.anims.stop();
+    // The rest frame is an atlas frame, so it needs the atlas staging even when the animator
+    // was mid-emotion when reduced motion came on.
+    this.restoreBaseStaging();
     if (this.setup.restFrameName) this.sprite.setFrame(this.setup.restFrameName);
   }
 
@@ -188,6 +250,7 @@ export class AnimalAnimator {
     }
     if (this.status === 'idle') this.playIdle();
     else if (this.status === 'alert') this.playAlert();
+    else if (this.status === 'emotion' && this.emotion) this.playEmotion(this.emotion);
   }
 }
 
