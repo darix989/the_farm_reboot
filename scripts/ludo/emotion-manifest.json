@@ -14,7 +14,14 @@
     "    three-quarter — telling either of them 'side view, facing left' asks the generator to",
     "    turn the character, and the clip then will not cut against its own idle loop.",
     "  - Keep the silhouette. The reference frame carries the character; the prompt should only",
-    "    ever move it."
+    "    ever move it.",
+    "  - Never name a posture the animal has to CHANGE STATE to reach. 'Crouched low' made the",
+    "    generator lie the donkey down over the clip and never stand it back up: a transition,",
+    "    not a held attitude, and one that cannot loop. Say what the body does while it stays",
+    "    where it is, and say outright what it must not do ('never lies down').",
+    "  - Watch the height swing in the review output. The runtime scales a clip off one union",
+    "    bounding box, so a character whose height wanders 20%+ across frames renders too small",
+    "    for most of the clip however good it looks in isolation."
   ],
 
   "defaults": {
@@ -23,6 +30,7 @@
     "frameSize": 256,
     "duration": 2,
     "loop": true,
+    "closeLoop": true,
     "imageType": "sprite",
     "frameRate": 12,
     "marginRatioMode": "auto"
@@ -42,7 +50,7 @@
       "prompt": "{view}. The {species} stays in place and thinks: nearly still, head lowered and turned slightly away, a slow considering nod, weight settled. Quiet and deliberate. Seamless loop, no travel, same silhouette throughout."
     },
     "sneaky": {
-      "prompt": "{view}. The {species} stays in place and speaks conspiratorially: body crouched low and drawn in, head extended forward and dipped, glancing furtively to the side mid-sentence. Sly, secretive, up to something. Seamless loop, no travel, same silhouette throughout."
+      "prompt": "{view}. The {species} stays standing on all fours the entire time and speaks conspiratorially: head craned forward and dipped toward the listener, ears flattening back, eyes flicking sideways mid-sentence. Sly, secretive, up to something. It never lies down, never sits, never lowers its body. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
     }
   },
 

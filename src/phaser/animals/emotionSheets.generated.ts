@@ -18,4 +18,57 @@ import type { AnimalEmotion, EmotionSheet } from './animalEmotions';
 
 export const EMOTION_SHEETS: Partial<
   Record<AnimalSpriteId, Partial<Record<AnimalEmotion, EmotionSheet>>>
-> = {};
+> = {
+  'donkey-grey': {
+    angry: {
+      file: 'donkey-grey-angry.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 16,
+      frameRate: 12,
+      scale: 2.0584,
+      originX: 0.5384,
+      originY: 0.7933,
+    },
+    doubtful: {
+      file: 'donkey-grey-doubtful.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 16,
+      frameRate: 12,
+      scale: 2.0268,
+      originX: 0.5332,
+      originY: 0.7922,
+    },
+    sneaky: {
+      file: 'donkey-grey-sneaky.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 16,
+      frameRate: 12,
+      scale: 2.177,
+      originX: 0.5266,
+      originY: 0.7884,
+    },
+    talking: {
+      file: 'donkey-grey-talking.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 16,
+      frameRate: 12,
+      scale: 2.1331,
+      originX: 0.5361,
+      originY: 0.7894,
+    },
+    thinking: {
+      file: 'donkey-grey-thinking.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 16,
+      frameRate: 12,
+      scale: 2.0584,
+      originX: 0.5257,
+      originY: 0.7933,
+    },
+  },
+};

@@ -12,7 +12,8 @@
  *   --promote                    Copy reviewed clips out of the review dir into
  *                                `public/assets/characters/emotions/` and rewrite
  *                                `src/phaser/animals/emotionSheets.generated.ts`.
- *   --force                      Regenerate a clip that already exists in the review dir.
+ *   --force                      Regenerate a clip that already exists in the review dir,
+ *                                bypassing the API's request_id result cache (see `requestId`).
  *
  * ## The API key
  *
@@ -43,6 +44,7 @@
  */
 import { mkdir, readdir, readFile, writeFile, copyFile, access } from 'node:fs/promises';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 import { validateApiKey, submitGeneration, awaitJob, downloadAsset } from './ludo/ludoClient.mjs';
 import { extractReferenceFrame, toDataUri } from './ludo/referenceFrame.mjs';
@@ -131,8 +133,30 @@ function planJobs(manifest, args) {
   return jobs;
 }
 
+/**
+ * `request_id` is an **idempotency key**, not just a label.
+ *
+ * The docs present it as a tag for finding a result again later, which undersold it badly:
+ * re-submitting a request_id the account has already used returns that earlier generation
+ * verbatim — no new job, no charge. Measured the hard way, by "regenerating" two clips with a
+ * corrected prompt and getting byte-identical output back for free.
+ *
+ * That is genuinely useful, so it is kept and made accurate: the id carries a hash of
+ * everything that defines the clip, so re-running an unchanged manifest costs nothing while
+ * an edited prompt or a changed setting is a different clip and really regenerates. `--force`
+ * adds a timestamp to escape the cache entirely, which is what it always claimed to do.
+ */
+function requestId(job, force) {
+  const fingerprint = createHash('sha1')
+    .update(JSON.stringify([job.prompt, job.reference, job.settings]))
+    .digest('hex')
+    .slice(0, 8);
+  const suffix = force ? `-${Date.now().toString(36)}` : '';
+  return `farm-emotion-${job.animalId}-${job.emotion}-${fingerprint}${suffix}`;
+}
+
 /** Maps manifest settings onto the `AnimateSpritePayload` field names. */
-function buildPayload(job, referenceDataUri) {
+function buildPayload(job, referenceDataUri, force) {
   return {
     initial_image: referenceDataUri,
     motion_prompt: job.prompt,
@@ -142,13 +166,17 @@ function buildPayload(job, referenceDataUri) {
     frame_size: job.settings.frameSize,
     duration: job.settings.duration,
     loop: job.settings.loop,
+    // Pin the last frame to the same reference the first one came from. `loop: true` alone is
+    // a hint the generator is free to miss — measured on the first real run, an unpinned clip
+    // drifted from a standing donkey to a lying-down one and popped hard on every repeat.
+    // Handing it the same image as both ends removes the ambiguity instead of asking nicely.
+    ...(job.settings.closeLoop ? { final_image: referenceDataUri } : {}),
     margin_ratio_mode: job.settings.marginRatioMode,
     // Off deliberately: `crop` gives per-frame sizes, and a uniform grid is the entire
     // reason `load.spritesheet` can read these without an atlas.
     crop: false,
     gif: true, // the contact sheet plays this; costs nothing extra
-    // Tags the generation so it can be found again via `listGenerations` after the run.
-    request_id: `farm-emotion-${job.animalId}-${job.emotion}`,
+    request_id: requestId(job, force),
   };
 }
 
@@ -201,7 +229,7 @@ async function generate(args) {
     }
 
     const reference = await extractReferenceFrame(job.animalId, job.reference);
-    const payload = buildPayload(job, toDataUri(reference.buffer));
+    const payload = buildPayload(job, toDataUri(reference.buffer), args.force);
 
     if (args.dryRun) {
       await mkdir(dir, { recursive: true });
