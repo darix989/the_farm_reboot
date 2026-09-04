@@ -33,7 +33,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,css,scss,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,scss,json}\"",
     "export:gem": "node scripts/export-gem.js",
-    "sprites:emotions": "node scripts/generate-emotion-sprites.mjs",
+    "sprites:emotions": "node --env-file-if-exists=.env.local scripts/generate-emotion-sprites.mjs",
     "prepare": "husky"
   },
   "lint-staged": {

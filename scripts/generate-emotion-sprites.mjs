@@ -14,8 +14,22 @@
  *                                `src/phaser/animals/emotionSheets.generated.ts`.
  *   --force                      Regenerate a clip that already exists in the review dir.
  *
- * The key comes from `LUDO_API_KEY` in the environment, never a flag and never a file in the
- * repo — a key in argv leaks into shell history and `ps`.
+ * ## The API key
+ *
+ * Read from `LUDO_API_KEY` in the environment, never from a flag — a key in argv leaks into
+ * shell history and into `ps` output for anyone else on the machine.
+ *
+ * `npm run sprites:emotions` passes Node's `--env-file-if-exists=.env.local`, so putting
+ *
+ *     LUDO_API_KEY=...
+ *
+ * in `.env.local` is the intended way to hold it. That filename is already gitignored by the
+ * repo's `*.local` rule, the `-if-exists` form means the command still runs fine with no such
+ * file (an exported shell variable works exactly as well), and Node reads it natively — no
+ * dotenv dependency.
+ *
+ * Do **not** name it `VITE_LUDO_API_KEY`. Vite inlines every `VITE_`-prefixed variable into
+ * the client bundle, which would publish the key to anyone who opens the game.
  *
  * ## Why generation and promotion are two commands
  *
