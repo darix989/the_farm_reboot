@@ -61,8 +61,26 @@
     },
     "white-sheep-1": {
       "species": "white sheep",
-      "view": "Side view, facing left",
-      "reference": "__white_sheep_1_idle-0.png"
+      "view": "Side view, facing left, its head turned slightly toward the viewer",
+      "$comment": "The sheep's carrier is CONTRAST, not shape: a solid black head and black floppy ears against a pale fleece, which is the strongest value contrast in the cast \u2014 head height, head tilt and ear position read at any size, while the fleece is a fluffy oval that deforms into mush if you ask it to do anything. Its own hazard is a GRAZING prior (the atlas even ships `eating`): a sheep prompt will drop the head to the ground and stay there, which is a pose collapse that cannot loop. Suppressed the way the owl's wings finally were \u2014 by asserting positively that the head stays up at the reference height, not by forbidding grazing. Note the source canvas is only 419x363, the smallest in the cast, so generated detail is softer here than for the fox.",
+      "reference": "__white_sheep_1_idle-0.png",
+      "overrides": {
+        "talking": {
+          "prompt": "{view}. The white sheep stands in place and talks: its black muzzle opens and closes with each phrase, its dark head bobs gently in time, and its floppy black ears flick once. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "doubtful": {
+          "prompt": "{view}. The white sheep stands in place and is unconvinced: its dark head draws back and tilts to one side, one floppy black ear lifts and swivels back, its muzzle stays shut, and it gives one slow doubtful shake of the head. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "angry": {
+          "prompt": "{view}. The white sheep stands in place and is angry: its floppy black ears pin flat back against its skull for the whole clip, its dark head drops until it is level with its shoulders and pushes forward toward the target, and its muzzle opens in a hard bleat. Its head never drops below shoulder height. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "thinking": {
+          "prompt": "{view}. The white sheep stands in place and considers something: almost motionless, its dark head turned slightly away, its floppy black ears rotating slowly back and forward again, its muzzle shut. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "sneaky": {
+          "prompt": "{view}. The white sheep stands in place and speaks conspiratorially: its dark head cranes forward and dips a little toward the listener, its floppy black ears tilt back, its eyes flick sideways, and its muzzle moves in a low mutter. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        }
+      }
     },
     "fox": {
       "species": "red fox",

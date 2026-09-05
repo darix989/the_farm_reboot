@@ -196,5 +196,97 @@
       "originX": 0.4901,
       "originY": 0.752
     }
+  },
+  "white-sheep-1": {
+    "angry": {
+      "file": "white-sheep-1-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.1422,
+      "originX": 0.4842,
+      "originY": 0.8126,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and is angry: its floppy black ears pin flat back against its skull for the whole clip, its dark head drops until it is level with its shoulders and pushes forward toward the target, and its muzzle opens in a hard bleat. Its head never drops below shoulder height. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.3,
+        "heightSwing": 14.7,
+        "driftX": 4.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:15:49.771Z"
+    },
+    "doubtful": {
+      "file": "white-sheep-1-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.1937,
+      "originX": 0.4848,
+      "originY": 0.8065,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and is unconvinced: its dark head draws back and tilts to one side, one floppy black ear lifts and swivels back, its muzzle stays shut, and it gives one slow doubtful shake of the head. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.28,
+        "heightSwing": 7.7,
+        "driftX": 4,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:14:41.015Z"
+    },
+    "sneaky": {
+      "file": "white-sheep-1-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.1373,
+      "originX": 0.4901,
+      "originY": 0.811,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and speaks conspiratorially: its dark head cranes forward and dips a little toward the listener, its floppy black ears tilt back, its eyes flick sideways, and its muzzle moves in a low mutter. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.31,
+        "heightSwing": 5.2,
+        "driftX": 1.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:18:31.633Z"
+    },
+    "talking": {
+      "file": "white-sheep-1-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.1472,
+      "originX": 0.4911,
+      "originY": 0.8121,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and talks: its black muzzle opens and closes with each phrase, its dark head bobs gently in time, and its floppy black ears flick once. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.32,
+        "heightSwing": 7.4,
+        "driftX": 2.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:13:31.405Z"
+    },
+    "thinking": {
+      "file": "white-sheep-1-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.1937,
+      "originX": 0.4887,
+      "originY": 0.8084,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and considers something: almost motionless, its dark head turned slightly away, its floppy black ears rotating slowly back and forward again, its muzzle shut. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.29,
+        "heightSwing": 2.7,
+        "driftX": 4,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:17:19.792Z"
+    }
   }
 }

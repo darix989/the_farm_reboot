@@ -117,10 +117,19 @@ here because ignoring them costs credits.
    | donkey | whole-body posture | no strong facial or ear features; body lean is all there is |
    | owl | **eyes** (~40% of body area, high-contrast yellow) | body-posture `angry` read as a surprised owl talking; narrowed-eye `sneaky` was the best clip of the project until the fox |
    | fox | **ears + bushy tail + snarl** | ears pinned flat back plus an open snarl produced the strongest `angry` generated so far, first try |
+   | sheep | **contrast**: solid black head + black ears on pale fleece | head height and tilt read at any size; the fleece is a fluffy oval that turns to mush if asked to deform |
 
    Before writing prompts for a new animal, look at its reference frame and ask what changes
    the outline. Ears and tails are the quadruped equivalent of the owl's eyes: real visual
-   weight, and they move without disturbing the body.
+   weight, and they move without disturbing the body. Strong *value* contrast counts too — the
+   sheep has no expressive shape at all, but a black head on white fleece means its head
+   position reads from across the stage.
+
+   Ask the same question about **priors**, because each animal brings one that will wreck a
+   loop if unaddressed: the owl wants to blink and flare its wings, the sheep wants to graze
+   (the atlas even ships `eating`), and any quadruped will walk out of frame. Suppress it with
+   rule 6, positively — "its head stays UP at the height it is in the reference" beat "never
+   grazes" for the sheep, first try.
 2. **Never name a posture the animal must change state to reach.** "Crouched low and drawn in"
    made the generator lie the donkey down over the clip and never stand it back up — a
    transition, not a held attitude, and one that cannot loop. Say what the body does while it
