@@ -276,81 +276,91 @@
       "file": "owl-angry.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.2129,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.1962,
       "originX": 0.5019,
       "originY": 0.75,
+      "prompt": "Front view, facing the viewer. A close, still shot of the owl. Its body, wings, feet and outline stay exactly as they are in the reference image and do not move at all — the wings remain tucked down at its sides in the same shape as the reference in every frame. ONLY THE FACE MOVES. The brow feathers press down into a hard V over the eyes, each big yellow eye narrows into a slanted slit with the bright yellow still visible, and the beak opens and snaps shut in a sharp scolding. The head tips forward a little toward the viewer and back. Nothing else in the picture changes. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
         "loopPop": 0.1,
-        "heightSwing": 11,
-        "driftX": 0.5,
+        "heightSwing": 7.6,
+        "driftX": 0.3,
         "warnings": []
-      }
+      },
+      "generatedAt": "2026-09-05T04:23:16.943Z"
     },
     "doubtful": {
       "file": "owl-doubtful.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.1476,
-      "originX": 0.4931,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.2214,
+      "originX": 0.496,
       "originY": 0.75,
+      "prompt": "Front view, facing the viewer. The owl stays standing in place on its own two feet and is skeptical: weight settling back, head rotating slowly to one side and tilting, a long unimpressed stare, one slow blink. It stays upright the whole time and never takes off. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.16,
-        "heightSwing": 5.5,
-        "driftX": 8.3,
+        "loopPop": 0.43,
+        "heightSwing": 9.2,
+        "driftX": 2.3,
         "warnings": []
-      }
+      },
+      "generatedAt": "2026-09-05T04:21:48.851Z"
     },
     "sneaky": {
       "file": "owl-sneaky.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.2045,
-      "originX": 0.4999,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.1087,
+      "originX": 0.5058,
       "originY": 0.75,
+      "prompt": "Front view, facing the viewer. The owl stays standing upright in place on its own two feet and speaks conspiratorially: head craned forward and dipped toward the listener, rotating to glance furtively to one side and back, eyes narrowing, body still. It never crouches, never hunches its body down, never lies down, never takes off. Sly and secretive. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.18,
-        "heightSwing": 14.4,
-        "driftX": 0.3,
+        "loopPop": 0.12,
+        "heightSwing": 7.2,
+        "driftX": 3.8,
         "warnings": []
-      }
+      },
+      "generatedAt": "2026-09-05T04:25:48.641Z"
     },
     "talking": {
       "file": "owl-talking.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.1962,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.1716,
       "originX": 0.5009,
       "originY": 0.75,
+      "prompt": "Front view, facing the viewer. The owl stays standing in place on its own two feet and talks: beak opening and closing, head bobbing slightly with each phrase, body still and upright. It never takes off and never leaves the ground; no perch or branch appears. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.1,
-        "heightSwing": 4.2,
-        "driftX": 0.3,
+        "loopPop": 0.14,
+        "heightSwing": 6,
+        "driftX": 0,
         "warnings": []
-      }
+      },
+      "generatedAt": "2026-09-05T04:20:39.507Z"
     },
     "thinking": {
       "file": "owl-thinking.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
+      "frameCount": 25,
+      "frameRate": 13,
       "scale": 2.2299,
-      "originX": 0.4901,
-      "originY": 0.752,
+      "originX": 0.4921,
+      "originY": 0.748,
+      "prompt": "Front view, facing the viewer. The owl stays standing in place on its own two feet and thinks: almost motionless, head turning slowly to one side and back, a single slow blink. It stays upright and never takes off. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.25,
-        "heightSwing": 1.5,
-        "driftX": 3.8,
+        "loopPop": 0.13,
+        "heightSwing": 1.9,
+        "driftX": 3,
         "warnings": []
-      }
+      },
+      "generatedAt": "2026-09-05T04:24:29.701Z"
     }
   },
   "raccoon": {
