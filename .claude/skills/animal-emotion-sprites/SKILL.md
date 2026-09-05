@@ -101,11 +101,14 @@ here because ignoring them costs credits.
 4. **Say "in place", "no travel".** Left unsaid, the model walks the animal out of frame.
 5. **Keep the silhouette.** The reference frame carries the character; the prompt should only
    ever move it.
-6. **Negations work for gross body actions, not for small habitual ones.** "Never lies down",
-   "never takes off" and "no perch appears" all held. "The eyes never close, never blink" was
-   ignored across two attempts — blinking is too strong a prior in any owl animation. If a
-   small motion has to be suppressed, find a positive phrasing that displaces it rather than
-   forbidding it.
+6. **To suppress a motion, assert stillness — do not forbid the motion.** Negations hold only
+   when the model had no strong prior pulling the other way. "Never lies down", "never takes
+   off" and "no perch appears" all held. "The eyes never close" and "the wings stay folded,
+   never spread, never flared" were both ignored, because *angry bird* carries a wing-display
+   prior and *owl* carries a blink prior. What finally worked was describing the still parts
+   positively and dropping the emotion word that summoned the motion: "its body, wings and feet
+   stay exactly as in the reference image and do not move at all — ONLY THE FACE MOVES". Name
+   what holds, not what must not happen.
 
 **`angry` is the hardest emotion.** It came out weak on the first pass for both animals
 generated so far, and three attempts on the owl did not fix it. Budget for iteration there, or
