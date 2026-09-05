@@ -59,7 +59,7 @@ function alphaBounds({ data, width, height }) {
   return { x: minX, y: minY, width: maxX - minX + 1, height: maxY - minY + 1 };
 }
 
-async function boundsOf(buffer) {
+export async function boundsOf(buffer) {
   const { data, info } = await sharp(buffer)
     .ensureAlpha()
     .raw()
@@ -67,22 +67,25 @@ async function boundsOf(buffer) {
   return alphaBounds({ data, width: info.width, height: info.height });
 }
 
+/** One cell of the grid, as a standalone PNG. Shared with the quality check. */
+export async function frameAt(sheetBuffer, index, { cols, frameWidth, frameHeight }) {
+  return sharp(sheetBuffer)
+    .extract({
+      left: (index % cols) * frameWidth,
+      top: Math.floor(index / cols) * frameHeight,
+      width: frameWidth,
+      height: frameHeight,
+    })
+    .png()
+    .toBuffer();
+}
+
 /** Union of the character's box across every cell of the grid that holds a frame. */
-async function sheetBounds(sheetBuffer, { cols, frameWidth, frameHeight, frameCount }) {
+async function sheetBounds(sheetBuffer, grid) {
   let union = null;
 
-  for (let i = 0; i < frameCount; i++) {
-    const cell = await sharp(sheetBuffer)
-      .extract({
-        left: (i % cols) * frameWidth,
-        top: Math.floor(i / cols) * frameHeight,
-        width: frameWidth,
-        height: frameHeight,
-      })
-      .png()
-      .toBuffer();
-
-    const box = await boundsOf(cell);
+  for (let i = 0; i < grid.frameCount; i++) {
+    const box = await boundsOf(await frameAt(sheetBuffer, i, grid));
     if (!box) continue;
     union = union
       ? {

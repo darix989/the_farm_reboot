@@ -391,6 +391,10 @@ the character twitch as its box changed shape between frames.
 
 ### 9.5 Generating a clip
 
+> The full operating manual is the **`animal-emotion-sprites` skill**
+> (`.claude/skills/animal-emotion-sprites/`) — prompt rules, quality thresholds, API
+> gotchas, troubleshooting. What follows is the shape of it.
+
 ```
 export LUDO_API_KEY=...                                   # never a flag; argv leaks
 npm run sprites:emotions -- --dry-run                     # free: payloads + reference frames

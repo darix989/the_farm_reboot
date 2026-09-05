@@ -49,6 +49,7 @@ import sharp from 'sharp';
 import { validateApiKey, submitGeneration, awaitJob, downloadAsset } from './ludo/ludoClient.mjs';
 import { extractReferenceFrame, toDataUri } from './ludo/referenceFrame.mjs';
 import { measureNormalization } from './ludo/normalize.mjs';
+import { measureClipQuality } from './ludo/qualityCheck.mjs';
 
 const MANIFEST_PATH = 'scripts/ludo/emotion-manifest.json';
 const REVIEW_DIR = '.ludo-review';
@@ -259,6 +260,14 @@ async function generate(args) {
       await writeFile(join(dir, 'preview.gif'), await downloadAsset(result.gif_url));
     }
 
+    const grid = {
+      cols: result.num_cols,
+      frameWidth: Math.round(width / result.num_cols),
+      frameHeight: Math.round(height / result.num_rows),
+      frameCount: result.num_frames,
+    };
+    const quality = await measureClipQuality(sheet, grid);
+
     const meta = {
       animalId: job.animalId,
       emotion: job.emotion,
@@ -273,14 +282,19 @@ async function generate(args) {
       rows: result.num_rows,
       // Frame size is derived, not taken from `frame_size`: the API pads to whole pixels and
       // the request value is a request, not a guarantee.
-      frameWidth: Math.round(width / result.num_cols),
-      frameHeight: Math.round(height / result.num_rows),
+      frameWidth: grid.frameWidth,
+      frameHeight: grid.frameHeight,
+      quality,
     };
     await writeFile(join(dir, 'meta.json'), `${JSON.stringify(meta, null, 2)}\n`);
 
     console.log(
       ` done (${meta.frameCount} frames, ${meta.cols}x${meta.rows} grid of ${meta.frameWidth}x${meta.frameHeight})`,
     );
+    console.log(
+      `    loop seam ${quality.loopPop}%  height swing ${quality.heightSwing}%  drift ±${quality.driftX}px`,
+    );
+    quality.warnings.forEach((warning) => console.log(`    ⚠ ${warning}`));
   }
 
   await writeContactSheet();
@@ -331,6 +345,12 @@ async function writeContactSheet() {
         <figcaption>
           <strong>${c.animalId} · ${c.emotion}</strong>
           <span>${c.frameCount} frames @ ${rate}fps · ${c.frameWidth}×${c.frameHeight}</span>
+          ${
+            c.quality
+              ? `<span class="${c.quality.warnings.length ? 'bad' : 'good'}">loop seam ${c.quality.loopPop}% · height swing ${c.quality.heightSwing}% · drift ±${c.quality.driftX}px</span>
+          ${c.quality.warnings.map((w) => `<span class="bad">⚠ ${w}</span>`).join('\n          ')}`
+              : ''
+          }
           <p>${c.prompt}</p>
         </figcaption>
       </figure>
@@ -366,6 +386,8 @@ async function writeContactSheet() {
            background: repeating-conic-gradient(#333 0 25%, #3d3d3d 0 50%) 0 0 / 24px 24px; }
   figcaption { padding: 12px 14px; display: grid; gap: 6px; }
   figcaption span { color: #aaa; font-size: 12px; }
+  figcaption .good { color: #7fd18b; }
+  figcaption .bad { color: #f0a05a; }
   figcaption p { margin: 0; color: #999; font-size: 12px; line-height: 1.45; }
 </style>
 <h1>Emotion clip review — ${clips.length} clip(s), playing at Trial scale (~300px tall)</h1>
