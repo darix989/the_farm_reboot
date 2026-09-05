@@ -55,9 +55,10 @@ public/assets/characters/
 ```
 
 Both the JSON descriptors and the PNG pages live under `public/assets/` (loaded by
-Phaser's `this.load.multiatlas`), **not** imported as ES modules — eleven descriptors
-have no reason to sit in the main JS bundle and be parsed on the main menu, even though
-`resolveJsonModule` is on.
+Phaser's `this.load.multiatlas` from the scene that needs them — see
+[`animalPacks.ts`](../src/phaser/animals/animalPacks.ts)), **not** imported as ES
+modules — eleven descriptors have no reason to sit in the main JS bundle and be parsed
+on the main menu, even though `resolveJsonModule` is on.
 
 Two naming mismatches, both inherited from the prototype. The `textures[].image` field
 inside each descriptor is the ultimate authority:
@@ -82,19 +83,21 @@ shape with a trailing `-`, so its prefixes are easier to copy but still mandator
 
 ---
 
-## 3. Four files carry the system
+## 3. Five files carry the system
 
 | File                                                                                    | Role                                                                                                               |
 | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | [`src/phaser/animals/animalDescriptors.ts`](../src/phaser/animals/animalDescriptors.ts) | The data. One `AnimalDescriptor` per animal: frame ranges + idle/alert behaviour.                                  |
 | [`src/phaser/animals/animalAnimations.ts`](../src/phaser/animals/animalAnimations.ts)   | Turns descriptors into Phaser animations (`ensureAnimalAnimations`) and resolves per-animal setup (`animalSetup`). |
 | [`src/phaser/animals/AnimalAnimator.ts`](../src/phaser/animals/AnimalAnimator.ts)       | The playback engine: weighted sequence picking, chaining, self-looping. Drives any `Phaser.GameObjects.Sprite`.    |
-| [`src/phaser/animals/animalAtlases.ts`](../src/phaser/animals/animalAtlases.ts)         | Loads the eleven multiatlases.                                                                                     |
+| [`src/phaser/animals/animalAtlases.ts`](../src/phaser/animals/animalAtlases.ts)         | Queues a given list of multiatlases (`loadAnimalAtlases(scene, ids)`).                                             |
+| [`src/phaser/animals/animalPacks.ts`](../src/phaser/animals/animalPacks.ts)             | Derives which ids a scene needs and queues them. Farm = Level 1 roster; Trial = debate cast; Gallery = every id.   |
 
 Plus [`src/phaser/animals/animalStaging.ts`](../src/phaser/animals/animalStaging.ts) for
-per-surface scale, and the two scenes that use all of the above:
-[`Farm.ts`](../src/phaser/scenes/Farm.ts) (the overworld) and
-[`Trial.ts`](../src/phaser/scenes/Trial.ts) (the debate stage).
+per-surface scale, and the three scenes that use all of the above:
+[`Farm.ts`](../src/phaser/scenes/Farm.ts) (the overworld),
+[`Trial.ts`](../src/phaser/scenes/Trial.ts) (the debate stage), and
+[`AnimalGallery.ts`](../src/phaser/scenes/AnimalGallery.ts) (clip review).
 
 ### 3.1 `AnimalDescriptor` — the behaviour contract
 
@@ -143,16 +146,21 @@ one user of `transitions`: a sitting dog must stand up before it can bark.
 
 ### 3.2 Building animations — `ensureAnimalAnimations`
 
-Called once, from `Preloader.create()`, **not** from `Farm.create()` or
-`Trial.create()`. Animation keys are global to the Phaser game; building them per-scene
-would re-register every key on each scene entry (this is a real bug in the source
-prototype, which builds them in its Trial scene). `Preloader` always runs before both
-Farm and Trial, and its `create()` runs after `preload()` has finished loading every
-atlas, so every texture is already in the TextureManager.
+Called from the scene that just loaded its animal pack — `Farm.create()`,
+`Trial.create()`, `AnimalGallery.create()` — **not** from `Preloader`. Animation keys are
+global to the Phaser game; the source prototype builds them in its Trial scene and
+re-registers every key on each entry (a documented bug). Here the function is
+idempotent (`anims.exists(key)` guards each animation, `textures.exists` guards each
+animal) and is passed only the ids that scene queued, so a Farm entry does not warn
+about gallery-only animals that were never fetched.
 
-The function is idempotent (`anims.exists(key)` guards each animation, `textures.exists`
-guards each animal), which matters because React StrictMode tears the Phaser game down
-and rebuilds it in dev — the same idiom as `ensureFarmTextures()`.
+`Preloader` no longer touches character art. Each playable scene's `preload()` calls
+`queueAnimalPackForScene`, Phaser waits for those files, then `create()` calls
+`ensureAnimalPackForScene`. A second visit is a cache hit: `textures.exists` skips the
+queue, `anims.exists` skips registration.
+
+The same idempotence matters because React StrictMode tears the Phaser game down and
+rebuilds it in dev — the same idiom as `ensureFarmTextures()`.
 
 `repeat` is deliberately **not** set when an animation is created — looping is a
 property of the _sequence entry_ (`{ key: 'idle', repeat: -1 }`), so the same clip can
@@ -356,8 +364,15 @@ underneath the animated follower sprite (see §3.3).
    measured max frame size and tune by eye.
 6. **`characters.ts`** — set `animal: '<id>'` on whichever `CHARACTERS` entry should wear
    this skin.
-7. **`animalAtlases.ts`** needs no change — it iterates `ANIMAL_SPRITE_IDS`, derived from
-   `ANIMAL_DESCRIPTORS`, automatically.
+7. **Loading.** `animalAtlases.ts` needs no change — it loads whatever ids it is given.
+   [`animalPacks.ts`](../src/phaser/animals/animalPacks.ts) derives those ids:
+   - **Gallery** loads every `ANIMAL_SPRITE_IDS` entry on open, so a descriptor with no
+     character is still previewable.
+   - **Farm** loads whoever `CHARACTERS` + `FARM_NPCS` (plus the player) name. Set
+     `animal: '<id>'` on a farm character and the atlas is queued the next time the
+     overworld starts.
+   - **Trial** loads the active debate's cast the same way. From the farm this is a
+     cache hit; from the main menu it fetches only that scenario's animals.
 
 **Verify.** `npm run dev-nolog`, enter the Farm, and look for the new sprite idling near
 its zone. If it is cast as a Trial participant, launch that scenario and check it lands

@@ -12,12 +12,14 @@ import { useGameStore } from '../store/gameStore';
 import { DEBATES } from '../data/levels';
 
 const ReactApp: React.FC = () => {
-  const { currentScene, isGameReady, activeDebateId } = useGameStore();
+  const { currentScene, isGameReady, isSceneLoading, activeDebateId } = useGameStore();
 
   // `isGameReady` means the first playable scene has run `create()` — not merely that a
   // Phaser instance exists. Until then `currentScene` names a scene that is not up yet, so
   // rendering its overlay would put live buttons over a still-loading game.
-  if (!isGameReady) {
+  // `isSceneLoading` is the same gate for a later pack fetch (Farm / Trial / Gallery):
+  // `currentScene` still names the scene we are leaving until the new one reports in.
+  if (!isGameReady || isSceneLoading) {
     return (
       <ReactRoot>
         <GameLoadingScreen />

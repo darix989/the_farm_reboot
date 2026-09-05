@@ -18,7 +18,9 @@ import { useFarmStore } from '../../store/farmStore';
 import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import getLabel from '../../data/labels';
 import { animalSetup } from '../animals/animalAnimations';
+import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
+import { reportSceneLoadProgress } from '../bootProgress';
 import {
   ANIMAL_STAGING,
   animalArtFacesLeft,
@@ -66,7 +68,12 @@ export class Farm extends Scene {
     super('Farm');
   }
 
+  preload() {
+    if (queueAnimalPackForScene(this)) reportSceneLoadProgress(this);
+  }
+
   create() {
+    ensureAnimalPackForScene(this);
     ensureFarmTextures(this);
     useFarmStore.getState().resetFarmUi();
 

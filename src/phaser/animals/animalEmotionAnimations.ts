@@ -60,41 +60,68 @@ function eachSheet(
 }
 
 /**
- * Queues every promoted emotion sheet. Called from `Preloader` alongside
- * `loadAnimalAtlases`; a no-op until the first `--promote` run writes entries into
- * `emotionSheets.generated.ts`.
+ * Walks promoted sheets, optionally restricted to a set of animal ids so a scene that
+ * only asked for the farm pack does not warn about gallery-only animals.
+ */
+function eachSheetFor(
+  ids: readonly AnimalSpriteId[],
+  visit: (animalId: AnimalSpriteId, emotion: AnimalEmotion, sheet: EmotionSheet) => void,
+): void {
+  const wanted = new Set(ids);
+  eachSheet((animalId, emotion, sheet) => {
+    if (!wanted.has(animalId)) return;
+    visit(animalId, emotion, sheet);
+  });
+}
+
+/**
+ * Queues promoted emotion sheets for `ids`. A no-op until the first `--promote` run
+ * writes entries into `emotionSheets.generated.ts`, and a no-op per clip whose texture
+ * is already in the cache.
  *
  * The loader path is set and restored around the queueing rather than inherited from
- * whatever `Preloader.preload` last called `setPath` with. `loadAnimalAtlases` gets this for
+ * whatever the scene last called `setPath` with. `loadAnimalAtlases` gets this for
  * free by passing `path` to `load.multiatlas`; `load.spritesheet` has no such argument (its
  * `SpriteSheetFileConfig` accepts no `path`), so it has to be done by hand — and it is worth
  * doing, because Phaser captures the current path at queue time and a call that leans on an
  * earlier `setPath` silently 404s the day someone reorders `preload`. `sheet.file` is
  * therefore a bare filename, not a path.
+ *
+ * Returns whether anything was added to the loader.
  */
-export function loadAnimalEmotionSheets(scene: Phaser.Scene): void {
+export function loadAnimalEmotionSheets(
+  scene: Phaser.Scene,
+  ids: readonly AnimalSpriteId[],
+): boolean {
   const previousPath = scene.load.path;
   scene.load.setPath(EMOTION_ASSET_PATH);
 
-  eachSheet((animalId, emotion, sheet) => {
+  let queued = false;
+  eachSheetFor(ids, (animalId, emotion, sheet) => {
     const key = emotionTextureKey(animalId, emotion);
-    if (scene.textures.exists(key)) return; // React StrictMode / scene restart
+    if (scene.textures.exists(key)) return; // React StrictMode / scene restart / already lazy-loaded
     scene.load.spritesheet(key, sheet.file, {
       frameWidth: sheet.frameWidth,
       frameHeight: sheet.frameHeight,
     });
+    queued = true;
   });
 
   scene.load.setPath(previousPath);
+  return queued;
 }
 
 /**
- * Creates one animation per loaded emotion sheet. Idempotent, and skips any clip whose
- * texture is missing — a promoted entry whose PNG was deleted warns once and leaves the
- * animal on its base behaviour instead of throwing during scene create.
+ * Creates one animation per loaded emotion sheet in `ids`. Idempotent, and skips any clip
+ * whose texture is missing — a promoted entry whose PNG was deleted warns once and leaves
+ * the animal on its base behaviour instead of throwing during scene create. Only the
+ * requested ids are considered, so a Farm pack does not warn about gallery-only animals.
  */
-export function ensureAnimalEmotionAnimations(scene: Phaser.Scene): void {
-  eachSheet((animalId, emotion, sheet) => {
+export function ensureAnimalEmotionAnimations(
+  scene: Phaser.Scene,
+  ids: readonly AnimalSpriteId[],
+): void {
+  eachSheetFor(ids, (animalId, emotion, sheet) => {
     const textureKey = emotionTextureKey(animalId, emotion);
     const animKey = emotionAnimKey(animalId, emotion);
     if (scene.anims.exists(animKey)) return;

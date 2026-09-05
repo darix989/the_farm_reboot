@@ -20,6 +20,7 @@ import { EventBus } from '../EventBus';
 import { ANIMAL_GALLERY_STAGE } from '../../utils/constants';
 import { useAnimalGalleryStore } from '../../store/animalGalleryStore';
 import { animalSetup } from '../animals/animalAnimations';
+import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { animalClips, type AnimalClip } from '../animals/animalClipCatalogue';
 import { ANIMAL_STAGING, applyAtlasFeetOrigin } from '../animals/animalStaging';
 import {
@@ -32,6 +33,7 @@ import {
 import { isAnimalEmotion } from '../animals/animalEmotions';
 import { prefersReducedMotion } from '../../utils/reducedMotion';
 import type { AnimalSpriteId } from '../../data/characters';
+import { reportSceneLoadProgress } from '../bootProgress';
 
 /**
  * Preview size relative to the Trial's staging. Larger than the Trial (which has to fit three
@@ -60,7 +62,12 @@ export class AnimalGallery extends Scene {
     super('AnimalGallery');
   }
 
+  preload() {
+    if (queueAnimalPackForScene(this)) reportSceneLoadProgress(this);
+  }
+
   create() {
+    ensureAnimalPackForScene(this);
     this.cameras.main.setBackgroundColor(BACKGROUND);
     this.drawStage();
 

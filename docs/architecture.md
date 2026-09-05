@@ -81,17 +81,21 @@ boilerplate over your scene.
 
 That first emit is also the **readiness signal**. `isGameReady` means "a playable scene has
 run `create()`", not "a `Phaser.Game` object exists" — the constructor returns in
-microseconds while ~22 MB of atlases are still downloading. `ReactApp` renders
-`GameLoadingScreen` (which covers the stage and takes pointer events) until then, so no
-overlay button can be clicked while `Preloader` is still running. Before this gate existed,
-an early menu click ran `game.scene.start('Farm')` alongside the loading `Preloader` — the
-Farm came up with placeholder circles for animals, and `Preloader.create()` then started
-`MainMenu`, leaving the menu overlay painted over the running Farm.
+microseconds while `Boot`/`Preloader` are still fetching the backdrop, logo and star.
+Character atlases are **not** part of that wait: each playable scene queues only the
+animals it uses (`src/phaser/animals/animalPacks.ts`) in its own `preload()`. `ReactApp`
+renders `GameLoadingScreen` (which covers the stage and takes pointer events) until the
+menu reports in, and again while `isSceneLoading` is true so a Farm / Gallery click cannot
+start a second scene alongside a pack that is still downloading. Before the boot gate
+existed, an early menu click ran `game.scene.start('Farm')` alongside the loading
+`Preloader` — the Farm came up with placeholder circles for animals, and
+`Preloader.create()` then started `MainMenu`, leaving the menu overlay painted over the
+running Farm.
 
 Loading progress reaches React the same way: `Boot` and `Preloader` mirror their loaders
-onto `boot-progress` via `src/phaser/bootProgress.ts`, weighted so the bar tracks bytes
-rather than phase count. The progress bar and the interaction gate read the same store
-field, so they cannot disagree.
+onto `boot-progress` via `src/phaser/bootProgress.ts`; a later scene pack uses
+`scene-load-progress`. The progress bar and the interaction gate read the same store
+field (`loadProgress`), so they cannot disagree.
 
 > **Switching scenes:** use `GameManager.switchScene(key)`. It goes through the *running
 > scene's* ScenePlugin so the old scene stops. `game.scene.start(key)` (the SceneManager)
@@ -121,7 +125,7 @@ The two buses:
 
 | Bus | Events | Typed | Used for |
 |---|---|---|---|
-| `src/phaser/EventBus.ts` | 4 | no | `current-scene-ready`, `game-ready`, `game-destroyed`, `boot-progress` |
+| `src/phaser/EventBus.ts` | 5 | no | `current-scene-ready`, `game-ready`, `game-destroyed`, `boot-progress`, `scene-load-progress` |
 | `src/react/trial/utils/debateEventBus.ts` | 28 | yes | every debate interaction, and the trigger system for scenario tutorials |
 
 They are unrelated and must not be confused. The Phaser bus exists only to tell React which
@@ -173,8 +177,8 @@ src/
   utils/gameManager.ts       imperative Phaser access (switchScene, getScene, …)
   phaser/
     main.ts                  game config: scale, physics, scene list
-    EventBus.ts              the 4-event Phaser→React bus
-    bootProgress.ts          Boot/Preloader loader progress → `boot-progress`
+    EventBus.ts              the 5-event Phaser→React bus
+    bootProgress.ts          Boot/Preloader → `boot-progress`; scene packs → `scene-load-progress`
     PhaserGame.tsx           creates/destroys the game
     scenes/                  Boot, Preloader, MainMenu, Farm, Game, Trial, GameOver
     farm/                    overworld helpers (textures, input, joystick, palette)

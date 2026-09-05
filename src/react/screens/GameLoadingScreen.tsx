@@ -4,11 +4,13 @@ import getLabel from '../../data/labels';
 import styles from './GameLoadingScreen.module.scss';
 
 /**
- * The boot screen, shown until the first playable Phaser scene reports in.
+ * The loading screen, shown until the first playable Phaser scene reports in, and again
+ * while a playable scene fetches its animal pack (`isSceneLoading`).
  *
  * It is both the loading UI and the interaction gate: it covers the stage and swallows
  * pointer events, so nothing behind it can be clicked while `Boot`/`Preloader` are still
- * fetching. Progress comes from the Phaser loaders via `boot-progress` (see
+ * fetching, or while Farm / Trial / Gallery `preload()` is pulling atlases. Progress comes
+ * from the Phaser loaders via `boot-progress` / `scene-load-progress` (see
  * `src/phaser/bootProgress.ts`), so the bar and the gate can never disagree.
  */
 const GameLoadingScreen: React.FC = () => {

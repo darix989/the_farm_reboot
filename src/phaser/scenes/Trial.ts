@@ -7,6 +7,7 @@ import { DEBATES } from '../../data/levels';
 import { debateParticipantIds, stageOrder } from '../../data/debateCast';
 import { resolveCharacter } from '../../data/characters';
 import { animalSetup } from '../animals/animalAnimations';
+import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
 import {
   ANIMAL_STAGING,
@@ -15,6 +16,7 @@ import {
   applyAtlasFeetOrigin,
 } from '../animals/animalStaging';
 import { ANIMAL_EMOTIONS, type AnimalEmotion } from '../animals/animalEmotions';
+import { reportSceneLoadProgress } from '../bootProgress';
 
 /** Draws the `TRIAL_STAGE_HOLE` rect and a marker at each computed cast slot. Toggle to
  *  check the Phaser rect and the `.trialGameHole` CSS cell still agree — nothing else
@@ -53,7 +55,12 @@ export class Trial extends Scene {
     super('Trial');
   }
 
+  preload() {
+    if (queueAnimalPackForScene(this)) reportSceneLoadProgress(this);
+  }
+
   create() {
+    ensureAnimalPackForScene(this);
     this.camera = this.cameras.main;
     this.camera.setBackgroundColor(0x1a1a1a);
 

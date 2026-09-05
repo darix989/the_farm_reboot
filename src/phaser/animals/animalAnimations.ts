@@ -4,8 +4,9 @@
  * Ported from `the_farm/src/phaser/utils/animationBuilders.ts` (`createAnimalsAnims`,
  * `getAnimInfoByName`). The source builds animations inside `Trial.create()`, which
  * re-registers every (global) key each time the scene re-enters — its own doc flags this
- * as a bug (§9.3). Here `ensureAnimalAnimations` is called once from `Preloader.create()`,
- * and is idempotent besides, so a second call anywhere is always harmless.
+ * as a bug (§9.3). Here `ensureAnimalAnimations` is called from each scene that just
+ * loaded its animal pack (`Farm` / `Trial` / `AnimalGallery` `create()`), and is
+ * idempotent besides, so a second call anywhere is always harmless.
  */
 import {
   ANIMAL_DESCRIPTORS,
@@ -76,12 +77,14 @@ export function animalSetup(id: AnimalSpriteId): AnimalSetup {
 }
 
 /**
- * Creates one Phaser animation per `baseAnimations` entry, for every animal whose atlas is
- * loaded. Idempotent — safe to call more than once, which matters because React StrictMode
- * tears the Phaser game down and rebuilds it in dev (mirrors `ensureFarmTextures`).
+ * Creates one Phaser animation per `baseAnimations` entry, for each id whose atlas is
+ * loaded. Pass only the pack this scene asked for — calling it with every descriptor
+ * would warn about animals that were deliberately not fetched. Idempotent — safe to
+ * call more than once, which matters because React StrictMode tears the Phaser game
+ * down and rebuilds it in dev (mirrors `ensureFarmTextures`).
  */
-export function ensureAnimalAnimations(scene: Phaser.Scene): void {
-  ANIMAL_SPRITE_IDS.forEach((id) => {
+export function ensureAnimalAnimations(scene: Phaser.Scene, ids: readonly AnimalSpriteId[]): void {
+  ids.forEach((id) => {
     const descriptor = ANIMAL_DESCRIPTORS[id];
     if (descriptor.variantOf) return; // variants share the base animal's keys
 

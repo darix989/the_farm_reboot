@@ -62,11 +62,11 @@ src/
   phaser/
     PhaserGame.tsx      # Creates/destroys Phaser Game, wires Zustand + EventBus
     main.ts             # Game config: scene list, scale, physics
-    EventBus.ts         # Phaser→React bus (3 events)
+    EventBus.ts         # Phaser→React bus (5 events)
     scenes/             # Boot, Preloader, MainMenu, Farm, Game, Trial, GameOver
     farm/               # Overworld helpers: textures, palette, input, joystick
     animals/            # Placeholder animal spritesheets: descriptors, animation
-                        #   builder, AnimalAnimator playback — see
+                        #   builder, AnimalAnimator, per-scene packs — see
                         #   docs/characters-and-animations.md
   react/
     AGENTS.md           # React-layer guide (TrialUI, debate workflow, event bus)
@@ -74,10 +74,10 @@ src/
     uiFont.ts           # var(--ui-font-*) for inline styles in TSX
     uiColors.scss       # @mixin color-palette → --ui-color-* on `html`
     uiColor.ts          # var(--ui-color-*) for inline styles in TSX
-    ReactApp.tsx        # Scene-key → overlay switch; loading gate on isGameReady
+    ReactApp.tsx        # Scene-key → overlay switch; loading gate on isGameReady / isSceneLoading
     ReactRoot.tsx       # Overlay aligned to Phaser canvas (resize sync)
     screens/            # One overlay per scene key
-      GameLoadingScreen.tsx # Boot progress bar + interaction gate (shown until ready)
+      GameLoadingScreen.tsx # Boot + scene-pack progress bar (shown until ready / while loading)
       MainMenuUI.tsx
       TrialUI.tsx       # The debate (rounds, choices, analysis, score)
       FarmUI.tsx        # Overworld prompt + dialogue
@@ -135,18 +135,20 @@ The model — siblings over one stage, scene key drives the overlay — is expla
 | File | Role |
 |---|---|
 | `src/phaser/PhaserGame.tsx` | Mounts the game once; emits `game-ready` / `game-destroyed`. |
-| `src/phaser/EventBus.ts` | The 4-event Phaser→React bus. Scenes emit `current-scene-ready` at the end of `create()`; `Boot`/`Preloader` emit `boot-progress`. |
-| `src/phaser/bootProgress.ts` | Mirrors the `Boot`/`Preloader` loaders onto `boot-progress` as one weighted 0..1 figure. |
-| `src/store/gameStore.ts` | Subscribes to those events; holds `currentScene`, `currentSceneInstance`, `bootPhase`/`isGameReady` and `loadProgress`. |
+| `src/phaser/EventBus.ts` | The 5-event Phaser→React bus. Scenes emit `current-scene-ready` at the end of `create()`; `Boot`/`Preloader` emit `boot-progress`; a playable scene fetching its animal pack emits `scene-load-progress`. |
+| `src/phaser/bootProgress.ts` | Mirrors `Boot`/`Preloader` onto `boot-progress`, and a scene pack onto `scene-load-progress`. |
+| `src/store/gameStore.ts` | Subscribes to those events; holds `currentScene`, `currentSceneInstance`, `bootPhase`/`isGameReady`, `isSceneLoading` and `loadProgress`. |
 | `src/react/ReactApp.tsx` | Switches on `currentScene` to pick the overlay. |
 | `src/react/ReactRoot.tsx` | Mirrors the canvas margins/size on resize. |
 | `src/utils/gameManager.ts` | Imperative access: `switchScene`, `getScene`, pause/resume. |
 
 ⚠️ **Readiness is not "the game object exists."** `isGameReady` flips only when the first
-playable scene emits `current-scene-ready`; `new Phaser.Game()` returns long before the
-assets are in the cache. Never make an overlay interactive on anything weaker, and never
-call `game.scene.start()` to route — `GameManager.switchScene` goes through the running
-scene and refuses to run before the game is ready.
+playable scene emits `current-scene-ready`; `new Phaser.Game()` returns long before
+`Boot`/`Preloader` finish. Character atlases load later, per scene — `isSceneLoading`
+gates the overlay while that fetch runs. Never make an overlay interactive on anything
+weaker, and never call `game.scene.start()` to route — `GameManager.switchScene` goes
+through the running scene and refuses to run before the game is ready (or while a pack
+is still loading).
 
 `GameManager.whenReady` / `whenSceneReady` compare against zustand v5's previous-state
 argument (the v3/v4 `(selector, listener)` pair they used to pass was silently dropped) and

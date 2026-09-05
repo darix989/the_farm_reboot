@@ -12,7 +12,7 @@ export type { DebateScenarioKey } from '../data/levels';
  * - `idle` — no Phaser game instance.
  * - `booting` — the instance exists, but `Boot`/`Preloader` are still fetching. **Nothing
  *   in the React overlay may be interactive here**: the loaded scene is not the one
- *   `currentScene` would name, and the ~22 MB of character assets are not in the cache.
+ *   `currentScene` would name. Character atlases load later, per scene.
  * - `ready` — the first playable scene has run `create()` and reported in.
  *
  * Constructing `new Phaser.Game()` is *not* readiness. It returns in microseconds while
@@ -49,7 +49,13 @@ interface GameState {
   bootPhase: GameBootPhase;
   /** `bootPhase === 'ready'`, kept as a field so consumers can select it directly. */
   isGameReady: boolean;
-  /** Overall asset-loading progress, 0..1. Drives the React boot screen. */
+  /**
+   * A playable scene is fetching its animal pack. Distinct from `bootPhase`: the game is
+   * already ready (the menu has reported in); this only gates the overlay so menu buttons
+   * cannot fire a second `scene.start` while Farm/Trial/Gallery preload.
+   */
+  isSceneLoading: boolean;
+  /** Overall asset-loading progress, 0..1. Drives the React loading screen (boot and scene). */
   loadProgress: number;
 
   // UI state
@@ -63,6 +69,8 @@ interface GameStore extends GameState {
   setCurrentSceneInstance: (scene: Phaser.Scene | null) => void;
   setGameReady: (ready: boolean) => void;
   setLoadProgress: (progress: number) => void;
+  beginSceneLoad: () => void;
+  endSceneLoad: () => void;
 
   // Game state actions
   setCurrentScene: (scene: string) => void;
@@ -86,6 +94,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   currentSceneInstance: null,
   bootPhase: 'idle',
   isGameReady: false,
+  isSceneLoading: false,
   loadProgress: 0,
   player: {
     level: 1,
@@ -104,8 +113,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setGame: (game) =>
     set(
       game
-        ? { game, bootPhase: 'booting', isGameReady: false, loadProgress: 0 }
-        : { game: null, bootPhase: 'idle', isGameReady: false, loadProgress: 0 },
+        ? {
+            game,
+            bootPhase: 'booting',
+            isGameReady: false,
+            isSceneLoading: false,
+            loadProgress: 0,
+          }
+        : {
+            game: null,
+            bootPhase: 'idle',
+            isGameReady: false,
+            isSceneLoading: false,
+            loadProgress: 0,
+          },
     ),
   setCurrentSceneInstance: (scene) => set({ currentSceneInstance: scene }),
   setGameReady: (ready) =>
@@ -115,6 +136,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       loadProgress: ready ? 1 : state.loadProgress,
     })),
   setLoadProgress: (progress) => set({ loadProgress: Math.max(0, Math.min(1, progress)) }),
+  beginSceneLoad: () => set({ isSceneLoading: true, loadProgress: 0 }),
+  endSceneLoad: () => set({ isSceneLoading: false, loadProgress: 1 }),
 
   // Game state actions
   setCurrentScene: (scene) => set({ currentScene: scene }),
@@ -165,14 +188,27 @@ EventBus.on('boot-progress', ({ scene, progress }: { scene: Phaser.Scene; progre
   store.setLoadProgress(progress);
 });
 
+EventBus.on(
+  'scene-load-progress',
+  ({ scene, progress }: { scene: Phaser.Scene; progress: number }) => {
+    if (!isLiveGame(scene)) return;
+    const store = useGameStore.getState();
+    if (!store.isSceneLoading || progress <= store.loadProgress) return;
+    store.setLoadProgress(progress);
+  },
+);
+
 // The first scene to report in is the first one the player can actually interact with:
 // `Boot` and `Preloader` never emit. That makes this the moment the game is ready.
+// A later emit from Farm/Trial/Gallery also ends a scene-pack load, so the overlay
+// unblocks on the same tick the new scene is up.
 EventBus.on('current-scene-ready', (scene: Phaser.Scene) => {
   if (!isLiveGame(scene)) return;
   const store = useGameStore.getState();
   store.setCurrentScene(scene.scene.key);
   store.setCurrentSceneInstance(scene);
   if (!store.isGameReady) store.setGameReady(true);
+  if (store.isSceneLoading) store.endSceneLoad();
 });
 
 EventBus.on('game-ready', (game: Phaser.Game) => {
