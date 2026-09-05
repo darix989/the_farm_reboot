@@ -13,8 +13,14 @@
  */
 import { ANIMAL_DESCRIPTORS } from './animalDescriptors';
 import { animalAnimKey, animalSetup } from './animalAnimations';
-import { ANIMAL_EMOTIONS, EMOTION_FRAME_RATE, type AnimalEmotion } from './animalEmotions';
+import {
+  ANIMAL_EMOTIONS,
+  EMOTION_FRAME_RATE,
+  type AnimalEmotion,
+  type EmotionQuality,
+} from './animalEmotions';
 import { emotionAnimKey, emotionSheet } from './animalEmotionAnimations';
+import { emotionClipQualityStatus, type ClipQualityStatus } from './emotionQuality';
 import type { AnimalSpriteId } from '../../data/characters';
 
 /** `emotion` clips are generated; `base` clips came with the source art. */
@@ -32,6 +38,10 @@ export interface AnimalClip {
   frameRate: number;
   /** True for the animal's resting pose, which the gallery opens on. */
   isRest: boolean;
+  /** Emotion clips only. Base atlas clips have no generated quality. */
+  qualityStatus?: ClipQualityStatus;
+  /** Present when the promoted record stored measurements for this emotion. */
+  quality?: EmotionQuality;
 }
 
 /**
@@ -58,6 +68,8 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
       frameCount: sheet?.frameCount ?? 0,
       frameRate: sheet?.frameRate ?? EMOTION_FRAME_RATE,
       isRest: false,
+      qualityStatus: emotionClipQualityStatus(sheet),
+      quality: sheet?.quality,
     };
   });
 

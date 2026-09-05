@@ -29,6 +29,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.125,
       originX: 0.528,
       originY: 0.7012,
+      quality: {
+        loopPop: 0.12,
+        heightSwing: 5.1,
+        driftX: 0.3,
+        warnings: [],
+      },
     },
     doubtful: {
       file: 'brown-wolf-doubtful.png',
@@ -39,6 +45,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.2174,
       originX: 0.521,
       originY: 0.7012,
+      quality: {
+        loopPop: 0.13,
+        heightSwing: 12.1,
+        driftX: 2.3,
+        warnings: [],
+      },
     },
     sneaky: {
       file: 'brown-wolf-sneaky.png',
@@ -49,6 +61,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.1857,
       originX: 0.536,
       originY: 0.6992,
+      quality: {
+        loopPop: 0.33,
+        heightSwing: 16.7,
+        driftX: 3,
+        warnings: [],
+      },
     },
     talking: {
       file: 'brown-wolf-talking.png',
@@ -59,6 +77,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.2174,
       originX: 0.5337,
       originY: 0.6992,
+      quality: {
+        loopPop: 0.28,
+        heightSwing: 4.3,
+        driftX: 8.5,
+        warnings: [],
+      },
     },
     thinking: {
       file: 'brown-wolf-thinking.png',
@@ -69,6 +93,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.2282,
       originX: 0.5277,
       originY: 0.7012,
+      quality: {
+        loopPop: 0.19,
+        heightSwing: 3.4,
+        driftX: 1.3,
+        warnings: [],
+      },
     },
   },
   'donkey-grey': {
@@ -133,6 +163,14 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.3155,
       originX: 0.5723,
       originY: 0.6641,
+      quality: {
+        loopPop: 0.19,
+        heightSwing: 32.1,
+        driftX: 10.8,
+        warnings: [
+          'height swing 32% (over 20%) — check it is motion, not the character changing pose',
+        ],
+      },
     },
     doubtful: {
       file: 'fox-doubtful.png',
@@ -143,6 +181,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.3018,
       originX: 0.5472,
       originY: 0.6641,
+      quality: {
+        loopPop: 0.16,
+        heightSwing: 15.4,
+        driftX: 6,
+        warnings: [],
+      },
     },
     sneaky: {
       file: 'fox-sneaky.png',
@@ -153,6 +197,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.3018,
       originX: 0.5443,
       originY: 0.6641,
+      quality: {
+        loopPop: 0.19,
+        heightSwing: 16.6,
+        driftX: 8,
+        warnings: [],
+      },
     },
     talking: {
       file: 'fox-talking.png',
@@ -163,6 +213,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.2616,
       originX: 0.545,
       originY: 0.666,
+      quality: {
+        loopPop: 0.2,
+        heightSwing: 3.5,
+        driftX: 1.8,
+        warnings: [],
+      },
     },
     thinking: {
       file: 'fox-thinking.png',
@@ -173,6 +229,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.3155,
       originX: 0.5635,
       originY: 0.6641,
+      quality: {
+        loopPop: 0.17,
+        heightSwing: 14.3,
+        driftX: 7.3,
+        warnings: [],
+      },
     },
   },
   owl: {
@@ -237,6 +299,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.4663,
       originX: 0.5123,
       originY: 0.6855,
+      quality: {
+        loopPop: 0.16,
+        heightSwing: 13,
+        driftX: 11.5,
+        warnings: [],
+      },
     },
     doubtful: {
       file: 'raccoon-doubtful.png',
@@ -247,6 +315,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.4198,
       originX: 0.5115,
       originY: 0.6836,
+      quality: {
+        loopPop: 0.17,
+        heightSwing: 10.9,
+        driftX: 11.3,
+        warnings: [],
+      },
     },
     sneaky: {
       file: 'raccoon-sneaky.png',
@@ -257,6 +331,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.7,
       originX: 0.5112,
       originY: 0.6836,
+      quality: {
+        loopPop: 0.17,
+        heightSwing: 3.7,
+        driftX: 1.3,
+        warnings: [],
+      },
     },
     talking: {
       file: 'raccoon-talking.png',
@@ -267,6 +347,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.5779,
       originX: 0.5117,
       originY: 0.6836,
+      quality: {
+        loopPop: 0.16,
+        heightSwing: 5.5,
+        driftX: 1.8,
+        warnings: [],
+      },
     },
     thinking: {
       file: 'raccoon-thinking.png',
@@ -277,6 +363,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.565,
       originX: 0.5118,
       originY: 0.6836,
+      quality: {
+        loopPop: 0.17,
+        heightSwing: 6,
+        driftX: 5.8,
+        warnings: [],
+      },
     },
   },
   'white-sheep-1': {
@@ -289,6 +381,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 1.0861,
       originX: 0.4797,
       originY: 0.7148,
+      quality: {
+        loopPop: 0.31,
+        heightSwing: 18.5,
+        driftX: 3.5,
+        warnings: [],
+      },
     },
     doubtful: {
       file: 'white-sheep-1-doubtful.png',
@@ -299,6 +397,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 1.1937,
       originX: 0.4848,
       originY: 0.7148,
+      quality: {
+        loopPop: 0.28,
+        heightSwing: 7.7,
+        driftX: 4,
+        warnings: [],
+      },
     },
     sneaky: {
       file: 'white-sheep-1-sneaky.png',
@@ -309,6 +413,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 1.1373,
       originX: 0.4901,
       originY: 0.7148,
+      quality: {
+        loopPop: 0.31,
+        heightSwing: 5.2,
+        driftX: 1.8,
+        warnings: [],
+      },
     },
     talking: {
       file: 'white-sheep-1-talking.png',
@@ -319,6 +429,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 1.1472,
       originX: 0.4911,
       originY: 0.7168,
+      quality: {
+        loopPop: 0.32,
+        heightSwing: 7.4,
+        driftX: 2.5,
+        warnings: [],
+      },
     },
     thinking: {
       file: 'white-sheep-1-thinking.png',
@@ -329,6 +445,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 1.1937,
       originX: 0.4887,
       originY: 0.7168,
+      quality: {
+        loopPop: 0.29,
+        heightSwing: 2.7,
+        driftX: 4,
+        warnings: [],
+      },
     },
   },
 };

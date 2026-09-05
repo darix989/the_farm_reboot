@@ -545,6 +545,22 @@ function sortRecord(byAnimal) {
   );
 }
 
+function jsString(value) {
+  return `'${String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
+}
+
+function serializeQuality(quality) {
+  if (!quality) return '';
+  const warnings = (quality.warnings ?? []).map(jsString).join(', ');
+  return `
+      quality: {
+        loopPop: ${quality.loopPop},
+        heightSwing: ${quality.heightSwing},
+        driftX: ${quality.driftX},
+        warnings: [${warnings}],
+      },`;
+}
+
 function serializeSheet(sheet) {
   const rate = sheet.frameRate == null ? '' : `\n      frameRate: ${sheet.frameRate},`;
   return `{
@@ -554,7 +570,7 @@ function serializeSheet(sheet) {
       frameCount: ${sheet.frameCount},${rate}
       scale: ${sheet.scale},
       originX: ${sheet.originX},
-      originY: ${sheet.originY},
+      originY: ${sheet.originY},${serializeQuality(sheet.quality)}
     }`;
 }
 

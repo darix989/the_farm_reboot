@@ -4,10 +4,14 @@ import { GameManager } from '../../utils/gameManager';
 import { useAnimalGalleryStore } from '../../store/animalGalleryStore';
 import { animalClips, type AnimalClip } from '../../phaser/animals/animalClipCatalogue';
 import { ANIMAL_SPRITE_IDS } from '../../phaser/animals/animalDescriptors';
-import { CHARACTERS } from '../../data/characters';
-import getLabel from '../../data/labels';
+import { CURRENT_EMOTION_FRAME_COUNT } from '../../phaser/animals/animalEmotions';
+import {
+  animalEmotionQualityStatus,
+  type ClipQualityStatus,
+} from '../../phaser/animals/emotionQuality';
+import { CHARACTERS, type AnimalSpriteId } from '../../data/characters';
+import getLabel, { type Labels } from '../../data/labels';
 import styles from './AnimalGalleryUI.module.scss';
-import type { AnimalSpriteId } from '../../data/characters';
 
 /**
  * Controls for the `AnimalGallery` scene: pick an animal, hold any one of its clips, and
@@ -24,6 +28,62 @@ const WORN_BY: Partial<Record<AnimalSpriteId, string>> = Object.fromEntries(
     .filter((character) => character.animal)
     .map((character) => [character.animal!, getLabel(character.nameLabel)]),
 );
+
+const QUALITY_PILL_LABEL: Record<Exclude<ClipQualityStatus, 'none'>, Labels> = {
+  pass: 'galleryQualityPass',
+  warn: 'galleryQualityWarn',
+  unknown: 'galleryQualityUnknown',
+};
+
+const ANIMAL_QUALITY_TITLE: Record<Exclude<ClipQualityStatus, 'none'>, Labels> = {
+  pass: 'galleryQualityAnimalPass',
+  warn: 'galleryQualityAnimalWarn',
+  unknown: 'galleryQualityAnimalUnknown',
+};
+
+function clipQualityTitle(clip: AnimalClip): string {
+  if (clip.qualityStatus === 'unknown' || !clip.quality) {
+    return getLabel('galleryQualityUnmeasured');
+  }
+  const parts = [
+    getLabel('galleryQualityMetrics', {
+      replacements: {
+        loopPop: clip.quality.loopPop,
+        heightSwing: clip.quality.heightSwing,
+        driftX: clip.quality.driftX,
+      },
+    }),
+  ];
+  if (clip.frameCount !== CURRENT_EMOTION_FRAME_COUNT) {
+    parts.push(
+      getLabel('galleryQualityStale', { replacements: { frames: String(clip.frameCount) } }),
+    );
+  }
+  if (clip.quality.warnings.length > 0) {
+    parts.push(clip.quality.warnings.join(' '));
+  }
+  return parts.join(' · ');
+}
+
+const QualityBadge: React.FC<{ status: ClipQualityStatus; title: string }> = ({
+  status,
+  title,
+}) => {
+  if (status === 'none') return null;
+  return (
+    <span
+      className={cn(
+        styles.qualityBadge,
+        status === 'pass' && styles.qualityBadgePass,
+        status === 'warn' && styles.qualityBadgeWarn,
+        status === 'unknown' && styles.qualityBadgeUnknown,
+      )}
+      title={title}
+    >
+      {getLabel(QUALITY_PILL_LABEL[status])}
+    </span>
+  );
+};
 
 const AnimalGalleryUI: React.FC = () => {
   const { animalId, clipName, smoothTransitions, setAnimal, setClip, setSmoothTransitions } =
@@ -54,7 +114,12 @@ const AnimalGalleryUI: React.FC = () => {
       onClick={() => setClip(clip.name)}
       aria-pressed={clip.name === clipName}
     >
-      <span className={styles.clipName}>{clip.name.replace(/_/g, ' ')}</span>
+      <span className={styles.clipHeader}>
+        <span className={styles.clipName}>{clip.name.replace(/_/g, ' ')}</span>
+        {clip.qualityStatus && clip.qualityStatus !== 'none' && (
+          <QualityBadge status={clip.qualityStatus} title={clipQualityTitle(clip)} />
+        )}
+      </span>
       <span className={styles.clipMeta}>
         {clip.available
           ? getLabel('galleryClipMeta', {
@@ -73,18 +138,29 @@ const AnimalGalleryUI: React.FC = () => {
 
         <h2 className={styles.heading}>{getLabel('galleryAnimalHeading')}</h2>
         <div className={styles.animalGrid}>
-          {ANIMAL_SPRITE_IDS.map((id) => (
-            <button
-              key={id}
-              type="button"
-              className={cn(styles.animalButton, id === animalId && styles.animalButtonActive)}
-              onClick={() => setAnimal(id)}
-              aria-pressed={id === animalId}
-            >
-              <span className={styles.animalId}>{id}</span>
-              {WORN_BY[id] && <span className={styles.animalWornBy}>{WORN_BY[id]}</span>}
-            </button>
-          ))}
+          {ANIMAL_SPRITE_IDS.map((id) => {
+            const animalQuality = animalEmotionQualityStatus(id);
+            return (
+              <button
+                key={id}
+                type="button"
+                className={cn(styles.animalButton, id === animalId && styles.animalButtonActive)}
+                onClick={() => setAnimal(id)}
+                aria-pressed={id === animalId}
+              >
+                <span className={styles.animalHeader}>
+                  <span className={styles.animalId}>{id}</span>
+                  {animalQuality !== 'none' && (
+                    <QualityBadge
+                      status={animalQuality}
+                      title={getLabel(ANIMAL_QUALITY_TITLE[animalQuality])}
+                    />
+                  )}
+                </span>
+                {WORN_BY[id] && <span className={styles.animalWornBy}>{WORN_BY[id]}</span>}
+              </button>
+            );
+          })}
         </div>
 
         <h2 className={styles.heading}>{getLabel('galleryEmotionsHeading')}</h2>

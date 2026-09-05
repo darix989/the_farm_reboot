@@ -53,6 +53,33 @@ export function isAnimalEmotion(value: string): value is AnimalEmotion {
 export const EMOTION_FRAME_RATE = 12;
 
 /**
+ * Manifest default `frames`. Older promoted clips shipped 16 frames at 8fps; those are the
+ * choppy generation. The gallery treats anything other than this count as a quality warn.
+ */
+export const CURRENT_EMOTION_FRAME_COUNT = 25;
+
+/**
+ * Numeric gates from `scripts/ludo/qualityCheck.mjs`. Duplicated here so the gallery can
+ * classify a clip without importing the Node pipeline. Keep them in lockstep.
+ */
+export const EMOTION_QUALITY_THRESHOLDS = {
+  /** Below ~1% the seam is invisible; by 3% it reads as a stutter every loop. */
+  loopPop: 2,
+  /** Beyond this the union-box scale noticeably under-sizes the character. */
+  heightSwing: 20,
+  /** In frame pixels, half the total wander. */
+  driftX: 20,
+} as const;
+
+/** Pipeline measurements written into a promoted clip when they were recorded. */
+export interface EmotionQuality {
+  loopPop: number;
+  heightSwing: number;
+  driftX: number;
+  warnings: readonly string[];
+}
+
+/**
  * Metadata for one generated clip. Uniform-grid spritesheets (`load.spritesheet`), NOT the
  * trimmed TexturePacker multiatlases the base animations use: Ludo returns a fixed grid,
  * and repacking it into an atlas would buy nothing — the frames are already uniform, and
@@ -86,4 +113,9 @@ export interface EmotionSheet {
    */
   originX: number;
   originY: number;
+  /**
+   * Pipeline measurements, written at promote/reindex when the promoted record has them.
+   * Absent on clips promoted before quality was stored.
+   */
+  quality?: EmotionQuality;
 }
