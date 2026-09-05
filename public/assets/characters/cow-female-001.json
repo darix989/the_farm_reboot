@@ -1,0 +1,2994 @@
+{
+	"textures": [
+		{
+			"image": "cow_female_001/cow_female_001-0.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1950,
+				"h": 1951
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "cow_speak_angry__loop__-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 47,
+						"w": 495,
+						"h": 315
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 495,
+						"h": 315
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 45,
+						"w": 491,
+						"h": 317
+					},
+					"frame": {
+						"x": 1,
+						"y": 318,
+						"w": 491,
+						"h": 317
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 50,
+						"w": 495,
+						"h": 312
+					},
+					"frame": {
+						"x": 498,
+						"y": 1,
+						"w": 495,
+						"h": 312
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 53,
+						"w": 495,
+						"h": 309
+					},
+					"frame": {
+						"x": 995,
+						"y": 1,
+						"w": 495,
+						"h": 309
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 44,
+						"w": 485,
+						"h": 318
+					},
+					"frame": {
+						"x": 1,
+						"y": 637,
+						"w": 485,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 44,
+						"w": 482,
+						"h": 318
+					},
+					"frame": {
+						"x": 1,
+						"y": 957,
+						"w": 482,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 44,
+						"w": 477,
+						"h": 318
+					},
+					"frame": {
+						"x": 1,
+						"y": 1277,
+						"w": 477,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-23.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 91,
+						"y": 11,
+						"w": 411,
+						"h": 353
+					},
+					"frame": {
+						"x": 1,
+						"y": 1597,
+						"w": 411,
+						"h": 353
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-19.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 48,
+						"y": 42,
+						"w": 457,
+						"h": 321
+					},
+					"frame": {
+						"x": 1492,
+						"y": 1,
+						"w": 457,
+						"h": 321
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 56,
+						"w": 490,
+						"h": 306
+					},
+					"frame": {
+						"x": 498,
+						"y": 315,
+						"w": 490,
+						"h": 306
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 58,
+						"w": 487,
+						"h": 304
+					},
+					"frame": {
+						"x": 494,
+						"y": 623,
+						"w": 487,
+						"h": 304
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 22,
+						"y": 60,
+						"w": 484,
+						"h": 302
+					},
+					"frame": {
+						"x": 488,
+						"y": 929,
+						"w": 484,
+						"h": 302
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-33.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 43,
+						"y": 52,
+						"w": 478,
+						"h": 311
+					},
+					"frame": {
+						"x": 485,
+						"y": 1233,
+						"w": 478,
+						"h": 311
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 44,
+						"w": 474,
+						"h": 318
+					},
+					"frame": {
+						"x": 480,
+						"y": 1546,
+						"w": 474,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 44,
+						"w": 468,
+						"h": 318
+					},
+					"frame": {
+						"x": 995,
+						"y": 312,
+						"w": 468,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-16.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 44,
+						"w": 466,
+						"h": 318
+					},
+					"frame": {
+						"x": 983,
+						"y": 632,
+						"w": 466,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-17.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 44,
+						"w": 461,
+						"h": 318
+					},
+					"frame": {
+						"x": 1465,
+						"y": 324,
+						"w": 461,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-18.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 40,
+						"y": 43,
+						"w": 460,
+						"h": 319
+					},
+					"frame": {
+						"x": 1451,
+						"y": 644,
+						"w": 460,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-20.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 56,
+						"y": 40,
+						"w": 455,
+						"h": 324
+					},
+					"frame": {
+						"x": 974,
+						"y": 952,
+						"w": 455,
+						"h": 324
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-21.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 62,
+						"y": 36,
+						"w": 451,
+						"h": 328
+					},
+					"frame": {
+						"x": 1431,
+						"y": 965,
+						"w": 451,
+						"h": 328
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 10,
+						"w": 450,
+						"h": 326
+					},
+					"frame": {
+						"x": 965,
+						"y": 1278,
+						"w": 450,
+						"h": 326
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-22.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 85,
+						"y": 20,
+						"w": 427,
+						"h": 344
+					},
+					"frame": {
+						"x": 956,
+						"y": 1606,
+						"w": 427,
+						"h": 344
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 11,
+						"w": 450,
+						"h": 325
+					},
+					"frame": {
+						"x": 1417,
+						"y": 1295,
+						"w": 450,
+						"h": 325
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 8,
+						"w": 445,
+						"h": 328
+					},
+					"frame": {
+						"x": 1385,
+						"y": 1622,
+						"w": 445,
+						"h": 328
+					}
+				}
+			]
+		},
+		{
+			"image": "cow_female_001/cow_female_001-1.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1822,
+				"h": 2020
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "cow_speak_angry__loop__-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 22,
+						"y": 60,
+						"w": 480,
+						"h": 302
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 480,
+						"h": 302
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 22,
+						"y": 60,
+						"w": 474,
+						"h": 302
+					},
+					"frame": {
+						"x": 483,
+						"y": 1,
+						"w": 474,
+						"h": 302
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 60,
+						"w": 469,
+						"h": 302
+					},
+					"frame": {
+						"x": 959,
+						"y": 1,
+						"w": 469,
+						"h": 302
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-24.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 97,
+						"y": 6,
+						"w": 391,
+						"h": 358
+					},
+					"frame": {
+						"x": 1430,
+						"y": 1,
+						"w": 391,
+						"h": 358
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-32.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 44,
+						"y": 53,
+						"w": 468,
+						"h": 309
+					},
+					"frame": {
+						"x": 1,
+						"y": 305,
+						"w": 468,
+						"h": 309
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-31.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 48,
+						"y": 48,
+						"w": 453,
+						"h": 314
+					},
+					"frame": {
+						"x": 471,
+						"y": 305,
+						"w": 453,
+						"h": 314
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 13,
+						"w": 446,
+						"h": 323
+					},
+					"frame": {
+						"x": 926,
+						"y": 305,
+						"w": 446,
+						"h": 323
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-36.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 13,
+						"w": 440,
+						"h": 323
+					},
+					"frame": {
+						"x": 1374,
+						"y": 361,
+						"w": 440,
+						"h": 323
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-35.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 13,
+						"w": 436,
+						"h": 323
+					},
+					"frame": {
+						"x": 1,
+						"y": 616,
+						"w": 436,
+						"h": 323
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 12,
+						"w": 450,
+						"h": 324
+					},
+					"frame": {
+						"x": 439,
+						"y": 621,
+						"w": 450,
+						"h": 324
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-37.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 12,
+						"w": 442,
+						"h": 324
+					},
+					"frame": {
+						"x": 891,
+						"y": 630,
+						"w": 442,
+						"h": 324
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-38.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 10,
+						"w": 447,
+						"h": 326
+					},
+					"frame": {
+						"x": 1335,
+						"y": 686,
+						"w": 447,
+						"h": 326
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-16.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 8,
+						"w": 435,
+						"h": 328
+					},
+					"frame": {
+						"x": 1,
+						"y": 941,
+						"w": 435,
+						"h": 328
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-39.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 9,
+						"w": 446,
+						"h": 327
+					},
+					"frame": {
+						"x": 438,
+						"y": 947,
+						"w": 446,
+						"h": 327
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-40.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 9,
+						"w": 442,
+						"h": 327
+					},
+					"frame": {
+						"x": 886,
+						"y": 956,
+						"w": 442,
+						"h": 327
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 8,
+						"w": 440,
+						"h": 328
+					},
+					"frame": {
+						"x": 1330,
+						"y": 1014,
+						"w": 440,
+						"h": 328
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-41.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 8,
+						"w": 431,
+						"h": 328
+					},
+					"frame": {
+						"x": 1,
+						"y": 1271,
+						"w": 431,
+						"h": 328
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-17.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 8,
+						"w": 430,
+						"h": 328
+					},
+					"frame": {
+						"x": 434,
+						"y": 1276,
+						"w": 430,
+						"h": 328
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-21.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 6,
+						"w": 423,
+						"h": 333
+					},
+					"frame": {
+						"x": 866,
+						"y": 1285,
+						"w": 423,
+						"h": 333
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-22.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 4,
+						"w": 422,
+						"h": 335
+					},
+					"frame": {
+						"x": 1291,
+						"y": 1344,
+						"w": 422,
+						"h": 335
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-23.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 2,
+						"w": 423,
+						"h": 337
+					},
+					"frame": {
+						"x": 1,
+						"y": 1601,
+						"w": 423,
+						"h": 337
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-24.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 2,
+						"w": 418,
+						"h": 337
+					},
+					"frame": {
+						"x": 426,
+						"y": 1606,
+						"w": 418,
+						"h": 337
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-25.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 1,
+						"w": 418,
+						"h": 338
+					},
+					"frame": {
+						"x": 846,
+						"y": 1620,
+						"w": 418,
+						"h": 338
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-26.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 1,
+						"w": 415,
+						"h": 338
+					},
+					"frame": {
+						"x": 1266,
+						"y": 1681,
+						"w": 415,
+						"h": 338
+					}
+				}
+			]
+		},
+		{
+			"image": "cow_female_001/cow_female_001-2.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 1719,
+				"h": 1980
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "cow_speak_worried__loop__-27.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 1,
+						"w": 414,
+						"h": 338
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 414,
+						"h": 338
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-28.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 1,
+						"w": 410,
+						"h": 338
+					},
+					"frame": {
+						"x": 1,
+						"y": 341,
+						"w": 410,
+						"h": 338
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 59,
+						"w": 460,
+						"h": 303
+					},
+					"frame": {
+						"x": 1,
+						"y": 681,
+						"w": 460,
+						"h": 303
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-30.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 53,
+						"y": 44,
+						"w": 438,
+						"h": 319
+					},
+					"frame": {
+						"x": 417,
+						"y": 1,
+						"w": 438,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 14,
+						"w": 437,
+						"h": 322
+					},
+					"frame": {
+						"x": 417,
+						"y": 322,
+						"w": 437,
+						"h": 322
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-29.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 1,
+						"w": 409,
+						"h": 338
+					},
+					"frame": {
+						"x": 463,
+						"y": 646,
+						"w": 409,
+						"h": 338
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 14,
+						"w": 433,
+						"h": 322
+					},
+					"frame": {
+						"x": 857,
+						"y": 1,
+						"w": 433,
+						"h": 322
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-42.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 20,
+						"w": 427,
+						"h": 319
+					},
+					"frame": {
+						"x": 856,
+						"y": 325,
+						"w": 427,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-30.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 1,
+						"w": 407,
+						"h": 338
+					},
+					"frame": {
+						"x": 874,
+						"y": 646,
+						"w": 407,
+						"h": 338
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-20.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 3,
+						"w": 414,
+						"h": 333
+					},
+					"frame": {
+						"x": 1283,
+						"y": 646,
+						"w": 414,
+						"h": 333
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-40.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 20,
+						"w": 426,
+						"h": 319
+					},
+					"frame": {
+						"x": 1285,
+						"y": 325,
+						"w": 426,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-41.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 20,
+						"w": 426,
+						"h": 319
+					},
+					"frame": {
+						"x": 1292,
+						"y": 1,
+						"w": 426,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-19.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 4,
+						"w": 419,
+						"h": 332
+					},
+					"frame": {
+						"x": 1283,
+						"y": 981,
+						"w": 419,
+						"h": 332
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 22,
+						"y": 13,
+						"w": 430,
+						"h": 323
+					},
+					"frame": {
+						"x": 1,
+						"y": 986,
+						"w": 430,
+						"h": 323
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-44.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 4,
+						"w": 415,
+						"h": 332
+					},
+					"frame": {
+						"x": 433,
+						"y": 986,
+						"w": 415,
+						"h": 332
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-18.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 5,
+						"w": 423,
+						"h": 331
+					},
+					"frame": {
+						"x": 1,
+						"y": 1311,
+						"w": 423,
+						"h": 331
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-34.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 12,
+						"w": 427,
+						"h": 324
+					},
+					"frame": {
+						"x": 850,
+						"y": 1315,
+						"w": 427,
+						"h": 324
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 13,
+						"w": 425,
+						"h": 323
+					},
+					"frame": {
+						"x": 850,
+						"y": 986,
+						"w": 425,
+						"h": 323
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-43.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 5,
+						"w": 420,
+						"h": 331
+					},
+					"frame": {
+						"x": 426,
+						"y": 1320,
+						"w": 420,
+						"h": 331
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-32.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 8,
+						"w": 419,
+						"h": 328
+					},
+					"frame": {
+						"x": 1,
+						"y": 1644,
+						"w": 419,
+						"h": 328
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-42.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 6,
+						"w": 425,
+						"h": 330
+					},
+					"frame": {
+						"x": 1279,
+						"y": 1315,
+						"w": 425,
+						"h": 330
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-29.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 61,
+						"y": 37,
+						"w": 421,
+						"h": 327
+					},
+					"frame": {
+						"x": 848,
+						"y": 1641,
+						"w": 421,
+						"h": 327
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-20.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 13,
+						"w": 424,
+						"h": 326
+					},
+					"frame": {
+						"x": 422,
+						"y": 1653,
+						"w": 424,
+						"h": 326
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 24,
+						"y": 11,
+						"w": 423,
+						"h": 325
+					},
+					"frame": {
+						"x": 1271,
+						"y": 1647,
+						"w": 423,
+						"h": 325
+					}
+				}
+			]
+		},
+		{
+			"image": "cow_female_001/cow_female_001-3.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 2044,
+				"h": 2012
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "cow_idle_smile__loop__-33.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 11,
+						"w": 422,
+						"h": 325
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 422,
+						"h": 325
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 9,
+						"w": 419,
+						"h": 327
+					},
+					"frame": {
+						"x": 425,
+						"y": 1,
+						"w": 419,
+						"h": 327
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-21.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 2,
+						"w": 410,
+						"h": 334
+					},
+					"frame": {
+						"x": 1,
+						"y": 328,
+						"w": 410,
+						"h": 334
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-19.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 13,
+						"w": 420,
+						"h": 326
+					},
+					"frame": {
+						"x": 846,
+						"y": 1,
+						"w": 420,
+						"h": 326
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-31.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 1,
+						"w": 405,
+						"h": 338
+					},
+					"frame": {
+						"x": 1268,
+						"y": 1,
+						"w": 405,
+						"h": 338
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-45.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 3,
+						"w": 410,
+						"h": 333
+					},
+					"frame": {
+						"x": 846,
+						"y": 329,
+						"w": 410,
+						"h": 333
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-22.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 1,
+						"w": 407,
+						"h": 335
+					},
+					"frame": {
+						"x": 413,
+						"y": 330,
+						"w": 407,
+						"h": 335
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-46.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 2,
+						"w": 407,
+						"h": 334
+					},
+					"frame": {
+						"x": 1,
+						"y": 664,
+						"w": 407,
+						"h": 334
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-26.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 103,
+						"y": 1,
+						"w": 367,
+						"h": 363
+					},
+					"frame": {
+						"x": 1675,
+						"y": 1,
+						"w": 367,
+						"h": 363
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-31.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 7,
+						"w": 414,
+						"h": 329
+					},
+					"frame": {
+						"x": 1258,
+						"y": 341,
+						"w": 414,
+						"h": 329
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 9,
+						"w": 416,
+						"h": 327
+					},
+					"frame": {
+						"x": 822,
+						"y": 664,
+						"w": 416,
+						"h": 327
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-32.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 20,
+						"y": 2,
+						"w": 403,
+						"h": 337
+					},
+					"frame": {
+						"x": 410,
+						"y": 667,
+						"w": 403,
+						"h": 337
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-33.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 19,
+						"y": 3,
+						"w": 403,
+						"h": 336
+					},
+					"frame": {
+						"x": 1,
+						"y": 1000,
+						"w": 403,
+						"h": 336
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-25.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 102,
+						"y": 1,
+						"w": 369,
+						"h": 363
+					},
+					"frame": {
+						"x": 1674,
+						"y": 366,
+						"w": 369,
+						"h": 363
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-18.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 15,
+						"w": 419,
+						"h": 324
+					},
+					"frame": {
+						"x": 1240,
+						"y": 672,
+						"w": 419,
+						"h": 324
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-30.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 27,
+						"y": 6,
+						"w": 411,
+						"h": 330
+					},
+					"frame": {
+						"x": 815,
+						"y": 993,
+						"w": 411,
+						"h": 330
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-23.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 1,
+						"w": 404,
+						"h": 335
+					},
+					"frame": {
+						"x": 406,
+						"y": 1006,
+						"w": 404,
+						"h": 335
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-34.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 4,
+						"w": 403,
+						"h": 335
+					},
+					"frame": {
+						"x": 1,
+						"y": 1338,
+						"w": 403,
+						"h": 335
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-28.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 88,
+						"y": 9,
+						"w": 377,
+						"h": 355
+					},
+					"frame": {
+						"x": 1661,
+						"y": 731,
+						"w": 377,
+						"h": 355
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-43.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 20,
+						"w": 425,
+						"h": 319
+					},
+					"frame": {
+						"x": 1228,
+						"y": 998,
+						"w": 425,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_angry__loop__-27.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 530,
+						"h": 394
+					},
+					"spriteSourceSize": {
+						"x": 96,
+						"y": 5,
+						"w": 372,
+						"h": 359
+					},
+					"frame": {
+						"x": 1655,
+						"y": 1088,
+						"w": 372,
+						"h": 359
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-47.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 25,
+						"y": 2,
+						"w": 405,
+						"h": 334
+					},
+					"frame": {
+						"x": 1228,
+						"y": 1319,
+						"w": 405,
+						"h": 334
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-29.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 6,
+						"w": 408,
+						"h": 330
+					},
+					"frame": {
+						"x": 1635,
+						"y": 1449,
+						"w": 408,
+						"h": 330
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 7,
+						"w": 411,
+						"h": 329
+					},
+					"frame": {
+						"x": 812,
+						"y": 1325,
+						"w": 411,
+						"h": 329
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-24.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 27,
+						"y": 2,
+						"w": 402,
+						"h": 334
+					},
+					"frame": {
+						"x": 1225,
+						"y": 1655,
+						"w": 402,
+						"h": 334
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-48.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 27,
+						"y": 2,
+						"w": 402,
+						"h": 334
+					},
+					"frame": {
+						"x": 406,
+						"y": 1343,
+						"w": 402,
+						"h": 334
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-49.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 3,
+						"w": 400,
+						"h": 333
+					},
+					"frame": {
+						"x": 1,
+						"y": 1675,
+						"w": 400,
+						"h": 333
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 28,
+						"y": 7,
+						"w": 409,
+						"h": 329
+					},
+					"frame": {
+						"x": 810,
+						"y": 1656,
+						"w": 409,
+						"h": 329
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-35.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 7,
+						"w": 404,
+						"h": 332
+					},
+					"frame": {
+						"x": 403,
+						"y": 1679,
+						"w": 404,
+						"h": 332
+					}
+				}
+			]
+		},
+		{
+			"image": "cow_female_001/cow_female_001-4.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 2024,
+				"h": 1952
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "cow_speak_worried__loop__-44.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 20,
+						"w": 424,
+						"h": 319
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 424,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-5.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 20,
+						"w": 423,
+						"h": 319
+					},
+					"frame": {
+						"x": 427,
+						"y": 1,
+						"w": 423,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-6.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 20,
+						"w": 423,
+						"h": 319
+					},
+					"frame": {
+						"x": 852,
+						"y": 1,
+						"w": 423,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-7.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 21,
+						"w": 423,
+						"h": 318
+					},
+					"frame": {
+						"x": 1277,
+						"y": 1,
+						"w": 423,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-8.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 21,
+						"w": 423,
+						"h": 318
+					},
+					"frame": {
+						"x": 1277,
+						"y": 321,
+						"w": 423,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-39.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 19,
+						"w": 422,
+						"h": 320
+					},
+					"frame": {
+						"x": 1,
+						"y": 322,
+						"w": 422,
+						"h": 320
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-45.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 20,
+						"w": 422,
+						"h": 319
+					},
+					"frame": {
+						"x": 425,
+						"y": 322,
+						"w": 422,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-4.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 21,
+						"w": 421,
+						"h": 318
+					},
+					"frame": {
+						"x": 849,
+						"y": 322,
+						"w": 421,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-3.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 21,
+						"w": 420,
+						"h": 318
+					},
+					"frame": {
+						"x": 1272,
+						"y": 641,
+						"w": 420,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-9.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 21,
+						"w": 420,
+						"h": 318
+					},
+					"frame": {
+						"x": 849,
+						"y": 642,
+						"w": 420,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-46.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 20,
+						"w": 419,
+						"h": 319
+					},
+					"frame": {
+						"x": 425,
+						"y": 643,
+						"w": 419,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-49.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 20,
+						"w": 419,
+						"h": 319
+					},
+					"frame": {
+						"x": 1,
+						"y": 644,
+						"w": 419,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-47.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 20,
+						"w": 418,
+						"h": 319
+					},
+					"frame": {
+						"x": 1271,
+						"y": 961,
+						"w": 418,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-48.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 11,
+						"y": 20,
+						"w": 418,
+						"h": 319
+					},
+					"frame": {
+						"x": 846,
+						"y": 962,
+						"w": 418,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-2.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 21,
+						"w": 418,
+						"h": 318
+					},
+					"frame": {
+						"x": 422,
+						"y": 964,
+						"w": 418,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-10.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 21,
+						"w": 418,
+						"h": 318
+					},
+					"frame": {
+						"x": 1,
+						"y": 965,
+						"w": 418,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-25.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 3,
+						"w": 399,
+						"h": 333
+					},
+					"frame": {
+						"x": 1,
+						"y": 1285,
+						"w": 399,
+						"h": 333
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-28.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 5,
+						"w": 404,
+						"h": 331
+					},
+					"frame": {
+						"x": 1,
+						"y": 1620,
+						"w": 404,
+						"h": 331
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-53.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 4,
+						"w": 401,
+						"h": 332
+					},
+					"frame": {
+						"x": 402,
+						"y": 1285,
+						"w": 401,
+						"h": 332
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-52.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 4,
+						"w": 400,
+						"h": 332
+					},
+					"frame": {
+						"x": 407,
+						"y": 1619,
+						"w": 400,
+						"h": 332
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-26.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 4,
+						"w": 399,
+						"h": 332
+					},
+					"frame": {
+						"x": 805,
+						"y": 1284,
+						"w": 399,
+						"h": 332
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-50.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 4,
+						"w": 399,
+						"h": 332
+					},
+					"frame": {
+						"x": 809,
+						"y": 1618,
+						"w": 399,
+						"h": 332
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-27.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 5,
+						"w": 401,
+						"h": 331
+					},
+					"frame": {
+						"x": 1206,
+						"y": 1283,
+						"w": 401,
+						"h": 331
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-38.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 17,
+						"w": 413,
+						"h": 322
+					},
+					"frame": {
+						"x": 1609,
+						"y": 1282,
+						"w": 413,
+						"h": 322
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 6,
+						"w": 406,
+						"h": 330
+					},
+					"frame": {
+						"x": 1210,
+						"y": 1616,
+						"w": 406,
+						"h": 330
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-54.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 6,
+						"w": 405,
+						"h": 330
+					},
+					"frame": {
+						"x": 1618,
+						"y": 1606,
+						"w": 405,
+						"h": 330
+					}
+				}
+			]
+		},
+		{
+			"image": "cow_female_001/cow_female_001-5.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 831,
+				"h": 1947
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "cow_speak_worried__loop__-12.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 20,
+						"w": 416,
+						"h": 319
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 416,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-13.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 20,
+						"w": 416,
+						"h": 319
+					},
+					"frame": {
+						"x": 1,
+						"y": 322,
+						"w": 416,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-11.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 21,
+						"w": 416,
+						"h": 318
+					},
+					"frame": {
+						"x": 1,
+						"y": 643,
+						"w": 416,
+						"h": 318
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-14.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 20,
+						"w": 414,
+						"h": 319
+					},
+					"frame": {
+						"x": 1,
+						"y": 963,
+						"w": 414,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-15.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 20,
+						"w": 414,
+						"h": 319
+					},
+					"frame": {
+						"x": 1,
+						"y": 1284,
+						"w": 414,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-37.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 16,
+						"w": 409,
+						"h": 323
+					},
+					"frame": {
+						"x": 419,
+						"y": 1,
+						"w": 409,
+						"h": 323
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-0.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 19,
+						"w": 412,
+						"h": 320
+					},
+					"frame": {
+						"x": 1,
+						"y": 1605,
+						"w": 412,
+						"h": 320
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-36.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 15,
+						"y": 15,
+						"w": 407,
+						"h": 324
+					},
+					"frame": {
+						"x": 419,
+						"y": 326,
+						"w": 407,
+						"h": 324
+					}
+				},
+				{
+					"filename": "cow_idle_smile__loop__-51.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 456,
+						"h": 338
+					},
+					"spriteSourceSize": {
+						"x": 30,
+						"y": 5,
+						"w": 399,
+						"h": 331
+					},
+					"frame": {
+						"x": 419,
+						"y": 652,
+						"w": 399,
+						"h": 331
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 12,
+						"y": 20,
+						"w": 413,
+						"h": 319
+					},
+					"frame": {
+						"x": 417,
+						"y": 985,
+						"w": 413,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-16.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 16,
+						"y": 20,
+						"w": 413,
+						"h": 319
+					},
+					"frame": {
+						"x": 417,
+						"y": 1306,
+						"w": 413,
+						"h": 319
+					}
+				},
+				{
+					"filename": "cow_speak_worried__loop__-17.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 442,
+						"h": 344
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 20,
+						"w": 413,
+						"h": 319
+					},
+					"frame": {
+						"x": 415,
+						"y": 1627,
+						"w": 413,
+						"h": 319
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:63d3eb21b76394feb7319d9a944c7c22:94e46017e621c25ffcef21ae961752af:e52c27ecbc6a534e40072eb42decdb23$"
+	}
+}

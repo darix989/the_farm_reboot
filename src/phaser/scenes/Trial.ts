@@ -8,7 +8,11 @@ import { debateParticipantIds, stageOrder } from '../../data/debateCast';
 import { resolveCharacter } from '../../data/characters';
 import { animalSetup } from '../animals/animalAnimations';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
-import { ANIMAL_STAGING, TRIAL_SCALE_BY_CAST_SIZE } from '../animals/animalStaging';
+import {
+  ANIMAL_STAGING,
+  TRIAL_SCALE_BY_CAST_SIZE,
+  animalArtFacesLeft,
+} from '../animals/animalStaging';
 import { ANIMAL_EMOTIONS, type AnimalEmotion } from '../animals/animalEmotions';
 
 /** Draws the `TRIAL_STAGE_HOLE` rect and a marker at each computed cast slot. Toggle to
@@ -112,7 +116,7 @@ export class Trial extends Scene {
         .sprite(x, floorY, setup.textureKey, setup.restFrameName)
         .setOrigin(0.5, 1)
         .setScale(ANIMAL_STAGING[visual.animal].trialScale * sizeScale)
-        .setFlipX(x < centreX); // art faces left; left-hand slots flip to face inward
+        .setFlipX(x < centreX === animalArtFacesLeft(visual.animal));
 
       const animator = attachAnimalAnimator(sprite, setup, {
         staging: 'trial', // selects idleTrial/alertTrial (Tobias sits up)

@@ -37,7 +37,7 @@ scenes check `visual.animal` before doing anything sprite-related.
 
 ## 2. Assets on disk
 
-Six multi-page TexturePacker atlases, copied from the prototype:
+Eleven multi-page TexturePacker atlases, copied from the prototype:
 
 ```
 public/assets/characters/
@@ -47,28 +47,38 @@ public/assets/characters/
   fox.json         + fox/fox-{0..4}.png
   white-sheep-1.json + white-sheep-1/white-sheep-1-{0..2}.png
   brown-wolf.json  + brown-wolf/brown-wolf-{0..8}.png
+  cow.json         + cow/cow-{0..4}.png
+  cow-female-001.json + cow_female_001/cow_female_001-{0..5}.png
+  dog.json         + dog/dog-{0..11}.png
+  mouse.json       + mouse/mouse-{0..7}.png
+  pig.json         + pig/pig-{0..1}.png
 ```
 
 Both the JSON descriptors and the PNG pages live under `public/assets/` (loaded by
-Phaser's `this.load.multiatlas`), **not** imported as ES modules — six descriptors are
-~310 KB of JSON that has no reason to sit in the main JS bundle and be parsed on the
-main menu, even though `resolveJsonModule` is on.
+Phaser's `this.load.multiatlas`), **not** imported as ES modules — eleven descriptors
+have no reason to sit in the main JS bundle and be parsed on the main menu, even though
+`resolveJsonModule` is on.
 
-`brown-wolf.json` was renamed from the source's `brown_wolf.json` — the only naming
-mismatch between animal id, descriptor filename and image directory in this subset. The
-`textures[].image` field inside each descriptor is still the ultimate authority if you
-add a seventh animal and its naming doesn't match its id.
+Two naming mismatches, both inherited from the prototype. The `textures[].image` field
+inside each descriptor is the ultimate authority:
 
-**Frame naming — two shapes in this set:**
+- `brown-wolf.json` was renamed from the source's `brown_wolf.json` (dashed id, dashed dir).
+- `cow-female-001` keeps the source's underscored image directory (`cow_female_001/`) and
+  PNG names; only the JSON file was renamed to match the dashed id, so
+  `load.multiatlas('cow-female-001', 'characters/cow-female-001.json')` finds it.
 
-| Shape                              | Example frame filename                                    | Animals                                              | Needs `framePrefix`?                     |
-| ---------------------------------- | --------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------- |
-| Flat, dash-separated               | `__red_fox_idle-3.png`                                    | donkey-grey, fox, white-sheep-1, brown-wolf, raccoon | no — matches the default `${frameStem}-` |
-| Foldered, **underscore**-separated | `__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_4.png` | owl                                                  | yes, on all five animations              |
+**Frame naming — three shapes in this set:**
+
+| Shape                              | Example frame filename                                    | Animals                                                                 | Needs `framePrefix`?                     |
+| ---------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------- |
+| Flat, dash-separated               | `__red_fox_idle-3.png`                                    | donkey-grey, fox, white-sheep-1, brown-wolf, raccoon, dog, mouse, pig, cow-female-001 | no — matches the default `${frameStem}-` |
+| Foldered, dash-separated           | `__black_and_white_cow_die/__black_and_white_cow_die-0.png` | cow                                                                     | yes                                      |
+| Foldered, **underscore**-separated | `__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_4.png` | owl                                                                     | yes, on all five animations              |
 
 The owl is the trap: its frame folder ends in `_`, not `-`, so every one of its
 `baseAnimations` entries needs an explicit `framePrefix` copied character-for-character.
-Get it wrong and `generateFrameNames` silently returns zero frames.
+Get it wrong and `generateFrameNames` silently returns zero frames. The cow is the same
+shape with a trailing `-`, so its prefixes are easier to copy but still mandatory.
 
 ---
 
@@ -79,7 +89,7 @@ Get it wrong and `generateFrameNames` silently returns zero frames.
 | [`src/phaser/animals/animalDescriptors.ts`](../src/phaser/animals/animalDescriptors.ts) | The data. One `AnimalDescriptor` per animal: frame ranges + idle/alert behaviour.                                  |
 | [`src/phaser/animals/animalAnimations.ts`](../src/phaser/animals/animalAnimations.ts)   | Turns descriptors into Phaser animations (`ensureAnimalAnimations`) and resolves per-animal setup (`animalSetup`). |
 | [`src/phaser/animals/AnimalAnimator.ts`](../src/phaser/animals/AnimalAnimator.ts)       | The playback engine: weighted sequence picking, chaining, self-looping. Drives any `Phaser.GameObjects.Sprite`.    |
-| [`src/phaser/animals/animalAtlases.ts`](../src/phaser/animals/animalAtlases.ts)         | Loads the six multiatlases.                                                                                        |
+| [`src/phaser/animals/animalAtlases.ts`](../src/phaser/animals/animalAtlases.ts)         | Loads the eleven multiatlases.                                                                                     |
 
 Plus [`src/phaser/animals/animalStaging.ts`](../src/phaser/animals/animalStaging.ts) for
 per-surface scale, and the two scenes that use all of the above:
@@ -120,16 +130,16 @@ Registration is a plain `Record<AnimalSpriteId, AnimalDescriptor>`
 compiler enforces that every `AnimalSpriteId` has a descriptor, instead of a silently
 unregistered entry producing zero animations.
 
-Every animal has a `move`: the walk cycle from its atlas, except Duchess (`owl`), whose
-atlas has none and who flies (`flap_wings`) rather than walks. Unlike `idle`, a `move`
-sequence should loop (`repeat: -1`) — movement ends when the _character_ stops, not when
-the clip does. Only the player translates today; the field is on the descriptor rather
-than in `Farm.ts` so a wandering NPC or a cutscene tween gets the same cycle for free.
+Every animal has a `move` except two: Duchess (`owl`), whose atlas has none and who flies
+(`flap_wings`) rather than walks, and `cow-female-001`, whose atlas is idle plus two speak
+loops. Unlike `idle`, a `move` sequence should loop (`repeat: -1`) — movement ends when
+the _character_ stops, not when the clip does. Only the player translates today; the field
+is on the descriptor rather than in `Farm.ts` so a wandering NPC or a cutscene tween gets
+the same cycle for free.
 
 Only Tobias (`raccoon`) uses `idleTrial`: he stands in the field but sits up
-(`sitting_up_idle`) once staged in a Trial. No animal uses `alertTrial` or
-`transitions` today — both exist in the type for a future animal that needs them (the
-prototype's dog needed `transitions` to stand up before barking).
+(`sitting_up_idle`) once staged in a Trial. No animal uses `alertTrial`. The dog is the
+one user of `transitions`: a sitting dog must stand up before it can bark.
 
 ### 3.2 Building animations — `ensureAnimalAnimations`
 
@@ -231,6 +241,11 @@ apparent size the two multipliers above were fit to:
 | `fox`           | 0.6          | 598×391                  | 359×235                        |
 | `white-sheep-1` | 1.0          | 311×267                  | 311×267                        |
 | `brown-wolf`    | 0.7          | 589×468                  | 412×328                        |
+| `cow`           | 1.0          | 479×383                  | 479×383                        |
+| `cow-female-001`| 1.3          | 406×330                  | **528×429 — largest in the set** |
+| `dog`           | 0.6          | 700×568                  | 420×341                        |
+| `mouse`         | 0.35         | 735×469                  | 257×164                        |
+| `pig`           | 1.0          | 419×229                  | 419×229                        |
 
 Recomputing: pick a target donkey height for the surface, divide by 372 (its as-designed
 apparent height above) to get that surface's multiplier, then multiply every animal's
@@ -242,10 +257,11 @@ three-character scenario today) — with the ratios above, even the tightest nei
 pair (donkey next to raccoon) clears the gap between adjacent stage slots without it, but
 it also just reads better than three animals crowding the full width of the hole.
 
-All six atlases draw their animal facing **left**. A sprite placed on the left half of
-a scene should `setFlipX(true)` to face inward/right; one on the right keeps
-`flipX = false`. `Farm.ts` flips the player based on movement direction; `Trial.ts`
-flips based on which side of centre a cast member's slot falls on.
+Every atlas except the mouse draws its animal facing **left**. The mouse faces **right**
+(`isFlipped` on its descriptor). `animalArtFacesLeft()` in `animalStaging.ts` is the
+single check; Farm, Trial and the gallery consult it rather than assuming the whole
+cast matches. A sprite that should face inward/right still `setFlipX(true)` when the
+art faces left, and the opposite when it faces right.
 
 ---
 

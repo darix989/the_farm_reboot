@@ -61,13 +61,15 @@ the flag, the script gets no arguments, and no arguments means the whole manifes
 | `-- --promote`, `-- --reindex` | free, no API call |
 | `-- --animal X --emotion Y` | 4 credits per clip in scope |
 | `-- --force …` | charges again — it exists to bypass the result cache |
-| **no flags** | **the entire manifest, ~120 credits** |
+| **no flags** | **the entire manifest (11 animals × 5 emotions), ~220 credits** |
 
 ## Names you will get wrong
 
 Animal ids are the atlas names, not the species: `donkey-grey`, `white-sheep-1`, `brown-wolf`,
-`fox`, `owl`, `raccoon`. Emotions: `talking`, `doubtful`, `angry`, `thinking`, `sneaky`.
-All 30 pairings already exist, so every generation from here is a *re*generation.
+`fox`, `owl`, `raccoon`, `cow`, `cow-female-001`, `dog`, `mouse`, `pig`. Emotions: `talking`,
+`doubtful`, `angry`, `thinking`, `sneaky`. Only the original six have generated clips; the
+other five are imported but ungenerated — do not run a generating command for them unless
+asked.
 
 ## Four things not to re-derive
 

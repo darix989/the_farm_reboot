@@ -19,7 +19,7 @@ import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import getLabel from '../../data/labels';
 import { animalSetup } from '../animals/animalAnimations';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
-import { ANIMAL_STAGING } from '../animals/animalStaging';
+import { ANIMAL_STAGING, animalArtFacesLeft } from '../animals/animalStaging';
 
 const PLAYER_SPEED = 167; // slowed twice by 30% from the 340 the overworld shipped with
 /** Player body is smaller than the sprite so Rue's feet, not his head, hit walls. */
@@ -217,7 +217,13 @@ export class Farm extends Scene {
     if (this.playerArt) {
       this.playerArt.setPosition(this.player.x, this.player.y + PLAYER_ART_FEET_OFFSET);
       this.playerArt.setDepth(this.player.y);
-      if (dir.x !== 0) this.playerArt.setFlipX(dir.x > 0); // art faces left by default
+      if (dir.x !== 0) {
+        const animal = resolveCharacter(PLAYER_CHARACTER_ID).animal;
+        if (animal) {
+          const facesLeft = animalArtFacesLeft(animal);
+          this.playerArt.setFlipX(facesLeft ? dir.x > 0 : dir.x < 0);
+        }
+      }
     }
 
     // `dir` is <= 1 and keeps the joystick's analogue magnitude (see `movementVector`), so it

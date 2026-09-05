@@ -173,6 +173,121 @@
           "prompt": "{view}. The owl stays standing upright in place on its own two feet and speaks conspiratorially: head craned forward and dipped toward the listener, rotating to glance furtively to one side and back, eyes narrowing, body still. It never crouches, never hunches its body down, never lies down, never takes off. Sly and secretive. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
         }
       }
+    },
+    "cow": {
+      "species": "black and white cow",
+      "view": "Side view, facing left",
+      "$comment": "Carrier is the huge PINK SNOUT + GOOGLY EYES + golden COWBELL on a teal collar: high-contrast silhouette pieces that read at stage scale, while the spotted body is a big oval that turns to mush if asked to deform. Its prior is GRAZING (the atlas ships eat / eat_start / eat_end), so every prompt holds the head UP at the reference height the way the sheep's did. The bell should move with talk and anger; the legs stay planted.",
+      "reference": "__black_and_white_cow_idle/__black_and_white_cow_idle-0.png",
+      "overrides": {
+        "talking": {
+          "prompt": "{view}. The black and white cow stands in place on all fours and talks: its big pink snout opens and closes with each phrase, its head bobs gently in time, its googly eyes blink once, and the golden bell on its teal collar swings slightly. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "doubtful": {
+          "prompt": "{view}. The black and white cow stands in place on all fours and is unconvinced: its head draws back and tilts, one ear flicks, its big pink snout stays shut, and the golden bell on its collar hangs still. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "angry": {
+          "prompt": "{view}. The black and white cow stands in place on all fours and is furious: its googly eyes narrow, its head drops until it is level with its shoulders and pushes forward at the target, its big pink snout is held open in one long hard bellow, and the golden bell on its teal collar jerks. The open mouth is always the same shape: one big clean smooth rounded patch of flat pink inside the snout, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and never move. Its head never drops below shoulder height, never lowers to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "thinking": {
+          "prompt": "{view}. The black and white cow stands in place on all fours and considers something: almost motionless, its head turned slightly away, its googly eyes rolling slowly, its big pink snout shut, the golden bell hanging still. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "sneaky": {
+          "prompt": "{view}. The black and white cow stands in place on all fours and speaks conspiratorially: its head cranes forward and dips a little toward the listener, its googly eyes flick sideways, its big pink snout moves in a low mutter, and the golden bell on its collar stays still. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        }
+      }
+    },
+    "cow-female-001": {
+      "species": "black and white cow with braided pigtails",
+      "view": "Side view, facing left",
+      "$comment": "Carrier is the two long BLACK BRAIDS hanging down the neck \u2014 unique in the cast, high-contrast against the white body, and they move without disturbing the torso. Secondary: the golden cowbell, the large white eyes, the small smile. Same grazing prior as the other cow, plus a SPEAKING prior (the atlas already ships speak_angry / speak_worried), so prompts must keep the body standing and the braids fully drawn rather than letting a talk clip collapse into a close-up head.",
+      "reference": "cow_idle_smile__loop__-0.png",
+      "overrides": {
+        "talking": {
+          "prompt": "{view}. The black and white cow with braided pigtails stands in place on all fours and talks: its muzzle opens and closes with each phrase, its head bobs gently in time, its two long black braids sway slowly, and the golden bell on its collar swings slightly. All four hooves stay planted exactly where they are in the reference image and never move. Both braids stay whole and fully drawn in every frame, hanging in the same shape as the reference. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "doubtful": {
+          "prompt": "{view}. The black and white cow with braided pigtails stands in place on all fours and is unconvinced: its head draws back and tilts, one braid swings back, its muzzle stays shut, and the golden bell hangs still. All four hooves stay planted exactly where they are in the reference image and never move. Both braids stay whole and fully drawn in every frame. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "angry": {
+          "prompt": "{view}. The black and white cow with braided pigtails stands in place on all fours and is furious: its eyes narrow, its brows drive down, its two long black braids swing back, its head drops level with its shoulders and pushes forward at the target, and its muzzle opens in a hard bellow. The open mouth is always the same shape: one clean smooth rounded patch of flat pink, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and never move. Both braids stay whole and fully drawn in every frame. Its head never drops below shoulder height, never lowers to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "thinking": {
+          "prompt": "{view}. The black and white cow with braided pigtails stands in place on all fours and considers something: almost motionless, its head turned slightly away, its two long black braids hanging still, its muzzle shut, the golden bell still. All four hooves stay planted exactly where they are in the reference image and never move. Both braids stay whole and fully drawn in every frame. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "sneaky": {
+          "prompt": "{view}. The black and white cow with braided pigtails stands in place on all fours and speaks conspiratorially: its head cranes forward and dips a little toward the listener, its eyes flick sideways, its muzzle moves in a low mutter, and its two long black braids hang still. All four hooves stay planted exactly where they are in the reference image and never move. Both braids stay whole and fully drawn in every frame. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        }
+      }
+    },
+    "dog": {
+      "species": "tan alsatian dog",
+      "view": "Side view, facing left",
+      "$comment": "Same carriers as the fox \u2014 pointed EARS and a hanging TAIL \u2014 plus a dark saddle across the back that bristles. Its prior is SITTING (the atlas ships sit / sit_idle / stand) and BARKING (alert is bark). Every prompt holds it standing on all fours and never sitting, and angry should snarl in place rather than become a barking lunge.",
+      "reference": "__alsation_idle-0.png",
+      "overrides": {
+        "talking": {
+          "prompt": "{view}. The tan alsatian dog stands in place on all fours and talks: its muzzle opens and closes with each phrase, its head bobs gently in time, its pointed ears stay upright and flick once, and the tip of its tail sways slowly. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never sits, never lies down. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "doubtful": {
+          "prompt": "{view}. The tan alsatian dog stands in place on all fours and is unconvinced: its head draws back and tilts, one pointed ear swivels back and returns, its muzzle stays shut, and its tail hangs still. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never sits, never lies down. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "angry": {
+          "prompt": "{view}. The tan alsatian dog stands in place on all fours, ears flattened hard back against its skull for the whole clip, muzzle wrinkled open in a snarl showing teeth, head lowered until it is level with its shoulders and pushed toward the target, and its tail held low. All four feet stay planted exactly where they are in the reference image and never move \u2014 it does not step, lunge, walk or pounce, and the body stays standing, never sits, never lies down. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "thinking": {
+          "prompt": "{view}. The tan alsatian dog stands in place on all fours and considers something: nearly still, its head lowered and turned slightly away, its pointed ears rotating slowly back and forward again, its muzzle closed, its tail hanging still. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never sits, never lies down. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "sneaky": {
+          "prompt": "{view}. The tan alsatian dog stands in place on all fours and speaks conspiratorially: its head lowers and cranes slowly forward toward the listener, its ears tilt back, and its eyes flick sideways. Its tail stays whole and fully drawn for every frame, held low. All four feet stay planted exactly where they are in the reference image and never move; it stays standing the whole time and never crouches flat, never lies down, never sits. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        }
+      }
+    },
+    "mouse": {
+      "species": "grey mouse",
+      "view": "Side view, facing right",
+      "$comment": "The only animal whose source art faces RIGHT (isFlipped). Framing MUST stay 'facing right' \u2014 telling it 'facing left' turns the character and the clip will not cut against idle. Carrier: huge rounded EARS with pink interiors (the highest-contrast feature) plus the long arched PINK TAIL and the two rectangular BUCK TEETH. Its prior is LYING DOWN (the atlas ships lie / stand), so every prompt holds it standing and never lying down.",
+      "reference": "mouse-idle-spritesheet-746px-by-469px-per-frame-0.png",
+      "overrides": {
+        "talking": {
+          "prompt": "{view}. The grey mouse stands in place on all fours and talks: its snout opens and closes showing the same two rectangular white front teeth in every frame the mouth is open, its head bobs gently in time, its big rounded ears with pink interiors flick once, and the long pink tail arched over its back sways slightly. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "doubtful": {
+          "prompt": "{view}. The grey mouse stands in place on all fours and is unconvinced: its head draws back and tilts, one big rounded ear swivels back, its snout stays shut with the two white front teeth still visible, and its long pink tail hangs still. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "angry": {
+          "prompt": "{view}. The grey mouse stands in place on all fours and is furious: its big rounded ears pin back, its eyes narrow, its head pushes forward at the target, its snout opens showing the same two rectangular white front teeth in every frame, and its long pink tail lashes. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits, never lunges. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "thinking": {
+          "prompt": "{view}. The grey mouse stands in place on all fours and considers something: almost motionless, its head turned slightly away, its big rounded ears rotating slowly, its snout shut with the two white front teeth still visible, its long pink tail arched still. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "sneaky": {
+          "prompt": "{view}. The grey mouse stands in place on all fours and speaks conspiratorially: its head cranes forward and dips toward the listener, its big rounded ears tilt back, its eyes flick sideways, and its snout moves in a low mutter showing the same two rectangular white front teeth whenever the mouth opens. Its long pink tail stays whole and fully drawn in every frame, arched over its back in the same shape as the reference. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        }
+      }
+    },
+    "pig": {
+      "species": "pink pig",
+      "view": "Side view, facing left",
+      "$comment": "Carrier is the round PINK SNOUT (the face) plus the CORKSCREW TAIL (the only silhouette appendage). The body is a low wide oval that will collapse into a lying-down mud pose if unaddressed, so every prompt holds it standing on four short legs. Ears are small and do not carry emotion the way the fox's do.",
+      "reference": "__pig_idle-0.png",
+      "overrides": {
+        "talking": {
+          "prompt": "{view}. The pink pig stands in place on all fours and talks: its round snout opens and closes with each phrase, its head bobs gently in time, its small ears flick once, and its corkscrew tail twitches. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "doubtful": {
+          "prompt": "{view}. The pink pig stands in place on all fours and is unconvinced: its head draws back and tilts, one small ear flicks, its round snout stays shut, and its corkscrew tail hangs still. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "angry": {
+          "prompt": "{view}. The pink pig stands in place on all fours and is furious: its small ears pin back, its eyes narrow, its head drops level with its shoulders and pushes forward at the target, its round snout is held open, and its corkscrew tail twitches hard. The open snout is always the same shape: one clean smooth rounded patch of flat darker pink inside, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "thinking": {
+          "prompt": "{view}. The pink pig stands in place on all fours and considers something: almost motionless, its head turned slightly away, its small ears rotating slowly, its round snout shut, its corkscrew tail still. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        },
+        "sneaky": {
+          "prompt": "{view}. The pink pig stands in place on all fours and speaks conspiratorially: its head cranes forward and dips toward the listener, its small ears tilt back, its eyes flick sideways, and its round snout moves in a low mutter. Its corkscrew tail stays whole and fully drawn in every frame. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+        }
+      }
     }
   }
 }

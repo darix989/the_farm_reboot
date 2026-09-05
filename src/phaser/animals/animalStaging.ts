@@ -31,13 +31,14 @@
  * donkey lands at the target height and apply it to every animal's source scale.
  */
 import type { AnimalSpriteId } from '../../data/characters';
+import { ANIMAL_DESCRIPTORS } from './animalDescriptors';
 
 export interface AnimalStagingScale {
   farmScale: number;
   trialScale: number;
 }
 
-/** `the_farm/src/phaser/utils/animalDescriptors.ts`'s `CharacterInfo.scale` for these six. */
+/** `the_farm/src/phaser/utils/animalDescriptors.ts`'s `CharacterInfo.scale`. */
 const SOURCE_SCALE: Record<AnimalSpriteId, number> = {
   'donkey-grey': 0.7,
   owl: 0.4,
@@ -45,6 +46,11 @@ const SOURCE_SCALE: Record<AnimalSpriteId, number> = {
   fox: 0.6,
   'white-sheep-1': 1.0,
   'brown-wolf': 0.7,
+  cow: 1.0,
+  'cow-female-001': 1.3,
+  dog: 0.6,
+  mouse: 0.35,
+  pig: 1.0,
 };
 
 const FARM_MULTIPLIER = 0.377; // donkey-grey -> ~140px tall next to the 56px placeholder NPCs
@@ -75,5 +81,11 @@ export const ANIMAL_STAGING: Record<AnimalSpriteId, AnimalStagingScale> = Object
 /** A cast of three needs to be smaller than a cast of one or two to fit the hole. */
 export const TRIAL_SCALE_BY_CAST_SIZE: Record<number, number> = { 1: 1.1, 2: 1, 3: 0.85 };
 
-/** Verified by eye against the source atlases: every ported animal faces left. */
-export const ANIMAL_ART_FACES_LEFT = true;
+/**
+ * Whether this animal's source art faces left. Every atlas except the mouse does; the mouse
+ * faces right (`isFlipped` on its descriptor). Facing logic in Farm / Trial / the gallery
+ * has to consult this rather than assuming the whole cast matches.
+ */
+export function animalArtFacesLeft(id: AnimalSpriteId): boolean {
+  return ANIMAL_DESCRIPTORS[id].isFlipped !== true;
+}

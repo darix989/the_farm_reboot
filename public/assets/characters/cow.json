@@ -1,0 +1,2164 @@
+{
+  "textures": [
+    {
+      "image": "cow/cow-0.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1911,
+        "h": 1800
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__black_and_white_cow_die/__black_and_white_cow_die-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 177,
+            "w": 472,
+            "h": 226
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 472,
+            "h": 226
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_die/__black_and_white_cow_die-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 43,
+            "y": 176,
+            "w": 467,
+            "h": 227
+          },
+          "frame": {
+            "x": 475,
+            "y": 1,
+            "w": 467,
+            "h": 227
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_die/__black_and_white_cow_die-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 153,
+            "w": 473,
+            "h": 243
+          },
+          "frame": {
+            "x": 944,
+            "y": 1,
+            "w": 473,
+            "h": 243
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 104,
+            "w": 491,
+            "h": 294
+          },
+          "frame": {
+            "x": 1419,
+            "y": 1,
+            "w": 491,
+            "h": 294
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 41,
+            "w": 467,
+            "h": 357
+          },
+          "frame": {
+            "x": 1,
+            "y": 229,
+            "w": 467,
+            "h": 357
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 41,
+            "w": 466,
+            "h": 357
+          },
+          "frame": {
+            "x": 470,
+            "y": 230,
+            "w": 466,
+            "h": 357
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 41,
+            "w": 465,
+            "h": 357
+          },
+          "frame": {
+            "x": 938,
+            "y": 246,
+            "w": 465,
+            "h": 357
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 40,
+            "w": 467,
+            "h": 358
+          },
+          "frame": {
+            "x": 1405,
+            "y": 297,
+            "w": 467,
+            "h": 358
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-22.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 38,
+            "w": 471,
+            "h": 360
+          },
+          "frame": {
+            "x": 1,
+            "y": 589,
+            "w": 471,
+            "h": 360
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-23.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 38,
+            "w": 472,
+            "h": 360
+          },
+          "frame": {
+            "x": 474,
+            "y": 605,
+            "w": 472,
+            "h": 360
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 38,
+            "w": 471,
+            "h": 360
+          },
+          "frame": {
+            "x": 948,
+            "y": 657,
+            "w": 471,
+            "h": 360
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 38,
+            "w": 471,
+            "h": 360
+          },
+          "frame": {
+            "x": 1421,
+            "y": 657,
+            "w": 471,
+            "h": 360
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 13,
+            "w": 471,
+            "h": 385
+          },
+          "frame": {
+            "x": 1,
+            "y": 951,
+            "w": 471,
+            "h": 385
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 13,
+            "w": 471,
+            "h": 385
+          },
+          "frame": {
+            "x": 1,
+            "y": 951,
+            "w": 471,
+            "h": 385
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 13,
+            "w": 470,
+            "h": 385
+          },
+          "frame": {
+            "x": 474,
+            "y": 967,
+            "w": 470,
+            "h": 385
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 13,
+            "w": 470,
+            "h": 385
+          },
+          "frame": {
+            "x": 474,
+            "y": 967,
+            "w": 470,
+            "h": 385
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 15,
+            "w": 478,
+            "h": 383
+          },
+          "frame": {
+            "x": 946,
+            "y": 1019,
+            "w": 478,
+            "h": 383
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-24.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 15,
+            "w": 478,
+            "h": 383
+          },
+          "frame": {
+            "x": 946,
+            "y": 1019,
+            "w": 478,
+            "h": 383
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 15,
+            "w": 478,
+            "h": 383
+          },
+          "frame": {
+            "x": 1426,
+            "y": 1019,
+            "w": 478,
+            "h": 383
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-23.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 15,
+            "w": 478,
+            "h": 383
+          },
+          "frame": {
+            "x": 1426,
+            "y": 1019,
+            "w": 478,
+            "h": 383
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 9,
+            "w": 466,
+            "h": 395
+          },
+          "frame": {
+            "x": 1,
+            "y": 1338,
+            "w": 466,
+            "h": 395
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 51,
+            "y": 8,
+            "w": 467,
+            "h": 395
+          },
+          "frame": {
+            "x": 469,
+            "y": 1354,
+            "w": 467,
+            "h": 395
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 50,
+            "y": 6,
+            "w": 471,
+            "h": 395
+          },
+          "frame": {
+            "x": 938,
+            "y": 1404,
+            "w": 471,
+            "h": 395
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 55,
+            "y": 9,
+            "w": 463,
+            "h": 395
+          },
+          "frame": {
+            "x": 1411,
+            "y": 1404,
+            "w": 463,
+            "h": 395
+          }
+        }
+      ]
+    },
+    {
+      "image": "cow/cow-1.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1962,
+        "h": 1834
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 35,
+            "y": 101,
+            "w": 492,
+            "h": 297
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 492,
+            "h": 297
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_die/__black_and_white_cow_die-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 42,
+            "y": 94,
+            "w": 475,
+            "h": 304
+          },
+          "frame": {
+            "x": 495,
+            "y": 1,
+            "w": 475,
+            "h": 304
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 34,
+            "y": 91,
+            "w": 493,
+            "h": 307
+          },
+          "frame": {
+            "x": 972,
+            "y": 1,
+            "w": 493,
+            "h": 307
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 33,
+            "y": 81,
+            "w": 494,
+            "h": 317
+          },
+          "frame": {
+            "x": 1467,
+            "y": 1,
+            "w": 494,
+            "h": 317
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 40,
+            "w": 468,
+            "h": 358
+          },
+          "frame": {
+            "x": 1,
+            "y": 300,
+            "w": 468,
+            "h": 358
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 40,
+            "w": 468,
+            "h": 358
+          },
+          "frame": {
+            "x": 471,
+            "y": 307,
+            "w": 468,
+            "h": 358
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 40,
+            "w": 468,
+            "h": 358
+          },
+          "frame": {
+            "x": 941,
+            "y": 310,
+            "w": 468,
+            "h": 358
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 40,
+            "w": 468,
+            "h": 358
+          },
+          "frame": {
+            "x": 1411,
+            "y": 320,
+            "w": 468,
+            "h": 358
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 51,
+            "y": 36,
+            "w": 467,
+            "h": 362
+          },
+          "frame": {
+            "x": 1,
+            "y": 660,
+            "w": 467,
+            "h": 362
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 38,
+            "w": 472,
+            "h": 360
+          },
+          "frame": {
+            "x": 470,
+            "y": 670,
+            "w": 472,
+            "h": 360
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 38,
+            "w": 471,
+            "h": 360
+          },
+          "frame": {
+            "x": 944,
+            "y": 680,
+            "w": 471,
+            "h": 360
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_die/__black_and_white_cow_die-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 37,
+            "w": 474,
+            "h": 361
+          },
+          "frame": {
+            "x": 1417,
+            "y": 680,
+            "w": 474,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 37,
+            "w": 474,
+            "h": 361
+          },
+          "frame": {
+            "x": 1417,
+            "y": 680,
+            "w": 474,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 51,
+            "y": 13,
+            "w": 467,
+            "h": 385
+          },
+          "frame": {
+            "x": 1,
+            "y": 1024,
+            "w": 467,
+            "h": 385
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 13,
+            "w": 470,
+            "h": 385
+          },
+          "frame": {
+            "x": 470,
+            "y": 1032,
+            "w": 470,
+            "h": 385
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 13,
+            "w": 470,
+            "h": 385
+          },
+          "frame": {
+            "x": 470,
+            "y": 1032,
+            "w": 470,
+            "h": 385
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 14,
+            "w": 473,
+            "h": 384
+          },
+          "frame": {
+            "x": 942,
+            "y": 1042,
+            "w": 473,
+            "h": 384
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-22.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 15,
+            "w": 477,
+            "h": 383
+          },
+          "frame": {
+            "x": 1417,
+            "y": 1043,
+            "w": 477,
+            "h": 383
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 15,
+            "w": 477,
+            "h": 383
+          },
+          "frame": {
+            "x": 1417,
+            "y": 1043,
+            "w": 477,
+            "h": 383
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 3,
+            "w": 465,
+            "h": 401
+          },
+          "frame": {
+            "x": 1,
+            "y": 1411,
+            "w": 465,
+            "h": 401
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 57,
+            "y": 4,
+            "w": 461,
+            "h": 401
+          },
+          "frame": {
+            "x": 468,
+            "y": 1419,
+            "w": 461,
+            "h": 401
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 57,
+            "y": 1,
+            "w": 461,
+            "h": 404
+          },
+          "frame": {
+            "x": 931,
+            "y": 1428,
+            "w": 461,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 55,
+            "y": 0,
+            "w": 463,
+            "h": 405
+          },
+          "frame": {
+            "x": 1394,
+            "y": 1428,
+            "w": 463,
+            "h": 405
+          }
+        }
+      ]
+    },
+    {
+      "image": "cow/cow-2.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1975,
+        "h": 1454
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 33,
+            "y": 79,
+            "w": 494,
+            "h": 319
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 494,
+            "h": 319
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 35,
+            "y": 69,
+            "w": 492,
+            "h": 329
+          },
+          "frame": {
+            "x": 497,
+            "y": 1,
+            "w": 492,
+            "h": 329
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 65,
+            "w": 491,
+            "h": 333
+          },
+          "frame": {
+            "x": 991,
+            "y": 1,
+            "w": 491,
+            "h": 333
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 61,
+            "w": 490,
+            "h": 337
+          },
+          "frame": {
+            "x": 1484,
+            "y": 1,
+            "w": 490,
+            "h": 337
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 51,
+            "y": 40,
+            "w": 476,
+            "h": 358
+          },
+          "frame": {
+            "x": 1,
+            "y": 322,
+            "w": 476,
+            "h": 358
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 39,
+            "w": 469,
+            "h": 359
+          },
+          "frame": {
+            "x": 479,
+            "y": 332,
+            "w": 469,
+            "h": 359
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 39,
+            "w": 470,
+            "h": 359
+          },
+          "frame": {
+            "x": 950,
+            "y": 336,
+            "w": 470,
+            "h": 359
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-20.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 39,
+            "w": 471,
+            "h": 359
+          },
+          "frame": {
+            "x": 1422,
+            "y": 340,
+            "w": 471,
+            "h": 359
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 37,
+            "w": 474,
+            "h": 361
+          },
+          "frame": {
+            "x": 1,
+            "y": 682,
+            "w": 474,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 37,
+            "w": 474,
+            "h": 361
+          },
+          "frame": {
+            "x": 1,
+            "y": 682,
+            "w": 474,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 37,
+            "w": 474,
+            "h": 361
+          },
+          "frame": {
+            "x": 1,
+            "y": 682,
+            "w": 474,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 37,
+            "w": 474,
+            "h": 361
+          },
+          "frame": {
+            "x": 1,
+            "y": 682,
+            "w": 474,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 37,
+            "w": 473,
+            "h": 361
+          },
+          "frame": {
+            "x": 477,
+            "y": 697,
+            "w": 473,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-24.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 37,
+            "w": 473,
+            "h": 361
+          },
+          "frame": {
+            "x": 952,
+            "y": 701,
+            "w": 473,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 50,
+            "y": 32,
+            "w": 469,
+            "h": 366
+          },
+          "frame": {
+            "x": 1427,
+            "y": 701,
+            "w": 469,
+            "h": 366
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 14,
+            "w": 474,
+            "h": 384
+          },
+          "frame": {
+            "x": 1,
+            "y": 1045,
+            "w": 474,
+            "h": 384
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 14,
+            "w": 473,
+            "h": 384
+          },
+          "frame": {
+            "x": 477,
+            "y": 1060,
+            "w": 473,
+            "h": 384
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 13,
+            "w": 473,
+            "h": 385
+          },
+          "frame": {
+            "x": 952,
+            "y": 1064,
+            "w": 473,
+            "h": 385
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 13,
+            "w": 473,
+            "h": 385
+          },
+          "frame": {
+            "x": 952,
+            "y": 1064,
+            "w": 473,
+            "h": 385
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 14,
+            "w": 475,
+            "h": 384
+          },
+          "frame": {
+            "x": 1427,
+            "y": 1069,
+            "w": 475,
+            "h": 384
+          }
+        }
+      ]
+    },
+    {
+      "image": "cow/cow-3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1919,
+        "h": 1480
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 41,
+            "y": 53,
+            "w": 486,
+            "h": 345
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 486,
+            "h": 345
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 8,
+            "w": 466,
+            "h": 392
+          },
+          "frame": {
+            "x": 489,
+            "y": 1,
+            "w": 466,
+            "h": 392
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-21.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 14,
+            "w": 476,
+            "h": 384
+          },
+          "frame": {
+            "x": 1,
+            "y": 348,
+            "w": 476,
+            "h": 384
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 14,
+            "w": 476,
+            "h": 384
+          },
+          "frame": {
+            "x": 1,
+            "y": 348,
+            "w": 476,
+            "h": 384
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 41,
+            "y": 54,
+            "w": 486,
+            "h": 344
+          },
+          "frame": {
+            "x": 479,
+            "y": 395,
+            "w": 486,
+            "h": 344
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-20.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 14,
+            "w": 475,
+            "h": 384
+          },
+          "frame": {
+            "x": 1,
+            "y": 734,
+            "w": 475,
+            "h": 384
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_to_eat/__black_and_white_cow_transition_to_eat-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 46,
+            "y": 48,
+            "w": 481,
+            "h": 350
+          },
+          "frame": {
+            "x": 957,
+            "y": 1,
+            "w": 481,
+            "h": 350
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 14,
+            "w": 475,
+            "h": 384
+          },
+          "frame": {
+            "x": 967,
+            "y": 353,
+            "w": 475,
+            "h": 384
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 18,
+            "w": 479,
+            "h": 378
+          },
+          "frame": {
+            "x": 967,
+            "y": 739,
+            "w": 479,
+            "h": 378
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 22,
+            "w": 473,
+            "h": 376
+          },
+          "frame": {
+            "x": 1444,
+            "y": 1,
+            "w": 473,
+            "h": 376
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 41,
+            "w": 467,
+            "h": 357
+          },
+          "frame": {
+            "x": 1444,
+            "y": 379,
+            "w": 467,
+            "h": 357
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 50,
+            "y": 26,
+            "w": 471,
+            "h": 372
+          },
+          "frame": {
+            "x": 478,
+            "y": 741,
+            "w": 471,
+            "h": 372
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 39,
+            "w": 471,
+            "h": 359
+          },
+          "frame": {
+            "x": 478,
+            "y": 1115,
+            "w": 471,
+            "h": 359
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 39,
+            "w": 471,
+            "h": 359
+          },
+          "frame": {
+            "x": 1,
+            "y": 1120,
+            "w": 471,
+            "h": 359
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 50,
+            "y": 29,
+            "w": 470,
+            "h": 369
+          },
+          "frame": {
+            "x": 1448,
+            "y": 738,
+            "w": 470,
+            "h": 369
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 39,
+            "w": 470,
+            "h": 359
+          },
+          "frame": {
+            "x": 1448,
+            "y": 1109,
+            "w": 470,
+            "h": 359
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 39,
+            "w": 469,
+            "h": 359
+          },
+          "frame": {
+            "x": 951,
+            "y": 1119,
+            "w": 469,
+            "h": 359
+          }
+        }
+      ]
+    },
+    {
+      "image": "cow/cow-4.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1907,
+        "h": 1501
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 41,
+            "w": 466,
+            "h": 357
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 466,
+            "h": 357
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 41,
+            "w": 465,
+            "h": 357
+          },
+          "frame": {
+            "x": 469,
+            "y": 1,
+            "w": 465,
+            "h": 357
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 41,
+            "w": 465,
+            "h": 357
+          },
+          "frame": {
+            "x": 936,
+            "y": 1,
+            "w": 465,
+            "h": 357
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 41,
+            "w": 466,
+            "h": 357
+          },
+          "frame": {
+            "x": 1403,
+            "y": 1,
+            "w": 466,
+            "h": 357
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 52,
+            "y": 39,
+            "w": 469,
+            "h": 359
+          },
+          "frame": {
+            "x": 1,
+            "y": 360,
+            "w": 469,
+            "h": 359
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 51,
+            "y": 39,
+            "w": 466,
+            "h": 359
+          },
+          "frame": {
+            "x": 472,
+            "y": 360,
+            "w": 466,
+            "h": 359
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 38,
+            "w": 472,
+            "h": 360
+          },
+          "frame": {
+            "x": 940,
+            "y": 360,
+            "w": 472,
+            "h": 360
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_eat/__black_and_white_cow_eat-21.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 38,
+            "w": 471,
+            "h": 360
+          },
+          "frame": {
+            "x": 1414,
+            "y": 360,
+            "w": 471,
+            "h": 360
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_transition_out_of_eat/__black_and_white_cow_transition_out_of_eat-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 19,
+            "w": 474,
+            "h": 379
+          },
+          "frame": {
+            "x": 1,
+            "y": 721,
+            "w": 474,
+            "h": 379
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 50,
+            "y": 19,
+            "w": 471,
+            "h": 381
+          },
+          "frame": {
+            "x": 477,
+            "y": 722,
+            "w": 471,
+            "h": 381
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 18,
+            "w": 475,
+            "h": 382
+          },
+          "frame": {
+            "x": 950,
+            "y": 722,
+            "w": 475,
+            "h": 382
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 15,
+            "w": 479,
+            "h": 383
+          },
+          "frame": {
+            "x": 1427,
+            "y": 722,
+            "w": 479,
+            "h": 383
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 14,
+            "w": 474,
+            "h": 384
+          },
+          "frame": {
+            "x": 1,
+            "y": 1102,
+            "w": 474,
+            "h": 384
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_idle/__black_and_white_cow_idle-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 14,
+            "w": 475,
+            "h": 384
+          },
+          "frame": {
+            "x": 477,
+            "y": 1106,
+            "w": 475,
+            "h": 384
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 12,
+            "w": 475,
+            "h": 387
+          },
+          "frame": {
+            "x": 954,
+            "y": 1107,
+            "w": 475,
+            "h": 387
+          }
+        },
+        {
+          "filename": "__black_and_white_cow_walk/__black_and_white_cow_walk-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 543,
+            "h": 417
+          },
+          "spriteSourceSize": {
+            "x": 54,
+            "y": 11,
+            "w": 464,
+            "h": 393
+          },
+          "frame": {
+            "x": 1431,
+            "y": 1107,
+            "w": 464,
+            "h": 393
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "3.0",
+    "smartupdate": "$TexturePacker:SmartUpdate:c13c38ee895c12a1269f35f648768d3e:1536eb2317e9606306328395605bc980:b0e3462adf1154d636cdbe4743b6b0f9$"
+  }
+}

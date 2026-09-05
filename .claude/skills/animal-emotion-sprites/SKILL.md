@@ -20,8 +20,9 @@ settings). **Never run a generating command without the user having asked for th
 generation, and confirm the scope first if they gave a budget or an ambiguous "do the rest".**
 `--dry-run` is free and needs no key — start there, always.
 
-State the projected cost before generating: `clips × 4 credits`. A full uncovered cast is
-~100 credits.
+State the projected cost before generating: `clips × 4 credits`. The five imported animals
+that still have no emotion art (`cow`, `cow-female-001`, `dog`, `mouse`, `pig`) are 25 clips,
+~100 credits. Do not generate them until asked.
 
 ## The pipeline in one screen
 
@@ -125,6 +126,11 @@ here because ignoring them costs credits.
    | sheep | **contrast**: solid black head + black ears on pale fleece | head height and tilt read at any size; the fleece is a fluffy oval that turns to mush if asked to deform. Its ears are black on a black head and barely read — its *eyes* are the white-on-black signal |
    | wolf | **ears + bushy tail + snarl + white neck ruff** | the fox's carriers plus a high-contrast ruff that bristles; produced the strongest `angry` in the project, first try, with textbook-stable fangs |
    | raccoon | **brows + big white eyes in a dark mask**, and **free forepaws** | staged sitting up, so it is the only character with hands — it can gesture, point and clench, which nothing else in the cast can |
+   | cow | **huge pink snout + googly eyes + golden cowbell** | grazing prior (atlas ships `eat`); hold the head UP at the reference height |
+   | cow-female-001 | **two long black braids** (plus the bell and eyes) | same grazing prior, plus a speaking prior (`speak_angry` / `speak_worried` in the atlas) |
+   | dog | **pointed ears + tail**, dark saddle | sitting prior (`sit` / `sit_idle`) and a bark; keep it standing |
+   | mouse | **huge pink-lined ears + arched pink tail + buck teeth** | source art faces **right** (`isFlipped`); lying-down prior (`lie`) |
+   | pig | **round snout + corkscrew tail** | low wide oval that wants to lie down; hold the four short legs planted |
 
    Before writing prompts for a new animal, look at its reference frame and ask what changes
    the outline. Ears and tails are the quadruped equivalent of the owl's eyes: real visual
@@ -209,9 +215,11 @@ Full contract in [references/ludo-api.md](references/ludo-api.md). The four that
 - **The REST default flips from synchronous to async on 2026-09-10.** The client already sends
   `async: true` and long-polls, so it is unaffected. Do not "simplify" that away.
 
-**The whole cast is generated.** All six animals have all five emotions — 30 clips. Reach for
-this skill to regenerate one that reads wrong, add an emotion to the vocabulary, or give art to
-a newly added animal, not to fill gaps.
+**The original six are generated** (`donkey-grey`, `owl`, `raccoon`, `fox`, `white-sheep-1`,
+`brown-wolf` — 30 clips). Five more atlases are imported (`cow`, `cow-female-001`, `dog`,
+`mouse`, `pig`) and listed in the emotion manifest, but they have no generated clips yet —
+do not generate them until asked. Reach for this skill to regenerate a clip that reads
+wrong, add an emotion to the vocabulary, or give art to a newly added animal.
 
 ## `scripts/ludo/promoted-clips.json` is the source of truth
 
