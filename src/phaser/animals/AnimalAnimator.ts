@@ -18,6 +18,7 @@
  *   3. `prefers-reduced-motion` freezes the sprite on its rest frame instead of animating.
  */
 import { animalAnimKey, type AnimalSetup } from './animalAnimations';
+import { applyAtlasFeetOrigin } from './animalStaging';
 import {
   applyEmotionStaging,
   captureStaging,
@@ -223,11 +224,15 @@ export class AnimalAnimator {
       }
     }
     restoreStaging(this.sprite, this.baseStaging);
+    // Atlas clips do not all share a canvas (the dog's sit loop is a different size from
+    // its idle). Re-pin origin to this clip's current frame after restoring scale.
+    applyAtlasFeetOrigin(this.sprite);
   }
 
   /** Undoes `playEmotion`'s scale/origin override. A no-op when none is in effect. */
   private restoreBaseStaging(): void {
     restoreStaging(this.sprite, this.baseStaging);
+    applyAtlasFeetOrigin(this.sprite);
   }
 
   destroy(): void {

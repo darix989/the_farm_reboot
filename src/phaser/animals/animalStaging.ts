@@ -91,19 +91,35 @@ export function animalArtFacesLeft(id: AnimalSpriteId): boolean {
 }
 
 /**
- * Pins a sprite's origin at the rest-frame's visible feet, not the export-canvas bottom.
+ * TexturePacker's `anchor` is the frame centre, not the feet. Phaser copies it onto the
+ * sprite on every `setFrame` when `customPivot` is set, which undoes the feet origin the
+ * moment an animation starts. Only the dog atlas exports these (idle is `{x:0.5,y:0.5}`);
+ * a no-op on every other animal. Must run against the whole texture, not the current frame
+ * — the next clip frame would just turn it back on.
+ */
+function ignoreTexturePackerAnchors(texture: Phaser.Textures.Texture): void {
+  texture.getFrameNames().forEach((name) => {
+    texture.get(name).customPivot = false;
+  });
+}
+
+/**
+ * Pins a sprite's origin at the current frame's visible feet, not the export-canvas bottom.
  *
  * TexturePacker trims transparent pixels but Phaser still sizes the sprite to `sourceSize`
  * (`frame.realWidth` / `realHeight`). `setOrigin(0.5, 1)` therefore lands on empty padding
- * below every animal except the owl, whose canvas already reached the feet. Using the rest
- * frame's trim (`frame.y + frame.cutHeight`) keeps the floor stable across clips — a
- * per-frame origin would bounce as the box changed shape.
+ * below every animal except the owl, whose canvas already reached the feet. Using the
+ * current frame's trim (`frame.y + frame.cutHeight`) keeps each clip on the floor even when
+ * its export canvas differs from the rest pose (the dog's sit loop is a different size
+ * from its idle). A per-frame origin inside one clip would bounce as the box changed shape,
+ * so callers apply this once when a clip starts, not every frame.
  *
- * Call after the sprite has its rest frame (Farm, Trial and the gallery all do) and before
+ * Call after the sprite has a frame (Farm, Trial and the gallery all do) and before
  * attaching an `AnimalAnimator`, so `captureStaging` records the feet origin. Returns the
  * sprite so it can sit in a `add.sprite(…).setScale(…)` chain.
  */
 export function applyAtlasFeetOrigin(sprite: Phaser.GameObjects.Sprite): Phaser.GameObjects.Sprite {
+  ignoreTexturePackerAnchors(sprite.texture);
   const frame = sprite.frame;
   if (!frame || frame.realHeight <= 0) {
     return sprite.setOrigin(0.5, 1);

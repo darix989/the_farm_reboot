@@ -267,10 +267,15 @@ art faces left, and the opposite when it faces right.
 still sizes the sprite to the untrimmed `sourceSize`. `setOrigin(0.5, 1)` therefore
 pins the export-canvas bottom, which only matches the feet for the owl — everyone else
 has 55–198px of padding below the hooves (the raccoon is worst: its canvas is sized for
-the sitting-up pose). `applyAtlasFeetOrigin` reads the rest frame's trim and sets
+the sitting-up pose). `applyAtlasFeetOrigin` reads the current frame's trim and sets
 `originY` at the visible bottom, so Farm shadows, the Trial floor line and the gallery
 floor all sit under the feet. Generated emotion clips get a matching origin from
 `normalize.mjs` (§9.4).
+
+The dog atlas is the one extra trap: every frame carries a TexturePacker `anchor` at
+the visual centre (`{x:0.5,y:0.5}` on idle). Phaser copies that onto the sprite on
+every `setFrame`, which undoes the feet origin the moment a clip plays. The helper
+clears `customPivot` on the whole texture so those anchors are ignored.
 
 ---
 

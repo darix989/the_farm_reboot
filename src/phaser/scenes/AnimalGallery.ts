@@ -144,6 +144,7 @@ export class AnimalGallery extends Scene {
       sprite.anims.stop();
       restoreStaging(sprite, base);
       if (setup.restFrameName) sprite.setFrame(setup.restFrameName);
+      applyAtlasFeetOrigin(sprite);
       return;
     }
 
@@ -165,7 +166,10 @@ export class AnimalGallery extends Scene {
     }
 
     if (sheet) applyEmotionStaging(sprite, sheet, base);
-    else restoreStaging(sprite, base);
+    else {
+      restoreStaging(sprite, base);
+      applyAtlasFeetOrigin(sprite);
+    }
   }
 
   /**
