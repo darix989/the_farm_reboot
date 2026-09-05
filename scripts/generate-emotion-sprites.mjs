@@ -456,6 +456,13 @@ async function promote() {
       scale: norm.scale,
       originX: norm.originX,
       originY: norm.originY,
+      // Provenance, recorded here and not in the generated module (the runtime has no use for
+      // it). The manifest is edited between rounds — generic prompts get rewritten, animals
+      // gain overrides — so it stops describing what shipped the moment it changes. Without
+      // this, there is no way to know what a promoted clip was actually asked to be.
+      prompt: clip.prompt,
+      quality: clip.quality,
+      generatedAt: clip.generatedAt,
     };
     console.log(
       `- ${clip.animalId}/${clip.emotion} → ${join(PUBLIC_DIR, file)}` +

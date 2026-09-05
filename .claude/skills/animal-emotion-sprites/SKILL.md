@@ -83,13 +83,20 @@ Prompts live in `scripts/ludo/emotion-manifest.json`: a generic prompt per emoti
 sense for that body. The file carries these rules in its own `$comment`; they are repeated
 here because ignoring them costs credits.
 
-1. **Describe posture, not expression — unless the face *is* the silhouette.** A Trial sprite is
-   ~300px tall, so its face is 50–80px and a raised eyebrow is invisible. That holds for the
-   quadrupeds. It does **not** hold for the owl, whose eyes are ~40% of its body area in
-   high-contrast yellow: there a body-posture "angry" read as a surprised owl talking, while a
-   "sneaky" asking for narrowed eyes produced the best clip generated for any animal. Judge per
-   animal — if the face carries a large, high-contrast share of the silhouette, lead with eyes,
-   brow and mouth.
+1. **Lead with whatever carries the most silhouette signal for *that* animal.** A Trial sprite
+   is ~300px tall, so anything that does not change the outline or a large high-contrast area
+   is invisible. Which feature that is differs per animal, and picking wrong is the single
+   biggest cause of a clip that technically loops but reads as nothing:
+
+   | Animal | Carrier | Evidence |
+   |---|---|---|
+   | donkey | whole-body posture | no strong facial or ear features; body lean is all there is |
+   | owl | **eyes** (~40% of body area, high-contrast yellow) | body-posture `angry` read as a surprised owl talking; narrowed-eye `sneaky` was the best clip of the project until the fox |
+   | fox | **ears + bushy tail + snarl** | ears pinned flat back plus an open snarl produced the strongest `angry` generated so far, first try |
+
+   Before writing prompts for a new animal, look at its reference frame and ask what changes
+   the outline. Ears and tails are the quadruped equivalent of the owl's eyes: real visual
+   weight, and they move without disturbing the body.
 2. **Never name a posture the animal must change state to reach.** "Crouched low and drawn in"
    made the generator lie the donkey down over the clip and never stand it back up — a
    transition, not a held attitude, and one that cannot loop. Say what the body does while it
@@ -110,9 +117,11 @@ here because ignoring them costs credits.
    stay exactly as in the reference image and do not move at all — ONLY THE FACE MOVES". Name
    what holds, not what must not happen.
 
-**`angry` is the hardest emotion.** It came out weak on the first pass for both animals
-generated so far, and three attempts on the owl did not fix it. Budget for iteration there, or
-accept a neutral clip — the fallback to `playAlert()` is not a disaster.
+**`angry` is the hardest emotion — but only when the animal has no carrier for it.** It came out
+weak first-try on the donkey and took five attempts on the owl. The fox nailed it first try,
+because ears-pinned-back plus a snarl is an unambiguous canid anger signal that survives the
+downscale. If `angry` is not landing, the fix is usually a better carrier, not a stronger
+adjective.
 
 ## Things about the Ludo API that will bite you
 
@@ -134,7 +143,10 @@ Full contract in [references/ludo-api.md](references/ludo-api.md). The four that
 ## `scripts/ludo/promoted-clips.json` is the source of truth
 
 Committed record of every clip ever promoted. `--promote` **merges** into it and generates the
-TS module from the merged whole.
+TS module from the merged whole. Each entry also stores the exact `prompt` the clip was
+generated from, its `quality` numbers and `generatedAt` — provenance the runtime has no use
+for, but which the manifest stops carrying the moment someone edits a generic prompt or adds
+an override.
 
 This exists because promote used to rebuild the module from whatever was in the review
 directory, which made it silently destructive: promoting the owl after clearing the review dir
