@@ -15,7 +15,12 @@
  */
 import { EMOTION_SHEETS } from './emotionSheets.generated';
 import { animalAnimKey } from './animalAnimations';
-import { EMOTION_FRAME_RATE, type AnimalEmotion, type EmotionSheet } from './animalEmotions';
+import {
+  ANIMAL_EMOTIONS,
+  EMOTION_FRAME_RATE,
+  type AnimalEmotion,
+  type EmotionSheet,
+} from './animalEmotions';
 import type { AnimalSpriteId } from '../../data/characters';
 
 export const EMOTION_ASSET_PATH = 'assets/characters/emotions';
@@ -120,4 +125,55 @@ export function emotionSheet(
   emotion: AnimalEmotion,
 ): EmotionSheet | null {
   return EMOTION_SHEETS[animalId]?.[emotion] ?? null;
+}
+
+/** Every emotion this animal has generated art for, in `ANIMAL_EMOTIONS` order. */
+export function generatedEmotions(animalId: AnimalSpriteId): AnimalEmotion[] {
+  const byEmotion = EMOTION_SHEETS[animalId];
+  if (!byEmotion) return [];
+  return ANIMAL_EMOTIONS.filter((emotion) => byEmotion[emotion]);
+}
+
+/**
+ * The scale and origin a sprite was staged with, so an emotion clip's override can be undone.
+ *
+ * Capture it once, before anything plays: the two scenes stage sprites differently (`Trial`
+ * scales by cast size, `AnimalGallery` fits the preview box) and neither wants the other's
+ * numbers baked in.
+ */
+export interface SpriteStaging {
+  scaleX: number;
+  scaleY: number;
+  originX: number;
+  originY: number;
+}
+
+export function captureStaging(sprite: Phaser.GameObjects.Sprite): SpriteStaging {
+  return {
+    scaleX: sprite.scaleX,
+    scaleY: sprite.scaleY,
+    originX: sprite.originX,
+    originY: sprite.originY,
+  };
+}
+
+/**
+ * Applies a generated clip's normalization — see `EmotionSheet.scale` for why it exists at
+ * all. Shared by `AnimalAnimator` and the gallery scene so the two cannot disagree about how
+ * a clip is placed; a gallery that staged clips differently from the game would be worse than
+ * useless, since its whole job is to show you what the game will do.
+ */
+export function applyEmotionStaging(
+  sprite: Phaser.GameObjects.Sprite,
+  sheet: EmotionSheet,
+  base: SpriteStaging,
+): void {
+  sprite.setScale(base.scaleX * sheet.scale, base.scaleY * sheet.scale);
+  sprite.setOrigin(sheet.originX, sheet.originY);
+}
+
+/** Undoes `applyEmotionStaging`. A no-op when no override is in effect. */
+export function restoreStaging(sprite: Phaser.GameObjects.Sprite, base: SpriteStaging): void {
+  sprite.setScale(base.scaleX, base.scaleY);
+  sprite.setOrigin(base.originX, base.originY);
 }

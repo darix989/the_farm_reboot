@@ -1,3 +1,4 @@
+import { AnimalGallery } from './scenes/AnimalGallery';
 import { Boot } from './scenes/Boot';
 import { Farm } from './scenes/Farm';
 import { GameOver } from './scenes/GameOver';
@@ -35,7 +36,7 @@ const config: Phaser.Types.Core.GameConfig = {
   // The Farm camera follows the player, so snap draws to whole pixels to stop
   // sub-pixel shimmer on the generated textures.
   render: { roundPixels: true },
-  scene: [Boot, Preloader, MainMenu, Farm, MainGame, Trial, GameOver],
+  scene: [Boot, Preloader, MainMenu, Farm, MainGame, Trial, AnimalGallery, GameOver],
 };
 
 const StartGame = (parent: string) => {

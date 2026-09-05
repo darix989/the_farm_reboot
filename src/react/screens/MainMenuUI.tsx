@@ -20,6 +20,8 @@ const MainMenuUI: React.FC = () => {
 
   const enterFarm = () => GameManager.switchScene('Farm');
 
+  const openAnimationGallery = () => GameManager.switchScene('AnimalGallery');
+
   const renderGroup = (headingLabel: Labels, entries: readonly ScenarioEntry[]) => (
     <>
       <h2 className={styles.menuGroupHeading}>{getLabel(headingLabel)}</h2>
@@ -45,6 +47,9 @@ const MainMenuUI: React.FC = () => {
         <div className={styles.buttonContainer}>
           <button className={styles.menuButton} type="button" onClick={enterFarm}>
             {getLabel('enterTheFarm')}
+          </button>
+          <button className={styles.menuButton} type="button" onClick={openAnimationGallery}>
+            {getLabel('animationGallery')}
           </button>
         </div>
         {renderGroup('level1Heading', LEVEL_1_SCENARIOS)}

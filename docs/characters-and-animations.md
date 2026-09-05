@@ -276,6 +276,9 @@ default:
   while typing; flip it on locally when tuning a descriptor's sequences, or to check a
   freshly promoted emotion clip without playing a debate to the beat that triggers it.
 
+For looking at the animals themselves rather than at a scene, the **Animation Gallery**
+(main menu) is a better tool than either flag — see §9.6.
+
 `arcade: { debug: true }` in [`main.ts`](../src/phaser/main.ts) still draws physics
 body outlines, which is how you confirm Rue's invisible collider is tracking correctly
 underneath the animated follower sprite (see §3.3).
@@ -419,7 +422,38 @@ character filled the frame and clips its legs and ears.
 Asset URLs from the API **expire after 7 days**, so the pipeline downloads inside the run
 that generated them and the review directory holds bytes, never URLs.
 
-### 9.6 Adding an emotion
+### 9.6 The gallery scene
+
+`AnimalGallery` (main menu → **Animation Gallery**) is where you actually look at any of
+this. Pick an animal, hold any one of its clips on a loop, switch between them faster than a
+debate ever would.
+
+It deliberately does **not** use `AnimalAnimator`. That class plays animations the way the
+*game* wants them — weighted, random, interrupted by whatever the debate is doing — which
+makes it a poor instrument for judging a single clip. The gallery plays one key and holds it.
+
+What it does share is staging: it calls the same `applyEmotionStaging` / `restoreStaging`
+(§9.4) that `AnimalAnimator` calls, so a clip previewed here is placed exactly as the Trial
+will place it. A gallery that staged clips its own way would be worse than no gallery.
+
+Three things worth knowing:
+
+- **Clips with no art are listed, not hidden.** `animalClipCatalogue.ts` returns every
+  `ANIMAL_EMOTIONS` entry with an `available` flag, and the UI shows the missing ones dashed
+  and labelled "no art yet". With the cast generated one animal at a time, the gap between the
+  vocabulary and the art is the thing you most need to see.
+- **The smooth-transition toggle is a diagnostic, not decoration.** Switching from an atlas
+  clip to a generated one changes the sprite's texture, scale and origin on a single frame.
+  The crossfade hides that; turning it off is how you check whether a switch that looks fine
+  actually is fine.
+- **React never touches Phaser.** Every control is a write to `animalGalleryStore`, which the
+  scene subscribes to — the same split, for the same reason, as `trialStageStore`.
+
+The panel width is a two-place contract: `ANIMAL_GALLERY_PANEL_WIDTH` in `constants.ts` and
+`.panel`'s width in `AnimalGalleryUI.module.scss`. Nothing enforces that they agree, exactly
+like `TRIAL_STAGE_HOLE` vs `.trialGameHole`.
+
+### 9.7 Adding an emotion
 
 1. Add the name to `ANIMAL_EMOTIONS` in `animalEmotions.ts`.
 2. Add a prompt for it under `emotions` in `emotion-manifest.json`, plus any per-animal

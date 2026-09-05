@@ -1,0 +1,198 @@
+/* =========================================================================
+   Animation Gallery UI
+
+   The panel width here MUST match `ANIMAL_GALLERY_PANEL_WIDTH` in
+   `src/utils/constants.ts` — the Phaser scene sizes its stage rect as
+   "everything to the left of this", and nothing enforces that the two agree.
+   Same contract as `.trialGameHole` vs `TRIAL_STAGE_HOLE`.
+   ========================================================================= */
+
+.galleryUi {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+
+  /* `.react-ui-overlay` is pointer-events: none and it inherits. Anything interactive
+     must switch it back on, or clicks fall through to the Phaser canvas. */
+  pointer-events: none;
+}
+
+.panel {
+  /* 620/1920 of the design stage — see the header note. */
+  width: 32.29%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  overflow-y: auto;
+  background: var(--ui-color-overlay-backdrop);
+  border-left: 2px solid var(--ui-color-border-emphasis);
+  backdrop-filter: blur(5px);
+  pointer-events: all;
+}
+
+.title {
+  font-size: var(--ui-font-display);
+  color: var(--ui-color-accent);
+  margin: 0 0 1rem;
+}
+
+.heading {
+  font-size: var(--ui-font-caption);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ui-color-text-muted-2);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.animalGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.animalButton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  background: var(--ui-color-bg-soft);
+  color: var(--ui-color-text-emphasis);
+  border: 2px solid var(--ui-color-border-default);
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    border-color: var(--ui-color-accent);
+  }
+}
+
+.animalButtonActive {
+  border-color: var(--ui-color-accent);
+  color: var(--ui-color-accent);
+}
+
+.animalId {
+  font-size: var(--ui-font-body);
+  font-weight: bold;
+}
+
+.animalWornBy {
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-text-muted-2);
+}
+
+.clipGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+}
+
+.clipButton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+  background: var(--ui-color-bg-soft);
+  color: var(--ui-color-text-emphasis);
+  border: 2px solid var(--ui-color-border-default);
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    border-color: var(--ui-color-accent);
+  }
+}
+
+.clipButtonActive {
+  border-color: var(--ui-color-accent);
+  color: var(--ui-color-accent);
+}
+
+/* Dimmed, not disabled: the button still selects, it just has nothing generated to play. */
+.clipButtonMissing {
+  border-style: dashed;
+  border-color: var(--ui-color-border-muted);
+  color: var(--ui-color-text-muted-2);
+}
+
+.clipName {
+  font-size: var(--ui-font-body);
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.clipMeta {
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-text-muted-2);
+}
+
+.note {
+  margin: 0.5rem 0 0;
+  font-size: var(--ui-font-caption);
+  line-height: 1.45;
+  color: var(--ui-color-text-muted-2);
+}
+
+.toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  background: var(--ui-color-bg-soft);
+  border: 2px solid var(--ui-color-border-default);
+  border-radius: 6px;
+  cursor: pointer;
+
+  input {
+    margin-top: 0.15rem;
+    cursor: pointer;
+  }
+}
+
+.toggleLabel {
+  display: block;
+  font-size: var(--ui-font-body);
+  color: var(--ui-color-text-emphasis);
+}
+
+.toggleHint {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-text-muted-2);
+}
+
+.statusBar {
+  margin-top: 1rem;
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-text-muted-2);
+}
+
+.backButton {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.7rem;
+  font-size: var(--ui-font-body);
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--ui-color-bg), var(--ui-color-bg-soft));
+  color: var(--ui-color-text-emphasis);
+  border: 2px solid var(--ui-color-border-emphasis);
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--ui-color-accent);
+    color: var(--ui-color-accent);
+  }
+}

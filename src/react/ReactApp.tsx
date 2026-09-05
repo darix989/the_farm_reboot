@@ -4,6 +4,7 @@ import BoilerPlateUI from './screens/BoilerPlateUI';
 import MainMenuUI from './screens/MainMenuUI';
 import TrialUI from './screens/TrialUI';
 import FarmUI from './screens/FarmUI';
+import AnimalGalleryUI from './screens/AnimalGalleryUI';
 import ReactRoot from './ReactRoot';
 import TutorialOverlay from './tutorial/TutorialOverlay';
 import { useGameStore } from '../store/gameStore';
@@ -32,6 +33,8 @@ const ReactApp: React.FC = () => {
         return <TrialUI debate={DEBATES[activeDebateId]} />;
       case 'Farm':
         return <FarmUI />;
+      case 'AnimalGallery':
+        return <AnimalGalleryUI />;
       case 'Game':
       case 'GameOver':
       case 'Boot':

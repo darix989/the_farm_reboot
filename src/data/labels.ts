@@ -20,6 +20,22 @@ const LABELS = {
   level1LabCass: '1.4 · The Cranky Rooster Lab: Dirty Feathers',
   level1SkirmishBram: '1.5 · Fence-line Skirmish: The Bent Grate',
   level1BossDuchess: '1.6 · The Public Farm: The Pond Motion',
+  animationGallery: 'Animation Gallery',
+
+  // --- Animation gallery ---
+  galleryTitle: 'Animation Gallery',
+  galleryAnimalHeading: 'Animal',
+  galleryEmotionsHeading: 'Emotions (generated)',
+  galleryBaseHeading: 'Base animations',
+  gallerySmoothTransitions: 'Smooth transition when switching',
+  gallerySmoothHint: 'Crossfades between clips. Turn off to see the raw cut.',
+  galleryBackToMenu: 'Back to Main Menu',
+  galleryNoArt: 'no art yet',
+  galleryRestPose: 'rest pose',
+  galleryClipMeta: '{frames} frames · {fps} fps',
+  galleryNothingSelected: 'Nothing selected',
+  galleryMissingArtNote:
+    '{count} of {total} emotions have no generated art for this animal yet — they fall back to the alert animation in game.',
   currentScene: 'Current Scene:',
   gameStatus: 'Game Status:',
   loadingEllipsis: 'Loading...',

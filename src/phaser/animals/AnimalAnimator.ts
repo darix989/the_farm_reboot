@@ -18,7 +18,14 @@
  *   3. `prefers-reduced-motion` freezes the sprite on its rest frame instead of animating.
  */
 import { animalAnimKey, type AnimalSetup } from './animalAnimations';
-import { emotionSequenceKey, emotionSheet } from './animalEmotionAnimations';
+import {
+  applyEmotionStaging,
+  captureStaging,
+  emotionSequenceKey,
+  emotionSheet,
+  restoreStaging,
+  type SpriteStaging,
+} from './animalEmotionAnimations';
 import type { AnimalEmotion } from './animalEmotions';
 import type { AnimalBehaviour } from './animalDescriptors';
 import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reducedMotion';
@@ -52,10 +59,7 @@ export class AnimalAnimator {
    * animator's job is to leave the sprite exactly as it found it either way. This does assume
    * the scene sets scale and origin before attaching the animator, which both do.
    */
-  private readonly baseScaleX: number;
-  private readonly baseScaleY: number;
-  private readonly baseOriginX: number;
-  private readonly baseOriginY: number;
+  private readonly baseStaging: SpriteStaging;
   private reducedMotionUnsubscribe: (() => void) | null = null;
   private destroyed = false;
 
@@ -64,10 +68,7 @@ export class AnimalAnimator {
     private readonly setup: AnimalSetup,
     private readonly options: AnimalAnimatorOptions = {},
   ) {
-    this.baseScaleX = sprite.scaleX;
-    this.baseScaleY = sprite.scaleY;
-    this.baseOriginX = sprite.originX;
-    this.baseOriginY = sprite.originY;
+    this.baseStaging = captureStaging(sprite);
 
     this.sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onSequenceEnd, this);
     this.reducedMotionUnsubscribe = onReducedMotionChange(() => this.onReducedMotionChange());
@@ -112,8 +113,7 @@ export class AnimalAnimator {
     }
     this.status = 'emotion';
     this.emotion = emotion;
-    this.sprite.setScale(this.baseScaleX * sheet.scale, this.baseScaleY * sheet.scale);
-    this.sprite.setOrigin(sheet.originX, sheet.originY);
+    applyEmotionStaging(this.sprite, sheet, this.baseStaging);
     this.playSequence(
       [{ key: emotionSequenceKey(emotion), repeat: -1 }],
       /* playImmediately */ true,
@@ -122,8 +122,7 @@ export class AnimalAnimator {
 
   /** Undoes `playEmotion`'s scale/origin override. A no-op when none is in effect. */
   private restoreBaseStaging(): void {
-    this.sprite.setScale(this.baseScaleX, this.baseScaleY);
-    this.sprite.setOrigin(this.baseOriginX, this.baseOriginY);
+    restoreStaging(this.sprite, this.baseStaging);
   }
 
   destroy(): void {

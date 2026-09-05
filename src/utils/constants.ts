@@ -25,3 +25,19 @@ export const STAGE_REM_MAX_PX = 28;
  * `DEBUG_TRIAL_STAGE` in `Trial.ts` to check they still agree.
  */
 export const TRIAL_STAGE_HOLE = { x: 0, y: 0, width: 1152, height: 540 } as const;
+
+/**
+ * Where the `AnimalGallery` scene draws its animal, in 1920x1080 stage coords.
+ *
+ * The gallery's React controls occupy a fixed column down the right-hand side; this is
+ * everything to the left of it. Kept here next to `TRIAL_STAGE_HOLE` because it is the same
+ * kind of contract — a Phaser rect that has to agree with a CSS width, with nothing enforcing
+ * it but the two numbers matching (`ANIMAL_GALLERY_PANEL_WIDTH` below is that width).
+ */
+export const ANIMAL_GALLERY_PANEL_WIDTH = 620;
+export const ANIMAL_GALLERY_STAGE = {
+  x: 0,
+  y: 0,
+  width: STAGE_DESIGN_WIDTH - ANIMAL_GALLERY_PANEL_WIDTH,
+  height: STAGE_DESIGN_HEIGHT,
+} as const;
