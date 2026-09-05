@@ -394,6 +394,11 @@ the character twitch as its box changed shape between frames.
 > The full operating manual is the **`animal-emotion-sprites` skill**
 > (`.claude/skills/animal-emotion-sprites/`) — prompt rules, quality thresholds, API
 > gotchas, troubleshooting. What follows is the shape of it.
+>
+> For the measurement side specifically — what a loop *seam* is, how each quality number is
+> computed and what it cannot catch — the skill's
+> [`references/measuring-animations.md`](../.claude/skills/animal-emotion-sprites/references/measuring-animations.md)
+> explains it from first principles, assuming no sprite-animation background.
 
 ```
 export LUDO_API_KEY=...                                   # never a flag; argv leaks

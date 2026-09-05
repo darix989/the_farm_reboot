@@ -78,6 +78,11 @@ If you inherit clips at the wrong rate, fix `frameRate` in `promoted-clips.json`
 
 ## Reading the quality numbers
 
+> **New to this?** [references/measuring-animations.md](references/measuring-animations.md)
+> explains all of it from scratch — what a frame, a spritesheet, a loop *seam*, an alpha channel
+> and a bounding box are, exactly how each number is computed, what it can and cannot catch, and
+> where to find the numbers. Start there; this section is the short form.
+
 Generation prints three metrics per clip, and they are also stored in each clip's `meta.json`
 and shown on the contact sheet. They exist because each caught a real failure that is hard to
 see in a single loop and obvious once the clip is in the game.
