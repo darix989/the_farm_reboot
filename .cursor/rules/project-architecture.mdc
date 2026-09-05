@@ -13,10 +13,36 @@ All source code lives in `src/`:
 - **`src/types/`** — shared TypeScript types, chiefly the content schema.
 - **`src/utils/`** — framework-agnostic helpers and imperative Phaser access.
 
+Outside `src/`: **`scripts/`** holds build-time and asset-pipeline Node scripts that are never
+shipped — including `scripts/ludo/`, the paid sprite pipeline described below.
+
 ## Before changing anything structural
 
 Read `docs/architecture.md` — it explains the Phaser/React split, scene-key routing,
 the four stores and two event buses. `AGENTS.md` at the repo root is the file map.
+
+## Generated art costs real money
+
+`npm run sprites:emotions` generates the cast's emotion animations through the Ludo.ai API and
+spends **~4 credits per clip** from the user's Ludo.ai balance. Non-refundable.
+
+- **Never run a generating invocation unless the user asked for that specific generation.** An
+  open-ended "finish the animals" is not authorisation. State the projected cost
+  (`clips × 4 credits`) and wait for a yes.
+- **Flags must come after `--`.** `npm run sprites:emotions --dry-run` is *not* a dry run: npm
+  swallows the flag, the script receives **no arguments at all**, and its default scope is the
+  entire manifest — 30 clips, ~120 credits. Always `npm run sprites:emotions -- --dry-run`.
+  (Verified: with the flag before `--` the script's `process.argv.slice(2)` is `[]`.)
+- Free and safe: `-- --dry-run` (no API key needed), `-- --promote`, `-- --reindex`. Costly:
+  anything else, and `--force` deliberately bypasses the result cache so it charges again.
+- `LUDO_API_KEY` lives only in the gitignored `.env.local`. Never commit it, never pass it as a
+  CLI flag, never print the file's contents, and never rename it to `VITE_LUDO_API_KEY` — Vite
+  inlines every `VITE_`-prefixed variable into the client bundle, publishing it to every player.
+
+Everything else about that pipeline is in `.claude/skills/animal-emotion-sprites/SKILL.md` — an
+ordinary markdown file in this repo, readable by any tool. Read it before doing anything with
+the pipeline beyond a dry run. (Do not add `.claude/` to a `.cursorignore`; it would silently
+cut every pointer in this repo.)
 
 ## Two rules that are easy to get wrong
 

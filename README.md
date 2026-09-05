@@ -31,6 +31,7 @@ npm run dev-nolog      # http://localhost:8080
 | `npm run lint` / `lint:fix` | ESLint over `src` |
 | `npm run lint:styles` | Stylelint over SCSS |
 | `npm run format` / `format:check` | Prettier |
+| `npm run sprites:emotions` | Generate/promote the cast's emotion animation art. **Spends Ludo.ai credits** — `-- --dry-run` is free. Note the `--` |
 
 There is **no test runner.** Changes are verified by running the app and driving it — see
 [docs/architecture.md](docs/architecture.md#build-and-verification).
@@ -83,6 +84,7 @@ Start at **[docs/README.md](docs/README.md)**.
 | Work on the overworld | [docs/farm_overworld.md](docs/farm_overworld.md) |
 | Know what the game teaches | [docs/logical_fallacies_intro.md](docs/logical_fallacies_intro.md) |
 | See a level built end to end | [docs/level_01_the_pond_motion.md](docs/level_01_the_pond_motion.md) |
+| Generate or fix a character's animation art | [.claude/skills/animal-emotion-sprites/SKILL.md](.claude/skills/animal-emotion-sprites/SKILL.md) — a plain markdown manual any tool can read |
 | Find your way around the code | [AGENTS.md](AGENTS.md), and [src/react/AGENTS.md](src/react/AGENTS.md) for the debate UI |
 
 ---
