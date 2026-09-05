@@ -520,12 +520,44 @@ async function promote() {
   console.log(`Run \`npx tsc --noEmit\` and reload the game.`);
 }
 
-/** Emits Prettier-shaped source, so a promote never leaves the tree needing a format pass. */
+/**
+ * Runs the emitted module through the repo's own Prettier before it is written.
+ *
+ * This used to be attempted by hand — emit source that is already "Prettier-shaped" — and it
+ * silently stopped being true. A quality warning like `height swing 28% (over 20%) — check it
+ * is motion, not the character changing pose` pushes its `warnings: [...]` line past the
+ * 100-column budget, so Prettier wraps it and the serializer did not.
+ *
+ * The result had no stable state: `--reindex` wrote the unwrapped form, the pre-commit hook
+ * rewrapped it, and the next `--reindex` dirtied it again. So every `--promote` showed a diff
+ * in the generated module that the person running it had not caused — precisely the confusion
+ * `promoted-clips.json` exists to prevent.
+ *
+ * Formatting with Prettier itself, resolving this repo's `.prettierrc`, makes the two agree by
+ * construction rather than through a rule duplicated in two places and kept in sync by hope.
+ *
+ * Prettier is a devDependency and this is a dev-only script, but a missing install degrades to
+ * a warning rather than losing a promote that has already spent credits.
+ */
+async function formatGenerated(source, filepath) {
+  try {
+    const prettier = await import('prettier');
+    const options = (await prettier.resolveConfig(filepath)) ?? {};
+    return await prettier.format(source, { ...options, filepath });
+  } catch (error) {
+    console.warn(
+      `Could not format ${filepath} with Prettier (${error.message}) — writing unformatted. ` +
+        `Run \`npm run format\` before committing.`,
+    );
+    return source;
+  }
+}
+
 /**
  * Quote an object key only when it is not a bare identifier — `'donkey-grey'` needs quotes,
- * `owl` does not. Matching Prettier here means a promote never leaves the tree needing a
- * format pass, which matters because the pre-commit hook would otherwise rewrite a generated
- * file straight after the script wrote it.
+ * `owl` does not. Redundant now that `formatGenerated` runs, since Prettier's `quoteProps`
+ * default would do the same; kept so the pre-format source is readable when a Prettier failure
+ * makes it the thing that actually lands.
  */
 function quoteKey(key) {
   return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key) ? key : `'${key}'`;
@@ -610,7 +642,7 @@ export const EMOTION_SHEETS: Partial<
 ${entries}
 };
 `;
-  await writeFile(GENERATED_TS, source);
+  await writeFile(GENERATED_TS, await formatGenerated(source, GENERATED_TS));
 }
 
 // ---------------------------------------------------------------------------
