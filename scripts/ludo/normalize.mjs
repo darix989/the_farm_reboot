@@ -85,7 +85,7 @@ export async function frameAt(sheetBuffer, index, { cols, frameWidth, frameHeigh
 }
 
 /** Union of the character's box across every cell of the grid that holds a frame. */
-async function sheetBounds(sheetBuffer, grid) {
+export async function sheetBounds(sheetBuffer, grid) {
   let union = null;
 
   for (let i = 0; i < grid.frameCount; i++) {
@@ -140,4 +140,72 @@ export async function measureNormalization(sheetBuffer, referenceBuffer, grid) {
     originY: Number((anchorY / grid.frameHeight).toFixed(4)),
     measured: { reference, sheet, referenceCanvas: { width: referenceMeta.width, height: referenceMeta.height } },
   };
+}
+
+// ---------------------------------------------------------------------------
+// faces
+// ---------------------------------------------------------------------------
+
+/**
+ * How much of the portrait box the head fills. A runtime/review constant, not a shipped
+ * measurement, so re-framing the whole cast 8% tighter is a one-line edit with no credits
+ * spent and no re-promote. Mirrored in `src/phaser/animals/animalFaces.ts`.
+ */
+export const FACE_BOX_FILL = 0.92;
+
+/**
+ * Measures how a generated *face* clip has to be placed inside a square portrait box.
+ *
+ * The body measurement above answers "how big is this character and where are its feet",
+ * because a body clip is staged on a floor line at atlas scale next to other animals. None of
+ * that means anything for a portrait: there is no floor, no neighbour to be sized against,
+ * and no atlas frame to match — a dialogue portrait just has to sit centred in its box at a
+ * consistent size, whatever the generator chose to do with the cell.
+ *
+ * So this ships the union head box as fractions of one cell and nothing else. Note what it
+ * does *not* need: the reference frame. `measureNormalization` has to re-extract the atlas
+ * frame to know what height to match, which is why `--remeasure` reaches back into the
+ * atlases; a face clip is self-describing, so `--faces --remeasure` needs only the shipped
+ * PNG and can never drift because an atlas was repacked.
+ *
+ * Union across every frame, not per-frame, for the same reason the body pipeline uses it: a
+ * per-frame centre would make the head twitch inside its own box, which is precisely the
+ * defect a stable anchor exists to prevent.
+ */
+export async function measureFaceNormalization(sheetBuffer, grid) {
+  const union = await sheetBounds(sheetBuffer, grid);
+  if (!union) throw new Error('Generated face spritesheet is fully transparent');
+
+  const round = (value) => Number(value.toFixed(4));
+  return {
+    fit: {
+      x: round(union.x / grid.frameWidth),
+      y: round(union.y / grid.frameHeight),
+      width: round(union.width / grid.frameWidth),
+      height: round(union.height / grid.frameHeight),
+    },
+    measured: { union, cell: { width: grid.frameWidth, height: grid.frameHeight } },
+  };
+}
+
+/**
+ * Turns a face clip's `fit` box into the transform that centres the head in a `size`-px box.
+ *
+ * Exported from the pipeline and mirrored in `animalFaces.ts` so the review page and the game
+ * frame a portrait *identically*. A contact sheet that stages clips its own way is worse than
+ * no contact sheet — it is the reason `applyEmotionStaging` is shared between the Trial and
+ * the gallery rather than reimplemented in each.
+ *
+ * Uses `max(headW, headH)` so a non-square head box (every one of them: the crops are not
+ * square and the generator pads them to a square cell) is fitted without distortion.
+ * Apply as `transform: translate(x, y) scale(z)` with `transform-origin: 0 0` on a
+ * `frameWidth x frameHeight` element.
+ */
+export function faceBoxTransform(fit, frameWidth, frameHeight, size, fill = FACE_BOX_FILL) {
+  const headWidth = fit.width * frameWidth;
+  const headHeight = fit.height * frameHeight;
+  const z = (size * fill) / Math.max(headWidth, headHeight);
+  const centreX = (fit.x + fit.width / 2) * frameWidth;
+  const centreY = (fit.y + fit.height / 2) * frameHeight;
+  return { z, x: size / 2 - centreX * z, y: size / 2 - centreY * z };
 }

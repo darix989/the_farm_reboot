@@ -35,6 +35,17 @@
         "marginRatioMode": "auto"
   },
 
+  "faceDefaults": {
+    "model": "blitz",
+    "frames": 25,
+    "frameSize": 256,
+    "duration": 2,
+    "loop": true,
+    "closeLoop": true,
+    "imageType": "sprite",
+    "marginRatioMode": "auto"
+  },
+
   "emotions": {
     "talking": {
       "prompt": "{view}. The {species} stays in place and talks: head bobbing gently in time with speech, mouth opening and closing, body relaxed and weight even. Small, steady, conversational. Seamless loop, no travel, same silhouette throughout."
@@ -53,17 +64,76 @@
     }
   },
 
+  "$faceComment": [
+    "Authoring input for `npm run sprites:emotions -- --faces`. These are the HEADSHOT clips",
+    "that play in dialogue boxes, and their rules are NOT the rules above \u2014 they invert them.",
+    "",
+    "The body doctrine opens with 'describe POSTURE, not expression, because a Trial sprite's",
+    "face is 50-80px'. A portrait has no posture left in the frame and the face fills it, so",
+    "expression is the entire signal. Read these before editing a face prompt:",
+    "",
+    "  F1. LEAD WITH THE EXPRESSION: brow, eyelid aperture, pupil direction, mouth shape, ear",
+    "      angle, in that order. The carrier table in SKILL.md still says which of those an",
+    "      animal actually owns \u2014 but the answer is now always somewhere on the head.",
+    "  F2. ASSERT THE FRAMING HOLDS. There is no `view` sentence to lean on here: the crop IS",
+    "      the framing. Every prompt says the head stays the same size in the same place and",
+    "      the camera never zooms, pans or pulls back. Left unsaid, the model pulls back to",
+    "      reveal the body \u2014 which is the one thing a face clip must never do.",
+    "  F3. Body rule 3 does NOT apply. A face clip never has to cut against an atlas idle loop,",
+    "      because it plays in a React dialogue box and never sits beside a Phaser sprite. That",
+    "      is why there is no `view` token in these prompts at all.",
+    "  F4. PIN THE MOUTH INTERIOR, EVERY TIME. The body doctrine's rule 7 flicker was a minor",
+    "      artifact at 300px. At portrait scale the mouth fills a fifth of the frame and a",
+    "      shape that changes every frame is the loudest defect in the clip.",
+    "  F5. PIN THE PUPILS. A hazard the body clips never had: at this size pupils drift, wander",
+    "      and roll to whites frame to frame. Say the pupil is one solid shape of a fixed size",
+    "      and where it points. A blink happens only if you asked for one, and only once.",
+    "  F6. NO NEW DETAIL. Whiskers, eyelashes, nostril highlights and fur strands get invented",
+    "      at portrait scale because there is finally room for them, and they flicker.",
+    "",
+    "`face` on each animal is the crop rect, in fractions of that animal's alpha bounding box",
+    "in its un-trimmed reference frame \u2014 see `extractFaceCrop` in scripts/ludo/referenceFrame.mjs.",
+    "Negative x/y are normal and deliberate: they reach into the transparent margin so ears and",
+    "muzzle are not cropped hard against the outline. Tune them for free with",
+    "`--faces --dry-run`, which writes every crop and a review page and spends no credits.",
+    "One rect per animal, never one per emotion: the five portraits of an animal play in the",
+    "same box in the same dialogue, so a tighter `angry` rect would make the head jump size",
+    "when the beat changes.",
+    "An animal with no `face` rect is skipped by face runs \u2014 that is how the five gallery-only",
+    "animals (cow, cow-female-001, dog, mouse, pig) stay out of a full-cast face generation."
+  ],
+
+  "faceEmotions": {
+    "talking": {
+      "prompt": "Extreme close-up of the {species}'s head, exactly as framed in the reference image. Its head stays the same size and in the same position in the frame for the whole clip; the framing never changes, the camera never zooms, pans or pulls back, and no part of its body is revealed. The outline of its skull, the base of its ears and its neck stay exactly as they are in the reference and do not move. ONLY THE FACE MOVES: its mouth opens and closes with each phrase, its brow stays eased and smooth, and its eyes stay open and look forward. Each pupil is one solid shape of the same size in every frame. Each time the mouth opens it shows the same shape every frame \u2014 one clean smooth patch of flat pink inside a plain dark muzzle, drawn identically in every frame it appears, never changing shape, size or colour between frames. No detail appears that is not in the reference image; the fur and markings keep exactly the reference's flat shapes. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+    },
+    "doubtful": {
+      "prompt": "Extreme close-up of the {species}'s head, exactly as framed in the reference image. Its head stays the same size and in the same position in the frame for the whole clip; the framing never changes, the camera never zooms, pans or pulls back, and no part of its body is revealed. ONLY THE FACE MOVES: one brow lifts high while the other stays low and holds there, its eyelids lower slightly into a flat unimpressed look, its pupils slide once to the side and back, its mouth stays shut in a straight line, and its head tilts a few degrees to one side and back. Each pupil is one solid shape of the same size in every frame. The mouth never opens. No detail appears that is not in the reference image; the fur and markings keep exactly the reference's flat shapes. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+    },
+    "angry": {
+      "prompt": "Extreme close-up of the {species}'s head, exactly as framed in the reference image. Its head stays the same size and in the same position in the frame for the whole clip; the framing never changes, the camera never zooms, pans or pulls back, and no part of its body is revealed. The outline of its skull and the base of its ears stay exactly as they are in the reference. ONLY THE FACE MOVES: its brow drives down hard into a V and holds there for the whole clip, both eyes narrow into hard slanted slits with the pupils still clearly visible inside them, its ears pin flat back, and its mouth opens wide in one long hard shout and stays open for most of the clip. The open mouth is always the same shape: one big clean smooth rounded patch of flat pink inside a plain dark muzzle, with the same two plain white blocks of teeth in the same places, drawn identically in every frame it appears \u2014 never changing shape, size or colour between frames. Each pupil is one solid shape of the same size in every frame. No detail appears that is not in the reference image; the fur and markings keep exactly the reference's flat shapes. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+    },
+    "thinking": {
+      "prompt": "Extreme close-up of the {species}'s head, exactly as framed in the reference image. Its head stays the same size and in the same position in the frame for the whole clip; the framing never changes, the camera never zooms, pans or pulls back, and no part of its body is revealed. ONLY THE FACE MOVES, and it moves almost not at all: its brow draws gently together, its pupils roll slowly upward and to one side as if searching for a word and come back, its mouth stays shut, and there is exactly ONE slow blink in the whole clip. Each pupil is one solid shape of the same size in every frame. The mouth never opens. No detail appears that is not in the reference image; the fur and markings keep exactly the reference's flat shapes. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+    },
+    "sneaky": {
+      "prompt": "Extreme close-up of the {species}'s head, exactly as framed in the reference image. Its head stays the same size and in the same position in the frame for the whole clip; the framing never changes, the camera never zooms, pans or pulls back, and no part of its body is revealed. ONLY THE FACE MOVES: its eyelids lower to half-closed and stay there, its brow drops low, its pupils flick to one side and hold, its ears tilt back, and its mouth moves in a small low mutter with the lips barely parting. Each time the mouth parts it shows the same shape every frame \u2014 one small clean patch of flat pink inside a plain dark muzzle, drawn identically in every frame it appears. Each pupil is one solid shape of the same size in every frame. Sly and secretive. No detail appears that is not in the reference image; the fur and markings keep exactly the reference's flat shapes. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+    }
+  },
+
   "animals": {
     "donkey-grey": {
       "species": "grey donkey",
       "view": "Side view, facing left",
-      "reference": "__grey_donkey_idle-0.png"
+      "reference": "__grey_donkey_idle-0.png",
+      "face": { "x": -0.03, "y": -0.05, "w": 0.46, "h": 0.64 }
     },
     "white-sheep-1": {
       "species": "white sheep",
       "view": "Side view, facing left, its head turned slightly toward the viewer",
       "$comment": "The sheep's carrier is CONTRAST, not shape: a solid black head and black floppy ears against a pale fleece, which is the strongest value contrast in the cast \u2014 head height, head tilt and ear position read at any size, while the fleece is a fluffy oval that deforms into mush if you ask it to do anything. Its own hazard is a GRAZING prior (the atlas even ships `eating`): a sheep prompt will drop the head to the ground and stay there, which is a pose collapse that cannot loop. Suppressed the way the owl's wings finally were \u2014 by asserting positively that the head stays up at the reference height, not by forbidding grazing. Note the source canvas is only 419x363, the smallest in the cast, so generated detail is softer here than for the fox.",
       "reference": "__white_sheep_1_idle-0.png",
+      "face": { "x": -0.06, "y": -0.06, "w": 0.6, "h": 0.82 },
       "overrides": {
         "talking": {
           "prompt": "{view}. The white sheep stands in place and talks: its black muzzle opens and closes with each phrase, its dark head bobs gently in time, and its floppy black ears flick once. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip \u2014 it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
@@ -87,6 +157,7 @@
       "view": "Side view, facing left",
       "$comment": "A fox carries emotion in two places the donkey does not: pointed EARS (upright, swivelled, pinned flat back) and a big bushy TAIL. Both are silhouette elements with real visual weight, so they read at stage scale where a muzzle alone would not \u2014 this is the quadruped equivalent of leading the owl with its eyes. Every override also pins the feet positively ('stay planted exactly where they are and never move') rather than only saying 'no travel', because that is the phrasing that finally stopped the owl flaring its wings.",
       "reference": "__red_fox_idle-0.png",
+      "face": { "x": -0.03, "y": -0.1, "w": 0.57, "h": 0.72 },
       "overrides": {
         "talking": {
           "prompt": "{view}. The red fox stands in place on all fours and talks: its muzzle opens and closes with each phrase, its head bobs gently in time, its ears stay upright and flick once, and the tip of its bushy tail sways slowly. All four feet stay planted exactly where they are in the reference image and never move. Seamless loop, no travel, same silhouette throughout."
@@ -110,6 +181,7 @@
       "view": "Side view, facing left",
       "$comment": "Same carriers as the fox \u2014 pointed EARS, bushy TAIL, a long muzzle that can snarl \u2014 plus one the fox lacks: the white RUFF at its neck, high-contrast against the brown coat, which bristles for anger. Two wolf-specific notes. Its prior is HOWLING (the atlas ships `howl`), and a howl hijacks any open-mouth prompt by tipping the head up at the sky, so every prompt holds the muzzle level and forward. And its idle face is ALREADY scowling, which means the calm emotions have to say so explicitly \u2014 'brow eased and smooth rather than furrowed' \u2014 or `talking` and `thinking` read as quietly cross.",
       "reference": "__wolf_brown_idle-0.png",
+      "face": { "x": -0.03, "y": -0.06, "w": 0.57, "h": 0.7 },
       "overrides": {
         "talking": {
           "prompt": "{view}. The brown wolf stands in place on all fours and talks calmly: its long muzzle opens and closes with each phrase, its head bobs gently in time, its pointed ears stay upright and relaxed, its brow is EASED and smooth rather than furrowed, and the tip of its bushy tail sways slowly. Each time the mouth opens it shows the same shape every frame \u2014 a plain dark muzzle around one clean flat pink inner mouth that never changes shape, size or colour between frames. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never lies down, never sits, never lunges or bites. Its muzzle stays level and pointed forward, never tipped up toward the sky. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
@@ -133,6 +205,7 @@
       "view": "Three-quarter view, facing left",
       "$comment": "Staged sitting up on the trial stand (`idleTrial`), so the reference is the sitting pose, not the four-legged crouch \u2014 a clip generated from the crouch would pop the moment the debate cuts to it. Its carrier is the FACE: big white eyes inside a dark bandit mask with heavy dark brows above them, the highest-contrast face in the cast after the owl, so brows and eyes do the emotional work. It is also the only character with FREE FOREPAWS \u2014 it can gesture, point and clench, which no other animal here can. Both of its priors come from those same paws: they rest in exactly the 'holding something' pose and the atlas ships `eat_nut` and `throw_nut`, so a nut will appear unless the paws are positively described as empty; and a sitting animal is one prompt away from dropping back onto all fours. Both suppressed per rule 6 by naming what holds.",
       "reference": "__raccoon_sitting_up_idle-0.png",
+      "face": { "x": -0.02, "y": -0.06, "w": 0.57, "h": 0.64 },
       "overrides": {
         "talking": {
           "prompt": "{view}. The raccoon sits in place and talks: its small muzzle opens and closes with each phrase, its head bobs gently in time, its big white eyes stay wide with the dark brows above them level and relaxed, and one front paw makes a small easy gesture in time with the words. Each time the muzzle opens it shows the same shape every frame \u2014 a small clean flat pink inner mouth that never changes shape, size or colour between frames. It stays SITTING UPRIGHT on its haunches for the whole clip with its hindquarters planted exactly where they are in the reference image \u2014 it never drops onto all fours, never stands up, never lies down, never walks. Its front paws stay empty and open and hold nothing at any point: no nut, no food and no object of any kind ever appears in the picture. Its striped tail stays whole and fully drawn in every frame, curled behind it in the same shape as the reference. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
@@ -156,6 +229,7 @@
       "view": "Front view, facing the viewer",
       "$comment": "A standing bird has no gait and no shoulders to square, so the generic four-legged posture prompts read as nonsense here. Two hazards this body has and the quadrupeds do not — it can TAKE OFF, and the word 'perch' invites a branch the source art does not contain — so every prompt forbids both. Its angry clip took five attempts: forbidding the wing flare never worked (an 'angry bird' prior outweighs any 'never spread' instruction) and only freezing the body positively did — 'body, wings and feet stay exactly as in the reference, ONLY THE FACE MOVES'. AND THE BIG ONE: this owl breaks the global 'posture, not expression' rule. Its eyes are ~40% of its body area in high-contrast yellow, so the face IS the silhouette and reads fine at stage scale. The first pass proved it — a body-posture 'angry' read as a surprised owl talking, while 'sneaky' asking for narrowed eyes was the best clip generated for any animal. Lead the owl's emotions with eyes, brow and beak.",
       "reference": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_0.png",
+      "face": { "x": -0.04, "y": -0.06, "w": 1.08, "h": 0.63 },
       "overrides": {
         "talking": {
           "prompt": "{view}. The owl stays standing in place on its own two feet and talks: beak opening and closing, head bobbing slightly with each phrase, body still and upright. It never takes off and never leaves the ground; no perch or branch appears. Seamless loop, no travel, same silhouette throughout."
