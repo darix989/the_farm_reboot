@@ -111,6 +111,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.0584,
       originX: 0.5384,
       originY: 0.7383,
+      quality: {
+        loopPop: 0.23,
+        heightSwing: 12.9,
+        driftX: 1.5,
+        warnings: [],
+      },
     },
     doubtful: {
       file: 'donkey-grey-doubtful.png',
@@ -121,6 +127,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.0268,
       originX: 0.5332,
       originY: 0.7363,
+      quality: {
+        loopPop: 2.52,
+        heightSwing: 9.6,
+        driftX: 10.5,
+        warnings: ['loop seam 2.52% (over 2%) — it will visibly jump on every repeat'],
+      },
     },
     sneaky: {
       file: 'donkey-grey-sneaky.png',
@@ -131,6 +143,14 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.177,
       originX: 0.5266,
       originY: 0.7363,
+      quality: {
+        loopPop: 0.22,
+        heightSwing: 28,
+        driftX: 5.5,
+        warnings: [
+          'height swing 28% (over 20%) — check it is motion, not the character changing pose',
+        ],
+      },
     },
     talking: {
       file: 'donkey-grey-talking.png',
@@ -141,6 +161,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.1331,
       originX: 0.5361,
       originY: 0.7363,
+      quality: {
+        loopPop: 0.74,
+        heightSwing: 3.2,
+        driftX: 1.5,
+        warnings: [],
+      },
     },
     thinking: {
       file: 'donkey-grey-thinking.png',
@@ -151,6 +177,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.0584,
       originX: 0.5257,
       originY: 0.7383,
+      quality: {
+        loopPop: 1.54,
+        heightSwing: 10.9,
+        driftX: 6.3,
+        warnings: [],
+      },
     },
   },
   fox: {
@@ -247,6 +279,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.2129,
       originX: 0.5019,
       originY: 0.75,
+      quality: {
+        loopPop: 0.1,
+        heightSwing: 11,
+        driftX: 0.5,
+        warnings: [],
+      },
     },
     doubtful: {
       file: 'owl-doubtful.png',
@@ -257,6 +295,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.1476,
       originX: 0.4931,
       originY: 0.75,
+      quality: {
+        loopPop: 0.16,
+        heightSwing: 5.5,
+        driftX: 8.3,
+        warnings: [],
+      },
     },
     sneaky: {
       file: 'owl-sneaky.png',
@@ -267,6 +311,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.2045,
       originX: 0.4999,
       originY: 0.75,
+      quality: {
+        loopPop: 0.18,
+        heightSwing: 14.4,
+        driftX: 0.3,
+        warnings: [],
+      },
     },
     talking: {
       file: 'owl-talking.png',
@@ -277,6 +327,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.1962,
       originX: 0.5009,
       originY: 0.75,
+      quality: {
+        loopPop: 0.1,
+        heightSwing: 4.2,
+        driftX: 0.3,
+        warnings: [],
+      },
     },
     thinking: {
       file: 'owl-thinking.png',
@@ -287,6 +343,12 @@ export const EMOTION_SHEETS: Partial<
       scale: 2.2299,
       originX: 0.4901,
       originY: 0.752,
+      quality: {
+        loopPop: 0.25,
+        heightSwing: 1.5,
+        driftX: 3.8,
+        warnings: [],
+      },
     },
   },
   raccoon: {

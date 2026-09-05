@@ -18,11 +18,13 @@
  *                                alone, with no review dir and no API calls. For when the
  *                                record was edited by hand (a corrected frame rate) or the
  *                                module drifted from it.
- *   --remeasure                  Re-run `measureNormalization` against the shipped PNGs in
- *                                `public/assets/characters/emotions/` and the atlas reference
- *                                frames, then rewrite `promoted-clips.json` and the generated
- *                                module. Free: no API, no review dir. Use after changing the
- *                                origin/scale maths in `normalize.mjs`.
+ *   --remeasure                  Re-run `measureNormalization` and `measureClipQuality`
+ *                                against the shipped PNGs in `public/assets/characters/emotions/`
+ *                                (and the atlas reference frames for scale/origin), then rewrite
+ *                                `promoted-clips.json` and the generated module. Free: no API,
+ *                                no review dir. Use after changing the origin/scale maths in
+ *                                `normalize.mjs`, or to fill quality numbers that predate
+ *                                provenance. Honours `--animal` / `--emotion`.
  *
  * ## The API key
  *
@@ -625,24 +627,43 @@ async function reindex() {
 }
 
 /**
- * Re-runs `measureNormalization` on every shipped clip. Scale/origin live in
- * `promoted-clips.json` because they cannot be recovered from the PNG alone, so a change to
+ * Re-runs `measureNormalization` and `measureClipQuality` on shipped clips. Scale/origin live
+ * in `promoted-clips.json` because they cannot be recovered from the PNG alone, so a change to
  * the maths (planting originY at the feet rather than the atlas canvas bottom) has to write
- * new numbers back. Reads the promoted PNG and extracts the atlas reference frame — the same
- * inputs `--promote` used — and never touches the API.
+ * new numbers back. Quality is the same story for clips promoted before those numbers were
+ * stored — donkey and owl shipped without a `quality` block. Reads the promoted PNG (and, for
+ * scale, the atlas reference frame) — the same inputs `--promote` used — and never touches
+ * the API.
  */
-async function remeasure() {
+async function remeasure(args) {
   const record = await readPromotedRecord();
-  const total = Object.values(record).reduce((n, e) => n + Object.keys(e).length, 0);
+  const animalIds = Object.keys(record).sort();
+  const scopedAnimals = args.animals
+    ? args.animals.filter((id) => {
+        if (record[id]) return true;
+        console.warn(`No promoted clips for "${id}" — skipping.`);
+        return false;
+      })
+    : animalIds;
+  if (scopedAnimals.length === 0) {
+    console.error('Nothing to remeasure — check --animal against promoted-clips.json.');
+    process.exit(1);
+  }
+
+  const total = scopedAnimals.reduce((n, id) => {
+    const emotions = Object.keys(record[id]);
+    const scoped = args.emotions ? emotions.filter((e) => args.emotions.includes(e)) : emotions;
+    return n + scoped.length;
+  }, 0);
   if (total === 0) {
-    console.error(`${PROMOTED_RECORD} holds no clips — nothing to remeasure.`);
+    console.error('Nothing to remeasure — check --emotion against the promoted record.');
     process.exit(1);
   }
 
   const manifest = await readManifest();
   console.log(`Remeasuring ${total} clip(s) against shipped PNGs (no API calls).\n`);
 
-  for (const animalId of Object.keys(record).sort()) {
+  for (const animalId of scopedAnimals.sort()) {
     const animal = manifest.animals[animalId];
     if (!animal?.reference) {
       throw new Error(
@@ -650,8 +671,12 @@ async function remeasure() {
       );
     }
     const { buffer: referenceBuffer } = await extractReferenceFrame(animalId, animal.reference);
+    const emotions = Object.keys(record[animalId]).sort();
+    const scopedEmotions = args.emotions
+      ? emotions.filter((emotion) => args.emotions.includes(emotion))
+      : emotions;
 
-    for (const emotion of Object.keys(record[animalId]).sort()) {
+    for (const emotion of scopedEmotions) {
       const sheet = record[animalId][emotion];
       const pngPath = join(PUBLIC_DIR, sheet.file);
       if (!(await exists(pngPath))) {
@@ -670,9 +695,15 @@ async function remeasure() {
       sheet.scale = norm.scale;
       sheet.originX = norm.originX;
       sheet.originY = norm.originY;
+      const quality = await measureClipQuality(sheetBuffer, grid);
+      sheet.quality = quality;
       console.log(
         `- ${animalId}/${emotion}  (scale ×${norm.scale}, origin ${norm.originX}/${norm.originY})`,
       );
+      console.log(
+        `    loop seam ${quality.loopPop}%  height swing ${quality.heightSwing}%  drift ±${quality.driftX}px`,
+      );
+      quality.warnings.forEach((warning) => console.log(`    ⚠ ${warning}`));
     }
   }
 
@@ -684,7 +715,7 @@ async function remeasure() {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  if (args.remeasure) await remeasure();
+  if (args.remeasure) await remeasure(args);
   else if (args.reindex) await reindex();
   else if (args.promote) await promote();
   else await generate(args);
