@@ -182,39 +182,37 @@
       "file": "fox-angry.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.3155,
-      "originX": 0.5723,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.2486,
+      "originX": 0.5638,
       "originY": 0.6641,
       "prompt": "Side view, facing left. The red fox stands in place on all fours, ears flattened hard back against its skull for the whole clip, muzzle wrinkled open in a snarl showing teeth, head lowered until it is level with its shoulders and pushed toward the target, and its low bushy tail lashing from side to side. All four feet stay planted exactly where they are in the reference image and never move — it does not step, lunge, walk or pounce, and the body stays standing. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.19,
-        "heightSwing": 32.1,
-        "driftX": 10.8,
-        "warnings": [
-          "height swing 32% (over 20%) — check it is motion, not the character changing pose"
-        ]
+        "loopPop": 0.2,
+        "heightSwing": 12.9,
+        "driftX": 10.5,
+        "warnings": []
       },
-      "generatedAt": "2026-09-05T00:49:04.868Z"
+      "generatedAt": "2026-09-05T04:33:20.382Z"
     },
     "doubtful": {
       "file": "fox-doubtful.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
+      "frameCount": 25,
+      "frameRate": 13,
       "scale": 2.3018,
-      "originX": 0.5472,
+      "originX": 0.5443,
       "originY": 0.6641,
       "prompt": "Side view, facing left. The red fox stands in place on all fours and is unconvinced: its head draws back and tilts, one upright ear swivels back and returns, its muzzle stays closed, and its bushy tail hangs still. All four feet stay planted exactly where they are in the reference image and never move; the body stays standing the whole time. Guarded and skeptical. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
         "loopPop": 0.16,
-        "heightSwing": 15.4,
-        "driftX": 6,
+        "heightSwing": 10.1,
+        "driftX": 1,
         "warnings": []
       },
-      "generatedAt": "2026-09-05T00:47:56.669Z"
+      "generatedAt": "2026-09-05T04:31:53.057Z"
     },
     "sneaky": {
       "file": "fox-sneaky.png",
@@ -238,37 +236,39 @@
       "file": "fox-talking.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.2616,
-      "originX": 0.545,
-      "originY": 0.666,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.2229,
+      "originX": 0.535,
+      "originY": 0.6641,
       "prompt": "Side view, facing left. The red fox stands in place on all fours and talks: its muzzle opens and closes with each phrase, its head bobs gently in time, its ears stay upright and flick once, and the tip of its bushy tail sways slowly. All four feet stay planted exactly where they are in the reference image and never move. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.2,
-        "heightSwing": 3.5,
-        "driftX": 1.8,
+        "loopPop": 0.18,
+        "heightSwing": 16,
+        "driftX": 2.5,
         "warnings": []
       },
-      "generatedAt": "2026-09-05T00:46:47.174Z"
+      "generatedAt": "2026-09-05T04:30:32.717Z"
     },
     "thinking": {
       "file": "fox-thinking.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.3155,
-      "originX": 0.5635,
-      "originY": 0.6641,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.3018,
+      "originX": 0.5726,
+      "originY": 0.666,
       "prompt": "Side view, facing left. The red fox stands in place on all fours and considers something: nearly still, its head lowered and turned slightly away, its ears rotating slowly back and forward again, its muzzle closed, its bushy tail hanging still. All four feet stay planted exactly where they are in the reference image and never move. Quiet and deliberate. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
         "loopPop": 0.17,
-        "heightSwing": 14.3,
-        "driftX": 7.3,
-        "warnings": []
+        "heightSwing": 26.8,
+        "driftX": 11.3,
+        "warnings": [
+          "height swing 27% (over 20%) — check it is motion, not the character changing pose"
+        ]
       },
-      "generatedAt": "2026-09-05T00:50:16.419Z"
+      "generatedAt": "2026-09-05T04:34:32.892Z"
     }
   },
   "owl": {
