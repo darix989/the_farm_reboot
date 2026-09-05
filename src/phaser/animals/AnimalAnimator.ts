@@ -30,7 +30,7 @@ import type { AnimalEmotion } from './animalEmotions';
 import type { AnimalBehaviour } from './animalDescriptors';
 import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reducedMotion';
 
-export type AnimalStatus = 'none' | 'idle' | 'alert' | 'emotion';
+export type AnimalStatus = 'none' | 'idle' | 'alert' | 'emotion' | 'move';
 
 export interface AnimalAnimatorOptions {
   /** Use the `idleTrial` / `alertTrial` behaviour variants. Defaults to 'farm'. */
@@ -44,6 +44,26 @@ export interface AnimalAnimatorOptions {
 }
 
 const DEFAULT_DESYNC_DELAY: readonly [number, number] = [100, 1500];
+
+/**
+ * Playback rate of a walk cycle for a character travelling at its top speed.
+ *
+ * The cast's walk clips were authored at a stroll — 15 frames at 12fps is a 1.25s stride —
+ * and the overworld now moves Rue at 167px/s, a little over one of his own body heights per
+ * second, so the clip's own rate slightly outpaces the ground and the feet skate. Tuned by
+ * eye against the donkey (the most-seen animal); the same number then applies to the rest of
+ * the cast, whose clips run at the same 12fps default.
+ *
+ * It tracks `PLAYER_SPEED`: the skate is a ratio of stride length to ground covered, so
+ * changing the one without the other just moves the mismatch to the opposite foot.
+ */
+const MOVE_RATE_AT_TOP_SPEED = 0.77;
+/** A barely-pushed joystick should still lift the feet rather than crawl frame by frame. */
+const MIN_MOVE_RATE = 0.4;
+
+function moveRate(speed01: number): number {
+  return Phaser.Math.Clamp(speed01 * MOVE_RATE_AT_TOP_SPEED, MIN_MOVE_RATE, MOVE_RATE_AT_TOP_SPEED);
+}
 
 export class AnimalAnimator {
   private status: AnimalStatus = 'none';
@@ -60,6 +80,9 @@ export class AnimalAnimator {
    * the scene sets scale and origin before attaching the animator, which both do.
    */
   private readonly baseStaging: SpriteStaging;
+  /** Fraction of top speed the last `playMove` reported, so a re-roll or a reduced-motion
+   *  flip back on resumes the cycle at the rate the character is actually travelling at. */
+  private moveSpeed = 1;
   private reducedMotionUnsubscribe: (() => void) | null = null;
   private destroyed = false;
 
@@ -74,7 +97,13 @@ export class AnimalAnimator {
     this.reducedMotionUnsubscribe = onReducedMotionChange(() => this.onReducedMotionChange());
   }
 
-  playIdle(): void {
+  /**
+   * `immediate` cuts to the idle sequence instead of easing into it after the current clip's
+   * repeat. Default off — an idling animal should ride out whatever it was doing. A character
+   * that just *stopped walking* is the exception: waiting out the rest of a looping stride
+   * leaves it marching in place for up to a second after the player let go of the key.
+   */
+  playIdle(immediate = false): void {
     this.status = 'idle';
     this.emotion = null;
     this.restoreBaseStaging();
@@ -82,7 +111,7 @@ export class AnimalAnimator {
     const behaviour =
       (trial ? this.setup.descriptor.idleTrial : undefined) ?? this.setup.descriptor.idle;
     const sequence = behaviour ? this.pickSequence(behaviour) : [{ key: 'idle', repeat: -1 }];
-    this.playSequence(sequence, /* playImmediately */ false);
+    this.playSequence(sequence, immediate);
   }
 
   playAlert(): void {
@@ -94,6 +123,44 @@ export class AnimalAnimator {
       (trial ? this.setup.descriptor.alertTrial : undefined) ?? this.setup.descriptor.alert;
     if (!behaviour) return;
     this.playSequence(this.pickSequence(behaviour), /* playImmediately */ true);
+  }
+
+  /**
+   * Holds the locomotion cycle for as long as the character is translating.
+   *
+   * Cheap to call every frame, which is how a scene should drive it: once the cycle is
+   * running, further calls only retune its playback rate. `speed01` is the fraction of top
+   * speed the character is moving at — a half-pushed joystick is 0.5 — so a character
+   * dawdling does not stride as if sprinting (see `moveRate`).
+   *
+   * Movement ends when the *character* stops, not when the clip does, so the caller is the
+   * one that ends it: call `playIdle(true)` on the frame the character comes to rest.
+   *
+   * An animal with no `move` behaviour idles instead — a cast where only some animals have
+   * locomotion art degrades to standing still while it slides, exactly what every animal did
+   * before movement was wired up, rather than freezing on a missing key.
+   */
+  playMove(speed01 = 1): void {
+    this.moveSpeed = speed01;
+    if (this.status === 'move') {
+      this.applyPlaybackRate();
+      return;
+    }
+    this.startMove();
+  }
+
+  private startMove(): void {
+    const behaviour = this.setup.descriptor.move;
+    if (!behaviour) {
+      if (this.status !== 'idle') this.playIdle(/* immediate */ true);
+      return;
+    }
+    this.status = 'move';
+    this.emotion = null;
+    this.restoreBaseStaging();
+    // No desync delay: the character is already moving across the ground, so anything but an
+    // instant start is a visible slide on its rest pose.
+    this.playSequence(this.pickSequence(behaviour), /* playImmediately */ true, /* desync */ false);
   }
 
   /**
@@ -172,16 +239,27 @@ export class AnimalAnimator {
       .map((key) => ({ key }));
   }
 
+  /** Walk cycles run faster or slower with the character's speed; everything else plays at
+   *  the rate its animation was created with. */
+  private applyPlaybackRate(): void {
+    this.sprite.anims.timeScale = this.status === 'move' ? moveRate(this.moveSpeed) : 1;
+  }
+
   private playSequence(
     sequence: readonly Phaser.Types.Animations.PlayAnimationConfig[],
     playImmediately: boolean,
+    desync = true,
   ): void {
+    this.applyPlaybackRate();
+
     if (prefersReducedMotion()) {
       this.applyRestFrame();
       return;
     }
 
-    const [minDelay, maxDelay] = this.options.desyncDelayMs ?? DEFAULT_DESYNC_DELAY;
+    const [minDelay, maxDelay] = desync
+      ? (this.options.desyncDelayMs ?? DEFAULT_DESYNC_DELAY)
+      : [0, 0];
     const transitions = this.getTransitionOut(this.sprite.anims.currentAnim?.key ?? '');
     const fullSequence = [...transitions, ...sequence];
 
@@ -229,6 +307,7 @@ export class AnimalAnimator {
       if (this.destroyed) return;
       if (this.status === 'idle') this.playIdle();
       else if (this.status === 'alert') this.playAlert();
+      else if (this.status === 'move') this.startMove();
       else if (this.status === 'emotion' && this.emotion) this.playEmotion(this.emotion);
     });
   }
@@ -249,6 +328,7 @@ export class AnimalAnimator {
     }
     if (this.status === 'idle') this.playIdle();
     else if (this.status === 'alert') this.playAlert();
+    else if (this.status === 'move') this.startMove();
     else if (this.status === 'emotion' && this.emotion) this.playEmotion(this.emotion);
   }
 }

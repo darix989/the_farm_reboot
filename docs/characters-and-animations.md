@@ -105,6 +105,7 @@ export interface AnimalDescriptor {
   idleTrial?: AnimalBehaviour;  // replaces `idle` when staged in a Trial
   alert?: AnimalBehaviour;
   alertTrial?: AnimalBehaviour;
+  move?: AnimalBehaviour;       // locomotion cycle, held while the character translates
   transitions?: readonly (readonly [string, readonly string[]])[];
 }
 ```
@@ -118,6 +119,12 @@ Registration is a plain `Record<AnimalSpriteId, AnimalDescriptor>`
 (`ANIMAL_DESCRIPTORS`), not the prototype's `ANIMALS.push(...)` side effects — the
 compiler enforces that every `AnimalSpriteId` has a descriptor, instead of a silently
 unregistered entry producing zero animations.
+
+Every animal has a `move`: the walk cycle from its atlas, except Duchess (`owl`), whose
+atlas has none and who flies (`flap_wings`) rather than walks. Unlike `idle`, a `move`
+sequence should loop (`repeat: -1`) — movement ends when the *character* stops, not when
+the clip does. Only the player translates today; the field is on the descriptor rather
+than in `Farm.ts` so a wandering NPC or a cutscene tween gets the same cycle for free.
 
 Only Tobias (`raccoon`) uses `idleTrial`: he stands in the field but sits up
 (`sitting_up_idle`) once staged in a Trial. No animal uses `alertTrial` or
@@ -161,6 +168,21 @@ whatever it was doing. `playAlert()` does the same from `alert`/`alertTrial` but
 On `ANIMATION_COMPLETE`, guarded so it fires only once the whole chained sequence has
 finished, the animator re-rolls a fresh weighted sequence and keeps going — this is
 what keeps an idling animal varying its behaviour forever with no per-frame update code.
+
+`playMove(speed01)` holds the `move` cycle while the character is translating. It is meant
+to be called **every frame** from a scene's `update` — once the cycle is running, further
+calls only retune playback rate — and `speed01` is the fraction of top speed the character
+is travelling at, so a half-pushed joystick steps at half rate (`Farm.update` passes the
+movement vector's length, which keeps the stick's analogue magnitude). At full speed the
+cycle plays at `MOVE_RATE_AT_TOP_SPEED` (0.77): the cast's clips were authored at a stroll —
+15 frames at 12fps — and the overworld moves Rue at 167px/s, so at rate 1 his feet skate.
+That constant tracks `PLAYER_SPEED` — the skate is a ratio of stride length to ground
+covered, so changing one without the other reintroduces it.
+Nothing ends the cycle by itself, because nothing but the caller knows the character has
+stopped: the scene calls `playIdle(true)` on that frame. That `immediate` argument (default
+off) cuts straight to idle instead of easing in after the current repeat, which for a
+looping stride would leave the animal marching in place for up to a second after the key
+was released. An animal with no `move` behaviour idles instead of freezing on a missing key.
 
 **Why not the prototype's `HerdAnimal extends Phaser.GameObjects.Sprite`:** Rue needs an
 Arcade physics body, and these atlases' frames vary wildly in trimmed size (the donkey
@@ -297,6 +319,8 @@ underneath the animated follower sprite (see §3.3).
    `ANIMAL_DESCRIPTORS`. Derive `baseAnimations` from the atlas's actual frame names; set
    `framePrefix` unless they follow `<frameStem>-<n>.png` exactly. `endFrameIndex` is
    inclusive.
+   Give it a `move` behaviour if it will ever translate (the player, or a future wandering
+   NPC) — a looping walk cycle from its atlas.
 4. **`animalAnimations.ts`** — add the animal's resting-pose name to `REST_POSE`.
 5. **`animalStaging.ts`** — add a `farmScale` / `trialScale` entry. Start from a
    measured max frame size and tune by eye.

@@ -131,6 +131,12 @@ Note it ends `return out.limit(1)` and **not** `.normalize()`. Keyboard diagonal
 joystick is already ≤ 1 and has to keep its analogue magnitude — a half-pushed stick should
 walk slowly. `limit` clamps the long case without inflating the short one.
 
+The vector's *length* is reused as the animation's pace: `Farm.update` calls
+`playerAnimator.playMove(dir.length())` while it is non-zero and `playIdle(true)` on the
+frame it hits zero, so Rue walks when he moves, steps at half rate on a half-pushed stick,
+and drops back to idling (and eating) the moment he stops. See
+[characters-and-animations.md](./characters-and-animations.md) §3.3.
+
 The joystick **anchors wherever the thumb lands** rather than sitting in a painted corner,
 which is far more forgiving on a phone, and stays hidden until the first `pointer.wasTouch`
 so desktop never sees it. Both sprites use `setScrollFactor(0)` to stay locked to the camera
@@ -258,9 +264,12 @@ sprite with a velocity and a depth sort — animated, as of
 Known rough edges:
 
 - **Terrain is still coloured blocks.** Only characters have real art.
-- **Rue only idles or eats on the farm** — there is no walk-cycle wired to movement yet
-  (`donkey-grey` has `run` / `walk_to_left` animations that go unused). See that doc's
-  "adding an animal" section for where a `move` behaviour would plug in.
+- **Rue walks, but never runs.** Movement plays the `move` behaviour (the donkey's
+  `walk_to_left` cycle, sped up with his ground speed); each animal's `run` clip is still
+  unused, so there is no second gait above a threshold speed.
+- **NPCs never move.** They stand on their spawn point and idle. The `move` behaviour is on
+  the descriptor, not in the player code, so a wandering NPC would animate correctly the day
+  one is given somewhere to wander.
 - **`GameManager.whenReady` / `whenSceneReady` are broken** and were left alone. They pass a
   `(selector, listener)` pair to `useGameStore.subscribe`, which is the zustand v3/v4
   signature; this repo is on v5 without `subscribeWithSelector`, so the selector is invoked

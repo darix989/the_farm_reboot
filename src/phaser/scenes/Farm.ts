@@ -21,7 +21,7 @@ import { animalSetup } from '../animals/animalAnimations';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
 import { ANIMAL_STAGING } from '../animals/animalStaging';
 
-const PLAYER_SPEED = 340;
+const PLAYER_SPEED = 167; // slowed twice by 30% from the 340 the overworld shipped with
 /** Player body is smaller than the sprite so Rue's feet, not his head, hit walls. */
 const PLAYER_BODY = { width: 38, height: 28, offsetX: 9, offsetY: 24 };
 /**
@@ -50,6 +50,9 @@ export class Farm extends Scene {
   private joystick: VirtualJoystick | null = null;
   private npcActors: { npc: FarmNpc; animator: AnimalAnimator | null }[] = [];
   private moveVector = new Phaser.Math.Vector2();
+  /** Whether the walk cycle is currently running, so it is started and stopped on the frame
+   *  the player actually starts and stops moving rather than re-triggered every frame. */
+  private walking = false;
   private solids!: Phaser.Physics.Arcade.StaticGroup;
 
   constructor() {
@@ -186,7 +189,12 @@ export class Farm extends Scene {
         .setOrigin(0.5, 1)
         .setScale(ANIMAL_STAGING[visual.animal].farmScale)
         .setDepth(y);
-      this.playerAnimator = attachAnimalAnimator(this.playerArt, setup, { staging: 'farm' });
+      // No desync delay for the player: that range exists to scatter a herd told to react in
+      // the same frame, and Rue is one animal answering the key the human just pressed.
+      this.playerAnimator = attachAnimalAnimator(this.playerArt, setup, {
+        staging: 'farm',
+        desyncDelayMs: [0, 0],
+      });
       this.playerAnimator?.playIdle();
     }
   }
@@ -197,6 +205,7 @@ export class Farm extends Scene {
     // Freeze while a conversation is open so Rue does not wander mid-sentence.
     if (useFarmStore.getState().talkingToNpcId) {
       this.player.setVelocity(0, 0);
+      this.stopWalking();
       return;
     }
 
@@ -211,7 +220,26 @@ export class Farm extends Scene {
       if (dir.x !== 0) this.playerArt.setFlipX(dir.x > 0); // art faces left by default
     }
 
+    // `dir` is <= 1 and keeps the joystick's analogue magnitude (see `movementVector`), so it
+    // doubles as the fraction of top speed to pace the walk cycle at: a half-pushed stick
+    // moves Rue at half speed and steps at half rate. `playMove` is cheap to repeat.
+    const speed = dir.length();
+    if (speed > 0) {
+      this.playerAnimator?.playMove(speed);
+      this.walking = true;
+    } else {
+      this.stopWalking();
+    }
+
     this.updateNearbyNpc();
+  }
+
+  /** Back to idling the moment Rue comes to rest — `immediate`, or he marches on the spot for
+   *  the rest of the stride after the key is released. */
+  private stopWalking(): void {
+    if (!this.walking) return;
+    this.walking = false;
+    this.playerAnimator?.playIdle(/* immediate */ true);
   }
 
   private updateNearbyNpc(): void {

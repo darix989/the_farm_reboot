@@ -52,6 +52,14 @@ export interface AnimalDescriptor {
   alert?: AnimalBehaviour;
   /** Replaces `alert` when the sprite is staged in a Trial. Unused by these six. */
   alertTrial?: AnimalBehaviour;
+  /**
+   * Locomotion cycle, held for as long as the character is translating — see
+   * `AnimalAnimator.playMove`. Sequences here should loop (`repeat: -1`): unlike `idle`,
+   * which re-rolls when it finishes, movement ends when the character stops, not when the
+   * clip does. An animal with no `move` keeps standing still while it slides, which is what
+   * the whole cast did before movement was wired up.
+   */
+  move?: AnimalBehaviour;
   /** `[fromName, [animsToPlayFirst]]` — mandatory exit poses. Unused by these six. */
   transitions?: readonly (readonly [string, readonly string[]])[];
 }
@@ -82,6 +90,9 @@ const DONKEY_GREY: AnimalDescriptor = {
     ],
   ],
   alert: [[1, [{ key: 'buck', repeat: -1 }]]],
+  // The clip is named `walk_to_left` because that is the direction the art was drawn
+  // walking; the whole cast faces left and the scene flips X to walk right (`Farm.update`).
+  move: [[1, [{ key: 'walk_to_left', repeat: -1 }]]],
 };
 
 // duchess -> owl. Foldered + underscore frame naming: every animation needs `framePrefix`.
@@ -123,6 +134,8 @@ const OWL: AnimalDescriptor = {
   ],
   idle: [[1, [{ key: 'idle_awake', repeat: -1 }]]],
   alert: [[1, [{ key: 'rotate_head', repeat: -1 }]]],
+  // The owl atlas has no walk cycle, and an owl covering ground flies rather than walks.
+  move: [[1, [{ key: 'flap_wings', repeat: -1 }]]],
 };
 
 // tobias -> raccoon. Only user of `idleTrial`: sits up on the trial stand, stands in the field.
@@ -145,6 +158,7 @@ const RACCOON: AnimalDescriptor = {
   idleTrial: [[1, [{ key: 'sitting_up_idle' }]]],
   // No `repeat` here (matches the source): a single jump completes and re-rolls continuously.
   alert: [[1, [{ key: 'jump' }]]],
+  move: [[1, [{ key: 'walk', repeat: -1 }]]],
 };
 
 // cass -> fox. The source declares no `idle` for the fox and relies on a runtime fallback
@@ -161,6 +175,7 @@ const FOX: AnimalDescriptor = {
   ],
   idle: [[1, [{ key: 'idle', repeat: -1 }]]],
   alert: [[1, [{ key: 'jump', repeat: -1 }]]],
+  move: [[1, [{ key: 'walk', repeat: -1 }]]],
 };
 
 // hetty -> white-sheep-1
@@ -189,6 +204,7 @@ const WHITE_SHEEP_1: AnimalDescriptor = {
     ],
   ],
   alert: [[1, [{ key: 'jump', repeat: -1 }]]],
+  move: [[1, [{ key: 'walk', repeat: -1 }]]],
 };
 
 // bram -> brown-wolf
@@ -214,6 +230,7 @@ const BROWN_WOLF: AnimalDescriptor = {
     ],
   ],
   alert: [[1, [{ key: 'howl' }, { key: 'idle' }, { key: 'bite' }, { key: 'idle' }]]],
+  move: [[1, [{ key: 'walk', repeat: -1 }]]],
 };
 
 export const ANIMAL_DESCRIPTORS: Readonly<Record<AnimalSpriteId, AnimalDescriptor>> = {
