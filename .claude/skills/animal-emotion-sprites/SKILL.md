@@ -119,6 +119,7 @@ here because ignoring them costs credits.
    | fox | **ears + bushy tail + snarl** | ears pinned flat back plus an open snarl produced the strongest `angry` generated so far, first try |
    | sheep | **contrast**: solid black head + black ears on pale fleece | head height and tilt read at any size; the fleece is a fluffy oval that turns to mush if asked to deform. Its ears are black on a black head and barely read — its *eyes* are the white-on-black signal |
    | wolf | **ears + bushy tail + snarl + white neck ruff** | the fox's carriers plus a high-contrast ruff that bristles; produced the strongest `angry` in the project, first try, with textbook-stable fangs |
+   | raccoon | **brows + big white eyes in a dark mask**, and **free forepaws** | staged sitting up, so it is the only character with hands — it can gesture, point and clench, which nothing else in the cast can |
 
    Before writing prompts for a new animal, look at its reference frame and ask what changes
    the outline. Ears and tails are the quadruped equivalent of the owl's eyes: real visual
@@ -129,8 +130,10 @@ here because ignoring them costs credits.
    Ask the same question about **priors**, because each animal brings one that will wreck a
    loop if unaddressed: the owl wants to blink and flare its wings, the sheep wants to graze
    (the atlas ships `eating`), the wolf wants to howl (the atlas ships `howl`, and a howl
-   hijacks any open-mouth prompt by tipping the head at the sky), and any quadruped will walk
-   out of frame. Suppress it with rule 6, positively — "its head stays UP at the height it is
+   hijacks any open-mouth prompt by tipping the head at the sky), the raccoon wants to hold
+   food (its paws rest in exactly the carrying pose and the atlas ships `eat_nut`/`throw_nut`,
+   so a nut appears unless the paws are described as empty) and to drop back onto all fours,
+   and any quadruped will walk out of frame. Suppress it with rule 6, positively — "its head stays UP at the height it is
    in the reference" beat "never grazes" for the sheep, and "its muzzle stays level and pointed
    forward" kept the wolf snarling instead of howling. Both held first try.
 
@@ -200,6 +203,10 @@ Full contract in [references/ludo-api.md](references/ludo-api.md). The four that
   construction (measured 5.88% → 0.22% seam).
 - **The REST default flips from synchronous to async on 2026-09-10.** The client already sends
   `async: true` and long-polls, so it is unaffected. Do not "simplify" that away.
+
+**The whole cast is generated.** All six animals have all five emotions — 30 clips. Reach for
+this skill to regenerate one that reads wrong, add an emotion to the vocabulary, or give art to
+a newly added animal, not to fill gaps.
 
 ## `scripts/ludo/promoted-clips.json` is the source of truth
 
