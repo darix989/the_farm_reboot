@@ -150,6 +150,20 @@ here because ignoring them costs credits.
    stay exactly as in the reference image and do not move at all — ONLY THE FACE MOVES". Name
    what holds, not what must not happen.
 
+7. **Pin the inside of an open mouth, or it will flicker.** The generator invents mouth
+   interiors frame by frame and does not keep them consistent: the sheep's `angry` grew a
+   white wedge, then a split blocky shape, then a tooth-and-tongue, all different sizes, on an
+   animal whose source art has no teeth at all. It reads as flashing. Anything that opens its
+   mouth is exposed to this, so say what the open mouth *shows*: "one clean smooth rounded
+   patch of flat pink inside a plain dark muzzle, drawn identically in every frame it appears".
+   The positive description is what fixes it; "no teeth" on its own is a negation (rule 6) and
+   will be ignored. Expect a quieter mouth as the price — the fix trades some expressiveness
+   for stable art.
+
+   Zoom in before judging: crop the head from a handful of frames, scale it up and lay them
+   side by side. Per-frame detail defects are invisible in a full spritesheet and obvious at
+   4x.
+
 **`angry` is the hardest emotion — but only when the animal has no carrier for it.** It came out
 weak first-try on the donkey and took five attempts on the owl. The fox nailed it first try,
 because ears-pinned-back plus a snarl is an unambiguous canid anger signal that survives the

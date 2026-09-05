@@ -204,17 +204,17 @@
       "frameHeight": 512,
       "frameCount": 25,
       "frameRate": 13,
-      "scale": 1.1422,
-      "originX": 0.4842,
-      "originY": 0.8126,
-      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and is angry: its floppy black ears pin flat back against its skull for the whole clip, its dark head drops until it is level with its shoulders and pushes forward toward the target, and its muzzle opens in a hard bleat. Its head never drops below shoulder height. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "scale": 1.1472,
+      "originX": 0.4491,
+      "originY": 0.8278,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and is angry: its floppy black ears pin flat back against its skull for the whole clip, its dark head drops until it is level with its shoulders and pushes forward toward the target, and its dark muzzle opens and closes in a hard bleat. Every time the mouth opens it shows exactly the same simple shape: one clean smooth rounded patch of flat pink inside a plain dark muzzle, drawn identically in every frame it appears. The inside of the mouth is flat pink and nothing else — no white shapes, no teeth, no tongue detail — and it never changes shape, size or colour from frame to frame. Its head never drops below shoulder height. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.3,
-        "heightSwing": 14.7,
-        "driftX": 4.5,
+        "loopPop": 0.29,
+        "heightSwing": 18.6,
+        "driftX": 15.3,
         "warnings": []
       },
-      "generatedAt": "2026-09-05T01:15:49.771Z"
+      "generatedAt": "2026-09-05T01:27:16.499Z"
     },
     "doubtful": {
       "file": "white-sheep-1-doubtful.png",
