@@ -182,9 +182,9 @@ export const EMOTION_SHEETS: Partial<
       frameHeight: 512,
       frameCount: 25,
       frameRate: 13,
-      scale: 1.1472,
-      originX: 0.4491,
-      originY: 0.8278,
+      scale: 1.0861,
+      originX: 0.4797,
+      originY: 0.8156,
     },
     doubtful: {
       file: 'white-sheep-1-doubtful.png',

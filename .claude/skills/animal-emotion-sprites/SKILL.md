@@ -157,8 +157,14 @@ here because ignoring them costs credits.
    mouth is exposed to this, so say what the open mouth *shows*: "one clean smooth rounded
    patch of flat pink inside a plain dark muzzle, drawn identically in every frame it appears".
    The positive description is what fixes it; "no teeth" on its own is a negation (rule 6) and
-   will be ignored. Expect a quieter mouth as the price — the fix trades some expressiveness
-   for stable art.
+   will be ignored.
+
+   **The defect is instability, not presence.** Pinning the interior works while the mouth
+   stays small, and the sheep's first fix over-corrected into a nearly shut mouth that killed
+   the emotion entirely — an `angry` clip with no anger left in it. A wide-open shout brings
+   teeth back whatever the prompt says, and that is fine: a consistent pair of white blocks
+   that scale with the mouth reads as a cartoon shout. Judge it on consecutive frames, not on
+   whether teeth appear at all. What you are hunting is a shape that changes every frame.
 
    Zoom in before judging: crop the head from a handful of frames, scale it up and lay them
    side by side. Per-frame detail defects are invisible in a full spritesheet and obvious at
