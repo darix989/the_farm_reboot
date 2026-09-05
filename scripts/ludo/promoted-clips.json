@@ -5,7 +5,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.0584,
       "originX": 0.5384,
       "originY": 0.7933
@@ -15,7 +15,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.0268,
       "originX": 0.5332,
       "originY": 0.7922
@@ -25,7 +25,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.177,
       "originX": 0.5266,
       "originY": 0.7884
@@ -35,7 +35,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.1331,
       "originX": 0.5361,
       "originY": 0.7894
@@ -45,7 +45,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.0584,
       "originX": 0.5257,
       "originY": 0.7933
@@ -57,7 +57,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.3155,
       "originX": 0.5723,
       "originY": 0.7265,
@@ -77,7 +77,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.3018,
       "originX": 0.5472,
       "originY": 0.7269,
@@ -94,28 +94,26 @@
       "file": "fox-sneaky.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 12,
-      "scale": 2.1492,
-      "originX": 0.5659,
-      "originY": 0.7372,
-      "prompt": "Side view, facing left. The red fox stands in place on all fours and speaks conspiratorially: its head cranes forward and dips toward the listener, its ears tilt back, its eyes flick sideways mid-sentence, and its bushy tail curls low. All four feet stay planted exactly where they are in the reference image and never move; it stays standing the whole time and never crouches, never lies down, never sits. Sly and secretive. Seamless loop, no travel, same silhouette throughout.",
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.3018,
+      "originX": 0.5443,
+      "originY": 0.7269,
+      "prompt": "Side view, facing left. The red fox stands in place on all fours and speaks conspiratorially: its head lowers and cranes slowly forward toward the listener, its ears tilt back, and its eyes flick sideways. Its big bushy tail stays whole and fully drawn for every frame, held low and curled behind it, the same full shape and length as in the reference image. The movement is ONE slow continuous glide from start to finish — gentle and unhurried, with no sudden jumps, no fast beats and no snapping back. All four feet stay planted exactly where they are in the reference image and never move; it stays standing the whole time and never crouches flat, never lies down, never sits. Sly and secretive. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.16,
-        "heightSwing": 33.1,
-        "driftX": 9,
-        "warnings": [
-          "height swing 33% (over 20%) — check it is motion, not the character changing pose"
-        ]
+        "loopPop": 0.19,
+        "heightSwing": 16.6,
+        "driftX": 8,
+        "warnings": []
       },
-      "generatedAt": "2026-09-05T00:51:43.847Z"
+      "generatedAt": "2026-09-05T00:59:36.942Z"
     },
     "talking": {
       "file": "fox-talking.png",
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.2616,
       "originX": 0.545,
       "originY": 0.7299,
@@ -133,7 +131,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.3155,
       "originX": 0.5635,
       "originY": 0.7265,
@@ -153,7 +151,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.2129,
       "originX": 0.5019,
       "originY": 0.75
@@ -163,7 +161,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.1476,
       "originX": 0.4931,
       "originY": 0.75
@@ -173,7 +171,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.2045,
       "originX": 0.4999,
       "originY": 0.75
@@ -183,7 +181,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.1962,
       "originX": 0.5009,
       "originY": 0.75
@@ -193,7 +191,7 @@
       "frameWidth": 512,
       "frameHeight": 512,
       "frameCount": 16,
-      "frameRate": 12,
+      "frameRate": 8,
       "scale": 2.2299,
       "originX": 0.4901,
       "originY": 0.752

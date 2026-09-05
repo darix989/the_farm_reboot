@@ -26,14 +26,13 @@
 
   "defaults": {
     "model": "blitz",
-    "frames": 16,
+    "frames": 25,
     "frameSize": 256,
     "duration": 2,
     "loop": true,
     "closeLoop": true,
     "imageType": "sprite",
-    "frameRate": 12,
-    "marginRatioMode": "auto"
+        "marginRatioMode": "auto"
   },
 
   "emotions": {
@@ -84,7 +83,7 @@
           "prompt": "{view}. The red fox stands in place on all fours and considers something: nearly still, its head lowered and turned slightly away, its ears rotating slowly back and forward again, its muzzle closed, its bushy tail hanging still. All four feet stay planted exactly where they are in the reference image and never move. Quiet and deliberate. Seamless loop, no travel, same silhouette throughout."
         },
         "sneaky": {
-          "prompt": "{view}. The red fox stands in place on all fours and speaks conspiratorially: its head cranes forward and dips toward the listener, its ears tilt back, its eyes flick sideways mid-sentence, and its bushy tail curls low. All four feet stay planted exactly where they are in the reference image and never move; it stays standing the whole time and never crouches, never lies down, never sits. Sly and secretive. Seamless loop, no travel, same silhouette throughout."
+          "prompt": "{view}. The red fox stands in place on all fours and speaks conspiratorially: its head lowers and cranes slowly forward toward the listener, its ears tilt back, and its eyes flick sideways. Its big bushy tail stays whole and fully drawn for every frame, held low and curled behind it, the same full shape and length as in the reference image. The movement is ONE slow continuous glide from start to finish \u2014 gentle and unhurried, with no sudden jumps, no fast beats and no snapping back. All four feet stay planted exactly where they are in the reference image and never move; it stays standing the whole time and never crouches flat, never lies down, never sits. Sly and secretive. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
         }
       }
     },

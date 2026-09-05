@@ -44,7 +44,8 @@ npm run sprites:emotions -- --promote
 
 Flags: `--animal a,b` and `--emotion x,y` restrict scope (default: everything in the
 manifest). `--force` regenerates a clip that already exists locally **and** bypasses the API's
-result cache — see "request_id is an idempotency key" below.
+result cache — see "request_id is an idempotency key" below. `--reindex` rebuilds the generated
+module from `promoted-clips.json` alone, with no review dir and no API calls.
 
 Generation and promotion are separate on purpose: diffusion output is not deterministic and
 not always usable, so nothing reaches `public/assets/` without a human having watched it loop.
@@ -57,6 +58,24 @@ it via Node's `--env-file-if-exists`). An exported shell variable works too.
 **Never name it `VITE_LUDO_API_KEY`** — Vite inlines every `VITE_`-prefixed variable into the
 client bundle, publishing the key to anyone who opens the game.
 
+## Playback speed: `frames / duration`, never a hard-coded rate
+
+The API is asked for `duration` seconds of motion sampled into `frames` frames, so the **only**
+rate that plays a clip at the speed it was generated is `frames / duration`. `playbackFrameRate()`
+derives it; the manifest sets no `frameRate` at all.
+
+This was originally hard-coded to 12 to match the hand-authored atlas clips, which silently ran
+every generated clip **1.5× too fast** — 16 frames of a 2s motion crammed into 1.33s. It reads
+as rushed and it is invisible in a spritesheet; only playback shows it. The first fifteen clips
+shipped that way before it was caught.
+
+Hence the defaults: **25 frames over 2 seconds**, landing on ~12.5fps — correctly paced *and*
+close to the atlas tempo, where 16 frames would have forced a choppy 8fps. Frame count does not
+affect cost (credits are `duration × model rate`), so more frames is free smoothness.
+
+If you inherit clips at the wrong rate, fix `frameRate` in `promoted-clips.json` and run
+`--reindex`. No credits, no regeneration.
+
 ## Reading the quality numbers
 
 Generation prints three metrics per clip, and they are also stored in each clip's `meta.json`
@@ -68,6 +87,11 @@ see in a single loop and obvious once the clip is in the game.
 | `loop seam` | 2% | Last frame differs from the first, so it jumps on every repeat | Confirm `closeLoop` is on; regenerate with `--force` |
 | `height swing` | 20% | Character's height wanders across frames | Check it is motion (a head dipping) and not a pose collapse (lying down). See the prompt rules |
 | `drift ±px` | 20px | Character slides horizontally | Add "in place, no travel" emphasis; regenerate |
+
+A clip can also be **rushed without tripping any of these** — the metrics measure the frames,
+not the tempo. If motion looks hurried or snaps between poses, check the frame rate maths above
+first, then ask the prompt for "ONE slow continuous glide from start to finish, no sudden jumps,
+no fast beats".
 
 These are thresholds for *attention*, not rejection. A clip can exceed one and still be the
 right clip — `sneaky` legitimately swings 28% because the donkey's head dips a long way.

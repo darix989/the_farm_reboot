@@ -14,6 +14,10 @@
  *                                `src/phaser/animals/emotionSheets.generated.ts`.
  *   --force                      Regenerate a clip that already exists in the review dir,
  *                                bypassing the API's request_id result cache (see `requestId`).
+ *   --reindex                    Rebuild the generated TS module from `promoted-clips.json`
+ *                                alone, with no review dir and no API calls. For when the
+ *                                record was edited by hand (a corrected frame rate) or the
+ *                                module drifted from it.
  *
  * ## The API key
  *
@@ -76,12 +80,20 @@ const TAXONOMY_PATH = 'src/phaser/animals/animalEmotions.ts';
 // ---------------------------------------------------------------------------
 
 function parseArgs(argv) {
-  const args = { animals: null, emotions: null, dryRun: false, promote: false, force: false };
+  const args = {
+    animals: null,
+    emotions: null,
+    dryRun: false,
+    promote: false,
+    force: false,
+    reindex: false,
+  };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--dry-run') args.dryRun = true;
     else if (arg === '--promote') args.promote = true;
     else if (arg === '--force') args.force = true;
+    else if (arg === '--reindex') args.reindex = true;
     else if (arg === '--animal') args.animals = (argv[++i] ?? '').split(',').filter(Boolean);
     else if (arg === '--emotion') args.emotions = (argv[++i] ?? '').split(',').filter(Boolean);
     else {
@@ -139,6 +151,7 @@ function planJobs(manifest, args) {
         .replaceAll('{species}', animal.species)
         .replaceAll('{view}', animal.view);
       const settings = { ...manifest.defaults, ...base, ...override };
+      settings.frameRate = playbackFrameRate(settings);
 
       jobs.push({ animalId, emotion, prompt, settings, reference: animal.reference });
     }
@@ -166,6 +179,24 @@ function requestId(job, force) {
     .slice(0, 8);
   const suffix = force ? `-${Date.now().toString(36)}` : '';
   return `farm-emotion-${job.animalId}-${job.emotion}-${fingerprint}${suffix}`;
+}
+
+/**
+ * Frame rate that plays a clip back at the speed it was generated at.
+ *
+ * The API is asked for `duration` seconds of motion sampled into `frames` frames, so the only
+ * rate that reproduces the intended speed is `frames / duration`. Hard-coding 12 to match the
+ * hand-authored atlas clips — which is what this did originally — silently played every
+ * generated clip **1.5x too fast** (16 frames of a 2s motion in 1.33s), which reads as rushed
+ * and is the reason the defaults now ask for 25 frames rather than 16: at 2s that lands on
+ * 12.5fps, so the clip is both correctly paced *and* close to the atlas tempo.
+ *
+ * An explicit `frameRate` in the manifest still wins, for the rare clip that should deliberately
+ * run off-speed.
+ */
+function playbackFrameRate(settings) {
+  if (settings.frameRateOverride) return settings.frameRateOverride;
+  return Math.round(settings.frames / settings.duration);
 }
 
 /** Maps manifest settings onto the `AnimateSpritePayload` field names. */
@@ -559,9 +590,21 @@ ${entries}
 
 // ---------------------------------------------------------------------------
 
+async function reindex() {
+  const record = await readPromotedRecord();
+  const total = Object.values(record).reduce((n, e) => n + Object.keys(e).length, 0);
+  if (total === 0) {
+    console.error(`${PROMOTED_RECORD} holds no clips — nothing to reindex.`);
+    process.exit(1);
+  }
+  await writeGeneratedModule(sortRecord(record));
+  console.log(`Rebuilt ${GENERATED_TS} from ${PROMOTED_RECORD}: ${total} clip(s).`);
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  if (args.promote) await promote();
+  if (args.reindex) await reindex();
+  else if (args.promote) await promote();
   else await generate(args);
 }
 
