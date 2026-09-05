@@ -1143,7 +1143,7 @@ export const FACE_SHEETS: Partial<
 ${entries}
 };
 `;
-    await writeFile(MODE.generatedTs, faceSource);
+    await writeFile(MODE.generatedTs, await formatGenerated(faceSource, MODE.generatedTs));
     return;
   }
 
