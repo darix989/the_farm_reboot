@@ -58,7 +58,7 @@ the flag, the script gets no arguments, and no arguments means the whole manifes
 | Invocation | Cost |
 |---|---|
 | `-- --dry-run` | free, no API key needed |
-| `-- --promote`, `-- --reindex` | free, no API call |
+| `-- --promote`, `-- --reindex`, `-- --remeasure` | free, no API call |
 | `-- --animal X --emotion Y` | 4 credits per clip in scope |
 | `-- --force …` | charges again — it exists to bypass the result cache |
 | **no flags** | **the entire manifest (11 animals × 5 emotions), ~220 credits** |
@@ -87,8 +87,8 @@ nothing reaches `public/assets/` without a human having watched it loop.
 
 ## Where else to look
 
-- `scripts/generate-emotion-sprites.mjs` — its header documents all six flags (`--dry-run`,
-  `--animal`, `--emotion`, `--force`, `--promote`, `--reindex`) and the key handling.
+- `scripts/generate-emotion-sprites.mjs` — its header documents all seven flags (`--dry-run`,
+  `--animal`, `--emotion`, `--force`, `--promote`, `--reindex`, `--remeasure`) and the key handling.
 - `scripts/ludo/emotion-manifest.json` — the prompts, with the authoring rules in its own
   `$comment` fields.
 - `scripts/ludo/promoted-clips.json` — the committed record of every promoted clip. `--promote`
@@ -98,7 +98,7 @@ nothing reaches `public/assets/` without a human having watched it loop.
 
 Never hand-edit `src/phaser/animals/emotionSheets.generated.ts`: its `scale` / `originX` /
 `originY` are measured at promote time, and a clip without them renders at the wrong size. Fix
-the measurement in `scripts/ludo/normalize.mjs` and re-promote instead.
+the measurement in `scripts/ludo/normalize.mjs` and run `-- --remeasure` instead.
 
 ## Maintaining this rule
 

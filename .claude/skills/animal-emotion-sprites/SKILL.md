@@ -1,6 +1,6 @@
 ---
 name: animal-emotion-sprites
-argument-hint: "[--animal <id>] [--emotion <name>] [--dry-run|--promote|--force]"
+argument-hint: "[--animal <id>] [--emotion <name>] [--dry-run|--promote|--reindex|--remeasure|--force]"
 description: Generate, review and ship the cast's per-emotion animation clips (talking, doubtful, angry, thinking, sneaky) via the Ludo.ai API. Use when asked to generate, regenerate, add or fix an animal's emotion animation or spritesheet, to add a new emotion to the vocabulary, to give a newly added animal its emotion art, or when a generated clip looks wrong in game (wrong size, floating off the floor, popping on loop). Also covers the Animation Gallery used to review the results.
 ---
 
@@ -46,7 +46,9 @@ npm run sprites:emotions -- --promote
 Flags: `--animal a,b` and `--emotion x,y` restrict scope (default: everything in the
 manifest). `--force` regenerates a clip that already exists locally **and** bypasses the API's
 result cache — see "request_id is an idempotency key" below. `--reindex` rebuilds the generated
-module from `promoted-clips.json` alone, with no review dir and no API calls.
+module from `promoted-clips.json` alone, with no review dir and no API calls. `--remeasure`
+re-runs the origin/scale maths against the shipped PNGs (also free) after a change to
+`normalize.mjs`.
 
 Generation and promotion are separate on purpose: diffusion output is not deterministic and
 not always usable, so nothing reaches `public/assets/` without a human having watched it loop.
@@ -244,7 +246,8 @@ be written down.
 `originX` and `originY` are **measured**, not chosen: a generated 512px cell is not the atlas
 export canvas the staging was tuned against, and without those numbers the animal renders ~3×
 too small and floats off the floor line. If they look wrong, fix the measurement in
-`scripts/ludo/normalize.mjs` and re-promote — never patch the output.
+`scripts/ludo/normalize.mjs` and run `--remeasure` against the shipped PNGs — never patch the
+output. Re-promote is only needed when the PNG itself changed.
 
 ## Reviewing in game
 
@@ -281,6 +284,6 @@ dry-run, look at the extracted `reference.png` to confirm the pose and facing, a
 | `API key rejected (HTTP 403)` | Bad key, or the plan lacks API access |
 | `Frame "..." is not in ...` | `reference` does not match a `filename` in that animal's atlas JSON |
 | Regenerated clip is byte-identical | `request_id` cache — use `--force` |
-| Animal renders tiny / floats off the floor | Promoted without normalization, or hand-edited generated TS |
+| Animal renders tiny / floats off the floor | Promoted without normalization, or hand-edited generated TS. If atlas idle sits on the floor but emotion clips float, re-run `--remeasure` after a `normalize.mjs` change. |
 | Emotion does nothing in game | No art for that pairing; it falls back to `playAlert()` by design |
 | `defines emotion(s) the game does not know` | Manifest names an emotion missing from `ANIMAL_EMOTIONS` |

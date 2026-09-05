@@ -240,20 +240,23 @@ each other vertically — measuring width would let a clip that gestures sideway
 
 The **origin** is the anchor point of a sprite: the spot the game holds it by when positioning
 it. Expressed as a fraction of the frame, so `(0.5, 1)` means "halfway across, all the way down"
-— bottom-centre, which is how the cast is placed on the floor line.
+— bottom-centre of the *canvas*.
 
-That works for atlas art because the character's feet are near the bottom of its frame. In a
-generated cell there is empty space below the feet, so bottom-centre anchoring leaves the
-character hovering. These two numbers put the anchor **in the same place relative to the
-character** that `(0.5, 1)` puts it in the atlas frame. Typical values here are around
-`0.51 / 0.78`.
+That is **not** where the atlas art's feet are. TexturePacker leaves empty padding below every
+animal except the owl (the raccoon has ~198px of it). Phaser sizes the sprite to that untrimmed
+canvas, so `setOrigin(0.5, 1)` planted Farm shadows and the Trial floor line in the padding.
+Atlas staging now uses `applyAtlasFeetOrigin`, which pins `originY` at the rest-frame's
+visible bottom. These two generated numbers do the same for a cell: `originX` still matches
+the atlas canvas centre (walk cycles were authored around it); `originY` is the bottom of the
+union bounding box, i.e. the feet. Typical values here are around `0.51 / 0.70`.
 
 **Both come from the union box, not per-frame boxes** — deliberately. A per-frame origin would
 re-anchor the sprite every frame and make the character twitch. One anchor for the clip means
 the character moves *within* a stable frame of reference, which is what an animation is.
 
-**Never hand-edit these.** They are measured. If they look wrong, the measurement is wrong — fix
-`normalize.mjs` and re-promote.
+**Never hand-edit these.** They are measured. If they look wrong, the measurement is wrong —
+fix `normalize.mjs` and run `npm run sprites:emotions -- --remeasure` against the shipped
+PNGs. Re-promote is only needed when the PNG itself changed.
 
 ---
 

@@ -33,7 +33,7 @@ spends **~4 credits per clip** from the user's Ludo.ai balance. Non-refundable.
   swallows the flag, the script receives **no arguments at all**, and its default scope is the
   entire manifest — 30 clips, ~120 credits. Always `npm run sprites:emotions -- --dry-run`.
   (Verified: with the flag before `--` the script's `process.argv.slice(2)` is `[]`.)
-- Free and safe: `-- --dry-run` (no API key needed), `-- --promote`, `-- --reindex`. Costly:
+- Free and safe: `-- --dry-run` (no API key needed), `-- --promote`, `-- --reindex`, `-- --remeasure`. Costly:
   anything else, and `--force` deliberately bypasses the result cache so it charges again.
 - `LUDO_API_KEY` lives only in the gitignored `.env.local`. Never commit it, never pass it as a
   CLI flag, never print the file's contents, and never rename it to `VITE_LUDO_API_KEY` — Vite

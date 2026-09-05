@@ -12,6 +12,7 @@ import {
   ANIMAL_STAGING,
   TRIAL_SCALE_BY_CAST_SIZE,
   animalArtFacesLeft,
+  applyAtlasFeetOrigin,
 } from '../animals/animalStaging';
 import { ANIMAL_EMOTIONS, type AnimalEmotion } from '../animals/animalEmotions';
 
@@ -112,9 +113,9 @@ export class Trial extends Scene {
 
       const setup = animalSetup(visual.animal);
       const x = TRIAL_STAGE_HOLE.x + (TRIAL_STAGE_HOLE.width * (i + 1)) / (n + 1);
-      const sprite = this.add
-        .sprite(x, floorY, setup.textureKey, setup.restFrameName)
-        .setOrigin(0.5, 1)
+      const sprite = applyAtlasFeetOrigin(
+        this.add.sprite(x, floorY, setup.textureKey, setup.restFrameName),
+      )
         .setScale(ANIMAL_STAGING[visual.animal].trialScale * sizeScale)
         .setFlipX(x < centreX === animalArtFacesLeft(visual.animal));
 

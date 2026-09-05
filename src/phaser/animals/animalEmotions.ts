@@ -78,11 +78,11 @@ export interface EmotionSheet {
    */
   scale: number;
   /**
-   * Origin to use while this clip plays, replacing the staged `(0.5, 1)`.
+   * Origin to use while this clip plays, replacing the staged atlas feet origin.
    *
    * Same cause as `scale`: the character's feet are not at the bottom of a generated cell, so
-   * a bottom-anchored sprite floats above the stage floor. These put the anchor in the same
-   * place relative to the character that `(0.5, 1)` puts it in the atlas frame.
+   * a bottom-anchored sprite floats above the stage floor. These put the anchor at the
+   * character's feet — the same place `applyAtlasFeetOrigin` pins it on an atlas frame.
    */
   originX: number;
   originY: number;

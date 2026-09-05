@@ -8,9 +8,11 @@
  * a 784x702 export canvas with the donkey filling most of it; a generated clip is a grid of
  * (say) 256x256 cells with the donkey somewhere inside, at whatever size and offset the
  * generator chose. `ANIMAL_STAGING` scales the sprite on the assumption that the frame *is*
- * the atlas canvas, and `Trial` anchors it with `setOrigin(0.5, 1)` on the assumption that
- * the character's feet are near the canvas bottom. Neither holds for a generated cell, so
- * playing one unchanged renders the animal at the wrong size, floating off the floor line.
+ * the atlas canvas. Staging used to also assume feet sat at the canvas bottom
+ * (`setOrigin(0.5, 1)`); that was only true of the owl, so Farm shadows and the Trial floor
+ * floated below everyone else. Atlas sprites now pin originY at the rest-frame trim
+ * (`applyAtlasFeetOrigin`). A generated cell matches neither atlas scale nor that feet
+ * origin, so playing one unchanged renders the animal at the wrong size, off the floor line.
  *
  * ## The fix
  *
@@ -19,8 +21,10 @@
  *
  *   - `scale`:   multiplier on the staging scale that makes the character the same height it
  *                is in the atlas art.
- *   - `originX`, `originY`: the origin that puts the sprite's anchor in the same place
- *                relative to the character that `(0.5, 1)` puts it in the atlas frame.
+ *   - `originX`, `originY`: the origin that puts the sprite's anchor at the character's
+ *                feet — the same place `applyAtlasFeetOrigin` pins it on an atlas frame.
+ *                `originX` still matches the atlas canvas centre (walk cycles were authored
+ *                around it); `originY` is the bottom of the generated union box.
  *
  * The union box (not per-frame) is deliberate: a per-frame origin would make the character
  * twitch as the box changed shape between frames. One box for the clip means the character
@@ -121,15 +125,14 @@ export async function measureNormalization(sheetBuffer, referenceBuffer, grid) {
   // gestures sideways would otherwise be shrunk by its own gesture.
   const scale = reference.height / sheet.height;
 
-  // Where `setOrigin(0.5, 1)` sits relative to the character in the atlas frame, in reference
-  // pixels: horizontally off its centre, vertically below its feet.
+  // Atlas staging pins originX at the canvas centre (walk cycles were authored around it)
+  // and originY at the visible feet (`applyAtlasFeetOrigin`). Copy that onto the generated
+  // cell: horizontally off the character's centre by the same canvas-centre offset,
+  // vertically at the bottom of the union box — no extra pad below the feet.
   const anchorOffsetX = referenceMeta.width * 0.5 - (reference.x + reference.width / 2);
-  const anchorOffsetY = referenceMeta.height - (reference.y + reference.height);
-
-  // Convert that offset into generated-frame pixels, then express it as an origin fraction.
   const toSheetPixels = sheet.height / reference.height;
   const anchorX = sheet.x + sheet.width / 2 + anchorOffsetX * toSheetPixels;
-  const anchorY = sheet.y + sheet.height + anchorOffsetY * toSheetPixels;
+  const anchorY = sheet.y + sheet.height;
 
   return {
     scale: Number(scale.toFixed(4)),

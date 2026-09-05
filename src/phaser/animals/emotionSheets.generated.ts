@@ -28,7 +28,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.125,
       originX: 0.528,
-      originY: 0.7775,
+      originY: 0.7012,
     },
     doubtful: {
       file: 'brown-wolf-doubtful.png',
@@ -38,7 +38,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.2174,
       originX: 0.521,
-      originY: 0.7743,
+      originY: 0.7012,
     },
     sneaky: {
       file: 'brown-wolf-sneaky.png',
@@ -48,7 +48,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.1857,
       originX: 0.536,
-      originY: 0.7734,
+      originY: 0.6992,
     },
     talking: {
       file: 'brown-wolf-talking.png',
@@ -58,7 +58,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.2174,
       originX: 0.5337,
-      originY: 0.7723,
+      originY: 0.6992,
     },
     thinking: {
       file: 'brown-wolf-thinking.png',
@@ -68,7 +68,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.2282,
       originX: 0.5277,
-      originY: 0.7739,
+      originY: 0.7012,
     },
   },
   'donkey-grey': {
@@ -80,7 +80,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 8,
       scale: 2.0584,
       originX: 0.5384,
-      originY: 0.7933,
+      originY: 0.7383,
     },
     doubtful: {
       file: 'donkey-grey-doubtful.png',
@@ -90,7 +90,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 8,
       scale: 2.0268,
       originX: 0.5332,
-      originY: 0.7922,
+      originY: 0.7363,
     },
     sneaky: {
       file: 'donkey-grey-sneaky.png',
@@ -100,7 +100,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 8,
       scale: 2.177,
       originX: 0.5266,
-      originY: 0.7884,
+      originY: 0.7363,
     },
     talking: {
       file: 'donkey-grey-talking.png',
@@ -110,7 +110,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 8,
       scale: 2.1331,
       originX: 0.5361,
-      originY: 0.7894,
+      originY: 0.7363,
     },
     thinking: {
       file: 'donkey-grey-thinking.png',
@@ -120,7 +120,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 8,
       scale: 2.0584,
       originX: 0.5257,
-      originY: 0.7933,
+      originY: 0.7383,
     },
   },
   fox: {
@@ -132,7 +132,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 8,
       scale: 2.3155,
       originX: 0.5723,
-      originY: 0.7265,
+      originY: 0.6641,
     },
     doubtful: {
       file: 'fox-doubtful.png',
@@ -142,7 +142,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 8,
       scale: 2.3018,
       originX: 0.5472,
-      originY: 0.7269,
+      originY: 0.6641,
     },
     sneaky: {
       file: 'fox-sneaky.png',
@@ -152,7 +152,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.3018,
       originX: 0.5443,
-      originY: 0.7269,
+      originY: 0.6641,
     },
     talking: {
       file: 'fox-talking.png',
@@ -162,7 +162,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 8,
       scale: 2.2616,
       originX: 0.545,
-      originY: 0.7299,
+      originY: 0.666,
     },
     thinking: {
       file: 'fox-thinking.png',
@@ -172,7 +172,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 8,
       scale: 2.3155,
       originX: 0.5635,
-      originY: 0.7265,
+      originY: 0.6641,
     },
   },
   owl: {
@@ -236,7 +236,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.4663,
       originX: 0.5123,
-      originY: 0.8416,
+      originY: 0.6855,
     },
     doubtful: {
       file: 'raccoon-doubtful.png',
@@ -246,7 +246,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.4198,
       originX: 0.5115,
-      originY: 0.8426,
+      originY: 0.6836,
     },
     sneaky: {
       file: 'raccoon-sneaky.png',
@@ -256,7 +256,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.7,
       originX: 0.5112,
-      originY: 0.8261,
+      originY: 0.6836,
     },
     talking: {
       file: 'raccoon-talking.png',
@@ -266,7 +266,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.5779,
       originX: 0.5117,
-      originY: 0.8328,
+      originY: 0.6836,
     },
     thinking: {
       file: 'raccoon-thinking.png',
@@ -276,7 +276,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 2.565,
       originX: 0.5118,
-      originY: 0.8336,
+      originY: 0.6836,
     },
   },
   'white-sheep-1': {
@@ -288,7 +288,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 1.0861,
       originX: 0.4797,
-      originY: 0.8156,
+      originY: 0.7148,
     },
     doubtful: {
       file: 'white-sheep-1-doubtful.png',
@@ -298,7 +298,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 1.1937,
       originX: 0.4848,
-      originY: 0.8065,
+      originY: 0.7148,
     },
     sneaky: {
       file: 'white-sheep-1-sneaky.png',
@@ -308,7 +308,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 1.1373,
       originX: 0.4901,
-      originY: 0.811,
+      originY: 0.7148,
     },
     talking: {
       file: 'white-sheep-1-talking.png',
@@ -318,7 +318,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 1.1472,
       originX: 0.4911,
-      originY: 0.8121,
+      originY: 0.7168,
     },
     thinking: {
       file: 'white-sheep-1-thinking.png',
@@ -328,7 +328,7 @@ export const EMOTION_SHEETS: Partial<
       frameRate: 13,
       scale: 1.1937,
       originX: 0.4887,
-      originY: 0.8084,
+      originY: 0.7168,
     },
   },
 };

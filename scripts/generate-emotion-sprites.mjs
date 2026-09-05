@@ -18,6 +18,11 @@
  *                                alone, with no review dir and no API calls. For when the
  *                                record was edited by hand (a corrected frame rate) or the
  *                                module drifted from it.
+ *   --remeasure                  Re-run `measureNormalization` against the shipped PNGs in
+ *                                `public/assets/characters/emotions/` and the atlas reference
+ *                                frames, then rewrite `promoted-clips.json` and the generated
+ *                                module. Free: no API, no review dir. Use after changing the
+ *                                origin/scale maths in `normalize.mjs`.
  *
  * ## The API key
  *
@@ -87,6 +92,7 @@ function parseArgs(argv) {
     promote: false,
     force: false,
     reindex: false,
+    remeasure: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -94,6 +100,7 @@ function parseArgs(argv) {
     else if (arg === '--promote') args.promote = true;
     else if (arg === '--force') args.force = true;
     else if (arg === '--reindex') args.reindex = true;
+    else if (arg === '--remeasure') args.remeasure = true;
     else if (arg === '--animal') args.animals = (argv[++i] ?? '').split(',').filter(Boolean);
     else if (arg === '--emotion') args.emotions = (argv[++i] ?? '').split(',').filter(Boolean);
     else {
@@ -601,9 +608,68 @@ async function reindex() {
   console.log(`Rebuilt ${GENERATED_TS} from ${PROMOTED_RECORD}: ${total} clip(s).`);
 }
 
+/**
+ * Re-runs `measureNormalization` on every shipped clip. Scale/origin live in
+ * `promoted-clips.json` because they cannot be recovered from the PNG alone, so a change to
+ * the maths (planting originY at the feet rather than the atlas canvas bottom) has to write
+ * new numbers back. Reads the promoted PNG and extracts the atlas reference frame — the same
+ * inputs `--promote` used — and never touches the API.
+ */
+async function remeasure() {
+  const record = await readPromotedRecord();
+  const total = Object.values(record).reduce((n, e) => n + Object.keys(e).length, 0);
+  if (total === 0) {
+    console.error(`${PROMOTED_RECORD} holds no clips — nothing to remeasure.`);
+    process.exit(1);
+  }
+
+  const manifest = await readManifest();
+  console.log(`Remeasuring ${total} clip(s) against shipped PNGs (no API calls).\n`);
+
+  for (const animalId of Object.keys(record).sort()) {
+    const animal = manifest.animals[animalId];
+    if (!animal?.reference) {
+      throw new Error(
+        `No manifest reference for "${animalId}" — cannot extract the atlas frame to measure against.`,
+      );
+    }
+    const { buffer: referenceBuffer } = await extractReferenceFrame(animalId, animal.reference);
+
+    for (const emotion of Object.keys(record[animalId]).sort()) {
+      const sheet = record[animalId][emotion];
+      const pngPath = join(PUBLIC_DIR, sheet.file);
+      if (!(await exists(pngPath))) {
+        throw new Error(`Missing shipped clip ${pngPath}`);
+      }
+      const sheetBuffer = await readFile(pngPath);
+      const { width } = await sharp(sheetBuffer).metadata();
+      if (!width) throw new Error(`${pngPath} has no width`);
+      const grid = {
+        cols: width / sheet.frameWidth,
+        frameWidth: sheet.frameWidth,
+        frameHeight: sheet.frameHeight,
+        frameCount: sheet.frameCount,
+      };
+      const norm = await measureNormalization(sheetBuffer, referenceBuffer, grid);
+      sheet.scale = norm.scale;
+      sheet.originX = norm.originX;
+      sheet.originY = norm.originY;
+      console.log(
+        `- ${animalId}/${emotion}  (scale ×${norm.scale}, origin ${norm.originX}/${norm.originY})`,
+      );
+    }
+  }
+
+  const sorted = sortRecord(record);
+  await writeFile(PROMOTED_RECORD, `${JSON.stringify(sorted, null, 2)}\n`);
+  await writeGeneratedModule(sorted);
+  console.log(`\nRewrote ${PROMOTED_RECORD} and ${GENERATED_TS} with ${total} clip(s).`);
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  if (args.reindex) await reindex();
+  if (args.remeasure) await remeasure();
+  else if (args.reindex) await reindex();
   else if (args.promote) await promote();
   else await generate(args);
 }

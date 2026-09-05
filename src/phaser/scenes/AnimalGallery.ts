@@ -21,7 +21,7 @@ import { ANIMAL_GALLERY_STAGE } from '../../utils/constants';
 import { useAnimalGalleryStore } from '../../store/animalGalleryStore';
 import { animalSetup } from '../animals/animalAnimations';
 import { animalClips, type AnimalClip } from '../animals/animalClipCatalogue';
-import { ANIMAL_STAGING } from '../animals/animalStaging';
+import { ANIMAL_STAGING, applyAtlasFeetOrigin } from '../animals/animalStaging';
 import {
   applyEmotionStaging,
   captureStaging,
@@ -109,15 +109,14 @@ export class AnimalGallery extends Scene {
       return;
     }
 
-    this.sprite = this.add
-      .sprite(
+    this.sprite = applyAtlasFeetOrigin(
+      this.add.sprite(
         ANIMAL_GALLERY_STAGE.x + ANIMAL_GALLERY_STAGE.width / 2,
         ANIMAL_GALLERY_STAGE.y + ANIMAL_GALLERY_STAGE.height * FLOOR_RATIO,
         setup.textureKey,
         setup.restFrameName,
-      )
-      .setOrigin(0.5, 1)
-      .setScale(ANIMAL_STAGING[animalId].trialScale * GALLERY_SCALE_OF_TRIAL);
+      ),
+    ).setScale(ANIMAL_STAGING[animalId].trialScale * GALLERY_SCALE_OF_TRIAL);
 
     // Captured after staging and before any clip plays — this is what `restoreStaging` puts
     // back when leaving a generated clip.

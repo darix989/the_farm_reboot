@@ -263,6 +263,15 @@ single check; Farm, Trial and the gallery consult it rather than assuming the wh
 cast matches. A sprite that should face inward/right still `setFlipX(true)` when the
 art faces left, and the opposite when it faces right.
 
+**Feet origin, not canvas bottom.** TexturePacker trims transparent pixels but Phaser
+still sizes the sprite to the untrimmed `sourceSize`. `setOrigin(0.5, 1)` therefore
+pins the export-canvas bottom, which only matches the feet for the owl — everyone else
+has 55–198px of padding below the hooves (the raccoon is worst: its canvas is sized for
+the sitting-up pose). `applyAtlasFeetOrigin` reads the rest frame's trim and sets
+`originY` at the visible bottom, so Farm shadows, the Trial floor line and the gallery
+floor all sit under the feet. Generated emotion clips get a matching origin from
+`normalize.mjs` (§9.4).
+
 ---
 
 ## 5. Two bugs the prototype had, fixed here
@@ -416,21 +425,29 @@ exactly as it did before emotions existed.
 A generated cell is **not** the atlas canvas. Rue's idle frame is a 784×702 export canvas
 with the donkey filling most of it; a generated clip is a grid of 256×256 cells with the
 donkey somewhere inside at whatever size the generator chose. `ANIMAL_STAGING` (§4) assumes
-the frame _is_ the export canvas and `Trial` anchors with `setOrigin(0.5, 1)` assuming the
-feet are near the canvas bottom. Neither holds. Played unchanged, the animal shrinks by ~3×
-and floats off the floor line the moment it reacts.
+the frame _is_ the export canvas. Staging used to also assume the feet sat at that canvas
+bottom (`setOrigin(0.5, 1)`); that is only true of the owl, so Farm shadows and the Trial
+floor line floated below everyone else. Atlas sprites now call `applyAtlasFeetOrigin`,
+which pins `originY` at the rest-frame trim. A generated cell matches neither atlas scale
+nor that feet origin, so playing one unchanged shrinks the animal by ~3× and floats it
+off the floor the moment it reacts.
 
 So `scripts/ludo/normalize.mjs` measures, at promote time, the character's alpha bounding box
 in the clip against the same box in the atlas frame it was generated from, and stores a
-`scale` multiplier and an `originX`/`originY` on the sheet. `AnimalAnimator` applies them on
-`ANIMATION_START` of the emotion clip and restores the staged values on `ANIMATION_START` of
-anything else — never in `playEmotion` / `playIdle` themselves. Phaser can delay the first
-frame (`delay`, `playAfterRepeat`), and putting emotion scale on an atlas texture (or atlas
-scale on a generated cell) is a ~2× size flash the moment a debate changes phase. The
-runtime measures nothing.
+`scale` multiplier and an `originX`/`originY` on the sheet. `originY` is the bottom of the
+generated union box — the same place the atlas rest-frame trim puts the feet — so switching
+from idle to an emotion does not jump. `AnimalAnimator` applies them on `ANIMATION_START` of
+the emotion clip and restores the staged values on `ANIMATION_START` of anything else —
+never in `playEmotion` / `playIdle` themselves. Phaser can delay the first frame (`delay`,
+`playAfterRepeat`), and putting emotion scale on an atlas texture (or atlas scale on a
+generated cell) is a ~2× size flash the moment a debate changes phase. The runtime measures
+nothing.
 
 The union box across all frames is used, not a per-frame box: a per-frame origin would make
 the character twitch as its box changed shape between frames.
+
+If the origin/scale maths change, re-run `npm run sprites:emotions -- --remeasure` against
+the shipped PNGs — no API, no regeneration.
 
 ### 9.5 Generating a clip
 

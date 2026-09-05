@@ -10,9 +10,10 @@
  *
  * Dropped from the source shape: `scale` (moves to `animalStaging.ts` — the source values
  * were tuned for a Tiled world at camera zoom 0.6 and don't apply here) and `manualPivot`
- * (dog-only in the source, and only because that sprite skipped `setOrigin(0.5, 1)`; with
- * bottom-anchoring the trimmed idle frame already sits on the floor). `isFlipped` is used
- * by the mouse, whose art faces right; `variantOf` is kept for parity but unused.
+ * (dog-only in the source). Atlas feet origin is measured from the rest frame's trim
+ * (`applyAtlasFeetOrigin` in `animalStaging.ts`), so a per-animal pivot is not needed.
+ * `isFlipped` is used by the mouse, whose art faces right; `variantOf` is kept for parity
+ * but unused.
  */
 import type { AnimalSpriteId } from '../../data/characters';
 

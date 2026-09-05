@@ -19,14 +19,21 @@ import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import getLabel from '../../data/labels';
 import { animalSetup } from '../animals/animalAnimations';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
-import { ANIMAL_STAGING, animalArtFacesLeft } from '../animals/animalStaging';
+import {
+  ANIMAL_STAGING,
+  animalArtFacesLeft,
+  applyAtlasFeetOrigin,
+  atlasTrimmedDisplayWidth,
+} from '../animals/animalStaging';
 
 const PLAYER_SPEED = 167; // slowed twice by 30% from the 340 the overworld shipped with
 /** Player body is smaller than the sprite so Rue's feet, not his head, hit walls. */
 const PLAYER_BODY = { width: 38, height: 28, offsetX: 9, offsetY: 24 };
 /**
- * Vertical offset from the (invisible) physics body's centre down to where the animated
- * art's feet should sit. Half the body height plus its own top offset, tuned by eye.
+ * Vertical offset from the (invisible) physics body's centre down to the animated art's
+ * feet. `applyAtlasFeetOrigin` now pins the sprite origin at the hooves, so this is purely
+ * body alignment: 18 sits them near the bottom of the 28px collider (which ends 24px below
+ * centre). Do not re-introduce canvas-padding fudge here.
  */
 const PLAYER_ART_FEET_OFFSET = 18;
 
@@ -134,12 +141,12 @@ export class Farm extends Scene {
 
       if (visual.animal && this.textures.exists(visual.animal)) {
         const setup = animalSetup(visual.animal);
-        const sprite = this.add
-          .sprite(npc.x, npc.y, setup.textureKey, setup.restFrameName)
-          .setOrigin(0.5, 1) // y is the animal's feet
+        const sprite = applyAtlasFeetOrigin(
+          this.add.sprite(npc.x, npc.y, setup.textureKey, setup.restFrameName),
+        )
           .setScale(ANIMAL_STAGING[visual.animal].farmScale)
           .setDepth(npc.y);
-        shadow.setScale(sprite.displayWidth / 56, 1);
+        shadow.setScale(atlasTrimmedDisplayWidth(sprite) / 56, 1);
         animator = attachAnimalAnimator(sprite, setup, { staging: 'farm' });
         animator?.playIdle();
         nameY = npc.y + 12;
@@ -184,9 +191,9 @@ export class Farm extends Scene {
     if (visual.animal && this.textures.exists(visual.animal)) {
       const setup = animalSetup(visual.animal);
       this.player.setVisible(false);
-      this.playerArt = this.add
-        .sprite(x, y + PLAYER_ART_FEET_OFFSET, setup.textureKey, setup.restFrameName)
-        .setOrigin(0.5, 1)
+      this.playerArt = applyAtlasFeetOrigin(
+        this.add.sprite(x, y + PLAYER_ART_FEET_OFFSET, setup.textureKey, setup.restFrameName),
+      )
         .setScale(ANIMAL_STAGING[visual.animal].farmScale)
         .setDepth(y);
       // No desync delay for the player: that range exists to scatter a herd told to react in

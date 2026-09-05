@@ -89,3 +89,33 @@ export const TRIAL_SCALE_BY_CAST_SIZE: Record<number, number> = { 1: 1.1, 2: 1, 
 export function animalArtFacesLeft(id: AnimalSpriteId): boolean {
   return ANIMAL_DESCRIPTORS[id].isFlipped !== true;
 }
+
+/**
+ * Pins a sprite's origin at the rest-frame's visible feet, not the export-canvas bottom.
+ *
+ * TexturePacker trims transparent pixels but Phaser still sizes the sprite to `sourceSize`
+ * (`frame.realWidth` / `realHeight`). `setOrigin(0.5, 1)` therefore lands on empty padding
+ * below every animal except the owl, whose canvas already reached the feet. Using the rest
+ * frame's trim (`frame.y + frame.cutHeight`) keeps the floor stable across clips — a
+ * per-frame origin would bounce as the box changed shape.
+ *
+ * Call after the sprite has its rest frame (Farm, Trial and the gallery all do) and before
+ * attaching an `AnimalAnimator`, so `captureStaging` records the feet origin. Returns the
+ * sprite so it can sit in a `add.sprite(…).setScale(…)` chain.
+ */
+export function applyAtlasFeetOrigin(sprite: Phaser.GameObjects.Sprite): Phaser.GameObjects.Sprite {
+  const frame = sprite.frame;
+  if (!frame || frame.realHeight <= 0) {
+    return sprite.setOrigin(0.5, 1);
+  }
+  return sprite.setOrigin(0.5, (frame.y + frame.cutHeight) / frame.realHeight);
+}
+
+/**
+ * Visible (trimmed) width of the current frame, in display pixels. `sprite.displayWidth` is
+ * the untrimmed canvas, which is 25–100% wider than the animal and blows a contact shadow
+ * out past the body.
+ */
+export function atlasTrimmedDisplayWidth(sprite: Phaser.GameObjects.Sprite): number {
+  return sprite.frame.cutWidth * Math.abs(sprite.scaleX);
+}
