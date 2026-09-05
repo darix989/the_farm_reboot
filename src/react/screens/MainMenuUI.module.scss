@@ -22,6 +22,20 @@
   text-align: center;
   pointer-events: all;
   backdrop-filter: blur(5px);
+
+  /* Ten scenarios no longer fit a 1080-tall stage at every zoom level. */
+  max-height: 90%;
+  overflow-y: auto;
+}
+
+.menuGroupHeading {
+  font-size: var(--ui-font-caption);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ui-color-text-muted-2);
+  margin: 0 0 10px;
+  text-align: left;
 }
 
 .menuTitle {
@@ -34,14 +48,15 @@
 .buttonContainer {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
 .menuButton {
-  width: 200px;
-  padding: 15px 20px;
-  font-size: var(--ui-font-subtitle);
+  width: 26rem;
+  max-width: 100%;
+  padding: 12px 18px;
+  font-size: var(--ui-font-body);
   font-weight: bold;
   background: linear-gradient(45deg, var(--ui-color-bg), var(--ui-color-bg-soft));
   color: var(--ui-color-text-emphasis);
@@ -49,8 +64,7 @@
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  text-align: left;
 
   &:hover {
     border-color: var(--ui-color-accent);

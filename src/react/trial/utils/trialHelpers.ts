@@ -1,16 +1,112 @@
+import { PLAYER_CHARACTER_ID } from '../../../data/characters';
+import getLabel from '../../../data/labels';
+import type { GamePhase } from '../../hooks/useTrialRoundWorkflow';
 import {
   PLAYER_OPTION_IMPACT_ABS_MAX,
   type DebateScenarioJson,
+  type NpcRoundEntry,
+  type OpponentResponse,
   type PlayerOption,
+  type PlayerRoundEntry,
   type RoundEntry,
   type Sentence,
   type Side,
+  type Statement,
 } from '../../../types/debateEntities';
 import { uiColor } from '../../uiColor';
-import getLabel from '../../../data/labels';
+import type { AnimalEmotion } from '../../../phaser/animals/animalEmotions';
 
 export function getSpeakerName(debate: DebateScenarioJson, speakerId: string): string {
   return debate.characters?.[speakerId] ?? speakerId.charAt(0).toUpperCase() + speakerId.slice(1);
+}
+
+/** Current speaker for CharacterStage highlighting. Intro/complete/recap leave everyone equal. */
+export function activeSpeakerIdForWorkflow(
+  gamePhase: GamePhase,
+  currentNpcRound: NpcRoundEntry | null,
+  currentPlayerRound: PlayerRoundEntry | null,
+  selectedOption: PlayerOption | null,
+  activeOpponentResponse: OpponentResponse | null,
+): string | null {
+  switch (gamePhase) {
+    case 'npc_speaking':
+      return currentNpcRound?.speakerId ?? null;
+    case 'player_choosing':
+      if (!selectedOption && currentPlayerRound?.opponentPrompt) {
+        return currentPlayerRound.opponentPrompt.speakerId;
+      }
+      return PLAYER_CHARACTER_ID;
+    case 'player_confirming':
+      return PLAYER_CHARACTER_ID;
+    case 'npc_responding':
+      return activeOpponentResponse?.statement.speakerId ?? null;
+    default:
+      return null;
+  }
+}
+
+/**
+ * Emotional register for whoever `activeSpeakerIdForWorkflow` just returned.
+ *
+ * Kept as a sibling of that function, and given the identical argument list, because the two
+ * are read together on every render and must be derived from exactly the same snapshot: a
+ * speaker paired with the previous line's emotion is worse than no emotion at all.
+ *
+ * Derivation over authoring, by default. An authored `Statement.emotion` always wins, but
+ * every existing scenario predates this field, and the shape of the data already carries the
+ * intent:
+ *   - A line whose sentences carry `logicalFallacies` is a line the speaker is trying to slip
+ *     past the player. That is `sneaky` — no re-authoring needed to make every dirty argument
+ *     in the game look dirty.
+ *   - `crossfire` is the adversarial format; its questions are put skeptically (`doubtful`).
+ *   - While the player is picking, Rue is not speaking — he is deliberating (`thinking`).
+ * Everything else is plain `talking`, which is the honest answer rather than a guess.
+ */
+export function activeEmotionForWorkflow(
+  gamePhase: GamePhase,
+  currentNpcRound: NpcRoundEntry | null,
+  currentPlayerRound: PlayerRoundEntry | null,
+  selectedOption: PlayerOption | null,
+  activeOpponentResponse: OpponentResponse | null,
+): AnimalEmotion | null {
+  switch (gamePhase) {
+    case 'npc_speaking':
+      if (!currentNpcRound) return null;
+      return emotionFromStatement(currentNpcRound.statement);
+    case 'player_choosing':
+      if (!selectedOption && currentPlayerRound?.opponentPrompt) {
+        return emotionFromStatement(currentPlayerRound.opponentPrompt);
+      }
+      // The player holds the floor but has not committed to a line yet.
+      return 'thinking';
+    case 'player_confirming':
+      return selectedOption?.emotion ?? emotionFromOptionQuality(selectedOption);
+    case 'npc_responding': {
+      const statement = activeOpponentResponse?.statement ?? null;
+      return statement ? emotionFromStatement(statement) : null;
+    }
+    default:
+      return null;
+  }
+}
+
+/** Shared tail of the derivation above; see its docstring for the reasoning. */
+function emotionFromStatement(statement: Statement): AnimalEmotion {
+  if (statement.emotion) return statement.emotion;
+  const hidesAFallacy = statement.sentences.some((s) => (s.logicalFallacies?.length ?? 0) > 0);
+  if (hidesAFallacy) return 'sneaky';
+  if (statement.type === 'crossfire') return 'doubtful';
+  return 'talking';
+}
+
+/**
+ * How Rue delivers the line he just committed to. A knowingly bad choice is played `sneaky`
+ * rather than `talking`: the player chose it on purpose, and the sprite selling it as a dirty
+ * move is the feedback that a quality badge alone does not give.
+ */
+function emotionFromOptionQuality(option: PlayerOption | null): AnimalEmotion {
+  if (option?.quality === 'logical_fallacy') return 'sneaky';
+  return 'talking';
 }
 
 /**
@@ -24,8 +120,19 @@ export function getStartingInsightPoints(debate: DebateScenarioJson): number {
   return Math.floor(value);
 }
 
-export function qualityColor(quality: PlayerOption['quality']): string {
-  if (quality === 'effective') return uiColor.info;
+/**
+ * Colour for an option's quality badge.
+ *
+ * `targetQuality` is the quality the scenario rewards (see `DebateScenarioMechanics`).
+ * It is `'effective'` for every debate, so the default arm reproduces the original
+ * behaviour; inoculation scenarios pass `'logical_fallacy'` so the deliberately dirty
+ * line reads as the win rather than as a mistake.
+ */
+export function qualityColor(
+  quality: PlayerOption['quality'],
+  targetQuality: PlayerOption['quality'] = 'effective',
+): string {
+  if (quality === targetQuality) return uiColor.info;
   if (quality === 'logical_fallacy') return uiColor.danger;
   return uiColor.textHint;
 }
@@ -38,6 +145,19 @@ export function qualityLabel(quality: PlayerOption['quality']): string {
 
 export function statementText(sentences: Sentence[]): string {
   return sentences.map((s) => s.text).join(' ');
+}
+
+/**
+ * One block of recap copy: the authored `summary` when there is one, the spoken text
+ * otherwise. `isSummary` tells the caller whether it may clamp the paragraph — the
+ * fallback is full-length prose and must not be cut.
+ */
+export function recapText(
+  summary: string | undefined,
+  fullText: string,
+): { text: string; isSummary: boolean } {
+  const authored = summary?.trim() ?? '';
+  return authored ? { text: authored, isSummary: true } : { text: fullText, isSummary: false };
 }
 
 /** Preview line for compact UI (e.g. choice buttons); full text stays in aria-label. */

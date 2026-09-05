@@ -1,0 +1,1357 @@
+{
+  "textures": [
+    {
+      "image": "mouse/mouse-0.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 2024,
+        "h": 2042
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "mouse-lie-spritesheet-1095px-by-680px-per-frame-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1095,
+            "h": 680
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 25,
+            "w": 790,
+            "h": 643
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 790,
+            "h": 643
+          }
+        },
+        {
+          "filename": "mouse-stand-spritesheet-1103px-by-658px-per-frame-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1103,
+            "h": 658
+          },
+          "spriteSourceSize": {
+            "x": 16,
+            "y": 203,
+            "w": 1083,
+            "h": 455
+          },
+          "frame": {
+            "x": 1,
+            "y": 646,
+            "w": 1083,
+            "h": 455
+          }
+        },
+        {
+          "filename": "mouse-stand-spritesheet-1103px-by-658px-per-frame-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1103,
+            "h": 658
+          },
+          "spriteSourceSize": {
+            "x": 14,
+            "y": 161,
+            "w": 1071,
+            "h": 494
+          },
+          "frame": {
+            "x": 793,
+            "y": 1,
+            "w": 1071,
+            "h": 494
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 41,
+            "w": 1121,
+            "h": 364
+          },
+          "frame": {
+            "x": 1,
+            "y": 1103,
+            "w": 1121,
+            "h": 364
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 257,
+            "w": 937,
+            "h": 482
+          },
+          "frame": {
+            "x": 1086,
+            "y": 497,
+            "w": 937,
+            "h": 482
+          }
+        },
+        {
+          "filename": "mouse-lie-spritesheet-1095px-by-680px-per-frame-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1095,
+            "h": 680
+          },
+          "spriteSourceSize": {
+            "x": 1,
+            "y": 51,
+            "w": 856,
+            "h": 620
+          },
+          "frame": {
+            "x": 1124,
+            "y": 981,
+            "w": 856,
+            "h": 620
+          }
+        },
+        {
+          "filename": "mouse-stand-spritesheet-1103px-by-658px-per-frame-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1103,
+            "h": 658
+          },
+          "spriteSourceSize": {
+            "x": 12,
+            "y": 119,
+            "w": 1047,
+            "h": 536
+          },
+          "frame": {
+            "x": 1,
+            "y": 1469,
+            "w": 1047,
+            "h": 536
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 278,
+            "w": 938,
+            "h": 438
+          },
+          "frame": {
+            "x": 1050,
+            "y": 1603,
+            "w": 938,
+            "h": 438
+          }
+        }
+      ]
+    },
+    {
+      "image": "mouse/mouse-1.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 2041,
+        "h": 1985
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "mouse-stand-spritesheet-1103px-by-658px-per-frame-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1103,
+            "h": 658
+          },
+          "spriteSourceSize": {
+            "x": 4,
+            "y": 29,
+            "w": 856,
+            "h": 620
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 856,
+            "h": 620
+          }
+        },
+        {
+          "filename": "mouse-lie-spritesheet-1095px-by-680px-per-frame-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1095,
+            "h": 680
+          },
+          "spriteSourceSize": {
+            "x": 13,
+            "y": 225,
+            "w": 1082,
+            "h": 455
+          },
+          "frame": {
+            "x": 1,
+            "y": 623,
+            "w": 1082,
+            "h": 455
+          }
+        },
+        {
+          "filename": "mouse-lie-spritesheet-1095px-by-680px-per-frame-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1095,
+            "h": 680
+          },
+          "spriteSourceSize": {
+            "x": 11,
+            "y": 183,
+            "w": 1070,
+            "h": 494
+          },
+          "frame": {
+            "x": 859,
+            "y": 1,
+            "w": 1070,
+            "h": 494
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 28,
+            "w": 1121,
+            "h": 358
+          },
+          "frame": {
+            "x": 1,
+            "y": 1080,
+            "w": 1121,
+            "h": 358
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 72,
+            "y": 247,
+            "w": 936,
+            "h": 480
+          },
+          "frame": {
+            "x": 1085,
+            "y": 497,
+            "w": 936,
+            "h": 480
+          }
+        },
+        {
+          "filename": "mouse-stand-spritesheet-1103px-by-658px-per-frame-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1103,
+            "h": 658
+          },
+          "spriteSourceSize": {
+            "x": 6,
+            "y": 45,
+            "w": 916,
+            "h": 607
+          },
+          "frame": {
+            "x": 1124,
+            "y": 979,
+            "w": 916,
+            "h": 607
+          }
+        },
+        {
+          "filename": "mouse-lie-spritesheet-1095px-by-680px-per-frame-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1095,
+            "h": 680
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 142,
+            "w": 1047,
+            "h": 535
+          },
+          "frame": {
+            "x": 1,
+            "y": 1440,
+            "w": 1047,
+            "h": 535
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 70,
+            "y": 289,
+            "w": 938,
+            "h": 396
+          },
+          "frame": {
+            "x": 1050,
+            "y": 1588,
+            "w": 938,
+            "h": 396
+          }
+        }
+      ]
+    },
+    {
+      "image": "mouse/mouse-2.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1932,
+        "h": 1986
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "mouse-lie-spritesheet-1095px-by-680px-per-frame-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1095,
+            "h": 680
+          },
+          "spriteSourceSize": {
+            "x": 3,
+            "y": 67,
+            "w": 915,
+            "h": 607
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 915,
+            "h": 607
+          }
+        },
+        {
+          "filename": "mouse-stand-spritesheet-1103px-by-658px-per-frame-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1103,
+            "h": 658
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 243,
+            "w": 1102,
+            "h": 409
+          },
+          "frame": {
+            "x": 1,
+            "y": 610,
+            "w": 1102,
+            "h": 409
+          }
+        },
+        {
+          "filename": "mouse-stand-spritesheet-1103px-by-658px-per-frame-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1103,
+            "h": 658
+          },
+          "spriteSourceSize": {
+            "x": 10,
+            "y": 84,
+            "w": 1013,
+            "h": 571
+          },
+          "frame": {
+            "x": 918,
+            "y": 1,
+            "w": 1013,
+            "h": 571
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 1,
+            "y": 38,
+            "w": 1120,
+            "h": 386
+          },
+          "frame": {
+            "x": 1,
+            "y": 1021,
+            "w": 1120,
+            "h": 386
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 1,
+            "y": 29,
+            "w": 1120,
+            "h": 366
+          },
+          "frame": {
+            "x": 1,
+            "y": 1409,
+            "w": 1120,
+            "h": 366
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 0,
+            "y": 0,
+            "w": 735,
+            "h": 469
+          },
+          "frame": {
+            "x": 1123,
+            "y": 574,
+            "w": 735,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 3,
+            "y": 0,
+            "w": 733,
+            "h": 469
+          },
+          "frame": {
+            "x": 1123,
+            "y": 1045,
+            "w": 733,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 3,
+            "y": 0,
+            "w": 733,
+            "h": 469
+          },
+          "frame": {
+            "x": 1123,
+            "y": 1516,
+            "w": 733,
+            "h": 469
+          }
+        }
+      ]
+    },
+    {
+      "image": "mouse/mouse-3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1999,
+        "h": 1775
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 1,
+            "y": 75,
+            "w": 983,
+            "h": 606
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 983,
+            "h": 606
+          }
+        },
+        {
+          "filename": "mouse-lie-spritesheet-1095px-by-680px-per-frame-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1095,
+            "h": 680
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 106,
+            "w": 1012,
+            "h": 571
+          },
+          "frame": {
+            "x": 986,
+            "y": 1,
+            "w": 1012,
+            "h": 571
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 2,
+            "y": 86,
+            "w": 987,
+            "h": 602
+          },
+          "frame": {
+            "x": 1,
+            "y": 609,
+            "w": 987,
+            "h": 602
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 4,
+            "y": 96,
+            "w": 989,
+            "h": 600
+          },
+          "frame": {
+            "x": 990,
+            "y": 574,
+            "w": 989,
+            "h": 600
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 5,
+            "y": 155,
+            "w": 999,
+            "h": 556
+          },
+          "frame": {
+            "x": 1,
+            "y": 1213,
+            "w": 999,
+            "h": 556
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 2,
+            "y": 104,
+            "w": 991,
+            "h": 598
+          },
+          "frame": {
+            "x": 1002,
+            "y": 1176,
+            "w": 991,
+            "h": 598
+          }
+        }
+      ]
+    },
+    {
+      "image": "mouse/mouse-4.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1987,
+        "h": 1773
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 6,
+            "y": 107,
+            "w": 991,
+            "h": 597
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 991,
+            "h": 597
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 180,
+            "w": 1000,
+            "h": 520
+          },
+          "frame": {
+            "x": 1,
+            "y": 600,
+            "w": 1000,
+            "h": 520
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 117,
+            "w": 992,
+            "h": 591
+          },
+          "frame": {
+            "x": 994,
+            "y": 1,
+            "w": 992,
+            "h": 591
+          }
+        },
+        {
+          "filename": "mouse-stand-spritesheet-1103px-by-658px-per-frame-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1103,
+            "h": 658
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 58,
+            "w": 968,
+            "h": 596
+          },
+          "frame": {
+            "x": 1003,
+            "y": 594,
+            "w": 968,
+            "h": 596
+          }
+        },
+        {
+          "filename": "mouse-lie-spritesheet-1095px-by-680px-per-frame-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1095,
+            "h": 680
+          },
+          "spriteSourceSize": {
+            "x": 5,
+            "y": 81,
+            "w": 968,
+            "h": 595
+          },
+          "frame": {
+            "x": 1,
+            "y": 1122,
+            "w": 968,
+            "h": 595
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 4,
+            "y": 130,
+            "w": 995,
+            "h": 580
+          },
+          "frame": {
+            "x": 971,
+            "y": 1192,
+            "w": 995,
+            "h": 580
+          }
+        }
+      ]
+    },
+    {
+      "image": "mouse/mouse-5.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1935,
+        "h": 1953
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 10,
+            "y": 128,
+            "w": 994,
+            "h": 582
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 994,
+            "h": 582
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 12,
+            "y": 138,
+            "w": 995,
+            "h": 577
+          },
+          "frame": {
+            "x": 1,
+            "y": 585,
+            "w": 995,
+            "h": 577
+          }
+        },
+        {
+          "filename": "mouse-run-spritesheet-1009px-by-748px-per-frame-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1009,
+            "h": 748
+          },
+          "spriteSourceSize": {
+            "x": 71,
+            "y": 268,
+            "w": 937,
+            "h": 467
+          },
+          "frame": {
+            "x": 997,
+            "y": 1,
+            "w": 937,
+            "h": 467
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 3,
+            "y": 36,
+            "w": 1118,
+            "h": 392
+          },
+          "frame": {
+            "x": 1,
+            "y": 1164,
+            "w": 1118,
+            "h": 392
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 6,
+            "y": 0,
+            "w": 732,
+            "h": 469
+          },
+          "frame": {
+            "x": 998,
+            "y": 470,
+            "w": 732,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 6,
+            "y": 0,
+            "w": 732,
+            "h": 469
+          },
+          "frame": {
+            "x": 1121,
+            "y": 941,
+            "w": 732,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 0,
+            "w": 731,
+            "h": 469
+          },
+          "frame": {
+            "x": 1121,
+            "y": 1412,
+            "w": 731,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 35,
+            "w": 1112,
+            "h": 394
+          },
+          "frame": {
+            "x": 1,
+            "y": 1558,
+            "w": 1112,
+            "h": 394
+          }
+        }
+      ]
+    },
+    {
+      "image": "mouse/mouse-6.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1850,
+        "h": 1917
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 4,
+            "y": 38,
+            "w": 1117,
+            "h": 390
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 1117,
+            "h": 390
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 12,
+            "y": 0,
+            "w": 729,
+            "h": 469
+          },
+          "frame": {
+            "x": 1120,
+            "y": 1,
+            "w": 729,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 4,
+            "y": 28,
+            "w": 1117,
+            "h": 375
+          },
+          "frame": {
+            "x": 1,
+            "y": 393,
+            "w": 1117,
+            "h": 375
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 13,
+            "y": 0,
+            "w": 728,
+            "h": 469
+          },
+          "frame": {
+            "x": 1120,
+            "y": 472,
+            "w": 728,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 4,
+            "y": 30,
+            "w": 1117,
+            "h": 369
+          },
+          "frame": {
+            "x": 1,
+            "y": 770,
+            "w": 1117,
+            "h": 369
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 0,
+            "w": 731,
+            "h": 469
+          },
+          "frame": {
+            "x": 1,
+            "y": 1141,
+            "w": 731,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 34,
+            "w": 1113,
+            "h": 387
+          },
+          "frame": {
+            "x": 734,
+            "y": 1141,
+            "w": 1113,
+            "h": 387
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 15,
+            "y": 32,
+            "w": 1106,
+            "h": 386
+          },
+          "frame": {
+            "x": 734,
+            "y": 1530,
+            "w": 1106,
+            "h": 386
+          }
+        }
+      ]
+    },
+    {
+      "image": "mouse/mouse-7.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1842,
+        "h": 1858
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 29,
+            "w": 1113,
+            "h": 376
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 1113,
+            "h": 376
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 19,
+            "y": 0,
+            "w": 725,
+            "h": 469
+          },
+          "frame": {
+            "x": 1116,
+            "y": 1,
+            "w": 725,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 31,
+            "w": 1113,
+            "h": 365
+          },
+          "frame": {
+            "x": 1,
+            "y": 379,
+            "w": 1113,
+            "h": 365
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 16,
+            "y": 0,
+            "w": 727,
+            "h": 469
+          },
+          "frame": {
+            "x": 1,
+            "y": 746,
+            "w": 727,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 14,
+            "y": 32,
+            "w": 1107,
+            "h": 372
+          },
+          "frame": {
+            "x": 730,
+            "y": 746,
+            "w": 1107,
+            "h": 372
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 14,
+            "y": 29,
+            "w": 1107,
+            "h": 367
+          },
+          "frame": {
+            "x": 730,
+            "y": 1120,
+            "w": 1107,
+            "h": 367
+          }
+        },
+        {
+          "filename": "mouse-idle-spritesheet-746px-by-469px-per-frame-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 746,
+            "h": 469
+          },
+          "spriteSourceSize": {
+            "x": 16,
+            "y": 0,
+            "w": 727,
+            "h": 469
+          },
+          "frame": {
+            "x": 1,
+            "y": 1217,
+            "w": 727,
+            "h": 469
+          }
+        },
+        {
+          "filename": "mouse-walk-spritesheet-1124px-by-439px-per-frame-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1124,
+            "h": 439
+          },
+          "spriteSourceSize": {
+            "x": 20,
+            "y": 30,
+            "w": 1101,
+            "h": 368
+          },
+          "frame": {
+            "x": 730,
+            "y": 1489,
+            "w": 1101,
+            "h": 368
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "3.0",
+    "smartupdate": "$TexturePacker:SmartUpdate:3284733b7737c26505f9523bb7c07466:72dbf49fbec9dc8a4c5d5ae6f86ceeb3:c31da667fe2e6a922dabd5c9faf33768$"
+  }
+}

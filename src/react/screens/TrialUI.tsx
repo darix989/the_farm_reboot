@@ -13,7 +13,6 @@ import type {
   GuessPayload,
   GuessRecord,
 } from '../trial/utils/fallacyGuessTypes';
-import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from '../trial/utils/fallacyGuessTypes';
 import {
   computeMissedPairs,
   guessMultisetFromPicks,
@@ -29,15 +28,25 @@ import InteractivePanel from '../trial/panels/InteractivePanel';
 import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
 import {
+  activeEmotionForWorkflow,
+  activeSpeakerIdForWorkflow,
   getSpeakerName,
   getStartingInsightPoints,
   moderatorOpinionPlainText,
   statementText,
 } from '../trial/utils/trialHelpers';
+import { debateParticipantIds, stageOrder } from '../../data/debateCast';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
+import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
+import CharacterStage from '../farm/CharacterStage';
 import getLabel from '../../data/labels';
+import { useGameStore } from '../../store/gameStore';
+import { useProgressStore } from '../../store/progressStore';
+import { useTrialStageStore } from '../../store/trialStageStore';
+import { resolveCharacter } from '../../data/characters';
+import { GameManager } from '../../utils/gameManager';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
@@ -50,6 +59,9 @@ function guessStorageRoundNumberForTarget(target: AnalysisTarget): number {
 }
 
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
+  // Mode flags for this scenario. A scenario with no `mechanics` block resolves to
+  // full-debate defaults, so every existing debate is unaffected.
+  const mechanics = useMemo(() => resolveMechanics(debate), [debate]);
   const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, FallacyGuessSession>>(new Map());
   const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
     () => new Set(),
@@ -296,7 +308,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       if (!existing || existing.npcRoundId !== targetId) {
         session = {
           npcRoundId: targetId,
-          maxAttempts: DEFAULT_MAX_ANALYSIS_ATTEMPTS,
+          maxAttempts: mechanics.maxAnalysisAttempts,
           attempts: [record],
         };
       } else {
@@ -376,6 +388,23 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     }
   };
 
+  /**
+   * True while an NPC round marked `requiresAnalysis` has not been resolved yet — the
+   * player has neither landed a correct guess nor spent every attempt. Spotting-only
+   * rungs use this to hold the Continue button until the statement has actually been
+   * analysed, which is the whole gameplay of those scenarios.
+   */
+  const analysisGatePending = useMemo(() => {
+    if (wf.gamePhase !== 'npc_speaking') return false;
+    const round = wf.currentNpcRound;
+    if (!round?.requiresAnalysis) return false;
+    for (const session of fallacyGuesses.values()) {
+      if (session.npcRoundId !== round.id) continue;
+      return !isSessionTerminal(session) && session.attempts.length < session.maxAttempts;
+    }
+    return true;
+  }, [wf.gamePhase, wf.currentNpcRound, fallacyGuesses]);
+
   // -----------------------------------------------------------------------
   // Footer action state
   // -----------------------------------------------------------------------
@@ -398,14 +427,20 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 fromPhase: 'debate_intro',
                 roundNumber: null,
               });
-              setIntroSummaryOpen(true);
+              // Scenarios with `showIntroSummary: false` go straight into round 1;
+              // a two-line trough chat does not need a "Before the debate" briefing.
+              if (mechanics.showIntroSummary) {
+                setIntroSummaryOpen(true);
+              } else {
+                wf.dispatch({ type: 'continue' });
+              }
             };
         break;
       }
       case 'npc_speaking':
       case 'npc_responding':
         submitLabel = getLabel('continue');
-        submitDisabled = false;
+        submitDisabled = analysisGatePending;
         onSubmit = () => {
           debateEventBus.emit('interactive:continue', {
             fromPhase: wf.gamePhase,
@@ -446,6 +481,20 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           wf.dispatch({ type: 'confirm_option' });
         };
         break;
+      case 'debate_complete':
+        // Until now a finished encounter was a dead end: this case fell through to
+        // `default`, leaving Continue disabled forever with no way out.
+        submitLabel = getLabel('leaveEncounter');
+        submitDisabled = false;
+        onSubmit = () => {
+          const { activeDebateId, returnSceneKey } = useGameStore.getState();
+          // Mark by the scenario *key*, not `debate.id` — those differ
+          // (`015_duchess_vs_rue` vs `level1-boss-pond-motion`) and only the key
+          // is a `DebateScenarioKey`.
+          useProgressStore.getState().markCompleted(activeDebateId);
+          GameManager.switchScene(returnSceneKey);
+        };
+        break;
       default:
         submitDisabled = true;
     }
@@ -459,6 +508,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     wf.currentRound,
     wf.currentPlayerRound,
     isTutorialOpen,
+    analysisGatePending,
+    mechanics.showIntroSummary,
   ]);
 
   const modalSpeakerName = useMemo(() => {
@@ -590,7 +641,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       }
       case 'debate_complete':
         return {
-          title: getLabel('debateFinished'),
+          title: getLabel(encounterLabels(debate).finished),
           body: moderatorOpinionPlainText(wf.totalScore),
         };
       default:
@@ -607,9 +658,85 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     fallacyGuesses,
   ]);
 
+  // The workflow hook is deliberately unaware of guess state, so the "you must analyse
+  // this first" nudge is applied here rather than inside `wizardMessage`.
+  const wizardMessage = analysisGatePending
+    ? getLabel('workflowNpcSpeakingMustAnalyze')
+    : wf.wizardMessage;
+
+  // `stageOrder` matches the left-to-right order the Phaser `Trial` scene lays its sprites
+  // out in (player first, moderator centred in a 3+ cast) — the nameplates below must use
+  // the same order or they end up over the wrong sprite.
+  const participantIds = useMemo(() => stageOrder(debateParticipantIds(debate)), [debate]);
+  const activeSpeakerId = useMemo(
+    () =>
+      activeSpeakerIdForWorkflow(
+        wf.gamePhase,
+        wf.currentNpcRound,
+        wf.currentPlayerRound,
+        wf.selectedOption,
+        wf.activeOpponentResponse,
+      ),
+    [
+      wf.gamePhase,
+      wf.currentNpcRound,
+      wf.currentPlayerRound,
+      wf.selectedOption,
+      wf.activeOpponentResponse,
+    ],
+  );
+
+  // Derived from the identical snapshot as `activeSpeakerId` above, and pushed in the same
+  // effect, so the scene never sees a new speaker wearing the previous line's emotion.
+  const activeEmotion = useMemo(
+    () =>
+      activeEmotionForWorkflow(
+        wf.gamePhase,
+        wf.currentNpcRound,
+        wf.currentPlayerRound,
+        wf.selectedOption,
+        wf.activeOpponentResponse,
+      ),
+    [
+      wf.gamePhase,
+      wf.currentNpcRound,
+      wf.currentPlayerRound,
+      wf.selectedOption,
+      wf.activeOpponentResponse,
+    ],
+  );
+
+  // The Phaser `Trial` scene reacts to the active speaker through `trialStageStore` — see
+  // that store's docstring for why a store and not `EventBus`. The setter no-ops when
+  // neither field changed, so this is safe on every render, including StrictMode's
+  // double-mount.
+  useEffect(() => {
+    useTrialStageStore.getState().setActiveSpeaker(activeSpeakerId, activeEmotion);
+  }, [activeSpeakerId, activeEmotion]);
+
+  useEffect(() => {
+    return () => useTrialStageStore.getState().resetStage();
+  }, []);
+
+  // Only scenarios whose whole cast has sprite art get the nameplate-only stage; legacy
+  // debates (no `CHARACTERS.animal` entry for their speakers) keep their CSS busts, since
+  // the Phaser scene draws no cast for them.
+  const hasPhaserCast = useMemo(
+    () => participantIds.some((id) => resolveCharacter(id).animal !== null),
+    [participantIds],
+  );
+
   return (
     <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
       <TrialLayout
+        stage={
+          <CharacterStage
+            participantIds={participantIds}
+            activeSpeakerId={activeSpeakerId}
+            layout="hole"
+            variant={hasPhaserCast ? 'nameplates' : 'busts'}
+          />
+        }
         feedback={
           <FeedbackPanel
             wf={wf}
@@ -617,9 +744,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             insightPoints={insightPoints}
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
+            mechanics={mechanics}
           />
         }
-        wizard={<WizardPanel wizardMessage={wf.wizardMessage} detail={wizardDetail} />}
+        wizard={<WizardPanel wizardMessage={wizardMessage} detail={wizardDetail} />}
         interactive={
           <InteractivePanel
             key={debate.id}
@@ -634,7 +762,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           />
         }
       />
-      {analysisTarget && (
+      {analysisTarget && mechanics.analysisEnabled && (
         <RoundAnalysisModal
           target={analysisTarget}
           allFallacies={allFallacies}
@@ -649,9 +777,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           insightPoints={insightPoints}
           insightRevealed={insightRevealedForCurrentTarget}
           onSpendInsightPoint={handleSpendInsightPoint}
+          maxAnalysisAttempts={mechanics.maxAnalysisAttempts}
         />
       )}
-      {introSummaryOpen && wf.gamePhase === 'debate_intro' && (
+      {introSummaryOpen && mechanics.showIntroSummary && wf.gamePhase === 'debate_intro' && (
         <IntroSummaryModal
           debate={debate}
           onClose={() => {
@@ -667,6 +796,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           fallacyGuesses={fallacyGuesses}
           revealedLockedOptionIds={revealedLockedOptionIds}
           onClose={() => wf.dispatch({ type: 'continue' })}
+          mechanics={mechanics}
         />
       )}
     </div>

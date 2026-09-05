@@ -4,6 +4,7 @@ import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import AnalyzeButton from './AnalyzeButton';
+import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
 import {
   getSpeakerName,
   MODERATOR_OPINION_LABEL,
@@ -36,6 +37,8 @@ interface DebateRoundLogCardProps {
   onExpandToggle: () => void;
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
   onOpenAnalysis: (target: AnalysisTarget) => void;
+  /** Scenario mode flags — gate the analyze buttons and the impact emoji. */
+  mechanics: ResolvedMechanics;
 }
 
 type DebateRoundStatus = 'active' | 'upcoming' | 'completed';
@@ -61,13 +64,15 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   onExpandToggle,
   getNpcGuessState,
   onOpenAnalysis,
+  mechanics,
 }) => {
   const bodyId = useId();
   const status = roundStatus(roundIndex, wf.gamePhase, wf.currentRoundIndex);
   const isUpcoming = status === 'upcoming';
 
-  const defaultExpanded = status === 'active';
-  const effectiveExpanded = isUpcoming ? false : (expandOverride ?? defaultExpanded);
+  // Every round card — the active one included — starts shrunk, so moving to a new round
+  // never pops a card open on its own. Expanding is always the player's explicit choice.
+  const effectiveExpanded = isUpcoming ? false : (expandOverride ?? false);
 
   const headerSide = sideForRoundHeader(debate, round);
   const sideLineClass =
@@ -78,10 +83,19 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   /** "· YOU" only when this player round opens with the player's line (not NPC-led crossfire). */
   const showSideYouOnRoundBadge = round.kind === 'player' && !round.opponentPrompt;
 
-  const stackedSideLabel =
-    round.kind === 'player'
-      ? `${sideDisplayLabel(headerSide).toUpperCase()}${showSideYouOnRoundBadge ? getLabel('sideYouSuffix') : ''}`
-      : sideDisplayLabel(headerSide).toUpperCase();
+  // Gossip / sparring / lab have no Proposition-vs-Opposition framing, so the badge
+  // shows only the "YOU" marker there (and nothing at all on an NPC round).
+  const { showSides } = encounterLabels(debate);
+  const stackedSideLabel = (() => {
+    if (!showSides) {
+      // No sides to name — the badge is either the "YOU" marker or nothing.
+      return round.kind === 'player' && showSideYouOnRoundBadge ? getLabel('youBadge') : '';
+    }
+    const side = sideDisplayLabel(headerSide).toUpperCase();
+    return round.kind === 'player' && showSideYouOnRoundBadge
+      ? `${side}${getLabel('sideYouSuffix')}`
+      : side;
+  })();
 
   const isThisPlayerRound = wf.currentPlayerRound?.id === round.id && round.kind === 'player';
 
@@ -137,9 +151,17 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
         ? getLabel('statusUpcoming')
         : getLabel('statusCompleted');
 
-  const showPromptAnalyze = round.kind === 'player' && !!round.opponentPrompt && showOpponentPrompt;
+  const showPromptAnalyze =
+    mechanics.analysisEnabled &&
+    round.kind === 'player' &&
+    !!round.opponentPrompt &&
+    showOpponentPrompt;
 
-  const showResponseAnalyze = round.kind === 'player' && !!displayResponse && showOpponentResponse;
+  const showResponseAnalyze =
+    mechanics.analysisEnabled &&
+    round.kind === 'player' &&
+    !!displayResponse &&
+    showOpponentResponse;
 
   /** Hide impact emoji until this player round is over (advanced or debate finished). */
   const playerRoundEndedForLog =
@@ -148,7 +170,11 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
     (isThisPlayerRound && wf.gamePhase === 'round_recap');
 
   const impactEmojiLine =
-    round.kind === 'player' && chosenOption && playerRoundEndedForLog && completedForRound ? (
+    mechanics.showModeratorOpinion &&
+    round.kind === 'player' &&
+    chosenOption &&
+    playerRoundEndedForLog &&
+    completedForRound ? (
       <span
         aria-label={`${MODERATOR_OPINION_LABEL}: ${
           completedForRound.impact > 0 ? '+' : ''
@@ -250,32 +276,36 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
                     <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      {getSpeakerName(debate, round.speakerId)} —{' '}
-                      {sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}
+                      {getSpeakerName(debate, round.speakerId)}
+                      {showSides
+                        ? ` — ${sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}`
+                        : ''}
                     </p>
-                    <div
-                      className={styles.debateLogAnalyzeGroup}
-                      aria-label={getLabel('analyzeStatementGroupAria')}
-                    >
-                      <AnalyzeButton
-                        guessState={getNpcGuessState(round.id)}
-                        title={getLabel('analyzeThisStatement')}
-                        dataRoundId={round.id}
-                        onClick={() => {
-                          const target = {
-                            kind: 'debate_log_round_analyze',
-                            roundId: round.id,
-                          } as const;
-                          if (!canRunTutorialTargetAction(target)) return;
-                          debateEventBus.emit('debate_log:round:analyze', {
-                            roundNumber: round.roundNumber,
-                            roundId: round.id,
-                          });
-                          onOpenAnalysis({ kind: 'npc', round });
-                          notifyTutorialTargetAction(target);
-                        }}
-                      />
-                    </div>
+                    {mechanics.analysisEnabled && (
+                      <div
+                        className={styles.debateLogAnalyzeGroup}
+                        aria-label={getLabel('analyzeStatementGroupAria')}
+                      >
+                        <AnalyzeButton
+                          guessState={getNpcGuessState(round.id)}
+                          title={getLabel('analyzeThisStatement')}
+                          dataRoundId={round.id}
+                          onClick={() => {
+                            const target = {
+                              kind: 'debate_log_round_analyze',
+                              roundId: round.id,
+                            } as const;
+                            if (!canRunTutorialTargetAction(target)) return;
+                            debateEventBus.emit('debate_log:round:analyze', {
+                              roundNumber: round.roundNumber,
+                              roundId: round.id,
+                            });
+                            onOpenAnalysis({ kind: 'npc', round });
+                            notifyTutorialTargetAction(target);
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(round.statement.sentences)}
@@ -344,33 +374,35 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                       {getLabel('you')}
                       {impactEmojiLine != null ? <> — {impactEmojiLine}</> : null}
                     </p>
-                    <div
-                      className={styles.debateLogAnalyzeGroup}
-                      aria-label={getLabel('analyzeYourLineGroupAria')}
-                    >
-                      <AnalyzeButton
-                        guessState={getNpcGuessState(chosenOption.id)}
-                        title={getLabel('analyzeThisStatement')}
-                        dataRoundId={round.id}
-                        onClick={() => {
-                          const target = {
-                            kind: 'debate_log_round_analyze',
-                            roundId: round.id,
-                          } as const;
-                          if (!canRunTutorialTargetAction(target)) return;
-                          debateEventBus.emit('debate_log:round:analyze', {
-                            roundNumber: round.roundNumber,
-                            roundId: round.id,
-                          });
-                          onOpenAnalysis({
-                            kind: 'player',
-                            round,
-                            chosenOption: chosenOption!,
-                          });
-                          notifyTutorialTargetAction(target);
-                        }}
-                      />
-                    </div>
+                    {mechanics.analysisEnabled && (
+                      <div
+                        className={styles.debateLogAnalyzeGroup}
+                        aria-label={getLabel('analyzeYourLineGroupAria')}
+                      >
+                        <AnalyzeButton
+                          guessState={getNpcGuessState(chosenOption.id)}
+                          title={getLabel('analyzeThisStatement')}
+                          dataRoundId={round.id}
+                          onClick={() => {
+                            const target = {
+                              kind: 'debate_log_round_analyze',
+                              roundId: round.id,
+                            } as const;
+                            if (!canRunTutorialTargetAction(target)) return;
+                            debateEventBus.emit('debate_log:round:analyze', {
+                              roundNumber: round.roundNumber,
+                              roundId: round.id,
+                            });
+                            onOpenAnalysis({
+                              kind: 'player',
+                              round,
+                              chosenOption: chosenOption!,
+                            });
+                            notifyTutorialTargetAction(target);
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>{playerBodyText}</p>
                 </div>

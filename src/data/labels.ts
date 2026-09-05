@@ -5,11 +5,47 @@
 const LABELS = {
   // --- App shell / menus ---
   loadingGame: 'Loading Game...',
+  loadingPercent: '{percent}%',
   mainMenu: 'Main Menu',
   sampleDebate: 'Sample debate',
   tutorialBlueBarn: 'Tutorial: The Blue Barn',
   montyVsPenny: 'Monty vs Penny',
   bellaVsWoolsey: 'Bella vs Woolsey',
+
+  // --- Level 1: The Pond Motion ---
+  level1Heading: 'Level 1 — The Pond Motion',
+  legacyScenariosHeading: 'Other scenarios',
+  level1GossipHetty: '1.1 · Gossip at the Trough: What Hetty Heard',
+  level1SparringCass: '1.2 · The Sparring Post',
+  level1GossipBram: '1.3 · Gossip at the Trough: Everyone Says',
+  level1LabCass: '1.4 · The Cranky Rooster Lab: Dirty Feathers',
+  level1SkirmishBram: '1.5 · Fence-line Skirmish: The Bent Grate',
+  level1BossDuchess: '1.6 · The Public Farm: The Pond Motion',
+  animationGallery: 'Animation Gallery',
+
+  // --- Animation gallery ---
+  galleryTitle: 'Animation Gallery',
+  galleryAnimalHeading: 'Animal',
+  galleryEmotionsHeading: 'Emotions (generated)',
+  galleryBaseHeading: 'Base animations',
+  gallerySmoothTransitions: 'Smooth transition when switching',
+  gallerySmoothHint: 'Crossfades between clips. Turn off to see the raw cut.',
+  galleryBackToMenu: 'Back to Main Menu',
+  galleryNoArt: 'no art yet',
+  galleryRestPose: 'rest pose',
+  galleryClipMeta: '{frames} frames · {fps} fps',
+  galleryNothingSelected: 'Nothing selected',
+  galleryMissingArtNote:
+    '{count} of {total} emotions have no generated art for this animal yet — they fall back to the alert animation in game.',
+  galleryQualityPass: 'OK',
+  galleryQualityWarn: 'check',
+  galleryQualityUnknown: '?',
+  galleryQualityAnimalPass: 'all emotions pass',
+  galleryQualityAnimalWarn: 'emotions need review',
+  galleryQualityAnimalUnknown: 'emotions unmeasured',
+  galleryQualityMetrics: 'loop seam {loopPop}% · height swing {heightSwing}% · drift ±{driftX}px',
+  galleryQualityStale: 'old generation ({frames} frames)',
+  galleryQualityUnmeasured: 'no quality numbers yet',
   currentScene: 'Current Scene:',
   gameStatus: 'Game Status:',
   loadingEllipsis: 'Loading...',
@@ -21,7 +57,11 @@ const LABELS = {
   addNewSprite: 'Add New Sprite',
 
   // --- Trial layout panels ---
+  // Log panel heading, one per `EncounterKind` (see `encounterLabels`).
   debateLog: 'Debate Log',
+  gossipLog: 'Trough Talk',
+  sparringLog: 'Sparring Log',
+  labLog: 'Lab Notes',
   interactive: 'Interactive',
   wizard: 'Wizard',
   back: 'Back',
@@ -31,6 +71,8 @@ const LABELS = {
   // --- Debate log cards ---
   introduction: 'Introduction',
   moderator: 'Moderator',
+  /** Intro-card stripe label for encounters with no moderator (gossip, sparring, lab). */
+  setting: 'Setting',
   minimize: 'Minimize',
   expand: 'Expand',
   notAvailableUntilRoundStarts: 'Not available until this round starts',
@@ -40,6 +82,8 @@ const LABELS = {
   roundNotStartedYet: 'This round has not started yet.',
   roundAria: 'Round {roundNumber}',
   sideYouSuffix: ' · YOU',
+  /** Standalone "YOU" badge for encounters that have no Proposition / Opposition sides. */
+  youBadge: 'YOU',
   you: 'You',
   responds: '{name} responds',
   debaterQuestion: "{name}'s question",
@@ -67,13 +111,26 @@ const LABELS = {
   wizardDetailResponse: "{name}'s response:",
   wizardDetailRoundRecapBody:
     'Review the round summary in the dialog. Close it when you are ready to continue.',
+  // Closing line, one per `EncounterKind`.
   debateFinished: 'The debate is finished.',
+  gossipFinished: 'There is nothing more to overhear.',
+  sparringFinished: 'That is the session done.',
+  labFinished: 'That is the exercise done.',
 
   // --- useTrialRoundWorkflow (wizard strip) ---
+  // Opening guidance, one per `EncounterKind`.
   workflowDebateIntro:
     "We're about to play a debate. Read the introduction, and once you are ready, click Continue.",
+  workflowGossipIntro:
+    'Someone is talking. Read what they say, then open the magnifying glass and spot any logical fallacies.',
+  workflowSparringIntro:
+    'A practice bout — nothing is at stake. Read the line you are given, then pick the answer that actually addresses it.',
+  workflowLabIntro:
+    'A training exercise. Here the dirty answer is the one being asked for. Read the brief, then pick your line.',
   workflowRoundWithType: 'Round {roundNumber} — {typeDisplay}',
   workflowNpcSpeaking: "{roundLabel}. Read {opponentName}'s statement, then click Continue.",
+  workflowNpcSpeakingMustAnalyze:
+    'Analyze this statement before you move on. Open it with the magnifying glass, then tag any logical fallacies — or mark it Clean.',
   workflowPlayerChoosingQuestion:
     '{roundLabel}. {opponentName} has asked a question. Choose your response.',
   workflowPlayerChoosingStatement: '{roundLabel}. Choose your statement.',
@@ -168,6 +225,80 @@ const LABELS = {
   moderatorsOpinion: "Moderator's opinion",
   sideProposition: 'Proposition',
   sideOpposition: 'Opposition',
+
+  // --- Overworld (Green Meadows Farm) ---
+  enterTheFarm: 'Enter the Farm',
+  farmNpcRue: 'Rue',
+  farmNpcHetty: 'Hetty',
+  farmNpcCass: 'Cass',
+  farmNpcBram: 'Bram',
+  farmNpcDuchess: 'Duchess',
+  farmNpcTobias: 'Tobias',
+  farmZoneBarn: 'THE BIG BARN',
+  farmZonePond: 'THE OLD POND',
+  farmTalkPrompt: 'Talk to {name}',
+  farmInteractHint: 'Space / E',
+  farmMoveHint: 'Arrows or WASD to move',
+  farmMoveHintTouch: 'Drag anywhere to move',
+  farmTalk: 'Talk',
+  farmNotNow: 'Not now',
+  farmLeave: 'Leave',
+  characterStage: 'Participants: {names}',
+  /** Shown on the finished-encounter footer; returns to wherever you came from. */
+  leaveEncounter: 'Leave',
+
+  // Farm talk beats. Fallback one-liners (`farmDialog<Npc><n|Done>`) still exist
+  // so a missing table row is never silent. Authored conversations live in
+  // `farmTalk.ts` and point at the `a`/`b`/`c` keys.
+  farmDialogHetty1:
+    'Oh — hello. You are the donkey, are you not? Never mind. Stand there a moment, I have news.',
+  farmDialogHetty1a: 'Oh — hello. You are the donkey, are you not?',
+  farmDialogHetty1b: 'I am. They call me Rue.',
+  farmDialogHetty1c: 'Never mind. Stand there a moment, I have news.',
+  farmDialogHettyDone:
+    'I have told you everything I know, and a little that I do not. Go and see the rooster.',
+  farmDialogHettyDoneA: 'I have told you everything I know, and a little that I do not.',
+  farmDialogHettyDoneB: 'Go and see the rooster.',
+  farmDialogCass1:
+    'You. Stand at the post. I am going to say unpleasant things to you and you are going to answer them properly.',
+  farmDialogCass1a: 'You. Stand at the post.',
+  farmDialogCass1b: 'I can stand.',
+  farmDialogCass1c:
+    'I am going to say unpleasant things to you and you are going to answer them properly.',
+  farmDialogCass2:
+    'Back again. Good. This time you are going to be the unpleasant one, and you are going to enjoy it. That is the lesson.',
+  farmDialogCass2a: 'Back again. Good.',
+  farmDialogCass2b: 'I came back.',
+  farmDialogCass2c:
+    'This time you are going to be the unpleasant one, and you are going to enjoy it. That is the lesson.',
+  farmDialogCassDone:
+    'Nothing more from me. Save it for Sunday, and do not let her make it about you.',
+  farmDialogCassDoneA: 'Nothing more from me.',
+  farmDialogCassDoneB: 'Save it for Sunday, and do not let her make it about you.',
+  farmDialogBram1:
+    'Rue, is it? A courtesy, before Sunday. You should hear how the Flock is voting.',
+  farmDialogBram1a: 'Rue, is it?',
+  farmDialogBram1b: 'I am.',
+  farmDialogBram1c: 'A courtesy, before Sunday. You should hear how the Flock is voting.',
+  farmDialogBram2:
+    'One more word before the Public Farm. Ask me whatever you like — I will answer straight, which is more than most.',
+  farmDialogBram2a: 'One more word before the Public Farm.',
+  farmDialogBram2b: 'Go on.',
+  farmDialogBram2c: 'Ask me whatever you like — I will answer straight, which is more than most.',
+  farmDialogBramDone:
+    'I have said more than I should have. The grate is bent. You did not hear it from me.',
+  farmDialogBramDoneA: 'I have said more than I should have.',
+  farmDialogBramDoneB: 'The grate is bent. You did not hear it from me.',
+  farmDialogDuchess1:
+    'Ah. The newcomer. Tobias has the motion, and the Flock is ready. Shall we settle the pond?',
+  farmDialogDuchess1a: 'Ah. The newcomer.',
+  farmDialogDuchess1b: 'Rue. I live here now.',
+  farmDialogDuchess1c: 'Tobias has the motion, and the Flock is ready. Shall we settle the pond?',
+  farmDialogDuchessDone: 'The pond is settled, dear. For now.',
+  farmDialogTobiasDone:
+    'I moderate; I do not take sides. Speak to the others, and I shall see you on the floor.',
+  farmDialogTobiasDoneA: 'I moderate; I do not take sides.',
+  farmDialogTobiasDoneB: 'Speak to the others, and I shall see you on the floor.',
 
   // --- Phaser placeholder scenes ---
   gameOver: 'Game Over',

@@ -1,4 +1,5 @@
 import { useGameStore, getGameInstance, getCurrentSceneInstance } from '../store/gameStore';
+import { animalAssetsMissing, animalPackForScene } from '../phaser/animals/animalPacks';
 
 /**
  * Game Manager - Centralized utility for game operations
@@ -27,20 +28,56 @@ export class GameManager {
   }
 
   /**
-   * Switch to a different scene
+   * Switch to a different scene, stopping the one currently running.
+   *
+   * `game.scene.start()` (SceneManager) only *starts* the target — it leaves the
+   * previous scene alive, updating and rendering underneath. `scene.scene.start()`
+   * (ScenePlugin, called on the running scene) stops the caller first, which is what
+   * "switch" should mean: the old scene shuts down, fires its SHUTDOWN handlers, and
+   * stops drawing behind the new one.
+   *
+   * Refuses to switch before the game is ready. During `Boot`/`Preloader` there is no
+   * running scene to hand off from, so the only available call would be the SceneManager
+   * one — which starts the target *alongside* the still-loading Preloader, against an
+   * empty texture cache, and is then trampled when `Preloader.create()` starts `MainMenu`.
+   * The React overlay gates on `isGameReady` so this should be unreachable; it is a guard,
+   * not a code path.
+   *
+   * Also refuses while a scene is fetching its animal pack (`isSceneLoading`), and raises
+   * that flag *before* `scene.start` when the destination's pack is not yet in the cache.
+   * That is earlier than the destination's `preload()`, so a double-click cannot start a
+   * second scene alongside the first load. Cached revisits skip the flag, so Farm → Trial
+   * after the farm pack is in does not flash the loading overlay.
    */
   static switchScene(sceneKey: string): void {
     const game = this.getGame();
-    if (game && game.scene.isActive(sceneKey)) {
-      console.warn(`Scene ${sceneKey} is already active`);
+    if (!game) {
+      console.error('Game instance not available');
       return;
     }
-    
-    if (game) {
-      game.scene.start(sceneKey);
-    } else {
-      console.error('Game instance not available');
+    if (!this.isGameReady()) {
+      console.warn(`Scene switch to "${sceneKey}" ignored: the game is still loading.`);
+      return;
     }
+    const store = useGameStore.getState();
+    if (store.isSceneLoading) {
+      console.warn(`Scene switch to "${sceneKey}" ignored: a scene pack is still loading.`);
+      return;
+    }
+    if (game.scene.isActive(sceneKey)) return;
+
+    const current = this.getCurrentScene();
+    if (!current) {
+      console.warn(`Scene switch to "${sceneKey}" ignored: no running scene to switch from.`);
+      return;
+    }
+
+    const pack = animalPackForScene(sceneKey, store.activeDebateId);
+    if (pack && animalAssetsMissing(game.textures, pack.ids, { emotions: pack.emotions })) {
+      store.beginSceneLoad();
+    }
+
+    current.scene.start(sceneKey);
   }
 
   /**
@@ -77,51 +114,54 @@ export class GameManager {
   }
 
   /**
-   * Execute a callback when the game is ready
+   * Execute a callback when the game is ready — immediately if it already is.
+   *
+   * Returns an unsubscribe function so a caller that goes away before the game finishes
+   * loading can drop its pending callback.
    */
-  static whenReady(callback: (game: Phaser.Game) => void): void {
-    const game = this.getGame();
-    if (game && this.isGameReady()) {
-      callback(game);
-    } else {
-      // Wait for game to be ready
-      const unsubscribe = useGameStore.subscribe(
-        (state) => state.isGameReady,
-        (isReady) => {
-          if (isReady) {
-            const game = this.getGame();
-            if (game) {
-              callback(game);
-              unsubscribe();
-            }
-          }
-        }
-      );
+  static whenReady(callback: (game: Phaser.Game) => void): () => void {
+    if (this.isGameReady()) {
+      const game = this.getGame();
+      if (game) {
+        callback(game);
+        return () => {};
+      }
     }
+
+    // zustand v5's `subscribe` takes a single listener — the two-argument selector form
+    // needs the `subscribeWithSelector` middleware, which this store does not use. Compare
+    // against the previous state by hand instead.
+    const unsubscribe = useGameStore.subscribe((state, prev) => {
+      if (!state.isGameReady || prev.isGameReady) return;
+      const game = state.game;
+      if (game) {
+        unsubscribe();
+        callback(game);
+      }
+    });
+    return unsubscribe;
   }
 
   /**
-   * Execute a callback when a specific scene is ready
+   * Execute a callback when a specific scene becomes the active one — immediately if it
+   * already is. Returns an unsubscribe function.
    */
-  static whenSceneReady(sceneKey: string, callback: (scene: Phaser.Scene) => void): void {
-    const scene = this.getScene(sceneKey);
-    if (scene) {
-      callback(scene);
-    } else {
-      // Wait for scene to be ready
-      const unsubscribe = useGameStore.subscribe(
-        (state) => state.currentScene,
-        (currentSceneKey) => {
-          if (currentSceneKey === sceneKey) {
-            const scene = this.getCurrentScene();
-            if (scene) {
-              callback(scene);
-              unsubscribe();
-            }
-          }
-        }
-      );
+  static whenSceneReady(sceneKey: string, callback: (scene: Phaser.Scene) => void): () => void {
+    const current = this.getCurrentScene();
+    if (current && current.scene.key === sceneKey) {
+      callback(current);
+      return () => {};
     }
+
+    const unsubscribe = useGameStore.subscribe((state, prev) => {
+      if (state.currentScene !== sceneKey || prev.currentScene === sceneKey) return;
+      const scene = state.currentSceneInstance;
+      if (scene) {
+        unsubscribe();
+        callback(scene);
+      }
+    });
+    return unsubscribe;
   }
 
   /**
@@ -146,5 +186,5 @@ export const {
   getScene,
   whenReady,
   whenSceneReady,
-  destroyGame
+  destroyGame,
 } = GameManager;

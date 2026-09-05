@@ -8,6 +8,7 @@ import {
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
+import { encounterLabels } from '../utils/scenarioMechanics';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -38,8 +39,9 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
 }) => {
   const bodyId = useId();
   const status = introStatus(wf);
-  const defaultExpanded = status === 'active';
-  const effectiveExpanded = expandOverride ?? defaultExpanded;
+  // Like every round card, the intro row starts shrunk and stays that way until the player
+  // opens it — the full text is already in the wizard panel during `debate_intro`.
+  const effectiveExpanded = expandOverride ?? false;
 
   const statusLabel = status === 'active' ? getLabel('statusActive') : getLabel('statusCompleted');
 
@@ -54,7 +56,8 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
             <div
               className={`${styles.debateLogRoundSideLine} ${styles.debateLogRoundSideLineModerator}`}
             >
-              {getLabel('moderator')}
+              {/* Only a debate has a moderator; elsewhere this row just frames the scene. */}
+              {getLabel(encounterLabels(wf.scenario).showSides ? 'moderator' : 'setting')}
             </div>
             <div className={styles.debateLogRoundTypeLine}>{getLabel('introduction')}</div>
           </div>

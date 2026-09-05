@@ -12,6 +12,11 @@ import cn from 'classnames';
 import recapStyles from '../roundRecapModal/RoundRecapModal.module.scss';
 import getLabel from '../../../data/labels';
 
+/**
+ * Fallback budget for a scenario that has no authored `introductionSummary`. Truncating
+ * the introduction still repeats its wording — that is exactly what the authored field
+ * exists to avoid — so this is a stopgap, not the intended presentation.
+ */
 const INTRO_SUMMARY_MAX_CHARS = 320;
 
 function summarizeIntroduction(text: string, maxLen: number): string {
@@ -29,9 +34,13 @@ interface IntroSummaryModalProps {
 }
 
 const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }) => {
+  // The authored paraphrase wins; the truncated introduction is only a fallback for
+  // scenarios that have not been given one yet.
+  const authoredSummary = debate.introductionSummary?.trim() ?? '';
   const introSummary = useMemo(
-    () => summarizeIntroduction(debate.introduction ?? '', INTRO_SUMMARY_MAX_CHARS),
-    [debate.introduction],
+    () =>
+      authoredSummary || summarizeIntroduction(debate.introduction ?? '', INTRO_SUMMARY_MAX_CHARS),
+    [authoredSummary, debate.introduction],
   );
 
   const sideLabel = sideDisplayLabel(debate.playerSide);
@@ -87,7 +96,13 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
           </div>
           <div className={recapStyles.recapSection}>
             <p className={recapStyles.recapSectionLabel}>{getLabel('introduction')}</p>
-            <p className={recapStyles.recapBody}>{introSummary}</p>
+            {/* Only the authored line is clamped — clamping the longer fallback would
+                cut the introduction a second time. */}
+            <p
+              className={cn(recapStyles.recapBody, authoredSummary && recapStyles.recapSummaryBody)}
+            >
+              {introSummary}
+            </p>
           </div>
         </ScrollFadeContainer>
 

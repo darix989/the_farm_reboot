@@ -27,11 +27,13 @@
     "build-nolog": "vite build --config vite/config.prod.mjs",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
+    "lint:scenarios": "node scripts/lint-scenarios.mjs",
     "lint:styles": "stylelint \"src/**/*.{css,scss}\"",
     "lint:styles:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,scss,json}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,scss,json}\"",
     "export:gem": "node scripts/export-gem.js",
+    "sprites:emotions": "node --env-file-if-exists=.env.local scripts/generate-emotion-sprites.mjs",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -69,6 +71,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.2",
+    "sharp": "^0.35.4",
     "stylelint": "^17.7.0",
     "stylelint-config-standard-scss": "^17.0.0",
     "stylelint-prettier": "^5.0.3",

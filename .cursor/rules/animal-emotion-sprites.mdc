@@ -1,0 +1,106 @@
+---
+description: Generating, reviewing and promoting the cast's per-emotion animation clips (talking, doubtful, angry, thinking, sneaky) through the Ludo.ai API. Use when asked to generate, regenerate, add or fix an animal's emotion animation or spritesheet, to add a new emotion, or when touching scripts/ludo/, the emotion manifest, or public/assets/characters/emotions/.
+globs: scripts/ludo/**, scripts/generate-emotion-sprites.mjs, src/phaser/animals/**, public/assets/characters/emotions/**
+---
+
+# Animal emotion sprites
+
+The cast's emotion clips are **generated**, not exported from the source art pack.
+`npm run sprites:emotions` drives the Ludo.ai API from a committed prompt manifest into
+reviewable art and then into the game.
+
+## Read the manual before running anything
+
+The full operating manual lives at:
+
+- `.claude/skills/animal-emotion-sprites/SKILL.md` — the cost guardrail, the workflow, the
+  frame-rate maths, seven prompt-writing rules including a per-animal "carrier" table, the API
+  gotchas, and a troubleshooting table.
+- `.claude/skills/animal-emotion-sprites/references/ludo-api.md` — the REST contract, including
+  the two places the vendor's own prose docs are wrong.
+- `.claude/skills/animal-emotion-sprites/references/measuring-animations.md` — what the quality
+  numbers mean, explained from first principles.
+
+**These are ordinary markdown files in this repository — open and read them.** The `.claude/`
+path is where Claude Code auto-loads them from; it does not make them unavailable to any other
+tool. Do not reimplement or guess at their contents.
+
+@.claude/skills/animal-emotion-sprites/SKILL.md
+
+## ⚠️ Generating costs real money
+
+Each clip spends roughly **4 credits** from the user's Ludo.ai balance.
+
+**Never run a generating command unless the user asked for that specific generation**, and
+confirm the scope first if they gave a budget or an ambiguous "do the rest". State the projected
+cost (`clips × 4 credits`) before starting. `--dry-run` is free, needs no API key, and is always
+the right first step.
+
+`LUDO_API_KEY` lives in the gitignored `.env.local` and is loaded by the npm script itself. Never
+commit it, never pass it as a CLI flag, and never rename it to `VITE_LUDO_API_KEY` — Vite inlines
+every `VITE_`-prefixed variable into the client bundle, which would publish the key to anyone who
+opens the game.
+
+## The workflow
+
+```bash
+npm run sprites:emotions -- --dry-run --animal fox   # free: prints payloads, extracts references
+npm run sprites:emotions -- --animal fox             # costs credits; writes to gitignored .ludo-review/
+open .ludo-review/index.html                         # review every clip at stage scale
+rm -rf .ludo-review/fox/angry                        # rejecting a clip = deleting its directory
+npm run sprites:emotions -- --promote                # ship what survived
+```
+
+**The `--` is load-bearing.** `npm run sprites:emotions --dry-run` is not a dry run — npm eats
+the flag, the script gets no arguments, and no arguments means the whole manifest: 30 clips,
+~120 credits.
+
+| Invocation | Cost |
+|---|---|
+| `-- --dry-run` | free, no API key needed |
+| `-- --promote`, `-- --reindex`, `-- --remeasure` | free, no API call |
+| `-- --animal X --emotion Y` | 4 credits per clip in scope |
+| `-- --force …` | charges again — it exists to bypass the result cache |
+| **no flags** | **the entire manifest (11 animals × 5 emotions), ~220 credits** |
+
+## Names you will get wrong
+
+Animal ids are the atlas names, not the species: `donkey-grey`, `white-sheep-1`, `brown-wolf`,
+`fox`, `owl`, `raccoon`, `cow`, `cow-female-001`, `dog`, `mouse`, `pig`. Emotions: `talking`,
+`doubtful`, `angry`, `thinking`, `sneaky`. Only the original six have generated clips; the
+other five are imported but ungenerated — do not run a generating command for them unless
+asked.
+
+## Four things not to re-derive
+
+- Playback rate is `frames / duration` — never hard-code one. A wrong rate is fixed by editing
+  `promoted-clips.json` and running `-- --reindex`, free.
+- `scripts/ludo/promoted-clips.json` is the source of truth; `--promote` merges into it. If the
+  generated module loses an animal, look there first.
+- `request_id` is an idempotency key: an unchanged rerun returns the previous result free.
+- Never write a prompt from memory — SKILL.md's "Writing prompts" has seven numbered rules, a
+  per-animal carrier table and the per-animal priors (the owl blinks and flares its wings, the
+  sheep grazes, the wolf howls, the raccoon holds food). Ignoring them costs credits.
+
+Generation and promotion are separate on purpose: diffusion output is not deterministic, so
+nothing reaches `public/assets/` without a human having watched it loop.
+
+## Where else to look
+
+- `scripts/generate-emotion-sprites.mjs` — its header documents all seven flags (`--dry-run`,
+  `--animal`, `--emotion`, `--force`, `--promote`, `--reindex`, `--remeasure`) and the key handling.
+- `scripts/ludo/emotion-manifest.json` — the prompts, with the authoring rules in its own
+  `$comment` fields.
+- `scripts/ludo/promoted-clips.json` — the committed record of every promoted clip. `--promote`
+  merges into it; it is the source of truth for `src/phaser/animals/emotionSheets.generated.ts`.
+- `docs/characters-and-animations.md` §9 — the runtime design (why clips are spritesheets and
+  not atlases, and the scale/origin trap).
+
+Never hand-edit `src/phaser/animals/emotionSheets.generated.ts`: its `scale` / `originX` /
+`originY` are measured at promote time, and a clip without them renders at the wrong size. Fix
+the measurement in `scripts/ludo/normalize.mjs` and run `-- --remeasure` instead.
+
+## Maintaining this rule
+
+This file is a pointer. The canonical text is the skill, and it changes often. Do not copy
+sections of `SKILL.md` into here — if you want to, edit the skill and leave this file alone.

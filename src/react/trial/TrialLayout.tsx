@@ -4,6 +4,7 @@ import { uiColor } from '../uiColor';
 import styles from './TrialLayout.module.scss';
 
 export interface TrialLayoutProps {
+  stage: React.ReactNode;
   feedback: React.ReactNode;
   wizard: React.ReactNode;
   interactive: React.ReactNode;
@@ -11,17 +12,16 @@ export interface TrialLayoutProps {
 
 /**
  * Trial overlay over the Phaser canvas:
- * - Top-left: empty game hole (pointer-events pass through to Phaser).
+ * - Top-left: character stage (pointer-events pass through to Phaser).
  * - Top-right: Debate Log beside the game hole.
  * - Bottom row: Wizard under the hole, Interactive under the log.
  *
  * Two columns: left 60% (3fr), right 40% (2fr), two equal-height rows.
  */
-const TrialLayout: React.FC<TrialLayoutProps> = ({ feedback, wizard, interactive }) => {
+const TrialLayout: React.FC<TrialLayoutProps> = ({ stage, feedback, wizard, interactive }) => {
   return (
     <div className={styles.trialLayoutGrid}>
-      {/* Top-left: game hole (60% column width, top 50% height) */}
-      <div className={styles.trialGameHole} aria-hidden />
+      <div className={styles.trialGameHole}>{stage}</div>
 
       {/* Debate Log: top row, right column (40% width) */}
       <div

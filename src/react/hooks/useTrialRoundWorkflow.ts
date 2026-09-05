@@ -14,6 +14,7 @@ import {
   type GuessSessionForUnlock,
 } from '../trial/utils/optionUnlock';
 import { debateEventBus, type RoundLifecyclePayload } from '../trial/utils/debateEventBus';
+import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import getLabel from '../../data/labels';
 
 // ---------------------------------------------------------------------------
@@ -161,6 +162,31 @@ function advanceToNextRound(
   };
 }
 
+/**
+ * Enter the round recap, or skip straight to the next round when the scenario has
+ * `mechanics.showRoundRecap: false`. Spotting-only rungs have no player choice to recap,
+ * so a modal reading "impact 0" between every gossip line is pure friction.
+ */
+function toRecapOrAdvance(
+  state: WorkflowState,
+  scenario: DebateScenarioJson,
+  completedRounds: CompletedRound[],
+  totalScore: number,
+): WorkflowState {
+  if (!resolveMechanics(scenario).showRoundRecap) {
+    // `advanceToNextRound` snapshots `state` for undo and applies the new
+    // completedRounds/totalScore itself, so pass the pre-transition state.
+    return advanceToNextRound(state, scenario, completedRounds, totalScore);
+  }
+  return {
+    ...state,
+    past: pushHistory(state),
+    gamePhase: 'round_recap',
+    completedRounds,
+    totalScore,
+  };
+}
+
 function reduceWorkflow(
   state: WorkflowState,
   action: Action,
@@ -221,13 +247,7 @@ function reduceWorkflow(
     ];
     const newScore = state.totalScore + currentRound.impact;
 
-    return {
-      ...state,
-      past: pushHistory(state),
-      gamePhase: 'round_recap',
-      completedRounds: newCompleted,
-      totalScore: newScore,
-    };
+    return toRecapOrAdvance(state, scenario, newCompleted, newScore);
   }
 
   // --- Player choosing: player selects one of the 3 options ---
@@ -277,13 +297,16 @@ function reduceWorkflow(
 
     // If the round has opponent responses, enter responding; else go straight to recap.
     const hasResponses = Boolean(currentRound.opponentResponses?.length);
-    return {
-      ...state,
-      past: pushHistory(state),
-      gamePhase: hasResponses ? 'npc_responding' : 'round_recap',
-      completedRounds: newCompleted,
-      totalScore: newScore,
-    };
+    if (hasResponses) {
+      return {
+        ...state,
+        past: pushHistory(state),
+        gamePhase: 'npc_responding',
+        completedRounds: newCompleted,
+        totalScore: newScore,
+      };
+    }
+    return toRecapOrAdvance(state, scenario, newCompleted, newScore);
   }
 
   // --- Player confirming: player can go back (undo) or confirm ---
@@ -323,23 +346,13 @@ function reduceWorkflow(
     }
 
     // No NPC response: show round recap before advancing
-    return {
-      ...state,
-      past: pushHistory(state),
-      gamePhase: 'round_recap',
-      completedRounds: newCompleted,
-      totalScore: newScore,
-    };
+    return toRecapOrAdvance(state, scenario, newCompleted, newScore);
   }
 
   // --- NPC responding: player clicks Continue after seeing NPC reply ---
   if (state.gamePhase === 'npc_responding') {
     if (action.type !== 'continue') return state;
-    return {
-      ...state,
-      past: pushHistory(state),
-      gamePhase: 'round_recap',
-    };
+    return toRecapOrAdvance(state, scenario, state.completedRounds, state.totalScore);
   }
 
   // --- Round recap: dismiss modal (Continue) advances ---
@@ -504,9 +517,10 @@ export function useTrialRoundWorkflow(
   }, [scenario]);
 
   const wizardMessage = useMemo((): string => {
-    if (state.gamePhase === 'debate_complete') return getLabel('debateFinished');
+    const copy = encounterLabels(scenario);
+    if (state.gamePhase === 'debate_complete') return getLabel(copy.finished);
     if (state.gamePhase === 'debate_intro') {
-      return getLabel('workflowDebateIntro');
+      return getLabel(copy.intro);
     }
     if (!currentRound) return '';
 
@@ -540,7 +554,14 @@ export function useTrialRoundWorkflow(
       default:
         return '';
     }
-  }, [state.gamePhase, state.selectedOptionId, currentRound, currentPlayerRound, opponentName]);
+  }, [
+    state.gamePhase,
+    state.selectedOptionId,
+    currentRound,
+    currentPlayerRound,
+    opponentName,
+    scenario,
+  ]);
 
   const totalRounds = scenario.rounds.length;
   const playerRounds = scenario.rounds.filter((r) => r.kind === 'player');

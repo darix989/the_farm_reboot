@@ -21,7 +21,20 @@
 .trialGameHole {
   grid-column: 1;
   grid-row: 1;
+  display: flex;
   min-height: 0;
+  min-width: 0;
+  align-items: flex-end; /* was: stretch — nameplates sit along the bottom */
+  justify-content: center; /* was: stretch */
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--ui-color-border-ring);
+
+  /* Transparent so the Phaser `Trial` scene's animated cast shows through underneath.
+     This cell's geometry is mirrored as `TRIAL_STAGE_HOLE` in `src/utils/constants.ts` —
+     change both together. The scene paints the same `--ui-color-surface-trial-panel`
+     colour behind the cast, so an empty stage (legacy debates) still reads as a panel. */
+  background: transparent; /* was: var(--ui-color-surface-trial-panel) */
   pointer-events: none;
 }
 

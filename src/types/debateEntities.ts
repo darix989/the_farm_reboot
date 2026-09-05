@@ -6,6 +6,9 @@
 // on `EventTrigger` from this file, and we depend on the trigger type it defines.
 import type { DebateTutorialTrigger } from '../react/trial/utils/debateEventBus';
 import type { TutorialModalSpec } from './tutorialModalLayout';
+// Type-only, and `animalEmotions` imports no Phaser — see its docstring for why the shared
+// emotion vocabulary lives under `src/phaser/animals/`.
+import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 
 /** Always exactly two sides in a debate. */
 export type Side = 'proposition' | 'opposition';
@@ -52,13 +55,45 @@ export type StatementType =
   | 'opening_constructive'
   | 'rebuttal'
   | 'crossfire'
-  | 'closing_constructive';
+  | 'closing_constructive'
+  /** A line dropped outside the Public Farm floor (trough gossip, yard sparring). */
+  | 'gossip';
+
+/**
+ * How many lines an authored recap summary may occupy. The recap renders summaries
+ * clamped to this many lines, so anything longer is silently cut — treat it as a hard
+ * authoring limit, not a suggestion.
+ */
+export const RECAP_SUMMARY_MAX_LINES = 2;
+
+/**
+ * Rough character budget for {@link RECAP_SUMMARY_MAX_LINES} lines at the recap's body
+ * width. Used by the authoring lint (`npm run lint:scenarios`), not at runtime.
+ */
+export const RECAP_SUMMARY_MAX_CHARS = 160;
 
 export interface Statement {
   id: string;
   speakerId: string;
   sentences: Sentence[];
   type: StatementType;
+  /**
+   * Authored paraphrase of `sentences`, shown wherever the line is *recapped* rather
+   * than spoken (the round recap modal). Recapping the statement verbatim reads as a
+   * copy-paste of the round the player just played, so write a fresh, shorter line —
+   * what this statement did, not what it said. Keep it to
+   * {@link RECAP_SUMMARY_MAX_LINES} lines (see {@link RECAP_SUMMARY_MAX_CHARS}).
+   * When omitted the recap falls back to the full text.
+   */
+  summary?: string;
+  /**
+   * Overrides the emotion the staged sprite plays while this line is spoken. Omit it and
+   * `activeEmotionForWorkflow()` derives one from the line itself (a statement carrying
+   * `logicalFallacies` reads as `sneaky`, for instance) — set it only where the derived
+   * emotion is wrong for the beat. An emotion the speaker's animal has no art for falls back
+   * to the generic reaction, so authoring one is never load-bearing.
+   */
+  emotion?: AnimalEmotion;
 }
 
 export type JuryVerdict = 'proposition_accepted' | 'proposition_rejected';
@@ -92,6 +127,18 @@ export interface PlayerOption {
   /** Explanation of why this option is effective, ineffective, or a logical fallacy. */
   reason?: string;
   /**
+   * Overrides the emotion Rue plays while delivering this line. Same rules as
+   * {@link Statement.emotion}; omitted, it is derived from `quality`.
+   */
+  emotion?: AnimalEmotion;
+  /**
+   * Authored paraphrase of the line, shown in the round recap in place of the verbatim
+   * sentences. Same rules as {@link Statement.summary}: a fresh, shorter line, at most
+   * {@link RECAP_SUMMARY_MAX_LINES} lines. Describes the *unlocked* copy — while the
+   * option is still locked the recap keeps showing the placeholder `sentences`.
+   */
+  summary?: string;
+  /**
    * If set, `sentences` is placeholder copy until unlock; full content lives in `unlockedSentences`.
    */
   unlockCondition?: PlayerOptionUnlockCondition;
@@ -118,6 +165,12 @@ export interface NpcRoundEntry {
    * and the moderator drifts toward the player.
    */
   impact: number;
+  /**
+   * When `true`, the Continue button stays disabled until the player has resolved this
+   * round's analysis (a correct guess, or all attempts spent). Used by spotting-only
+   * scenarios where analysing the statement *is* the gameplay.
+   */
+  requiresAnalysis?: boolean;
 }
 
 /** Links one NPC response to the player option that triggered it. */
@@ -383,6 +436,55 @@ export interface DebateScenarioTutorialEntry {
 }
 
 /**
+ * What kind of encounter a scenario is. This selects UI copy only — the panel heading,
+ * the opening guidance and the closing line — so a trough conversation is not labelled
+ * "Debate Log". It never changes behaviour; the mechanics flags below do that.
+ *
+ * `'debate'` covers the full Public Farm and the one-beat skirmishes that use its chrome.
+ */
+export type EncounterKind = 'debate' | 'gossip' | 'sparring' | 'lab';
+
+/**
+ * Feature flags that let a scenario ship as a *smaller mode* than a full Public Farm
+ * debate (see `pitch/002_gradual_mechanics_onboarding.md`). Each flag is consumed
+ * independently — there is deliberately no behavioural `mode` enum, so nothing in the
+ * engine branches on which rung a scenario belongs to.
+ *
+ * Every field is optional and defaults to full-debate behaviour, so scenarios that
+ * omit `mechanics` entirely keep working unchanged. Read these through
+ * `resolveMechanics()` rather than off the raw scenario.
+ */
+export interface DebateScenarioMechanics {
+  /** Analyze buttons and the analysis modal. Default `true`. */
+  analysisEnabled?: boolean;
+  /** Insight Points counter in the debate log header. Default `true`. */
+  showInsightPoints?: boolean;
+  /** Moderator gauge, opinion emoji and per-round impact numbers. Default `true`. */
+  showModeratorOpinion?: boolean;
+  /** The per-round recap modal. When `false`, rounds advance straight through. Default `true`. */
+  showRoundRecap?: boolean;
+  /** The pre-round-1 introduction summary modal. Default `true`. */
+  showIntroSummary?: boolean;
+  /**
+   * When `true`, the round recap shows the chosen option's quality badge and its
+   * `reason`. This is the only feedback a scenario with `analysisEnabled: false`
+   * can give the player, so speaking-only rungs rely on it. Default `false`.
+   */
+  revealChoiceAssessment?: boolean;
+  /**
+   * The option quality this scenario rewards. Inoculation scenarios set
+   * `'logical_fallacy'` so committing the fallacy on purpose reads as the win.
+   * Only affects presentation — scoring always comes from authored `impact`.
+   * Default `'effective'`.
+   */
+  targetQuality?: OptionQuality;
+  /** Analysis attempts per target. Default `DEFAULT_MAX_ANALYSIS_ATTEMPTS`. */
+  maxAnalysisAttempts?: number;
+  /** Selects the encounter's UI copy. Presentation only. Default `'debate'`. */
+  encounterKind?: EncounterKind;
+}
+
+/**
  * Authoring shape for a single-player debate scenario loaded from JSON.
  * `rounds` defines the full sequential flow (NPC and player turns in order).
  */
@@ -390,6 +492,13 @@ export interface DebateScenarioJson {
   id: string;
   /** Brief summary of what the debate is about. */
   introduction?: string;
+  /**
+   * Authored paraphrase of `introduction`, shown in the pre-round-1 introduction summary
+   * modal. Without it that modal just repeats the introduction the player has already
+   * read (truncated at a word boundary), so write a fresh line: the stakes, not the scene.
+   * At most {@link RECAP_SUMMARY_MAX_LINES} lines.
+   */
+  introductionSummary?: string;
   playerSide: Side;
   /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
   characters?: Record<string, string>;
@@ -397,6 +506,8 @@ export interface DebateScenarioJson {
   availableLogicalFallacies: LogicalFallacyId[];
   /** Initial Insight Points balance the player starts the debate with. Defaults to 0. */
   startingInsightPoints?: number;
+  /** Mode flags; omit for a full debate. See `DebateScenarioMechanics`. */
+  mechanics?: DebateScenarioMechanics;
   rounds: RoundEntry[];
   /**
    * Overlay tutorials wired to specific debate events via the typed event bus.

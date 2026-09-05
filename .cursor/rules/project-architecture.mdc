@@ -2,14 +2,51 @@
 alwaysApply: true
 ---
 
-## Folder Structure
+## Folder structure
 
-All the source code should go inside `src`, then use the following rules for each file:
-- UI files implemneted with React must go inside src/react
-- Game files that use Phaser and do not create any React component must go inside src/phaser
-- ## Folder Structure
+All source code lives in `src/`:
 
-All the source code should go inside `src`, then use the following rules for each file:
-- UI files implemneted with React must go inside src/react
-- Game files that use Phaser and do not create any React component must go inside src/phaser
-- 
+- **`src/react/`** — anything that renders a React component: screens, panels, modals, hooks, SCSS modules.
+- **`src/phaser/`** — Phaser-only code with no React: game config, scenes, and scene helpers.
+- **`src/store/`** — Zustand stores. The only sanctioned way for the Phaser and React layers to share state.
+- **`src/data/`** — authored content and copy: `labels.ts`, the scenario registry, the farm map, encounter JSON.
+- **`src/types/`** — shared TypeScript types, chiefly the content schema.
+- **`src/utils/`** — framework-agnostic helpers and imperative Phaser access.
+
+Outside `src/`: **`scripts/`** holds build-time and asset-pipeline Node scripts that are never
+shipped — including `scripts/ludo/`, the paid sprite pipeline described below.
+
+## Before changing anything structural
+
+Read `docs/architecture.md` — it explains the Phaser/React split, scene-key routing,
+the four stores and two event buses. `AGENTS.md` at the repo root is the file map.
+
+## Generated art costs real money
+
+`npm run sprites:emotions` generates the cast's emotion animations through the Ludo.ai API and
+spends **~4 credits per clip** from the user's Ludo.ai balance. Non-refundable.
+
+- **Never run a generating invocation unless the user asked for that specific generation.** An
+  open-ended "finish the animals" is not authorisation. State the projected cost
+  (`clips × 4 credits`) and wait for a yes.
+- **Flags must come after `--`.** `npm run sprites:emotions --dry-run` is *not* a dry run: npm
+  swallows the flag, the script receives **no arguments at all**, and its default scope is the
+  entire manifest — 30 clips, ~120 credits. Always `npm run sprites:emotions -- --dry-run`.
+  (Verified: with the flag before `--` the script's `process.argv.slice(2)` is `[]`.)
+- Free and safe: `-- --dry-run` (no API key needed), `-- --promote`, `-- --reindex`, `-- --remeasure`. Costly:
+  anything else, and `--force` deliberately bypasses the result cache so it charges again.
+- `LUDO_API_KEY` lives only in the gitignored `.env.local`. Never commit it, never pass it as a
+  CLI flag, never print the file's contents, and never rename it to `VITE_LUDO_API_KEY` — Vite
+  inlines every `VITE_`-prefixed variable into the client bundle, publishing it to every player.
+
+Everything else about that pipeline is in `.claude/skills/animal-emotion-sprites/SKILL.md` — an
+ordinary markdown file in this repo, readable by any tool. Read it before doing anything with
+the pipeline beyond a dry run. (Do not add `.claude/` to a `.cursorignore`; it would silently
+cut every pointer in this repo.)
+
+## Two rules that are easy to get wrong
+
+- The React overlay is `pointer-events: none` and that **inherits**. Any new interactive
+  element must set `pointer-events: auto` on its root, or clicks fall through to the canvas.
+- All user-visible fixed strings go through `getLabel` in `src/data/labels.ts` — Phaser
+  scenes included. Scenario prose lives in the encounter JSON, not in labels.

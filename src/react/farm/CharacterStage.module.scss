@@ -1,0 +1,113 @@
+/* Placeholder busts shared by farm talk and the Trial game hole. Display-only. */
+
+$player-outline: #2a2118;
+
+.stage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin: 0;
+  pointer-events: none;
+}
+
+.stageHole {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+  padding: 1rem;
+}
+
+.participant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  transition: opacity 0.2s ease;
+}
+
+.active .bust {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 0 0.2rem var(--ui-color-accent),
+    0 0 1.1rem var(--ui-color-accent-glow);
+}
+
+.dimmed {
+  opacity: 0.45;
+}
+
+.bust {
+  box-sizing: border-box;
+  width: 4.25rem;
+  height: 4.25rem;
+  border: 2px solid var(--ui-color-border-emphasis);
+  box-shadow: 0 0.35rem 0.9rem var(--ui-color-shadow-deep);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stageHole .bust {
+  width: clamp(4.5rem, 11vw, 8.5rem);
+  height: clamp(4.5rem, 11vw, 8.5rem);
+}
+
+.npcBust {
+  border-radius: 50%;
+}
+
+.playerBust {
+  position: relative;
+  border-radius: 0.85rem;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 14%;
+    left: 50%;
+    width: 18%;
+    height: 18%;
+    border-radius: 50%;
+    background: $player-outline;
+    transform: translateX(-50%);
+  }
+}
+
+.name {
+  margin: 0;
+  color: var(--ui-color-text-emphasis);
+  font-size: var(--ui-font-caption);
+  font-weight: bold;
+  text-shadow: 0 1px 4px var(--ui-color-shadow-deep);
+}
+
+.stageHole .name {
+  font-size: var(--ui-font-subtitle);
+}
+
+/* Nameplate-only variant: labels the Phaser `Trial` scene's animated cast instead of
+   drawing CSS busts. One evenly-spaced slot per participant, mirroring the sprite layout
+   `Trial.ts` computes for the same cast. */
+.nameplateRow {
+  justify-content: space-around;
+}
+
+.nameplateSlot {
+  flex: 1 1 0;
+  align-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .participant {
+    transition: none;
+  }
+
+  .active .bust {
+    transform: none;
+  }
+}

@@ -1,0 +1,550 @@
+{
+  "brown-wolf": {
+    "angry": {
+      "file": "brown-wolf-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.125,
+      "originX": 0.528,
+      "originY": 0.7012,
+      "prompt": "Side view, facing left. The brown wolf stands in place on all fours and is furious: its pointed ears pin flat back against its skull for the whole clip, the white ruff of fur at its neck bristles out, its brows drive down hard over narrowed eyes, its head drops level with its shoulders and pushes forward at the target, and its long muzzle wrinkles open in a snarl. Each time the mouth opens it shows the same shape every frame — a plain dark muzzle around one clean flat pink inner mouth that never changes shape, size or colour between frames. Its bushy tail stays low. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never lies down, never sits, never lunges or bites. Its muzzle stays level and pointed forward, never tipped up toward the sky. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.12,
+        "heightSwing": 5.1,
+        "driftX": 0.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:43:38.565Z"
+    },
+    "doubtful": {
+      "file": "brown-wolf-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.2174,
+      "originX": 0.521,
+      "originY": 0.7012,
+      "prompt": "Side view, facing left. The brown wolf stands in place on all fours and is unconvinced: its head draws back and tilts to one side, one pointed ear swivels back and returns, one brow lifts while the other stays low, its muzzle stays shut, and its bushy tail hangs still. Guarded and skeptical. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never lies down, never sits, never lunges or bites. Its muzzle stays level and pointed forward, never tipped up toward the sky. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.13,
+        "heightSwing": 12.1,
+        "driftX": 2.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:42:30.085Z"
+    },
+    "sneaky": {
+      "file": "brown-wolf-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.1857,
+      "originX": 0.536,
+      "originY": 0.6992,
+      "prompt": "Side view, facing left. The brown wolf stands in place on all fours and speaks conspiratorially: its head cranes slowly forward and dips toward the listener, its pointed ears tilt back, its eyes flick sideways, and its long muzzle moves in a small low mutter. Its bushy tail stays whole and fully drawn in every frame, held low and curled behind it. Each time the mouth opens it shows the same shape every frame — a plain dark muzzle around one clean flat pink inner mouth that never changes shape, size or colour between frames. Sly and secretive. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never lies down, never sits, never lunges or bites. Its muzzle stays level and pointed forward, never tipped up toward the sky. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.33,
+        "heightSwing": 16.7,
+        "driftX": 3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:46:00.687Z"
+    },
+    "talking": {
+      "file": "brown-wolf-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.2174,
+      "originX": 0.5337,
+      "originY": 0.6992,
+      "prompt": "Side view, facing left. The brown wolf stands in place on all fours and talks calmly: its long muzzle opens and closes with each phrase, its head bobs gently in time, its pointed ears stay upright and relaxed, its brow is EASED and smooth rather than furrowed, and the tip of its bushy tail sways slowly. Each time the mouth opens it shows the same shape every frame — a plain dark muzzle around one clean flat pink inner mouth that never changes shape, size or colour between frames. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never lies down, never sits, never lunges or bites. Its muzzle stays level and pointed forward, never tipped up toward the sky. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.28,
+        "heightSwing": 4.3,
+        "driftX": 8.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:41:12.392Z"
+    },
+    "thinking": {
+      "file": "brown-wolf-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.2282,
+      "originX": 0.5277,
+      "originY": 0.7012,
+      "prompt": "Side view, facing left. The brown wolf stands in place on all fours and considers something: almost motionless, its head lowered and turned slightly away, its pointed ears rotating slowly back and forward again, its brow eased and smooth, its muzzle shut, its bushy tail hanging still. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never lies down, never sits, never lunges or bites. Its muzzle stays level and pointed forward, never tipped up toward the sky. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.19,
+        "heightSwing": 3.4,
+        "driftX": 1.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:44:47.545Z"
+    }
+  },
+  "donkey-grey": {
+    "angry": {
+      "file": "donkey-grey-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 16,
+      "frameRate": 8,
+      "scale": 2.0584,
+      "originX": 0.5384,
+      "originY": 0.7383,
+      "quality": {
+        "loopPop": 0.23,
+        "heightSwing": 12.9,
+        "driftX": 1.5,
+        "warnings": []
+      }
+    },
+    "doubtful": {
+      "file": "donkey-grey-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 16,
+      "frameRate": 8,
+      "scale": 2.0268,
+      "originX": 0.5332,
+      "originY": 0.7363,
+      "quality": {
+        "loopPop": 2.52,
+        "heightSwing": 9.6,
+        "driftX": 10.5,
+        "warnings": [
+          "loop seam 2.52% (over 2%) — it will visibly jump on every repeat"
+        ]
+      }
+    },
+    "sneaky": {
+      "file": "donkey-grey-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 16,
+      "frameRate": 8,
+      "scale": 2.177,
+      "originX": 0.5266,
+      "originY": 0.7363,
+      "quality": {
+        "loopPop": 0.22,
+        "heightSwing": 28,
+        "driftX": 5.5,
+        "warnings": [
+          "height swing 28% (over 20%) — check it is motion, not the character changing pose"
+        ]
+      }
+    },
+    "talking": {
+      "file": "donkey-grey-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 16,
+      "frameRate": 8,
+      "scale": 2.1331,
+      "originX": 0.5361,
+      "originY": 0.7363,
+      "quality": {
+        "loopPop": 0.74,
+        "heightSwing": 3.2,
+        "driftX": 1.5,
+        "warnings": []
+      }
+    },
+    "thinking": {
+      "file": "donkey-grey-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 16,
+      "frameRate": 8,
+      "scale": 2.0584,
+      "originX": 0.5257,
+      "originY": 0.7383,
+      "quality": {
+        "loopPop": 1.54,
+        "heightSwing": 10.9,
+        "driftX": 6.3,
+        "warnings": []
+      }
+    }
+  },
+  "fox": {
+    "angry": {
+      "file": "fox-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 16,
+      "frameRate": 8,
+      "scale": 2.3155,
+      "originX": 0.5723,
+      "originY": 0.6641,
+      "prompt": "Side view, facing left. The red fox stands in place on all fours, ears flattened hard back against its skull for the whole clip, muzzle wrinkled open in a snarl showing teeth, head lowered until it is level with its shoulders and pushed toward the target, and its low bushy tail lashing from side to side. All four feet stay planted exactly where they are in the reference image and never move — it does not step, lunge, walk or pounce, and the body stays standing. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.19,
+        "heightSwing": 32.1,
+        "driftX": 10.8,
+        "warnings": [
+          "height swing 32% (over 20%) — check it is motion, not the character changing pose"
+        ]
+      },
+      "generatedAt": "2026-09-05T00:49:04.868Z"
+    },
+    "doubtful": {
+      "file": "fox-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 16,
+      "frameRate": 8,
+      "scale": 2.3018,
+      "originX": 0.5472,
+      "originY": 0.6641,
+      "prompt": "Side view, facing left. The red fox stands in place on all fours and is unconvinced: its head draws back and tilts, one upright ear swivels back and returns, its muzzle stays closed, and its bushy tail hangs still. All four feet stay planted exactly where they are in the reference image and never move; the body stays standing the whole time. Guarded and skeptical. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.16,
+        "heightSwing": 15.4,
+        "driftX": 6,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T00:47:56.669Z"
+    },
+    "sneaky": {
+      "file": "fox-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.3018,
+      "originX": 0.5443,
+      "originY": 0.6641,
+      "prompt": "Side view, facing left. The red fox stands in place on all fours and speaks conspiratorially: its head lowers and cranes slowly forward toward the listener, its ears tilt back, and its eyes flick sideways. Its big bushy tail stays whole and fully drawn for every frame, held low and curled behind it, the same full shape and length as in the reference image. The movement is ONE slow continuous glide from start to finish — gentle and unhurried, with no sudden jumps, no fast beats and no snapping back. All four feet stay planted exactly where they are in the reference image and never move; it stays standing the whole time and never crouches flat, never lies down, never sits. Sly and secretive. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.19,
+        "heightSwing": 16.6,
+        "driftX": 8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T00:59:36.942Z"
+    },
+    "talking": {
+      "file": "fox-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 16,
+      "frameRate": 8,
+      "scale": 2.2616,
+      "originX": 0.545,
+      "originY": 0.666,
+      "prompt": "Side view, facing left. The red fox stands in place on all fours and talks: its muzzle opens and closes with each phrase, its head bobs gently in time, its ears stay upright and flick once, and the tip of its bushy tail sways slowly. All four feet stay planted exactly where they are in the reference image and never move. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.2,
+        "heightSwing": 3.5,
+        "driftX": 1.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T00:46:47.174Z"
+    },
+    "thinking": {
+      "file": "fox-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 16,
+      "frameRate": 8,
+      "scale": 2.3155,
+      "originX": 0.5635,
+      "originY": 0.6641,
+      "prompt": "Side view, facing left. The red fox stands in place on all fours and considers something: nearly still, its head lowered and turned slightly away, its ears rotating slowly back and forward again, its muzzle closed, its bushy tail hanging still. All four feet stay planted exactly where they are in the reference image and never move. Quiet and deliberate. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.17,
+        "heightSwing": 14.3,
+        "driftX": 7.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T00:50:16.419Z"
+    }
+  },
+  "owl": {
+    "angry": {
+      "file": "owl-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.1962,
+      "originX": 0.5019,
+      "originY": 0.75,
+      "prompt": "Front view, facing the viewer. A close, still shot of the owl. Its body, wings, feet and outline stay exactly as they are in the reference image and do not move at all — the wings remain tucked down at its sides in the same shape as the reference in every frame. ONLY THE FACE MOVES. The brow feathers press down into a hard V over the eyes, each big yellow eye narrows into a slanted slit with the bright yellow still visible, and the beak opens and snaps shut in a sharp scolding. The head tips forward a little toward the viewer and back. Nothing else in the picture changes. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.1,
+        "heightSwing": 7.6,
+        "driftX": 0.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T04:23:16.943Z"
+    },
+    "doubtful": {
+      "file": "owl-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.2214,
+      "originX": 0.496,
+      "originY": 0.75,
+      "prompt": "Front view, facing the viewer. The owl stays standing in place on its own two feet and is skeptical: weight settling back, head rotating slowly to one side and tilting, a long unimpressed stare, one slow blink. It stays upright the whole time and never takes off. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.43,
+        "heightSwing": 9.2,
+        "driftX": 2.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T04:21:48.851Z"
+    },
+    "sneaky": {
+      "file": "owl-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.1087,
+      "originX": 0.5058,
+      "originY": 0.75,
+      "prompt": "Front view, facing the viewer. The owl stays standing upright in place on its own two feet and speaks conspiratorially: head craned forward and dipped toward the listener, rotating to glance furtively to one side and back, eyes narrowing, body still. It never crouches, never hunches its body down, never lies down, never takes off. Sly and secretive. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.12,
+        "heightSwing": 7.2,
+        "driftX": 3.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T04:25:48.641Z"
+    },
+    "talking": {
+      "file": "owl-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.1716,
+      "originX": 0.5009,
+      "originY": 0.75,
+      "prompt": "Front view, facing the viewer. The owl stays standing in place on its own two feet and talks: beak opening and closing, head bobbing slightly with each phrase, body still and upright. It never takes off and never leaves the ground; no perch or branch appears. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.14,
+        "heightSwing": 6,
+        "driftX": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T04:20:39.507Z"
+    },
+    "thinking": {
+      "file": "owl-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.2299,
+      "originX": 0.4921,
+      "originY": 0.748,
+      "prompt": "Front view, facing the viewer. The owl stays standing in place on its own two feet and thinks: almost motionless, head turning slowly to one side and back, a single slow blink. It stays upright and never takes off. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.13,
+        "heightSwing": 1.9,
+        "driftX": 3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T04:24:29.701Z"
+    }
+  },
+  "raccoon": {
+    "angry": {
+      "file": "raccoon-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.4663,
+      "originX": 0.5123,
+      "originY": 0.6855,
+      "prompt": "Three-quarter view, facing left. The raccoon sits in place and is furious: its dark brows drive down hard into a V over its big white eyes, narrowing them into a glare it holds for the whole clip, its head pushes forward toward the target, its chest thrusts out, and both front paws clench and jab forward sharply. Its small muzzle opens in a hard chitter. Each time the muzzle opens it shows the same shape every frame — a small clean flat pink inner mouth that never changes shape, size or colour between frames. It stays SITTING UPRIGHT on its haunches for the whole clip with its hindquarters planted exactly where they are in the reference image — it never drops onto all fours, never stands up, never lies down, never walks. Its front paws stay empty and open and hold nothing at any point: no nut, no food and no object of any kind ever appears in the picture. Its striped tail stays whole and fully drawn in every frame, curled behind it in the same shape as the reference. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.16,
+        "heightSwing": 13,
+        "driftX": 11.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:59:27.715Z"
+    },
+    "doubtful": {
+      "file": "raccoon-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.4198,
+      "originX": 0.5115,
+      "originY": 0.6836,
+      "prompt": "Three-quarter view, facing left. The raccoon sits in place and is unconvinced: its head draws back and tilts to one side, one dark brow lifts high while the other stays low over its big white eyes, its muzzle stays shut, and one front paw stops and hangs still mid-air. Guarded and skeptical. It stays SITTING UPRIGHT on its haunches for the whole clip with its hindquarters planted exactly where they are in the reference image — it never drops onto all fours, never stands up, never lies down, never walks. Its front paws stay empty and open and hold nothing at any point: no nut, no food and no object of any kind ever appears in the picture. Its striped tail stays whole and fully drawn in every frame, curled behind it in the same shape as the reference. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.17,
+        "heightSwing": 10.9,
+        "driftX": 11.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:58:07.331Z"
+    },
+    "sneaky": {
+      "file": "raccoon-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.7,
+      "originX": 0.5112,
+      "originY": 0.6836,
+      "prompt": "Three-quarter view, facing left. The raccoon sits in place and speaks conspiratorially: its head cranes slowly forward and dips toward the listener, its big white eyes flick sideways under lowered dark brows, its small muzzle moves in a low mutter, and its two front paws draw in close together in front of its chest. Sly and secretive. Each time the muzzle opens it shows the same shape every frame — a small clean flat pink inner mouth that never changes shape, size or colour between frames. It stays SITTING UPRIGHT on its haunches for the whole clip with its hindquarters planted exactly where they are in the reference image — it never drops onto all fours, never stands up, never lies down, never walks. Its front paws stay empty and open and hold nothing at any point: no nut, no food and no object of any kind ever appears in the picture. Its striped tail stays whole and fully drawn in every frame, curled behind it in the same shape as the reference. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.17,
+        "heightSwing": 3.7,
+        "driftX": 1.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T02:01:45.269Z"
+    },
+    "talking": {
+      "file": "raccoon-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.5779,
+      "originX": 0.5117,
+      "originY": 0.6836,
+      "prompt": "Three-quarter view, facing left. The raccoon sits in place and talks: its small muzzle opens and closes with each phrase, its head bobs gently in time, its big white eyes stay wide with the dark brows above them level and relaxed, and one front paw makes a small easy gesture in time with the words. Each time the muzzle opens it shows the same shape every frame — a small clean flat pink inner mouth that never changes shape, size or colour between frames. It stays SITTING UPRIGHT on its haunches for the whole clip with its hindquarters planted exactly where they are in the reference image — it never drops onto all fours, never stands up, never lies down, never walks. Its front paws stay empty and open and hold nothing at any point: no nut, no food and no object of any kind ever appears in the picture. Its striped tail stays whole and fully drawn in every frame, curled behind it in the same shape as the reference. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.16,
+        "heightSwing": 5.5,
+        "driftX": 1.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:56:53.774Z"
+    },
+    "thinking": {
+      "file": "raccoon-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.565,
+      "originX": 0.5118,
+      "originY": 0.6836,
+      "prompt": "Three-quarter view, facing left. The raccoon sits in place and considers something: almost motionless, its head tilted and turned slightly away, its big white eyes rolling slowly upward as if searching for a word, its dark brows drawn together, its muzzle shut, and one front paw lifting slowly toward its chin and lowering again. It stays SITTING UPRIGHT on its haunches for the whole clip with its hindquarters planted exactly where they are in the reference image — it never drops onto all fours, never stands up, never lies down, never walks. Its front paws stay empty and open and hold nothing at any point: no nut, no food and no object of any kind ever appears in the picture. Its striped tail stays whole and fully drawn in every frame, curled behind it in the same shape as the reference. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.17,
+        "heightSwing": 6,
+        "driftX": 5.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T02:00:36.331Z"
+    }
+  },
+  "white-sheep-1": {
+    "angry": {
+      "file": "white-sheep-1-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.0861,
+      "originX": 0.4797,
+      "originY": 0.7148,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and is FURIOUS. Its white eyes narrow into hard angry slits with the brows driven down low over them and stay narrowed for the whole clip — the white of the eye is still clearly visible against the dark head in every frame. Its floppy black ears pin flat back against its skull. Its dark head drops until it is level with its shoulders and pushes forward at the target. Its dark muzzle is held WIDE OPEN in one long hard bleat for most of the clip. The open mouth is always the same shape: one big clean smooth rounded patch of flat pink inside a plain dark muzzle, drawn identically in every frame it appears, flat pink and nothing else — no white shapes, no teeth, no tongue detail — never changing shape, size or colour between frames. Its head never drops below shoulder height. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.31,
+        "heightSwing": 18.5,
+        "driftX": 3.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:31:45.481Z"
+    },
+    "doubtful": {
+      "file": "white-sheep-1-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.1937,
+      "originX": 0.4848,
+      "originY": 0.7148,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and is unconvinced: its dark head draws back and tilts to one side, one floppy black ear lifts and swivels back, its muzzle stays shut, and it gives one slow doubtful shake of the head. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.28,
+        "heightSwing": 7.7,
+        "driftX": 4,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:14:41.015Z"
+    },
+    "sneaky": {
+      "file": "white-sheep-1-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.1373,
+      "originX": 0.4901,
+      "originY": 0.7148,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and speaks conspiratorially: its dark head cranes forward and dips a little toward the listener, its floppy black ears tilt back, its eyes flick sideways, and its muzzle moves in a low mutter. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.31,
+        "heightSwing": 5.2,
+        "driftX": 1.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:18:31.633Z"
+    },
+    "talking": {
+      "file": "white-sheep-1-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.1472,
+      "originX": 0.4911,
+      "originY": 0.7168,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and talks: its black muzzle opens and closes with each phrase, its dark head bobs gently in time, and its floppy black ears flick once. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.32,
+        "heightSwing": 7.4,
+        "driftX": 2.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:13:31.405Z"
+    },
+    "thinking": {
+      "file": "white-sheep-1-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.1937,
+      "originX": 0.4887,
+      "originY": 0.7168,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and considers something: almost motionless, its dark head turned slightly away, its floppy black ears rotating slowly back and forward again, its muzzle shut. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.29,
+        "heightSwing": 2.7,
+        "driftX": 4,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-05T01:17:19.792Z"
+    }
+  }
+}

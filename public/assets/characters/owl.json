@@ -1,0 +1,1766 @@
+{
+  "textures": [
+    {
+      "image": "owl/owl-0.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1975,
+        "h": 1787
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__owl_no_tail_flap_wings/__owl_no_tail_flap_wings_2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 31,
+            "y": 17,
+            "w": 845,
+            "h": 584
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 845,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_flap_wings/__owl_no_tail_flap_wings_5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 17,
+            "w": 815,
+            "h": 584
+          },
+          "frame": {
+            "x": 1,
+            "y": 587,
+            "w": 815,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_flap_wings/__owl_no_tail_flap_wings_4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 67,
+            "y": 17,
+            "w": 774,
+            "h": 584
+          },
+          "frame": {
+            "x": 818,
+            "y": 587,
+            "w": 774,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_flap_wings/__owl_no_tail_flap_wings_3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 91,
+            "y": 17,
+            "w": 723,
+            "h": 584
+          },
+          "frame": {
+            "x": 848,
+            "y": 1,
+            "w": 723,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_rotate_head/__owl_no_tail_rotate_head_7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 268,
+            "y": 0,
+            "w": 360,
+            "h": 601
+          },
+          "frame": {
+            "x": 1594,
+            "y": 1,
+            "w": 360,
+            "h": 601
+          }
+        },
+        {
+          "filename": "__owl_no_tail_rotate_head/__owl_no_tail_rotate_head_2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 248,
+            "y": 5,
+            "w": 380,
+            "h": 596
+          },
+          "frame": {
+            "x": 1594,
+            "y": 604,
+            "w": 380,
+            "h": 596
+          }
+        },
+        {
+          "filename": "__owl_no_tail_flap_wings/__owl_no_tail_flap_wings_6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 94,
+            "y": 17,
+            "w": 717,
+            "h": 584
+          },
+          "frame": {
+            "x": 1,
+            "y": 1173,
+            "w": 717,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_flap_wings/__owl_no_tail_flap_wings_1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 124,
+            "y": 17,
+            "w": 668,
+            "h": 584
+          },
+          "frame": {
+            "x": 720,
+            "y": 1173,
+            "w": 668,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_flap_wings/__owl_no_tail_flap_wings_0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1390,
+            "y": 1202,
+            "w": 448,
+            "h": 584
+          }
+        }
+      ]
+    },
+    {
+      "image": "owl/owl-1.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1731,
+        "h": 1783
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_rotate_head/__owl_no_tail_rotate_head_3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 287,
+            "y": 0,
+            "w": 355,
+            "h": 601
+          },
+          "frame": {
+            "x": 451,
+            "y": 1,
+            "w": 355,
+            "h": 601
+          }
+        },
+        {
+          "filename": "__owl_no_tail_rotate_head/__owl_no_tail_rotate_head_8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 283,
+            "y": 5,
+            "w": 379,
+            "h": 596
+          },
+          "frame": {
+            "x": 1,
+            "y": 590,
+            "w": 379,
+            "h": 596
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 382,
+            "y": 604,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_rotate_head/__owl_no_tail_rotate_head_4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 268,
+            "y": 7,
+            "w": 375,
+            "h": 594
+          },
+          "frame": {
+            "x": 1,
+            "y": 1188,
+            "w": 375,
+            "h": 594
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 808,
+            "y": 1,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_rotate_head/__owl_no_tail_rotate_head_6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 267,
+            "y": 7,
+            "w": 375,
+            "h": 594
+          },
+          "frame": {
+            "x": 832,
+            "y": 590,
+            "w": 375,
+            "h": 594
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 832,
+            "y": 1186,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 378,
+            "y": 1193,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 1209,
+            "y": 590,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 1282,
+            "y": 1179,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 1258,
+            "y": 1,
+            "w": 448,
+            "h": 587
+          }
+        }
+      ]
+    },
+    {
+      "image": "owl/owl-2.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1800,
+        "h": 1766
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 451,
+            "y": 1,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 901,
+            "y": 1,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 1351,
+            "y": 1,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 1,
+            "y": 590,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 451,
+            "y": 590,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 14,
+            "w": 448,
+            "h": 587
+          },
+          "frame": {
+            "x": 901,
+            "y": 590,
+            "w": 448,
+            "h": 587
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 1351,
+            "y": 590,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 1351,
+            "y": 1178,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 1,
+            "y": 1179,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 451,
+            "y": 1179,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 901,
+            "y": 1179,
+            "w": 448,
+            "h": 586
+          }
+        }
+      ]
+    },
+    {
+      "image": "owl/owl-3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1800,
+        "h": 1763
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 451,
+            "y": 1,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 901,
+            "y": 1,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 1351,
+            "y": 1,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 1,
+            "y": 589,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 451,
+            "y": 589,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 15,
+            "w": 448,
+            "h": 586
+          },
+          "frame": {
+            "x": 901,
+            "y": 589,
+            "w": 448,
+            "h": 586
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 1351,
+            "y": 589,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 1351,
+            "y": 1176,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 1,
+            "y": 1177,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 451,
+            "y": 1177,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 901,
+            "y": 1177,
+            "w": 448,
+            "h": 585
+          }
+        }
+      ]
+    },
+    {
+      "image": "owl/owl-4.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1800,
+        "h": 1761
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 1,
+            "y": 588,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 1,
+            "y": 1175,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 451,
+            "y": 1,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 901,
+            "y": 1,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 1351,
+            "y": 1,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 451,
+            "y": 588,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 451,
+            "y": 1175,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 901,
+            "y": 588,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 1351,
+            "y": 588,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 901,
+            "y": 1175,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 1351,
+            "y": 1175,
+            "w": 448,
+            "h": 585
+          }
+        }
+      ]
+    },
+    {
+      "image": "owl/owl-5.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1800,
+        "h": 1759
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 16,
+            "w": 448,
+            "h": 585
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 448,
+            "h": 585
+          }
+        },
+        {
+          "filename": "__owl_no_tail_flap_wings/__owl_no_tail_flap_wings_7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1,
+            "y": 588,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_flap_wings/__owl_no_tail_flap_wings_8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1,
+            "y": 1174,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_flap_wings/__owl_no_tail_flap_wings_9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 451,
+            "y": 1,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 901,
+            "y": 1,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1351,
+            "y": 1,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 451,
+            "y": 587,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 451,
+            "y": 1173,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_asleep/__owl_no_tail_idle_asleep_2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 901,
+            "y": 587,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1351,
+            "y": 587,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 901,
+            "y": 1173,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1351,
+            "y": 1173,
+            "w": 448,
+            "h": 584
+          }
+        }
+      ]
+    },
+    {
+      "image": "owl/owl-6.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1800,
+        "h": 1758
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1,
+            "y": 587,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1,
+            "y": 1173,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 451,
+            "y": 1,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 901,
+            "y": 1,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1351,
+            "y": 1,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_idle_sleepy_face/__owl_no_tail_idle_sleepy_face_2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 451,
+            "y": 587,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_rotate_head/__owl_no_tail_rotate_head_0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 451,
+            "y": 1173,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_rotate_head/__owl_no_tail_rotate_head_1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 901,
+            "y": 587,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_rotate_head/__owl_no_tail_rotate_head_9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 228,
+            "y": 17,
+            "w": 448,
+            "h": 584
+          },
+          "frame": {
+            "x": 1351,
+            "y": 587,
+            "w": 448,
+            "h": 584
+          }
+        },
+        {
+          "filename": "__owl_no_tail_rotate_head/__owl_no_tail_rotate_head_5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 906,
+            "h": 601
+          },
+          "spriteSourceSize": {
+            "x": 233,
+            "y": 22,
+            "w": 448,
+            "h": 579
+          },
+          "frame": {
+            "x": 901,
+            "y": 1173,
+            "w": 448,
+            "h": 579
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "3.0",
+    "smartupdate": "$TexturePacker:SmartUpdate:ed25fe10e8b3292d74b1a8b506e59e50:56da713aa989b289d5529a3e58049b87:a9e0c0bf30b18ef5003d21a7c835e61d$"
+  }
+}

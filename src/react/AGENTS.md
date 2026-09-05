@@ -1,4 +1,4 @@
-# AGENT.md — React overlay layer
+# AGENTS.md — React overlay layer
 
 This document describes the React UI layer under `src/react/` with a focus on the Trial/debate screen (`screens/TrialUI.tsx`) and its supporting files.
 
@@ -9,16 +9,17 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `ReactApp.tsx` | Scene-keyed switch: renders `MainMenuUI`, `TrialUI`, or `BoilerPlateUI` based on the active Phaser scene. |
 | `ReactRoot.tsx` | Positions the overlay over the Phaser canvas and syncs its size on resize. |
 | `screens/MainMenuUI.tsx` | Overlay shown while the `MainMenu` scene is active. |
+| `screens/GameLoadingScreen.tsx` | Loading screen shown until `isGameReady`, and again while `isSceneLoading`. Also the interaction gate: it covers the stage and sets `pointer-events: auto`, so nothing behind it is clickable while `Boot`/`Preloader` or a scene pack load. |
 | `screens/BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
 | `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, `RoundRecapModal`, and `RoundAnalysisModal`. |
-| `trial/TrialLayout.tsx` | Three-column layout shell used by `TrialUI`. |
+| `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent "game hole" top-left, then Debate Log, Wizard and Interactive. |
 | `trial/panels/FeedbackPanel.tsx` | Left column: introduction, round counter, score, history, live crossfire prompt. |
 | `trial/panels/WizardPanel.tsx` | Centre column: `wizardMessage` only. |
 | `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and footer (Back / Continue / Confirm). |
 | `hooks/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. Also emits `round:start` / `round:end` on the debate event bus. |
 | `hooks/useScenarioTutorials.ts` | Subscribes to bus events declared by `scenario.tutorials` and opens the matching overlay via `useTutorialStore` (see "Scenario tutorials" below). |
 | `trial/utils/debateEventBus.ts` | Typed pub/sub singleton keyed on `EventTrigger`, plus the `useDebateEvent` React hook and tutorial-trigger helpers (`DebateTutorialTrigger`, `debatePayloadSatisfies`, `debateTutorialTriggerMatches`). |
-| `trial/roundRecapModal/RoundRecapModal.tsx` | Post–player-round summary modal; closing it dispatches `continue` and advances the workflow. Emits `round:recap:open` / `round:recap:close` on mount/unmount. |
+| `trial/roundRecapModal/RoundRecapModal.tsx` | Post–player-round summary modal; closing it dispatches `continue` and advances the workflow. Emits `round:recap:open` / `round:recap:close` on mount/unmount. Each block renders the authored `summary` (clamped to two lines), falling back to the spoken text — see [`docs/encounters.md`](../../docs/encounters.md#recap-summaries). |
 | `trial/roundAnalysisModal/RoundAnalysisModal.tsx` | Modal overlay for per-round analysis and fallacy guessing (see below). Emits `analysis:*` events for every open/close, sentence toggle, fallacy toggle, and guess outcome. |
 | `hooks/useScrollFade.ts` | Hook that tracks scroll edge state; drives animated fade overlays on scrollable containers. |
 | `trial/utils/trialHelpers.ts` | Shared helpers: speaker names, quality/score colours, statement text, statement type labels. |
@@ -69,7 +70,10 @@ Implementation split:
 | `introduction` | `string?` | Optional text shown at the top of the Feedback panel throughout the debate. |
 | `playerSide` | `"proposition" \| "opposition"` | Which side the player argues. |
 | `characters` | `Record<string, string>?` | Maps a `speakerId` to a display name; falls back to capitalising the id. |
-| `logicalFallacies` | `LogicalFallacy[]` | Master catalogue of all fallacies usable in this scenario. Displayed in the analysis modal's fallacy picker. |
+| `logicalFallacies` | `LogicalFallacyScenario[]` | The fallacies this scenario uses, each with an `explanation` shown after a guess. |
+| `availableLogicalFallacies` | `LogicalFallacyId[]` | Which fallacy icons appear on the analysis modal's picker. Keep it short — it is the difficulty dial. |
+| `startingInsightPoints` | `number?` | Insight balance the player starts with. Defaults to 0. |
+| `mechanics` | `DebateScenarioMechanics?` | Mode flags that let a scenario ship as something smaller than a full debate. Omit for full-debate behaviour. See [`docs/encounters.md`](../../docs/encounters.md). |
 | `rounds` | `RoundEntry[]` | Ordered list of NPC and player turns (see below). |
 | `tutorials` | `DebateScenarioTutorialEntry[]?` | Bus-driven overlays triggered by specific `EventTrigger` emissions with optional payload filters. See "Scenario tutorials" below. The onboarding overlay that used to live on `introTutorial` is now just an entry here triggered by `introduction:start`. |
 
@@ -111,29 +115,39 @@ Optional fields on a player round:
 
 ```
 debate_intro   (only when `scenario.introduction` is non-empty)
-    │  player clicks Continue → intro summary modal → Begin Round 1
+    │  Continue → intro summary modal → Begin Round 1
+    │  (mechanics.showIntroSummary: false skips the modal)
     ▼
 npc_speaking
-    │  player clicks Continue
-    ▼
-[next round starts]
-    │  if next round is a player round
+    │  Continue  — held disabled while the round has `requiresAnalysis`
+    │             and its analysis is unresolved
     ▼
 player_choosing
-    │  player clicks one of the 3 options
+    │  pick one of the 3 options, then Continue
+    ├─► npc_responding   (round has opponentResponses)
+    │        │  Continue
+    │        ▼
+    └─► round_recap ◄────┘   (entered directly when there are none)
+    │  Continue closes the recap
+    │  (mechanics.showRoundRecap: false skips it — advance straight on)
     ▼
-player_confirming  ◄──── Back (undo)
-    │  player clicks Confirm
-    ├─► npc_responding  (when the round has opponentResponses)
-    │       │  player clicks Continue
-    │       └──────────────┐
-    └─► round_recap ◄──────┘  (also entered directly when there are no opponentResponses)
-    │  player closes Round recap modal (Continue)
-    ▼
-[next round starts] ... until all rounds exhausted
+[next round] ... until rounds are exhausted
     ▼
 debate_complete
+    │  Leave → mark complete, return to `gameStore.returnSceneKey`
+    ▼
+[MainMenu or Farm]
 ```
+
+Two notes on this diagram:
+
+- **`player_confirming` is not in it on purpose.** The phase is declared in `GamePhase` and
+  reduced, and `canUndo` keys off it — but nothing ever sets it, so it is unreachable.
+  `player_choosing` + Continue goes straight to `npc_responding` / `round_recap`. Treat it as
+  dead code until something enters it.
+- **`debate_complete` used to be a dead end** — it fell through to `default:` in `TrialUI`'s
+  footer, leaving Continue disabled forever. It now has a Leave action; see
+  [`docs/farm_overworld.md`](../../docs/farm_overworld.md) for the return-trip plumbing.
 
 ### Key hook values returned by `useTrialRoundWorkflow`
 

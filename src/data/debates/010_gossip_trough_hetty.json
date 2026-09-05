@@ -1,0 +1,168 @@
+{
+  "id": "level1-gossip-hetty",
+  "introduction": "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is. She has not quite worked out yet that you are the donkey she is talking about.",
+  "introductionSummary": "Hetty has a theory about the pond, and no idea she is telling it to the donkey in it.",
+  "playerSide": "opposition",
+  "characters": {
+    "hetty": "Hetty",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Attacking the animal instead of the argument. Whether Rue arrived in a mud cart has nothing to do with whether the pond is muddy."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem"],
+  "startingInsightPoints": 0,
+  "mechanics": {
+    "showModeratorOpinion": false,
+    "showRoundRecap": false,
+    "showIntroSummary": false,
+    "encounterKind": "gossip"
+  },
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "gossip",
+      "speakerId": "hetty",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r1-hetty",
+        "speakerId": "hetty",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Morning! Did you hear? That new donkey — Rue, I think it is — has been complaining about the pond drain again.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "I wouldn't put much stock in it, mind. He arrived in a mud cart with straw in his ears; he's hardly the sort who'd know about water.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "The claim is about the pond. Hetty answers it by describing how Rue turned up and what he looks like, which tells us nothing about the water."
+              }
+            ]
+          },
+          {
+            "id": "s-r1-3",
+            "text": "Anyway, the pond's been going brown since before the frost.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Hetty dismisses the donkey's drain complaint by his arrival, not his argument."
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "gossip",
+      "speakerId": "hetty",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r2-hetty",
+        "speakerId": "hetty",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r2-1",
+            "text": "The grate at the outflow is bent, you know. I saw it myself, chasing a beetle.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-2",
+            "text": "Water backs up behind it, so the mud goes into the pond instead of out of it.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-3",
+            "text": "Someone ought to tell the Flock. They don't much listen to hens.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Hetty has seen the real cause — a bent outflow grate — and assumes no one will listen to a hen."
+      }
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "gossip-what-this-is",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This is **[accent]not a debate[/accent]** — no sides, no moderator, no score.\n\nTwo animals are talking. Your only job is to **[accent]catch the bad reasoning[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "gossip-how-to-spot",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-1"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Round cards stay **[accent]minimized[/accent]**. Press **[accent]▶ Expand[/accent]** to open this one and read what Hetty said.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "debate_log_round_toggle",
+              "roundId": "round-1"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "Now open the **[accent]magnifying glass[/accent]** to read what was said, sentence by sentence.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-1"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "**[warning]Continue is locked[/warning]** until you judge it.\n\nTag a fallacy — or press **[accent]Clean[/accent]**. Not every sentence is a trap.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "continue"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topRight"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

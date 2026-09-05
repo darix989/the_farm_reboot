@@ -13,9 +13,13 @@ import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/option
 import {
   getSpeakerName,
   moderatorOpinionEmoji,
+  qualityColor,
+  qualityLabel,
+  recapText,
   statementText,
   statementTypeLabel,
 } from '../utils/trialHelpers';
+import type { ResolvedMechanics } from '../utils/scenarioMechanics';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import cn from 'classnames';
 import shared from '../trialShared.module.scss';
@@ -24,12 +28,23 @@ import getLabel from '../../../data/labels';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
+/**
+ * A recap paragraph is clamped to two lines (`RECAP_SUMMARY_MAX_LINES`) only when it is
+ * showing an authored summary. Scenarios that have none fall back to the spoken line, and
+ * clamping that would hide half of what was said.
+ */
+function recapBodyClass(block: { isSummary: boolean } | null): string {
+  return cn(styles.recapBody, block?.isSummary && styles.recapSummaryBody);
+}
+
 interface RoundRecapModalProps {
   debate: DebateScenarioJson;
   wf: Wf;
   fallacyGuesses: Map<number, FallacyGuessSession>;
   revealedLockedOptionIds: Set<string>;
   onClose: () => void;
+  /** Scenario mode flags — gate the impact row and the choice assessment block. */
+  mechanics: ResolvedMechanics;
 }
 
 const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
@@ -38,6 +53,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
   fallacyGuesses,
   revealedLockedOptionIds,
   onClose,
+  mechanics,
 }) => {
   const round = wf.currentRound;
   const chosen = wf.selectedOption;
@@ -59,11 +75,14 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
   }, [round?.id]);
 
   const choicePreview = useMemo(() => {
-    if (!chosen) return '';
+    if (!chosen) return recapText(undefined, '');
     const showRealCopy =
       !chosen.unlockCondition ||
       (isPlayerOptionUnlocked(chosen, fallacyGuesses) && revealedLockedOptionIds.has(chosen.id));
-    return statementText(resolvedOptionSentences(chosen, showRealCopy));
+    const spoken = statementText(resolvedOptionSentences(chosen, showRealCopy));
+    // `summary` paraphrases the *unlocked* line, so a still-locked option keeps showing
+    // its placeholder copy rather than leaking what the real line says.
+    return recapText(showRealCopy ? chosen.summary : undefined, spoken);
   }, [chosen, fallacyGuesses, revealedLockedOptionIds]);
 
   const responseSpeaker = wf.activeOpponentResponse
@@ -71,8 +90,11 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
     : '';
 
   const responseBody = wf.activeOpponentResponse
-    ? statementText(wf.activeOpponentResponse.statement.sentences)
-    : '';
+    ? recapText(
+        wf.activeOpponentResponse.statement.summary,
+        statementText(wf.activeOpponentResponse.statement.sentences),
+      )
+    : null;
 
   const currentPlayerRound = round?.kind === 'player' ? round : null;
   const opponentPromptStatement = currentPlayerRound?.opponentPrompt;
@@ -80,8 +102,8 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
     ? getSpeakerName(debate, opponentPromptStatement.speakerId)
     : '';
   const crossfirePromptBody = opponentPromptStatement
-    ? statementText(opponentPromptStatement.sentences)
-    : '';
+    ? recapText(opponentPromptStatement.summary, statementText(opponentPromptStatement.sentences))
+    : null;
 
   const roundHeading = round
     ? getLabel('roundHeadingWithStatementType', {
@@ -96,7 +118,9 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
   const npcSpeakerName =
     round && round.kind === 'npc' ? getSpeakerName(debate, round.speakerId) : '';
   const npcStatementBody =
-    round && round.kind === 'npc' ? statementText(round.statement.sentences) : '';
+    round && round.kind === 'npc'
+      ? recapText(round.statement.summary, statementText(round.statement.sentences))
+      : null;
 
   // `recap` describes a completed round we can render impact for. Both player and NPC
   // rounds qualify now; the modal opens after every round (introduction excluded).
@@ -124,6 +148,16 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
       : responseSpeaker
         ? getLabel('opponentResponseHeading', { replacements: { name: responseSpeaker } })
         : '';
+
+  /**
+   * The coach's verdict on the line just spoken. With `analysisEnabled: false` the
+   * option's `reason` is otherwise unreachable, so speaking-only scenarios would give
+   * the player no feedback at all.
+   */
+  const choiceAssessment =
+    mechanics.revealChoiceAssessment && round?.kind === 'player' && chosen
+      ? { quality: chosen.quality, reason: chosen.reason }
+      : null;
 
   const activeRoundImpactAriaLabel = recap
     ? `${getLabel('activeRoundImpact')}: ${
@@ -174,12 +208,14 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                           replacements: { name: crossfirePromptSpeaker },
                         })}
                       </p>
-                      <p className={styles.recapBody}>{crossfirePromptBody}</p>
+                      <p className={recapBodyClass(crossfirePromptBody)}>
+                        {crossfirePromptBody?.text}
+                      </p>
                     </div>
                   ) : null}
                   <div className={styles.recapSection}>
                     <p className={styles.recapSectionLabel}>{playerRecapContributionLabel}</p>
-                    <p className={styles.recapBody}>{choicePreview}</p>
+                    <p className={recapBodyClass(choicePreview)}>{choicePreview.text}</p>
                   </div>
                 </>
               ) : (
@@ -189,37 +225,56 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                       replacements: { name: npcSpeakerName },
                     })}
                   </p>
-                  <p className={styles.recapBody}>{npcStatementBody}</p>
+                  <p className={recapBodyClass(npcStatementBody)}>{npcStatementBody?.text}</p>
                 </div>
               )}
 
-              {recap.kind === 'player' && responseBody && opponentReplyRecapLabel ? (
+              {recap.kind === 'player' && responseBody?.text && opponentReplyRecapLabel ? (
                 <div className={styles.recapSection}>
                   <p className={styles.recapSectionLabel}>{opponentReplyRecapLabel}</p>
-                  <p className={styles.recapBody}>{responseBody}</p>
+                  <p className={recapBodyClass(responseBody)}>{responseBody.text}</p>
                 </div>
               ) : null}
 
-              <div className={styles.recapSection} data-tutorial-recap-section="main">
-                <div className={styles.recapScoreRow}>
-                  <div className={styles.recapScoreColumn}>
-                    <p className={styles.recapSectionLabel}>{getLabel('activeRoundImpact')}</p>
-                    <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
-                      <span aria-label={activeRoundImpactAriaLabel}>
-                        <span aria-hidden="true">
-                          {moderatorOpinionEmoji(recap.lastCompleted.impact)}
+              {choiceAssessment ? (
+                <div className={styles.recapSection}>
+                  <p className={styles.recapSectionLabel}>{getLabel('assessment')}</p>
+                  <p
+                    className={styles.recapBody}
+                    style={{
+                      color: qualityColor(choiceAssessment.quality, mechanics.targetQuality),
+                    }}
+                  >
+                    {qualityLabel(choiceAssessment.quality)}
+                  </p>
+                  {choiceAssessment.reason ? (
+                    <p className={styles.recapBody}>{choiceAssessment.reason}</p>
+                  ) : null}
+                </div>
+              ) : null}
+
+              {mechanics.showModeratorOpinion ? (
+                <div className={styles.recapSection} data-tutorial-recap-section="main">
+                  <div className={styles.recapScoreRow}>
+                    <div className={styles.recapScoreColumn}>
+                      <p className={styles.recapSectionLabel}>{getLabel('activeRoundImpact')}</p>
+                      <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
+                        <span aria-label={activeRoundImpactAriaLabel}>
+                          <span aria-hidden="true">
+                            {moderatorOpinionEmoji(recap.lastCompleted.impact)}
+                          </span>
                         </span>
-                      </span>
-                    </p>
-                  </div>
-                  <div className={styles.recapScoreColumn}>
-                    <p className={styles.recapSectionLabel}>{getLabel('overallScore')}</p>
-                    <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
-                      <ModeratorOpinionInline score={wf.totalScore} />
-                    </p>
+                      </p>
+                    </div>
+                    <div className={styles.recapScoreColumn}>
+                      <p className={styles.recapSectionLabel}>{getLabel('overallScore')}</p>
+                      <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
+                        <ModeratorOpinionInline score={wf.totalScore} />
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : null}
             </>
           ) : (
             <p className={styles.recapBody}>{getLabel('roundComplete')}</p>

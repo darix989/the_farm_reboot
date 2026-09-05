@@ -13,6 +13,7 @@ import {
 } from '../utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import { debateEventBus } from '../utils/debateEventBus';
+import { prefersReducedMotion } from '../../../utils/reducedMotion';
 import {
   canRunTutorialTargetAction,
   notifyTutorialTargetAction,
@@ -135,10 +136,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
 
   useEffect(() => {
     if (!revealAnimOptionId) return;
-    const reduced =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const ms = reduced ? 480 : 1020;
+    const ms = prefersReducedMotion() ? 480 : 1020;
     const t = window.setTimeout(() => setRevealAnimOptionId(null), ms);
     return () => window.clearTimeout(t);
   }, [revealAnimOptionId]);

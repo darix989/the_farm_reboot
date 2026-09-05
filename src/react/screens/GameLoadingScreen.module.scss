@@ -1,0 +1,67 @@
+/* =========================================================================
+   Game Loading Screen — boot progress and interaction gate
+   ========================================================================= */
+
+.loadingScreen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ui-color-overlay-backdrop);
+
+  /*
+   * `.react-ui-overlay` sets `pointer-events: none`, which inherits. Re-enabling it here
+   * is what makes this a gate: every click during boot lands on this element instead of
+   * falling through to the Phaser canvas or a menu button behind it.
+   */
+  pointer-events: auto;
+}
+
+.loadingCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 30px 40px;
+  border: 2px solid var(--ui-color-border-emphasis);
+  border-radius: 10px;
+  background: var(--ui-color-overlay-panel);
+  backdrop-filter: blur(5px);
+  text-align: center;
+}
+
+.loadingTitle {
+  font-size: var(--ui-font-display);
+  color: var(--ui-color-accent);
+  text-shadow: 2px 2px 4px var(--ui-color-overlay-backdrop);
+}
+
+.progressTrack {
+  width: 26rem;
+  max-width: 100%;
+  height: 14px;
+  overflow: hidden;
+  border: 1px solid var(--ui-color-border-emphasis);
+  border-radius: 999px;
+  background: var(--ui-color-glass-06);
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ui-color-accent);
+  box-shadow: 0 0 12px var(--ui-color-accent-glow);
+  transition: width 0.2s ease-out;
+
+  /* The bar's only job is to report progress; honour a reduced-motion preference. */
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.progressReadout {
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-text-muted-2);
+  font-variant-numeric: tabular-nums;
+}

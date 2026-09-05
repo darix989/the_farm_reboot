@@ -6,6 +6,7 @@ import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import DebateRoundLogCard from '../components/DebateRoundLogCard';
 import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/IntroDebateLogCard';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
+import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
 import styles from './TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
@@ -16,29 +17,19 @@ interface FeedbackPanelProps {
   insightPoints: number;
   onOpenAnalysis: (target: AnalysisTarget) => void;
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
+  /** Scenario mode flags — gate the header strip and the per-round analyze buttons. */
+  mechanics: ResolvedMechanics;
 }
 
 /** Match `grid-template-rows` transition on `.debateLogRoundBodyShell` (+ small buffer). */
 const DEBATE_LOG_BODY_TRANSITION_MS = 480;
 
 /**
- * Leaving `debate_intro` does not change `currentRoundIndex` (still 0), but the intro card and
- * round 1 both animate; scrolling immediately measures wrong heights — wait longer than a normal
- * round-only transition.
+ * Leaving `debate_intro` does not change `currentRoundIndex` (still 0), but round 1 gains its
+ * body and an intro card the player opened may still be animating; scrolling immediately
+ * measures wrong heights — wait longer than a normal round-only transition.
  */
 const DEBATE_LOG_LEAVE_INTRO_SCROLL_MS = 720;
-
-function roundExpandedDefault(
-  roundIndex: number,
-  gamePhase: ReturnType<typeof useTrialRoundWorkflow>['gamePhase'],
-  currentRoundIndex: number,
-): boolean {
-  if (gamePhase === 'debate_intro') return false;
-  if (gamePhase === 'debate_complete') return false;
-  if (roundIndex > currentRoundIndex) return false;
-  if (roundIndex === currentRoundIndex) return true;
-  return false;
-}
 
 const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   wf,
@@ -46,6 +37,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   insightPoints,
   onOpenAnalysis,
   getNpcGuessState,
+  mechanics,
 }) => {
   const feedbackScrollRef = useRef<HTMLDivElement>(null);
   const [expandOverrideByRoundId, setExpandOverrideByRoundId] = useState<
@@ -136,7 +128,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   return (
     <div className={styles.trialPanelContent}>
       <div className={styles.trialAreaTitle}>
-        <h2 className={styles.trialPanelHeading}>{getLabel('debateLog')}</h2>
+        <h2 className={styles.trialPanelHeading}>{getLabel(encounterLabels(debate).logTitle)}</h2>
         <p
           className={styles.trialDebateLogTitleScore}
           style={{ margin: 0, color: uiColor.textBody }}
@@ -145,7 +137,11 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
             className={styles.debateLogModeratorScoreTutorialHook}
             data-tutorial-debate-log-moderator-score
           >
-            <ModeratorOpinionInline score={wf.totalScore} insightPoints={insightPoints} />
+            <ModeratorOpinionInline
+              score={wf.totalScore}
+              insightPoints={mechanics.showInsightPoints ? insightPoints : undefined}
+              showOpinion={mechanics.showModeratorOpinion}
+            />
           </span>
         </p>
       </div>
@@ -165,9 +161,8 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
               expandOverride={expandOverrideByRoundId[INTRO_DEBATE_LOG_CARD_ID]}
               onExpandToggle={() => {
                 setExpandOverrideByRoundId((prev) => {
-                  const o = prev[INTRO_DEBATE_LOG_CARD_ID];
-                  const def = wf.gamePhase === 'debate_intro';
-                  const current = o ?? def;
+                  // Mirrors `IntroDebateLogCard`: shrunk until the player opens it.
+                  const current = prev[INTRO_DEBATE_LOG_CARD_ID] ?? false;
                   return { ...prev, [INTRO_DEBATE_LOG_CARD_ID]: !current };
                 });
               }}
@@ -190,18 +185,14 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                     wf.gamePhase !== 'debate_complete' && roundIndex > wf.currentRoundIndex;
                   if (isUpcoming) return;
                   setExpandOverrideByRoundId((prev) => {
-                    const o = prev[round.id];
-                    const def = roundExpandedDefault(
-                      roundIndex,
-                      wf.gamePhase,
-                      wf.currentRoundIndex,
-                    );
-                    const current = o ?? def;
+                    // Mirrors `DebateRoundLogCard`: every round card defaults to shrunk.
+                    const current = prev[round.id] ?? false;
                     return { ...prev, [round.id]: !current };
                   });
                 }}
                 getNpcGuessState={getNpcGuessState}
                 onOpenAnalysis={onOpenAnalysis}
+                mechanics={mechanics}
               />
             );
           })}

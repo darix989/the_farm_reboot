@@ -1,0 +1,2141 @@
+{
+  "textures": [
+    {
+      "image": "dog/dog-0.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1550,
+        "h": 1992
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_sit-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 806,
+            "h": 629
+          },
+          "spriteSourceSize": {
+            "x": 11,
+            "y": 8,
+            "w": 781,
+            "h": 589
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 781,
+            "h": 589
+          },
+          "anchor": {
+            "x": 0.435,
+            "y": 0.45
+          }
+        },
+        {
+          "filename": "__alsation_sit-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 806,
+            "h": 629
+          },
+          "spriteSourceSize": {
+            "x": 6,
+            "y": 4,
+            "w": 755,
+            "h": 587
+          },
+          "frame": {
+            "x": 784,
+            "y": 1,
+            "w": 755,
+            "h": 587
+          },
+          "anchor": {
+            "x": 0.435,
+            "y": 0.45
+          }
+        },
+        {
+          "filename": "__alsation_walk-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 2,
+            "w": 748,
+            "h": 570
+          },
+          "frame": {
+            "x": 784,
+            "y": 590,
+            "w": 748,
+            "h": 570
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_stand-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 807,
+            "h": 629
+          },
+          "spriteSourceSize": {
+            "x": 19,
+            "y": 13,
+            "w": 778,
+            "h": 574
+          },
+          "frame": {
+            "x": 1,
+            "y": 592,
+            "w": 778,
+            "h": 574
+          },
+          "anchor": {
+            "x": 0.435,
+            "y": 0.45
+          }
+        },
+        {
+          "filename": "__alsation_die-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 637
+          },
+          "spriteSourceSize": {
+            "x": 20,
+            "y": 335,
+            "w": 767,
+            "h": 253
+          },
+          "frame": {
+            "x": 781,
+            "y": 1162,
+            "w": 767,
+            "h": 253
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_stand-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 807,
+            "h": 629
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 6,
+            "w": 775,
+            "h": 587
+          },
+          "frame": {
+            "x": 1,
+            "y": 1168,
+            "w": 775,
+            "h": 587
+          },
+          "anchor": {
+            "x": 0.435,
+            "y": 0.45
+          }
+        },
+        {
+          "filename": "__alsation_sit-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 806,
+            "h": 629
+          },
+          "spriteSourceSize": {
+            "x": 26,
+            "y": 15,
+            "w": 771,
+            "h": 574
+          },
+          "frame": {
+            "x": 778,
+            "y": 1417,
+            "w": 771,
+            "h": 574
+          },
+          "anchor": {
+            "x": 0.435,
+            "y": 0.45
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-1.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1483,
+        "h": 2023
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_stand-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 807,
+            "h": 629
+          },
+          "spriteSourceSize": {
+            "x": 5,
+            "y": 2,
+            "w": 734,
+            "h": 579
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 734,
+            "h": 579
+          },
+          "anchor": {
+            "x": 0.435,
+            "y": 0.45
+          }
+        },
+        {
+          "filename": "__alsation_walk-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 1,
+            "w": 722,
+            "h": 570
+          },
+          "frame": {
+            "x": 737,
+            "y": 1,
+            "w": 722,
+            "h": 570
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_walk-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 3,
+            "w": 715,
+            "h": 571
+          },
+          "frame": {
+            "x": 737,
+            "y": 573,
+            "w": 715,
+            "h": 571
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_bark-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 613
+          },
+          "spriteSourceSize": {
+            "x": 13,
+            "y": 28,
+            "w": 691,
+            "h": 585
+          },
+          "frame": {
+            "x": 1,
+            "y": 582,
+            "w": 691,
+            "h": 585
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.535
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 10,
+            "y": 3,
+            "w": 735,
+            "h": 554
+          },
+          "frame": {
+            "x": 694,
+            "y": 1146,
+            "w": 735,
+            "h": 554
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_bark-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 613
+          },
+          "spriteSourceSize": {
+            "x": 33,
+            "y": 21,
+            "w": 671,
+            "h": 592
+          },
+          "frame": {
+            "x": 1,
+            "y": 1169,
+            "w": 671,
+            "h": 592
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.535
+          }
+        },
+        {
+          "filename": "__alsation_die-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 637
+          },
+          "spriteSourceSize": {
+            "x": 2,
+            "y": 269,
+            "w": 808,
+            "h": 320
+          },
+          "frame": {
+            "x": 674,
+            "y": 1702,
+            "w": 808,
+            "h": 320
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-2.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1477,
+        "h": 1664
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_sit_idle-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 4,
+            "w": 736,
+            "h": 553
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 736,
+            "h": 553
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 5,
+            "w": 737,
+            "h": 552
+          },
+          "frame": {
+            "x": 1,
+            "y": 556,
+            "w": 737,
+            "h": 552
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 5,
+            "w": 737,
+            "h": 552
+          },
+          "frame": {
+            "x": 739,
+            "y": 1,
+            "w": 737,
+            "h": 552
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 4,
+            "w": 736,
+            "h": 553
+          },
+          "frame": {
+            "x": 740,
+            "y": 555,
+            "w": 736,
+            "h": 553
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 4,
+            "w": 736,
+            "h": 553
+          },
+          "frame": {
+            "x": 1,
+            "y": 1110,
+            "w": 736,
+            "h": 553
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 4,
+            "w": 736,
+            "h": 553
+          },
+          "frame": {
+            "x": 739,
+            "y": 1110,
+            "w": 736,
+            "h": 553
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1480,
+        "h": 1660
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_sit_idle-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 5,
+            "w": 737,
+            "h": 552
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 737,
+            "h": 552
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 6,
+            "w": 738,
+            "h": 551
+          },
+          "frame": {
+            "x": 1,
+            "y": 555,
+            "w": 738,
+            "h": 551
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 6,
+            "w": 738,
+            "h": 551
+          },
+          "frame": {
+            "x": 740,
+            "y": 1,
+            "w": 738,
+            "h": 551
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 5,
+            "w": 737,
+            "h": 552
+          },
+          "frame": {
+            "x": 741,
+            "y": 554,
+            "w": 737,
+            "h": 552
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 6,
+            "w": 738,
+            "h": 551
+          },
+          "frame": {
+            "x": 1,
+            "y": 1108,
+            "w": 738,
+            "h": 551
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 6,
+            "w": 738,
+            "h": 551
+          },
+          "frame": {
+            "x": 741,
+            "y": 1108,
+            "w": 738,
+            "h": 551
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-4.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1480,
+        "h": 1660
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_sit_idle-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 10,
+            "y": 4,
+            "w": 735,
+            "h": 553
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 735,
+            "h": 553
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 806,
+            "h": 629
+          },
+          "spriteSourceSize": {
+            "x": 43,
+            "y": 22,
+            "w": 739,
+            "h": 550
+          },
+          "frame": {
+            "x": 1,
+            "y": 556,
+            "w": 739,
+            "h": 550
+          },
+          "anchor": {
+            "x": 0.435,
+            "y": 0.45
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 7,
+            "w": 739,
+            "h": 550
+          },
+          "frame": {
+            "x": 738,
+            "y": 1,
+            "w": 739,
+            "h": 550
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 10,
+            "y": 4,
+            "w": 735,
+            "h": 553
+          },
+          "frame": {
+            "x": 742,
+            "y": 553,
+            "w": 735,
+            "h": 553
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 6,
+            "w": 738,
+            "h": 551
+          },
+          "frame": {
+            "x": 1,
+            "y": 1108,
+            "w": 738,
+            "h": 551
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 6,
+            "w": 738,
+            "h": 551
+          },
+          "frame": {
+            "x": 741,
+            "y": 1108,
+            "w": 738,
+            "h": 551
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-5.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 2045,
+        "h": 1689
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_stand-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 807,
+            "h": 629
+          },
+          "spriteSourceSize": {
+            "x": 42,
+            "y": 22,
+            "w": 739,
+            "h": 550
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 739,
+            "h": 550
+          },
+          "anchor": {
+            "x": 0.435,
+            "y": 0.45
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 7,
+            "w": 738,
+            "h": 550
+          },
+          "frame": {
+            "x": 742,
+            "y": 1,
+            "w": 738,
+            "h": 550
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_sit_idle-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 751,
+            "h": 602
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 7,
+            "w": 738,
+            "h": 550
+          },
+          "frame": {
+            "x": 1,
+            "y": 553,
+            "w": 738,
+            "h": 550
+          },
+          "anchor": {
+            "x": 0.42,
+            "y": 0.445
+          }
+        },
+        {
+          "filename": "__alsation_bark-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 613
+          },
+          "spriteSourceSize": {
+            "x": 11,
+            "y": 30,
+            "w": 693,
+            "h": 583
+          },
+          "frame": {
+            "x": 1,
+            "y": 1105,
+            "w": 693,
+            "h": 583
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.535
+          }
+        },
+        {
+          "filename": "__alsation_walk-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 2,
+            "w": 696,
+            "h": 576
+          },
+          "frame": {
+            "x": 696,
+            "y": 1105,
+            "w": 696,
+            "h": 576
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_die-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 637
+          },
+          "spriteSourceSize": {
+            "x": 19,
+            "y": 81,
+            "w": 769,
+            "h": 516
+          },
+          "frame": {
+            "x": 741,
+            "y": 553,
+            "w": 769,
+            "h": 516
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_bark-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 613
+          },
+          "spriteSourceSize": {
+            "x": 54,
+            "y": 22,
+            "w": 650,
+            "h": 591
+          },
+          "frame": {
+            "x": 1394,
+            "y": 1071,
+            "w": 650,
+            "h": 591
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.535
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-6.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 2048,
+        "h": 1776
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_walk-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 2,
+            "w": 695,
+            "h": 574
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 695,
+            "h": 574
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_die-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 637
+          },
+          "spriteSourceSize": {
+            "x": 51,
+            "y": 0,
+            "w": 702,
+            "h": 567
+          },
+          "frame": {
+            "x": 698,
+            "y": 1,
+            "w": 702,
+            "h": 567
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_bark-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 613
+          },
+          "spriteSourceSize": {
+            "x": 61,
+            "y": 23,
+            "w": 643,
+            "h": 590
+          },
+          "frame": {
+            "x": 1402,
+            "y": 1,
+            "w": 643,
+            "h": 590
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.535
+          }
+        },
+        {
+          "filename": "__alsation_sit-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 806,
+            "h": 629
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 0,
+            "w": 702,
+            "h": 567
+          },
+          "frame": {
+            "x": 698,
+            "y": 570,
+            "w": 702,
+            "h": 567
+          },
+          "anchor": {
+            "x": 0.435,
+            "y": 0.45
+          }
+        },
+        {
+          "filename": "__alsation_bark-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 613
+          },
+          "spriteSourceSize": {
+            "x": 65,
+            "y": 23,
+            "w": 639,
+            "h": 590
+          },
+          "frame": {
+            "x": 1402,
+            "y": 593,
+            "w": 639,
+            "h": 590
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.535
+          }
+        },
+        {
+          "filename": "__alsation_idle-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 1,
+            "w": 695,
+            "h": 569
+          },
+          "frame": {
+            "x": 1,
+            "y": 577,
+            "w": 695,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_bark-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 613
+          },
+          "spriteSourceSize": {
+            "x": 4,
+            "y": 45,
+            "w": 700,
+            "h": 568
+          },
+          "frame": {
+            "x": 698,
+            "y": 1139,
+            "w": 700,
+            "h": 568
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.535
+          }
+        },
+        {
+          "filename": "__alsation_bark-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 613
+          },
+          "spriteSourceSize": {
+            "x": 57,
+            "y": 23,
+            "w": 647,
+            "h": 590
+          },
+          "frame": {
+            "x": 1400,
+            "y": 1185,
+            "w": 647,
+            "h": 590
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.535
+          }
+        },
+        {
+          "filename": "__alsation_idle-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 1,
+            "w": 695,
+            "h": 569
+          },
+          "frame": {
+            "x": 1,
+            "y": 1148,
+            "w": 695,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-7.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1404,
+        "h": 1710
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_idle-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 6,
+            "y": 1,
+            "w": 698,
+            "h": 569
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 698,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_stand-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 807,
+            "h": 629
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 0,
+            "w": 701,
+            "h": 567
+          },
+          "frame": {
+            "x": 1,
+            "y": 572,
+            "w": 701,
+            "h": 567
+          },
+          "anchor": {
+            "x": 0.435,
+            "y": 0.45
+          }
+        },
+        {
+          "filename": "__alsation_idle-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 4,
+            "y": 2,
+            "w": 700,
+            "h": 568
+          },
+          "frame": {
+            "x": 701,
+            "y": 1,
+            "w": 700,
+            "h": 568
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 5,
+            "y": 2,
+            "w": 699,
+            "h": 568
+          },
+          "frame": {
+            "x": 704,
+            "y": 571,
+            "w": 699,
+            "h": 568
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 4,
+            "y": 2,
+            "w": 700,
+            "h": 568
+          },
+          "frame": {
+            "x": 1,
+            "y": 1141,
+            "w": 700,
+            "h": 568
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 4,
+            "y": 2,
+            "w": 700,
+            "h": 568
+          },
+          "frame": {
+            "x": 703,
+            "y": 1141,
+            "w": 700,
+            "h": 568
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-8.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1400,
+        "h": 1712
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_idle-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 1,
+            "w": 697,
+            "h": 569
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 697,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 5,
+            "y": 2,
+            "w": 699,
+            "h": 568
+          },
+          "frame": {
+            "x": 1,
+            "y": 572,
+            "w": 699,
+            "h": 568
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 6,
+            "y": 2,
+            "w": 698,
+            "h": 568
+          },
+          "frame": {
+            "x": 700,
+            "y": 1,
+            "w": 698,
+            "h": 568
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 1,
+            "w": 697,
+            "h": 569
+          },
+          "frame": {
+            "x": 702,
+            "y": 571,
+            "w": 697,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 1,
+            "w": 697,
+            "h": 569
+          },
+          "frame": {
+            "x": 1,
+            "y": 1142,
+            "w": 697,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 1,
+            "w": 697,
+            "h": 569
+          },
+          "frame": {
+            "x": 700,
+            "y": 1142,
+            "w": 697,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-9.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1398,
+        "h": 1712
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_idle-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 1,
+            "w": 696,
+            "h": 569
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 696,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 6,
+            "y": 2,
+            "w": 698,
+            "h": 568
+          },
+          "frame": {
+            "x": 1,
+            "y": 572,
+            "w": 698,
+            "h": 568
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 6,
+            "y": 2,
+            "w": 698,
+            "h": 568
+          },
+          "frame": {
+            "x": 699,
+            "y": 1,
+            "w": 698,
+            "h": 568
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 1,
+            "w": 696,
+            "h": 569
+          },
+          "frame": {
+            "x": 701,
+            "y": 571,
+            "w": 696,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 1,
+            "w": 695,
+            "h": 569
+          },
+          "frame": {
+            "x": 1,
+            "y": 1142,
+            "w": 695,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 1,
+            "w": 695,
+            "h": 569
+          },
+          "frame": {
+            "x": 698,
+            "y": 1142,
+            "w": 695,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-10.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 2046,
+        "h": 1756
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_bark-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 613
+          },
+          "spriteSourceSize": {
+            "x": 43,
+            "y": 21,
+            "w": 661,
+            "h": 592
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 661,
+            "h": 592
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.535
+          }
+        },
+        {
+          "filename": "__alsation_bark-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 613
+          },
+          "spriteSourceSize": {
+            "x": 44,
+            "y": 21,
+            "w": 660,
+            "h": 592
+          },
+          "frame": {
+            "x": 1,
+            "y": 595,
+            "w": 660,
+            "h": 592
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.535
+          }
+        },
+        {
+          "filename": "__alsation_walk-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 1,
+            "w": 690,
+            "h": 566
+          },
+          "frame": {
+            "x": 1,
+            "y": 1189,
+            "w": 690,
+            "h": 566
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_walk-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 0,
+            "w": 690,
+            "h": 572
+          },
+          "frame": {
+            "x": 663,
+            "y": 595,
+            "w": 690,
+            "h": 572
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_walk-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 0,
+            "w": 690,
+            "h": 569
+          },
+          "frame": {
+            "x": 1355,
+            "y": 1,
+            "w": 690,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_walk-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 1,
+            "w": 689,
+            "h": 570
+          },
+          "frame": {
+            "x": 664,
+            "y": 1,
+            "w": 689,
+            "h": 570
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_walk-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 3,
+            "w": 686,
+            "h": 572
+          },
+          "frame": {
+            "x": 1355,
+            "y": 572,
+            "w": 686,
+            "h": 572
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_idle-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 704,
+            "h": 570
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 1,
+            "w": 694,
+            "h": 569
+          },
+          "frame": {
+            "x": 693,
+            "y": 1169,
+            "w": 694,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "image": "dog/dog-11.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1489,
+        "h": 1697
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__alsation_walk-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 4,
+            "w": 680,
+            "h": 569
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 680,
+            "h": 569
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_die-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 637
+          },
+          "spriteSourceSize": {
+            "x": 2,
+            "y": 172,
+            "w": 807,
+            "h": 426
+          },
+          "frame": {
+            "x": 1,
+            "y": 572,
+            "w": 807,
+            "h": 426
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_walk-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 9,
+            "y": 0,
+            "w": 693,
+            "h": 563
+          },
+          "frame": {
+            "x": 683,
+            "y": 1,
+            "w": 693,
+            "h": 563
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_walk-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 5,
+            "w": 678,
+            "h": 565
+          },
+          "frame": {
+            "x": 810,
+            "y": 566,
+            "w": 678,
+            "h": 565
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_walk-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 4,
+            "w": 680,
+            "h": 568
+          },
+          "frame": {
+            "x": 1,
+            "y": 1000,
+            "w": 680,
+            "h": 568
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        },
+        {
+          "filename": "__alsation_walk-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 760,
+            "h": 580
+          },
+          "spriteSourceSize": {
+            "x": 7,
+            "y": 5,
+            "w": 678,
+            "h": 563
+          },
+          "frame": {
+            "x": 683,
+            "y": 1133,
+            "w": 678,
+            "h": 563
+          },
+          "anchor": {
+            "x": 0.5,
+            "y": 0.5
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "3.0",
+    "smartupdate": "$TexturePacker:SmartUpdate:b2d0174f3bdd3bd2e308decb9949b135:d324f17e4cb9c7caad917a5f017346a9:327657081ddf41f3c7017aaa0c7be943$"
+  }
+}

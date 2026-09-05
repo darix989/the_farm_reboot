@@ -1,6 +1,7 @@
 {
   "id": "debate-siesta-proposal",
   "introduction": "Bella the Cow has proposed a 15-minute mandatory 'Quiet Time' after lunch to improve the farm's productivity. Woolsey the Sheep, a staunch advocate for 'The Grind,' is terrified this is the beginning of the end for the farm's work ethic. As Bella, you must defend your proposal against Woolsey's escalating fears.",
+  "introductionSummary": "Bella's 15-minute Quiet Time is on the floor, and Woolsey is certain it is the end of the farm's work ethic.",
   "playerSide": "proposition",
   "characters": {
     "bella": "Bella",
@@ -36,6 +37,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "This is a False Dilemma. It suggests that without the nap, everyone will definitely collapse, ignoring the possibility that they could just keep working as they are now.",
+          "summary": "You frame it as rest now or a workforce dead by Friday.",
           "sentences": [
             {
               "id": "s-r1a-1",
@@ -54,6 +56,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "This is a pleasant sentiment but doesn't provide a logical argument for the proposal.",
+          "summary": "You argue for a sit-down because the grass is soft this time of year.",
           "sentences": [
             {
               "id": "s-r1b-1",
@@ -67,6 +70,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "This provides a clear, evidence-based reason for the proposal, focusing on productivity and health.",
+          "summary": "You make the productivity case: less heat-stress, more output through the afternoon.",
           "sentences": [
             {
               "id": "s-r1c-1",
@@ -114,7 +118,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Woolsey warns the first fifteen minutes slide into three-day weeks, rotting fences and wolves at the gate."
       }
     },
     {
@@ -128,6 +133,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "Another Slippery Slope. It assumes Woolsey's opposition will lead directly to a specific disaster.",
+          "summary": "You answer his wolf with your own: too tired to outrun one.",
           "sentences": [
             {
               "id": "s-r3a-1",
@@ -146,6 +152,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "This is a distracting detail about sheep wool that doesn't challenge his logic.",
+          "summary": "You ask whether his wool runs hotter than your hide.",
           "sentences": [
             {
               "id": "s-r3b-1",
@@ -159,6 +166,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "This forces him to justify why he thinks a small rest period leads to a total collapse of the farm.",
+          "summary": "You ask what evidence connects a scheduled rest to a three-day week.",
           "sentences": [
             {
               "id": "s-r3c-1",
@@ -181,7 +189,8 @@
                 "text": "Nonsense! Hard work is the only thing that keeps us safe. Rest is for the weak.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Woolsey: hard work is the only thing keeping the farm safe, and rest is for the weak."
           },
           "impact": 0
         },
@@ -197,7 +206,8 @@
                 "text": "My wool is of no concern! My commitment to the harvest is what matters.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Woolsey brushes the wool aside for his commitment to the harvest."
           },
           "impact": 0
         },
@@ -218,7 +228,8 @@
                   }
                 ]
               }
-            ]
+            ],
+            "summary": "Woolsey offers common sense in place of evidence — an inch given, a mile taken."
           },
           "impact": 15
         }
@@ -244,7 +255,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Woolsey asks the jury to choose between a farm that makes grain and one that makes dreams."
       },
       "opponentPromptImpact": 15,
       "options": [
@@ -253,6 +265,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "This uses the 'nothing-to-hide' fallacy, implying only lazy animals fear his logic.",
+          "summary": "You suggest only someone frightened of quiet would ask that.",
           "sentences": [
             {
               "id": "s-r4a-1",
@@ -271,6 +284,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "This is a literal answer to a rhetorical question and doesn't advance your case.",
+          "summary": "You admit you do enjoy dreaming in the warm sun.",
           "sentences": [
             {
               "id": "s-r4b-1",
@@ -284,6 +298,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "This rejects his false choice and explains that the rest is exactly what ensures the 'grain' gets produced.",
+          "summary": "You name the false choice: the rest exists to raise the grain, not to replace it.",
           "sentences": [
             {
               "id": "s-r4c-1",
@@ -326,7 +341,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Woolsey chains lost momentum to a late harvest to starvation by winter."
       }
     },
     {
@@ -340,6 +356,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "This uses an Ad Hominem attack on the Sheep species.",
+          "summary": "You call Woolsey a stubborn sheep who cannot follow cow-science.",
           "sentences": [
             {
               "id": "s-r6a-1",
@@ -358,6 +375,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "This doesn't address the logic, just makes a vague promise.",
+          "summary": "You promise nobody starves and ask everyone to be more positive.",
           "sentences": [
             {
               "id": "s-r6b-1",
@@ -371,6 +389,7 @@
           "quality": "effective",
           "impact": 20,
           "reason": "This identifies the Slippery Slope and points out that one step does not lead to the extreme conclusion without proof.",
+          "summary": "You name the Slippery Slope and point out nothing links a short rest to a failed harvest.",
           "unlockCondition": {
             "npcRoundId": "round-5",
             "sentenceId": "s-r5-3",
@@ -409,6 +428,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "Loaded Question. It assumes he wants everyone to suffer.",
+          "summary": "You ask why he enjoys watching the animals suffer in the heat.",
           "sentences": [
             {
               "id": "s-r7a-1",
@@ -427,6 +447,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Doesn't target a logical flaw.",
+          "summary": "You ask whether sheep sleep during the day at all.",
           "sentences": [
             {
               "id": "s-r7b-1",
@@ -440,6 +461,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "This forces him to explain the actual mechanism of his 'slope' or admit it's just a guess.",
+          "summary": "You ask him to trace exactly how fifteen minutes of rest rots a fence.",
           "sentences": [
             {
               "id": "s-r7c-1",
@@ -462,7 +484,8 @@
                 "text": "I don't! I enjoy seeing them survive, which requires food, which requires WORK!",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Woolsey insists he wants them to survive, and survival means work."
           },
           "impact": 0
         },
@@ -478,7 +501,8 @@
                 "text": "We are very vigilant! Unlike some cows who want to nap the day away.",
                 "logicalFallacies": []
               }
-            ]
+            ],
+            "summary": "Woolsey claims vigilance, with a dig at cows who nap."
           },
           "impact": 0
         },
@@ -499,7 +523,8 @@
                   }
                 ]
               }
-            ]
+            ],
+            "summary": "Woolsey falls back on culture: relax the rules once and it is all or nothing."
           },
           "impact": 15
         }
@@ -525,7 +550,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Woolsey asks whether the pigs will demand a full vacation the moment they hear of quiet time."
       },
       "opponentPromptImpact": 15,
       "options": [
@@ -534,6 +560,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "Slippery Slope from your side.",
+          "summary": "You warn the pigs will revolt and take the farmhouse if they are denied rest.",
           "sentences": [
             {
               "id": "s-r8a-1",
@@ -552,6 +579,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Answering about the pigs' preferences doesn't solve the logical dispute.",
+          "summary": "You concede the pigs like vacations and that you have not asked them.",
           "sentences": [
             {
               "id": "s-r8b-1",
@@ -565,6 +593,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "This points out that a reasonable rule for one group doesn't automatically mean an unreasonable rule for another.",
+          "summary": "You hold the scope: a specific timed rest now, and whatever the pigs want as a separate conversation later.",
           "sentences": [
             {
               "id": "s-r8c-1",
@@ -612,7 +641,8 @@
               }
             ]
           }
-        ]
+        ],
+        "summary": "Woolsey closes on a precipice — vote for the nap and you vote for the end of the farm."
       }
     },
     {
@@ -626,6 +656,7 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "Using an Appeal to Pity.",
+          "summary": "You ask for the vote out of pity for your tired hooves.",
           "sentences": [
             {
               "id": "s-r10a-1",
@@ -644,6 +675,7 @@
           "quality": "ineffective",
           "impact": 0,
           "reason": "Too weak and doesn't summarize the win.",
+          "summary": "You suggest trying it for a single day to see how it goes.",
           "sentences": [
             {
               "id": "s-r10b-1",
@@ -657,6 +689,7 @@
           "quality": "effective",
           "impact": 15,
           "reason": "A perfect closing that names both fallacies and refocuses on the practical benefits of the proposal.",
+          "summary": "You close by naming the false choices and imaginary slopes, and call the rest a bridge to more output.",
           "sentences": [
             {
               "id": "s-r10c-1",

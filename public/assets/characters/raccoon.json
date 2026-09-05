@@ -1,0 +1,3357 @@
+{
+  "textures": [
+    {
+      "image": "raccoon/raccoon-0.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1935,
+        "h": 1916
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_run-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 128,
+            "y": 359,
+            "w": 1044,
+            "h": 388
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 1044,
+            "h": 388
+          }
+        },
+        {
+          "filename": "__raccoon_jump-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 80,
+            "y": 83,
+            "w": 851,
+            "h": 613
+          },
+          "frame": {
+            "x": 1047,
+            "y": 1,
+            "w": 851,
+            "h": 613
+          }
+        },
+        {
+          "filename": "__raccoon_run-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 129,
+            "y": 352,
+            "w": 1041,
+            "h": 402
+          },
+          "frame": {
+            "x": 1,
+            "y": 391,
+            "w": 1041,
+            "h": 402
+          }
+        },
+        {
+          "filename": "__raccoon_jump-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 141,
+            "y": 173,
+            "w": 802,
+            "h": 576
+          },
+          "frame": {
+            "x": 1044,
+            "y": 616,
+            "w": 802,
+            "h": 576
+          }
+        },
+        {
+          "filename": "__raccoon_run-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 129,
+            "y": 368,
+            "w": 1041,
+            "h": 391
+          },
+          "frame": {
+            "x": 1,
+            "y": 795,
+            "w": 1041,
+            "h": 391
+          }
+        },
+        {
+          "filename": "__raccoon_jump-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 96,
+            "y": 235,
+            "w": 977,
+            "h": 375
+          },
+          "frame": {
+            "x": 1,
+            "y": 1188,
+            "w": 977,
+            "h": 375
+          }
+        },
+        {
+          "filename": "__raccoon_jump-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 112,
+            "y": 374,
+            "w": 954,
+            "h": 378
+          },
+          "frame": {
+            "x": 980,
+            "y": 1194,
+            "w": 954,
+            "h": 378
+          }
+        },
+        {
+          "filename": "__raccoon_wake-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 103,
+            "y": 410,
+            "w": 945,
+            "h": 350
+          },
+          "frame": {
+            "x": 1,
+            "y": 1565,
+            "w": 945,
+            "h": 350
+          }
+        },
+        {
+          "filename": "__raccoon_jump-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 107,
+            "y": 437,
+            "w": 938,
+            "h": 320
+          },
+          "frame": {
+            "x": 948,
+            "y": 1574,
+            "w": 938,
+            "h": 320
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-1.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1975,
+        "h": 2044
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_run-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 130,
+            "y": 345,
+            "w": 1038,
+            "h": 406
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 1038,
+            "h": 406
+          }
+        },
+        {
+          "filename": "__raccoon_throw_nut-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 45,
+            "y": 185,
+            "w": 930,
+            "h": 560
+          },
+          "frame": {
+            "x": 1041,
+            "y": 1,
+            "w": 930,
+            "h": 560
+          }
+        },
+        {
+          "filename": "__raccoon_run-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 130,
+            "y": 378,
+            "w": 1038,
+            "h": 365
+          },
+          "frame": {
+            "x": 1,
+            "y": 409,
+            "w": 1038,
+            "h": 365
+          }
+        },
+        {
+          "filename": "__raccoon_wake-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 96,
+            "y": 469,
+            "w": 861,
+            "h": 300
+          },
+          "frame": {
+            "x": 1041,
+            "y": 563,
+            "w": 861,
+            "h": 300
+          }
+        },
+        {
+          "filename": "__raccoon_run-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 131,
+            "y": 354,
+            "w": 1034,
+            "h": 398
+          },
+          "frame": {
+            "x": 1,
+            "y": 776,
+            "w": 1034,
+            "h": 398
+          }
+        },
+        {
+          "filename": "__raccoon_jump-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 108,
+            "y": 248,
+            "w": 937,
+            "h": 361
+          },
+          "frame": {
+            "x": 1037,
+            "y": 865,
+            "w": 937,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__raccoon_run-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 131,
+            "y": 372,
+            "w": 1034,
+            "h": 379
+          },
+          "frame": {
+            "x": 1,
+            "y": 1176,
+            "w": 1034,
+            "h": 379
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 261,
+            "w": 705,
+            "h": 486
+          },
+          "frame": {
+            "x": 1,
+            "y": 1557,
+            "w": 705,
+            "h": 486
+          }
+        },
+        {
+          "filename": "__raccoon_jump-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 108,
+            "y": 431,
+            "w": 934,
+            "h": 321
+          },
+          "frame": {
+            "x": 1037,
+            "y": 1228,
+            "w": 934,
+            "h": 321
+          }
+        },
+        {
+          "filename": "__raccoon_throw_nut-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 212,
+            "y": 259,
+            "w": 709,
+            "h": 488
+          },
+          "frame": {
+            "x": 1037,
+            "y": 1551,
+            "w": 709,
+            "h": 488
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-2.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 2042,
+        "h": 1990
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_run-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 132,
+            "y": 365,
+            "w": 1031,
+            "h": 381
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 1031,
+            "h": 381
+          }
+        },
+        {
+          "filename": "__raccoon_confused-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 384,
+            "w": 920,
+            "h": 366
+          },
+          "frame": {
+            "x": 1034,
+            "y": 1,
+            "w": 920,
+            "h": 366
+          }
+        },
+        {
+          "filename": "__raccoon_confused-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 396,
+            "w": 920,
+            "h": 354
+          },
+          "frame": {
+            "x": 1034,
+            "y": 369,
+            "w": 920,
+            "h": 354
+          }
+        },
+        {
+          "filename": "__raccoon_run-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 133,
+            "y": 364,
+            "w": 1030,
+            "h": 378
+          },
+          "frame": {
+            "x": 1,
+            "y": 384,
+            "w": 1030,
+            "h": 378
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 246,
+            "w": 705,
+            "h": 501
+          },
+          "frame": {
+            "x": 1033,
+            "y": 725,
+            "w": 705,
+            "h": 501
+          }
+        },
+        {
+          "filename": "__raccoon_run-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 134,
+            "y": 357,
+            "w": 1026,
+            "h": 403
+          },
+          "frame": {
+            "x": 1,
+            "y": 764,
+            "w": 1026,
+            "h": 403
+          }
+        },
+        {
+          "filename": "__raccoon_run-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 134,
+            "y": 374,
+            "w": 1026,
+            "h": 375
+          },
+          "frame": {
+            "x": 1,
+            "y": 1169,
+            "w": 1026,
+            "h": 375
+          }
+        },
+        {
+          "filename": "__raccoon_run-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 140,
+            "y": 370,
+            "w": 1012,
+            "h": 372
+          },
+          "frame": {
+            "x": 1029,
+            "y": 1228,
+            "w": 1012,
+            "h": 372
+          }
+        },
+        {
+          "filename": "__raccoon_run-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 138,
+            "y": 359,
+            "w": 1017,
+            "h": 387
+          },
+          "frame": {
+            "x": 1,
+            "y": 1602,
+            "w": 1017,
+            "h": 387
+          }
+        },
+        {
+          "filename": "__raccoon_run-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 138,
+            "y": 378,
+            "w": 1017,
+            "h": 385
+          },
+          "frame": {
+            "x": 1020,
+            "y": 1602,
+            "w": 1017,
+            "h": 385
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1946,
+        "h": 2013
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_sitting_eat_nut-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 178,
+            "w": 705,
+            "h": 569
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 705,
+            "h": 569
+          }
+        },
+        {
+          "filename": "__raccoon_run-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 136,
+            "y": 350,
+            "w": 1022,
+            "h": 396
+          },
+          "frame": {
+            "x": 1,
+            "y": 572,
+            "w": 1022,
+            "h": 396
+          }
+        },
+        {
+          "filename": "__raccoon_run-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 136,
+            "y": 384,
+            "w": 1021,
+            "h": 361
+          },
+          "frame": {
+            "x": 708,
+            "y": 1,
+            "w": 1021,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 185,
+            "w": 705,
+            "h": 562
+          },
+          "frame": {
+            "x": 1025,
+            "y": 364,
+            "w": 705,
+            "h": 562
+          }
+        },
+        {
+          "filename": "__raccoon_confused-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 396,
+            "w": 920,
+            "h": 354
+          },
+          "frame": {
+            "x": 1025,
+            "y": 928,
+            "w": 920,
+            "h": 354
+          }
+        },
+        {
+          "filename": "__raccoon_confused-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 397,
+            "w": 920,
+            "h": 353
+          },
+          "frame": {
+            "x": 1,
+            "y": 970,
+            "w": 920,
+            "h": 353
+          }
+        },
+        {
+          "filename": "__raccoon_confused-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 398,
+            "w": 920,
+            "h": 352
+          },
+          "frame": {
+            "x": 923,
+            "y": 1284,
+            "w": 920,
+            "h": 352
+          }
+        },
+        {
+          "filename": "__raccoon_confused-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 402,
+            "w": 920,
+            "h": 348
+          },
+          "frame": {
+            "x": 1,
+            "y": 1325,
+            "w": 920,
+            "h": 348
+          }
+        },
+        {
+          "filename": "__raccoon_confused-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 410,
+            "w": 920,
+            "h": 340
+          },
+          "frame": {
+            "x": 923,
+            "y": 1638,
+            "w": 920,
+            "h": 340
+          }
+        },
+        {
+          "filename": "__raccoon_confused-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 413,
+            "w": 920,
+            "h": 337
+          },
+          "frame": {
+            "x": 1,
+            "y": 1675,
+            "w": 920,
+            "h": 337
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-4.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1844,
+        "h": 2040
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_throw_nut-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 186,
+            "y": 231,
+            "w": 780,
+            "h": 709
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 780,
+            "h": 709
+          }
+        },
+        {
+          "filename": "__raccoon_confused-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 413,
+            "w": 920,
+            "h": 337
+          },
+          "frame": {
+            "x": 1,
+            "y": 712,
+            "w": 920,
+            "h": 337
+          }
+        },
+        {
+          "filename": "__raccoon_confused-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 414,
+            "w": 920,
+            "h": 336
+          },
+          "frame": {
+            "x": 783,
+            "y": 1,
+            "w": 920,
+            "h": 336
+          }
+        },
+        {
+          "filename": "__raccoon_confused-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 414,
+            "w": 920,
+            "h": 336
+          },
+          "frame": {
+            "x": 783,
+            "y": 339,
+            "w": 920,
+            "h": 336
+          }
+        },
+        {
+          "filename": "__raccoon_throw_nut-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 297,
+            "y": 55,
+            "w": 782,
+            "h": 690
+          },
+          "frame": {
+            "x": 923,
+            "y": 677,
+            "w": 782,
+            "h": 690
+          }
+        },
+        {
+          "filename": "__raccoon_confused-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 416,
+            "w": 920,
+            "h": 334
+          },
+          "frame": {
+            "x": 1,
+            "y": 1051,
+            "w": 920,
+            "h": 334
+          }
+        },
+        {
+          "filename": "__raccoon_confused-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 417,
+            "w": 920,
+            "h": 333
+          },
+          "frame": {
+            "x": 923,
+            "y": 1369,
+            "w": 920,
+            "h": 333
+          }
+        },
+        {
+          "filename": "__raccoon_confused-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 420,
+            "w": 920,
+            "h": 330
+          },
+          "frame": {
+            "x": 1,
+            "y": 1387,
+            "w": 920,
+            "h": 330
+          }
+        },
+        {
+          "filename": "__raccoon_confused-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 421,
+            "w": 920,
+            "h": 329
+          },
+          "frame": {
+            "x": 923,
+            "y": 1704,
+            "w": 920,
+            "h": 329
+          }
+        },
+        {
+          "filename": "__raccoon_confused-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 110,
+            "y": 430,
+            "w": 920,
+            "h": 320
+          },
+          "frame": {
+            "x": 1,
+            "y": 1719,
+            "w": 920,
+            "h": 320
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-5.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1796,
+        "h": 1950
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_idle-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 375,
+            "w": 896,
+            "h": 373
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 896,
+            "h": 373
+          }
+        },
+        {
+          "filename": "__raccoon_idle-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 374,
+            "w": 896,
+            "h": 374
+          },
+          "frame": {
+            "x": 899,
+            "y": 1,
+            "w": 896,
+            "h": 374
+          }
+        },
+        {
+          "filename": "__raccoon_idle-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 374,
+            "w": 896,
+            "h": 374
+          },
+          "frame": {
+            "x": 1,
+            "y": 376,
+            "w": 896,
+            "h": 374
+          }
+        },
+        {
+          "filename": "__raccoon_idle-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 373,
+            "w": 896,
+            "h": 375
+          },
+          "frame": {
+            "x": 899,
+            "y": 377,
+            "w": 896,
+            "h": 375
+          }
+        },
+        {
+          "filename": "__raccoon_walk-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 379,
+            "w": 896,
+            "h": 386
+          },
+          "frame": {
+            "x": 1,
+            "y": 752,
+            "w": 896,
+            "h": 386
+          }
+        },
+        {
+          "filename": "__raccoon_throw_nut-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 314,
+            "y": 85,
+            "w": 748,
+            "h": 657
+          },
+          "frame": {
+            "x": 899,
+            "y": 754,
+            "w": 748,
+            "h": 657
+          }
+        },
+        {
+          "filename": "__raccoon_throw_nut-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 305,
+            "y": 59,
+            "w": 789,
+            "h": 685
+          },
+          "frame": {
+            "x": 1,
+            "y": 1140,
+            "w": 789,
+            "h": 685
+          }
+        },
+        {
+          "filename": "__raccoon_throw_nut-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 39,
+            "y": 208,
+            "w": 913,
+            "h": 536
+          },
+          "frame": {
+            "x": 792,
+            "y": 1413,
+            "w": 913,
+            "h": 536
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-6.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1796,
+        "h": 2045
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_sitting_eat_nut-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 215,
+            "y": 197,
+            "w": 708,
+            "h": 550
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 708,
+            "h": 550
+          }
+        },
+        {
+          "filename": "__raccoon_idle-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 375,
+            "w": 896,
+            "h": 373
+          },
+          "frame": {
+            "x": 1,
+            "y": 553,
+            "w": 896,
+            "h": 373
+          }
+        },
+        {
+          "filename": "__raccoon_idle-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 376,
+            "w": 896,
+            "h": 371
+          },
+          "frame": {
+            "x": 711,
+            "y": 1,
+            "w": 896,
+            "h": 371
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 215,
+            "y": 197,
+            "w": 708,
+            "h": 550
+          },
+          "frame": {
+            "x": 899,
+            "y": 374,
+            "w": 708,
+            "h": 550
+          }
+        },
+        {
+          "filename": "__raccoon_walk-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 374,
+            "w": 895,
+            "h": 374
+          },
+          "frame": {
+            "x": 899,
+            "y": 926,
+            "w": 895,
+            "h": 374
+          }
+        },
+        {
+          "filename": "__raccoon_walk-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 374,
+            "w": 892,
+            "h": 372
+          },
+          "frame": {
+            "x": 1,
+            "y": 928,
+            "w": 892,
+            "h": 372
+          }
+        },
+        {
+          "filename": "__raccoon_idle-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 376,
+            "w": 896,
+            "h": 371
+          },
+          "frame": {
+            "x": 1,
+            "y": 1302,
+            "w": 896,
+            "h": 371
+          }
+        },
+        {
+          "filename": "__raccoon_idle-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 377,
+            "w": 896,
+            "h": 370
+          },
+          "frame": {
+            "x": 899,
+            "y": 1302,
+            "w": 896,
+            "h": 370
+          }
+        },
+        {
+          "filename": "__raccoon_idle-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 377,
+            "w": 896,
+            "h": 370
+          },
+          "frame": {
+            "x": 899,
+            "y": 1674,
+            "w": 896,
+            "h": 370
+          }
+        },
+        {
+          "filename": "__raccoon_idle-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 378,
+            "w": 896,
+            "h": 369
+          },
+          "frame": {
+            "x": 1,
+            "y": 1675,
+            "w": 896,
+            "h": 369
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-7.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1796,
+        "h": 2032
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_sitting_eat_nut-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 209,
+            "w": 705,
+            "h": 538
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 705,
+            "h": 538
+          }
+        },
+        {
+          "filename": "__raccoon_idle-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 378,
+            "w": 896,
+            "h": 369
+          },
+          "frame": {
+            "x": 1,
+            "y": 541,
+            "w": 896,
+            "h": 369
+          }
+        },
+        {
+          "filename": "__raccoon_idle-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 380,
+            "w": 896,
+            "h": 367
+          },
+          "frame": {
+            "x": 708,
+            "y": 1,
+            "w": 896,
+            "h": 367
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 215,
+            "y": 211,
+            "w": 708,
+            "h": 536
+          },
+          "frame": {
+            "x": 899,
+            "y": 370,
+            "w": 708,
+            "h": 536
+          }
+        },
+        {
+          "filename": "__raccoon_walk-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 380,
+            "w": 891,
+            "h": 388
+          },
+          "frame": {
+            "x": 899,
+            "y": 908,
+            "w": 891,
+            "h": 388
+          }
+        },
+        {
+          "filename": "__raccoon_walk-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 379,
+            "w": 893,
+            "h": 370
+          },
+          "frame": {
+            "x": 1,
+            "y": 912,
+            "w": 893,
+            "h": 370
+          }
+        },
+        {
+          "filename": "__raccoon_idle-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 380,
+            "w": 896,
+            "h": 367
+          },
+          "frame": {
+            "x": 1,
+            "y": 1284,
+            "w": 896,
+            "h": 367
+          }
+        },
+        {
+          "filename": "__raccoon_idle-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 381,
+            "w": 896,
+            "h": 366
+          },
+          "frame": {
+            "x": 899,
+            "y": 1298,
+            "w": 896,
+            "h": 366
+          }
+        },
+        {
+          "filename": "__raccoon_idle-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 381,
+            "w": 896,
+            "h": 366
+          },
+          "frame": {
+            "x": 1,
+            "y": 1653,
+            "w": 896,
+            "h": 366
+          }
+        },
+        {
+          "filename": "__raccoon_idle-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 383,
+            "w": 896,
+            "h": 365
+          },
+          "frame": {
+            "x": 899,
+            "y": 1666,
+            "w": 896,
+            "h": 365
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-8.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1593,
+        "h": 2014
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_jump-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 117,
+            "y": 262,
+            "w": 861,
+            "h": 404
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 861,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 213,
+            "w": 693,
+            "h": 534
+          },
+          "frame": {
+            "x": 1,
+            "y": 407,
+            "w": 693,
+            "h": 534
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 213,
+            "w": 693,
+            "h": 534
+          },
+          "frame": {
+            "x": 1,
+            "y": 943,
+            "w": 693,
+            "h": 534
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 213,
+            "w": 693,
+            "h": 534
+          },
+          "frame": {
+            "x": 1,
+            "y": 1479,
+            "w": 693,
+            "h": 534
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 213,
+            "w": 693,
+            "h": 534
+          },
+          "frame": {
+            "x": 864,
+            "y": 1,
+            "w": 693,
+            "h": 534
+          }
+        },
+        {
+          "filename": "__raccoon_idle-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 382,
+            "w": 896,
+            "h": 365
+          },
+          "frame": {
+            "x": 696,
+            "y": 537,
+            "w": 896,
+            "h": 365
+          }
+        },
+        {
+          "filename": "__raccoon_idle-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 383,
+            "w": 896,
+            "h": 365
+          },
+          "frame": {
+            "x": 696,
+            "y": 904,
+            "w": 896,
+            "h": 365
+          }
+        },
+        {
+          "filename": "__raccoon_idle-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 382,
+            "w": 896,
+            "h": 365
+          },
+          "frame": {
+            "x": 696,
+            "y": 1271,
+            "w": 896,
+            "h": 365
+          }
+        },
+        {
+          "filename": "__raccoon_walk-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 384,
+            "w": 896,
+            "h": 365
+          },
+          "frame": {
+            "x": 696,
+            "y": 1638,
+            "w": 896,
+            "h": 365
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-9.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1645,
+        "h": 1970
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_throw_nut-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 200,
+            "y": 234,
+            "w": 745,
+            "h": 532
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 745,
+            "h": 532
+          }
+        },
+        {
+          "filename": "__raccoon_die_sleep-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 384,
+            "w": 896,
+            "h": 364
+          },
+          "frame": {
+            "x": 748,
+            "y": 1,
+            "w": 896,
+            "h": 364
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 215,
+            "y": 214,
+            "w": 708,
+            "h": 533
+          },
+          "frame": {
+            "x": 1,
+            "y": 535,
+            "w": 708,
+            "h": 533
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 214,
+            "w": 705,
+            "h": 533
+          },
+          "frame": {
+            "x": 1,
+            "y": 1070,
+            "w": 705,
+            "h": 533
+          }
+        },
+        {
+          "filename": "__raccoon_idle-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 384,
+            "w": 896,
+            "h": 364
+          },
+          "frame": {
+            "x": 1,
+            "y": 1605,
+            "w": 896,
+            "h": 364
+          }
+        },
+        {
+          "filename": "__raccoon_jump-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 384,
+            "w": 896,
+            "h": 364
+          },
+          "frame": {
+            "x": 748,
+            "y": 367,
+            "w": 896,
+            "h": 364
+          }
+        },
+        {
+          "filename": "__raccoon_walk-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 390,
+            "w": 896,
+            "h": 361
+          },
+          "frame": {
+            "x": 711,
+            "y": 733,
+            "w": 896,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__raccoon_die_sleep-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 99,
+            "y": 444,
+            "w": 872,
+            "h": 307
+          },
+          "frame": {
+            "x": 708,
+            "y": 1096,
+            "w": 872,
+            "h": 307
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 215,
+            "y": 228,
+            "w": 708,
+            "h": 519
+          },
+          "frame": {
+            "x": 899,
+            "y": 1405,
+            "w": 708,
+            "h": 519
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-10.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1792,
+        "h": 1980
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_walk-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 379,
+            "w": 895,
+            "h": 369
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 895,
+            "h": 369
+          }
+        },
+        {
+          "filename": "__raccoon_walk-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 390,
+            "w": 893,
+            "h": 360
+          },
+          "frame": {
+            "x": 898,
+            "y": 1,
+            "w": 893,
+            "h": 360
+          }
+        },
+        {
+          "filename": "__raccoon_walk-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 395,
+            "w": 892,
+            "h": 355
+          },
+          "frame": {
+            "x": 898,
+            "y": 363,
+            "w": 892,
+            "h": 355
+          }
+        },
+        {
+          "filename": "__raccoon_walk-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 390,
+            "w": 895,
+            "h": 355
+          },
+          "frame": {
+            "x": 1,
+            "y": 372,
+            "w": 895,
+            "h": 355
+          }
+        },
+        {
+          "filename": "__raccoon_walk-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 390,
+            "w": 891,
+            "h": 361
+          },
+          "frame": {
+            "x": 898,
+            "y": 720,
+            "w": 891,
+            "h": 361
+          }
+        },
+        {
+          "filename": "__raccoon_walk-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 395,
+            "w": 895,
+            "h": 352
+          },
+          "frame": {
+            "x": 1,
+            "y": 729,
+            "w": 895,
+            "h": 352
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 215,
+            "w": 693,
+            "h": 532
+          },
+          "frame": {
+            "x": 1,
+            "y": 1083,
+            "w": 693,
+            "h": 532
+          }
+        },
+        {
+          "filename": "__raccoon_walk-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 384,
+            "w": 894,
+            "h": 362
+          },
+          "frame": {
+            "x": 1,
+            "y": 1617,
+            "w": 894,
+            "h": 362
+          }
+        },
+        {
+          "filename": "__raccoon_walk-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 385,
+            "w": 894,
+            "h": 363
+          },
+          "frame": {
+            "x": 897,
+            "y": 1083,
+            "w": 894,
+            "h": 363
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 196,
+            "y": 216,
+            "w": 724,
+            "h": 531
+          },
+          "frame": {
+            "x": 897,
+            "y": 1448,
+            "w": 724,
+            "h": 531
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-11.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1599,
+        "h": 1762
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_sitting_up_idle-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 216,
+            "w": 705,
+            "h": 531
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 705,
+            "h": 531
+          }
+        },
+        {
+          "filename": "__raccoon_jump-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 119,
+            "y": 303,
+            "w": 812,
+            "h": 437
+          },
+          "frame": {
+            "x": 1,
+            "y": 534,
+            "w": 812,
+            "h": 437
+          }
+        },
+        {
+          "filename": "__raccoon_walk-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 106,
+            "y": 385,
+            "w": 890,
+            "h": 362
+          },
+          "frame": {
+            "x": 708,
+            "y": 1,
+            "w": 890,
+            "h": 362
+          }
+        },
+        {
+          "filename": "__raccoon_die_sleep-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 93,
+            "y": 474,
+            "w": 817,
+            "h": 289
+          },
+          "frame": {
+            "x": 1,
+            "y": 973,
+            "w": 817,
+            "h": 289
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 255,
+            "w": 724,
+            "h": 494
+          },
+          "frame": {
+            "x": 815,
+            "y": 365,
+            "w": 724,
+            "h": 494
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 217,
+            "w": 705,
+            "h": 530
+          },
+          "frame": {
+            "x": 820,
+            "y": 861,
+            "w": 705,
+            "h": 530
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 193,
+            "y": 258,
+            "w": 723,
+            "h": 497
+          },
+          "frame": {
+            "x": 1,
+            "y": 1264,
+            "w": 723,
+            "h": 497
+          }
+        },
+        {
+          "filename": "__raccoon_wake-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 93,
+            "y": 474,
+            "w": 816,
+            "h": 290
+          },
+          "frame": {
+            "x": 726,
+            "y": 1393,
+            "w": 816,
+            "h": 290
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-12.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1431,
+        "h": 2048
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_sitting_up_idle-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 218,
+            "w": 705,
+            "h": 529
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 705,
+            "h": 529
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 194,
+            "y": 259,
+            "w": 722,
+            "h": 497
+          },
+          "frame": {
+            "x": 1,
+            "y": 532,
+            "w": 722,
+            "h": 497
+          }
+        },
+        {
+          "filename": "__raccoon_throw_nut-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 195,
+            "y": 249,
+            "w": 720,
+            "h": 500
+          },
+          "frame": {
+            "x": 708,
+            "y": 1,
+            "w": 720,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 219,
+            "w": 705,
+            "h": 528
+          },
+          "frame": {
+            "x": 725,
+            "y": 503,
+            "w": 705,
+            "h": 528
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 242,
+            "w": 705,
+            "h": 507
+          },
+          "frame": {
+            "x": 1,
+            "y": 1031,
+            "w": 705,
+            "h": 507
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 210,
+            "y": 242,
+            "w": 712,
+            "h": 505
+          },
+          "frame": {
+            "x": 708,
+            "y": 1033,
+            "w": 712,
+            "h": 505
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 248,
+            "w": 705,
+            "h": 499
+          },
+          "frame": {
+            "x": 1,
+            "y": 1540,
+            "w": 705,
+            "h": 499
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 240,
+            "w": 693,
+            "h": 507
+          },
+          "frame": {
+            "x": 708,
+            "y": 1540,
+            "w": 693,
+            "h": 507
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-13.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1414,
+        "h": 1580
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_sitting_up_idle-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 221,
+            "w": 705,
+            "h": 526
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 705,
+            "h": 526
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 221,
+            "w": 705,
+            "h": 526
+          },
+          "frame": {
+            "x": 1,
+            "y": 529,
+            "w": 705,
+            "h": 526
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 223,
+            "w": 705,
+            "h": 525
+          },
+          "frame": {
+            "x": 708,
+            "y": 1,
+            "w": 705,
+            "h": 525
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 217,
+            "y": 226,
+            "w": 706,
+            "h": 521
+          },
+          "frame": {
+            "x": 1,
+            "y": 1057,
+            "w": 706,
+            "h": 521
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 226,
+            "w": 693,
+            "h": 521
+          },
+          "frame": {
+            "x": 708,
+            "y": 528,
+            "w": 693,
+            "h": 521
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 219,
+            "w": 693,
+            "h": 528
+          },
+          "frame": {
+            "x": 709,
+            "y": 1051,
+            "w": 693,
+            "h": 528
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-14.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1414,
+        "h": 1574
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_sitting_up_idle-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 223,
+            "w": 705,
+            "h": 525
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 705,
+            "h": 525
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 225,
+            "w": 705,
+            "h": 523
+          },
+          "frame": {
+            "x": 708,
+            "y": 1,
+            "w": 705,
+            "h": 523
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 225,
+            "w": 705,
+            "h": 523
+          },
+          "frame": {
+            "x": 708,
+            "y": 526,
+            "w": 705,
+            "h": 523
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 227,
+            "w": 705,
+            "h": 522
+          },
+          "frame": {
+            "x": 1,
+            "y": 528,
+            "w": 705,
+            "h": 522
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 227,
+            "w": 705,
+            "h": 522
+          },
+          "frame": {
+            "x": 708,
+            "y": 1051,
+            "w": 705,
+            "h": 522
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 229,
+            "w": 705,
+            "h": 520
+          },
+          "frame": {
+            "x": 1,
+            "y": 1052,
+            "w": 705,
+            "h": 520
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-15.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1412,
+        "h": 1560
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_sitting_up_idle-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 229,
+            "w": 705,
+            "h": 520
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 705,
+            "h": 520
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 229,
+            "w": 693,
+            "h": 518
+          },
+          "frame": {
+            "x": 708,
+            "y": 1,
+            "w": 693,
+            "h": 518
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 229,
+            "w": 693,
+            "h": 518
+          },
+          "frame": {
+            "x": 708,
+            "y": 521,
+            "w": 693,
+            "h": 518
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 218,
+            "y": 255,
+            "w": 705,
+            "h": 492
+          },
+          "frame": {
+            "x": 1,
+            "y": 523,
+            "w": 705,
+            "h": 492
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 219,
+            "y": 231,
+            "w": 704,
+            "h": 518
+          },
+          "frame": {
+            "x": 1,
+            "y": 1017,
+            "w": 704,
+            "h": 518
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 219,
+            "y": 231,
+            "w": 704,
+            "h": 518
+          },
+          "frame": {
+            "x": 707,
+            "y": 1041,
+            "w": 704,
+            "h": 518
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-16.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1412,
+        "h": 1555
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_sitting_up_idle-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 219,
+            "y": 233,
+            "w": 704,
+            "h": 517
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 704,
+            "h": 517
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 219,
+            "y": 233,
+            "w": 704,
+            "h": 517
+          },
+          "frame": {
+            "x": 1,
+            "y": 520,
+            "w": 704,
+            "h": 517
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_eat_nut-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 219,
+            "y": 235,
+            "w": 704,
+            "h": 515
+          },
+          "frame": {
+            "x": 1,
+            "y": 1039,
+            "w": 704,
+            "h": 515
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 230,
+            "w": 693,
+            "h": 517
+          },
+          "frame": {
+            "x": 707,
+            "y": 1,
+            "w": 693,
+            "h": 517
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 230,
+            "w": 693,
+            "h": 517
+          },
+          "frame": {
+            "x": 707,
+            "y": 520,
+            "w": 693,
+            "h": 517
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_idle-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 219,
+            "y": 235,
+            "w": 704,
+            "h": 515
+          },
+          "frame": {
+            "x": 707,
+            "y": 1039,
+            "w": 704,
+            "h": 515
+          }
+        }
+      ]
+    },
+    {
+      "image": "raccoon/raccoon-17.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1401,
+        "h": 1515
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__raccoon_throw_nut-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 219,
+            "y": 235,
+            "w": 704,
+            "h": 515
+          },
+          "frame": {
+            "x": 1,
+            "y": 1,
+            "w": 704,
+            "h": 515
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 233,
+            "w": 693,
+            "h": 514
+          },
+          "frame": {
+            "x": 707,
+            "y": 1,
+            "w": 693,
+            "h": 514
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 236,
+            "w": 693,
+            "h": 511
+          },
+          "frame": {
+            "x": 707,
+            "y": 517,
+            "w": 693,
+            "h": 511
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 248,
+            "w": 693,
+            "h": 499
+          },
+          "frame": {
+            "x": 1,
+            "y": 518,
+            "w": 693,
+            "h": 499
+          }
+        },
+        {
+          "filename": "__raccoon_sitting_up_confused-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1173,
+            "h": 946
+          },
+          "spriteSourceSize": {
+            "x": 251,
+            "y": 252,
+            "w": 693,
+            "h": 495
+          },
+          "frame": {
+            "x": 1,
+            "y": 1019,
+            "w": 693,
+            "h": 495
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "3.0",
+    "smartupdate": "$TexturePacker:SmartUpdate:5d816c180ec7bfe9ed3c29ad27e9331e:379e2741455aa69394440b726a2def7e:3093c2990e3b259a6a942040ef353b75$"
+  }
+}
