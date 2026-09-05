@@ -227,9 +227,9 @@ wrong, add an emotion to the vocabulary, or give art to a newly added animal.
 
 Committed record of every clip ever promoted. `--promote` **merges** into it and generates the
 TS module from the merged whole. Each entry also stores the exact `prompt` the clip was
-generated from, its `quality` numbers and `generatedAt` — provenance the runtime has no use
-for, but which the manifest stops carrying the moment someone edits a generic prompt or adds
-an override.
+generated from, its `quality` numbers, optional `reviewNotes`, and `generatedAt` — provenance
+the runtime has no use for, but which the manifest stops carrying the moment someone edits a
+generic prompt or adds an override. `--promote` and `--remeasure` keep existing `reviewNotes`.
 
 This exists because promote used to rebuild the module from whatever was in the review
 directory, which made it silently destructive: promoting the owl after clearing the review dir
@@ -253,7 +253,12 @@ output. Re-promote is only needed when the PNG itself changed.
 
 **Main menu → Animation Gallery** (`AnimalGallery` scene). Pick an animal, hold any clip on a
 loop, compare generated clips against the atlas clips they sit beside. Emotions with no art are
-listed dashed and marked "no art yet".
+listed dashed and marked "no art yet". Clip and animal badges are **OK** / **check** / **?**.
+A clip is **check** if metrics trip, the frame count is not 25, or it has `reviewNotes`. The
+animal is **OK** only when all five emotions pass.
+
+When a clip looks wrong but the numbers are clean, add `reviewNotes` on that clip in
+`promoted-clips.json` and `--reindex`. Do not hand-edit the generated TS.
 
 Turn **off** the smooth-transition toggle to see the raw cut — switching between an atlas clip
 and a generated one changes texture, scale and origin on one frame, and the crossfade hides

@@ -1,10 +1,9 @@
 /**
  * Pass/warn/unknown for a generated emotion clip, using the numbers stored on the sheet.
  *
- * The three metric gates match `scripts/ludo/qualityCheck.mjs`. The fourth gate — frame
- * count — is gallery-only: a clip can score a clean seam at 16 frames / 8fps and still
- * look like stop-motion next to a 25-frame neighbour, which is the disparity the gallery
- * badge exists to show.
+ * The three metric gates match `scripts/ludo/qualityCheck.mjs`. Two more gallery-only
+ * gates sit on top: frame count (16-frame clips look like stop-motion next to a 25-frame
+ * neighbour), and `reviewNotes` on the sheet (a human mark that the numbers missed).
  */
 import {
   ANIMAL_EMOTIONS,
@@ -31,6 +30,8 @@ function metricsOverThreshold(quality: EmotionQuality): boolean {
 /** Classify one generated sheet. `null` means the emotion has no art yet. */
 export function emotionClipQualityStatus(sheet: EmotionSheet | null): ClipQualityStatus {
   if (!sheet) return 'none';
+  const noted = (sheet.reviewNotes?.length ?? 0) > 0;
+  if (noted) return 'warn';
   if (!sheet.quality) return 'unknown';
   const stale = sheet.frameCount !== CURRENT_EMOTION_FRAME_COUNT;
   if (stale || metricsOverThreshold(sheet.quality)) return 'warn';

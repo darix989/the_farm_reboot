@@ -118,4 +118,9 @@ export interface EmotionSheet {
    * Absent on clips promoted before quality was stored.
    */
   quality?: EmotionQuality;
+  /**
+   * Human review notes. Survive `--remeasure` (which rewrites `quality`) and turn the
+   * gallery badge to warn even when the numeric gates are clean.
+   */
+  reviewNotes?: readonly string[];
 }
