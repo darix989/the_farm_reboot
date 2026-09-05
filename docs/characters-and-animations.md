@@ -423,6 +423,10 @@ export canvas). That is what keeps a generated emotion on-model, and it is why t
 frame is un-trimmed first: handed a hard-cropped sprite, the generator composes as if the
 character filled the frame and clips its legs and ears.
 
+`scripts/ludo/promoted-clips.json` is the committed record of everything promoted so far;
+`--promote` merges into it and generates the TS module from the merged whole, so promoting one
+animal never drops another's clips.
+
 Asset URLs from the API **expire after 7 days**, so the pipeline downloads inside the run
 that generated them and the review directory holds bytes, never URLs.
 

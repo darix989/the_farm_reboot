@@ -55,6 +55,18 @@ const MANIFEST_PATH = 'scripts/ludo/emotion-manifest.json';
 const REVIEW_DIR = '.ludo-review';
 const PUBLIC_DIR = 'public/assets/characters/emotions';
 const GENERATED_TS = 'src/phaser/animals/emotionSheets.generated.ts';
+/**
+ * Durable record of every clip ever promoted, committed alongside the PNGs.
+ *
+ * `--promote` used to rebuild `GENERATED_TS` from whatever happened to be sitting in the
+ * review directory, which made it silently destructive: promoting the owl after the review
+ * dir had been cleared dropped every donkey entry from the module, leaving five orphaned PNGs
+ * in `public/` that the game no longer knew about. The metadata cannot be recovered from a
+ * promoted PNG alone — grid shape and frame rate are not derivable from the image — so it has
+ * to be written down. Promotion now merges into this file and generates the module from the
+ * merged whole.
+ */
+const PROMOTED_RECORD = 'scripts/ludo/promoted-clips.json';
 
 /** Keep in sync with `ANIMAL_EMOTIONS` in `src/phaser/animals/animalEmotions.ts`. */
 const TAXONOMY_PATH = 'src/phaser/animals/animalEmotions.ts';
@@ -402,6 +414,12 @@ async function writeContactSheet() {
 // promote
 // ---------------------------------------------------------------------------
 
+/** The committed record, or an empty one on a first run. */
+async function readPromotedRecord() {
+  if (!(await exists(PROMOTED_RECORD))) return {};
+  return JSON.parse(await readFile(PROMOTED_RECORD, 'utf8'));
+}
+
 async function promote() {
   const clips = await reviewedClips();
   if (clips.length === 0) {
@@ -411,7 +429,9 @@ async function promote() {
 
   await mkdir(PUBLIC_DIR, { recursive: true });
 
-  const byAnimal = {};
+  // Merge, never replace: clips promoted in earlier runs stay promoted even though their
+  // review directories are long gone.
+  const byAnimal = await readPromotedRecord();
   for (const clip of clips.sort((a, b) =>
     `${a.animalId}${a.emotion}`.localeCompare(`${b.animalId}${b.emotion}`),
   )) {
@@ -443,11 +463,43 @@ async function promote() {
     );
   }
 
-  await writeGeneratedModule(byAnimal);
-  console.log(`\nRewrote ${GENERATED_TS}. Run \`npx tsc --noEmit\` and reload the game.`);
+  await writeFile(PROMOTED_RECORD, `${JSON.stringify(sortRecord(byAnimal), null, 2)}\n`);
+  await writeGeneratedModule(sortRecord(byAnimal));
+
+  const total = Object.values(byAnimal).reduce((n, e) => n + Object.keys(e).length, 0);
+  console.log(
+    `\nRewrote ${GENERATED_TS} with all ${total} promoted clip(s) across ${Object.keys(byAnimal).length} animal(s).`,
+  );
+  console.log(`Run \`npx tsc --noEmit\` and reload the game.`);
 }
 
 /** Emits Prettier-shaped source, so a promote never leaves the tree needing a format pass. */
+/**
+ * Quote an object key only when it is not a bare identifier — `'donkey-grey'` needs quotes,
+ * `owl` does not. Matching Prettier here means a promote never leaves the tree needing a
+ * format pass, which matters because the pre-commit hook would otherwise rewrite a generated
+ * file straight after the script wrote it.
+ */
+function quoteKey(key) {
+  return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key) ? key : `'${key}'`;
+}
+
+/** Stable key order, so a promote produces a reviewable diff rather than a reshuffle. */
+function sortRecord(byAnimal) {
+  return Object.fromEntries(
+    Object.keys(byAnimal)
+      .sort()
+      .map((animalId) => [
+        animalId,
+        Object.fromEntries(
+          Object.keys(byAnimal[animalId])
+            .sort()
+            .map((emotion) => [emotion, byAnimal[animalId][emotion]]),
+        ),
+      ]),
+  );
+}
+
 function serializeSheet(sheet) {
   const rate = sheet.frameRate == null ? '' : `\n      frameRate: ${sheet.frameRate},`;
   return `{
@@ -467,7 +519,7 @@ async function writeGeneratedModule(byAnimal) {
       const inner = Object.entries(emotions)
         .map(([emotion, sheet]) => `    ${emotion}: ${serializeSheet(sheet)},`)
         .join('\n');
-      return `  '${animalId}': {\n${inner}\n  },`;
+      return `  ${quoteKey(animalId)}: {\n${inner}\n  },`;
     })
     .join('\n');
 

@@ -92,23 +92,23 @@
     "owl": {
       "species": "owl",
       "view": "Front view, facing the viewer",
-      "$comment": "A perched bird has no gait and no shoulders to square, so the generic four-legged posture prompts read as nonsense here. Every emotion is rewritten around what an owl actually has: head rotation, hunching, and wings.",
+      "$comment": "A standing bird has no gait and no shoulders to square, so the generic four-legged posture prompts read as nonsense here. Two hazards this body has and the quadrupeds do not — it can TAKE OFF, and the word 'perch' invites a branch the source art does not contain — so every prompt forbids both. AND THE BIG ONE: this owl breaks the global 'posture, not expression' rule. Its eyes are ~40% of its body area in high-contrast yellow, so the face IS the silhouette and reads fine at stage scale. The first pass proved it — a body-posture 'angry' read as a surprised owl talking, while 'sneaky' asking for narrowed eyes was the best clip generated for any animal. Lead the owl's emotions with eyes, brow and beak.",
       "reference": "__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_0.png",
       "overrides": {
         "talking": {
-          "prompt": "{view}. The perched owl stays in place and talks: beak opening and closing, head bobbing slightly with each phrase, body still and upright. Seamless loop, no travel, same silhouette throughout."
+          "prompt": "{view}. The owl stays standing in place on its own two feet and talks: beak opening and closing, head bobbing slightly with each phrase, body still and upright. It never takes off and never leaves the ground; no perch or branch appears. Seamless loop, no travel, same silhouette throughout."
         },
         "doubtful": {
-          "prompt": "{view}. The perched owl stays in place and is skeptical: body leaning back, head rotating slowly away and tilting, a long unimpressed stare. Seamless loop, no travel, same silhouette throughout."
+          "prompt": "{view}. The owl stays standing in place on its own two feet and is skeptical: weight settling back, head rotating slowly to one side and tilting, a long unimpressed stare, one slow blink. It stays upright the whole time and never takes off. Seamless loop, no travel, same silhouette throughout."
         },
         "angry": {
-          "prompt": "{view}. The perched owl stays in place and is angry: body hunched forward and low over its perch, wings flaring and snapping shut, head thrust out, beak open. Seamless loop, no travel, same silhouette throughout."
+          "prompt": "{view}. The owl stays standing upright in place on its own two feet and is angry: the brow feathers above both eyes drive downward into a hard V, so a heavy dark lid covers the top of each eye and the big yellow eyes are narrowed into hard slanted slits. The eyes stay OPEN and narrowed the entire time \u2014 they never close, never blink, never squeeze shut. The beak is open in a sharp shout and the head pushes forward toward the viewer. It never crouches, never lowers its body, never lies down, never spreads its wings to fly, never takes off; no perch or branch appears. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
         },
         "thinking": {
-          "prompt": "{view}. The perched owl stays in place and thinks: almost motionless, head turning slowly to one side and back, a single slow blink. Seamless loop, no travel, same silhouette throughout."
+          "prompt": "{view}. The owl stays standing in place on its own two feet and thinks: almost motionless, head turning slowly to one side and back, a single slow blink. It stays upright and never takes off. Seamless loop, no travel, same silhouette throughout."
         },
         "sneaky": {
-          "prompt": "{view}. The perched owl stays in place and speaks conspiratorially: body hunched down and drawn in, head craned forward and dipped low, rotating to glance furtively behind it. Seamless loop, no travel, same silhouette throughout."
+          "prompt": "{view}. The owl stays standing upright in place on its own two feet and speaks conspiratorially: head craned forward and dipped toward the listener, rotating to glance furtively to one side and back, eyes narrowing, body still. It never crouches, never hunches its body down, never lies down, never takes off. Sly and secretive. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
         }
       }
     }

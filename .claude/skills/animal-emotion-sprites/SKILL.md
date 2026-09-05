@@ -83,8 +83,13 @@ Prompts live in `scripts/ludo/emotion-manifest.json`: a generic prompt per emoti
 sense for that body. The file carries these rules in its own `$comment`; they are repeated
 here because ignoring them costs credits.
 
-1. **Describe posture, not expression.** A Trial sprite is ~300px tall, so its face is 50–80px.
-   A raised eyebrow is invisible and asking for one wastes the model's attention.
+1. **Describe posture, not expression — unless the face *is* the silhouette.** A Trial sprite is
+   ~300px tall, so its face is 50–80px and a raised eyebrow is invisible. That holds for the
+   quadrupeds. It does **not** hold for the owl, whose eyes are ~40% of its body area in
+   high-contrast yellow: there a body-posture "angry" read as a surprised owl talking, while a
+   "sneaky" asking for narrowed eyes produced the best clip generated for any animal. Judge per
+   animal — if the face carries a large, high-contrast share of the silhouette, lead with eyes,
+   brow and mouth.
 2. **Never name a posture the animal must change state to reach.** "Crouched low and drawn in"
    made the generator lie the donkey down over the clip and never stand it back up — a
    transition, not a held attitude, and one that cannot loop. Say what the body does while it
@@ -96,6 +101,15 @@ here because ignoring them costs credits.
 4. **Say "in place", "no travel".** Left unsaid, the model walks the animal out of frame.
 5. **Keep the silhouette.** The reference frame carries the character; the prompt should only
    ever move it.
+6. **Negations work for gross body actions, not for small habitual ones.** "Never lies down",
+   "never takes off" and "no perch appears" all held. "The eyes never close, never blink" was
+   ignored across two attempts — blinking is too strong a prior in any owl animation. If a
+   small motion has to be suppressed, find a positive phrasing that displaces it rather than
+   forbidding it.
+
+**`angry` is the hardest emotion.** It came out weak on the first pass for both animals
+generated so far, and three attempts on the owl did not fix it. Budget for iteration there, or
+accept a neutral clip — the fallback to `playAlert()` is not a disaster.
 
 ## Things about the Ludo API that will bite you
 
@@ -113,6 +127,20 @@ Full contract in [references/ludo-api.md](references/ludo-api.md). The four that
   construction (measured 5.88% → 0.22% seam).
 - **The REST default flips from synchronous to async on 2026-09-10.** The client already sends
   `async: true` and long-polls, so it is unaffected. Do not "simplify" that away.
+
+## `scripts/ludo/promoted-clips.json` is the source of truth
+
+Committed record of every clip ever promoted. `--promote` **merges** into it and generates the
+TS module from the merged whole.
+
+This exists because promote used to rebuild the module from whatever was in the review
+directory, which made it silently destructive: promoting the owl after clearing the review dir
+dropped every donkey entry, leaving five orphaned PNGs in `public/` the game no longer knew
+about. Nothing failed — the clips just stopped existing. The metadata cannot be recovered from
+a promoted PNG alone (grid shape and frame rate are not derivable from the image), so it has to
+be written down.
+
+**If you ever see the generated module lose an animal, check this file first.**
 
 ## Never hand-edit the generated art metadata
 
