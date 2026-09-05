@@ -17,14 +17,14 @@ weighted idle/alert playback engine were ported close to verbatim.
 Every Level 1 character is a real animal wearing a different animal's skin, because no
 matching art exists yet:
 
-| Character | Real species | Placeholder art (`AnimalSpriteId`) | Role |
-|---|---|---|---|
-| Rue | donkey | `donkey-grey` (exact match) | player |
-| Hetty | hen | `white-sheep-1` | farm NPC |
-| Cass | rooster | `fox` | farm NPC |
-| Bram | drake | `brown-wolf` | farm NPC |
-| Duchess | goose | `owl` | farm NPC, Trial opponent |
-| Tobias | tortoise | `raccoon` | farm NPC, Trial moderator |
+| Character | Real species | Placeholder art (`AnimalSpriteId`) | Role                      |
+| --------- | ------------ | ---------------------------------- | ------------------------- |
+| Rue       | donkey       | `donkey-grey` (exact match)        | player                    |
+| Hetty     | hen          | `white-sheep-1`                    | farm NPC                  |
+| Cass      | rooster      | `fox`                              | farm NPC                  |
+| Bram      | drake        | `brown-wolf`                       | farm NPC                  |
+| Duchess   | goose        | `owl`                              | farm NPC, Trial opponent  |
+| Tobias    | tortoise     | `raccoon`                          | farm NPC, Trial moderator |
 
 The mapping lives in one place: the optional `animal` field on
 [`CHARACTERS`](../src/data/characters.ts). A character with no `animal` entry (every
@@ -61,10 +61,10 @@ add a seventh animal and its naming doesn't match its id.
 
 **Frame naming — two shapes in this set:**
 
-| Shape | Example frame filename | Animals | Needs `framePrefix`? |
-|---|---|---|---|
-| Flat, dash-separated | `__red_fox_idle-3.png` | donkey-grey, fox, white-sheep-1, brown-wolf, raccoon | no — matches the default `${frameStem}-` |
-| Foldered, **underscore**-separated | `__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_4.png` | owl | yes, on all five animations |
+| Shape                              | Example frame filename                                    | Animals                                              | Needs `framePrefix`?                     |
+| ---------------------------------- | --------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------- |
+| Flat, dash-separated               | `__red_fox_idle-3.png`                                    | donkey-grey, fox, white-sheep-1, brown-wolf, raccoon | no — matches the default `${frameStem}-` |
+| Foldered, **underscore**-separated | `__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_4.png` | owl                                                  | yes, on all five animations              |
 
 The owl is the trap: its frame folder ends in `_`, not `-`, so every one of its
 `baseAnimations` entries needs an explicit `framePrefix` copied character-for-character.
@@ -74,12 +74,12 @@ Get it wrong and `generateFrameNames` silently returns zero frames.
 
 ## 3. Four files carry the system
 
-| File | Role |
-|---|---|
-| [`src/phaser/animals/animalDescriptors.ts`](../src/phaser/animals/animalDescriptors.ts) | The data. One `AnimalDescriptor` per animal: frame ranges + idle/alert behaviour. |
-| [`src/phaser/animals/animalAnimations.ts`](../src/phaser/animals/animalAnimations.ts) | Turns descriptors into Phaser animations (`ensureAnimalAnimations`) and resolves per-animal setup (`animalSetup`). |
-| [`src/phaser/animals/AnimalAnimator.ts`](../src/phaser/animals/AnimalAnimator.ts) | The playback engine: weighted sequence picking, chaining, self-looping. Drives any `Phaser.GameObjects.Sprite`. |
-| [`src/phaser/animals/animalAtlases.ts`](../src/phaser/animals/animalAtlases.ts) | Loads the six multiatlases. |
+| File                                                                                    | Role                                                                                                               |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| [`src/phaser/animals/animalDescriptors.ts`](../src/phaser/animals/animalDescriptors.ts) | The data. One `AnimalDescriptor` per animal: frame ranges + idle/alert behaviour.                                  |
+| [`src/phaser/animals/animalAnimations.ts`](../src/phaser/animals/animalAnimations.ts)   | Turns descriptors into Phaser animations (`ensureAnimalAnimations`) and resolves per-animal setup (`animalSetup`). |
+| [`src/phaser/animals/AnimalAnimator.ts`](../src/phaser/animals/AnimalAnimator.ts)       | The playback engine: weighted sequence picking, chaining, self-looping. Drives any `Phaser.GameObjects.Sprite`.    |
+| [`src/phaser/animals/animalAtlases.ts`](../src/phaser/animals/animalAtlases.ts)         | Loads the six multiatlases.                                                                                        |
 
 Plus [`src/phaser/animals/animalStaging.ts`](../src/phaser/animals/animalStaging.ts) for
 per-surface scale, and the two scenes that use all of the above:
@@ -90,28 +90,28 @@ per-surface scale, and the two scenes that use all of the above:
 
 ```ts
 export interface AnimalAnimation {
-  name: string;            // logical name used in behaviour sequences ('idle', 'eat_start')
-  frameStem: string;       // frame-name stem from the art export. NOT the Phaser key.
-  framePrefix?: string;    // override when frames don't follow `${frameStem}-`
+  name: string; // logical name used in behaviour sequences ('idle', 'eat_start')
+  frameStem: string; // frame-name stem from the art export. NOT the Phaser key.
+  framePrefix?: string; // override when frames don't follow `${frameStem}-`
   startFrameIndex?: number;
-  endFrameIndex: number;   // INCLUSIVE. 9 means ten frames, 0..9.
-  frameRate?: number;      // default 12
+  endFrameIndex: number; // INCLUSIVE. 9 means ten frames, 0..9.
+  frameRate?: number; // default 12
 }
 
 export interface AnimalDescriptor {
   id: AnimalSpriteId;
   baseAnimations: readonly AnimalAnimation[];
-  idle?: AnimalBehaviour;       // [weight, sequence][], weights cumulative, should sum to 1
-  idleTrial?: AnimalBehaviour;  // replaces `idle` when staged in a Trial
+  idle?: AnimalBehaviour; // [weight, sequence][], weights cumulative, should sum to 1
+  idleTrial?: AnimalBehaviour; // replaces `idle` when staged in a Trial
   alert?: AnimalBehaviour;
   alertTrial?: AnimalBehaviour;
-  move?: AnimalBehaviour;       // locomotion cycle, held while the character translates
+  move?: AnimalBehaviour; // locomotion cycle, held while the character translates
   transitions?: readonly (readonly [string, readonly string[]])[];
 }
 ```
 
 Renamed from the prototype's `CharacterInfo` / `CharacterAnimation`: `id` → `frameStem`
-(it was both the Phaser animation key *and* the frame-name prefix there — the root of a
+(it was both the Phaser animation key _and_ the frame-name prefix there — the root of a
 global-key collision risk, fixed here — see §5), `prefix` → `framePrefix`. `scale` and
 `manualPivot` were dropped from the type entirely — see §4.
 
@@ -122,7 +122,7 @@ unregistered entry producing zero animations.
 
 Every animal has a `move`: the walk cycle from its atlas, except Duchess (`owl`), whose
 atlas has none and who flies (`flap_wings`) rather than walks. Unlike `idle`, a `move`
-sequence should loop (`repeat: -1`) — movement ends when the *character* stops, not when
+sequence should loop (`repeat: -1`) — movement ends when the _character_ stops, not when
 the clip does. Only the player translates today; the field is on the descriptor rather
 than in `Farm.ts` so a wandering NPC or a cutscene tween gets the same cycle for free.
 
@@ -145,7 +145,7 @@ guards each animal), which matters because React StrictMode tears the Phaser gam
 and rebuilds it in dev — the same idiom as `ensureFarmTextures()`.
 
 `repeat` is deliberately **not** set when an animation is created — looping is a
-property of the *sequence entry* (`{ key: 'idle', repeat: -1 }`), so the same clip can
+property of the _sequence entry_ (`{ key: 'idle', repeat: -1 }`), so the same clip can
 loop in one context and play once in another.
 
 ### 3.3 Playback — `AnimalAnimator`
@@ -223,14 +223,14 @@ can hugely overstate a crouching or narrow pose — the raccoon's idle crouch fi
 ~40% of its canvas height) — multiplying by the prototype's scale gives the "as designed"
 apparent size the two multipliers above were fit to:
 
-| Animal | Source scale | Idle frame visible (w×h) | As-designed apparent (w×h) |
-|---|---|---|---|
-| `donkey-grey` | 0.7 | 561×531 | 393×372 |
-| `owl` | 0.4 | 448×587 | 179×235 |
-| `raccoon` | 0.4 | 896×373 | **358×149 — wide, low crouch** |
-| `fox` | 0.6 | 598×391 | 359×235 |
-| `white-sheep-1` | 1.0 | 311×267 | 311×267 |
-| `brown-wolf` | 0.7 | 589×468 | 412×328 |
+| Animal          | Source scale | Idle frame visible (w×h) | As-designed apparent (w×h)     |
+| --------------- | ------------ | ------------------------ | ------------------------------ |
+| `donkey-grey`   | 0.7          | 561×531                  | 393×372                        |
+| `owl`           | 0.4          | 448×587                  | 179×235                        |
+| `raccoon`       | 0.4          | 896×373                  | **358×149 — wide, low crouch** |
+| `fox`           | 0.6          | 598×391                  | 359×235                        |
+| `white-sheep-1` | 1.0          | 311×267                  | 311×267                        |
+| `brown-wolf`    | 0.7          | 589×468                  | 412×328                        |
 
 Recomputing: pick a target donkey height for the surface, divide by 372 (its as-designed
 apparent height above) to get that surface's multiplier, then multiply every animal's
@@ -366,13 +366,13 @@ reason.
 Derivation over authoring, by default. No existing scenario has an `emotion` field, but the
 data already carries the intent:
 
-| Signal | Emotion |
-|---|---|
-| Statement whose sentences carry `logicalFallacies` | `sneaky` |
-| `crossfire` statement | `doubtful` |
-| Player round, nothing picked yet | `thinking` |
-| Player confirming a `logical_fallacy` option | `sneaky` |
-| Anything else | `talking` |
+| Signal                                             | Emotion    |
+| -------------------------------------------------- | ---------- |
+| Statement whose sentences carry `logicalFallacies` | `sneaky`   |
+| `crossfire` statement                              | `doubtful` |
+| Player round, nothing picked yet                   | `thinking` |
+| Player confirming a `logical_fallacy` option       | `sneaky`   |
+| Anything else                                      | `talking`  |
 
 An authored `Statement.emotion` / `PlayerOption.emotion` overrides all of it. Reach for one
 only where the derived emotion is wrong for the beat.
@@ -400,15 +400,18 @@ exactly as it did before emotions existed.
 A generated cell is **not** the atlas canvas. Rue's idle frame is a 784×702 export canvas
 with the donkey filling most of it; a generated clip is a grid of 256×256 cells with the
 donkey somewhere inside at whatever size the generator chose. `ANIMAL_STAGING` (§4) assumes
-the frame *is* the export canvas and `Trial` anchors with `setOrigin(0.5, 1)` assuming the
+the frame _is_ the export canvas and `Trial` anchors with `setOrigin(0.5, 1)` assuming the
 feet are near the canvas bottom. Neither holds. Played unchanged, the animal shrinks by ~3×
 and floats off the floor line the moment it reacts.
 
 So `scripts/ludo/normalize.mjs` measures, at promote time, the character's alpha bounding box
 in the clip against the same box in the atlas frame it was generated from, and stores a
 `scale` multiplier and an `originX`/`originY` on the sheet. `AnimalAnimator` applies them on
-`playEmotion` and restores the staged values on `playIdle` / `playAlert`. The runtime measures
-nothing.
+`ANIMATION_START` of the emotion clip and restores the staged values on `ANIMATION_START` of
+anything else — never in `playEmotion` / `playIdle` themselves. Phaser can delay the first
+frame (`delay`, `playAfterRepeat`), and putting emotion scale on an atlas texture (or atlas
+scale on a generated cell) is a ~2× size flash the moment a debate changes phase. The
+runtime measures nothing.
 
 The union box across all frames is used, not a per-frame box: a per-frame origin would make
 the character twitch as its box changed shape between frames.
@@ -425,7 +428,7 @@ the character twitch as its box changed shape between frames.
 > `npm run sprites:emotions --dry-run` is not a dry run — npm swallows the flag, the script
 > receives no arguments, and no arguments means the entire manifest.
 >
-> For the measurement side specifically — what a loop *seam* is, how each quality number is
+> For the measurement side specifically — what a loop _seam_ is, how each quality number is
 > computed and what it cannot catch — the skill's
 > [`references/measuring-animations.md`](../.claude/skills/animal-emotion-sprites/references/measuring-animations.md)
 > explains it from first principles, assuming no sprite-animation background.
@@ -472,7 +475,7 @@ this. Pick an animal, hold any one of its clips on a loop, switch between them f
 debate ever would.
 
 It deliberately does **not** use `AnimalAnimator`. That class plays animations the way the
-*game* wants them — weighted, random, interrupted by whatever the debate is doing — which
+_game_ wants them — weighted, random, interrupted by whatever the debate is doing — which
 makes it a poor instrument for judging a single clip. The gallery plays one key and holds it.
 
 What it does share is staging: it calls the same `applyEmotionStaging` / `restoreStaging`
@@ -482,7 +485,7 @@ will place it. A gallery that staged clips its own way would be worse than no ga
 Three things worth knowing:
 
 - **Switching animal keeps the clip you were looking at.** The question a reviewer actually has
-  is "how does *this* emotion read on each animal", so the selection carries across the cast
+  is "how does _this_ emotion read on each animal", so the selection carries across the cast
   rather than resetting to idle every time. Emotion names exist for every animal, so an emotion
   stays selected the whole way round and lands on the "no art yet" state where the art is
   missing. Base animations are per-animal, so carrying `buck` from the donkey to the fox falls

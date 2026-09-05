@@ -148,24 +148,25 @@ export class AnimalGallery extends Scene {
       return;
     }
 
-    // Generated clips live on their own texture with their own canvas, so the scale and origin
-    // have to move with them; atlas clips go back to how the scene staged the sprite.
+    // Texture first, then scale/origin. A generated cell is a different canvas from an atlas
+    // frame; applying emotion scale while the atlas texture is still showing (or the reverse)
+    // is a ~2× flash. `AnimalAnimator` does the same on `ANIMATION_START`.
     const sheet =
       clip.kind === 'emotion' && isAnimalEmotion(clip.name)
         ? emotionSheet(setup.textureKey, clip.name)
         : null;
-    if (sheet) applyEmotionStaging(sprite, sheet, base);
-    else restoreStaging(sprite, base);
 
     if (prefersReducedMotion()) {
       // Hold frame 0 of the requested clip: still shows which clip is selected, without
       // motion. Matches `AnimalAnimator`'s treatment rather than inventing a second one.
       sprite.anims.stop();
       sprite.anims.setCurrentFrame(this.anims.get(clip.animKey).frames[0]!);
-      return;
+    } else {
+      sprite.play({ key: clip.animKey, repeat: -1 });
     }
 
-    sprite.play({ key: clip.animKey, repeat: -1 });
+    if (sheet) applyEmotionStaging(sprite, sheet, base);
+    else restoreStaging(sprite, base);
   }
 
   /**

@@ -93,6 +93,7 @@ export class AnimalAnimator {
   ) {
     this.baseStaging = captureStaging(sprite);
 
+    this.sprite.on(Phaser.Animations.Events.ANIMATION_START, this.onAnimationStart, this);
     this.sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onSequenceEnd, this);
     this.reducedMotionUnsubscribe = onReducedMotionChange(() => this.onReducedMotionChange());
   }
@@ -102,27 +103,36 @@ export class AnimalAnimator {
    * repeat. Default off — an idling animal should ride out whatever it was doing. A character
    * that just *stopped walking* is the exception: waiting out the rest of a looping stride
    * leaves it marching in place for up to a second after the player let go of the key.
+   *
+   * Leaving a generated emotion always cuts: those clips loop (`repeat: -1`), so "after the
+   * current repeat" is up to two seconds of the previous pose after the debate has moved on.
    */
   playIdle(immediate = false): void {
+    if (this.status === 'idle' && this.sprite.anims.isPlaying && !immediate) return;
+    const cutAway = immediate || this.status === 'emotion';
     this.status = 'idle';
     this.emotion = null;
-    this.restoreBaseStaging();
     const trial = this.options.staging === 'trial';
     const behaviour =
       (trial ? this.setup.descriptor.idleTrial : undefined) ?? this.setup.descriptor.idle;
     const sequence = behaviour ? this.pickSequence(behaviour) : [{ key: 'idle', repeat: -1 }];
-    this.playSequence(sequence, immediate);
+    this.playSequence(sequence, cutAway, /* desync */ !cutAway);
   }
 
   playAlert(): void {
-    this.status = 'alert';
-    this.emotion = null;
-    this.restoreBaseStaging();
+    if (this.status === 'alert' && this.sprite.anims.isPlaying) return;
     const trial = this.options.staging === 'trial';
     const behaviour =
       (trial ? this.setup.descriptor.alertTrial : undefined) ?? this.setup.descriptor.alert;
     if (!behaviour) return;
-    this.playSequence(this.pickSequence(behaviour), /* playImmediately */ true);
+    const fromEmotion = this.status === 'emotion';
+    this.status = 'alert';
+    this.emotion = null;
+    this.playSequence(
+      this.pickSequence(behaviour),
+      /* playImmediately */ true,
+      /* desync */ !fromEmotion,
+    );
   }
 
   /**
@@ -157,9 +167,8 @@ export class AnimalAnimator {
     }
     this.status = 'move';
     this.emotion = null;
-    this.restoreBaseStaging();
     // No desync delay: the character is already moving across the ground, so anything but an
-    // instant start is a visible slide on its rest pose.
+    // instant start is a visible slide on its rest pose. Staging lands on ANIMATION_START.
     this.playSequence(this.pickSequence(behaviour), /* playImmediately */ true, /* desync */ false);
   }
 
@@ -178,13 +187,42 @@ export class AnimalAnimator {
       this.playAlert();
       return;
     }
+    if (this.status === 'emotion' && this.emotion === emotion && this.sprite.anims.isPlaying) {
+      return;
+    }
     this.status = 'emotion';
     this.emotion = emotion;
-    applyEmotionStaging(this.sprite, sheet, this.baseStaging);
+    // No desync delay: scale/origin must land on the same frame as the texture swap, and a
+    // debate reaction has to hit the beat of the line, not 0–200ms later.
     this.playSequence(
       [{ key: emotionSequenceKey(emotion), repeat: -1 }],
       /* playImmediately */ true,
+      /* desync */ false,
     );
+  }
+
+  /**
+   * Matches scale/origin to the clip that just started. Applied here, not in `playEmotion` /
+   * `playIdle`, because Phaser can delay the first frame (`delay`, `playAfterRepeat`) and a
+   * generated cell is a different canvas from an atlas frame — putting emotion scale on an
+   * atlas texture (or the reverse) is a ~2× size flash the moment a debate changes phase.
+   */
+  private onAnimationStart(): void {
+    if (this.destroyed) return;
+    this.syncStagingToCurrentAnimation();
+  }
+
+  private syncStagingToCurrentAnimation(): void {
+    const emotion = this.emotion;
+    const key = this.sprite.anims.currentAnim?.key;
+    if (emotion && key === animalAnimKey(this.setup.textureKey, emotionSequenceKey(emotion))) {
+      const sheet = emotionSheet(this.setup.textureKey, emotion);
+      if (sheet) {
+        applyEmotionStaging(this.sprite, sheet, this.baseStaging);
+        return;
+      }
+    }
+    restoreStaging(this.sprite, this.baseStaging);
   }
 
   /** Undoes `playEmotion`'s scale/origin override. A no-op when none is in effect. */
@@ -194,6 +232,7 @@ export class AnimalAnimator {
 
   destroy(): void {
     this.destroyed = true;
+    this.sprite.off(Phaser.Animations.Events.ANIMATION_START, this.onAnimationStart, this);
     this.sprite.off(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onSequenceEnd, this);
     this.reducedMotionUnsubscribe?.();
     this.reducedMotionUnsubscribe = null;
@@ -314,10 +353,14 @@ export class AnimalAnimator {
 
   private applyRestFrame(): void {
     this.sprite.anims.stop();
-    // The rest frame is an atlas frame, so it needs the atlas staging even when the animator
-    // was mid-emotion when reduced motion came on.
+    // Rest pose lives on the atlas. `setFrame` looks up names on the *current* texture, so a
+    // sprite mid-emotion has to switch texture, not just frame — and scale/origin follow
+    // that swap, or emotion scale lands on the atlas canvas (the same ~2× flash as a
+    // debate phase change).
+    if (this.setup.restFrameName) {
+      this.sprite.setTexture(this.setup.textureKey, this.setup.restFrameName);
+    }
     this.restoreBaseStaging();
-    if (this.setup.restFrameName) this.sprite.setFrame(this.setup.restFrameName);
   }
 
   private onReducedMotionChange(): void {

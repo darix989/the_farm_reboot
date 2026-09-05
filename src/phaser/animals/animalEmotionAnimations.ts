@@ -162,6 +162,11 @@ export function captureStaging(sprite: Phaser.GameObjects.Sprite): SpriteStaging
  * all. Shared by `AnimalAnimator` and the gallery scene so the two cannot disagree about how
  * a clip is placed; a gallery that staged clips differently from the game would be worse than
  * useless, since its whole job is to show you what the game will do.
+ *
+ * Must run after the emotion texture is on the sprite. Scale is a multiplier on the current
+ * frame's canvas; applying it while an atlas frame is still showing (or restoring atlas
+ * scale onto a generated cell) is a ~2× size flash. `AnimalAnimator` hooks `ANIMATION_START`
+ * for that reason.
  */
 export function applyEmotionStaging(
   sprite: Phaser.GameObjects.Sprite,
