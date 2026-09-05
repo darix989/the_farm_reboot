@@ -77,6 +77,7 @@ src/
     ReactApp.tsx        # Scene-key → overlay switch; loading gate on isGameReady
     ReactRoot.tsx       # Overlay aligned to Phaser canvas (resize sync)
     screens/            # One overlay per scene key
+      GameLoadingScreen.tsx # Boot progress bar + interaction gate (shown until ready)
       MainMenuUI.tsx
       TrialUI.tsx       # The debate (rounds, choices, analysis, score)
       FarmUI.tsx        # Overworld prompt + dialogue
@@ -134,15 +135,22 @@ The model — siblings over one stage, scene key drives the overlay — is expla
 | File | Role |
 |---|---|
 | `src/phaser/PhaserGame.tsx` | Mounts the game once; emits `game-ready` / `game-destroyed`. |
-| `src/phaser/EventBus.ts` | The 3-event Phaser→React bus. Scenes emit `current-scene-ready` at the end of `create()`. |
-| `src/store/gameStore.ts` | Subscribes to those events; holds `currentScene` + `currentSceneInstance`. |
+| `src/phaser/EventBus.ts` | The 4-event Phaser→React bus. Scenes emit `current-scene-ready` at the end of `create()`; `Boot`/`Preloader` emit `boot-progress`. |
+| `src/phaser/bootProgress.ts` | Mirrors the `Boot`/`Preloader` loaders onto `boot-progress` as one weighted 0..1 figure. |
+| `src/store/gameStore.ts` | Subscribes to those events; holds `currentScene`, `currentSceneInstance`, `bootPhase`/`isGameReady` and `loadProgress`. |
 | `src/react/ReactApp.tsx` | Switches on `currentScene` to pick the overlay. |
 | `src/react/ReactRoot.tsx` | Mirrors the canvas margins/size on resize. |
 | `src/utils/gameManager.ts` | Imperative access: `switchScene`, `getScene`, pause/resume. |
 
-⚠️ **`GameManager.whenReady` and `whenSceneReady` are broken** — they pass a zustand v3/v4
-`(selector, listener)` pair to a v5 `subscribe`, so the callback is silently dropped. Do not
-use them; read the store directly.
+⚠️ **Readiness is not "the game object exists."** `isGameReady` flips only when the first
+playable scene emits `current-scene-ready`; `new Phaser.Game()` returns long before the
+assets are in the cache. Never make an overlay interactive on anything weaker, and never
+call `game.scene.start()` to route — `GameManager.switchScene` goes through the running
+scene and refuses to run before the game is ready.
+
+`GameManager.whenReady` / `whenSceneReady` compare against zustand v5's previous-state
+argument (the v3/v4 `(selector, listener)` pair they used to pass was silently dropped) and
+return an unsubscribe function — use it as your effect cleanup.
 
 ## Phaser scenes (registration order)
 

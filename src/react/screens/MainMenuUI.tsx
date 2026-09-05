@@ -12,10 +12,7 @@ const MainMenuUI: React.FC = () => {
     setActiveDebate(debateId);
     // Launching straight from the menu returns to the menu, not the farm.
     setReturnSceneKey('MainMenu');
-    const scene = GameManager.getCurrentScene();
-    if (scene) {
-      scene.scene.start('Trial');
-    }
+    GameManager.switchScene('Trial');
   };
 
   const enterFarm = () => GameManager.switchScene('Farm');

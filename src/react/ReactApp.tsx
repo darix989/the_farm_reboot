@@ -5,22 +5,22 @@ import MainMenuUI from './screens/MainMenuUI';
 import TrialUI from './screens/TrialUI';
 import FarmUI from './screens/FarmUI';
 import AnimalGalleryUI from './screens/AnimalGalleryUI';
+import GameLoadingScreen from './screens/GameLoadingScreen';
 import ReactRoot from './ReactRoot';
 import TutorialOverlay from './tutorial/TutorialOverlay';
 import { useGameStore } from '../store/gameStore';
 import { DEBATES } from '../data/levels';
-import styles from './ReactApp.module.scss';
-import getLabel from '../data/labels';
 
 const ReactApp: React.FC = () => {
   const { currentScene, isGameReady, activeDebateId } = useGameStore();
 
+  // `isGameReady` means the first playable scene has run `create()` — not merely that a
+  // Phaser instance exists. Until then `currentScene` names a scene that is not up yet, so
+  // rendering its overlay would put live buttons over a still-loading game.
   if (!isGameReady) {
     return (
       <ReactRoot>
-        <div className={styles.loadingContainer}>
-          <h2>{getLabel('loadingGame')}</h2>
-        </div>
+        <GameLoadingScreen />
       </ReactRoot>
     );
   }

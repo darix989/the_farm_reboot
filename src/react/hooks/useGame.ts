@@ -8,7 +8,7 @@ import { GameManager } from '../../utils/gameManager';
 export const useGame = () => {
   const game = useGameStore((state) => state.game);
   const isReady = useGameStore((state) => state.isGameReady);
-  
+
   return {
     game,
     isReady,
@@ -16,7 +16,7 @@ export const useGame = () => {
     switchScene: GameManager.switchScene,
     pauseGame: GameManager.pauseGame,
     resumeGame: GameManager.resumeGame,
-    destroyGame: GameManager.destroyGame
+    destroyGame: GameManager.destroyGame,
   };
 };
 
@@ -26,24 +26,28 @@ export const useGame = () => {
 export const useCurrentScene = () => {
   const currentScene = useGameStore((state) => state.currentScene);
   const currentSceneInstance = useGameStore((state) => state.currentSceneInstance);
-  
+
   return {
     sceneKey: currentScene,
     scene: currentSceneInstance,
     getCurrentScene: GameManager.getCurrentScene,
-    getScene: GameManager.getScene
+    getScene: GameManager.getScene,
   };
 };
 
 /**
  * Hook to execute code when the game is ready
  */
-export const useGameReady = (callback: (game: Phaser.Game) => void, deps: React.DependencyList = []) => {
+export const useGameReady = (
+  callback: (game: Phaser.Game) => void,
+  deps: React.DependencyList = [],
+) => {
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
 
   useEffect(() => {
-    GameManager.whenReady((game) => {
+    // `whenReady` returns an unsubscribe so an unmount mid-load drops the pending callback.
+    return GameManager.whenReady((game) => {
       callbackRef.current(game);
     });
   }, deps);
@@ -53,15 +57,15 @@ export const useGameReady = (callback: (game: Phaser.Game) => void, deps: React.
  * Hook to execute code when a specific scene is ready
  */
 export const useSceneReady = (
-  sceneKey: string, 
-  callback: (scene: Phaser.Scene) => void, 
-  deps: React.DependencyList = []
+  sceneKey: string,
+  callback: (scene: Phaser.Scene) => void,
+  deps: React.DependencyList = [],
 ) => {
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
 
   useEffect(() => {
-    GameManager.whenSceneReady(sceneKey, (scene) => {
+    return GameManager.whenSceneReady(sceneKey, (scene) => {
       callbackRef.current(scene);
     });
   }, [sceneKey, ...deps]);
@@ -76,12 +80,12 @@ export const useGameState = () => {
   const isPaused = useGameStore((state) => state.isPaused);
   const isGameReady = useGameStore((state) => state.isGameReady);
   const spritePositions = useGameStore((state) => state.spritePositions);
-  
+
   const actions = {
     updatePlayerPosition: useGameStore((state) => state.updatePlayerPosition),
     updateSpritePosition: useGameStore((state) => state.updateSpritePosition),
     setPaused: useGameStore((state) => state.setPaused),
-    addExperience: useGameStore((state) => state.addExperience)
+    addExperience: useGameStore((state) => state.addExperience),
   };
 
   return {
@@ -90,7 +94,7 @@ export const useGameState = () => {
     isPaused,
     isGameReady,
     spritePositions,
-    ...actions
+    ...actions,
   };
 };
 
@@ -99,7 +103,7 @@ export const useGameState = () => {
  */
 export const useGameOperations = () => {
   const isReady = useGameStore((state) => state.isGameReady);
-  
+
   const safeExecute = (operation: () => void) => {
     if (isReady) {
       operation();
@@ -114,6 +118,6 @@ export const useGameOperations = () => {
     switchScene: (sceneKey: string) => safeExecute(() => GameManager.switchScene(sceneKey)),
     pauseGame: () => safeExecute(() => GameManager.pauseGame()),
     resumeGame: () => safeExecute(() => GameManager.resumeGame()),
-    getScene: (sceneKey: string) => isReady ? GameManager.getScene(sceneKey) : null
+    getScene: (sceneKey: string) => (isReady ? GameManager.getScene(sceneKey) : null),
   };
 };

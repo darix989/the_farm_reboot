@@ -5,6 +5,7 @@ import {
   ensureAnimalEmotionAnimations,
   loadAnimalEmotionSheets,
 } from '../animals/animalEmotionAnimations';
+import { reportBootProgress } from '../bootProgress';
 
 export class Preloader extends Scene {
   constructor() {
@@ -14,23 +15,17 @@ export class Preloader extends Scene {
   init() {
     //  We loaded this image in our Boot Scene, so we can display it here.
     //  Centred on the 1920x1080 stage (see `STAGE_DESIGN_WIDTH/HEIGHT`), not the
-    //  template's original 1024x768 — the atlas load below makes this bar load-bearing.
+    //  template's original 1024x768.
     this.add.image(960, 540, 'background');
 
-    //  A simple progress bar. This is the outline of the bar.
-    this.add.rectangle(960, 540, 468, 32).setStrokeStyle(1, 0xffffff);
-
-    //  This is the progress bar itself. It will increase in size from the left based on the % of progress.
-    const bar = this.add.rectangle(960 - 230, 540, 4, 28, 0xffffff);
-
-    //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
-    this.load.on('progress', (progress: number) => {
-      //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
-      bar.width = 4 + 460 * progress;
-    });
+    //  The progress bar itself is React's (`GameLoadingScreen`), drawn over this backdrop.
+    //  It is the same overlay that gates the menu until the game is genuinely ready, so
+    //  there is exactly one loading UI and it cannot disagree with the gate.
   }
 
   preload() {
+    reportBootProgress(this, 'Preloader');
+
     //  Load the assets for the game - Replace with your own assets
     this.load.setPath('assets');
 
@@ -48,7 +43,8 @@ export class Preloader extends Scene {
     ensureAnimalAnimations(this);
     ensureAnimalEmotionAnimations(this);
 
-    //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
+    //  Move to the MainMenu. Its `current-scene-ready` emit is what flips the game to
+    //  ready and lets the React overlay become interactive — see `gameStore`.
     this.scene.start('MainMenu');
   }
 }

@@ -5,6 +5,7 @@
 const LABELS = {
   // --- App shell / menus ---
   loadingGame: 'Loading Game...',
+  loadingPercent: '{percent}%',
   mainMenu: 'Main Menu',
   sampleDebate: 'Sample debate',
   tutorialBlueBarn: 'Tutorial: The Blue Barn',

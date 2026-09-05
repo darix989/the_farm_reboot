@@ -9,6 +9,7 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `ReactApp.tsx` | Scene-keyed switch: renders `MainMenuUI`, `TrialUI`, or `BoilerPlateUI` based on the active Phaser scene. |
 | `ReactRoot.tsx` | Positions the overlay over the Phaser canvas and syncs its size on resize. |
 | `screens/MainMenuUI.tsx` | Overlay shown while the `MainMenu` scene is active. |
+| `screens/GameLoadingScreen.tsx` | Boot screen shown until `isGameReady`. Also the interaction gate: it covers the stage and sets `pointer-events: auto`, so nothing behind it is clickable while `Boot`/`Preloader` load. |
 | `screens/BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
 | `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, `RoundRecapModal`, and `RoundAnalysisModal`. |
 | `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent "game hole" top-left, then Debate Log, Wizard and Interactive. |
