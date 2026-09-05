@@ -7,7 +7,7 @@
  * event has no replay.
  */
 import { create } from 'zustand';
-import { defaultClip } from '../phaser/animals/animalClipCatalogue';
+import { animalClips, defaultClip } from '../phaser/animals/animalClipCatalogue';
 import { ANIMAL_SPRITE_IDS } from '../phaser/animals/animalDescriptors';
 import type { AnimalSpriteId } from '../data/characters';
 
@@ -28,7 +28,7 @@ interface AnimalGalleryStore {
    */
   smoothTransitions: boolean;
 
-  /** Switching animal resets the clip to that animal's rest pose — clip names are per-animal. */
+  /** Switching animal carries the current clip over where it exists — see `carryClipOver`. */
   setAnimal: (animalId: AnimalSpriteId) => void;
   setClip: (clipName: string | null) => void;
   setSmoothTransitions: (smooth: boolean) => void;
@@ -40,13 +40,37 @@ function openingClip(animalId: AnimalSpriteId): string | null {
   return defaultClip(animalId)?.name ?? null;
 }
 
+/**
+ * The clip to show after switching animal: the one already selected if the new animal has a
+ * clip by that name, otherwise its rest pose.
+ *
+ * Carrying the selection over is the whole point of putting the cast in one screen — the
+ * question a reviewer actually has is "how does *this* emotion read on each animal", and
+ * resetting to idle on every switch makes them re-click it six times to find out.
+ *
+ * Emotion names exist for every animal (`animalClips` lists the whole `ANIMAL_EMOTIONS`
+ * vocabulary, flagging the ones with no art yet), so an emotion selection is sticky right
+ * across the cast and lands on the "no art yet" state where the art is missing — the same
+ * thing selecting it directly does. Base animations are per-animal, so carrying `buck` from
+ * the donkey to the fox falls back to the fox's rest pose rather than showing nothing.
+ */
+function carryClipOver(animalId: AnimalSpriteId, clipName: string | null): string | null {
+  if (!clipName) return openingClip(animalId);
+  const carried = animalClips(animalId).some((clip) => clip.name === clipName);
+  return carried ? clipName : openingClip(animalId);
+}
+
 export const useAnimalGalleryStore = create<AnimalGalleryStore>((set) => ({
   animalId: FIRST_ANIMAL,
   clipName: openingClip(FIRST_ANIMAL),
   smoothTransitions: true,
 
   setAnimal: (animalId) =>
-    set((s) => (s.animalId === animalId ? s : { ...s, animalId, clipName: openingClip(animalId) })),
+    set((s) =>
+      s.animalId === animalId
+        ? s
+        : { ...s, animalId, clipName: carryClipOver(animalId, s.clipName) },
+    ),
 
   // No-op when unchanged, so a re-render never restarts a clip that is already playing.
   setClip: (clipName) => set((s) => (s.clipName === clipName ? s : { ...s, clipName })),

@@ -446,6 +446,12 @@ will place it. A gallery that staged clips its own way would be worse than no ga
 
 Three things worth knowing:
 
+- **Switching animal keeps the clip you were looking at.** The question a reviewer actually has
+  is "how does *this* emotion read on each animal", so the selection carries across the cast
+  rather than resetting to idle every time. Emotion names exist for every animal, so an emotion
+  stays selected the whole way round and lands on the "no art yet" state where the art is
+  missing. Base animations are per-animal, so carrying `buck` from the donkey to the fox falls
+  back to the fox's rest pose.
 - **Clips with no art are listed, not hidden.** `animalClipCatalogue.ts` returns every
   `ANIMAL_EMOTIONS` entry with an `available` flag, and the UI shows the missing ones dashed
   and labelled "no art yet". With the cast generated one animal at a time, the gap between the
