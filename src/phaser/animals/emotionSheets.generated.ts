@@ -19,6 +19,58 @@ import type { AnimalEmotion, EmotionSheet } from './animalEmotions';
 export const EMOTION_SHEETS: Partial<
   Record<AnimalSpriteId, Partial<Record<AnimalEmotion, EmotionSheet>>>
 > = {
+  'brown-wolf': {
+    angry: {
+      file: 'brown-wolf-angry.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 2.125,
+      originX: 0.528,
+      originY: 0.7775,
+    },
+    doubtful: {
+      file: 'brown-wolf-doubtful.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 2.2174,
+      originX: 0.521,
+      originY: 0.7743,
+    },
+    sneaky: {
+      file: 'brown-wolf-sneaky.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 2.1857,
+      originX: 0.536,
+      originY: 0.7734,
+    },
+    talking: {
+      file: 'brown-wolf-talking.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 2.2174,
+      originX: 0.5337,
+      originY: 0.7723,
+    },
+    thinking: {
+      file: 'brown-wolf-thinking.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 2.2282,
+      originX: 0.5277,
+      originY: 0.7739,
+    },
+  },
   'donkey-grey': {
     angry: {
       file: 'donkey-grey-angry.png',

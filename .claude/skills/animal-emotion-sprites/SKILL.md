@@ -117,7 +117,8 @@ here because ignoring them costs credits.
    | donkey | whole-body posture | no strong facial or ear features; body lean is all there is |
    | owl | **eyes** (~40% of body area, high-contrast yellow) | body-posture `angry` read as a surprised owl talking; narrowed-eye `sneaky` was the best clip of the project until the fox |
    | fox | **ears + bushy tail + snarl** | ears pinned flat back plus an open snarl produced the strongest `angry` generated so far, first try |
-   | sheep | **contrast**: solid black head + black ears on pale fleece | head height and tilt read at any size; the fleece is a fluffy oval that turns to mush if asked to deform |
+   | sheep | **contrast**: solid black head + black ears on pale fleece | head height and tilt read at any size; the fleece is a fluffy oval that turns to mush if asked to deform. Its ears are black on a black head and barely read — its *eyes* are the white-on-black signal |
+   | wolf | **ears + bushy tail + snarl + white neck ruff** | the fox's carriers plus a high-contrast ruff that bristles; produced the strongest `angry` in the project, first try, with textbook-stable fangs |
 
    Before writing prompts for a new animal, look at its reference frame and ask what changes
    the outline. Ears and tails are the quadruped equivalent of the owl's eyes: real visual
@@ -127,9 +128,16 @@ here because ignoring them costs credits.
 
    Ask the same question about **priors**, because each animal brings one that will wreck a
    loop if unaddressed: the owl wants to blink and flare its wings, the sheep wants to graze
-   (the atlas even ships `eating`), and any quadruped will walk out of frame. Suppress it with
-   rule 6, positively — "its head stays UP at the height it is in the reference" beat "never
-   grazes" for the sheep, first try.
+   (the atlas ships `eating`), the wolf wants to howl (the atlas ships `howl`, and a howl
+   hijacks any open-mouth prompt by tipping the head at the sky), and any quadruped will walk
+   out of frame. Suppress it with rule 6, positively — "its head stays UP at the height it is
+   in the reference" beat "never grazes" for the sheep, and "its muzzle stays level and pointed
+   forward" kept the wolf snarling instead of howling. Both held first try.
+
+   Check the **resting face** too. The wolf's idle already scowls, so its calm emotions have to
+   say "brow eased and smooth rather than furrowed" or `talking` reads as quietly cross — and
+   even then it only half-takes, which for this character is arguably correct rather than a
+   defect.
 2. **Never name a posture the animal must change state to reach.** "Crouched low and drawn in"
    made the generator lie the donkey down over the clip and never stand it back up — a
    transition, not a held attitude, and one that cannot loop. Say what the body does while it
