@@ -584,7 +584,7 @@ be skipped silently.
 
 ## 10. Dialogue portraits — the second register
 
-Head-and-shoulders loops played by **React, in the DOM**, in the farm dialogue box and the
+Head-and-shoulders loops played by **React, in the DOM**, in the farm talk Dialog panel and the
 debate log. Not a second generated vocabulary: they are **cropped out of the §9 body clips**
 locally, cost nothing, and call no API.
 

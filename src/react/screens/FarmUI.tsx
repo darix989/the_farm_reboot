@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import getLabel from '../../data/labels';
 import type { DebateScenarioKey } from '../../data/levels';
 import { resolveCharacter } from '../../data/characters';
@@ -24,16 +24,11 @@ const FarmUI: React.FC = () => {
   const talkingToNpcId = useFarmStore((s) => s.talkingToNpcId);
   const openDialogue = useFarmStore((s) => s.openDialogue);
   const closeDialogue = useFarmStore((s) => s.closeDialogue);
-  const [beatIndex, setBeatIndex] = useState(0);
 
   const dialogue = useMemo(
     () => (talkingToNpcId ? farmDialogueFor(talkingToNpcId) : null),
     [talkingToNpcId],
   );
-
-  useEffect(() => {
-    setBeatIndex(0);
-  }, [talkingToNpcId, dialogue?.slotKey]);
 
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;
 
@@ -46,11 +41,6 @@ const FarmUI: React.FC = () => {
     useFarmStore.getState().closeDialogue();
     GameManager.switchScene('Trial');
   }, []);
-
-  const advanceBeat = useCallback(() => {
-    if (!dialogue) return;
-    setBeatIndex((index) => Math.min(index + 1, dialogue.beats.length - 1));
-  }, [dialogue]);
 
   return (
     <div className={styles.farmUi}>
@@ -71,9 +61,8 @@ const FarmUI: React.FC = () => {
 
       {dialogue && (
         <FarmDialogue
+          key={dialogue.slotKey}
           dialogue={dialogue}
-          beatIndex={beatIndex}
-          onAdvance={advanceBeat}
           onStart={startEncounter}
           onClose={closeDialogue}
         />

@@ -5,13 +5,14 @@ import { create } from 'zustand';
  *
  * The scene writes `nearbyNpcId` as the player walks; React reads it to show the
  * talk prompt. React writes `talkingToNpcId` when the player opens a conversation;
- * the scene reads it to freeze movement. Mirrors how `gameStore` already bridges
- * the two layers, kept separate so overworld state does not leak into app state.
+ * the scene reads it to freeze movement and reframe the camera into the game hole.
+ * Mirrors how `gameStore` already bridges the two layers, kept separate so overworld
+ * state does not leak into app state.
  */
 interface FarmStore {
   /** Animal within interaction range, or null. Written only when it changes. */
   nearbyNpcId: string | null;
-  /** Animal whose dialogue box is open, or null. */
+  /** Animal whose conversation is open, or null. */
   talkingToNpcId: string | null;
 
   setNearbyNpc: (id: string | null) => void;

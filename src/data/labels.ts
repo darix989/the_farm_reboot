@@ -257,8 +257,10 @@ const LABELS = {
   farmMoveHint: 'Arrows or WASD to move',
   farmMoveHintTouch: 'Drag anywhere to move',
   farmTalk: 'Talk',
-  farmNotNow: 'Not now',
   farmLeave: 'Leave',
+  farmTalkHintContinue: 'Click Continue to hear the next line.',
+  farmTalkHintChoose: 'Pick Talk to start, or Leave to walk away.',
+  farmTalkHintNothingMore: 'Nothing more to say — click Leave when you are ready.',
   characterStage: 'Participants: {names}',
   /** Shown on the finished-encounter footer; returns to wherever you came from. */
   leaveEncounter: 'Leave',

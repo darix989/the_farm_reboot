@@ -762,7 +762,8 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
       0 1px 2px 0 var(--ui-color-shadow-soft);
     color: var(--ui-color-info-text);
 
-    .trialChoiceLetter {
+    .trialChoiceLetter,
+    .trialChoiceWord {
       border-color: var(--ui-color-info-border-active);
       background: var(--ui-color-info-bg);
       color: var(--ui-color-info-text);
@@ -790,11 +791,19 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
     0 1px 2px 0 var(--ui-color-shadow-soft);
   color: var(--ui-color-info-text);
 
-  .trialChoiceLetter {
+  .trialChoiceLetter,
+  .trialChoiceWord {
     border-color: var(--ui-color-info-border-active);
     background: var(--ui-color-info-bg);
     color: var(--ui-color-info-text);
   }
+}
+
+.trialChoiceBtnWord {
+  width: auto;
+  min-width: calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8);
+  padding: 0 0.85rem;
+  overflow: visible;
 }
 
 /* The letter is the whole button now — no badge border/background of its own. */
@@ -803,6 +812,15 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   font-weight: 700;
   line-height: 1;
   color: var(--ui-color-text-emphasis);
+  transition: color 0.15s ease-in-out;
+}
+
+.trialChoiceWord {
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ui-color-text-emphasis);
+  white-space: nowrap;
   transition: color 0.15s ease-in-out;
 }
 

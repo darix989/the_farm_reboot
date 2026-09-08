@@ -27,6 +27,7 @@ import {
   applyAtlasFeetOrigin,
   atlasTrimmedDisplayWidth,
 } from '../animals/animalStaging';
+import { STAGE_DESIGN_HEIGHT, STAGE_DESIGN_WIDTH, TRIAL_STAGE_HOLE } from '../../utils/constants';
 
 const PLAYER_SPEED = 167; // slowed twice by 30% from the 340 the overworld shipped with
 /** Player body is smaller than the sprite so Rue's feet, not his head, hit walls. */
@@ -45,10 +46,12 @@ const PLAYER_ART_FEET_OFFSET = 18;
  * The scene owns simulation only: terrain, collision, movement and which animal is
  * in range. All conversation UI is React (`FarmUI`), reached through `farmStore`.
  *
- * Launching an encounter uses `scene.start('Trial')`, which stops this scene, so it
- * never renders behind the debate panels. The player's position is written to
- * `gameStore` on shutdown and read back on `create`, so leaving and returning puts
- * Rue back where he stood.
+ * A normal talk stays on this scene: `talkingToNpcId` reframes `cameras.main` into
+ * `TRIAL_STAGE_HOLE` so the farm shows through the layout's game hole. Launching an
+ * encounter uses `scene.start('Trial')`, which stops this scene, so it never renders
+ * behind the debate panels. The player's position is written to `gameStore` on
+ * shutdown and read back on `create`, so leaving and returning puts Rue back where
+ * he stood.
  */
 export class Farm extends Scene {
   /** Physics body only — invisible once animated art is available. See `spawnPlayer`. */
@@ -63,6 +66,7 @@ export class Farm extends Scene {
    *  the player actually starts and stops moving rather than re-triggered every frame. */
   private walking = false;
   private solids!: Phaser.Physics.Arcade.StaticGroup;
+  private unsubscribeFarmUi: (() => void) | null = null;
 
   constructor() {
     super('Farm');
@@ -95,6 +99,15 @@ export class Farm extends Scene {
     this.keys?.interact.forEach((key) => {
       key.on('down', () => this.tryInteract());
     });
+
+    // zustand v5's vanilla `subscribe` takes a single listener receiving (state,
+    // previousState) — not a selector. Compare the field yourself; see `gameManager.ts`.
+    this.unsubscribeFarmUi = useFarmStore.subscribe((state, prevState) => {
+      if (state.talkingToNpcId !== prevState.talkingToNpcId) {
+        this.applyTalkViewport(state.talkingToNpcId);
+      }
+    });
+    this.applyTalkViewport(useFarmStore.getState().talkingToNpcId);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.persistPosition, this);
 
@@ -285,7 +298,37 @@ export class Farm extends Scene {
     openDialogue(nearbyNpcId);
   }
 
+  /**
+   * Frame the conversation into the Trial layout's game hole, or restore the full-stage
+   * follow camera when the talk closes. `setViewport` only writes the camera rect;
+   * `centerOn` (or `startFollow`'s snap) has to re-centre immediately or the first
+   * frames of a talk slide up from the clipped bottom edge.
+   */
+  private applyTalkViewport(talkingToNpcId: string | null): void {
+    const cam = this.cameras.main;
+    if (talkingToNpcId) {
+      const npc = this.npcActors.find((actor) => actor.npc.id === talkingToNpcId)?.npc;
+      cam.setViewport(
+        TRIAL_STAGE_HOLE.x,
+        TRIAL_STAGE_HOLE.y,
+        TRIAL_STAGE_HOLE.width,
+        TRIAL_STAGE_HOLE.height,
+      );
+      cam.stopFollow();
+      const cx = npc ? (this.player.x + npc.x) / 2 : this.player.x;
+      const cy = npc ? (this.player.y + npc.y) / 2 : this.player.y;
+      cam.centerOn(cx, cy);
+      this.joystick?.setEnabled(false);
+      return;
+    }
+    cam.setViewport(0, 0, STAGE_DESIGN_WIDTH, STAGE_DESIGN_HEIGHT);
+    cam.startFollow(this.player, true, 0.12, 0.12);
+    this.joystick?.setEnabled(true);
+  }
+
   private persistPosition(): void {
+    this.unsubscribeFarmUi?.();
+    this.unsubscribeFarmUi = null;
     if (!this.player) return;
     useGameStore.getState().updatePlayerPosition(this.player.x, this.player.y);
     this.joystick?.destroy();

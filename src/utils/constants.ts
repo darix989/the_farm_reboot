@@ -19,10 +19,15 @@ export const STAGE_REM_MAX_PX = 28;
 /**
  * The Trial layout's game hole, in 1920x1080 stage coords — where the Phaser `Trial`
  * scene draws its animated cast, behind the now-transparent `.trialGameHole` React cell.
+ * The Farm scene also uses this rect as its talk viewport, so a walk-up chat frames the
+ * farm into the same band.
  *
  * DERIVED FROM `TrialLayout.module.scss`: `.trialGameHole` spans `grid-column: 1 / -1`
  * (the full 1920) and `grid-template-rows: repeat(2, 1fr)` (1/2 * 1080 = 540). Change both
  * together, or use `DEBUG_TRIAL_STAGE` in `Trial.ts` to check they still agree.
+ *
+ * Height must stay **even**: Phaser `roundPixels` floors `x + originX + 0.5`, so an odd
+ * hole height makes `originY` fractional and bakes in a permanent half-pixel offset.
  *
  * The rect is deliberately **static**: when the player expands the Debate Log it paints over
  * the right 3fr of this band (see `debateLogStore`) rather than the cast re-laying out, so

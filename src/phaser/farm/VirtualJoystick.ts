@@ -19,6 +19,7 @@ export class VirtualJoystick {
   private origin = new Phaser.Math.Vector2();
   private value = new Phaser.Math.Vector2();
   private enabled = false;
+  private acceptingInput = true;
 
   constructor(private scene: Phaser.Scene) {
     this.base = scene.add
@@ -48,6 +49,7 @@ export class VirtualJoystick {
   }
 
   private onDown(pointer: Phaser.Input.Pointer): void {
+    if (!this.acceptingInput) return;
     if (this.pointerId !== null || !this.isTouch(pointer)) return;
     this.enabled = true;
     this.pointerId = pointer.id;
@@ -84,6 +86,20 @@ export class VirtualJoystick {
   /** True once the player has used touch at least once. */
   isEnabled(): boolean {
     return this.enabled;
+  }
+
+  /**
+   * Gate input for a farm talk. Disabling hides the sprites and clears a held stick so
+   * a stale vector cannot walk Rue off on the frame the conversation closes.
+   */
+  setEnabled(enabled: boolean): void {
+    this.acceptingInput = enabled;
+    if (!enabled) {
+      this.pointerId = null;
+      this.value.set(0, 0);
+      this.base.setVisible(false);
+      this.thumb.setVisible(false);
+    }
   }
 
   destroy(): void {

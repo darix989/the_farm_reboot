@@ -25,7 +25,7 @@ const config: Phaser.Types.Core.GameConfig = {
     // height: 768,
   },
   parent: 'game-container',
-  backgroundColor: '#028af8',
+  backgroundColor: '#1a1a1a',
   // Top-down overworld: Arcade with no gravity, used for player/solid collision
   // and NPC proximity. Every scene shares one physics world; the debate scenes
   // simply never create bodies.
