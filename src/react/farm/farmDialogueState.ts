@@ -4,7 +4,11 @@ import { characterById } from '../../data/characters';
 import { farmTalkBeats, farmTalkSlotKey, type FarmTalkBeat } from '../../data/farmTalk';
 import { farmNpcById } from '../../data/farmMap';
 import { useProgressStore } from '../../store/progressStore';
-import type { GameCondition } from '../../utils/gameConditions';
+import {
+  conditionContextSnapshot,
+  isConditionMet,
+  type GameCondition,
+} from '../../utils/gameConditions';
 
 /**
  * What an animal has to say right now.
@@ -41,9 +45,20 @@ export function farmDialogueFor(npcId: string): FarmDialogueState | null {
   const visual = characterById(npcId);
   if (!npc || !visual) return null;
 
-  const next = useProgressStore.getState().nextScenarioFor(npc.scenarios);
-  const index = next ? npc.scenarios.indexOf(next) + 1 : 0;
-  const suffix = next ? String(index) : 'Done';
+  let next: DebateScenarioKey | null = null;
+  let suffix: string;
+
+  if (npc.scenarios.length > 0) {
+    next = useProgressStore.getState().nextScenarioFor(npc.scenarios);
+    const index = next ? npc.scenarios.indexOf(next) + 1 : 0;
+    suffix = next ? String(index) : 'Done';
+  } else if (npc.talkStages?.length) {
+    const ctx = conditionContextSnapshot();
+    const stage = npc.talkStages.find((entry) => !isConditionMet(entry.until, ctx));
+    suffix = stage?.suffix ?? 'Done';
+  } else {
+    suffix = 'Done';
+  }
 
   return {
     npcId: npc.id,

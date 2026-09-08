@@ -2,7 +2,7 @@
 
 How the Phaser gameplay is built and how to extend it.
 
-Level 1's six encounters ([level_01_the_pond_motion.md](./level_01_the_pond_motion.md))
+Level 1's encounters ([level_01_the_pond_motion.md](./level_01_the_pond_motion.md))
 were originally reachable only from a list of buttons on the main menu. The overworld is
 the connective tissue: you play Rue, walk around Green Meadows Farm, find an animal, and
 talking to it launches the encounter that animal owns. Finish it and you land back on the
@@ -38,8 +38,9 @@ drawn in Phaser text objects and re-tuned for every aspect ratio.
 ## File map
 
 ```
-src/data/farmMap.ts             the world: zones, NPCs, spawn, interact radius
-src/phaser/scenes/Farm.ts       the scene (189 lines)
+src/data/farmMap.ts             the world: zones, NPCs (`gateTalk` / `talkStages`), spawn
+src/utils/farmTalkGate.ts       conversation-level lock (`gateTalk`)
+src/phaser/scenes/Farm.ts       the scene
 src/phaser/farm/
   farmTextures.ts               placeholder art, generated at runtime
   farmPalette.ts                numeric colours (Phaser cannot read CSS vars)
@@ -191,7 +192,9 @@ camera), not the old Phaser-template blue.
 
 `progressStore` is the repo's first use of zustand's `persist` middleware. It exists because
 an animal can own more than one encounter, so it has to know which one to offer next — Cass
-owns three, Hetty and Bram two each. It is load-bearing, not a nicety.
+owns three, Hetty and Bram two each, Tobias the boss. Duchess and Dot have no encounters;
+their farm talk advances on `talkStages` (Duchess until the boss is done; Dot through the
+intro, then Hetty, then the debate). It is load-bearing, not a nicety.
 
 `farmDialogueState.ts` derives the conversation from progress: an animal offers the first
 scenario the player has not finished, and the slot key is the animal's id plus how far
@@ -208,13 +211,11 @@ beat row — the old `cass1` copy described the sparring bout, which became `#2`
 requires → farmDialogueState.scenarioRequires → useUnmetConditionsHint → disabled Talk button
 ```
 
-A gated encounter is still *offered*. The animal talks; only Talk is disabled, and the
-conversation is where the reason is given. A silent animal is a bug report. The animal
-never skips a locked rung to offer a later unlocked one — the ladder is ordered.
-
-`Farm.ts` `tryInteract` is intentionally ungated: the gate is on *launching* an encounter,
-not on opening a dialogue. The main menu is also ungated, which is what makes the ladder
-testable without replaying the farm.
+A gated encounter is still *offered*, by default. The animal talks; only Talk is disabled, and
+the conversation is where the reason is given. Set `gateTalk: true` on the NPC to close the
+conversation itself until the next encounter's `requires` are met (Hetty: she will not speak
+until you can name Ad Hominem). `Farm.ts` `tryInteract` and the overworld prompt both consult
+`farmNpcTalkLocked`. The main menu is ungated.
 
 Leaving a finished encounter goes through `applyEncounterRewards`, which marks it complete
 and grants `teachesFallacies` / `setsDialogFlags` in one write. Mark completion with the
@@ -270,7 +271,10 @@ class of bug obvious in one screenshot.
 
 1. Add `FarmZone` rects to `FARM_ZONES` (later entries paint over earlier ones; set
    `solid: true` to block the player; `label` draws a world caption).
-2. Add a `FarmNpc` to `FARM_NPCS` with its `scenarios` in the order it should offer them.
+2. Add a `FarmNpc` to `FARM_NPCS`. Animals with encounters list them in `scenarios` in the
+   order they should be offered. A greeter with no encounter uses `talkStages` instead
+   (condition → suffix, then `Done`). Set `gateTalk: true` if the conversation itself should
+   stay closed until the next encounter's `requires` are met.
 3. Add labels: the name (`farmNpc<Name>`), then sequential talk beats in
    [`src/data/farmTalk.ts`](../src/data/farmTalk.ts) plus the copy in `labels.ts`
    (`farmDialog<Name>1a`, `1b`, … and a `Done` conversation). A missing table row

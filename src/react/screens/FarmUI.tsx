@@ -8,8 +8,13 @@ import { useGameStore } from '../../store/gameStore';
 import { useCodexUiStore } from '../../store/codexUiStore';
 import { GameManager } from '../../utils/gameManager';
 import { farmDialogueFor, farmNpcRequirements } from '../farm/farmDialogueState';
-import { useConditionsMet } from '../hooks/useGameConditions';
+import {
+  useConditionContext,
+  useConditionsMet,
+  useUnmetConditionsHint,
+} from '../hooks/useGameConditions';
 import { areConditionsMet, conditionContextSnapshot } from '../../utils/gameConditions';
+import { farmNpcTalkLocked } from '../../utils/farmTalkGate';
 import { scenarioRequirements } from '../../data/levels';
 import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
 import FarmDialogue from '../farm/FarmDialogue';
@@ -43,6 +48,9 @@ const FarmUI: React.FC = () => {
     [nearbyNpcId],
   );
   const nearbyUnlocked = useConditionsMet(nearbyRequires);
+  const conditionCtx = useConditionContext();
+  const nearbyTalkLocked = nearbyNpcId ? farmNpcTalkLocked(nearbyNpcId, conditionCtx) : false;
+  const nearbyLockedHint = useUnmetConditionsHint(nearbyTalkLocked ? nearbyRequires : []);
 
   const startEncounter = useCallback((scenario: DebateScenarioKey) => {
     // Re-checked here rather than trusted from the button's disabled state: this is the one
@@ -76,15 +84,21 @@ const FarmUI: React.FC = () => {
         <button
           type="button"
           className={styles.talkPrompt}
-          onClick={() => openDialogue(nearbyNpc.id)}
+          disabled={nearbyTalkLocked}
+          onClick={() => {
+            if (nearbyTalkLocked) return;
+            openDialogue(nearbyNpc.id);
+          }}
         >
           {getLabel('farmTalkPrompt', {
             replacements: { name: resolveCharacter(nearbyNpc.id).displayName },
           })}
-          {/* The prompt stays enabled when locked: the animal will still talk, they just will
-              not start their encounter, and the conversation is where the reason is given. */}
           <span className={styles.talkPromptKey}>
-            {nearbyUnlocked ? getLabel('farmInteractHint') : getLabel('farmPromptLocked')}
+            {nearbyTalkLocked
+              ? (nearbyLockedHint ?? getLabel('farmPromptLocked'))
+              : nearbyUnlocked
+                ? getLabel('farmInteractHint')
+                : getLabel('farmPromptLocked')}
           </span>
         </button>
       )}

@@ -42,12 +42,20 @@ The actual cause of the mud is a **bent grate on the pond's outflow drain** — 
 |---|---|---|---|
 | **Rue** | Raccoon | Player. Six weeks on the farm, does the hauling and the odd repair. | Plain, literal, hasn't learned the farm's social rules — which is why he keeps asking the question nobody wants asked. |
 | **Duchess** | Goose | Boss antagonist. Head of the Flock. | Warm, gracious, never raises her voice. Sincere — she genuinely believes the pond is the Flock's. Lethal. |
-| **Tobias** | Tortoise | Moderator of the Public Farm. | Old, tired, scrupulously fair. He *is* the moderator gauge. Names the tortoise the repo has been leaving unnamed. |
+| **Tobias** | Owl | Moderator of the Public Farm. Talking to him starts the boss debate. | Old, tired, scrupulously fair. He *is* the moderator gauge. |
 | **Cass** | Rooster | Coach. Ran the Public Farm floor for nine seasons before his voice went. | Cranky, impatient, fond of Rue in a way he'd deny. Runs both the sparring post and the Lab. |
-| **Hetty** | Hen | The gossip at the trough. | Not malicious — she repeats what she heard and has never once checked. |
+| **Hetty** | Hen | The gossip at the trough. Will not speak until you can name Ad Hominem. | Not malicious — she says it to your face and has never once checked. |
 | **Bram** | Drake | Duchess's second; the skirmish opponent. | Parrots the Flock line, but he's honest, and honesty is what trips him up. |
+| **Dot** | Dog | Yard greeter. No encounter. | Direct, a little breathless. Points you at Cass, then Hetty, then Tobias. |
 
 Antagonists are sincere, not villainous — the house style established in `pitch/001`.
+
+### How you arrive
+
+**Dot** is standing in the yard, just off spawn. Talking to her is the entry point: she
+welcomes you, names Duchess's motion and Sunday in front of Tobias, and sends you to Cass
+first, then Hetty, then the owl. She has no encounter. Her farm talk advances as you do
+those three things.
 
 ### The ladder
 
@@ -67,7 +75,11 @@ three-beat Ad Hominem ladder: Cass teaches the name, Hetty uses it, Duchess requ
 
 Rung 1.8 follows the 10-beat order in [plan_002.md](./to_process/plan_002.md) exactly; Rue is the **opposition** (Duchess proposes).
 
-Overworld gates: Hetty's 1.2 requires `fallacy_known` (Ad Hominem). Duchess's 1.8 requires that **and** the `hetty-ad-hominem-witnessed` flag. Cass's 1.1 is the only open door at a fresh start. The main menu lists every rung ungated.
+Overworld gates: Hetty will not speak at all until Ad Hominem is known (`gateTalk` plus
+`fallacy_known` on 1.2). Tobias offers the boss debate; it requires knowing Ad Hominem
+**and** the `hetty-ad-hominem-witnessed` flag, but he still talks when locked. Cass's 1.1
+is the only playable door at a fresh start. **Dot**, in the yard off spawn, is the intro:
+Cass first, then Hetty, then the owl. The main menu lists every rung ungated.
 
 ---
 
@@ -116,36 +128,36 @@ All three options lead to round 4. The spotting tutorial triggers on `{ event: '
 
 *Flags: analysis on, insight visible (default), moderator hidden, recap off, intro summary off, `encounterKind: 'gossip'`. Three NPC rounds, all `requiresAnalysis: true`. `setsDialogFlags: ['hetty-ad-hominem-witnessed']`. No `teachesFallacies` — the player already knows it by the time they can play this. Gated on `fallacy_known` / Ad Hominem.*
 
-**Introduction:** "Hetty has been going round the trough all morning, and every sentence has been about you. She does not think she is being unkind. She thinks she is being interesting."
+**Introduction:** "Hetty has been thinking about you all morning, and she is going to say it to your face. She does not think she is being unkind. She thinks she is being interesting."
 
-She never once mentions the water. That is the point.
+She never once mentions the water. That is the point. She says it *to you*, not about you to someone else.
 
 **Round 1 — Hetty** *(gossip)*
-1. "Have you heard about that raccoon? Rue, they call him." — *clean*
-2. "He arrived in a mud cart, you know. Straw still in his ears. You don't take advice from an animal who turns up like that." — **ad-hominem**
-3. "I said as much to anyone who would listen this morning." — *clean*
+1. "Rue. I have been thinking about you all morning." — *clean*
+2. "You arrived in a mud cart, you know. Straw still in your ears. You don't take advice from an animal who turns up like that." — **ad-hominem**
+3. "I said as much to anyone who would listen this morning. I thought you should hear it from me." — *clean*
 
 **Round 2 — Hetty** *(gossip)*
-1. "And he still looks as if he slept in it. Straw in the fur, mud on the paws." — *clean*
+1. "And you still look as if you slept in it. Straw in the fur, mud on the paws." — *clean*
 2. "An animal who cannot keep himself tidy is hardly the animal you'd ask about anything that matters." — **ad-hominem**
-3. "I don't mean it unkindly. I like him. He seems perfectly nice." — *clean*
+3. "I don't mean it unkindly. I like you. You seem perfectly nice." — *clean*
 
 **Round 3 — Hetty** *(gossip)*
 1. "And only six weeks! Six weeks." — *clean*
 2. "You cannot know a place in six weeks. The Flock has been here generations; that is whose opinion counts." — **ad-hominem**
 3. "Anyway. I thought you should hear it from me rather than from the yard." — *clean*
 
-> She meant no harm by any of it, which is exactly what makes it work. Finishing this encounter — however badly — is the second key on Duchess's door. Spotting is not required.
+> She meant no harm by any of it, which is exactly what makes it work. Finishing this encounter — however badly — is the second key on Tobias's door. Spotting is not required. The overworld will not even open her conversation until Ad Hominem is known.
 
 ### 1.3 — Gossip at the Trough: "What Hetty Heard"
 
 *Flags: analysis on, insight visible, moderator hidden, recap off, intro summary off. Both rounds `requiresAnalysis: true`.*
 
-**Introduction:** "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is. She talks about you in the third person even when you are standing there, which is how you know it is not personal."
+**Introduction:** "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is — yours. She will say it to your face and mean no harm by it."
 
 **Round 1 — Hetty** *(gossip)*
-1. "Morning! Did you hear? That new raccoon — Rue, I think — has been complaining about the pond drain again." — *clean*
-2. "I wouldn't put much stock in it, mind. He arrived in a mud cart with straw in his ears; he's hardly the sort who'd know about water." — **ad-hominem**
+1. "Morning! You've been on about the pond drain again." — *clean*
+2. "I wouldn't put much stock in it, mind. You arrived in a mud cart with straw in your ears; you're hardly the sort who'd know about water." — **ad-hominem**
 3. "Anyway, the pond's been going brown since before the frost." — *clean*
 
 **Round 2 — Hetty** *(gossip — entirely clean; teaches the "Clean" button)*
@@ -254,7 +266,7 @@ She never once mentions the water. That is the point.
 
 ### 1.8 — The Public Farm: "The Pond Motion" (boss)
 
-*Full defaults. `playerSide: 'opposition'`, `startingInsightPoints: 2`, `availableLogicalFallacies: ['ad-hominem', 'appeal-to-popularity', 'false-dilemma']` — one already-taught Level-2 distractor, per the "few other fallacy types" rule in [logical_fallacies_distribution.md](./logical_fallacies_distribution.md).*
+*Full defaults. `playerSide: 'opposition'`, `startingInsightPoints: 2`, `availableLogicalFallacies: ['ad-hominem', 'appeal-to-popularity', 'false-dilemma']` — one already-taught Level-2 distractor, per the "few other fallacy types" rule in [logical_fallacies_distribution.md](./logical_fallacies_distribution.md). Talking to **Tobias** starts this; Duchess at the barn will point you at him.*
 
 **Motion:** *The Old Pond shall be reserved for the Flock; every animal not of the Flock shall water at the road trough.*
 
@@ -339,7 +351,7 @@ literally — there is no italic.
 
 ## Notes for future levels
 
-- **Tobias** names the tortoise moderator, who had been referred to only as "a tired old
+- **Tobias** is an owl. He had been a tortoise in earlier drafts, unnamed except as "a tired old
   Tortoise" in `pitch/001_barnaby_pip_privacy.md`.
 - The **bent outflow grate** is the level's discoverable fact. It is planted as gossip
   (1.3 round 2), conceded by the opposition without their noticing (1.5 round 2), put on

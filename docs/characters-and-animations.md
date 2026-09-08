@@ -14,8 +14,8 @@ weighted idle/alert playback engine were ported close to verbatim.
 
 ## 1. The cast, today
 
-Every Level 1 character is a real animal wearing a different animal's skin, because no
-matching art exists yet:
+Every Level 1 character is a real species. Some wear a different animal's art because
+no matching sprite exists yet; Rue, Tobias and Dot are exact matches:
 
 | Character | Real species | Placeholder art (`AnimalSpriteId`) | Role                      |
 | --------- | ------------ | ---------------------------------- | ------------------------- |
@@ -23,8 +23,9 @@ matching art exists yet:
 | Hetty     | hen          | `white-sheep-1`                    | farm NPC                  |
 | Cass      | rooster      | `fox`                              | farm NPC                  |
 | Bram      | drake        | `brown-wolf`                       | farm NPC                  |
-| Duchess   | goose        | `owl`                              | farm NPC, Trial opponent  |
-| Tobias    | tortoise     | `donkey-grey`                      | farm NPC, Trial moderator |
+| Duchess   | goose        | `donkey-grey`                      | farm NPC, Trial opponent  |
+| Tobias    | owl          | `owl` (exact match)                | farm NPC, Trial moderator |
+| Dot       | dog          | `dog` (exact match; no emotions)   | farm greeter              |
 
 The mapping lives in one place: the optional `animal` field on
 [`CHARACTERS`](../src/data/characters.ts). A character with no `animal` entry (every
@@ -148,9 +149,10 @@ Two animals use `idleTrial`:
   four-legged crouch to sitting upright the moment he speaks. `usesTrialIdle` is a
   **casting** field on `CharacterVisual` (default `true`), not a property of the sprite —
   the Trial scene passes `staging: visual.usesTrialIdle ? 'trial' : 'farm'`.
-- **Tobias (`donkey-grey`)** got a standing `idleTrial` because the donkey's field `idle`
-  grazes 70% of the time, which is wrong for a moderator at a podium. Its emotion clips
+- **Duchess (`donkey-grey`)** got a standing `idleTrial` because the donkey's field `idle`
+  grazes 70% of the time, which is wrong for anyone at a podium. Its emotion clips
   come from `__grey_donkey_idle-0.png`, so the standing trial idle is consistent with them.
+  Tobias the owl has no `idleTrial`; his field idle is already an awake perch.
 
 No animal uses `alertTrial`. The dog is the one user of `transitions`: a sitting dog must
 stand up before it can bark.
@@ -679,9 +681,9 @@ portrait scale. This decides which animals work:
 
 Everything lands under the 2% gate except the donkey, whose body clips are the cast's weakest —
 the only ones that ever carried a loop-seam warning of their own. Its portraits are deliberately
-**not promoted**, which matters less than it did: the donkey is Tobias now, not Rue. Rue wears
-the raccoon, whose crops are the cast's cleanest. Tobias stays text-only until those body
-clips are regenerated.
+**not promoted**, which matters for Duchess: the donkey is her placeholder, and she is the
+boss opponent, so her debate-log portrait stays text-only until those body clips are
+regenerated. Tobias wears the owl, whose crops are among the cast's cleanest.
 
 Two more things worth knowing:
 

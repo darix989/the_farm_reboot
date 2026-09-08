@@ -8,8 +8,8 @@ flock, and everyone else can drink from the trough by the road. She is charming,
 forty-one birds behind her, and almost none of her argument is about the water.
 
 Walk the farm, talk to the animals, and learn to tell the difference between what someone
-*is* and what actually *happened* — first in low-stakes gossip at the trough, then in front
-of the moderator.
+*is* and what actually *happened* — first with Cass at the post, then in gossip at the trough,
+then in front of Tobias the owl.
 
 <img src="screenshot.png" alt="Screenshot" width="600" />
 

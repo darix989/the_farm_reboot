@@ -41,9 +41,10 @@ export interface ScenarioEntry {
    * What the player must have done elsewhere before an animal will start this encounter.
    * Omit for an encounter that is always available.
    *
-   * A gated encounter is still *offered* — the animal talks, and the Talk button carries the
-   * reason it is disabled. Being told "not yet, and here is why" is content; a silent animal is
-   * a bug report.
+   * A gated encounter is still *offered* by default — the animal talks, and the Talk button
+   * carries the reason it is disabled. Set `FarmNpc.gateTalk` to refuse the conversation
+   * itself until this encounter's `requires` are met. Being told "not yet, and here is why"
+   * is content; a silent animal without `gateTalk` is a bug report.
    *
    * This gates the overworld only. The main menu lists every scenario and always has, which is
    * what makes the ladder testable without replaying the farm.

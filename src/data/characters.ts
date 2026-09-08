@@ -16,13 +16,15 @@ const FALLBACK_TINT = 0x9ca3af;
 
 /**
  * Placeholder spritesheet cast, copied from the `the_farm` prototype. These are Phaser
- * texture keys, not the character's real species — the art is the nearest available animal,
- * not a match: Cass is a rooster played by a fox, Duchess a goose played by an owl, Tobias a
- * tortoise played by a donkey. Rue is the one exact match, and the only reason the cast is
- * assigned this way: the six sprites with generated emotion clips (`donkey-grey`, `owl`,
- * `raccoon`, `fox`, `white-sheep-1`, `brown-wolf`) map one-to-one onto the six characters, so
- * giving the player the raccoon forces Tobias onto the freed donkey. Frame data and behaviour
- * live in `src/phaser/animals/animalDescriptors.ts`.
+ * texture keys, not always the character's real species — the six sprites with generated
+ * emotion clips (`donkey-grey`, `owl`, `raccoon`, `fox`, `white-sheep-1`, `brown-wolf`) map
+ * one-to-one onto the six debate characters. Rue is the raccoon (exact match). Tobias is
+ * the owl (exact match): he is the moderator, and the owl reads as the animal in the middle
+ * of the floor. That leaves Duchess, a goose, on the donkey — a mismatch, and her debate-log
+ * portrait stays text-only until the donkey clips are good enough to crop. Cass is a rooster
+ * played by a fox, Hetty a hen by a sheep, Bram a drake by a wolf. Dot the greeter is a dog
+ * and never debates, so she can use an animal with no emotion clips.
+ * Frame data and behaviour live in `src/phaser/animals/animalDescriptors.ts`.
  */
 export type AnimalSpriteId =
   | 'donkey-grey'
@@ -79,14 +81,24 @@ export const CHARACTERS: Readonly<Record<string, CharacterVisual>> = {
     nameLabel: 'farmNpcDuchess',
     tint: 0xf5f2e8,
     kind: 'npc',
-    animal: 'owl',
+    animal: 'donkey-grey',
+    // Standing idle at the podium, not the field graze. The donkey's emotion clips were
+    // generated from `__grey_donkey_idle-0.png`, so the cut into a clip holds.
+    usesTrialIdle: true,
   },
   tobias: {
     id: 'tobias',
     nameLabel: 'farmNpcTobias',
     tint: 0x6b8f3f,
     kind: 'npc',
-    animal: 'donkey-grey',
+    animal: 'owl',
+  },
+  dot: {
+    id: 'dot',
+    nameLabel: 'farmNpcDot',
+    tint: 0xc4a574,
+    kind: 'npc',
+    animal: 'dog',
   },
 };
 

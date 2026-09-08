@@ -203,9 +203,11 @@ next to `TutorialOverlay`. Routing to a Codex scene would tear down the overworl
 Rue's position with it) just to read a list. It is `absolute` on the letterboxed stage,
 `pointer-events: auto` on its root, `z-index` above the trial modals.
 
-A gated animal still talks. The gate is on *launching* the encounter, not on opening the
-dialogue — `Farm.ts` `tryInteract` is intentionally ungated. Being told "not yet, and here
-is why" is content; a silent animal is a bug report.
+A gated encounter is still *offered*, by default — the animal talks, and only the Talk
+button is locked. Set `gateTalk` on the NPC to refuse the conversation itself (Hetty)
+until the next encounter's `requires` are met. `Farm.ts` `tryInteract` and the overworld
+prompt both go through `farmNpcTalkLocked`. Being told "not yet, and here is why" is
+content; a silent animal without `gateTalk` is a bug report.
 
 **All user-visible fixed strings go through `getLabel` in `src/data/labels.ts`** — Phaser
 scenes included. Scenario prose (statements, options, introductions) lives in the JSON, not

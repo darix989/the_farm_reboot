@@ -12,6 +12,7 @@
  */
 import type { DebateScenarioKey } from './levels';
 import type { Labels } from './labels';
+import type { GameCondition } from '../utils/gameConditions';
 
 export const FARM_WORLD_WIDTH = 2400;
 export const FARM_WORLD_HEIGHT = 1600;
@@ -56,6 +57,19 @@ export interface FarmNpc {
    * so a typo here is a compile error against `levels.ts`.
    */
   scenarios: readonly DebateScenarioKey[];
+  /**
+   * When true, the player cannot open this animal's conversation until their next
+   * encounter's `requires` are met. Default (omit) is the usual rule: the animal talks,
+   * and only the Talk button inside is disabled.
+   */
+  gateTalk?: boolean;
+  /**
+   * Farm-only conversations that advance on conditions rather than completed encounters.
+   * Used by animals who have nothing to play (a greeter). Ignored when `scenarios` is
+   * non-empty. Each stage is used while its `until` condition is unmet; after the last
+   * one is met, the `Done` beats play.
+   */
+  talkStages?: readonly { suffix: string; until: GameCondition }[];
 }
 
 /**
@@ -109,10 +123,24 @@ export const FARM_ZONES: readonly FarmZone[] = [
 
 export const FARM_NPCS: readonly FarmNpc[] = [
   {
+    id: 'dot',
+    // Yard, just off spawn, so the first thing Rue walks into is the intro.
+    x: 1240,
+    y: 760,
+    scenarios: [],
+    talkStages: [
+      { suffix: '1', until: { kind: 'fallacy_known', fallacyId: 'ad-hominem' } },
+      { suffix: '2', until: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' } },
+      { suffix: '3', until: { kind: 'encounter_completed', scenarioKey: '015_duchess_vs_rue' } },
+    ],
+  },
+  {
     id: 'hetty',
     x: 1800,
     y: 570,
     scenarios: ['021_hetty_ad_hominem_barrage', '010_gossip_trough_hetty'],
+    // She uses Ad Hominem to your face; it is not a conversation to have before you can name it.
+    gateTalk: true,
   },
   {
     id: 'cass',
@@ -134,14 +162,16 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     id: 'duchess',
     x: 700,
     y: 620,
-    scenarios: ['015_duchess_vs_rue'],
+    scenarios: [],
+    talkStages: [
+      { suffix: '1', until: { kind: 'encounter_completed', scenarioKey: '015_duchess_vs_rue' } },
+    ],
   },
   {
     id: 'tobias',
     x: 880,
     y: 640,
-    // The moderator presides; he does not hand out encounters.
-    scenarios: [],
+    scenarios: ['015_duchess_vs_rue'],
   },
 ];
 

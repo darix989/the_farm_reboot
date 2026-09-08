@@ -1,7 +1,7 @@
 {
   "id": "level1-hetty-barrage",
-  "introduction": "Hetty has been going round the trough all morning, and every sentence has been about you. She does not think she is being unkind. She thinks she is being interesting.",
-  "introductionSummary": "Hetty talks about Rue the whole way round the trough — the cart, the straw, the six weeks — and never once about the water.",
+  "introduction": "Hetty has been thinking about you all morning, and she is going to say it to your face. She does not think she is being unkind. She thinks she is being interesting.",
+  "introductionSummary": "Hetty talks to Rue the whole way round the trough — the cart, the straw, the six weeks — and never once about the water.",
   "playerSide": "opposition",
   "characters": {
     "hetty": "Hetty",
@@ -37,12 +37,12 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Have you heard about that raccoon? Rue, they call him.",
+            "text": "Rue. I have been thinking about you all morning.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
-            "text": "He arrived in a mud cart, you know. Straw still in his ears. You don't take advice from an animal who turns up like that.",
+            "text": "You arrived in a mud cart, you know. Straw still in your ears. You don't take advice from an animal who turns up like that.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
@@ -52,11 +52,11 @@
           },
           {
             "id": "s-r1-3",
-            "text": "I said as much to anyone who would listen this morning.",
+            "text": "I said as much to anyone who would listen this morning. I thought you should hear it from me.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Hetty treats the mud cart Rue arrived in as a reason not to listen to him."
+        "summary": "Hetty treats the mud cart you arrived in as a reason not to listen to you."
       }
     },
     {
@@ -74,7 +74,7 @@
         "sentences": [
           {
             "id": "s-r2-1",
-            "text": "And he still looks as if he slept in it. Straw in the fur, mud on the paws.",
+            "text": "And you still look as if you slept in it. Straw in the fur, mud on the paws.",
             "logicalFallacies": []
           },
           {
@@ -89,11 +89,11 @@
           },
           {
             "id": "s-r2-3",
-            "text": "I don't mean it unkindly. I like him. He seems perfectly nice.",
+            "text": "I don't mean it unkindly. I like you. You seem perfectly nice.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Hetty reads straw in the fur as a reason not to ask Rue about anything that matters, and means no harm by it."
+        "summary": "Hetty reads straw in the fur as a reason not to ask you about anything that matters, and means no harm by it."
       }
     },
     {
