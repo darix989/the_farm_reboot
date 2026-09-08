@@ -66,22 +66,20 @@ import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 import { validateApiKey, submitGeneration, awaitJob, downloadAsset } from './ludo/ludoClient.mjs';
+import { extractReferenceFrame, strokeRectPreview, toDataUri } from './ludo/referenceFrame.mjs';
+import { measureNormalization, faceBoxTransform, FACE_BOX_FILL } from './ludo/normalize.mjs';
 import {
-  extractReferenceFrame,
-  extractFaceCrop,
-  strokeRectPreview,
-  toDataUri,
-} from './ludo/referenceFrame.mjs';
-import {
-  measureNormalization,
-  measureFaceNormalization,
-  faceBoxTransform,
-  FACE_BOX_FILL,
-} from './ludo/normalize.mjs';
+  buildHeadTemplate,
+  alignFrames,
+  cropFaceSheet,
+  fitForRect,
+  summarizeAlignment,
+  CROP_CELL_SIZE,
+} from './ludo/cropFace.mjs';
 import {
   measureClipQuality,
   QUALITY_THRESHOLDS,
-  FACE_QUALITY_THRESHOLDS,
+  CROP_QUALITY_THRESHOLDS,
 } from './ludo/qualityCheck.mjs';
 
 const MANIFEST_PATH = 'scripts/ludo/emotion-manifest.json';
@@ -122,7 +120,7 @@ const FACE_MODE = {
   publicDir: 'public/assets/characters/faces',
   generatedTs: 'src/phaser/animals/faceSheets.generated.ts',
   record: 'scripts/ludo/promoted-faces.json',
-  thresholds: FACE_QUALITY_THRESHOLDS,
+  thresholds: CROP_QUALITY_THRESHOLDS,
 };
 
 /**
@@ -195,22 +193,15 @@ async function readManifest() {
   const manifest = JSON.parse(await readFile(MANIFEST_PATH, 'utf8'));
   const taxonomy = await readTaxonomy();
 
-  // Both registers are gated, not just the body one: a face prompt for an emotion the game
-  // has no type for would generate art nothing can ever ask to play.
-  for (const [key, vocabulary] of [
-    ['emotions', manifest.emotions],
-    ['faceEmotions', manifest.faceEmotions ?? {}],
-  ]) {
-    const unknown = Object.keys(vocabulary).filter((e) => !taxonomy.includes(e));
-    if (unknown.length > 0) {
-      throw new Error(
-        `${MANIFEST_PATH} \`${key}\` defines emotion(s) the game does not know: ${unknown.join(', ')}. ` +
-          `Add them to ANIMAL_EMOTIONS in ${TAXONOMY_PATH} first.`,
-      );
-    }
-  }
-  if (MODE.kind === 'face' && Object.keys(manifest.faceEmotions ?? {}).length === 0) {
-    throw new Error(`${MANIFEST_PATH} has no \`faceEmotions\` block — nothing to generate faces from.`);
+  // Gated so a prompt for an emotion the game has no type for cannot generate art nothing can
+  // ever ask to play. Portraits need no gate of their own: they are cropped from whatever body
+  // clips exist, so they inherit this one.
+  const unknown = Object.keys(manifest.emotions).filter((e) => !taxonomy.includes(e));
+  if (unknown.length > 0) {
+    throw new Error(
+      `${MANIFEST_PATH} \`emotions\` defines emotion(s) the game does not know: ${unknown.join(', ')}. ` +
+        `Add them to ANIMAL_EMOTIONS in ${TAXONOMY_PATH} first.`,
+    );
   }
   return manifest;
 }
@@ -223,36 +214,21 @@ async function readManifest() {
  * the reverse, without either run noticing the other's gap.
  */
 function planJobs(manifest, args) {
-  const faces = MODE.kind === 'face';
-  const vocabulary = faces ? manifest.faceEmotions : manifest.emotions;
-  const defaults = faces ? manifest.faceDefaults : manifest.defaults;
-
   const jobs = [];
   for (const [animalId, animal] of Object.entries(manifest.animals)) {
     if (args.animals && !args.animals.includes(animalId)) continue;
-    // No `face` rect means no headshot has been authored for this animal. Skipping here is
-    // how the five gallery-only animals (cow, cow-female-001, dog, mouse, pig) stay out of a
-    // full-cast face run without needing a flag: nobody has looked at their crop yet.
-    if (faces && !animal.face) continue;
 
-    for (const [emotion, base] of Object.entries(vocabulary)) {
+    for (const [emotion, base] of Object.entries(manifest.emotions)) {
       if (args.emotions && !args.emotions.includes(emotion)) continue;
 
-      const override = (faces ? animal.faceOverrides : animal.overrides)?.[emotion];
+      const override = animal.overrides?.[emotion];
       const prompt = (override?.prompt ?? base.prompt)
         .replaceAll('{species}', animal.species)
         .replaceAll('{view}', animal.view);
-      const settings = { ...defaults, ...base, ...override };
+      const settings = { ...manifest.defaults, ...base, ...override };
       settings.frameRate = playbackFrameRate(settings);
 
-      jobs.push({
-        animalId,
-        emotion,
-        prompt,
-        settings,
-        reference: animal.reference,
-        ...(faces ? { face: animal.face } : {}),
-      });
+      jobs.push({ animalId, emotion, prompt, settings, reference: animal.reference });
     }
   }
   return jobs;
@@ -271,29 +247,8 @@ function planJobs(manifest, args) {
  * an edited prompt or a changed setting is a different clip and really regenerates. `--force`
  * adds a timestamp to escape the cache entirely, which is what it always claimed to do.
  */
-function requestId(job, force, submittedImage) {
+function requestId(job, force) {
   const suffix = force ? `-${Date.now().toString(36)}` : '';
-
-  if (MODE.kind === 'face') {
-    // Faces hash the bytes actually submitted rather than `{prompt, reference, settings}`.
-    // Strictly stronger, and necessary: the crop rect, the clamp, the upscale and the crop
-    // code itself all change what the generator sees without changing any of those three
-    // fields, so a rect-blind fingerprint would hand back the previous generation — for free,
-    // silently — every time a rect was retuned. That is the exact trap this key already
-    // sprang once (see the byte-identical "regeneration" in references/ludo-api.md).
-    const image = createHash('sha1').update(submittedImage).digest('hex').slice(0, 8);
-    const fingerprint = createHash('sha1')
-      .update(JSON.stringify([job.prompt, image, job.settings]))
-      .digest('hex')
-      .slice(0, 8);
-    // Distinct prefix so a face job can never collide with a body one, and so face jobs are
-    // legible in `GET /assets/jobs`.
-    return `farm-face-${job.animalId}-${job.emotion}-${fingerprint}${suffix}`;
-  }
-
-  // Left exactly as it was, on purpose. Folding the image hash in here would change all 30
-  // existing body ids, so the next flagless re-run would charge ~120 credits instead of
-  // returning the cache for nothing.
   const fingerprint = createHash('sha1')
     .update(JSON.stringify([job.prompt, job.reference, job.settings]))
     .digest('hex')
@@ -327,7 +282,7 @@ function playbackFrameRate(settings) {
  * else is register-independent — a headshot is the same generation problem with a different
  * picture in it.
  */
-function buildPayload(job, referenceDataUri, force, submittedImage) {
+function buildPayload(job, referenceDataUri, force) {
   return {
     initial_image: referenceDataUri,
     motion_prompt: job.prompt,
@@ -347,7 +302,7 @@ function buildPayload(job, referenceDataUri, force, submittedImage) {
     // reason `load.spritesheet` can read these without an atlas.
     crop: false,
     gif: true, // the contact sheet plays this; costs nothing extra
-    request_id: requestId(job, force, submittedImage),
+    request_id: requestId(job, force),
   };
 }
 
@@ -390,9 +345,6 @@ async function generate(args) {
 
   console.log(`${jobs.length} ${MODE.noun}(s) to generate.\n`);
 
-  /** Face dry-run only: per-animal crop facts, for the boxes review page. */
-  const croppedAnimals = new Map();
-
   for (const job of jobs) {
     const label = `${job.animalId}/${job.emotion}`;
     const dir = clipDir(job.animalId, job.emotion);
@@ -403,55 +355,15 @@ async function generate(args) {
     }
 
     const reference = await extractReferenceFrame(job.animalId, job.reference);
-    // Body clips animate the whole reference frame; face clips animate the head cut out of
-    // it. From here down the two are the same job with a different starting picture.
-    const submitted = MODE.kind === 'face' ? await extractFaceCrop(reference.buffer, job.face) : reference;
-    const payload = buildPayload(job, toDataUri(submitted.buffer), args.force, submitted.buffer);
+    const payload = buildPayload(job, toDataUri(reference.buffer), args.force);
 
     if (args.dryRun) {
-      if (MODE.kind === 'face') {
-        // The crop is per animal, not per emotion (one rect for all five — a tighter `angry`
-        // rect would make the head jump size between dialogue beats), so write it once.
-        if (!croppedAnimals.has(job.animalId)) {
-          const animalDir = join(MODE.reviewDir, job.animalId);
-          await mkdir(animalDir, { recursive: true });
-          await writeFile(join(animalDir, 'reference.png'), reference.buffer);
-          await writeFile(join(animalDir, 'face.png'), submitted.buffer);
-          await writeFile(
-            join(animalDir, 'crop.png'),
-            await strokeRectPreview(reference.buffer, submitted.crop),
-          );
-          const upscale = submitted.width / Math.max(submitted.crop.width, submitted.crop.height);
-          croppedAnimals.set(job.animalId, {
-            animalId: job.animalId,
-            rect: job.face,
-            crop: submitted.crop,
-            upscale,
-            referenceSize: { width: reference.width, height: reference.height },
-            referenceBounds: submitted.referenceBounds,
-            submittedSize: submitted.width,
-          });
-          console.log(
-            `- ${job.animalId}: head ${submitted.crop.width}x${submitted.crop.height}px out of a ` +
-              `${reference.width}x${reference.height} frame → upscaled x${upscale.toFixed(2)} to ` +
-              `${submitted.width}px → ${animalDir}`,
-          );
-        }
-        console.log(
-          `  ${job.emotion}: ${JSON.stringify({
-            ...payload,
-            initial_image: `<${submitted.buffer.length} bytes>`,
-            ...(payload.final_image ? { final_image: '<same, closeLoop>' } : {}),
-          })}`,
-        );
-      } else {
-        await mkdir(dir, { recursive: true });
-        await writeFile(join(dir, 'reference.png'), reference.buffer);
-        console.log(`- ${label}: reference ${reference.width}x${reference.height} → ${dir}`);
-        console.log(
-          `  payload ${JSON.stringify({ ...payload, initial_image: `<${reference.buffer.length} bytes>` })}`,
-        );
-      }
+      await mkdir(dir, { recursive: true });
+      await writeFile(join(dir, 'reference.png'), reference.buffer);
+      console.log(`- ${label}: reference ${reference.width}x${reference.height} → ${dir}`);
+      console.log(
+        `  payload ${JSON.stringify({ ...payload, initial_image: `<${reference.buffer.length} bytes>` })}`,
+      );
       continue;
     }
 
@@ -468,14 +380,8 @@ async function generate(args) {
 
     await mkdir(dir, { recursive: true });
     await writeFile(join(dir, 'spritesheet.png'), sheet);
-    // `reference.png` is what the register measures against, so for faces it is the crop, not
-    // the whole frame — `--remeasure` must never have to re-derive a rect to reproduce a
-    // number. `frame.png` keeps the un-cropped frame for review.
-    await writeFile(join(dir, 'reference.png'), submitted.buffer);
-    if (MODE.kind === 'face') {
-      await writeFile(join(dir, 'frame.png'), reference.buffer);
-      await writeFile(join(dir, 'crop.png'), await strokeRectPreview(reference.buffer, submitted.crop));
-    }
+    // What `--remeasure` measures against, so it never needs another API call.
+    await writeFile(join(dir, 'reference.png'), reference.buffer);
     if (result.gif_url) {
       await writeFile(join(dir, 'preview.gif'), await downloadAsset(result.gif_url));
     }
@@ -494,19 +400,6 @@ async function generate(args) {
       emotion: job.emotion,
       prompt: job.prompt,
       referenceFrame: job.reference,
-      // What crop this portrait actually came from. The manifest rect gets retuned between
-      // rounds, so without this nobody can tell which framing a shipped face was generated
-      // at — the same provenance argument that puts `prompt` on the promoted record.
-      ...(MODE.kind === 'face'
-        ? {
-            faceRect: job.face,
-            submitted: {
-              width: submitted.crop.width,
-              height: submitted.crop.height,
-              size: submitted.width,
-            },
-          }
-        : {}),
       settings: job.settings,
       generatedAt: new Date().toISOString(),
       sheetWidth: width,
@@ -531,19 +424,233 @@ async function generate(args) {
     quality.warnings.forEach((warning) => console.log(`    ⚠ ${warning}`));
   }
 
-  if (args.dryRun && MODE.kind === 'face') {
-    await writeFaceBoxesPage([...croppedAnimals.values()]);
+  await writeContactSheet();
+  console.log(`\nReview them: open ${join(MODE.reviewDir, 'index.html')}`);
+  console.log(
+    `Delete any ${MODE.noun} directory that missed, then: npm run sprites:emotions -- --promote`,
+  );
+}
+
+// ---------------------------------------------------------------------------
+// face crops
+// ---------------------------------------------------------------------------
+
+/**
+ * The canonical clip a head rect and alignment template are taken from.
+ *
+ * `talking` because it is the emotion every animal has and the one closest to a neutral pose,
+ * so a rect authored against it reads sensibly for the other four. See the header of
+ * `cropFace.mjs` for why one rect and one template are shared across an animal's emotions
+ * rather than measured per clip.
+ */
+const CANONICAL_EMOTION = 'talking';
+
+/**
+ * Which portraits to cut, from the *body record* rather than from a prompt vocabulary.
+ *
+ * The source of truth for what can be cropped is what has actually been promoted as a body
+ * clip — a face vocabulary listing five emotions would happily plan a crop of art that was
+ * never generated. An animal with no `headCrop` is skipped, which is how the five gallery-only
+ * animals stay out of a full-cast run without needing a flag: nobody has authored and checked
+ * their box yet.
+ */
+function planCropJobs(manifest, bodyRecord, args) {
+  const jobs = [];
+  for (const [animalId, animal] of Object.entries(manifest.animals)) {
+    if (args.animals && !args.animals.includes(animalId)) continue;
+    if (!animal.headCrop) continue;
+
+    const emotions = bodyRecord[animalId];
+    if (!emotions) continue;
+    if (!emotions[CANONICAL_EMOTION]) {
+      throw new Error(
+        `${animalId} has a headCrop but no promoted '${CANONICAL_EMOTION}' body clip, which is ` +
+          `where its head rect and alignment template come from.`,
+      );
+    }
+
+    for (const [emotion, source] of Object.entries(emotions)) {
+      if (args.emotions && !args.emotions.includes(emotion)) continue;
+      jobs.push({ animalId, emotion, headCrop: animal.headCrop, source });
+    }
+  }
+  return jobs;
+}
+
+/**
+ * Grid of a promoted body sheet.
+ *
+ * `cols` is not on the body record — `promote` only ever wrote `scale`/`originX`/`originY` —
+ * so it is derived from the PNG exactly as `remeasure` derives it. Nothing here may assume
+ * 25 frames or 5 columns: `donkey-grey` is 16 frames at 8fps on a 4x4 grid.
+ */
+async function bodyGrid(sheetBuffer, source) {
+  const { width } = await sharp(sheetBuffer).metadata();
+  return {
+    cols: Math.round(width / source.frameWidth),
+    frameWidth: source.frameWidth,
+    frameHeight: source.frameHeight,
+    frameCount: source.frameCount,
+  };
+}
+
+/**
+ * Cuts every planned portrait out of its body clip.
+ *
+ * Spends nothing and calls no API. Replaces the generated face register — see the header of
+ * `cropFace.mjs` for the three failed generation attempts that led here.
+ */
+async function cropFaces(args) {
+  const manifest = await readManifest();
+  const bodyRecord = JSON.parse(await readFile(BODY_MODE.record, 'utf8'));
+  const jobs = planCropJobs(manifest, bodyRecord, args);
+
+  if (jobs.length === 0) {
+    console.error(
+      'Nothing to crop — check --animal / --emotion, and that the animal has a `headCrop` ' +
+        'in the manifest and promoted body clips.',
+    );
+    process.exit(1);
+  }
+
+  console.log(`${jobs.length} portrait(s) to cut. No API, no credits.\n`);
+
+  const byAnimal = new Map();
+  for (const job of jobs) {
+    if (!byAnimal.has(job.animalId)) byAnimal.set(job.animalId, []);
+    byAnimal.get(job.animalId).push(job);
+  }
+
+  /** Per-animal crop facts for the boxes review page. */
+  const reviewed = [];
+
+  for (const [animalId, animalJobs] of byAnimal) {
+    const animalEmotions = bodyRecord[animalId];
+    const canonicalSource = animalEmotions[CANONICAL_EMOTION];
+    const canonicalPath = join(BODY_MODE.publicDir, canonicalSource.file);
+    const canonicalSheet = await readFile(canonicalPath);
+    const canonicalGrid = await bodyGrid(canonicalSheet, canonicalSource);
+    const { rect, union, template } = await buildHeadTemplate(
+      canonicalSheet,
+      canonicalGrid,
+      animalJobs[0].headCrop,
+    );
+
+    const fit = fitForRect(rect, CROP_CELL_SIZE);
+    const upscale = CROP_CELL_SIZE / Math.max(rect.width, rect.height);
+    console.log(
+      `- ${animalId}: head ${rect.width}x${rect.height}px out of a ${canonicalGrid.frameWidth}px ` +
+        `cell (body union ${union.width}x${union.height}) → x${upscale.toFixed(2)} to ${CROP_CELL_SIZE}px`,
+    );
+
+    reviewed.push({
+      animalId,
+      headCrop: animalJobs[0].headCrop,
+      rect,
+      union,
+      upscale,
+      cellSize: CROP_CELL_SIZE,
+      sourceCell: canonicalGrid.frameWidth,
+      clips: [],
+    });
+
+    for (const job of animalJobs) {
+      const label = `${animalId}/${job.emotion}`;
+      const dir = clipDir(animalId, job.emotion);
+      const sheetBuffer = await readFile(join(BODY_MODE.publicDir, job.source.file));
+      const grid = await bodyGrid(sheetBuffer, job.source);
+
+      const offsets = await alignFrames(sheetBuffer, grid, { rect, template });
+      const alignment = summarizeAlignment(offsets);
+      const cropped = await cropFaceSheet(sheetBuffer, grid, rect, offsets, CROP_CELL_SIZE);
+      const croppedGrid = {
+        cols: cropped.cols,
+        frameWidth: cropped.frameWidth,
+        frameHeight: cropped.frameHeight,
+        frameCount: grid.frameCount,
+      };
+      const quality = await measureClipQuality(cropped.buffer, croppedGrid, MODE.thresholds);
+
+      await mkdir(dir, { recursive: true });
+      await writeFile(join(dir, 'spritesheet.png'), cropped.buffer);
+      // The source frame with the rect stroked on it: the "what got left out" view. A clipped
+      // ear is invisible in the crop and obvious here.
+      await writeFile(
+        join(dir, 'crop.png'),
+        await strokeRectPreview(await frameAtPng(sheetBuffer, 0, grid), rect),
+      );
+
+      const meta = {
+        kind: MODE.kind,
+        source: 'crop',
+        animalId,
+        emotion: job.emotion,
+        // Provenance: which body clip this was cut from, the rect, and where each frame's head
+        // was found. Without the offsets nobody can tell a tracking failure from bad art.
+        sourceClip: job.source.file,
+        headCrop: job.headCrop,
+        headRect: rect,
+        alignment: { offsets, ...alignment },
+        settings: { frameRate: job.source.frameRate },
+        croppedAt: new Date().toISOString(),
+        generatedAt: new Date().toISOString(),
+        sheetWidth: cropped.cols * cropped.frameWidth,
+        sheetHeight: cropped.rows * cropped.frameHeight,
+        frameCount: grid.frameCount,
+        cols: cropped.cols,
+        rows: cropped.rows,
+        frameWidth: cropped.frameWidth,
+        frameHeight: cropped.frameHeight,
+        fit,
+        quality,
+      };
+      await writeFile(join(dir, 'meta.json'), `${JSON.stringify(meta, null, 2)}\n`);
+
+      if (job.emotion === CANONICAL_EMOTION) {
+        // Frame 0 of the canonical crop: the still the head box is actually judged on.
+        const animalDir = join(MODE.reviewDir, animalId);
+        await mkdir(animalDir, { recursive: true });
+        await writeFile(join(animalDir, 'head.png'), await frameAtPng(cropped.buffer, 0, croppedGrid));
+        await writeFile(
+          join(animalDir, 'crop.png'),
+          await strokeRectPreview(await frameAtPng(sheetBuffer, 0, grid), rect),
+        );
+      }
+
+      reviewed[reviewed.length - 1].clips.push({ emotion: job.emotion, alignment, quality });
+      console.log(
+        `  ${job.emotion}: ${grid.frameCount} frames from ${job.source.file} ` +
+          `(align ≤${alignment.maxOffset}px, jump ≤${alignment.maxJump}px)`,
+      );
+      [...alignment.warnings, ...quality.warnings].forEach((w) => console.log(`    ⚠ ${w}`));
+    }
+  }
+
+  if (args.dryRun) {
+    await writeHeadBoxesPage(reviewed);
     console.log(`\nCheck the crops: open ${join(MODE.reviewDir, 'boxes.html')}`);
-    console.log('Retune `face` in the manifest and re-run — this costs nothing.');
+    console.log('Retune `headCrop` in the manifest and re-run — this costs nothing.');
     return;
   }
 
-  await writeContactSheet();
+  await writeFaceContactSheet();
   console.log(`\nReview them: open ${join(MODE.reviewDir, 'index.html')}`);
-  const promoteFlags = MODE.kind === 'face' ? '--faces --promote' : '--promote';
   console.log(
-    `Delete any ${MODE.noun} directory that missed, then: npm run sprites:emotions -- ${promoteFlags}`,
+    'Delete any portrait directory that missed, then: npm run sprites:emotions -- --faces --promote',
   );
+}
+
+/** One cell of a body sheet as a PNG, for the stroked review image. */
+async function frameAtPng(sheetBuffer, index, grid) {
+  return sharp(sheetBuffer)
+    .extract({
+      left: (index % grid.cols) * grid.frameWidth,
+      top: Math.floor(index / grid.cols) * grid.frameHeight,
+      width: grid.frameWidth,
+      height: grid.frameHeight,
+    })
+    .png()
+    .toBuffer();
 }
 
 // ---------------------------------------------------------------------------
@@ -582,37 +689,53 @@ async function reviewedClips() {
  *    differ by 2.5x, so the sheep's head is ~170px where the raccoon's is ~400px, and the
  *    small ones are being resampled 2.5x before the generator ever sees them.
  */
-async function writeFaceBoxesPage(animals) {
+async function writeHeadBoxesPage(animals) {
+  const RETINA_PX = FACE_PREVIEW_PX * 2;
   const cards = animals
     .sort((a, b) => a.animalId.localeCompare(b.animalId))
     .map((a) => {
       const hard = a.upscale >= 2;
+      const clips = a.clips
+        .map((c) => {
+          const warnings = [...c.alignment.warnings, ...c.quality.warnings];
+          return `<tr class="${warnings.length ? 'warn' : ''}">
+            <td>${c.emotion}</td>
+            <td>&le;${c.alignment.maxOffset}px</td>
+            <td>&le;${c.alignment.maxJump}px</td>
+            <td>${c.quality.loopPop}%</td>
+            <td>${warnings.join('; ') || '—'}</td>
+          </tr>`;
+        })
+        .join('\n');
       return `
       <figure class="card">
         <div class="views">
           <div class="view">
             <img src="${a.animalId}/crop.png" alt="">
-            <span>rect on the reference frame</span>
+            <span>rect on frame 0 of the body clip — check nothing is clipped</span>
           </div>
           <div class="view">
-            <div class="portrait"><img src="${a.animalId}/face.png" alt=""></div>
-            <span>at portrait size (${FACE_PREVIEW_PX}px)</span>
+            <div class="portrait"><img src="${a.animalId}/head.png" alt=""></div>
+            <span>ship size (${FACE_PREVIEW_PX}px)</span>
           </div>
           <div class="view">
-            <img class="native" src="${a.animalId}/face.png" alt=""
-                 style="width:${a.submittedSize}px;max-width:100%">
-            <span>as submitted (${a.submittedSize}px square)</span>
+            <div class="portrait retina"><img src="${a.animalId}/head.png" alt=""></div>
+            <span>2&times; DPR (${RETINA_PX}px) — judge softness here</span>
           </div>
         </div>
         <figcaption>
           <strong>${a.animalId}</strong>
-          <span>rect { x: ${a.rect.x}, y: ${a.rect.y}, w: ${a.rect.w}, h: ${a.rect.h} }
-                &rarr; ${a.crop.width}&times;${a.crop.height}px at (${a.crop.left}, ${a.crop.top})</span>
-          <span>frame ${a.referenceSize.width}&times;${a.referenceSize.height} &middot;
-                alpha box ${a.referenceBounds.width}&times;${a.referenceBounds.height}</span>
-          <span class="${hard ? 'bad' : 'good'}">upscaled &times;${a.upscale.toFixed(2)} to ${a.submittedSize}px${
-            hard ? ' — the resolution canary, judge this crop hardest' : ''
+          <span>headCrop { x: ${a.headCrop.x}, y: ${a.headCrop.y}, w: ${a.headCrop.w}, h: ${a.headCrop.h} }
+                &rarr; ${a.rect.width}&times;${a.rect.height}px at (${a.rect.left}, ${a.rect.top})
+                in a ${a.sourceCell}px cell</span>
+          <span>body union box ${a.union.width}&times;${a.union.height}px</span>
+          <span class="${hard ? 'bad' : 'good'}">&times;${a.upscale.toFixed(2)} to ${a.cellSize}px${
+            hard ? ' — over 2&times;, judge this crop hardest' : ''
           }</span>
+          <table>
+            <tr><th>emotion</th><th>align</th><th>jump</th><th>loop</th><th>warnings</th></tr>
+            ${clips}
+          </table>
         </figcaption>
       </figure>`;
     })
@@ -620,15 +743,15 @@ async function writeFaceBoxesPage(animals) {
 
   const html = `<!doctype html>
 <meta charset="utf-8">
-<title>Face crop review</title>
+<title>Head crop review</title>
 <style>
   body { margin: 0; padding: 24px; background: #3a3a3a; color: #eee;
          font: 14px system-ui, sans-serif; }
   h1 { font-size: 18px; font-weight: 600; }
-  p { color: #bbb; }
+  p { color: #bbb; max-width: 78ch; }
   .grid { display: grid; gap: 24px; }
   .card { margin: 0; background: #2b2b2b; border-radius: 8px; overflow: hidden; }
-  .views { display: grid; grid-template-columns: 2fr 1fr 2fr; gap: 12px; padding: 12px;
+  .views { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; padding: 12px;
            align-items: start;
            background: repeating-conic-gradient(#333 0 25%, #3d3d3d 0 50%) 0 0 / 24px 24px; }
   .view { display: grid; gap: 6px; justify-items: center; }
@@ -637,20 +760,31 @@ async function writeFaceBoxesPage(animals) {
   .portrait { width: ${FACE_PREVIEW_PX}px; height: ${FACE_PREVIEW_PX}px; display: grid;
               place-items: center; border: 2px solid #555; border-radius: 10px;
               overflow: hidden; background: #262626; }
+  .portrait.retina { width: ${RETINA_PX}px; height: ${RETINA_PX}px; }
   .portrait img { width: 100%; height: 100%; object-fit: contain; }
   figcaption { padding: 12px 14px; display: grid; gap: 6px; }
   figcaption span { color: #aaa; font-size: 12px; }
   figcaption .good { color: #7fd18b; }
   figcaption .bad { color: #f0a05a; }
+  table { border-collapse: collapse; margin-top: 6px; font-size: 12px; }
+  th, td { text-align: left; padding: 3px 12px 3px 0; color: #aaa; }
+  th { color: #777; font-weight: 500; }
+  tr.warn td { color: #f0a05a; }
 </style>
-<h1>Face crop review — ${animals.length} animal(s), no credits spent</h1>
-<p>Every crop should be a head-and-shoulders with air around it: nothing clipped by an edge,
-   the eyes and mouth well inside the frame. Retune <code>face</code> in
+<h1>Head crop review — ${animals.length} animal(s), no credits spent</h1>
+<p>Step 1 of the portrait workflow. Every crop should be a head-and-shoulders with air around
+   it: nothing clipped by an edge, the eyes and mouth well inside the frame. Part of the neck
+   and chest in shot is fine and expected. Retune <code>headCrop</code> in
    <code>${MANIFEST_PATH}</code> and re-run
    <code>npm run sprites:emotions -- --faces --dry-run</code> — this loop is free.</p>
-<p>One rect per animal, never one per emotion: all five portraits play in the same box in the
-   same dialogue, so a tighter <code>angry</code> rect would make the head jump size when the
-   beat changes.</p>
+<p>One rect per animal, never one per emotion, and one alignment template per animal taken
+   from its <code>${CANONICAL_EMOTION}</code> clip: all five portraits play in the same box in
+   the same dialogue, so a per-emotion rect would make the head jump size when the beat
+   changes speaker emotion.</p>
+<p><strong>align</strong> is how far the aligner had to move to follow the head, and
+   <strong>jump</strong> how far it moved between consecutive frames. A saturated align means
+   the search window was too small; a large jump means the matcher probably lost its lock.
+   Both are worth opening the clip for.</p>
 <div class="grid">${cards}</div>
 `;
   await writeFile(join(MODE.reviewDir, 'boxes.html'), html);
@@ -761,12 +895,10 @@ async function writeFaceContactSheet() {
       frameCount: c.frameCount,
     };
 
-    // Measured here rather than read from a record: nothing has been promoted yet, and this
-    // is the number the page has to frame with.
-    const { fit } = await measureFaceNormalization(
-      await readFile(join(clipDir(c.animalId, c.emotion), 'spritesheet.png')),
-      grid,
-    );
+    // The crop's own `fit`, off its meta — the same number that will ship, so the page frames
+    // a portrait exactly as the game will. Re-measuring it here would let the review page and
+    // the game disagree, which is the failure `faceBoxTransform` is shared to prevent.
+    const fit = c.fit ?? fitForRect(c.headRect, c.frameWidth);
     const t = faceBoxTransform(fit, c.frameWidth, c.frameHeight, FACE_PREVIEW_PX);
 
     const cellAt = (i) =>
@@ -935,16 +1067,19 @@ async function promote() {
     const file = `${clip.animalId}-${clip.emotion}.png`;
     const sheetBuffer = await readFile(join(dir, 'spritesheet.png'));
 
-    // Measured here rather than at generation time so a clip generated before this existed
-    // still promotes correctly, and so re-measuring never needs another API call.
-    //
-    // The two registers measure different things, because they are placed differently: a body
+    // The two registers derive different geometry, because they are placed differently. A body
     // clip has to land at atlas scale with its feet on a floor line next to its castmates, so
-    // it needs the atlas reference frame to compare against. A portrait only has to sit
-    // centred in its own box, so it is self-describing and needs nothing but the sheet.
+    // it is measured against the atlas reference frame. A portrait only has to sit centred in
+    // its own box.
+    //
+    // A portrait's `fit` is *arithmetic on the authored rect*, not a measurement of the art —
+    // `fitForRect` explains why at length, but the short version is that measuring it back out
+    // of the pixels makes it differ per emotion (an open snarl reaches further than a shut
+    // mouth), which reintroduces the head-size jump between dialogue beats that one rect per
+    // animal exists to prevent. It is computed at crop time and carried on the meta.
     const geometry =
       MODE.kind === 'face'
-        ? { fit: (await measureFaceNormalization(sheetBuffer, clip)).fit, cols: clip.cols }
+        ? { fit: clip.fit ?? fitForRect(clip.headRect, clip.frameWidth), cols: clip.cols }
         : await measureNormalization(sheetBuffer, await readFile(join(dir, 'reference.png')), clip);
 
     await copyFile(join(dir, 'spritesheet.png'), join(MODE.publicDir, file));
@@ -963,14 +1098,22 @@ async function promote() {
             // count has to be written down or the portrait plays garbage.
             cols: geometry.cols,
             fit: geometry.fit,
-            faceRect: clip.faceRect,
-            submitted: clip.submitted,
+            // Crop provenance. `headCrop` gets retuned between rounds, so without the resolved
+            // rect nobody can tell which framing a shipped portrait was actually cut at, and
+            // without `sourceClip` nobody can tell which body clip it came from. The offsets
+            // are what separates "the art is wrong" from "the aligner lost the head".
+            sourceClip: clip.sourceClip,
+            headCrop: clip.headCrop,
+            headRect: clip.headRect,
+            alignment: clip.alignment,
           }
         : { scale: geometry.scale, originX: geometry.originX, originY: geometry.originY }),
       // Provenance, recorded here and not in the generated module (the runtime has no use for
       // it). The manifest is edited between rounds — generic prompts get rewritten, animals
       // gain overrides — so it stops describing what shipped the moment it changes. Without
       // this, there is no way to know what a promoted clip was actually asked to be.
+      // Body clips record the prompt they were asked for; a crop has no prompt — its
+      // provenance is the rect and the source clip above. `undefined` drops out of the JSON.
       prompt: clip.prompt,
       quality: clip.quality,
       generatedAt: clip.generatedAt,
@@ -1260,10 +1403,15 @@ async function remeasure(args) {
       };
       let summary;
       if (MODE.kind === 'face') {
-        const { fit } = await measureFaceNormalization(sheetBuffer, grid);
-        sheet.fit = fit;
+        // Arithmetic on the recorded rect, not a measurement — so `--faces --remeasure` needs
+        // neither the atlases nor the pixels, and can never drift because a body clip was
+        // re-promoted underneath it. A portrait promoted before `headRect` existed has no rect
+        // to derive from, so its `fit` is left as recorded.
+        if (sheet.headRect) sheet.fit = fitForRect(sheet.headRect, sheet.frameWidth);
         sheet.cols = grid.cols;
-        summary = `head fills ${(fit.width * 100).toFixed(0)}%×${(fit.height * 100).toFixed(0)}% of the cell`;
+        summary = sheet.headRect
+          ? `head fills ${(sheet.fit.width * 100).toFixed(0)}%×${(sheet.fit.height * 100).toFixed(0)}% of the cell`
+          : 'fit left as recorded (no headRect — promoted before crops)';
       } else {
         const norm = await measureNormalization(sheetBuffer, referenceBuffer, grid);
         sheet.scale = norm.scale;
@@ -1293,6 +1441,7 @@ async function main() {
   if (args.remeasure) await remeasure(args);
   else if (args.reindex) await reindex();
   else if (args.promote) await promote();
+  else if (MODE.kind === 'face') await cropFaces(args);
   else await generate(args);
 }
 

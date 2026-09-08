@@ -154,39 +154,15 @@ export async function measureNormalization(sheetBuffer, referenceBuffer, grid) {
 export const FACE_BOX_FILL = 0.92;
 
 /**
- * Measures how a generated *face* clip has to be placed inside a square portrait box.
+ * A portrait's `fit` box is no longer measured here.
  *
- * The body measurement above answers "how big is this character and where are its feet",
- * because a body clip is staged on a floor line at atlas scale next to other animals. None of
- * that means anything for a portrait: there is no floor, no neighbour to be sized against,
- * and no atlas frame to match — a dialogue portrait just has to sit centred in its box at a
- * consistent size, whatever the generator chose to do with the cell.
- *
- * So this ships the union head box as fractions of one cell and nothing else. Note what it
- * does *not* need: the reference frame. `measureNormalization` has to re-extract the atlas
- * frame to know what height to match, which is why `--remeasure` reaches back into the
- * atlases; a face clip is self-describing, so `--faces --remeasure` needs only the shipped
- * PNG and can never drift because an atlas was repacked.
- *
- * Union across every frame, not per-frame, for the same reason the body pipeline uses it: a
- * per-frame centre would make the head twitch inside its own box, which is precisely the
- * defect a stable anchor exists to prevent.
+ * There used to be a `measureFaceNormalization` alongside this, which measured a generated
+ * headshot's union alpha box the way `measureNormalization` measures a body's. Portraits are
+ * now crops of the body clips at a rect we choose, so the answer is arithmetic on that rect
+ * rather than a measurement of the art — and measuring it back out of the pixels actively did
+ * harm, because different emotions have different silhouette extents inside the same rect. See
+ * `fitForRect` in `cropFace.mjs`, which owns that calculation and explains it.
  */
-export async function measureFaceNormalization(sheetBuffer, grid) {
-  const union = await sheetBounds(sheetBuffer, grid);
-  if (!union) throw new Error('Generated face spritesheet is fully transparent');
-
-  const round = (value) => Number(value.toFixed(4));
-  return {
-    fit: {
-      x: round(union.x / grid.frameWidth),
-      y: round(union.y / grid.frameHeight),
-      width: round(union.width / grid.frameWidth),
-      height: round(union.height / grid.frameHeight),
-    },
-    measured: { union, cell: { width: grid.frameWidth, height: grid.frameHeight } },
-  };
-}
 
 /**
  * Turns a face clip's `fit` box into the transform that centres the head in a `size`-px box.

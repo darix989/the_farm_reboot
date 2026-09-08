@@ -20,7 +20,8 @@
  * **`driftX`** — how far the character's centre wanders horizontally. The stage slot is fixed,
  * so a clip that slides is a clip that will look unmoored next to its neighbours.
  *
- * **`churn`** (face clips only) — the mean difference between *consecutive* frames, and the
+ * **`churn`** (generated clips only — see `CROP_QUALITY_THRESHOLDS`) — the mean difference
+ * between *consecutive* frames, and the
  * worst such pair. `loopPop` compares frame 0 to frame N-1 and is therefore completely blind
  * to a mouth interior or a pupil that is redrawn differently in every single frame: the clip
  * can return exactly to its start and still strobe for the whole two seconds in between. That
@@ -46,25 +47,34 @@ export const QUALITY_THRESHOLDS = {
 };
 
 /**
- * The same gates recalibrated for a headshot, which is a different measurement problem.
+ * The gates for a **cropped** portrait, which is a different measurement problem again.
  *
- * `loopPop` is unchanged — a seam is a seam. The other two are much tighter:
+ * These replaced a set calibrated for *generated* headshots, and the change is not a tweak —
+ * three of those four gates were measuring the wrong thing once portraits became crops of the
+ * body clips, and fired on 4 of the fox's 5 emotions. A review page full of warnings nobody
+ * should act on trains people to ignore warnings.
  *
- * - `heightSwing` 20% → **8%**. On a body clip a wandering height is a head dipping, which is
- *   the motion you asked for. Inside a fixed portrait box it is the generator *zooming*, which
- *   is the one failure a face clip must not have — so this doubles as the automatic detector
- *   for the framing rule (F2 in the manifest's `$faceComment`) having been ignored.
- * - `driftX` becomes a **ratio of the frame width** rather than an absolute pixel count. Face
- *   cells are smaller than body cells, so the body's flat 20px would quietly tolerate an 8%
- *   slide on a 256px cell — a head visibly sliding out of its box.
+ * - **`loopPop` 2%, unchanged.** A seam is a seam. The body clip's loop carries straight
+ *   through into the crop, so a portrait can still pop on every repeat.
+ * - **`heightSwing` dropped.** At 8% this was the automatic detector for the *generator having
+ *   zoomed* — the one failure a generated face clip must not have. A crop cannot zoom: the rect
+ *   is fixed and the cell is contain-fitted. What height swing now measures is the animal's own
+ *   jaw opening and head tilt, which is the motion the portrait exists to show.
+ * - **`driftX` loosened to 6% of the cell.** The head is pinned by the aligner rather than by a
+ *   prompt, so `summarizeAlignment` in `cropFace.mjs` is the sharper signal — it reports what
+ *   the aligner actually did. This stays as a backstop for a gross slide.
+ * - **`churn` dropped.** It exists to catch a mouth interior or pupil *redrawn differently in
+ *   every frame*, which is impossible in a crop: the pixels are the same drawn art, moved. What
+ *   it detects here is the mouth opening, i.e. the clip working. It flagged four fox crops.
+ *
+ * Keeping churn would also have been actively misleading, because it has a known blind spot —
+ * it compares consecutive frames, so it caught nothing at all on the worst generated clip,
+ * whose eye closed over six frames.
  */
-export const FACE_QUALITY_THRESHOLDS = {
+export const CROP_QUALITY_THRESHOLDS = {
   loopPop: 2,
-  heightSwing: 8,
   /** Fraction of `frameWidth`, resolved against the actual grid. */
-  driftXRatio: 0.04,
-  /** Flag the worst consecutive-frame pair once it is this many times the mean. */
-  churnPeakRatio: 2.5,
+  driftXRatio: 0.06,
 };
 
 /**
@@ -89,7 +99,8 @@ function meanDifference(a, b) {
  *
  * `grid` is the `{ cols, frameWidth, frameHeight, frameCount }` the generator reported.
  * `thresholds` selects the gate set — `QUALITY_THRESHOLDS` for body clips (the default, so
- * every existing caller is unchanged) or `FACE_QUALITY_THRESHOLDS` for headshots.
+ * every existing caller is unchanged) or `CROP_QUALITY_THRESHOLDS` for portraits. A set may
+ * omit a gate to disable it.
  */
 export async function measureClipQuality(sheetBuffer, grid, thresholds = QUALITY_THRESHOLDS) {
   const wantsChurn = thresholds.churnPeakRatio != null;
@@ -128,8 +139,12 @@ export async function measureClipQuality(sheetBuffer, grid, thresholds = QUALITY
   const heightSwing = heights.length ? (span(heights) / Math.max(...heights)) * 100 : 0;
   const driftX = span(centres) / 2;
 
-  // Absolute px for bodies, a fraction of the cell for faces — see FACE_QUALITY_THRESHOLDS.
-  const driftGate = thresholds.driftX ?? thresholds.driftXRatio * grid.frameWidth;
+  // Absolute px for bodies, a fraction of the cell for crops — see CROP_QUALITY_THRESHOLDS.
+  // A threshold set may omit a gate entirely to disable it; `Infinity` rather than `undefined`
+  // so the comparison is a deliberate never-fires rather than a NaN that happens to be falsy.
+  const driftGate =
+    thresholds.driftX ?? (thresholds.driftXRatio != null ? thresholds.driftXRatio * grid.frameWidth : Infinity);
+  const heightGate = thresholds.heightSwing ?? Infinity;
 
   const warnings = [];
   if (loopPop > thresholds.loopPop) {
@@ -137,9 +152,9 @@ export async function measureClipQuality(sheetBuffer, grid, thresholds = QUALITY
       `loop seam ${loopPop.toFixed(2)}% (over ${thresholds.loopPop}%) — it will visibly jump on every repeat`,
     );
   }
-  if (heightSwing > thresholds.heightSwing) {
+  if (heightSwing > heightGate) {
     warnings.push(
-      `height swing ${heightSwing.toFixed(0)}% (over ${thresholds.heightSwing}%) — check it is motion, not the character changing pose`,
+      `height swing ${heightSwing.toFixed(0)}% (over ${heightGate}%) — check it is motion, not the character changing pose`,
     );
   }
   if (driftX > driftGate) {
