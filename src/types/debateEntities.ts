@@ -250,6 +250,8 @@ export type EventTrigger =
   | 'debate_log:round:analyze'
   | 'debate_log:round:shrink'
   | 'debate_log:round:expand'
+  | 'debate_log:expand'
+  | 'debate_log:collapse'
   | 'analysis:open'
   | 'analysis:close'
   | 'analysis:sentence_selected'

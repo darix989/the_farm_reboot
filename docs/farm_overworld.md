@@ -177,7 +177,8 @@ Stopping the scene sidesteps that; the player's position is written to `gameStor
 `SHUTDOWN` and read back in `create`, so the round trip is seamless.
 
 Showing the farm inside the hole later would need
-`cameras.main.setViewport(0, 0, 1152, 540)` — a deliberate change, not a side effect.
+`cameras.main.setViewport(0, 0, 1920, 540)` (the hole spans the full stage width — see
+`TRIAL_STAGE_HOLE`) — a deliberate change, not a side effect.
 
 ---
 

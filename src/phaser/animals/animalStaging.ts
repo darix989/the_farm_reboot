@@ -19,7 +19,7 @@
  * apply one flat multiplier per surface — `farmScale` / `trialScale` below are
  * `sourceScale * surfaceMultiplier`, chosen so the donkey (the player, the most-seen
  * animal) lands at roughly 140px tall on the farm (next to the 56px placeholder NPCs) and
- * roughly 300px tall in the 1152x540 Trial hole. That preserves the designed size
+ * roughly 300px tall in the 1920x540 Trial hole. That preserves the designed size
  * hierarchy — donkey/wolf biggest, sheep mid-sized, fox/owl smaller, raccoon smallest and
  * widest — while fitting this repo's very different pixel budget.
  *

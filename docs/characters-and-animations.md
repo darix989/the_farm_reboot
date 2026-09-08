@@ -232,7 +232,7 @@ So `animalStaging.ts` **keeps the prototype's relative scale ratios** — they a
 actual art direction — and applies one flat multiplier per surface:
 `farmScale = sourceScale * 0.377`, `trialScale = sourceScale * 0.807`, chosen so the
 donkey (the player, the most-seen animal) lands at roughly 140px tall on the farm (next to
-the 56px placeholder NPCs) and roughly 300px in the 1152×540 Trial hole. That preserves
+the 56px placeholder NPCs) and roughly 300px in the 1920×540 Trial hole. That preserves
 the designed size hierarchy — donkey/wolf biggest, sheep mid-sized, fox/owl smaller,
 raccoon smallest and widest — while fitting this repo's very different pixel budget.
 
@@ -330,7 +330,9 @@ default:
 - **`DEBUG_TRIAL_STAGE`** — strokes the `TRIAL_STAGE_HOLE` rect (from
   [`src/utils/constants.ts`](../src/utils/constants.ts)) and drops a marker at each
   computed cast slot. Nothing enforces that this rect and the `.trialGameHole` CSS grid
-  cell agree — if they ever drift, turning this on shows it immediately.
+  cell agree — if they ever drift, turning this on shows it immediately. The same goes for
+  `CharacterStage`'s nameplates, which place each label at the identical `(i + 1) / (n + 1)`
+  slot so it sits over its own animal.
 - **`DEBUG_STAGE_KEYS`** — `A` forces the whole Trial cast to alert, `S` back to idle,
   and `1`..`5` play each `ANIMAL_EMOTIONS` entry in order (§9). Off by default because
   the Trial screen has focusable React inputs and an always-on key handler would fire

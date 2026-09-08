@@ -80,18 +80,26 @@ $player-outline: #2a2118;
 }
 
 /* Nameplate-only variant: labels the Phaser `Trial` scene's animated cast instead of
-   drawing CSS busts. One evenly-spaced slot per participant, mirroring the sprite layout
+   drawing CSS busts. One slot per participant, placed to *exactly* mirror the sprite layout
    `Trial.ts` computes for the same cast.
 
-   Must stay below `.stage`: it overrides `justify-content` from an equally specific single
-   class, so only source order decides which wins. */
+   Must stay below `.stage`: it overrides positioning from an equally specific single class,
+   so only source order decides which wins. */
 .nameplateRow {
-  justify-content: space-around;
+  position: relative;
 }
 
 .nameplateSlot {
-  flex: 1 1 0;
+  position: absolute;
+  top: 50%;
   align-items: center;
+
+  /* `left` is set inline by `CharacterStage` to `(i + 1) / (n + 1)`, the same slot formula
+     `Trial.ts` uses for the sprites underneath (`TRIAL_STAGE_HOLE.width * (i + 1) / (n + 1)`).
+     Equal flex slots would centre on `(i + 0.5) / n` instead and drift off the animals —
+     invisible while the hole was a quarter of the stage, obvious now it spans the full width.
+     Change the two together. */
+  transform: translate(-50%, -50%);
 }
 
 @media (prefers-reduced-motion: reduce) {

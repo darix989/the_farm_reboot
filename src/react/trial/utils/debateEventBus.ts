@@ -97,6 +97,12 @@ export interface DebateLogRoundPayload {
   roundId: string;
 }
 
+/** Whole-panel collapse / expand, as opposed to one round card opening its body. */
+export interface DebateLogPanelPayload {
+  /** Active workflow round, or `null` outside a round (`debate_intro`, `debate_complete`). */
+  roundNumber: number | null;
+}
+
 export interface AnalysisOpenClosePayload {
   targetKind: AnalysisTargetKind;
   /** NPC round id, opponent statement id, or chosen option id depending on targetKind. */
@@ -191,6 +197,8 @@ export interface DebateEventPayloads {
   'debate_log:round:analyze': DebateLogRoundPayload;
   'debate_log:round:shrink': DebateLogRoundPayload;
   'debate_log:round:expand': DebateLogRoundPayload;
+  'debate_log:expand': DebateLogPanelPayload;
+  'debate_log:collapse': DebateLogPanelPayload;
   'analysis:open': AnalysisOpenClosePayload;
   'analysis:close': AnalysisOpenClosePayload;
   'analysis:sentence_selected': AnalysisSentenceTogglePayload;

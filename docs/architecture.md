@@ -28,7 +28,12 @@ Three consequences that catch people out:
 
 1. **The canvas is always full-stage and never hidden.** `TrialUI`'s "game hole" is just an
    empty `pointer-events: none` div — it is *not* a clip. A Phaser scene left running while
-   the Trial UI is up paints behind the panels, not only in the hole.
+   the Trial UI is up paints behind the panels, not only in the hole. The hole spans the
+   **full stage width** across the top band (`TRIAL_STAGE_HOLE`, 1920×540); when the player
+   expands the Debate Log it paints *over* the right 2fr of the cast rather than the cast
+   re-laying out, so the rightmost animal of a 2-3 strong cast is hidden while the log is
+   open. That is deliberate — the stage rect is a compile-time constant, and nothing tells
+   Phaser how much room it has.
 2. **`pointer-events: none` inherits to every descendant of the overlay.** Any new
    interactive element must set `pointer-events: auto` on itself or its clicks fall through
    to the canvas. This is the single most common bug in this codebase.
@@ -50,6 +55,9 @@ Three consequences that catch people out:
 The debate rules, scoring and UI are **entirely React**. The `Trial` Phaser scene draws only
 a backdrop and the animated animal cast (`CharacterStage` in React labels it and reacts to
 who's speaking) — see [characters-and-animations.md](./characters-and-animations.md).
+`CharacterStage`'s nameplates place each label at `(i + 1) / (n + 1)` of the hole width, the
+same slot formula `Trial.ts` uses for the sprites; the two are a mirrored contract like
+`TRIAL_STAGE_HOLE` itself, and drift shows up as a label floating off its animal.
 
 ---
 
@@ -103,9 +111,9 @@ field (`loadProgress`), so they cannot disagree.
 
 ---
 
-## State: five stores, two buses
+## State: six stores, two buses
 
-Nothing here is Redux or Context. Five zustand stores, plus two event emitters that do not
+Nothing here is Redux or Context. Six zustand stores, plus two event emitters that do not
 know about each other.
 
 | Store | Scope | Persisted |
@@ -114,6 +122,7 @@ know about each other.
 | `tutorialStore` | The open tutorial overlay: steps, index, and the interaction gate | no |
 | `farmStore` | Overworld ↔ React handoff: which animal is nearby, which one you are talking to | no |
 | `trialStageStore` | Debate ↔ Phaser handoff: which speaker the `Trial` scene's cast should react to | no |
+| `debateLogStore` | Whether the Trial's Debate Log is expanded or collapsed to its recap chip | no |
 | `progressStore` | Which encounters are finished | **yes** — `localStorage`, `the-farm-progress` |
 
 Everything else in a debate — the chosen options, the fallacy guesses, the Insight balance —
@@ -173,7 +182,7 @@ src/
   types/debateEntities.ts    the whole content schema — scenarios, rounds, options,
                              mechanics flags, tutorial triggers
   data/                      labels, the scenario registry, the farm map, the JSON
-  store/                     the four zustand stores
+  store/                     the six zustand stores
   utils/gameManager.ts       imperative Phaser access (switchScene, getScene, …)
   phaser/
     main.ts                  game config: scale, physics, scene list

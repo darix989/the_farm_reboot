@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTutorialStore } from '../../store/tutorialStore';
+import { useDebateLogStore } from '../../store/debateLogStore';
 import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../types/debateEntities';
 import logicalFallaciesData from '../../data/logicalFallacies.json';
 import TrialLayout from '../trial/TrialLayout';
@@ -29,6 +30,7 @@ import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
 import {
   activeEmotionForWorkflow,
+  activeRoundNumber,
   activeSpeakerIdForWorkflow,
   getSpeakerName,
   getStartingInsightPoints,
@@ -41,6 +43,7 @@ import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechan
 import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
 import CharacterStage from '../farm/CharacterStage';
+import DebateLogRecapChip from '../trial/components/DebateLogRecapChip';
 import getLabel from '../../data/labels';
 import { useGameStore } from '../../store/gameStore';
 import { useProgressStore } from '../../store/progressStore';
@@ -97,6 +100,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     setAwardedInsightTargetIds(new Set());
     setInsightRevealedTargetIds(new Set());
     useTutorialStore.getState().resetTutorial();
+    // Every encounter opens on the full-width cast, with the Debate Log collapsed.
+    useDebateLogStore.getState().resetDebateLog();
     // Reset is keyed on scenario identity, not reference equality — the parent may
     // re-create the `debate` object on each render. `getStartingInsightPoints` reads
     // from `debate` but is pure, so capturing it via closure is intentional.
@@ -744,6 +749,17 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
             mechanics={mechanics}
+          />
+        }
+        debateLogRecap={
+          <DebateLogRecapChip
+            debate={debate}
+            roundNumber={activeRoundNumber(wf.currentRoundIndex, wf.totalRounds)}
+            totalRounds={wf.totalRounds}
+            totalScore={wf.totalScore}
+            insightPoints={insightPoints}
+            mechanics={mechanics}
+            needsAttention={analysisGatePending}
           />
         }
         wizard={<WizardPanel wizardMessage={wizardMessage} detail={wizardDetail} />}

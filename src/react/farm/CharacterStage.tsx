@@ -39,7 +39,7 @@ const CharacterStage: React.FC<CharacterStageProps> = ({
       role="group"
       aria-label={getLabel('characterStage', { replacements: { names } })}
     >
-      {participantIds.map((id) => {
+      {participantIds.map((id, index) => {
         const character = resolveCharacter(id);
         const isActive = activeSpeakerId === id;
         const isDimmed = activeSpeakerId !== null && !isActive;
@@ -52,6 +52,13 @@ const CharacterStage: React.FC<CharacterStageProps> = ({
               isActive && styles.active,
               isDimmed && styles.dimmed,
             )}
+            // Mirrors `Trial.ts`'s sprite slot `TRIAL_STAGE_HOLE.width * (i + 1) / (n + 1)`
+            // so each label sits over its own animal. See `.nameplateSlot`.
+            style={
+              variant === 'nameplates'
+                ? { left: `${((index + 1) / (participantIds.length + 1)) * 100}%` }
+                : undefined
+            }
           >
             {variant === 'busts' && (
               <div
