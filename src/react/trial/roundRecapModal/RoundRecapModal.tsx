@@ -26,6 +26,8 @@ import {
 } from '../utils/trialHelpers';
 import type { ResolvedMechanics } from '../utils/scenarioMechanics';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
+import { useWindowKeyDown } from '../../hooks/useWindowKeyDown';
+import { isContinueCode, shouldIgnoreActionShortcut } from '../utils/trialActionShortcuts';
 import cn from 'classnames';
 import shared from '../trialShared.module.scss';
 import styles from './RoundRecapModal.module.scss';
@@ -80,6 +82,25 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
   }, [round?.id]);
 
   const conditions = useConditionContext();
+
+  const handleContinue = () => {
+    const target = { kind: 'round_recap_action', action: 'continue' } as const;
+    // Block dismissal while a tutorial step is open unless the step has
+    // `interactionMode: 'target_only'` and targets this Continue button.
+    // A missing `interactionMode` field falls back to `'modal_only'` (see
+    // `tutorialStore.openTutorial` / `canRunTargetAction`), so an authored
+    // step without the field also blocks the click.
+    if (!canRunTutorialTargetAction(target)) return;
+    onClose();
+    notifyTutorialTargetAction(target);
+  };
+
+  useWindowKeyDown((event) => {
+    if (shouldIgnoreActionShortcut(event)) return;
+    if (!isContinueCode(event.code)) return;
+    event.preventDefault();
+    handleContinue();
+  }, true);
 
   const choicePreview = useMemo(() => {
     if (!chosen) return recapText(undefined, '');
@@ -290,20 +311,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
         </ScrollFadeContainer>
 
         <div className={styles.recapFooter}>
-          <TrialTextButton
-            onClick={() => {
-              const target = { kind: 'round_recap_action', action: 'continue' } as const;
-              // Block dismissal while a tutorial step is open unless the step has
-              // `interactionMode: 'target_only'` and targets this Continue button.
-              // A missing `interactionMode` field falls back to `'modal_only'` (see
-              // `tutorialStore.openTutorial` / `canRunTargetAction`), so an authored
-              // step without the field also blocks the click.
-              if (!canRunTutorialTargetAction(target)) return;
-              onClose();
-              notifyTutorialTargetAction(target);
-            }}
-            data-tutorial-round-recap-action="continue"
-          >
+          <TrialTextButton onClick={handleContinue} data-tutorial-round-recap-action="continue">
             {getLabel('continue')}
           </TrialTextButton>
         </div>

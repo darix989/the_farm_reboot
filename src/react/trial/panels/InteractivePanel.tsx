@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import type { DebateScenarioJson } from '../../../types/debateEntities';
+import type { DebateScenarioJson, PlayerOption } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import {
   analysisTargetStatementId,
@@ -22,6 +22,8 @@ import {
   canRunTutorialTargetAction,
   notifyTutorialTargetAction,
 } from '../../tutorial/tutorialInteractionGuard';
+import { useWindowKeyDown } from '../../hooks/useWindowKeyDown';
+import { optionIndexForCode, shouldIgnoreActionShortcut } from '../utils/trialActionShortcuts';
 import styles from './TrialPanels.module.scss';
 import getLabel from '../../../data/labels';
 
@@ -72,6 +74,11 @@ interface InteractivePanelProps {
   analyzeTarget: AnalysisTarget | null;
   /** 1-2 line "what do I do now" guidance, shown under the panel title above the icons. */
   hint: string;
+  /**
+   * When false, footer and option shortcuts are off so an overlay (analysis, intro
+   * summary) can own the keyboard.
+   */
+  shortcutsEnabled?: boolean;
 }
 
 const InteractivePanel: React.FC<InteractivePanelProps> = ({
@@ -87,6 +94,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   mechanics,
   analyzeTarget,
   hint,
+  shortcutsEnabled = true,
 }) => {
   const analyzeTargetId = analyzeTarget ? analysisTargetStatementId(analyzeTarget) : null;
   const analyzeGuessState = analyzeTargetId ? getNpcGuessState(analyzeTargetId) : null;
@@ -120,6 +128,56 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     const t = window.setTimeout(() => setRevealAnimOptionId(null), ms);
     return () => window.clearTimeout(t);
   }, [revealAnimOptionId]);
+
+  const isChoiceDisabled = (opt: PlayerOption): boolean => {
+    const gated = isOptionGated(opt);
+    const conditionsMet = isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
+    const locked = gated && !conditionsMet;
+    return locked || !!hideOptions;
+  };
+
+  const activateChoice = (opt: PlayerOption) => {
+    const playerRound = wf.currentPlayerRound;
+    if (!playerRound) return;
+    const gated = isOptionGated(opt);
+    const conditionsMet = isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
+    const target = { kind: 'interactive_option', optionId: opt.id } as const;
+    if (!canRunTutorialTargetAction(target)) return;
+    if (gated && conditionsMet && !revealedLockedOptionIds.has(opt.id)) {
+      setRevealAnimOptionId(opt.id);
+      debateEventBus.emit('interactive:statement_unlocked', {
+        roundNumber: playerRound.roundNumber,
+        roundId: playerRound.id,
+        optionId: opt.id,
+      });
+      onRevealLockedOption(opt.id);
+      notifyTutorialTargetAction(target);
+      return;
+    }
+    if (wf.selectedOption?.id === opt.id) {
+      wf.unselect();
+      notifyTutorialTargetAction(target);
+      return;
+    }
+    debateEventBus.emit('interactive:statement_selected', {
+      roundNumber: playerRound.roundNumber,
+      roundId: playerRound.id,
+      optionId: opt.id,
+    });
+    wf.dispatch({ type: 'select_option', optionId: opt.id });
+    notifyTutorialTargetAction(target);
+  };
+
+  useWindowKeyDown((event) => {
+    if (shouldIgnoreActionShortcut(event)) return;
+    const index = optionIndexForCode(event.code);
+    if (index == null) return;
+    if (wf.gamePhase !== 'player_choosing') return;
+    const opt = choosingOptionsOrder?.[index];
+    if (!opt || isChoiceDisabled(opt)) return;
+    event.preventDefault();
+    activateChoice(opt);
+  }, shortcutsEnabled);
 
   const renderChoices = () => {
     /** Only the player-choice grid belongs here; intro / NPC / responses live elsewhere. */
@@ -163,35 +221,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
               unlockHint={awaitingReveal}
               revealFlash={revealFlash}
               tutorialOptionId={opt.id}
-              onClick={() => {
-                const target = { kind: 'interactive_option', optionId: opt.id } as const;
-                if (!canRunTutorialTargetAction(target)) return;
-                if (gated && conditionsMet && !revealedLockedOptionIds.has(opt.id)) {
-                  setRevealAnimOptionId(opt.id);
-                  debateEventBus.emit('interactive:statement_unlocked', {
-                    roundNumber: playerRound.roundNumber,
-                    roundId: playerRound.id,
-                    optionId: opt.id,
-                  });
-                  onRevealLockedOption(opt.id);
-                  notifyTutorialTargetAction(target);
-                  return;
-                }
-                if (wf.selectedOption?.id === opt.id) {
-                  wf.unselect();
-                  notifyTutorialTargetAction(target);
-                  return;
-                }
-                if (playerRound) {
-                  debateEventBus.emit('interactive:statement_selected', {
-                    roundNumber: playerRound.roundNumber,
-                    roundId: playerRound.id,
-                    optionId: opt.id,
-                  });
-                }
-                wf.dispatch({ type: 'select_option', optionId: opt.id });
-                notifyTutorialTargetAction(target);
-              }}
+              onClick={() => activateChoice(opt)}
             />
           );
         })}
@@ -252,6 +282,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
             },
           }}
           submitTutorialAction={wf.gamePhase === 'player_confirming' ? 'confirm' : 'continue'}
+          shortcutsEnabled={shortcutsEnabled}
         />
         {renderChoices()}
       </div>

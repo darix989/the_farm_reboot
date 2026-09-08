@@ -605,28 +605,6 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     revealComplete();
   }, [revealAnalysisTargetId, analysisStatementTargetId, revealComplete]);
 
-  /**
-   * Space / Enter mirror Continue, but only while a line is being revealed: this is a reading
-   * pacer, not a way to play the whole debate from the keyboard. The modal checks stop it
-   * stealing a press that belongs to the analysis or intro-summary dialog, and the target check
-   * leaves a focused button's own Space/Enter activation alone — without it, clicking Continue
-   * once and then pressing Space advances twice.
-   */
-  useEffect(() => {
-    if (!revealActive) return;
-    if (analysisTarget || introSummaryOpen || isTutorialOpen) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.repeat) return;
-      if (event.code !== 'Space' && event.code !== 'Enter') return;
-      const target = event.target as HTMLElement | null;
-      if (target?.closest('button, a, input, textarea, select, [contenteditable]')) return;
-      event.preventDefault();
-      revealAdvance();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [revealActive, revealAdvance, analysisTarget, introSummaryOpen, isTutorialOpen]);
-
   // -----------------------------------------------------------------------
   // Footer action state
   // -----------------------------------------------------------------------
@@ -1116,6 +1094,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             // read yet would let them skip the reveal.
             analyzeTarget={revealActive ? null : currentAnalysisTarget}
             hint={actionsHint}
+            shortcutsEnabled={!analysisTarget && !introSummaryOpen}
           />
         }
       />

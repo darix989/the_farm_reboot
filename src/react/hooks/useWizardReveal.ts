@@ -29,7 +29,7 @@ export interface WizardReveal {
   skipToken: number;
   /** `TypewriterText` reports that the last character of the chunk has landed. */
   onSentenceTyped: () => void;
-  /** Consumes a Continue / Space / Enter. `false` means the caller should run its own action. */
+  /** Consumes a Continue press (Enter / Space / D). `false` means the caller should run its own action. */
   advance: () => boolean;
   /** Finish now and remember this line, so it is never revealed twice. */
   complete: () => void;

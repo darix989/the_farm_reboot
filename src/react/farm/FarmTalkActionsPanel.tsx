@@ -3,6 +3,11 @@ import getLabel from '../../data/labels';
 import type { DebateScenarioKey } from '../../data/levels';
 import TrialActionRow from '../trial/components/TrialActionRow';
 import TrialChoiceButton from '../trial/components/TrialChoiceButton';
+import { useWindowKeyDown } from '../hooks/useWindowKeyDown';
+import {
+  optionIndexForCode,
+  shouldIgnoreActionShortcut,
+} from '../trial/utils/trialActionShortcuts';
 import styles from '../trial/panels/TrialPanels.module.scss';
 
 interface FarmTalkActionsPanelProps {
@@ -54,6 +59,33 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
   const leaveLabel = getLabel('farmLeave');
   const continueLabel = getLabel('continue');
 
+  const talkDisabled = !scenario || revealActive || !!lockedHint;
+  const leaveDisabled = revealActive;
+  const startTalk = () => {
+    if (!scenario) return;
+    onStart(scenario);
+  };
+
+  // Last-beat Talk / Leave sit in the same A / B slots as debate options, so Z / X
+  // press them. They are unmounted (or hidden) until the last beat settles, which
+  // already matches `disabled` — a shortcut must no-op then, same as a click.
+  useWindowKeyDown((event) => {
+    if (shouldIgnoreActionShortcut(event)) return;
+    if (!isLastBeat) return;
+    const index = optionIndexForCode(event.code);
+    if (index === 0) {
+      if (talkDisabled) return;
+      event.preventDefault();
+      startTalk();
+      return;
+    }
+    if (index === 1) {
+      if (leaveDisabled) return;
+      event.preventDefault();
+      onClose();
+    }
+  }, true);
+
   return (
     <div className={styles.trialInteractiveBody}>
       <div className={styles.trialAreaTitle}>
@@ -85,6 +117,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
             },
           }}
           submitTutorialAction="continue"
+          extraContinueCodes={['KeyE']}
         />
         {isLastBeat && (
           <div
@@ -97,15 +130,15 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
                 content={talkLabel}
                 shape="word"
                 ariaLabel={lockedHint ? `${talkLabel} — ${lockedHint}` : talkLabel}
-                disabled={revealActive || !!lockedHint}
-                onClick={() => onStart(scenario)}
+                disabled={talkDisabled}
+                onClick={startTalk}
               />
             )}
             <TrialChoiceButton
               content={leaveLabel}
               shape="word"
               ariaLabel={leaveLabel}
-              disabled={revealActive}
+              disabled={leaveDisabled}
               onClick={onClose}
             />
           </div>

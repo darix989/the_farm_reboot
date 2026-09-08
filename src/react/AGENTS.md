@@ -16,13 +16,15 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `trial/panels/FeedbackPanel.tsx` | The expanded Debate Log: title strip (log title, Insight + moderator mood, the whole-panel collapse button) and the scrollable round-card list. |
 | `trial/components/DebateLogRecapChip.tsx` | The collapsed Debate Log: round counter, the same Insight + mood strip, and the button back in. |
 | `trial/components/DebateLogToggleButton.tsx` | The whole-panel collapse / expand control, rendered by both of the above so they cannot drift. Exports `DEBATE_LOG_PANEL_ID`. |
-| `trial/components/TrialActionRow.tsx` | Analyze / Back / Continue icon row, shared by the debate Actions panel and the overworld talk. |
+| `trial/components/TrialActionRow.tsx` | Analyze / Back / Continue icon row, shared by the debate Actions panel and the overworld talk. Owns A / S / Enter / Space / D (and farm-talk E) shortcuts. |
 | `trial/components/TrialChoiceButton.tsx` | A/B/C (or Talk / Leave) square, shared by the debate and the overworld talk. |
 | `trial/utils/debateLogTutorialNeeds.ts` | `tutorialNeedsDebateLog(steps)` — does this tutorial point at something only present while the log is expanded? |
 | `trial/panels/WizardPanel.tsx` | Centre column: the guidance line plus the statement box, which is revealed one sentence at a time (see "Wizard sentence reveal"). |
 | `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and an icon-only footer (Analyze / Back / Continue-Confirm-Leave). The Analyze button opens the opponent's current-round line — the debate log's own `AnalyzeButton` lenses stay the way into history. |
 | `hooks/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. Also emits `round:start` / `round:end` on the debate event bus. |
 | `hooks/useWizardReveal.ts` | Paces one incoming line through the wizard a sentence at a time; owns which sentence is showing, not the character count. |
+| `hooks/useWindowKeyDown.ts` | Window `keydown` subscription that always calls the latest handler (same ref pattern as `useDebateEvent`). |
+| `trial/utils/trialActionShortcuts.ts` | Action-key codes (Continue / Analyze / Back / options) and the ignore rules for focused controls. |
 | `trial/components/TypewriterText.tsx` | Leaf that fills in one line character by character. Owns the character count so a reveal re-renders one node, not the overlay. |
 | `hooks/useScenarioTutorials.ts` | Subscribes to bus events declared by `scenario.tutorials` and opens the matching overlay via `useTutorialStore` (see "Scenario tutorials" below). |
 | `trial/utils/debateEventBus.ts` | Typed pub/sub singleton keyed on `EventTrigger`, plus the `useDebateEvent` React hook and tutorial-trigger helpers (`DebateTutorialTrigger`, `debatePayloadSatisfies`, `debateTutorialTriggerMatches`). |
@@ -240,6 +242,8 @@ Content depends on `gamePhase`:
 
 The panel footer is three icon-only squared buttons: **Analyze | Back | Continue**. Analyze always targets the opponent's *current* line (the NPC statement, the opponent's crossfire question, or its response — never the player's own choice), keyed off `gamePhase`; it stays disabled while that line is still being revealed, and with nothing current to analyze (`debate_intro`, `player_confirming`, `round_recap`, `debate_complete`) it renders disabled rather than reflowing the row, and it is not rendered at all when `mechanics.analysisEnabled` is `false`. It carries the same green/amber/red guess-state tint as the debate log's `AnalyzeButton` lenses. **Back** is enabled only in `player_confirming` (or while an option can be unselected in `player_choosing`). The context-sensitive submit button's icon follows its three states — continue / confirm / leave — via `TrialUI`'s `interactiveFooter.submitIcon`.
 
+Keyboard shortcuts press those same buttons (no-op when the matching control is disabled, hidden, or tutorial-blocked): **A** Analyze, **S** Back, **Enter / Space / D** Continue (Confirm / Leave), **Z / X / C** options A / B / C. Analysis and intro-summary overlays suspend the footer/option map so they do not steal keys; recap and intro-summary Continue / Begin bind Enter / Space / D themselves. Farm talk keeps **E** as an extra Continue alias, and last-beat **Talk / Leave** take the A / B slots (**Z / X**). An open tutorial takes **Enter / Space / D** for Got it / Continue unless the step is `target_only` (those keys then press the highlighted control instead).
+
 ---
 
 ## Wizard sentence reveal (`hooks/useWizardReveal.ts`)
@@ -252,8 +256,9 @@ whole line.
 
 **Press rules**
 
-- Continue (or Space / Enter) while characters are still appearing fills in the rest of the
-  sentence.
+- Continue (or Enter / Space / D) while characters are still appearing fills in the rest of the
+  sentence. Those keys invoke the footer Continue button, so they also advance the phase or
+  farm beat once that button is enabled and the line is fully on screen.
 - Continue on a fully-shown sentence steps to the next one.
 - When the **last** sentence finishes (typewriter or skip), the reveal is done: the wizard
   keeps that sentence (readout stays `(n/n)`), Analyze unlocks, and Continue becomes the

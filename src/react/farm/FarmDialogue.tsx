@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import getLabel from '../../data/labels';
 import { resolveCharacter } from '../../data/characters';
 import type { DebateScenarioKey } from '../../data/levels';
@@ -14,10 +14,6 @@ interface FarmDialogueProps {
   dialogue: FarmDialogueState;
   onStart: (scenario: DebateScenarioKey) => void;
   onClose: () => void;
-}
-
-function isAdvanceKey(code: string): boolean {
-  return code === 'Space' || code === 'KeyE' || code === 'Enter';
 }
 
 /**
@@ -63,26 +59,6 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
       speaker: { characterId: beat.speakerId, emotion: beat.emotion ?? 'talking' },
     };
   }, [beat, body, sentences.length]);
-
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.repeat || !isAdvanceKey(event.code)) return;
-      const target = event.target as HTMLElement | null;
-      if (target?.closest('button, a, input, textarea, select, [contenteditable]')) return;
-      if (revealActive) {
-        event.preventDefault();
-        if (revealAdvance()) return;
-        if (!isLast) advanceBeat();
-        return;
-      }
-      if (!isLast) {
-        event.preventDefault();
-        advanceBeat();
-      }
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [revealActive, revealAdvance, isLast, advanceBeat]);
 
   return (
     <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
