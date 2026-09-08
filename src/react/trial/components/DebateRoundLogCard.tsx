@@ -1,9 +1,10 @@
 import React, { useId } from 'react';
 import cn from 'classnames';
-import type { DebateScenarioJson } from '../../../types/debateEntities';
+import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import AnalyzeButton from './AnalyzeButton';
+import SpottedFallacyIcons from './SpottedFallacyIcons';
 import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
 import {
   emotionForOption,
@@ -40,6 +41,10 @@ interface DebateRoundLogCardProps {
   expandOverride: boolean | undefined;
   onExpandToggle: () => void;
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
+  /** Fallacies correctly spotted so far in one statement, for its icon badge. */
+  getSpottedFallacies: (statementId: string, sentences: Sentence[]) => LogicalFallacy[];
+  /** Opens `FallacyInfoModal` describing one fallacy — passed to each spotted-fallacy icon. */
+  onOpenFallacyInfo: (fallacy: LogicalFallacy) => void;
   onOpenAnalysis: (target: AnalysisTarget) => void;
   /** Scenario mode flags — gate the analyze buttons and the impact emoji. */
   mechanics: ResolvedMechanics;
@@ -67,6 +72,8 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   expandOverride,
   onExpandToggle,
   getNpcGuessState,
+  getSpottedFallacies,
+  onOpenFallacyInfo,
   onOpenAnalysis,
   mechanics,
 }) => {
@@ -321,6 +328,12 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(round.statement.sentences)}
                   </p>
+                  {mechanics.analysisEnabled && (
+                    <SpottedFallacyIcons
+                      fallacies={getSpottedFallacies(round.id, round.statement.sentences)}
+                      onSelect={onOpenFallacyInfo}
+                    />
+                  )}
                 </div>
               )}
 
@@ -377,6 +390,15 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(round.opponentPrompt.sentences)}
                   </p>
+                  {showPromptAnalyze && (
+                    <SpottedFallacyIcons
+                      fallacies={getSpottedFallacies(
+                        round.opponentPrompt.id,
+                        round.opponentPrompt.sentences,
+                      )}
+                      onSelect={onOpenFallacyInfo}
+                    />
+                  )}
                 </div>
               )}
 
@@ -430,6 +452,15 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                     )}
                   </div>
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>{playerBodyText}</p>
+                  {mechanics.analysisEnabled && (
+                    <SpottedFallacyIcons
+                      fallacies={getSpottedFallacies(
+                        chosenOption.id,
+                        resolvedOptionSentences(chosenOption, true),
+                      )}
+                      onSelect={onOpenFallacyInfo}
+                    />
+                  )}
                 </div>
               )}
 
@@ -488,6 +519,15 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(displayResponse.statement.sentences)}
                   </p>
+                  {showResponseAnalyze && (
+                    <SpottedFallacyIcons
+                      fallacies={getSpottedFallacies(
+                        displayResponse.statement.id,
+                        displayResponse.statement.sentences,
+                      )}
+                      onSelect={onOpenFallacyInfo}
+                    />
+                  )}
                 </div>
               )}
             </div>

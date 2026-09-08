@@ -516,6 +516,24 @@ export function useTrialRoundWorkflow(
     return scenario.characters?.[id] ?? id.charAt(0).toUpperCase() + id.slice(1);
   }, [scenario]);
 
+  /**
+   * "Round 4 — crossfire" on its own: the whole guidance line minus the part that says what to
+   * do about it. The wizard shows this while it is still revealing a statement, so the
+   * instruction does not give away a line the player has not finished reading.
+   *
+   * `null` outside the rounds (intro, complete), where there is no round to label.
+   */
+  const wizardRoundLabel = useMemo((): string | null => {
+    if (state.gamePhase === 'debate_intro' || state.gamePhase === 'debate_complete') return null;
+    if (!currentRound) return null;
+    return getLabel('workflowRoundWithType', {
+      replacements: {
+        roundNumber: currentRound.roundNumber,
+        typeDisplay: currentRound.type.replace(/_/g, ' '),
+      },
+    });
+  }, [state.gamePhase, currentRound]);
+
   const wizardMessage = useMemo((): string => {
     const copy = encounterLabels(scenario);
     if (state.gamePhase === 'debate_complete') return getLabel(copy.finished);
@@ -524,27 +542,20 @@ export function useTrialRoundWorkflow(
     }
     if (!currentRound) return '';
 
-    const roundLabel = getLabel('workflowRoundWithType', {
-      replacements: {
-        roundNumber: currentRound.roundNumber,
-        typeDisplay: currentRound.type.replace(/_/g, ' '),
-      },
-    });
-
     switch (state.gamePhase) {
       case 'npc_speaking':
-        return getLabel('workflowNpcSpeaking', { replacements: { roundLabel, opponentName } });
+        return getLabel('workflowNpcSpeaking', { replacements: { opponentName } });
       case 'player_choosing':
         if (currentPlayerRound?.opponentPrompt) {
           return state.selectedOptionId
-            ? getLabel('workflowStatementSelected', { replacements: { roundLabel } })
+            ? getLabel('workflowStatementSelected')
             : getLabel('workflowPlayerChoosingQuestion', {
-                replacements: { roundLabel, opponentName },
+                replacements: { opponentName },
               });
         }
         return state.selectedOptionId
-          ? getLabel('workflowStatementSelected', { replacements: { roundLabel } })
-          : getLabel('workflowPlayerChoosingStatement', { replacements: { roundLabel } });
+          ? getLabel('workflowStatementSelected')
+          : getLabel('workflowPlayerChoosingStatement');
       case 'player_confirming':
         return getLabel('workflowPlayerConfirming');
       case 'npc_responding':
@@ -595,6 +606,7 @@ export function useTrialRoundWorkflow(
     canUndo,
     canUnselect,
     wizardMessage,
+    wizardRoundLabel,
     dispatch,
     undo,
     unselect,

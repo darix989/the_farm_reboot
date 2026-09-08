@@ -245,6 +245,7 @@ export type EventTrigger =
   | 'interactive:back'
   | 'interactive:continue'
   | 'interactive:confirm'
+  | 'interactive:analyze'
   | 'round:recap:open'
   | 'round:recap:close'
   | 'debate_log:round:analyze'
@@ -337,7 +338,7 @@ export type TutorialTargetRef =
   | { kind: 'modal_round_recap_score' }
   | { kind: 'round_recap_action'; action: 'continue' }
   | { kind: 'intro_summary_action'; action: 'begin_round_1' | 'close' }
-  | { kind: 'interactive_action'; action: 'back' | 'continue' | 'confirm' }
+  | { kind: 'interactive_action'; action: 'back' | 'continue' | 'confirm' | 'analyze' }
   | { kind: 'interactive_option'; optionId: string }
   | { kind: 'debate_log_round_analyze'; roundId: string }
   | { kind: 'debate_log_round_toggle'; roundId: string }

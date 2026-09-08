@@ -158,6 +158,36 @@ export function statementText(sentences: Sentence[]): string {
   return sentences.map((s) => s.text).join(' ');
 }
 
+/** A chunk shorter than this is folded into the one before it — see `splitIntoSentences`. */
+const MIN_REVEAL_CHUNK_CHARS = 40;
+
+/**
+ * Splits prose into reading chunks for the wizard's sentence-by-sentence reveal.
+ *
+ * Only `scenario.introduction` needs this. Every other line the wizard reveals is authored as
+ * `Sentence[]` — the same unit the analysis modal guesses on — so splitting it again would
+ * invent a second, competing definition of "one sentence".
+ *
+ * A bare `/(?<=[.!?…])\s+/` split is too eager on real intros: it strands one-word fragments
+ * ("Loudly.") and breaks inside quoted speech. Folding any short fragment (or one that starts
+ * mid-sentence, lowercase) into its predecessor fixes both without a tokenizer. It still
+ * mis-splits after an abbreviation ("Mr. Tobias"), which no authored intro currently contains.
+ */
+export function splitIntoSentences(text: string): string[] {
+  const chunks: string[] = [];
+  for (const raw of text.trim().split(/(?<=[.!?…])\s+/)) {
+    const chunk = raw.trim();
+    if (!chunk) continue;
+    const previous = chunks[chunks.length - 1];
+    if (previous && (chunk.length < MIN_REVEAL_CHUNK_CHARS || /^\p{Ll}/u.test(chunk))) {
+      chunks[chunks.length - 1] = `${previous} ${chunk}`;
+      continue;
+    }
+    chunks.push(chunk);
+  }
+  return chunks;
+}
+
 /**
  * One block of recap copy: the authored `summary` when there is one, the spoken text
  * otherwise. `isSummary` tells the caller whether it may clamp the paragraph — the
@@ -169,12 +199,6 @@ export function recapText(
 ): { text: string; isSummary: boolean } {
   const authored = summary?.trim() ?? '';
   return authored ? { text: authored, isSummary: true } : { text: fullText, isSummary: false };
-}
-
-/** Preview line for compact UI (e.g. choice buttons); full text stays in aria-label. */
-export function truncateStatementPreview(text: string, maxChars = 80): string {
-  if (text.length <= maxChars) return text;
-  return `${text.slice(0, maxChars)}...`;
 }
 
 /** Returns a CSS color string for a numeric score or impact value. */

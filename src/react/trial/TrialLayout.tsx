@@ -19,9 +19,9 @@ export interface TrialLayoutProps {
  * - Top row: character stage across the full stage width (pointer-events pass through).
  * - Top-right: the Debate Log, painting over the stage when expanded — or the recap chip
  *   when collapsed (`debateLogStore`).
- * - Bottom row: Wizard on the left 60%, Interactive on the right 40%.
+ * - Bottom row: Dialog on the left 70%, Actions on the right 30%.
  *
- * Two columns: left 60% (3fr), right 40% (2fr), two equal-height rows.
+ * Two columns: left 70% (7fr), right 30% (3fr), two equal-height rows.
  */
 const TrialLayout: React.FC<TrialLayoutProps> = ({
   stage,
@@ -42,7 +42,7 @@ const TrialLayout: React.FC<TrialLayoutProps> = ({
     <div className={styles.trialLayoutGrid}>
       <div className={styles.trialGameHole}>{stage}</div>
 
-      {/* Debate Log: top row, right column (40% width), over the full-width game hole */}
+      {/* Debate Log: top row, right column (30% width), over the full-width game hole */}
       {isDebateLogExpanded ? (
         <div
           id={DEBATE_LOG_PANEL_ID}
@@ -55,7 +55,7 @@ const TrialLayout: React.FC<TrialLayoutProps> = ({
         <div className={styles.trialDebateLogRecapCell}>{debateLogRecap}</div>
       )}
 
-      {/* Wizard: bottom row, left column (60% width) */}
+      {/* Dialog: bottom row, left column (70% width) */}
       <div
         className={cn(styles.trialPanel, styles.trialWizardPanel)}
         style={{ backgroundColor: uiColor.surfaceTrialPanel }}
@@ -63,7 +63,7 @@ const TrialLayout: React.FC<TrialLayoutProps> = ({
         <div className={styles.trialPanelInner}>{wizard}</div>
       </div>
 
-      {/* Interactive: bottom row, right column (40% width) */}
+      {/* Actions: bottom row, right column (30% width) */}
       <div
         className={cn(styles.trialPanel, styles.trialInteractivePanel)}
         style={{ backgroundColor: uiColor.surfaceTrialPanel }}

@@ -46,6 +46,14 @@
   max-width: none;
 }
 
+.widthSquare {
+  flex: 0 0 auto;
+  width: var(--trial-footer-icon-btn-size, 4rem);
+  height: var(--trial-footer-icon-btn-size, 4rem);
+  min-height: 0;
+  padding: 0;
+}
+
 .variantSolid {
   border: 2px solid var(--ui-color-border-ring);
   background: var(--ui-color-overlay-panel);

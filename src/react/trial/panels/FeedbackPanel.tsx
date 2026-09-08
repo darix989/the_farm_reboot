@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import type { DebateScenarioJson } from '../../../types/debateEntities';
+import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
@@ -19,6 +19,10 @@ interface FeedbackPanelProps {
   insightPoints: number;
   onOpenAnalysis: (target: AnalysisTarget) => void;
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
+  /** Fallacies correctly spotted so far in one statement, for its icon badge. */
+  getSpottedFallacies: (statementId: string, sentences: Sentence[]) => LogicalFallacy[];
+  /** Opens `FallacyInfoModal` describing one fallacy — passed down to each icon. */
+  onOpenFallacyInfo: (fallacy: LogicalFallacy) => void;
   /** Scenario mode flags — gate the header strip and the per-round analyze buttons. */
   mechanics: ResolvedMechanics;
 }
@@ -39,6 +43,8 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
   insightPoints,
   onOpenAnalysis,
   getNpcGuessState,
+  getSpottedFallacies,
+  onOpenFallacyInfo,
   mechanics,
 }) => {
   const feedbackScrollRef = useRef<HTMLDivElement>(null);
@@ -199,6 +205,8 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                   });
                 }}
                 getNpcGuessState={getNpcGuessState}
+                getSpottedFallacies={getSpottedFallacies}
+                onOpenFallacyInfo={onOpenFallacyInfo}
                 onOpenAnalysis={onOpenAnalysis}
                 mechanics={mechanics}
               />

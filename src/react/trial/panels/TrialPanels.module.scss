@@ -2,6 +2,13 @@
 @use '../../breakpoints' as bp;
 @use '../debateLogIconSizing' as debate-log-icon;
 
+/* Guess-state tints shared by the debate-log analyze lens (`.trialAnalyzeBtn`) and the
+   interactive footer's analyze button (`.trialFooterAnalyzeBtn`) — file-local per the
+   module's own colour convention, since both live only in this file. */
+$trial-guess-tint-correct: invert(1) sepia(1) saturate(3) hue-rotate(90deg);
+$trial-guess-tint-partial: invert(1) sepia(1) saturate(2.5) hue-rotate(15deg);
+$trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
+
 /* =========================================================================
    Trial panels — panel content wrappers
    ========================================================================= */
@@ -21,25 +28,53 @@
   flex-direction: column;
 }
 
-.trialInteractiveScrollWrap {
-  margin-top: 1rem;
-  display: flex;
-  min-height: 0;
-  flex: 1;
-  flex-direction: column;
+/* "What do I do now" guidance, under the title strip and above the centred icon/letter
+   cluster. Clamped to two lines so the rewritten (shorter) copy always fits a 30% column. */
+.trialActionsHint {
+  margin: 0.75rem 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  /* Fixed to exactly two lines' worth of height (line-height 1.4 × 2) so a one-line hint
+     reserves the same space as a two-line one — the icons/letters below never shift. */
+  height: 2.8em;
   overflow: hidden;
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.4;
+  color: var(--ui-color-text-body);
+  text-align: center;
 }
 
-.trialInteractiveFooter {
-  flex-shrink: 0;
+/* Hint → icons → letters, centred both axes in the space below the title strip. */
+.trialActionsCenter {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+/* Icon-only action row (Analyze | Back | Continue) — a flex row since the button count
+   varies (two when the scenario disables analysis). Meaningless `max-width` dropped now
+   that this sits in a 30% column rather than a full-width footer. */
+.trialInteractiveFooterActions {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid var(--ui-color-border-soft);
-  padding-top: 1rem;
+  gap: 1.5rem;
+
+  --trial-footer-icon-btn-size: 6rem;
+
+  @include bp.compact {
+    --trial-footer-icon-btn-size: 5rem;
+  }
 }
 
+/* Multi-button modal footer grid (Back | primary) — shared with `TutorialOverlay`. */
 .trialFooterGrid {
   display: grid;
   width: 100%;
@@ -57,6 +92,33 @@
   }
 }
 
+/* `<img>` inside a squared footer icon button. */
+.trialFooterIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.85;
+  filter: invert(1);
+}
+
+/* Guess-state tint for the footer analyze button, matching `.trialAnalyzeBtn` below. */
+.trialFooterAnalyzeBtn {
+  &.correct .trialFooterIcon {
+    opacity: 1;
+    filter: $trial-guess-tint-correct;
+  }
+
+  &.partial .trialFooterIcon {
+    opacity: 1;
+    filter: $trial-guess-tint-partial;
+  }
+
+  &.wrong .trialFooterIcon {
+    opacity: 1;
+    filter: $trial-guess-tint-wrong;
+  }
+}
+
 /* =========================================================================
    Trial panels — area title strip
    ========================================================================= */
@@ -64,7 +126,7 @@
 .trialAreaTitle {
   box-sizing: border-box;
   display: flex;
-  height: calc(5vh * 1.5);
+  height: calc(5vh * 1.3);
   flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
@@ -73,7 +135,7 @@
   border-radius: 0.5rem;
   border: 1px solid var(--ui-color-border-strong);
   background: var(--ui-color-overlay-medium);
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  padding: 0.6rem 1rem 0.6rem 1.25rem;
 
   > h2 {
     margin: 0;
@@ -106,7 +168,7 @@
 }
 
 .trialPanelHeading {
-  font-size: calc(var(--ui-font-display) * var(--ui-trial-panel-font-scale, 1));
+  font-size: calc(var(--ui-font-display) * 0.85 * var(--ui-trial-panel-font-scale, 1));
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -114,11 +176,23 @@
   margin: 0;
 }
 
+/* Trailing round label in the Dialog header strip: "DIALOG — ROUND 1 — OPENING CONSTRUCTIVE". */
+.trialDialogRoundLabel {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ui-color-text-caption);
+}
+
 /* =========================================================================
    Trial panels — wizard body
    ========================================================================= */
 
-/* Flex slot for `ScrollFadeContainer`; mirrors `trialInteractiveScrollWrap`. */
+/* Flex slot for `ScrollFadeContainer`. */
 .trialWizardBodySlot {
   box-sizing: border-box;
   display: flex;
@@ -155,43 +229,47 @@
   }
 }
 
-.trialWizardGuidanceText {
-  box-sizing: border-box;
-  flex-shrink: 0;
-  margin: 0;
-  max-width: 100%;
-  min-width: 0;
-  overflow-wrap: break-word;
-  padding: 0 0.25rem;
-  word-break: break-word;
-  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
-  line-height: 1.625;
-  color: var(--ui-color-text-body);
-}
-
 .trialWizardDetailLive {
   flex: 1 1 0%;
   min-height: 0;
   min-width: 0;
 }
 
-.trialWizardMainText {
-  border: none;
-  border-radius: 0.5rem;
-  box-shadow: none;
-  box-sizing: border-box;
-  flex: 1 1 0%;
-  margin: 0;
-  max-width: 100%;
-  min-height: 0;
-  min-width: 0;
-  outline: none;
-  overflow-wrap: break-word;
-  padding: 1rem;
-  word-break: break-word;
-  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
-  line-height: 1.625;
-  color: var(--ui-color-text-body);
+/* Off-screen text node: carries each revealed sentence to a screen reader once, in full,
+   while the visible copy fills in a character at a time (and is `aria-hidden`). */
+.trialWizardRevealAnnouncer {
+  border: 0;
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+/* Speaker portrait floated into the top-left of the Dialog statement box; both `<p>`s below
+   it are block boxes, so their line boxes shorten beside the portrait and run full-width
+   once it ends. */
+.trialWizardPortrait {
+  float: left;
+  margin: 0 1rem 0.5rem 0;
+
+  /* `AnimalFace` renders nothing for a character with no face art; without this the wrapper
+     survives as a zero-width float and still eats its own margin. */
+  &:empty {
+    display: none;
+  }
+}
+
+/* Speaker line + body: always at least 4 lines tall, so the box's background fully contains
+   `.trialWizardPortrait` (a fixed 112px square, see `FACE_BOX_PX`) even when the reveal has
+   only shown a word or two so far — a shorter block would let the floated portrait poke out
+   past the background underneath it. 3 lines still fell short of 112px at the default trial
+   panel font scale; 4 clears it with room to spare. */
+.trialWizardTextBlock {
+  min-height: calc(1.375em * 4);
 }
 
 /* =========================================================================
@@ -499,6 +577,50 @@
   line-height: 1.375;
 }
 
+/* Icons for the fallacies the player has correctly spotted in one statement, pinned to the
+   bottom-right corner under its text — a quick "you got these" recap. */
+.debateLogSpottedFallacies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: calc(0.35rem * var(--ui-trial-panel-font-scale, 1));
+  margin-top: calc(0.5rem * var(--ui-trial-panel-font-scale, 1));
+}
+
+/* Bordered chip — opens `FallacyInfoModal` for this fallacy. Same square-icon-button
+   language as `.trialAnalyzeBtn` / `.debateLogExpandBtn`, so the badge reads as clickable
+   rather than as plain decoration. */
+.debateLogSpottedFallacyBtn {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(2rem * var(--ui-trial-panel-font-scale, 1));
+  height: calc(2rem * var(--ui-trial-panel-font-scale, 1));
+  padding: calc(0.3rem * var(--ui-trial-panel-font-scale, 1));
+  border-radius: 0.375rem;
+  border: 1px solid var(--ui-color-border-inner);
+  background: var(--ui-color-overlay-deep);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease-in-out,
+    background 0.15s ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--ui-color-info-border-active);
+    background: var(--ui-color-info-bg);
+  }
+}
+
+.debateLogSpottedFallacyIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.9;
+  filter: $trial-guess-tint-correct;
+}
+
 /* =========================================================================
    Trial panels — history entry
    ========================================================================= */
@@ -558,7 +680,7 @@
 
     img {
       opacity: 1;
-      filter: invert(1) sepia(1) saturate(3) hue-rotate(90deg);
+      filter: $trial-guess-tint-correct;
     }
 
     &:hover {
@@ -573,7 +695,7 @@
 
     img {
       opacity: 1;
-      filter: invert(1) sepia(1) saturate(2.5) hue-rotate(15deg);
+      filter: $trial-guess-tint-partial;
     }
 
     &:hover {
@@ -588,7 +710,7 @@
 
     img {
       opacity: 1;
-      filter: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
+      filter: $trial-guess-tint-wrong;
     }
 
     &:hover {
@@ -602,36 +724,29 @@
    Trial panels — choice list
    ========================================================================= */
 
+/* Three letters, always in a row — unlike the old preview cards, a bare letter fits at any
+   column width, so there is no `bp.compact` single-column override. */
 .trialChoices {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: stretch;
-
-  /* Both branches set the same gap; only the column count toggles between compact and expanded. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 1.25rem;
-
-  @include bp.compact {
-    grid-template-columns: 1fr;
-  }
 }
 
 .trialChoiceBtn {
   box-sizing: border-box;
   display: flex;
-  width: 100%;
-  min-width: 0;
-  min-height: 5.75rem;
-  align-items: flex-start;
-  justify-content: stretch;
+  width: calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8);
+  height: calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8);
+  min-height: 0;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   overflow: hidden;
   border-radius: 0.5rem;
   border: 1px solid var(--ui-color-border-strong);
   background: var(--ui-color-overlay-muted);
-  padding: 0.875rem;
-  text-align: left;
-  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
-  line-height: 1.4;
-  color: var(--ui-color-text-emphasis);
   box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
   transition:
     border-color 0.15s ease-in-out,
@@ -665,10 +780,6 @@
       color: var(--ui-color-text-emphasis);
     }
   }
-
-  @include bp.expanded {
-    padding: 1rem;
-  }
 }
 
 .trialChoiceBtnSelected {
@@ -686,40 +797,13 @@
   }
 }
 
-.trialChoiceBtnRow {
-  display: flex;
-  width: 100%;
-  min-width: 0;
-  align-items: flex-start;
-  gap: 0.625rem;
-}
-
+/* The letter is the whole button now — no badge border/background of its own. */
 .trialChoiceLetter {
-  flex-shrink: 0;
-  box-sizing: border-box;
-  display: flex;
-  min-width: 1.5rem;
-  height: 1.5rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.3125rem;
-  border: 1px solid var(--ui-color-border-inner);
-  background: var(--ui-color-overlay-deep);
-  color: var(--ui-color-text-emphasis);
-  font-size: calc(var(--ui-font-label) * var(--ui-trial-panel-font-scale, 1));
+  font-size: calc(var(--ui-font-display) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 700;
   line-height: 1;
-  transition:
-    border-color 0.15s ease-in-out,
-    background 0.15s ease-in-out,
-    color 0.15s ease-in-out;
-}
-
-.trialChoiceStatement {
-  flex: 1;
-  min-width: 0;
-  overflow-wrap: break-word;
-  word-break: break-word;
+  color: var(--ui-color-text-emphasis);
+  transition: color 0.15s ease-in-out;
 }
 
 /** Nudge when a locked option is guess-unlocked but not yet clicked open; slow shake, repeats every 10s */

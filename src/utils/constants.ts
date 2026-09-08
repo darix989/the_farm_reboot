@@ -25,7 +25,7 @@ export const STAGE_REM_MAX_PX = 28;
  * together, or use `DEBUG_TRIAL_STAGE` in `Trial.ts` to check they still agree.
  *
  * The rect is deliberately **static**: when the player expands the Debate Log it paints over
- * the right 2fr of this band (see `debateLogStore`) rather than the cast re-laying out, so
+ * the right 3fr of this band (see `debateLogStore`) rather than the cast re-laying out, so
  * the rightmost sprite of a 2-3 animal cast is hidden while the log is open.
  */
 export const TRIAL_STAGE_HOLE = {
