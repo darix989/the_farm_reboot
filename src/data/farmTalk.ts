@@ -5,12 +5,20 @@
  * `Done` when the list is empty. A missing row falls back to the single
  * `farmDialog<Npc><suffix>` label so a new animal is never silent.
  */
+import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 import { PLAYER_CHARACTER_ID } from './characters';
 import type { Labels } from './labels';
 
 export interface FarmTalkBeat {
   speakerId: string;
   textLabel: Labels;
+  /**
+   * Register for the speaker's dialogue portrait. Optional, and unauthored throughout: every
+   * beat below predates the face register, and `talking` — what `FarmDialogue` falls back to —
+   * is the honest reading of an ordinary line. Set it where a beat is pointedly something
+   * else, the way `Statement.emotion` overrides the debate's derivation.
+   */
+  emotion?: AnimalEmotion;
 }
 
 const RUE = PLAYER_CHARACTER_ID;

@@ -79,12 +79,37 @@
 }
 
 .dialogueBox {
+  display: flex;
+
+  // Top-aligned so the portrait sits level with the speaker name rather than floating beside
+  // the middle of a long paragraph.
+  align-items: flex-start;
+
+  // Wraps the text below the portrait on a narrow stage instead of crushing it into a
+  // column a few words wide.
+  flex-wrap: wrap;
+  gap: 1.2rem;
   width: min(46rem, 86%);
   padding: 1.4rem 1.6rem;
   border: 2px solid var(--ui-color-border-emphasis);
   border-radius: 12px;
   background: var(--ui-color-bg-soft);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+/**
+ * The text column beside the portrait.
+ *
+ * `flex: 1 1 18rem` rather than a grid track: `AnimalFace` renders *nothing* for a character
+ * with no face art, and a two-column grid would then drop the text into the portrait's
+ * `auto`-width column and collapse the box. As a lone flex child this simply fills the width,
+ * so an animal without portraits looks exactly as it did before the register existed.
+ */
+.dialogueMain {
+  flex: 1 1 18rem;
+
+  // Without this a long unbroken word can push the column past the box.
+  min-width: 0;
 }
 
 .dialogueSpeaker {

@@ -87,6 +87,7 @@ src/
       useTrialRoundWorkflow.ts # Reducer hook driving the debate state machine
       useScenarioTutorials.ts  # Opens scenario tutorials off the debate bus
       useScrollFade.ts
+      useSpriteFrame.ts        # Steps a spritesheet frame index for clips played in the DOM
     trial/
       TrialLayout.tsx           # 2×2 grid: game hole | Feedback / Wizard | Interactive
       panels/                   # Feedback, Wizard, Interactive
@@ -98,6 +99,8 @@ src/
                                 #   fallacy guess types/utils, debateEventBus
     tutorial/                   # Overlay, spotlight geometry, interaction gate
     farm/                       # Overworld overlay: dialogue box + styles
+    characters/                 # AnimalFace — the DOM dialogue portrait, used by the farm
+                                #   dialogue box and the debate log
   store/
     gameStore.ts        # Phaser refs, currentScene, activeDebateId, returnSceneKey
     tutorialStore.ts    # Open tutorial overlay + its interaction gate
@@ -165,6 +168,7 @@ Defined in `src/phaser/main.ts`: **Boot** → **Preloader** → **MainMenu** →
 - Entry: `index.html` → `/src/main.tsx`, `#root`.
 - Favicon referenced: `/favicon.png` (ensure it exists under `public/` or root when deploying).
 - Template docs mention `public/assets` for static loads; add that folder as needed for `this.load.*` paths like `assets/...`.
+- **Character art** — `public/assets/characters/emotions/` holds the whole-body emotion clips Phaser plays on the Trial stage; `public/assets/characters/faces/` holds the head-and-shoulders portraits React plays in dialogue. Two registers, generated and promoted independently — see [`docs/characters-and-animations.md`](docs/characters-and-animations.md) and the `animal-emotion-sprites` skill.
 
 ## Telemetry (`log.js`)
 

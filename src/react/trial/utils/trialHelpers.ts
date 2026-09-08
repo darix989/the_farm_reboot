@@ -80,7 +80,7 @@ export function activeEmotionForWorkflow(
       // The player holds the floor but has not committed to a line yet.
       return 'thinking';
     case 'player_confirming':
-      return selectedOption?.emotion ?? emotionFromOptionQuality(selectedOption);
+      return emotionForOption(selectedOption);
     case 'npc_responding': {
       const statement = activeOpponentResponse?.statement ?? null;
       return statement ? emotionFromStatement(statement) : null;
@@ -90,8 +90,14 @@ export function activeEmotionForWorkflow(
   }
 }
 
-/** Shared tail of the derivation above; see its docstring for the reasoning. */
-function emotionFromStatement(statement: Statement): AnimalEmotion {
+/**
+ * Shared tail of the derivation above; see its docstring for the reasoning.
+ *
+ * Exported because the debate log needs the same answer for a statement it renders directly,
+ * out of the workflow's phase machine entirely. Re-deriving it there would mean two rules for
+ * "what emotion is this line", which would drift the first time either is tuned.
+ */
+export function emotionFromStatement(statement: Statement): AnimalEmotion {
   if (statement.emotion) return statement.emotion;
   const hidesAFallacy = statement.sentences.some((s) => (s.logicalFallacies?.length ?? 0) > 0);
   if (hidesAFallacy) return 'sneaky';
@@ -107,6 +113,11 @@ function emotionFromStatement(statement: Statement): AnimalEmotion {
 function emotionFromOptionQuality(option: PlayerOption | null): AnimalEmotion {
   if (option?.quality === 'logical_fallacy') return 'sneaky';
   return 'talking';
+}
+
+/** `emotionFromStatement`'s counterpart for a line the player chose rather than one authored. */
+export function emotionForOption(option: PlayerOption | null): AnimalEmotion {
+  return option?.emotion ?? emotionFromOptionQuality(option);
 }
 
 /**

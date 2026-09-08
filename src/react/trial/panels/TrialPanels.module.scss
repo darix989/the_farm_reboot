@@ -463,6 +463,26 @@
   }
 }
 
+/**
+ * Portrait plus speaker name, as one unit.
+ *
+ * The header row is `space-between` with the analyze buttons on the right, so adding the
+ * portrait as a third child would have pushed the name into the middle of the row. Grouping
+ * the two keeps the row at two children and the buttons where they were.
+ *
+ * `AnimalFace` renders nothing for a character with no face art, leaving this wrapper holding
+ * just the name — which lays out exactly as the bare `<p>` did before.
+ */
+.debateLogSpeakerRow {
+  display: flex;
+
+  // Centred rather than top-aligned: a 44px portrait against a single line of caption text
+  // reads as attached to the name, not hanging off it.
+  align-items: center;
+  gap: calc(0.45rem * var(--ui-trial-panel-font-scale, 1));
+  min-width: 0;
+}
+
 .debateLogMinPreview {
   margin: calc(0.5rem * var(--ui-trial-panel-font-scale, 1)) 0 0;
   font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
