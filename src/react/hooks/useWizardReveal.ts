@@ -15,6 +15,8 @@ export interface WizardReveal {
   sentence: string;
   /** Drives the wizard's scroll reset and remounts the live region once per chunk. */
   sentenceIndex: number;
+  /** Total chunks in the current source (0 when inactive), for a "(2/4)" progress readout. */
+  sentenceCount: number;
   /** The chunk is fully shown, so the next press steps on instead of skipping ahead. */
   sentenceComplete: boolean;
   /** Passed to `TypewriterText`; bumped by `advance` to finish the current chunk now. */
@@ -155,6 +157,7 @@ export function useWizardReveal(
     active,
     sentence: active ? (sentences[sentenceIndex] ?? '') : '',
     sentenceIndex,
+    sentenceCount: active ? sentences.length : 0,
     sentenceComplete: current.sentenceComplete,
     skipToken: current.skipToken,
     onSentenceTyped,

@@ -2,6 +2,6 @@
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>continue</title>
     <g id="continue" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <path d="M8.5,4.5 L16,12 L8.5,19.5 L6.5,17.5 L12,12 L6.5,6.5 Z" fill="#000000"></path>
+        <path d="M6,4.5 L13,12 L6,19.5 L4,17.5 L9,12 L4,6.5 Z M14,4.5 L21,12 L14,19.5 L12,17.5 L17,12 L12,6.5 Z" fill="#000000"></path>
     </g>
 </svg>

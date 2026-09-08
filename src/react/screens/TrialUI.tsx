@@ -585,7 +585,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       return {
         submitLabel: getLabel('continue'),
         submitDisabled: false,
-        submitIcon: 'continue',
+        submitIcon: 'reveal',
         onSubmit: () => {
           revealAdvance();
         },
@@ -739,7 +739,11 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_intro': {
         const intro = debate.introduction?.trim();
         if (!intro) return null;
-        return { title: getLabel('wizardDetailIntroduction'), body: intro };
+        return {
+          title: getLabel('wizardDetailIntroduction'),
+          body: intro,
+          sentenceCount: splitIntoSentences(intro).length,
+        };
       }
       case 'npc_speaking': {
         const npc = wf.currentNpcRound;
@@ -751,6 +755,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             },
           }),
           body: statementText(npc.statement.sentences),
+          sentenceCount: npc.statement.sentences.length,
         };
       }
       case 'player_choosing': {
@@ -765,6 +770,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
               },
             }),
             body: statementText(prompt.sentences),
+            sentenceCount: prompt.sentences.length,
           };
         }
         const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
@@ -793,6 +799,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             },
           }),
           body: statementText(response.statement.sentences),
+          sentenceCount: response.statement.sentences.length,
         };
       }
       case 'round_recap': {
@@ -806,6 +813,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
               },
             }),
             body: statementText(response.statement.sentences),
+            sentenceCount: response.statement.sentences.length,
           };
         }
         // NPC rounds also pass through `round_recap` now (after the player clicks
@@ -820,6 +828,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
               },
             }),
             body: statementText(npc.statement.sentences),
+            sentenceCount: npc.statement.sentences.length,
           };
         }
         return {
@@ -863,11 +872,19 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         ? {
             sentence: reveal.sentence,
             sentenceIndex: reveal.sentenceIndex,
+            sentenceCount: reveal.sentenceCount,
             skipToken: reveal.skipToken,
             onSentenceTyped: reveal.onSentenceTyped,
           }
         : null,
-    [revealActive, reveal.sentence, reveal.sentenceIndex, reveal.skipToken, reveal.onSentenceTyped],
+    [
+      revealActive,
+      reveal.sentence,
+      reveal.sentenceIndex,
+      reveal.sentenceCount,
+      reveal.skipToken,
+      reveal.onSentenceTyped,
+    ],
   );
 
   // `stageOrder` matches the left-to-right order the Phaser `Trial` scene lays its sprites

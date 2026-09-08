@@ -10,6 +10,13 @@ import getLabel from '../../../data/labels';
 export interface WizardPanelDetail {
   title: string;
   body: string;
+  /**
+   * Total sentences in this line, when it is (or was) incoming speech paced through the
+   * wizard reveal — drives the "(2/4)" / "(all)" readout beside the title. Omit for content
+   * that never reveals a sentence at a time (the player's own choice, the round recap, the
+   * closing verdict): those titles already say what they need to on their own.
+   */
+  sentenceCount?: number;
 }
 
 /** Set while `detail.body` is being paced out one sentence at a time. */
@@ -17,6 +24,8 @@ export interface WizardPanelReveal {
   /** The sentence to fill in, in place of the whole body. */
   sentence: string;
   sentenceIndex: number;
+  /** Total chunks in this reveal, for the "(2/4)" progress readout beside the title. */
+  sentenceCount: number;
   skipToken: number;
   onSentenceTyped: () => void;
 }
@@ -77,7 +86,24 @@ const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail, reveal
                   lineHeight: 1.375,
                 }}
               >
-                <p style={{ color: uiColor.textCaption, margin: 0 }}>{detail.title}</p>
+                <p style={{ color: uiColor.textCaption, margin: 0 }}>
+                  {detail.title}
+                  {detail.sentenceCount !== undefined && (
+                    <>
+                      {' '}
+                      <span style={{ opacity: 0.7 }}>
+                        {reveal
+                          ? getLabel('wizardSentenceProgress', {
+                              replacements: {
+                                current: reveal.sentenceIndex + 1,
+                                total: reveal.sentenceCount,
+                              },
+                            })
+                          : getLabel('wizardSentenceProgressAll')}
+                      </span>
+                    </>
+                  )}
+                </p>
                 <p style={{ marginTop: '0.5rem', color: uiColor.textBody, marginBottom: 0 }}>
                   {reveal ? (
                     <TypewriterText

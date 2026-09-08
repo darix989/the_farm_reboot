@@ -126,6 +126,10 @@ const LABELS = {
   wizardDetailResponse: "{name}'s response:",
   wizardDetailRoundRecapBody:
     'Review the round summary in the dialog. Close it when you are ready to continue.',
+  /** Sentence-reveal progress beside the wizard detail title, e.g. "Duchess speaks: (2/4)". */
+  wizardSentenceProgress: '({current}/{total})',
+  /** Shown in place of the fraction once the whole line is on screen. */
+  wizardSentenceProgressAll: '(all)',
   // Closing line, one per `EncounterKind`.
   debateFinished: 'The debate is finished.',
   gossipFinished: 'There is nothing more to overhear.',

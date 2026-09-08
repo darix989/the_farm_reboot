@@ -27,11 +27,13 @@ import getLabel from '../../../data/labels';
 
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
 import backIcon from '../../../static/icons/back.svg';
+import revealIcon from '../../../static/icons/reveal.svg';
 import continueIcon from '../../../static/icons/continue.svg';
 import confirmIcon from '../../../static/icons/confirm.svg';
 import leaveIcon from '../../../static/icons/leave.svg';
 
-const SUBMIT_ICON_SRC: Record<'continue' | 'confirm' | 'leave', string> = {
+const SUBMIT_ICON_SRC: Record<'reveal' | 'continue' | 'confirm' | 'leave', string> = {
+  reveal: revealIcon,
   continue: continueIcon,
   confirm: confirmIcon,
   leave: leaveIcon,
@@ -53,7 +55,12 @@ function analyzeTitleForTarget(target: AnalysisTarget | null): string {
 export interface InteractiveFooter {
   submitLabel: string;
   submitDisabled: boolean;
-  submitIcon: 'continue' | 'confirm' | 'leave';
+  /**
+   * `'reveal'` is the lesser, momentary step — pacing the wizard's typewriter forward a
+   * sentence at a time — rendered dashed with a single chevron. The other three are the
+   * real round/phase advance, rendered solid with their own icon.
+   */
+  submitIcon: 'reveal' | 'continue' | 'confirm' | 'leave';
   onSubmit?: () => void;
 }
 
@@ -337,6 +344,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
             </TrialTextButton>
             <TrialTextButton
               widthMode="square"
+              variant={interactiveFooter.submitIcon === 'reveal' ? 'dashed' : 'solid'}
               disabled={interactiveFooter.submitDisabled || !interactiveFooter.onSubmit}
               aria-label={interactiveFooter.submitLabel}
               title={interactiveFooter.submitLabel}
