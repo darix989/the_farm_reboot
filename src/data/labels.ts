@@ -67,7 +67,7 @@ const LABELS = {
 
   // --- Trial layout panels ---
   // Log panel heading, one per `EncounterKind` (see `encounterLabels`).
-  debateLog: 'Debate Log',
+  debateLog: 'Log',
   gossipLog: 'Trough Talk',
   sparringLog: 'Sparring Log',
   labLog: 'Lab Notes',
