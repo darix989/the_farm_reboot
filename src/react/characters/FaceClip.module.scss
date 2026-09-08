@@ -1,0 +1,20 @@
+.box {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+
+  // `.react-ui-overlay` is `pointer-events: none` and inherits it to every descendant. A
+  // decorative portrait must not opt back in, or it swallows clicks meant for the dialogue
+  // box behind it — the most common bug in this codebase.
+  pointer-events: none;
+}
+
+.frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  // The inline `transform` scales the head into the box from this corner.
+  transform-origin: 0 0;
+  background-repeat: no-repeat;
+}

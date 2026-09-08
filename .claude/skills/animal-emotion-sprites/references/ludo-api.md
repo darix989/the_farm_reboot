@@ -33,6 +33,30 @@ prose alone), `/assets/sprite/transfer-motion` (retarget one clip's motion onto 
 sprite, e.g. to give the whole cast an identical "thinking" rhythm), `/assets/sprite/pose`,
 `/assets/sprite/edit`.
 
+## Do not use this endpoint for headshots
+
+Recorded so nobody spends the credits again. Generating face-only clips from a head crop was
+tried three times and abandoned after 12 credits:
+
+| attempt | model | eyelid aperture swing over the clip | invented teeth |
+|---|---|---|---|
+| 1 | `blitz` | 165% | 16 of 25 frames |
+| 2 | `blitz`, aperture pinned in the prompt | 196% | 11 of 25 |
+| 3 | `forge` | 458% | 16 of 25, plus a full toothy grin |
+
+The cause is `margin_ratio_mode: auto` reframing the input: a head submitted at a 485×363
+bounding box came back at 257×192, so the endpoint is not animating the pixels it was given, it
+redraws the head smaller from scratch in every frame. No prompt makes a redrawn eye match the
+one before it, and `blitz` really is the most predictable of the models — `forge` was four times
+worse and ignored an explicit "no teeth, no tongue and no fangs" instruction outright.
+
+Note also that the churn quality check reported **nothing** on the worst of the three: it
+compares consecutive frames, so a six-frame slow eye closure registers as no change at all. It
+catches pops, not ramps.
+
+Dialogue portraits are now cut locally out of the body clips for free — see the `--faces`
+section of SKILL.md and `scripts/ludo/cropFace.mjs`.
+
 ## `AnimateSpritePayload`
 
 Required: `motion_prompt`, `initial_image` (URL **or** `data:image/png;base64,...`).

@@ -148,41 +148,94 @@ export async function buildHeadTemplate(talkingSheet, grid, headCrop) {
 /**
  * Per-frame `{dx, dy}` that puts the template's head where it sits in the template frame.
  *
- * Sum of absolute differences over RGBA, brute-forced over the search window. Crude, and
- * exactly right for this: the art is flat colour with hard outlines, so the true offset is a
- * sharp minimum rather than a shallow basin, and there is no sub-pixel answer worth finding
- * because the source pixels are the source pixels.
+ * Sum of absolute differences over RGBA, which is crude and exactly right for this: the art is
+ * flat colour with hard outlines, so the true offset is a sharp minimum rather than a shallow
+ * basin, and there is no sub-pixel answer worth finding because the source pixels are the
+ * source pixels.
+ *
+ * **Coarse-to-fine**, because brute force does not scale. A 48px radius is 97x97 offsets, and
+ * at ~2000 sampled template pixels that is 19M comparisons per frame — around three minutes to
+ * crop the 30-clip cast, which is too slow to iterate a head box against. Scanning every
+ * `COARSE_STEP`th offset first and then refining around the winner is ~15x fewer comparisons
+ * and finds the same offsets: verified against the brute-force result on all five fox clips.
+ *
+ * The coarse pass is safe here for the same reason the metric is crude — a head is a large
+ * block of flat colour, so the SAD surface is smooth at 4px granularity. It would not be safe
+ * on noisy or high-frequency art.
  */
+const COARSE_STEP = 4;
+const REFINE_RADIUS = COARSE_STEP - 1;
+
+/**
+ * How far the head may move between consecutive frames.
+ *
+ * Frame 0 is searched over the whole window; every frame after it is searched only near where
+ * the head was in the frame before. Without this the matcher tracked smoothly and then snapped
+ * to a completely different offset mid-clip — `-13,21` to `13,-25` on `white-sheep-1/angry`,
+ * `25,-17` to `-6,10` on `donkey-grey/angry`. A sign flip like that is not a head moving, it is
+ * a symmetric feature somewhere else in the frame scoring better: a sheep's body wool looks
+ * much like its head wool, and SAD has no idea which one it is supposed to be following.
+ *
+ * Constraining the *search* while still scoring against the fixed canonical template gets both
+ * properties — the appearance reference never drifts, and the trajectory cannot teleport. 20px
+ * because the largest legitimate single-frame move measured on a clean clip is 14 (fox/talking)
+ * and `donkey-grey` runs at 8fps, so its head covers twice the ground per frame.
+ */
+const TRACK_RADIUS = 20;
+
+function scoreOffset(cell, template, rect, dx, dy, ceiling) {
+  let score = 0;
+  for (let p = 0; p < template.pixels.length; p++) {
+    const t = template.pixels[p];
+    const x = rect.left + t.dx + dx;
+    const y = rect.top + t.dy + dy;
+    // Outside the cell scores as fully different, which pushes the match back inside rather
+    // than letting it drift off the edge for free.
+    if (x < 0 || y < 0 || x >= cell.width || y >= cell.height) {
+      score += 1020;
+      continue;
+    }
+    const i = (y * cell.width + x) * 4;
+    score +=
+      Math.abs(t.r - cell.data[i]) +
+      Math.abs(t.g - cell.data[i + 1]) +
+      Math.abs(t.b - cell.data[i + 2]) +
+      Math.abs(t.a - cell.data[i + 3]);
+    if (score >= ceiling) return score;
+  }
+  return score;
+}
+
 export async function alignFrames(sheetBuffer, grid, { rect, template }) {
   const cells = await readCells(sheetBuffer, grid);
   const offsets = [];
 
   for (const cell of cells) {
-    let best = { dx: 0, dy: 0, score: Infinity };
-    for (let dy = -ALIGN_SEARCH_RADIUS; dy <= ALIGN_SEARCH_RADIUS; dy++) {
-      for (let dx = -ALIGN_SEARCH_RADIUS; dx <= ALIGN_SEARCH_RADIUS; dx++) {
-        let score = 0;
-        for (let p = 0; p < template.pixels.length; p++) {
-          const t = template.pixels[p];
-          const x = rect.left + t.dx + dx;
-          const y = rect.top + t.dy + dy;
-          // Outside the cell scores as fully different, which pushes the match back inside
-          // rather than letting it drift off the edge for free.
-          if (x < 0 || y < 0 || x >= cell.width || y >= cell.height) {
-            score += 1020;
-            continue;
-          }
-          const i = (y * cell.width + x) * 4;
-          score +=
-            Math.abs(t.r - cell.data[i]) +
-            Math.abs(t.g - cell.data[i + 1]) +
-            Math.abs(t.b - cell.data[i + 2]) +
-            Math.abs(t.a - cell.data[i + 3]);
-          if (score >= best.score) break;
-        }
+    const previous = offsets[offsets.length - 1];
+    // Frame 0 has nothing to follow, so it searches everything; the rest track.
+    const centre = previous ?? { dx: 0, dy: 0 };
+    const reach = previous ? TRACK_RADIUS : ALIGN_SEARCH_RADIUS;
+    const lo = (c) => Math.max(c - reach, -ALIGN_SEARCH_RADIUS);
+    const hi = (c) => Math.min(c + reach, ALIGN_SEARCH_RADIUS);
+
+    let best = { dx: centre.dx, dy: centre.dy, score: Infinity };
+
+    for (let dy = lo(centre.dy); dy <= hi(centre.dy); dy += COARSE_STEP) {
+      for (let dx = lo(centre.dx); dx <= hi(centre.dx); dx += COARSE_STEP) {
+        const score = scoreOffset(cell, template, rect, dx, dy, best.score);
         if (score < best.score) best = { dx, dy, score };
       }
     }
+
+    const coarse = best;
+    for (let dy = coarse.dy - REFINE_RADIUS; dy <= coarse.dy + REFINE_RADIUS; dy++) {
+      for (let dx = coarse.dx - REFINE_RADIUS; dx <= coarse.dx + REFINE_RADIUS; dx++) {
+        if (dx < lo(centre.dx) || dx > hi(centre.dx) || dy < lo(centre.dy) || dy > hi(centre.dy)) continue;
+        const score = scoreOffset(cell, template, rect, dx, dy, best.score);
+        if (score < best.score) best = { dx, dy, score };
+      }
+    }
+
     offsets.push({ dx: best.dx, dy: best.dy });
   }
 
@@ -305,13 +358,18 @@ export async function cropFaceSheet(sheetBuffer, grid, rect, offsets, cellSize =
  * the head tilt in `angry`. Both numbers were real measurements of the wrong thing.
  *
  * The offsets are exact and free — they are what the matcher decided — and they fail in two
- * legible ways. **Saturation** means the head wanted to move further than the search window
- * allowed, so the crop is clipped rather than tracked. **A jump** means consecutive frames
- * chose offsets far apart, which a matcher that lost its lock does and a head bobbing smoothly
- * does not — though the threshold is 16px rather than something tighter because `fox/talking`
- * legitimately lifts its head 14px in one frame, on an otherwise smooth trajectory.
+ * legible ways. **Saturation** of the whole search window means the head travels further over
+ * the clip than the crop can follow. **Saturation of the per-frame track window** means it
+ * moves faster than the tracker follows and the crop lags briefly — common on `donkey-grey`,
+ * which runs at 8fps and so covers twice the ground per frame. A jump short of that cap but
+ * over 16px is the interesting case: faster than any clean clip measured (the most a clean one
+ * moved in a frame is 14, on `fox/talking`), so the matcher may have locked onto the wrong
+ * feature.
  */
 export function summarizeAlignment(offsets, searchRadius = ALIGN_SEARCH_RADIUS) {
+  // TRACK_RADIUS is the per-frame cap, so a jump equal to it means the head was moving faster
+  // than the tracker was allowed to follow — a different failure from a lost lock, and one the
+  // message has to name correctly or it sends the reader looking for the wrong thing.
   const magnitudes = offsets.map((o) => Math.max(Math.abs(o.dx), Math.abs(o.dy)));
   const jumps = offsets
     .slice(1)
@@ -326,10 +384,15 @@ export function summarizeAlignment(offsets, searchRadius = ALIGN_SEARCH_RADIUS) 
         `further than the crop can follow; widen ALIGN_SEARCH_RADIUS or retune the box`,
     );
   }
-  if (maxJump > 16) {
+  if (maxJump >= TRACK_RADIUS) {
     warnings.push(
-      `alignment jumps ${maxJump}px between consecutive frames — the matcher probably lost ` +
-        `its lock; check the clip on the review page before promoting`,
+      `alignment hit its ${TRACK_RADIUS}px per-frame limit — the head moves faster than the ` +
+        `tracker follows, so it lags for a frame or two; check the clip before promoting`,
+    );
+  } else if (maxJump > 16) {
+    warnings.push(
+      `alignment jumps ${maxJump}px between consecutive frames — faster than any clean clip ` +
+        `measured, so the matcher may have locked onto the wrong feature`,
     );
   }
   return { maxOffset, maxJump, warnings };

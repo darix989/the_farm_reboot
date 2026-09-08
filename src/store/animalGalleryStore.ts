@@ -9,6 +9,7 @@
 import { create } from 'zustand';
 import { animalClips, defaultClip } from '../phaser/animals/animalClipCatalogue';
 import { ANIMAL_SPRITE_IDS } from '../phaser/animals/animalDescriptors';
+import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 import type { AnimalSpriteId } from '../data/characters';
 
 const FIRST_ANIMAL = ANIMAL_SPRITE_IDS[0]!;
@@ -17,6 +18,18 @@ interface AnimalGalleryStore {
   animalId: AnimalSpriteId;
   /** Logical clip name from `animalClips()`, or null for the bare rest frame. */
   clipName: string | null;
+  /**
+   * Which dialogue portrait to blow up on the stage, or null for none.
+   *
+   * A second, independent selection rather than another value of `clipName`, because the two
+   * registers are two answers to the same question: a portrait is cut from the body clip of
+   * the same name, so you review them side by side. Sharing one field would make looking at
+   * `fox/angry`'s portrait stop the body clip it was cut from.
+   *
+   * Null by default. The scene never reads this field, and it is not in the diff `AnimalGallery`
+   * acts on, so writing it cannot disturb the sprite.
+   */
+  faceEmotion: AnimalEmotion | null;
   /**
    * Crossfade through transparent when switching clip, instead of cutting.
    *
@@ -31,6 +44,8 @@ interface AnimalGalleryStore {
   /** Switching animal carries the current clip over where it exists — see `carryClipOver`. */
   setAnimal: (animalId: AnimalSpriteId) => void;
   setClip: (clipName: string | null) => void;
+  /** Selecting the emotion already showing clears it — the preview is a toggle. */
+  setFaceEmotion: (emotion: AnimalEmotion | null) => void;
   setSmoothTransitions: (smooth: boolean) => void;
   /** Leaves the gallery on its opening state, so re-entering never resumes mid-review. */
   resetGallery: () => void;
@@ -63,8 +78,12 @@ function carryClipOver(animalId: AnimalSpriteId, clipName: string | null): strin
 export const useAnimalGalleryStore = create<AnimalGalleryStore>((set) => ({
   animalId: FIRST_ANIMAL,
   clipName: openingClip(FIRST_ANIMAL),
+  faceEmotion: null,
   smoothTransitions: true,
 
+  // `faceEmotion` rides across untouched, for the reason `carryClipOver` gives: emotion names
+  // exist for every animal, so the selection stays put the whole way round the cast and lands
+  // on "no portrait yet" where none was cropped — which is the comparison you came for.
   setAnimal: (animalId) =>
     set((s) =>
       s.animalId === animalId
@@ -75,8 +94,16 @@ export const useAnimalGalleryStore = create<AnimalGalleryStore>((set) => ({
   // No-op when unchanged, so a re-render never restarts a clip that is already playing.
   setClip: (clipName) => set((s) => (s.clipName === clipName ? s : { ...s, clipName })),
 
+  setFaceEmotion: (emotion) =>
+    set((s) => ({ ...s, faceEmotion: s.faceEmotion === emotion ? null : emotion })),
+
   setSmoothTransitions: (smoothTransitions) => set({ smoothTransitions }),
 
   resetGallery: () =>
-    set({ animalId: FIRST_ANIMAL, clipName: openingClip(FIRST_ANIMAL), smoothTransitions: true }),
+    set({
+      animalId: FIRST_ANIMAL,
+      clipName: openingClip(FIRST_ANIMAL),
+      faceEmotion: null,
+      smoothTransitions: true,
+    }),
 }));

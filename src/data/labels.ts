@@ -27,6 +27,7 @@ const LABELS = {
   galleryTitle: 'Animation Gallery',
   galleryAnimalHeading: 'Animal',
   galleryEmotionsHeading: 'Emotions (generated)',
+  galleryFacesHeading: 'Dialogue portraits (cropped)',
   galleryBaseHeading: 'Base animations',
   gallerySmoothTransitions: 'Smooth transition when switching',
   gallerySmoothHint: 'Crossfades between clips. Turn off to see the raw cut.',
@@ -37,6 +38,11 @@ const LABELS = {
   galleryNothingSelected: 'Nothing selected',
   galleryMissingArtNote:
     '{count} of {total} emotions have no generated art for this animal yet — they fall back to the alert animation in game.',
+  galleryMissingFaceNote:
+    '{count} of {total} emotions have no portrait cropped for this animal yet — this speaker stays text-only in game.',
+  galleryFacePreviewShip: '112 px · as it ships',
+  galleryFacePreviewRetina: '224 px · 2× display',
+  galleryFaceNoPreview: 'No portrait cropped for this emotion yet.',
   galleryQualityPass: 'OK',
   galleryQualityWarn: 'check',
   galleryQualityUnknown: '?',
@@ -44,6 +50,9 @@ const LABELS = {
   galleryQualityAnimalWarn: 'emotions need review',
   galleryQualityAnimalUnknown: 'emotions unmeasured',
   galleryQualityMetrics: 'loop seam {loopPop}% · height swing {heightSwing}% · drift ±{driftX}px',
+  // No height swing: a crop cannot zoom, so what it measures on a portrait is the jaw opening
+  // — the motion the portrait exists to show. See `FACE_QUALITY_THRESHOLDS`.
+  galleryFaceQualityMetrics: 'loop seam {loopPop}% · drift ±{driftX}px',
   galleryQualityStale: 'old generation ({frames} frames)',
   galleryQualityUnmeasured: 'no quality numbers yet',
   currentScene: 'Current Scene:',

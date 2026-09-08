@@ -160,6 +160,24 @@
         "warnings": []
       }
     },
+    "talking_still": {
+      "file": "donkey-grey-talking_still.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.1417,
+      "originX": 0.5379,
+      "originY": 0.7383,
+      "prompt": "Side view, facing left. The grey donkey stands completely still on all fours and talks. All four hooves stay planted exactly where they are in the reference image and never move, and its long ears stay UP in exactly the position they are in the reference. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes and never eats. Its body, legs and head do not move at all: the head stays in exactly the same position and at exactly the same size in every frame — it never bobs, nods, tilts, turns or leans — and the outline of its skull and the base of its ears stay exactly as they are in the reference image. ONLY THE FACE MOVES: its mouth opens and closes with each phrase and its eyes stay open and look forward, each pupil one solid shape of the same size in every frame. Each time the mouth opens it shows the same shape every frame — one clean flat patch inside a plain dark muzzle, drawn identically in every frame it appears, never changing shape, size or colour between frames. No teeth, no tongue and no fangs ever appear. No detail appears that is not in the reference image. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.22,
+        "heightSwing": 3.7,
+        "driftX": 7.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-08T03:50:01.947Z"
+    },
     "thinking": {
       "file": "donkey-grey-thinking.png",
       "frameWidth": 512,

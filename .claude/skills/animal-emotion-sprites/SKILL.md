@@ -1,7 +1,7 @@
 ---
 name: animal-emotion-sprites
-argument-hint: "[--animal <id>] [--emotion <name>] [--dry-run|--promote|--reindex|--remeasure|--force]"
-description: Generate, review and ship the cast's per-emotion animation clips (talking, doubtful, angry, thinking, sneaky) via the Ludo.ai API. Use when asked to generate, regenerate, add or fix an animal's emotion animation or spritesheet, to add a new emotion to the vocabulary, to give a newly added animal its emotion art, or when a generated clip looks wrong in game (wrong size, floating off the floor, popping on loop). Also covers the Animation Gallery used to review the results.
+argument-hint: "[--faces] [--animal <id>] [--emotion <name>] [--dry-run|--promote|--reindex|--remeasure|--force]"
+description: Ship the cast's two animation registers — whole-body per-emotion clips (talking, doubtful, angry, thinking, sneaky) generated via the Ludo.ai API, and the dialogue portraits cropped locally out of those clips for free with --faces. Use when asked to generate, regenerate, add or fix an animal's emotion animation or spritesheet, to add a new emotion to the vocabulary, to give a newly added animal its emotion art, to author or retune a head crop for a dialogue portrait, or when a clip or portrait looks wrong in game (wrong size, floating off the floor, popping on loop, head drifting inside its portrait). Also covers the Animation Gallery used to review the results.
 ---
 
 # Animal emotion sprites
@@ -263,6 +263,115 @@ When a clip looks wrong but the numbers are clean, add `reviewNotes` on that cli
 Turn **off** the smooth-transition toggle to see the raw cut — switching between an atlas clip
 and a generated one changes texture, scale and origin on one frame, and the crossfade hides
 whether that switch is actually clean.
+
+The panel's **Dialogue portraits** section does the same job for the crop register: the five
+emotions again, each with a live thumbnail, and a large preview over the stage at 112px (as it
+ships) and 224px (a 2x display). It is the in-game counterpart to `boxes.html` and uses the
+game's own `FaceClip`, so what you approve there is framed exactly as it ships. Portrait
+selection is independent of clip selection — a portrait plays beside the body clip it was cut
+from, which is the comparison worth having. Badges use the crop thresholds, so **no height-swing
+gate**: a crop cannot zoom.
+
+## Dialogue portraits (`--faces`) — cropped, never generated
+
+The second register: head-and-shoulders loops played by React in the farm dialogue box and the
+debate log. **They cost nothing and call no API** — they are cut out of the promoted body clips
+by `scripts/ludo/cropFace.mjs`.
+
+```bash
+# 1. Free. Cuts every portrait, writes a review page, promotes nothing.
+npm run sprites:emotions -- --faces --dry-run [--animal fox]
+open .ludo-review-faces/boxes.html
+
+# 2. Approve the box, then ship. Measures, copies PNGs, rewrites faceSheets.generated.ts.
+npm run sprites:emotions -- --faces --promote [--animal fox]
+open .ludo-review-faces/index.html
+```
+
+**Do not try to generate these.** It was attempted three times for 12 credits and failed the
+same way each time: the eyelid aperture swung 165%, 196% and 458% across the clip, and two
+attempts invented teeth the reference does not have. It is not a prompt problem — a head
+submitted at a 485x363 bounding box came back at 257x192, so the endpoint reframes its input and
+redraws the head from scratch in every frame. The body clips' faces hold still because the
+generator was animating posture and left the face alone.
+
+### Authoring a head box
+
+One `headCrop` per animal in the manifest, in fractions of the character's **union alpha box
+across all frames of its `talking` clip** — not of the cell, and not of the reference frame the
+retired `face` rect used. Rules C1-C6 are in the manifest's `$faceComment`. The short version:
+
+- **One rect per animal, never per emotion.** All five portraits play in the same box in the
+  same dialogue, so a tighter `angry` rect makes the head jump size when the beat changes.
+- **Negative x/y are normal**, and values past 1.0 are fine and get clamped.
+- **Part of the neck and chest in shot is correct.** It is what makes a portrait read as a
+  portrait instead of a floating head.
+- **Judge at both sizes the review page shows.** 112px is what ships; 224px is a 2x display, and
+  softness only shows at the second. Upscales run x1.23 (owl, best) to x2.21 (brown-wolf, worst).
+  The gallery's portraits section shows the same pair, so this check can also be done in game.
+- **Read the alignment numbers, not the height swing.** The head bobs through a body clip — the
+  fox's by 30px, its `thinking` by 40px — and the cropper tracks it per frame.
+
+### Known limitation: the face translates
+
+Human review of the shipped crops: they are **glitch-free** — no strobing eye, no flickering
+tooth, none of what generation produced — but it is obvious the source was not authored for a
+head-only crop. A portrait wants the face to hold still with only the mouth and eyes moving;
+here the face translates slightly, because the body clip is animating the whole animal and the
+head travels as part of that performance. The aligner removes most of it, not all.
+
+The cause is not a bug: **every `talking` prompt asks for "head bobbing gently in time with
+speech"**, deliberately, because at 300px a bobbing head is what reads as talking and a
+motionless one reads as idle. The crop faithfully reproduces a bob that was requested.
+
+**Accepted, not fixed.** If it needs improving, the lever is the **cropper**, not the prompt:
+the aligner matches the rect's rigid top 55% (skull, ears and eye), so when the head *rotates*
+the best translation-only match is a compromise that leaves the face offset. Narrowing the
+template to just the facial region would pin what the viewer actually looks at and let the ears
+drift instead; sub-pixel refinement and a small rotation search would take the rest. The
+structural answer is that head travel *is* part of a posture animation, so a portrait cut from
+one always inherits some.
+
+### `_still` variants: tried, and they do not do what their name says
+
+There is a `talking_still` emotion in the vocabulary and the cropper prefers `<emotion>_still`
+as its source when one has been promoted. It asks for the body and head locked with only the
+face moving. **It does not deliver a stiller head.** Measured on `donkey-grey/talking_still`,
+change per frame in the skull-and-ears band of the finished portrait — a band with no speech
+animation in it, so anything moving there is pose change the aligner cannot remove:
+
+| portrait cut from | skull+ears change/frame | crop loop seam |
+|---|---|---|
+| `talking` (bobbing) | 1.07% | 4.15% — fails the gate |
+| `talking_still` | **2.54%** | **0.56%** — passes |
+
+Twice as unstable, plus a ~22px lateral slide the bobbing clip did not have: with the body
+pinned, the generator moved the head instead. The shipped cast runs 0.53% (owl) to 2.12%
+(white-sheep-1), so it is the wobbliest portrait in the game.
+
+It shipped for a different reason than intended — the fresh generation **fixed the loop seam**,
+which is what had kept `donkey-grey` out of the register entirely. **Do not generate the other
+four still variants expecting stillness.** Generate one only when an animal's body clip has a
+seam bad enough to disqualify its portrait.
+
+### Cropping amplifies the source clip's loop seam
+
+Consistently **2-8x, mostly 3.5-5x** — the head fills the portrait where it was a fraction of the
+body frame, so a seam that is invisible at body scale is loud at portrait scale. This decides
+which animals work. Everything lands under the 2% gate except **`donkey-grey`**, whose
+`doubtful` goes 2.52% → 11.22% because its body clips are the cast's weakest. Its portraits are
+**deliberately not promoted**, which matters more than for the others: the donkey is Rue, so its
+portrait would be on screen most. `AnimalFace` renders nothing without art, so Rue stays
+text-only. Fixing it means regenerating those three body clips — that costs credits.
+
+Two other things worth knowing before authoring a box:
+
+- **The sheep has no mouth drawn at its angle.** `white-sheep-1`'s head is a black mass with a
+  wool tuft and two small eyes. Its portrait animates but reads as a head bob, not speech.
+- **Portraits are palettised PNG**, ~410-480KB each, and honestly named — unlike the body clips,
+  which are WebP under a `.png` extension. A lossless write was 1.8MB a sheet; lossy WebP would
+  halve the current size again and is avoided because ringing around hard black outlines is what
+  lossy codecs do worst at this size. The 25 shipped portraits are 12MB.
 
 ## Adding a new emotion to the vocabulary
 

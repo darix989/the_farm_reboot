@@ -246,3 +246,99 @@
     color: var(--ui-color-accent);
   }
 }
+
+/* =========================================================================
+   Dialogue portraits
+
+   The only art this panel draws itself. Face clips are DOM-played (see
+   `animalFaces.ts`), so there is no Phaser stage to hand them to — which is
+   also why the big preview is positioned over the scene rather than laid out
+   inside `.panel`: a portrait is judged at an exact pixel size, and a
+   scrolling column would clip it and move it as you scroll.
+   ========================================================================= */
+
+.faceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+}
+
+/* Overrides only — the button is rendered with `.clipButton` alongside this one, so it
+   inherits every border, hover and transition token from there and differs just in laying the
+   thumbnail out beside the text. Must stay below `.clipButton` in the file. */
+.faceButton {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* Sits behind the portrait so a missing crop reads as an empty well rather than as a
+   button that failed to render. */
+.faceThumb {
+  flex: none;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--ui-color-glass-06);
+  border-radius: 6px;
+}
+
+.faceText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.facePreview {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.9rem 1rem;
+  background: var(--ui-color-overlay-backdrop);
+  border: 2px solid var(--ui-color-border-emphasis);
+  border-radius: 8px;
+
+  /* Display-only, and `.galleryUi` is pointer-events: none — do not opt back in, or this
+     swallows clicks meant for the canvas behind it. */
+  pointer-events: none;
+}
+
+.facePreviewCaption {
+  margin: 0;
+  font-size: var(--ui-font-caption);
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ui-color-accent);
+}
+
+.facePreviewBoxes {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.facePreviewBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.facePreviewSize {
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-text-muted-2);
+}
+
+.facePreviewEmpty {
+  margin: 0;
+  max-width: 14rem;
+  font-size: var(--ui-font-caption);
+  line-height: 1.45;
+  color: var(--ui-color-text-muted-2);
+}

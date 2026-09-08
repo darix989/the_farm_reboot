@@ -445,6 +445,27 @@ async function generate(args) {
  */
 const CANONICAL_EMOTION = 'talking';
 
+/** Suffix marking a body clip generated with the body and head locked still. */
+const STILL_SUFFIX = '_still';
+
+/**
+ * The body clip a portrait of `emotion` should be cut from.
+ *
+ * Prefers `<emotion>_still` when one has been promoted. Those exist because the two registers
+ * want opposite things from the same clip: every `talking` prompt asks for "head bobbing gently
+ * in time with speech" — deliberately, because at 300px a bobbing head is what reads as talking
+ * — while a portrait wants the face held still in its box. Human review of the first crops said
+ * exactly that: glitch-free, but obviously not authored for a head-only crop, because the face
+ * translates. It was translating because the prompt asked it to.
+ *
+ * Falling back to the bobbing original makes a still variant an *optional* per-animal upgrade
+ * rather than a migration: an animal without one keeps the portrait it already had.
+ */
+function cropSource(emotions, emotion) {
+  const still = emotions[`${emotion}${STILL_SUFFIX}`];
+  return still ? { source: still, sourceEmotion: `${emotion}${STILL_SUFFIX}` } : { source: emotions[emotion], sourceEmotion: emotion };
+}
+
 /**
  * Which portraits to cut, from the *body record* rather than from a prompt vocabulary.
  *
@@ -453,6 +474,10 @@ const CANONICAL_EMOTION = 'talking';
  * never generated. An animal with no `headCrop` is skipped, which is how the five gallery-only
  * animals stay out of a full-cast run without needing a flag: nobody has authored and checked
  * their box yet.
+ *
+ * A `_still` clip is a *source*, never an output: it produces the portrait for the emotion it is
+ * a variant of, so it must not also produce a `talking_still` portrait that nothing would ask
+ * for. The runtime only ever looks up the five real emotions.
  */
 function planCropJobs(manifest, bodyRecord, args) {
   const jobs = [];
@@ -462,16 +487,20 @@ function planCropJobs(manifest, bodyRecord, args) {
 
     const emotions = bodyRecord[animalId];
     if (!emotions) continue;
-    if (!emotions[CANONICAL_EMOTION]) {
+
+    const outputs = Object.keys(emotions).filter((e) => !e.endsWith(STILL_SUFFIX));
+    const canonical = cropSource(emotions, CANONICAL_EMOTION);
+    if (!canonical.source) {
       throw new Error(
         `${animalId} has a headCrop but no promoted '${CANONICAL_EMOTION}' body clip, which is ` +
           `where its head rect and alignment template come from.`,
       );
     }
 
-    for (const [emotion, source] of Object.entries(emotions)) {
+    for (const emotion of outputs) {
       if (args.emotions && !args.emotions.includes(emotion)) continue;
-      jobs.push({ animalId, emotion, headCrop: animal.headCrop, source });
+      const { source, sourceEmotion } = cropSource(emotions, emotion);
+      jobs.push({ animalId, emotion, headCrop: animal.headCrop, source, sourceEmotion });
     }
   }
   return jobs;
@@ -526,7 +555,13 @@ async function cropFaces(args) {
 
   for (const [animalId, animalJobs] of byAnimal) {
     const animalEmotions = bodyRecord[animalId];
-    const canonicalSource = animalEmotions[CANONICAL_EMOTION];
+    // Same clip the `talking` portrait is cut from, still variant included: a rect authored
+    // against the bobbing clip and applied to the still one would be measuring one framing and
+    // cropping another, and the two do not have the same union box.
+    const { source: canonicalSource, sourceEmotion: canonicalEmotion } = cropSource(
+      animalEmotions,
+      CANONICAL_EMOTION,
+    );
     const canonicalPath = join(BODY_MODE.publicDir, canonicalSource.file);
     const canonicalSheet = await readFile(canonicalPath);
     const canonicalGrid = await bodyGrid(canonicalSheet, canonicalSource);
@@ -540,7 +575,8 @@ async function cropFaces(args) {
     const upscale = CROP_CELL_SIZE / Math.max(rect.width, rect.height);
     console.log(
       `- ${animalId}: head ${rect.width}x${rect.height}px out of a ${canonicalGrid.frameWidth}px ` +
-        `cell (body union ${union.width}x${union.height}) → x${upscale.toFixed(2)} to ${CROP_CELL_SIZE}px`,
+        `cell (body union ${union.width}x${union.height}, from ${canonicalEmotion}) ` +
+        `→ x${upscale.toFixed(2)} to ${CROP_CELL_SIZE}px`,
     );
 
     reviewed.push({
@@ -588,6 +624,7 @@ async function cropFaces(args) {
         // Provenance: which body clip this was cut from, the rect, and where each frame's head
         // was found. Without the offsets nobody can tell a tracking failure from bad art.
         sourceClip: job.source.file,
+        sourceEmotion: job.sourceEmotion,
         headCrop: job.headCrop,
         headRect: rect,
         alignment: { offsets, ...alignment },
@@ -619,7 +656,8 @@ async function cropFaces(args) {
 
       reviewed[reviewed.length - 1].clips.push({ emotion: job.emotion, alignment, quality });
       console.log(
-        `  ${job.emotion}: ${grid.frameCount} frames from ${job.source.file} ` +
+        `  ${job.emotion}: ${grid.frameCount} frames from ${job.source.file}` +
+          `${job.sourceEmotion === job.emotion ? '' : ` (still variant)`} ` +
           `(align ≤${alignment.maxOffset}px, jump ≤${alignment.maxJump}px)`,
       );
       [...alignment.warnings, ...quality.warnings].forEach((w) => console.log(`    ⚠ ${w}`));
@@ -1103,6 +1141,7 @@ async function promote() {
             // without `sourceClip` nobody can tell which body clip it came from. The offsets
             // are what separates "the art is wrong" from "the aligner lost the head".
             sourceClip: clip.sourceClip,
+            sourceEmotion: clip.sourceEmotion,
             headCrop: clip.headCrop,
             headRect: clip.headRect,
             alignment: clip.alignment,

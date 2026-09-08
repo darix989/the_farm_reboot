@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import getLabel from '../../data/labels';
 import type { DebateScenarioKey } from '../../data/levels';
-import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
+import { resolveCharacter } from '../../data/characters';
 import { farmNpcById } from '../../data/farmMap';
 import { useFarmStore } from '../../store/farmStore';
 import { useGameStore } from '../../store/gameStore';
 import { GameManager } from '../../utils/gameManager';
 import { farmDialogueFor } from '../farm/farmDialogueState';
 import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
-import CharacterStage from '../farm/CharacterStage';
 import FarmDialogue from '../farm/FarmDialogue';
 import styles from '../farm/FarmUI.module.scss';
 
@@ -37,7 +36,6 @@ const FarmUI: React.FC = () => {
   }, [talkingToNpcId, dialogue?.slotKey]);
 
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;
-  const currentBeat = dialogue?.beats[Math.min(beatIndex, Math.max(0, dialogue.beats.length - 1))];
 
   const startEncounter = useCallback((scenario: DebateScenarioKey) => {
     const store = useGameStore.getState();
@@ -72,21 +70,13 @@ const FarmUI: React.FC = () => {
       )}
 
       {dialogue && (
-        <>
-          <div className={styles.characterStage}>
-            <CharacterStage
-              participantIds={[PLAYER_CHARACTER_ID, dialogue.npcId]}
-              activeSpeakerId={currentBeat?.speakerId ?? dialogue.npcId}
-            />
-          </div>
-          <FarmDialogue
-            dialogue={dialogue}
-            beatIndex={beatIndex}
-            onAdvance={advanceBeat}
-            onStart={startEncounter}
-            onClose={closeDialogue}
-          />
-        </>
+        <FarmDialogue
+          dialogue={dialogue}
+          beatIndex={beatIndex}
+          onAdvance={advanceBeat}
+          onStart={startEncounter}
+          onClose={closeDialogue}
+        />
       )}
     </div>
   );

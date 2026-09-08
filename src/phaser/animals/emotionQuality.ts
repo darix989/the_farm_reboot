@@ -1,9 +1,12 @@
 /**
- * Pass/warn/unknown for a generated emotion clip, using the numbers stored on the sheet.
+ * Pass/warn/unknown for a clip in either animation register, using the numbers stored on its
+ * sheet.
  *
- * The three metric gates match `scripts/ludo/qualityCheck.mjs`. Two more gallery-only
- * gates sit on top: frame count (16-frame clips look like stop-motion next to a 25-frame
- * neighbour), and `reviewNotes` on the sheet (a human mark that the numbers missed).
+ * The metric gates match `scripts/ludo/qualityCheck.mjs`, which keeps a separate threshold set
+ * per register — so this file does too, one classifier each, rather than one function with a
+ * flag. Two more gallery-only gates sit on top of both: frame count (16-frame clips look like
+ * stop-motion next to a 25-frame neighbour), and `reviewNotes` on the sheet (a human mark that
+ * the numbers missed).
  */
 import {
   ANIMAL_EMOTIONS,
@@ -14,6 +17,7 @@ import {
 } from './animalEmotions';
 import { animalSetup } from './animalAnimations';
 import { emotionSheet } from './animalEmotionAnimations';
+import { FACE_QUALITY_THRESHOLDS, type FaceSheet } from './animalFaces';
 import type { AnimalSpriteId } from '../../data/characters';
 
 export type ClipQualityStatus = 'pass' | 'warn' | 'unknown' | 'none';
@@ -36,6 +40,26 @@ export function emotionClipQualityStatus(sheet: EmotionSheet | null): ClipQualit
   const stale = sheet.frameCount !== CURRENT_EMOTION_FRAME_COUNT;
   if (stale || metricsOverThreshold(sheet.quality)) return 'warn';
   return 'pass';
+}
+
+/**
+ * Classify one cropped portrait. `null` means the emotion has no portrait yet.
+ *
+ * Same shape as the body classifier, different gates — see `FACE_QUALITY_THRESHOLDS` for why
+ * `heightSwing` is not one of them here even though every face sheet still records it. `driftX`
+ * is stored in cell pixels, so the ratio has to be resolved against this sheet's own
+ * `frameWidth` rather than compared to a constant.
+ */
+export function faceClipQualityStatus(sheet: FaceSheet | null): ClipQualityStatus {
+  if (!sheet) return 'none';
+  if ((sheet.reviewNotes?.length ?? 0) > 0) return 'warn';
+  if (!sheet.quality) return 'unknown';
+  const stale = sheet.frameCount !== CURRENT_EMOTION_FRAME_COUNT;
+  const tripped =
+    sheet.quality.loopPop > FACE_QUALITY_THRESHOLDS.loopPop ||
+    sheet.quality.driftX > sheet.frameWidth * FACE_QUALITY_THRESHOLDS.driftXRatio ||
+    sheet.quality.warnings.length > 0;
+  return stale || tripped ? 'warn' : 'pass';
 }
 
 /**

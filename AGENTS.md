@@ -168,7 +168,7 @@ Defined in `src/phaser/main.ts`: **Boot** → **Preloader** → **MainMenu** →
 - Entry: `index.html` → `/src/main.tsx`, `#root`.
 - Favicon referenced: `/favicon.png` (ensure it exists under `public/` or root when deploying).
 - Template docs mention `public/assets` for static loads; add that folder as needed for `this.load.*` paths like `assets/...`.
-- **Character art** — `public/assets/characters/emotions/` holds the whole-body emotion clips Phaser plays on the Trial stage; `public/assets/characters/faces/` holds the head-and-shoulders portraits React plays in dialogue. Two registers, generated and promoted independently — see [`docs/characters-and-animations.md`](docs/characters-and-animations.md) and the `animal-emotion-sprites` skill.
+- **Character art** — `public/assets/characters/emotions/` holds the whole-body emotion clips Phaser plays on the Trial stage, **generated** through Ludo. `public/assets/characters/faces/` holds the head-and-shoulders portraits React plays in dialogue, **cropped out of those body clips locally** by `scripts/ludo/cropFace.mjs` — free, no API. Generating portraits was tried and abandoned; do not retry it without reading the `--faces` section of the `animal-emotion-sprites` skill. See also [`docs/characters-and-animations.md`](docs/characters-and-animations.md).
 
 ## Telemetry (`log.js`)
 

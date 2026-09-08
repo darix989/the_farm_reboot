@@ -1,13 +1,14 @@
 ---
-description: Generating, reviewing and promoting the cast's per-emotion animation clips (talking, doubtful, angry, thinking, sneaky) through the Ludo.ai API. Use when asked to generate, regenerate, add or fix an animal's emotion animation or spritesheet, to add a new emotion, or when touching scripts/ludo/, the emotion manifest, or public/assets/characters/emotions/.
-globs: scripts/ludo/**, scripts/generate-emotion-sprites.mjs, src/phaser/animals/**, public/assets/characters/emotions/**
+description: The cast's two animation registers — whole-body emotion clips generated through the Ludo.ai API, and dialogue portraits cropped locally out of those clips for free. Use when asked to generate, regenerate, add or fix an animal's emotion animation or spritesheet, to add a new emotion, to author or retune a head crop for a dialogue portrait, or when touching scripts/ludo/, the emotion manifest, public/assets/characters/emotions/ or public/assets/characters/faces/.
+globs: scripts/ludo/**, scripts/generate-emotion-sprites.mjs, src/phaser/animals/**, src/react/characters/**, public/assets/characters/emotions/**, public/assets/characters/faces/**
 ---
 
 # Animal emotion sprites
 
-The cast's emotion clips are **generated**, not exported from the source art pack.
-`npm run sprites:emotions` drives the Ludo.ai API from a committed prompt manifest into
-reviewable art and then into the game.
+Two registers, one script. The cast's **body** emotion clips are *generated*, not exported from
+the source art pack: `npm run sprites:emotions` drives the Ludo.ai API from a committed prompt
+manifest into reviewable art and then into the game. The **dialogue portraits** are *cropped* out
+of those body clips locally, for free — `--faces` calls no API at all.
 
 ## Read the manual before running anything
 
@@ -99,6 +100,34 @@ nothing reaches `public/assets/` without a human having watched it loop.
 Never hand-edit `src/phaser/animals/emotionSheets.generated.ts`: its `scale` / `originX` /
 `originY` are measured at promote time, and a clip without them renders at the wrong size. Fix
 the measurement in `scripts/ludo/normalize.mjs` and run `-- --remeasure` instead.
+
+## Dialogue portraits are crops, not generations
+
+The second register: head-and-shoulders loops React plays in the farm dialogue box and the debate
+log. **They cost nothing and call no API** — `scripts/ludo/cropFace.mjs` cuts them out of the
+already-promoted body clips.
+
+```bash
+npm run sprites:emotions -- --faces --dry-run   # free; writes .ludo-review-faces/boxes.html
+npm run sprites:emotions -- --faces --promote    # ships what you approved
+```
+
+**Do not try to generate these.** It was attempted three times for 12 credits and failed
+identically each time — the eyelid aperture swung 165%, 196% and 458% across the clip and two
+attempts invented teeth. The endpoint reframes its input (a head sent at 485x363 came back at
+257x192), so it redraws the head every frame rather than animating the pixels it was given.
+
+Four things not to re-derive here either:
+
+- **One `headCrop` per animal**, in fractions of the union alpha box of its `talking` clip. Never
+  one per emotion — all five portraits share a dialogue box, so a tighter `angry` rect makes the
+  head jump size between beats. Rules C1-C6 live in the manifest's `$faceComment`.
+- **`fit` is arithmetic on that rect, not a measurement of the art.** Measuring it back out made
+  it differ per emotion and reintroduced the size jump.
+- **Cropping amplifies the source loop seam 3.5-5x**, which is why `donkey-grey` has no portraits:
+  its body clips are the cast's weakest and its `doubtful` lands at 11%. Rue stays text-only.
+- **Known limitation, accepted:** the face translates slightly, because the body clip animates
+  the whole animal. See the `--faces` section of SKILL.md for the suggested fix if it matters.
 
 ## Maintaining this rule
 
