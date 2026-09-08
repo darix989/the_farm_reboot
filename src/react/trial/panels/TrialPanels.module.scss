@@ -2,6 +2,13 @@
 @use '../../breakpoints' as bp;
 @use '../debateLogIconSizing' as debate-log-icon;
 
+/* Guess-state tints shared by the debate-log analyze lens (`.trialAnalyzeBtn`) and the
+   interactive footer's analyze button (`.trialFooterAnalyzeBtn`) — file-local per the
+   module's own colour convention, since both live only in this file. */
+$trial-guess-tint-correct: invert(1) sepia(1) saturate(3) hue-rotate(90deg);
+$trial-guess-tint-partial: invert(1) sepia(1) saturate(2.5) hue-rotate(15deg);
+$trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
+
 /* =========================================================================
    Trial panels — panel content wrappers
    ========================================================================= */
@@ -54,6 +61,51 @@
   @include bp.expanded {
     gap: 2rem;
     padding: 0 1rem;
+  }
+}
+
+/* Icon-only footer row (Analyze | Back | Continue) — same centred sizing as
+   `.trialFooterGrid`, but a flex row since the button count varies (two when the
+   scenario disables analysis). */
+.trialInteractiveFooterActions {
+  display: flex;
+  width: 100%;
+  max-width: 56rem;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0 0.5rem;
+
+  @include bp.expanded {
+    gap: 2rem;
+    padding: 0 1rem;
+  }
+}
+
+/* `<img>` inside a squared footer icon button. */
+.trialFooterIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.85;
+  filter: invert(1);
+}
+
+/* Guess-state tint for the footer analyze button, matching `.trialAnalyzeBtn` below. */
+.trialFooterAnalyzeBtn {
+  &.correct .trialFooterIcon {
+    opacity: 1;
+    filter: $trial-guess-tint-correct;
+  }
+
+  &.partial .trialFooterIcon {
+    opacity: 1;
+    filter: $trial-guess-tint-partial;
+  }
+
+  &.wrong .trialFooterIcon {
+    opacity: 1;
+    filter: $trial-guess-tint-wrong;
   }
 }
 
@@ -572,7 +624,7 @@
 
     img {
       opacity: 1;
-      filter: invert(1) sepia(1) saturate(3) hue-rotate(90deg);
+      filter: $trial-guess-tint-correct;
     }
 
     &:hover {
@@ -587,7 +639,7 @@
 
     img {
       opacity: 1;
-      filter: invert(1) sepia(1) saturate(2.5) hue-rotate(15deg);
+      filter: $trial-guess-tint-partial;
     }
 
     &:hover {
@@ -602,7 +654,7 @@
 
     img {
       opacity: 1;
-      filter: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
+      filter: $trial-guess-tint-wrong;
     }
 
     &:hover {

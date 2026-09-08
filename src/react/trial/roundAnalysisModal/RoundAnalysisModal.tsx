@@ -60,6 +60,12 @@ export type AnalysisTarget =
   | { kind: 'opponent_prompt'; statement: Statement; playerRound: PlayerRoundEntry }
   | { kind: 'opponent_response'; statement: Statement; playerRound: PlayerRoundEntry };
 
+/** The id the analysis modal reports for a target: round id for an NPC round, chosen-option id for a player target, statement id otherwise. */
+export function analysisTargetStatementId(target: AnalysisTarget): string {
+  if (target.kind === 'player') return target.chosenOption.id;
+  return target.kind === 'npc' ? target.round.id : target.statement.id;
+}
+
 interface RoundAnalysisModalProps {
   target: AnalysisTarget;
   allFallacies: LogicalFallacy[];
@@ -1058,12 +1064,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   const analysisTargetKeyRef = useRef<string>('');
   const prevAttemptsLenRef = useRef(0);
 
-  const analysisTargetKey =
-    target.kind === 'player'
-      ? target.chosenOption.id
-      : target.kind === 'npc'
-        ? target.round.id
-        : target.statement.id;
+  const analysisTargetKey = analysisTargetStatementId(target);
 
   /** Narrow the bus enum alongside `target.kind`. */
   const analysisTargetKind: AnalysisTargetKind = target.kind;

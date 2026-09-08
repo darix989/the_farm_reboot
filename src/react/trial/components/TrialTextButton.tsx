@@ -3,7 +3,7 @@ import cn from 'classnames';
 import styles from './TrialTextButton.module.scss';
 
 export type TrialTextButtonVariant = 'solid' | 'dashed';
-export type TrialTextButtonWidthMode = 'content' | 'fill' | 'flexGrow';
+export type TrialTextButtonWidthMode = 'content' | 'fill' | 'flexGrow' | 'square';
 export type TrialTextButtonSize = 'default' | 'compact';
 
 export interface TrialTextButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -33,6 +33,7 @@ const TrialTextButton = forwardRef<HTMLButtonElement, TrialTextButtonProps>(
         widthMode === 'content' && styles.widthContent,
         widthMode === 'fill' && styles.widthFill,
         widthMode === 'flexGrow' && styles.widthFlexGrow,
+        widthMode === 'square' && styles.widthSquare,
         size === 'default' && styles.sizeDefault,
         size === 'compact' && styles.sizeCompact,
         className,

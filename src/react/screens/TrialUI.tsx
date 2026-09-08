@@ -8,6 +8,7 @@ import { useTrialRoundWorkflow } from '../hooks/useTrialRoundWorkflow';
 import { useWizardReveal, type WizardRevealSource } from '../hooks/useWizardReveal';
 import RoundAnalysisModal, {
   HELP_INSIGHT_COST,
+  analysisTargetStatementId,
   type AnalysisTarget,
 } from '../trial/roundAnalysisModal/RoundAnalysisModal';
 import type {
@@ -29,7 +30,7 @@ import WizardPanel, {
   type WizardPanelDetail,
   type WizardPanelReveal,
 } from '../trial/panels/WizardPanel';
-import InteractivePanel from '../trial/panels/InteractivePanel';
+import InteractivePanel, { type InteractiveFooter } from '../trial/panels/InteractivePanel';
 import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
 import {
@@ -181,9 +182,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   }, [wf.gamePhase, wf.currentRound]);
 
   const analysisStatementTargetId = useMemo(() => {
-    if (!analysisTarget) return null;
-    if (analysisTarget.kind === 'player') return analysisTarget.chosenOption.id;
-    return analysisTarget.kind === 'npc' ? analysisTarget.round.id : analysisTarget.statement.id;
+    return analysisTarget ? analysisTargetStatementId(analysisTarget) : null;
   }, [analysisTarget]);
 
   const analysisGuessStorageRoundNumber = useMemo((): number | null => {
@@ -421,6 +420,33 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     return true;
   }, [wf.gamePhase, wf.currentNpcRound, fallacyGuesses]);
 
+  /**
+   * The opponent's current line, for the footer analyze button — current-round only, so it
+   * never competes with the debate log's `AnalyzeButton` lenses, which cover history. `null`
+   * means "nothing to analyze right now" (the footer renders disabled, not absent — see
+   * `mechanics.analysisEnabled` for the absent case).
+   */
+  const currentAnalysisTarget = useMemo((): AnalysisTarget | null => {
+    switch (wf.gamePhase) {
+      case 'npc_speaking':
+        return wf.currentNpcRound ? { kind: 'npc', round: wf.currentNpcRound } : null;
+      case 'player_choosing': {
+        const playerRound = wf.currentPlayerRound;
+        const prompt = playerRound?.opponentPrompt;
+        if (!playerRound || !prompt) return null;
+        return { kind: 'opponent_prompt', statement: prompt, playerRound };
+      }
+      case 'npc_responding': {
+        const playerRound = wf.currentPlayerRound;
+        const response = wf.activeOpponentResponse;
+        if (!playerRound || !response) return null;
+        return { kind: 'opponent_response', statement: response.statement, playerRound };
+      }
+      default:
+        return null;
+    }
+  }, [wf.gamePhase, wf.currentNpcRound, wf.currentPlayerRound, wf.activeOpponentResponse]);
+
   // -----------------------------------------------------------------------
   // Wizard sentence reveal
   // -----------------------------------------------------------------------
@@ -549,7 +575,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // -----------------------------------------------------------------------
   // Footer action state
   // -----------------------------------------------------------------------
-  const interactiveFooter = useMemo(() => {
+  const interactiveFooter = useMemo((): InteractiveFooter => {
     // While a line is still being paced out, Continue belongs to the reveal: it fills in the
     // rest of the sentence, or steps to the next one. No `interactive:continue` emit and no
     // dispatch — nothing about the debate has moved. This has to sit ahead of
@@ -559,6 +585,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       return {
         submitLabel: getLabel('continue'),
         submitDisabled: false,
+        submitIcon: 'continue',
         onSubmit: () => {
           revealAdvance();
         },
@@ -567,6 +594,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
     let submitLabel = getLabel('continue');
     let submitDisabled = true;
+    let submitIcon: InteractiveFooter['submitIcon'] = 'continue';
     let onSubmit: (() => void) | undefined;
 
     const currentRoundNumber = wf.currentRound?.roundNumber ?? null;
@@ -624,6 +652,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'player_confirming':
         submitLabel = getLabel('confirm');
         submitDisabled = false;
+        submitIcon = 'confirm';
         onSubmit = () => {
           const option = wf.selectedOption;
           const round = wf.currentPlayerRound;
@@ -642,6 +671,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         // `default`, leaving Continue disabled forever with no way out.
         submitLabel = getLabel('leaveEncounter');
         submitDisabled = false;
+        submitIcon = 'leave';
         onSubmit = () => {
           const { activeDebateId, returnSceneKey } = useGameStore.getState();
           // Mark by the scenario *key*, not `debate.id` — those differ
@@ -655,7 +685,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         submitDisabled = true;
     }
 
-    return { submitLabel, submitDisabled, onSubmit };
+    return { submitLabel, submitDisabled, submitIcon, onSubmit };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- wf.gamePhase + wf.dispatch cover footer behavior; setIntroSummaryOpen is stable
   }, [
     wf.gamePhase,
@@ -948,6 +978,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             hideOptions={revealActive}
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
+            mechanics={mechanics}
+            analyzeTarget={currentAnalysisTarget}
           />
         }
       />

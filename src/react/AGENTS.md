@@ -18,7 +18,7 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `trial/components/DebateLogToggleButton.tsx` | The whole-panel collapse / expand control, rendered by both of the above so they cannot drift. Exports `DEBATE_LOG_PANEL_ID`. |
 | `trial/utils/debateLogTutorialNeeds.ts` | `tutorialNeedsDebateLog(steps)` — does this tutorial point at something only present while the log is expanded? |
 | `trial/panels/WizardPanel.tsx` | Centre column: the guidance line plus the statement box, which is revealed one sentence at a time (see "Wizard sentence reveal"). |
-| `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and footer (Back / Continue / Confirm). |
+| `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and an icon-only footer (Analyze / Back / Continue-Confirm-Leave). The Analyze button opens the opponent's current-round line — the debate log's own `AnalyzeButton` lenses stay the way into history. |
 | `hooks/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. Also emits `round:start` / `round:end` on the debate event bus. |
 | `hooks/useWizardReveal.ts` | Paces one incoming line through the wizard a sentence at a time; owns which sentence is showing, not the character count. |
 | `trial/components/TypewriterText.tsx` | Leaf that fills in one line character by character. Owns the character count so a reveal re-renders one node, not the overlay. |
@@ -234,7 +234,7 @@ Content depends on `gamePhase`:
 | `round_recap` | Same response view as `npc_responding` when a crossfire reply exists; otherwise a short note to use the recap modal. The footer **Continue** is disabled — the player advances only from the `RoundRecapModal`. |
 | `debate_complete` | A "debate finished" message with the final score. |
 
-The panel footer always shows **Back** (enabled only in `player_confirming`) and a context-sensitive **Continue / Confirm** button (disabled during `round_recap`).
+The panel footer is three icon-only squared buttons: **Analyze | Back | Continue**. Analyze always targets the opponent's *current* line (the NPC statement, the opponent's crossfire question, or its response — never the player's own choice), keyed off `gamePhase`; with nothing current to analyze (`debate_intro`, `player_confirming`, `round_recap`, `debate_complete`) it renders disabled rather than reflowing the row, and it is not rendered at all when `mechanics.analysisEnabled` is `false`. It carries the same green/amber/red guess-state tint as the debate log's `AnalyzeButton` lenses. **Back** is enabled only in `player_confirming` (or while an option can be unselected in `player_choosing`). The context-sensitive submit button's icon follows its three states — continue / confirm / leave — via `TrialUI`'s `interactiveFooter.submitIcon`.
 
 ---
 
@@ -352,6 +352,7 @@ A compile-time assertion (`_AssertKeysMatch`) keeps `EventTrigger` and `DebateEv
 | `interactive:confirm` | `InteractiveConfirmPayload` | `TrialUI` — the Confirm footer in `player_choosing` / `player_confirming`. |
 | `interactive:statement_selected` | `InteractiveStatementSelectedPayload` | `InteractivePanel` — option click (selection only, not unselect). |
 | `interactive:back` | `InteractiveBackPayload` | `InteractivePanel` — Back button. |
+| `interactive:analyze` | `InteractiveAnalyzePayload` | `InteractivePanel` — the footer Analyze button, current-round only. Distinct from `debate_log:round:analyze` so a tutorial `where` filter can tell a footer click from a log-card click. |
 | `round:recap:open` / `round:recap:close` | `RoundRecapTogglePayload` | `RoundRecapModal` — mount/unmount effect so any dismissal path stays balanced. |
 | `debate_log:round:analyze` | `DebateLogRoundPayload` | `DebateRoundLogCard` — every `AnalyzeButton` click site. |
 | `debate_log:round:shrink` / `debate_log:round:expand` | `DebateLogRoundPayload` | `DebateRoundLogCard` — per-card expand/collapse toggle. |

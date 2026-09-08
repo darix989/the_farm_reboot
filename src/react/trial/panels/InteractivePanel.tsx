@@ -1,8 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
-import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
+import {
+  analysisTargetStatementId,
+  type AnalysisTarget,
+} from '../roundAnalysisModal/RoundAnalysisModal';
 import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
+import type { ResolvedMechanics } from '../utils/scenarioMechanics';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TrialTextButton from '../components/TrialTextButton';
 import cn from 'classnames';
@@ -21,9 +25,35 @@ import {
 import styles from './TrialPanels.module.scss';
 import getLabel from '../../../data/labels';
 
-interface InteractiveFooter {
+import magnifyingIcon from '../../../static/icons/magnifying.svg';
+import backIcon from '../../../static/icons/back.svg';
+import continueIcon from '../../../static/icons/continue.svg';
+import confirmIcon from '../../../static/icons/confirm.svg';
+import leaveIcon from '../../../static/icons/leave.svg';
+
+const SUBMIT_ICON_SRC: Record<'continue' | 'confirm' | 'leave', string> = {
+  continue: continueIcon,
+  confirm: confirmIcon,
+  leave: leaveIcon,
+};
+
+/** Per-kind title for the footer analyze button; falls back to `analyzeThisRound` when disabled. */
+function analyzeTitleForTarget(target: AnalysisTarget | null): string {
+  if (!target) return getLabel('analyzeThisRound');
+  switch (target.kind) {
+    case 'opponent_prompt':
+      return getLabel('analyzeThisQuestion');
+    case 'opponent_response':
+      return getLabel('analyzeThisResponse');
+    default:
+      return getLabel('analyzeThisStatement');
+  }
+}
+
+export interface InteractiveFooter {
   submitLabel: string;
   submitDisabled: boolean;
+  submitIcon: 'continue' | 'confirm' | 'leave';
   onSubmit?: () => void;
 }
 
@@ -41,10 +71,12 @@ interface InteractivePanelProps {
    * when they appear.
    */
   hideOptions?: boolean;
-  /** Passed by `TrialUI`; not used in this panel. */
   onOpenAnalysis: (target: AnalysisTarget) => void;
-  /** Passed by `TrialUI`; not used in this panel. */
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
+  /** Mode flags — gates whether the footer analyze button renders at all. */
+  mechanics: ResolvedMechanics;
+  /** The current round's line to analyze, or `null` when there is none (renders disabled). */
+  analyzeTarget: AnalysisTarget | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -118,9 +150,14 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   onRevealLockedOption,
   interactiveFooter,
   hideOptions,
-  onOpenAnalysis: _onOpenAnalysis,
-  getNpcGuessState: _getNpcGuessState,
+  onOpenAnalysis,
+  getNpcGuessState,
+  mechanics,
+  analyzeTarget,
 }) => {
+  const analyzeTargetId = analyzeTarget ? analysisTargetStatementId(analyzeTarget) : null;
+  const analyzeGuessState = analyzeTargetId ? getNpcGuessState(analyzeTargetId) : null;
+  const analyzeTitle = analyzeTitleForTarget(analyzeTarget);
   const [playthroughShuffleKey] = useState(() =>
     typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
       ? crypto.randomUUID()
@@ -242,12 +279,43 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         </ScrollFadeContainer>
 
         <div className={styles.trialInteractiveFooter}>
-          <div className={styles.trialFooterGrid}>
+          <div className={styles.trialInteractiveFooterActions}>
+            {mechanics.analysisEnabled && (
+              <TrialTextButton
+                widthMode="square"
+                className={cn(styles.trialFooterAnalyzeBtn, {
+                  [styles.correct]: analyzeGuessState === 'correct',
+                  [styles.partial]: analyzeGuessState === 'partial',
+                  [styles.wrong]: analyzeGuessState === 'wrong',
+                })}
+                disabled={!analyzeTarget}
+                aria-label={analyzeTitle}
+                title={analyzeTitle}
+                onClick={() => {
+                  if (!analyzeTarget) return;
+                  const target = { kind: 'interactive_action', action: 'analyze' } as const;
+                  if (!canRunTutorialTargetAction(target)) return;
+                  debateEventBus.emit('interactive:analyze', {
+                    fromPhase: wf.gamePhase,
+                    roundNumber: wf.currentRound?.roundNumber ?? null,
+                    targetKind: analyzeTarget.kind,
+                  });
+                  onOpenAnalysis(analyzeTarget);
+                  notifyTutorialTargetAction(target);
+                }}
+                data-tutorial-interactive-action="analyze"
+              >
+                <img src={magnifyingIcon} alt="" className={styles.trialFooterIcon} />
+              </TrialTextButton>
+            )}
             <TrialTextButton
+              widthMode="square"
               disabled={
                 wf.gamePhase === 'debate_intro' ||
                 (wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo)
               }
+              aria-label={getLabel('back')}
+              title={getLabel('back')}
               onClick={() => {
                 const target = { kind: 'interactive_action', action: 'back' } as const;
                 if (!canRunTutorialTargetAction(target)) return;
@@ -265,10 +333,13 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
               }}
               data-tutorial-interactive-action="back"
             >
-              {getLabel('back')}
+              <img src={backIcon} alt="" className={styles.trialFooterIcon} />
             </TrialTextButton>
             <TrialTextButton
+              widthMode="square"
               disabled={interactiveFooter.submitDisabled || !interactiveFooter.onSubmit}
+              aria-label={interactiveFooter.submitLabel}
+              title={interactiveFooter.submitLabel}
               onClick={() => {
                 const target = {
                   kind: 'interactive_action',
@@ -282,7 +353,11 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 wf.gamePhase === 'player_confirming' ? 'confirm' : 'continue'
               }
             >
-              {interactiveFooter.submitLabel}
+              <img
+                src={SUBMIT_ICON_SRC[interactiveFooter.submitIcon]}
+                alt=""
+                className={styles.trialFooterIcon}
+              />
             </TrialTextButton>
           </div>
         </div>

@@ -87,6 +87,14 @@ export interface InteractiveConfirmPayload {
   optionId: string;
 }
 
+/** Footer analyze button click — distinct from `debate_log:round:analyze` so a tutorial `where` filter can tell a footer click from a log-card click. */
+export interface InteractiveAnalyzePayload {
+  /** Phase the analyze button was pressed from. */
+  fromPhase: GamePhase;
+  roundNumber: number | null;
+  targetKind: AnalysisTargetKind;
+}
+
 export interface RoundRecapTogglePayload {
   roundNumber: number;
   roundId: string;
@@ -192,6 +200,7 @@ export interface DebateEventPayloads {
   'interactive:back': InteractiveBackPayload;
   'interactive:continue': InteractiveContinuePayload;
   'interactive:confirm': InteractiveConfirmPayload;
+  'interactive:analyze': InteractiveAnalyzePayload;
   'round:recap:open': RoundRecapTogglePayload;
   'round:recap:close': RoundRecapTogglePayload;
   'debate_log:round:analyze': DebateLogRoundPayload;
