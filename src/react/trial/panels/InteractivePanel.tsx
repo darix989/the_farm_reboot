@@ -35,6 +35,12 @@ interface InteractivePanelProps {
   revealedLockedOptionIds: Set<string>;
   onRevealLockedOption: (optionId: string) => void;
   interactiveFooter: InteractiveFooter;
+  /**
+   * True while the wizard is still revealing the opponent's question. The options stay
+   * mounted but invisible and unclickable, so the panel does not resize under the player
+   * when they appear.
+   */
+  hideOptions?: boolean;
   /** Passed by `TrialUI`; not used in this panel. */
   onOpenAnalysis: (target: AnalysisTarget) => void;
   /** Passed by `TrialUI`; not used in this panel. */
@@ -111,6 +117,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   revealedLockedOptionIds,
   onRevealLockedOption,
   interactiveFooter,
+  hideOptions,
   onOpenAnalysis: _onOpenAnalysis,
   getNpcGuessState: _getNpcGuessState,
 }) => {
@@ -150,7 +157,12 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div className={styles.trialChoices} data-tutorial-panel="interactive">
+        <div
+          className={styles.trialChoices}
+          data-tutorial-panel="interactive"
+          aria-hidden={hideOptions || undefined}
+          style={hideOptions ? { visibility: 'hidden' } : undefined}
+        >
           {choosingOptionsOrder.map((opt, idx) => {
             const guessUnlocked = isPlayerOptionUnlocked(opt, fallacyGuesses);
             const revealed = !opt.unlockCondition || revealedLockedOptionIds.has(opt.id);
@@ -172,7 +184,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 optionLetter={optionLetter}
                 statementText={truncateStatementPreview(body)}
                 accessibilityStatement={body}
-                disabled={locked}
+                disabled={locked || hideOptions}
                 selected={wf.selectedOption?.id === opt.id}
                 unlockHint={awaitingReveal}
                 revealFlash={revealFlash}

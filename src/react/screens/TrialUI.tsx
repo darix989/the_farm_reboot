@@ -5,6 +5,7 @@ import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../types/d
 import logicalFallaciesData from '../../data/logicalFallacies.json';
 import TrialLayout from '../trial/TrialLayout';
 import { useTrialRoundWorkflow } from '../hooks/useTrialRoundWorkflow';
+import { useWizardReveal, type WizardRevealSource } from '../hooks/useWizardReveal';
 import RoundAnalysisModal, {
   HELP_INSIGHT_COST,
   type AnalysisTarget,
@@ -24,7 +25,10 @@ import {
   guessStateFromAttempts,
 } from '../trial/utils/fallacyGuessUtils';
 import FeedbackPanel from '../trial/panels/FeedbackPanel';
-import WizardPanel, { type WizardPanelDetail } from '../trial/panels/WizardPanel';
+import WizardPanel, {
+  type WizardPanelDetail,
+  type WizardPanelReveal,
+} from '../trial/panels/WizardPanel';
 import InteractivePanel from '../trial/panels/InteractivePanel';
 import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
@@ -35,6 +39,7 @@ import {
   getSpeakerName,
   getStartingInsightPoints,
   moderatorOpinionPlainText,
+  splitIntoSentences,
   statementText,
 } from '../trial/utils/trialHelpers';
 import { debateParticipantIds, stageOrder } from '../../data/debateCast';
@@ -54,6 +59,12 @@ import { GameManager } from '../../utils/gameManager';
 interface TrialUIProps {
   debate: DebateScenarioJson;
 }
+
+/**
+ * A wizard reveal source plus the id the analysis modal reports for the same line, so
+ * `TrialUI` can tell when the player has opened analysis on the line being revealed.
+ */
+type RevealSource = WizardRevealSource & { analysisTargetId: string | null };
 
 /** Map key for `fallacyGuesses`: the player round that owns this analysis target, not the workflow's current round. */
 function guessStorageRoundNumberForTarget(target: AnalysisTarget): number {
@@ -411,9 +422,149 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   }, [wf.gamePhase, wf.currentNpcRound, fallacyGuesses]);
 
   // -----------------------------------------------------------------------
+  // Wizard sentence reveal
+  // -----------------------------------------------------------------------
+
+  /**
+   * The line the wizard is pacing out one sentence at a time, or `null` when there is nothing
+   * to reveal.
+   *
+   * Incoming speech only. The player's own selected statement, the round recap and the closing
+   * verdict are text they chose or have already read, so pacing them out again is pure delay.
+   *
+   * Switching on `gamePhase` first is load-bearing: `activeOpponentResponse` is also non-null
+   * during `round_recap`, where the recap modal owns the screen and Continue belongs to it.
+   *
+   * `analysisTargetId` is the id the analysis modal reports for the same line, so the two can
+   * be compared below. It is the *round* id for an NPC round and the *statement* id elsewhere,
+   * matching `analysisStatementTargetId`.
+   */
+  const revealSource = useMemo((): RevealSource | null => {
+    const build = (
+      slot: string,
+      analysisTargetId: string | null,
+      sentences: string[],
+    ): RevealSource | null => {
+      const chunks = sentences.map((text) => text.trim()).filter(Boolean);
+      // An empty line would arm a reveal whose Continue is a permanent no-op.
+      if (chunks.length === 0) return null;
+      return {
+        key: `${debate.id}:${slot}:${analysisTargetId ?? slot}`,
+        sentences: chunks,
+        analysisTargetId,
+      };
+    };
+
+    switch (wf.gamePhase) {
+      case 'debate_intro': {
+        const intro = debate.introduction?.trim();
+        if (!intro) return null;
+        // The only reveal source authored as prose rather than as `Sentence[]`.
+        return build('intro', null, splitIntoSentences(intro));
+      }
+      case 'npc_speaking': {
+        const npc = wf.currentNpcRound;
+        if (!npc) return null;
+        return build(
+          'npc',
+          npc.id,
+          npc.statement.sentences.map((sentence) => sentence.text),
+        );
+      }
+      case 'player_choosing': {
+        const prompt = wf.currentPlayerRound?.opponentPrompt;
+        // Only the opponent's question is paced; once an option is picked the wizard shows the
+        // player's own line back to them.
+        if (!prompt || wf.selectedOption) return null;
+        return build(
+          'prompt',
+          prompt.id,
+          prompt.sentences.map((sentence) => sentence.text),
+        );
+      }
+      case 'npc_responding': {
+        const response = wf.activeOpponentResponse;
+        if (!response) return null;
+        return build(
+          'response',
+          response.statement.id,
+          response.statement.sentences.map((sentence) => sentence.text),
+        );
+      }
+      default:
+        return null;
+    }
+  }, [
+    wf.gamePhase,
+    wf.currentNpcRound,
+    wf.currentPlayerRound,
+    wf.selectedOption,
+    wf.activeOpponentResponse,
+    debate.id,
+    debate.introduction,
+  ]);
+
+  const reveal = useWizardReveal(revealSource, {
+    // A tutorial choreographs its own reading pace, and `tutorialStore` blocks Continue for any
+    // step that targets something other than it — which would strand the player mid-statement.
+    enabled: !isTutorialOpen,
+    resetKey: debate.id,
+  });
+  // Destructured so the effects below can depend on the stable callbacks by name; the reveal
+  // object itself is a fresh literal every render.
+  const { active: revealActive, advance: revealAdvance, complete: revealComplete } = reveal;
+
+  // Analysis lists every sentence of the line as its own card, and `requiresAnalysis` rounds
+  // force the player through it. Clicking a typewriter through text they just analysed is
+  // friction, so opening analysis on the revealing line finishes the reveal.
+  const revealAnalysisTargetId = revealSource?.analysisTargetId ?? null;
+  useEffect(() => {
+    if (!revealAnalysisTargetId) return;
+    if (analysisStatementTargetId !== revealAnalysisTargetId) return;
+    revealComplete();
+  }, [revealAnalysisTargetId, analysisStatementTargetId, revealComplete]);
+
+  /**
+   * Space / Enter mirror Continue, but only while a line is being revealed: this is a reading
+   * pacer, not a way to play the whole debate from the keyboard. The modal checks stop it
+   * stealing a press that belongs to the analysis or intro-summary dialog, and the target check
+   * leaves a focused button's own Space/Enter activation alone — without it, clicking Continue
+   * once and then pressing Space advances twice.
+   */
+  useEffect(() => {
+    if (!revealActive) return;
+    if (analysisTarget || introSummaryOpen || isTutorialOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.repeat) return;
+      if (event.code !== 'Space' && event.code !== 'Enter') return;
+      const target = event.target as HTMLElement | null;
+      if (target?.closest('button, a, input, textarea, select, [contenteditable]')) return;
+      event.preventDefault();
+      revealAdvance();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [revealActive, revealAdvance, analysisTarget, introSummaryOpen, isTutorialOpen]);
+
+  // -----------------------------------------------------------------------
   // Footer action state
   // -----------------------------------------------------------------------
   const interactiveFooter = useMemo(() => {
+    // While a line is still being paced out, Continue belongs to the reveal: it fills in the
+    // rest of the sentence, or steps to the next one. No `interactive:continue` emit and no
+    // dispatch — nothing about the debate has moved. This has to sit ahead of
+    // `analysisGatePending` below, or a `requiresAnalysis` round deadlocks: the gate disables
+    // Continue, and a disabled Continue can never finish the reveal.
+    if (revealActive) {
+      return {
+        submitLabel: getLabel('continue'),
+        submitDisabled: false,
+        onSubmit: () => {
+          revealAdvance();
+        },
+      };
+    }
+
     let submitLabel = getLabel('continue');
     let submitDisabled = true;
     let onSubmit: (() => void) | undefined;
@@ -515,6 +666,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     isTutorialOpen,
     analysisGatePending,
     mechanics.showIntroSummary,
+    revealActive,
+    revealAdvance,
   ]);
 
   const modalSpeakerName = useMemo(() => {
@@ -663,11 +816,29 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     fallacyGuesses,
   ]);
 
+  // While a line is still being revealed the wizard shows the round label alone — the full
+  // message recaps a statement the player has not finished reading yet.
+  //
   // The workflow hook is deliberately unaware of guess state, so the "you must analyse
   // this first" nudge is applied here rather than inside `wizardMessage`.
-  const wizardMessage = analysisGatePending
-    ? getLabel('workflowNpcSpeakingMustAnalyze')
-    : wf.wizardMessage;
+  const wizardMessage = revealActive
+    ? (wf.wizardRoundLabel ?? wf.wizardMessage)
+    : analysisGatePending
+      ? getLabel('workflowNpcSpeakingMustAnalyze')
+      : wf.wizardMessage;
+
+  const wizardReveal = useMemo(
+    (): WizardPanelReveal | null =>
+      revealActive
+        ? {
+            sentence: reveal.sentence,
+            sentenceIndex: reveal.sentenceIndex,
+            skipToken: reveal.skipToken,
+            onSentenceTyped: reveal.onSentenceTyped,
+          }
+        : null,
+    [revealActive, reveal.sentence, reveal.sentenceIndex, reveal.skipToken, reveal.onSentenceTyped],
+  );
 
   // `stageOrder` matches the left-to-right order the Phaser `Trial` scene lays its sprites
   // out in (player first, moderator centred in a 3+ cast) — the nameplates below must use
@@ -762,7 +933,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             needsAttention={analysisGatePending}
           />
         }
-        wizard={<WizardPanel wizardMessage={wizardMessage} detail={wizardDetail} />}
+        wizard={
+          <WizardPanel wizardMessage={wizardMessage} detail={wizardDetail} reveal={wizardReveal} />
+        }
         interactive={
           <InteractivePanel
             key={debate.id}
@@ -772,6 +945,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             revealedLockedOptionIds={revealedLockedOptionIds}
             onRevealLockedOption={revealLockedOption}
             interactiveFooter={interactiveFooter}
+            hideOptions={revealActive}
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
           />

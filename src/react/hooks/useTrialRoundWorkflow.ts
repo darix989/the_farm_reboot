@@ -516,20 +516,33 @@ export function useTrialRoundWorkflow(
     return scenario.characters?.[id] ?? id.charAt(0).toUpperCase() + id.slice(1);
   }, [scenario]);
 
+  /**
+   * "Round 4 — crossfire" on its own: the whole guidance line minus the part that says what to
+   * do about it. The wizard shows this while it is still revealing a statement, so the
+   * instruction does not give away a line the player has not finished reading.
+   *
+   * `null` outside the rounds (intro, complete), where there is no round to label.
+   */
+  const wizardRoundLabel = useMemo((): string | null => {
+    if (state.gamePhase === 'debate_intro' || state.gamePhase === 'debate_complete') return null;
+    if (!currentRound) return null;
+    return getLabel('workflowRoundWithType', {
+      replacements: {
+        roundNumber: currentRound.roundNumber,
+        typeDisplay: currentRound.type.replace(/_/g, ' '),
+      },
+    });
+  }, [state.gamePhase, currentRound]);
+
   const wizardMessage = useMemo((): string => {
     const copy = encounterLabels(scenario);
     if (state.gamePhase === 'debate_complete') return getLabel(copy.finished);
     if (state.gamePhase === 'debate_intro') {
       return getLabel(copy.intro);
     }
-    if (!currentRound) return '';
+    if (!currentRound || wizardRoundLabel === null) return '';
 
-    const roundLabel = getLabel('workflowRoundWithType', {
-      replacements: {
-        roundNumber: currentRound.roundNumber,
-        typeDisplay: currentRound.type.replace(/_/g, ' '),
-      },
-    });
+    const roundLabel = wizardRoundLabel;
 
     switch (state.gamePhase) {
       case 'npc_speaking':
@@ -561,6 +574,7 @@ export function useTrialRoundWorkflow(
     currentPlayerRound,
     opponentName,
     scenario,
+    wizardRoundLabel,
   ]);
 
   const totalRounds = scenario.rounds.length;
@@ -595,6 +609,7 @@ export function useTrialRoundWorkflow(
     canUndo,
     canUnselect,
     wizardMessage,
+    wizardRoundLabel,
     dispatch,
     undo,
     unselect,

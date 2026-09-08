@@ -17,9 +17,11 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `trial/components/DebateLogRecapChip.tsx` | The collapsed Debate Log: round counter, the same Insight + mood strip, and the button back in. |
 | `trial/components/DebateLogToggleButton.tsx` | The whole-panel collapse / expand control, rendered by both of the above so they cannot drift. Exports `DEBATE_LOG_PANEL_ID`. |
 | `trial/utils/debateLogTutorialNeeds.ts` | `tutorialNeedsDebateLog(steps)` — does this tutorial point at something only present while the log is expanded? |
-| `trial/panels/WizardPanel.tsx` | Centre column: `wizardMessage` only. |
+| `trial/panels/WizardPanel.tsx` | Centre column: the guidance line plus the statement box, which is revealed one sentence at a time (see "Wizard sentence reveal"). |
 | `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and footer (Back / Continue / Confirm). |
 | `hooks/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. Also emits `round:start` / `round:end` on the debate event bus. |
+| `hooks/useWizardReveal.ts` | Paces one incoming line through the wizard a sentence at a time; owns which sentence is showing, not the character count. |
+| `trial/components/TypewriterText.tsx` | Leaf that fills in one line character by character. Owns the character count so a reveal re-renders one node, not the overlay. |
 | `hooks/useScenarioTutorials.ts` | Subscribes to bus events declared by `scenario.tutorials` and opens the matching overlay via `useTutorialStore` (see "Scenario tutorials" below). |
 | `trial/utils/debateEventBus.ts` | Typed pub/sub singleton keyed on `EventTrigger`, plus the `useDebateEvent` React hook and tutorial-trigger helpers (`DebateTutorialTrigger`, `debatePayloadSatisfies`, `debateTutorialTriggerMatches`). |
 | `trial/roundRecapModal/RoundRecapModal.tsx` | Post–player-round summary modal; closing it dispatches `continue` and advances the workflow. Emits `round:recap:open` / `round:recap:close` on mount/unmount. Each block renders the authored `summary` (clamped to two lines), falling back to the spoken text — see [`docs/encounters.md`](../../docs/encounters.md#recap-summaries). |
@@ -142,7 +144,11 @@ debate_complete
 [MainMenu or Farm]
 ```
 
-Two notes on this diagram:
+Three notes on this diagram:
+
+- **Continue is consumed by the wizard reveal first.** In every phase that reveals an incoming
+  line, the first presses step through its sentences and dispatch nothing; only once the whole
+  line is on screen does Continue advance the phase as drawn. See "Wizard sentence reveal".
 
 - **`player_confirming` is not in it on purpose.** The phase is declared in `GamePhase` and
   reduced, and `canUndo` keys off it — but nothing ever sets it, so it is unreachable.
@@ -169,6 +175,7 @@ Two notes on this diagram:
 | `maxPossibleScore` | Sum of the best `impact` across every player round (for a score display). |
 | `canUndo` | `true` only during `player_confirming` — the Back button is enabled. |
 | `wizardMessage` | Human-readable guidance string for the current phase. |
+| `wizardRoundLabel` | `"Round 4 — crossfire"` alone, or `null` outside the rounds. What the wizard shows while it is still revealing a statement. |
 | `dispatch` | Action dispatcher (`continue`, `select_option`, `confirm_option`, `undo`). |
 
 ---
@@ -212,6 +219,7 @@ Three things worth knowing before you touch it:
 ### Wizard panel (`trial/panels/WizardPanel.tsx`)
 
 - Displays `wizardMessage` — a single contextual hint that tells the player what to do next (e.g. "Read the opponent's statement, then click Continue").
+- Below it, the statement box: the title of the line being spoken (`"Duchess speaks:"`) and its text, either in full or one sentence at a time while a reveal is running.
 
 ### Interactive panel (`trial/panels/InteractivePanel.tsx`)
 
@@ -220,13 +228,72 @@ Content depends on `gamePhase`:
 | Phase | Rendered content |
 |-------|-----------------|
 | `npc_speaking` | The NPC's full statement text (`StatementBlock`). |
-| `player_choosing` | Optional `opponentPrompt` (`StatementBlock` + `AnalyzeButton`), then three choice buttons labelled A / B / C. |
+| `player_choosing` | Three choice buttons labelled A / B / C — mounted but invisible and disabled (`hideOptions`) while the wizard is still revealing the opponent's question. |
 | `player_confirming` | The full text of the selected option plus a reminder that confirming is irreversible. |
 | `npc_responding` | The NPC's response matched to the confirmed option (`StatementBlock` + `AnalyzeButton`). |
 | `round_recap` | Same response view as `npc_responding` when a crossfire reply exists; otherwise a short note to use the recap modal. The footer **Continue** is disabled — the player advances only from the `RoundRecapModal`. |
 | `debate_complete` | A "debate finished" message with the final score. |
 
 The panel footer always shows **Back** (enabled only in `player_confirming`) and a context-sensitive **Continue / Confirm** button (disabled during `round_recap`).
+
+---
+
+## Wizard sentence reveal (`hooks/useWizardReveal.ts`)
+
+Incoming speech is paced through the wizard one sentence at a time rather than dumped as a
+block. `TrialUI` builds a `WizardRevealSource` (`{ key, sentences }`) for the current phase and
+passes it to `useWizardReveal`; `WizardPanel` renders the current sentence through
+`TypewriterText`.
+
+**Press rules**
+
+- Continue (or Space / Enter) while characters are still appearing fills in the rest of the
+  sentence.
+- Continue on a fully-shown sentence steps to the next one.
+- Continue past the **last** sentence puts the whole joined text in the panel and swaps the
+  guidance line from `wizardRoundLabel` ("Round 4 — crossfire") to the full `wizardMessage`
+  ("… Duchess has asked a question. Choose your response."). A further Continue advances the
+  phase.
+- **A single-sentence line skips that last step**: the sentence *is* the whole text, so
+  finishing the type finishes the reveal and the player keeps a press. Multi-sentence lines
+  never auto-advance — swapping the body out from under someone mid-read is worse than a press.
+
+**What is revealed** — incoming speech only: `scenario.introduction` during `debate_intro`, the
+NPC statement during `npc_speaking`, `opponentPrompt` during `player_choosing` while no option
+is selected, and the matched `OpponentResponse` during `npc_responding`. Never the player's own
+selected line, the round recap, or the closing verdict. `TrialUI`'s source memo switches on
+`gamePhase` **first** — `activeOpponentResponse` is also non-null during `round_recap`.
+
+**Chunking** — the authored `Sentence[]` is the unit, so wizard chunks line up with the cards
+the analysis modal guesses on. `scenario.introduction` is the one prose source and goes through
+`splitIntoSentences` in `trial/utils/trialHelpers.ts`.
+
+**What completes a reveal early** (`reveal.complete()`, and the line is never revealed again)
+
+| Trigger | Why |
+|---|---|
+| A tutorial overlay is open | `tutorialStore.canRunTargetAction` blocks Continue for any step targeting something else, which would strand the player mid-statement — and a step targeting an option the reveal has hidden would deadlock outright. A tutorial paces its own reading. |
+| `prefers-reduced-motion` | House rule from `useSpriteFrame`: show the still, don't animate. Behaviour is identical to a game without this feature. |
+| Analysis opened on the same line | The modal already lists every sentence, and `requiresAnalysis` rounds force the player through it. |
+| The scenario changes (`resetKey`) | The hook is not remounted on a scenario swap — only `InteractivePanel` is keyed on `debate.id`. |
+
+**Ordering constraint**: the reveal branch returns early from `TrialUI`'s `interactiveFooter`
+memo, *ahead* of `analysisGatePending`. Reversed, a `requiresAnalysis` round deadlocks — the
+gate disables Continue, and a disabled Continue can never finish the reveal. `analysisGatePending`
+itself is left alone because it also drives the debate-log attention chip.
+
+**Where the state lives** — not in `reduceWorkflow`. That reducer snapshots every field for the
+undo stack (a reveal step would replay a typewriter on Back), cannot own a timer, and is kept
+unaware of reduced motion / tutorials / analysis by design. The character count lives lower
+still, in `TypewriterText`: `TrialUI` renders the debate log, the cast stage and the interactive
+panel, none memoised — and `useTrialRoundWorkflow` returns a fresh object every render, so
+memoising them would not help — meaning a `chars` state in `TrialUI` would re-render the whole
+overlay ~36 times a second next to Phaser's own loop.
+
+**Accessibility** — the filling-in text is `aria-hidden`; `WizardPanel` carries a separate
+off-screen `aria-live` region, keyed on the sentence index, that announces each sentence once in
+full. The statement box's own `aria-live` is dropped while revealing, or a screen reader
+restarts the paragraph on every character.
 
 ---
 
@@ -502,6 +569,7 @@ Equivalent structure (conceptually; actual class names come from CSS modules suc
 | `getSpeakerName(debate, speakerId)` | Display name from `characters` or capitalised id. |
 | `qualityColor` / `qualityLabel` | Colours and labels for `PlayerOption.quality` (used in history, modal, etc.). |
 | `statementText(sentences)` | Joins `Sentence` text with spaces. |
+| `splitIntoSentences(text)` | Reading chunks for the wizard reveal, for the one prose source (`scenario.introduction`). Folds short or mid-sentence fragments back into their predecessor. |
 | `scoreColor(score)` | Cyan / red / neutral for numeric totals and impacts. |
 | `statementTypeLabel(type)` | Human-readable title for `StatementType` strings. |
 
