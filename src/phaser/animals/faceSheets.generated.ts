@@ -100,6 +100,53 @@ export const FACE_SHEETS: Partial<
       },
     },
   },
+  'donkey-grey': {
+    angry: {
+      file: 'donkey-grey-angry.png',
+      frameWidth: 256,
+      frameHeight: 256,
+      frameCount: 16,
+      frameRate: 8,
+      cols: 4,
+      fit: { x: 0.1087, y: 0, width: 0.7826, height: 1 },
+      quality: {
+        loopPop: 0.57,
+        heightSwing: 9.2,
+        driftX: 12.5,
+        warnings: [],
+      },
+    },
+    sneaky: {
+      file: 'donkey-grey-sneaky.png',
+      frameWidth: 256,
+      frameHeight: 256,
+      frameCount: 16,
+      frameRate: 8,
+      cols: 4,
+      fit: { x: 0.1087, y: 0, width: 0.7826, height: 1 },
+      quality: {
+        loopPop: 0.54,
+        heightSwing: 33.6,
+        driftX: 14.3,
+        warnings: [],
+      },
+    },
+    talking: {
+      file: 'donkey-grey-talking.png',
+      frameWidth: 256,
+      frameHeight: 256,
+      frameCount: 25,
+      frameRate: 13,
+      cols: 5,
+      fit: { x: 0.1087, y: 0, width: 0.7826, height: 1 },
+      quality: {
+        loopPop: 0.56,
+        heightSwing: 3.3,
+        driftX: 6.8,
+        warnings: [],
+      },
+    },
+  },
   fox: {
     angry: {
       file: 'fox-angry.png',

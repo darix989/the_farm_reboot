@@ -168,6 +168,22 @@ export const EMOTION_SHEETS: Partial<
         warnings: [],
       },
     },
+    talking_still: {
+      file: 'donkey-grey-talking_still.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 2.1417,
+      originX: 0.5379,
+      originY: 0.7383,
+      quality: {
+        loopPop: 0.22,
+        heightSwing: 3.7,
+        driftX: 7.8,
+        warnings: [],
+      },
+    },
     thinking: {
       file: 'donkey-grey-thinking.png',
       frameWidth: 512,

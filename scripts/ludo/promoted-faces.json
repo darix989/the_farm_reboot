@@ -708,6 +708,366 @@
       "generatedAt": "2026-09-08T03:17:25.950Z"
     }
   },
+  "donkey-grey": {
+    "angry": {
+      "file": "donkey-grey-angry.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 16,
+      "frameRate": 8,
+      "cols": 4,
+      "fit": {
+        "x": 0.1087,
+        "y": 0,
+        "width": 0.7826,
+        "height": 1
+      },
+      "sourceClip": "donkey-grey-angry.png",
+      "sourceEmotion": "angry",
+      "headCrop": {
+        "x": -0.03,
+        "y": -0.03,
+        "w": 0.42,
+        "h": 0.56
+      },
+      "headRect": {
+        "left": 120,
+        "top": 124,
+        "width": 108,
+        "height": 138
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 2,
+            "dy": -2
+          },
+          {
+            "dx": 6,
+            "dy": -7
+          },
+          {
+            "dx": 14,
+            "dy": -12
+          },
+          {
+            "dx": 24,
+            "dy": -18
+          },
+          {
+            "dx": 25,
+            "dy": -19
+          },
+          {
+            "dx": 5,
+            "dy": 1
+          },
+          {
+            "dx": -15,
+            "dy": 19
+          },
+          {
+            "dx": -18,
+            "dy": 19
+          },
+          {
+            "dx": -17,
+            "dy": 18
+          },
+          {
+            "dx": -12,
+            "dy": 13
+          },
+          {
+            "dx": -8,
+            "dy": 8
+          },
+          {
+            "dx": -4,
+            "dy": 4
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 25,
+        "maxJump": 20,
+        "warnings": [
+          "alignment hit its 20px per-frame limit — the head moves faster than the tracker follows, so it lags for a frame or two; check the clip before promoting"
+        ]
+      },
+      "quality": {
+        "loopPop": 0.57,
+        "heightSwing": 9.2,
+        "driftX": 12.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-08T03:53:58.480Z"
+    },
+    "sneaky": {
+      "file": "donkey-grey-sneaky.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 16,
+      "frameRate": 8,
+      "cols": 4,
+      "fit": {
+        "x": 0.1087,
+        "y": 0,
+        "width": 0.7826,
+        "height": 1
+      },
+      "sourceClip": "donkey-grey-sneaky.png",
+      "sourceEmotion": "sneaky",
+      "headCrop": {
+        "x": -0.03,
+        "y": -0.03,
+        "w": 0.42,
+        "h": 0.56
+      },
+      "headRect": {
+        "left": 120,
+        "top": 124,
+        "width": 108,
+        "height": 138
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -16,
+            "dy": 9
+          },
+          {
+            "dx": -29,
+            "dy": 17
+          },
+          {
+            "dx": -40,
+            "dy": 32
+          },
+          {
+            "dx": -25,
+            "dy": 24
+          },
+          {
+            "dx": -28,
+            "dy": 25
+          },
+          {
+            "dx": -26,
+            "dy": 24
+          },
+          {
+            "dx": -39,
+            "dy": 25
+          },
+          {
+            "dx": -24,
+            "dy": 10
+          },
+          {
+            "dx": -7,
+            "dy": 7
+          },
+          {
+            "dx": -4,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 40,
+        "maxJump": 17,
+        "warnings": [
+          "alignment jumps 17px between consecutive frames — faster than any clean clip measured, so the matcher may have locked onto the wrong feature"
+        ]
+      },
+      "quality": {
+        "loopPop": 0.54,
+        "heightSwing": 33.6,
+        "driftX": 14.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-08T03:54:00.407Z"
+    },
+    "talking": {
+      "file": "donkey-grey-talking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0.1087,
+        "y": 0,
+        "width": 0.7826,
+        "height": 1
+      },
+      "sourceClip": "donkey-grey-talking_still.png",
+      "sourceEmotion": "talking_still",
+      "headCrop": {
+        "x": -0.03,
+        "y": -0.03,
+        "w": 0.42,
+        "h": 0.56
+      },
+      "headRect": {
+        "left": 120,
+        "top": 124,
+        "width": 108,
+        "height": 138
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": 5,
+            "dy": 3
+          },
+          {
+            "dx": 9,
+            "dy": 4
+          },
+          {
+            "dx": 15,
+            "dy": 2
+          },
+          {
+            "dx": 17,
+            "dy": 1
+          },
+          {
+            "dx": 17,
+            "dy": 0
+          },
+          {
+            "dx": 20,
+            "dy": -2
+          },
+          {
+            "dx": 19,
+            "dy": -3
+          },
+          {
+            "dx": 21,
+            "dy": -3
+          },
+          {
+            "dx": 21,
+            "dy": -5
+          },
+          {
+            "dx": 22,
+            "dy": -5
+          },
+          {
+            "dx": 22,
+            "dy": -5
+          },
+          {
+            "dx": 22,
+            "dy": -4
+          },
+          {
+            "dx": 22,
+            "dy": -4
+          },
+          {
+            "dx": 22,
+            "dy": -4
+          },
+          {
+            "dx": 22,
+            "dy": -2
+          },
+          {
+            "dx": 19,
+            "dy": -3
+          },
+          {
+            "dx": 19,
+            "dy": -3
+          },
+          {
+            "dx": 13,
+            "dy": 5
+          },
+          {
+            "dx": 8,
+            "dy": 8
+          },
+          {
+            "dx": 0,
+            "dy": 6
+          },
+          {
+            "dx": -2,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 22,
+        "maxJump": 8,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.56,
+        "heightSwing": 3.3,
+        "driftX": 6.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-08T03:54:02.211Z"
+    }
+  },
   "fox": {
     "angry": {
       "file": "fox-angry.png",
@@ -723,6 +1083,7 @@
         "height": 0.9091
       },
       "sourceClip": "fox-angry.png",
+      "sourceEmotion": "angry",
       "headCrop": {
         "x": -0.011,
         "y": 0.017,
@@ -848,7 +1209,7 @@
         "driftX": 6,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:17:05.040Z"
+      "generatedAt": "2026-09-08T03:47:06.514Z"
     },
     "doubtful": {
       "file": "fox-doubtful.png",
@@ -864,6 +1225,7 @@
         "height": 0.9091
       },
       "sourceClip": "fox-doubtful.png",
+      "sourceEmotion": "doubtful",
       "headCrop": {
         "x": -0.011,
         "y": 0.017,
@@ -989,7 +1351,7 @@
         "driftX": 2,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:17:07.163Z"
+      "generatedAt": "2026-09-08T03:47:08.598Z"
     },
     "sneaky": {
       "file": "fox-sneaky.png",
@@ -1005,6 +1367,7 @@
         "height": 0.9091
       },
       "sourceClip": "fox-sneaky.png",
+      "sourceEmotion": "sneaky",
       "headCrop": {
         "x": -0.011,
         "y": 0.017,
@@ -1130,7 +1493,7 @@
         "driftX": 11,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:17:09.412Z"
+      "generatedAt": "2026-09-08T03:47:10.810Z"
     },
     "talking": {
       "file": "fox-talking.png",
@@ -1146,6 +1509,7 @@
         "height": 0.9091
       },
       "sourceClip": "fox-talking.png",
+      "sourceEmotion": "talking",
       "headCrop": {
         "x": -0.011,
         "y": 0.017,
@@ -1271,7 +1635,7 @@
         "driftX": 3.8,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:17:11.653Z"
+      "generatedAt": "2026-09-08T03:47:13.024Z"
     },
     "thinking": {
       "file": "fox-thinking.png",
@@ -1287,6 +1651,7 @@
         "height": 0.9091
       },
       "sourceClip": "fox-thinking.png",
+      "sourceEmotion": "thinking",
       "headCrop": {
         "x": -0.011,
         "y": 0.017,
@@ -1412,7 +1777,7 @@
         "driftX": 9.8,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:17:13.946Z"
+      "generatedAt": "2026-09-08T03:47:15.293Z"
     }
   },
   "owl": {
@@ -1555,7 +1920,7 @@
         "driftX": 0.5,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:17:40.277Z"
+      "generatedAt": "2026-09-08T03:39:03.489Z"
     },
     "doubtful": {
       "file": "owl-doubtful.png",
@@ -1696,7 +2061,7 @@
         "driftX": 1,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:21:14.407Z"
+      "generatedAt": "2026-09-08T03:39:05.687Z"
     },
     "sneaky": {
       "file": "owl-sneaky.png",
@@ -1837,7 +2202,7 @@
         "driftX": 4,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:21:16.578Z"
+      "generatedAt": "2026-09-08T03:39:07.829Z"
     },
     "talking": {
       "file": "owl-talking.png",
@@ -1978,7 +2343,7 @@
         "driftX": 0.3,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:21:18.810Z"
+      "generatedAt": "2026-09-08T03:39:10.043Z"
     },
     "thinking": {
       "file": "owl-thinking.png",
@@ -2119,7 +2484,7 @@
         "driftX": 3,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:21:21.138Z"
+      "generatedAt": "2026-09-08T03:39:12.357Z"
     }
   },
   "raccoon": {

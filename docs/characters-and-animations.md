@@ -656,11 +656,45 @@ a head-only crop. A portrait wants the face to hold still with only the mouth an
 here the face translates slightly, because the body clip is animating the whole animal and the
 head travels as part of that performance. The aligner removes most of that, not all.
 
-**Accepted rather than fixed.** If it needs improving, the next thing to try is narrowing the
-alignment template from the whole rigid upper head to just the facial region: when the head
-*rotates*, the best translation-only match is a compromise that leaves the face offset, so
-matching on what the viewer actually looks at would pin that and let the ears drift instead.
-Sub-pixel refinement and a small rotation search would take the rest. The structural answer is
-that head travel *is* part of a posture animation, so a portrait cut from one always inherits
-some of it — the alternative is art authored as a portrait, which is what generation was supposed
-to provide and could not.
+The cause is not a bug in the crop. **Every `talking` prompt in the manifest asks for "head
+bobbing gently in time with speech"** — deliberately, because at 300px a bobbing head is what
+reads as talking and a motionless one reads as idle (§9). The crop faithfully reproduces a bob
+that was requested.
+
+**Accepted rather than fixed.** If it needs improving, the lever is the cropper: the aligner
+matches the rect's rigid top 55%, so when the head *rotates* the best translation-only match is a
+compromise that leaves the face offset. Narrowing the template to just the facial region would pin
+what the viewer actually looks at and let the ears drift instead; sub-pixel refinement and a small
+rotation search would take the rest. The structural answer is that head travel *is* part of a
+posture animation, so a portrait cut from one always inherits some of it.
+
+### 10.5 `_still` variants — tried, and they do not do what their name says
+
+`ANIMAL_EMOTIONS` carries a `talking_still` entry and the cropper prefers `<emotion>_still` as
+its source when one has been promoted, falling back otherwise so it is an optional per-animal
+upgrade rather than a migration. It asks for the body and head locked with only the face moving,
+generated at body framing where the generator is reliable.
+
+**It does not deliver a stiller head.** Measured on the one that exists,
+`donkey-grey/talking_still` — change per frame in the skull-and-ears band of the finished
+portrait, a band with no speech animation in it, so anything moving there is pose change the
+aligner cannot remove:
+
+| portrait cut from | skull+ears change/frame | crop loop seam |
+|---|---|---|
+| `talking` (bobbing) | 1.07% | 4.15% — fails the 2% gate |
+| `talking_still` | **2.54%** | **0.56%** — passes |
+
+Twice as unstable, plus a ~22px lateral slide the bobbing clip did not have: with the body pinned,
+the generator moved the head instead. Against the shipped cast — owl 0.53%, raccoon 0.94%,
+brown-wolf 1.37%, fox 1.40%, white-sheep-1 2.12% — it is the wobbliest portrait in the game.
+
+It shipped anyway, for a reason unrelated to its name: the fresh generation **fixed the loop
+seam**, and that was what had kept `donkey-grey` out of the register entirely. A clean loop with a
+wobbly head beats a visible jump every two seconds, so Rue now has `talking`, `angry` and
+`sneaky` portraits; `doubtful` and `thinking` are still rejected on their source seams (11.73% and
+5.76%) and fall back to `talking`.
+
+**Do not generate the other four still variants expecting stillness.** Generate one only when an
+animal's body clip has a loop seam bad enough to disqualify its portrait — that is the problem
+these actually solve.
