@@ -568,3 +568,99 @@ like `TRIAL_STAGE_HOLE` vs `.trialGameHole`.
 
 The generator refuses a manifest emotion that is not in `ANIMAL_EMOTIONS`, so step 1 cannot
 be skipped silently.
+
+## 10. Dialogue portraits — the second register
+
+Head-and-shoulders loops played by **React, in the DOM**, in the farm dialogue box and the
+debate log. Not a second generated vocabulary: they are **cropped out of the §9 body clips**
+locally, cost nothing, and call no API.
+
+### 10.1 Why crops, and why the old reasoning was wrong
+
+§9 explains that a Trial sprite is ~300px tall so its face is 50-80px, which is why every
+emotion is a whole-body posture. A dialogue box asks the opposite question, so the first attempt
+generated face-only clips from a head crop of the atlas idle frame.
+
+That failed three times for 12 credits, identically each time — the eyelid aperture swung 165%,
+196% and 458% across the clip, and two attempts invented teeth the reference does not have. The
+cause is structural, not a prompt problem: a head submitted at a 485×363 bounding box came back
+at 257×192, so the endpoint reframes its input and redraws the head from scratch every frame
+rather than animating the pixels it was given.
+
+`animalFaces.ts` also used to argue that a portrait *could not* be cropped from a body clip —
+"the head is 90-110px of real pixels… blown up to a 112px portrait that is mush". That was
+measured against a 512px generator target rather than the **112px a portrait actually ships at**.
+Heads run ~100-150px, so a crop *downscales* into the box at 1× and upscales ~1.2-2.2× at 2× DPR.
+The body clips' faces also hold still, because the generator was animating posture and left the
+face alone — which is exactly the property a portrait needs.
+
+### 10.2 How a portrait is cut
+
+`scripts/ludo/cropFace.mjs`, driven by `--faces`:
+
+1. **One `headCrop` per animal** in the manifest, in fractions of the character's union alpha box
+   across all frames of its `talking` clip. Never one per emotion: all five play in the same box
+   in the same dialogue, so a per-emotion rect would make the head jump size between beats.
+2. **One alignment template per animal**, also from `talking` — the rect's rigid top 55% (skull,
+   ears, eye). The bottom is excluded because the mouth is the thing the clip is *for* and would
+   fight the match.
+3. **Per-frame tracking.** The head bobs through a body clip (the fox's by 30px, its `thinking`
+   by 40px), so a fixed rect drifts. Frame 0 searches the whole window; later frames search only
+   within 20px of where the head was, while still scoring against the fixed template — so the
+   appearance reference never drifts and the trajectory cannot teleport to a similar-looking
+   feature elsewhere, which it did before the constraint (a sheep's body wool looks much like its
+   head wool).
+4. **Cut, contain-fit to a 256px square** with `lanczos3`, assemble on the source's `cols`.
+5. **`fit` is arithmetic on the rect**, not measured from the art — see `fitForRect`. Measured, it
+   differed per emotion (an open snarl reaches further than a shut mouth) and became a 3%
+   head-size difference between beats.
+
+The record is `scripts/ludo/promoted-faces.json` and the generated index
+`src/phaser/animals/faceSheets.generated.ts`, both siblings of the body register's and never
+merged with them. `AnimalFace.tsx` renders nothing for an animal with no entry, so the register
+ships one animal at a time.
+
+### 10.3 What it costs
+
+**Cropping amplifies the source clip's loop seam 2-8×, mostly 3.5-5×** — the head fills the
+portrait where it was a fraction of the body frame, so a seam invisible at body scale is loud at
+portrait scale. This decides which animals work:
+
+| animal | worst source seam | worst crop seam | upscale |
+|---|---|---|---|
+| owl | 0.43% | 0.77% | ×1.23 |
+| raccoon | 0.17% | 0.66% | ×1.72 |
+| fox | 0.20% | 0.93% | ×1.94 |
+| white-sheep-1 | 0.32% | 1.26% | ×1.92 |
+| brown-wolf | 0.33% | 1.83% | ×2.21 |
+| **donkey-grey** | **2.52%** | **11.22%** | ×1.86 |
+
+Everything lands under the 2% gate except the donkey, whose body clips are the cast's weakest —
+the only ones that ever carried a loop-seam warning of their own. Its portraits are deliberately
+**not promoted**, which matters more than it would for the others: the donkey is Rue, so its
+portrait would be on screen most. Rue stays text-only until those body clips are regenerated.
+
+Two more things worth knowing:
+
+- **`white-sheep-1` has no mouth drawn at its angle** — a black mass, a wool tuft, two small
+  eyes. Its portrait animates but reads as a head bob rather than speech. Source art, not the crop.
+- **Portraits are palettised PNG**, ~410-480KB each and honestly named, unlike the body clips
+  which are WebP under a `.png` extension. The 25 shipped are 12MB, which more than doubles the
+  project's asset weight; a 192px cell or lossy WebP would each roughly halve it again.
+
+### 10.4 Known limitation: the face translates
+
+Human review of the shipped crops: they are **glitch-free** — no strobing eye, no flickering
+tooth, none of the defects generation produced. But it is obvious the source was not authored for
+a head-only crop. A portrait wants the face to hold still with only the mouth and eyes moving;
+here the face translates slightly, because the body clip is animating the whole animal and the
+head travels as part of that performance. The aligner removes most of that, not all.
+
+**Accepted rather than fixed.** If it needs improving, the next thing to try is narrowing the
+alignment template from the whole rigid upper head to just the facial region: when the head
+*rotates*, the best translation-only match is a compromise that leaves the face offset, so
+matching on what the viewer actually looks at would pin that and let the ears drift instead.
+Sub-pixel refinement and a small rotation search would take the rest. The structural answer is
+that head travel *is* part of a posture animation, so a portrait cut from one always inherits
+some of it — the alternative is art authored as a portrait, which is what generation was supposed
+to provide and could not.

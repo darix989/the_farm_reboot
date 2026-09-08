@@ -1,21 +1,43 @@
 /**
  * The cast's dialogue portraits — the second, face-only animation register.
  *
- * ## Why these exist separately from the emotion clips
+ * ## Portraits are crops of the body clips
  *
  * `animalEmotions.ts` opens by explaining that a Trial sprite is ~300px tall, so its face is
- * 50-80px, so every emotion has to be a whole-body posture. That reasoning is sound and it is
- * exactly why the body clips cannot be reused here: a dialogue box shows one character at
- * conversational distance, where the posture is out of frame and the face is the entire
- * performance. The two registers answer opposite questions about the same animal.
+ * 50-80px, so every emotion has to be a whole-body posture. A dialogue box asks the opposite
+ * question: the posture is out of frame and the face is the whole performance.
  *
- * Nor can a portrait be cropped out of a body clip. A promoted emotion sheet is a grid of
- * 512px cells holding the whole animal, so the head is 90-110px of real pixels — measured on
- * `fox-talking` and `raccoon-talking`. Blown up to a 112px portrait on a 2x display that is
- * mush. The headshots are generated instead, from a crop of the same *un-trimmed atlas
- * reference frame* the body clips start from (754x544 for the fox, 1173x946 for the raccoon),
- * which has the resolution to spare. See `extractFaceCrop` in `scripts/ludo/referenceFrame.mjs`
- * and the `$faceComment` block in `scripts/ludo/emotion-manifest.json`.
+ * This file used to answer that by *generating* headshots, and to argue at length that a
+ * portrait could not be cropped out of a body clip — "the head is 90-110px of real pixels…
+ * blown up to a 112px portrait on a 2x display that is mush". **That was wrong**, and wrong in
+ * a specific way worth recording: it measured the head against a 512px generator target rather
+ * than against the 112px a portrait actually ships at. Heads run ~100-150px, so a crop
+ * *downscales* into the box at 1x and upscales ~1.2-2.2x at 2x DPR, which flat vector art with
+ * heavy outlines survives.
+ *
+ * Generating them instead failed three times for 12 credits — the eyelid aperture swung 165%,
+ * 196% and 458% across the clip and two attempts invented teeth the reference does not have —
+ * because the endpoint reframes its input and redraws the head from scratch every frame rather
+ * than animating the pixels it was given. The body art holds its features still where the
+ * generator would not, because it was animating posture and left the face alone. So the
+ * portraits are cut locally, for free: see `scripts/ludo/cropFace.mjs` and the `$faceComment`
+ * block in `scripts/ludo/emotion-manifest.json`.
+ *
+ * ## The known limitation
+ *
+ * Human review of the shipped crops: they are glitch-free — no strobing eye, no flickering
+ * tooth, none of the defects generation produced — but it is **obvious they were not authored
+ * for a head-only crop**. A portrait wants the face to hold still and only the mouth and eyes
+ * to move; here the face translates slightly, because the source is animating the whole animal
+ * and the head travels as part of that performance. The aligner removes most of it, not all.
+ *
+ * Accepted for now rather than fixed. If it needs improving, the next thing to try is narrowing
+ * the alignment template from the whole rigid upper head (skull, ears and eye) to just the
+ * facial region: when the head *rotates*, the best translation-only match is a compromise that
+ * leaves the face offset, so matching on what the viewer actually looks at would pin that and
+ * let the ears drift instead. Sub-pixel refinement and a small rotation search would take the
+ * rest. The structural answer is that head travel *is* part of a posture animation, so a
+ * portrait cut from one will always inherit some of it.
  *
  * ## Why this module has no `phaser` import
  *
@@ -43,15 +65,15 @@ export const FACE_BOX_PX = 112;
  * How much of the portrait box the head fills.
  *
  * A runtime constant rather than a promoted measurement, deliberately: re-framing the whole
- * cast 8% tighter is an edit to this line, with no credits spent and no re-promote. Mirrored
+ * cast 8% tighter is an edit to this line, with nothing to re-promote. Mirrored
  * as `FACE_BOX_FILL` in `scripts/ludo/normalize.mjs`, which the review page uses so that what
  * is approved there is framed exactly as it ships.
  */
 export const FACE_BOX_FILL = 0.92;
 
 /**
- * Metadata for one promoted face clip. Written by
- * `npm run sprites:emotions -- --faces --promote`.
+ * Metadata for one promoted portrait. Written by
+ * `npm run sprites:emotions -- --faces --promote`, which crops rather than generates.
  *
  * Not an `EmotionSheet`, and not interchangeable with one. A body sheet carries `scale` and a
  * feet origin because it is planted on a floor line at atlas scale beside its castmates; a
@@ -79,14 +101,20 @@ export interface FaceSheet {
   /**
    * The head's union alpha bounding box across every frame, as fractions of one cell.
    *
-   * Union rather than per-frame for the same reason the body pipeline uses a union box: a
-   * per-frame centre would make the head twitch inside its own portrait, which is the exact
-   * defect a stable anchor exists to prevent. Measured at promote time from the sheet alone —
-   * unlike a body clip, a portrait needs no atlas frame to be measured against, so
-   * `--faces --remeasure` can re-derive this forever without touching the atlases.
+   * **Derived from the authored crop rect, not measured from the art.** All five emotions of an
+   * animal therefore share one `fit`, which is the point: measuring it back out of the pixels
+   * made it differ per emotion (an open snarl reaches further than a shut mouth), and
+   * `faceBoxTransform` turned that into a 3% head-size difference between two beats of the same
+   * conversation. Since it is arithmetic, `--faces --remeasure` needs neither the pixels nor
+   * the atlases. See `fitForRect` in `scripts/ludo/cropFace.mjs`.
    */
   fit: { x: number; y: number; width: number; height: number };
-  /** Pipeline measurements, including the face-only `churn*` flicker numbers. */
+  /**
+   * Pipeline measurements. `CROP_QUALITY_THRESHOLDS` drops the generated register's `churn`
+   * and `heightSwing` gates — churn catches an interior redrawn every frame, which cannot
+   * happen when the pixels are the same art moved, and height swing was a "the generator
+   * zoomed" alarm that a fixed crop rect makes meaningless.
+   */
   quality?: EmotionQuality;
   /** Human review notes, same contract as `EmotionSheet.reviewNotes`. */
   reviewNotes?: readonly string[];
@@ -104,10 +132,10 @@ export function faceSheet(
 /**
  * The clip to actually play for a pairing, falling back to `talking` before giving up.
  *
- * This is what lets the register ship one emotion at a time: an animal with only `talking`
- * art still gets a real portrait on every line, and its other four emotions light up as they
- * are generated. Callers never have to check — the same discipline
- * `AnimalAnimator.playEmotion()` follows when it falls back to `playAlert()`.
+ * This is what lets the register ship one animal at a time: `donkey-grey` has no portraits at
+ * all (its body clips carry the cast's worst loop seams, which cropping amplifies ~4x), so Rue
+ * stays text-only while everyone else has all five. Callers never have to check — the same
+ * discipline `AnimalAnimator.playEmotion()` follows when it falls back to `playAlert()`.
  */
 export function resolvedFaceSheet(
   animalId: AnimalSpriteId | null,
@@ -121,7 +149,7 @@ export function hasFaceArt(animalId: AnimalSpriteId | null): boolean {
   return animalId != null && Object.keys(FACE_SHEETS[animalId] ?? {}).length > 0;
 }
 
-/** Emotions this animal has face art for, in vocabulary order. */
+/** Emotions this animal has portrait art for, in vocabulary order. */
 export function generatedFaceEmotions(animalId: AnimalSpriteId): AnimalEmotion[] {
   return Object.keys(FACE_SHEETS[animalId] ?? {}) as AnimalEmotion[];
 }
@@ -146,7 +174,7 @@ export function faceSheetUrl(file: string): string {
  * between the Trial and the gallery rather than reimplemented in each.
  *
  * Scales off `max(headWidth, headHeight)` so a non-square head box — all of them, since the
- * crops are not square and the generator pads them into a square cell — is fitted without
+ * crops are not square and are contain-fitted into a square cell — is fitted without
  * distortion. Apply as `transform: translate(x, y) scale(z)` with `transform-origin: 0 0` on
  * an element sized `frameWidth x frameHeight`.
  */
