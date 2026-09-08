@@ -126,7 +126,7 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
 .trialAreaTitle {
   box-sizing: border-box;
   display: flex;
-  height: calc(5vh * 1.5);
+  height: calc(5vh * 1.3);
   flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
@@ -135,7 +135,7 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   border-radius: 0.5rem;
   border: 1px solid var(--ui-color-border-strong);
   background: var(--ui-color-overlay-medium);
-  padding: 0.75rem 1rem 0.75rem 1.25rem;
+  padding: 0.6rem 1rem 0.6rem 1.25rem;
 
   > h2 {
     margin: 0;
@@ -168,7 +168,7 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
 }
 
 .trialPanelHeading {
-  font-size: calc(var(--ui-font-display) * var(--ui-trial-panel-font-scale, 1));
+  font-size: calc(var(--ui-font-display) * 0.85 * var(--ui-trial-panel-font-scale, 1));
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -261,6 +261,15 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   &:empty {
     display: none;
   }
+}
+
+/* Speaker line + body: always at least 4 lines tall, so the box's background fully contains
+   `.trialWizardPortrait` (a fixed 112px square, see `FACE_BOX_PX`) even when the reveal has
+   only shown a word or two so far — a shorter block would let the floated portrait poke out
+   past the background underneath it. 3 lines still fell short of 112px at the default trial
+   panel font scale; 4 clears it with room to spare. */
+.trialWizardTextBlock {
+  min-height: calc(1.375em * 4);
 }
 
 /* =========================================================================
@@ -578,28 +587,38 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   margin-top: calc(0.5rem * var(--ui-trial-panel-font-scale, 1));
 }
 
-/* Bare button wrapper — opens `FallacyInfoModal` for this fallacy. No border/background of
-   its own; the icon inside carries all the visible styling. */
+/* Bordered chip — opens `FallacyInfoModal` for this fallacy. Same square-icon-button
+   language as `.trialAnalyzeBtn` / `.debateLogExpandBtn`, so the badge reads as clickable
+   rather than as plain decoration. */
 .debateLogSpottedFallacyBtn {
+  box-sizing: border-box;
   display: flex;
-  border: none;
-  background: transparent;
-  padding: 0;
+  align-items: center;
+  justify-content: center;
+  width: calc(2rem * var(--ui-trial-panel-font-scale, 1));
+  height: calc(2rem * var(--ui-trial-panel-font-scale, 1));
+  padding: calc(0.3rem * var(--ui-trial-panel-font-scale, 1));
+  border-radius: 0.375rem;
+  border: 1px solid var(--ui-color-border-inner);
+  background: var(--ui-color-overlay-deep);
   cursor: pointer;
+  transition:
+    border-color 0.15s ease-in-out,
+    background 0.15s ease-in-out;
 
-  &:hover .debateLogSpottedFallacyIcon,
-  &:focus-visible .debateLogSpottedFallacyIcon {
-    opacity: 1;
+  &:hover,
+  &:focus-visible {
+    border-color: var(--ui-color-info-border-active);
+    background: var(--ui-color-info-bg);
   }
 }
 
 .debateLogSpottedFallacyIcon {
-  width: calc(1.25rem * var(--ui-trial-panel-font-scale, 1));
-  height: calc(1.25rem * var(--ui-trial-panel-font-scale, 1));
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   opacity: 0.9;
   filter: $trial-guess-tint-correct;
-  transition: opacity 0.15s ease-in-out;
 }
 
 /* =========================================================================

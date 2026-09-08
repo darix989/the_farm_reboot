@@ -114,38 +114,43 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
                     />
                   </span>
                 )}
-                <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                  {detail.title}
-                  {detail.sentenceCount !== undefined && (
-                    <>
-                      {' '}
-                      <span style={{ opacity: 0.7 }}>
-                        {reveal
-                          ? getLabel('wizardSentenceProgress', {
-                              replacements: {
-                                current: reveal.sentenceIndex + 1,
-                                total: reveal.sentenceCount,
-                              },
-                            })
-                          : getLabel('wizardSentenceProgressAll')}
-                      </span>
-                    </>
-                  )}
-                </p>
-                <p style={{ marginTop: '0.5rem', color: uiColor.textBody, marginBottom: 0 }}>
-                  {reveal ? (
-                    <TypewriterText
-                      // Remount per sentence, so two identically-worded sentences in a row
-                      // still restart rather than looking already-typed.
-                      key={reveal.sentenceIndex}
-                      text={reveal.sentence}
-                      skipToken={reveal.skipToken}
-                      onComplete={reveal.onSentenceTyped}
-                    />
-                  ) : (
-                    detail.body
-                  )}
-                </p>
+                {/* Reserves 4 lines even for a single freshly-revealed word, so the box's
+                    background always fully contains the floated portrait — a shorter block
+                    would let the portrait poke out past the background underneath it. */}
+                <div className={styles.trialWizardTextBlock}>
+                  <p style={{ color: uiColor.textCaption, margin: 0 }}>
+                    {detail.title}
+                    {detail.sentenceCount !== undefined && (
+                      <>
+                        {' '}
+                        <span style={{ opacity: 0.7 }}>
+                          {reveal
+                            ? getLabel('wizardSentenceProgress', {
+                                replacements: {
+                                  current: reveal.sentenceIndex + 1,
+                                  total: reveal.sentenceCount,
+                                },
+                              })
+                            : getLabel('wizardSentenceProgressAll')}
+                        </span>
+                      </>
+                    )}
+                  </p>
+                  <p style={{ marginTop: '0.5rem', color: uiColor.textBody, marginBottom: 0 }}>
+                    {reveal ? (
+                      <TypewriterText
+                        // Remount per sentence, so two identically-worded sentences in a row
+                        // still restart rather than looking already-typed.
+                        key={reveal.sentenceIndex}
+                        text={reveal.sentence}
+                        skipToken={reveal.skipToken}
+                        onComplete={reveal.onSentenceTyped}
+                      />
+                    ) : (
+                      detail.body
+                    )}
+                  </p>
+                </div>
                 {!reveal && (
                   <SpottedFallacyIcons
                     fallacies={detail.spottedFallacies ?? []}
