@@ -1060,7 +1060,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
             mechanics={mechanics}
-            analyzeTarget={currentAnalysisTarget}
+            // Disabled (not just gated by tutorial) until the line finishes revealing in the
+            // Dialog — opening analysis on a statement the player hasn't fully read yet would
+            // let them skip the reveal.
+            analyzeTarget={revealActive ? null : currentAnalysisTarget}
             hint={actionsHint}
           />
         }
