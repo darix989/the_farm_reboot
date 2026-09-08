@@ -63,7 +63,7 @@ a scene.
 src/
   types/    the content schema (scenarios, rounds, options, tutorials)
   data/     UI copy, the scenario registry, the farm map, the encounter JSON
-  store/    four zustand stores
+  store/    six zustand stores
   phaser/   game config, scenes, the overworld
   react/    the debate UI, the tutorial system, the overworld overlay
 ```

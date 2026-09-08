@@ -19,7 +19,9 @@
 }
 
 .trialGameHole {
-  grid-column: 1;
+  /* Full stage width: the cast is framed across the whole top band, and the Debate Log
+     paints over its right 2fr when expanded (see `debateLogStore`). */
+  grid-column: 1 / -1;
   grid-row: 1;
   display: flex;
   min-height: 0;
@@ -31,9 +33,10 @@
   border: 2px solid var(--ui-color-border-ring);
 
   /* Transparent so the Phaser `Trial` scene's animated cast shows through underneath.
-     This cell's geometry is mirrored as `TRIAL_STAGE_HOLE` in `src/utils/constants.ts` —
-     change both together. The scene paints the same `--ui-color-surface-trial-panel`
-     colour behind the cast, so an empty stage (legacy debates) still reads as a panel. */
+     This cell's geometry (full width x 1fr of 2 rows) is mirrored as `TRIAL_STAGE_HOLE` in
+     `src/utils/constants.ts` — change both together. The scene paints the same
+     `--ui-color-surface-trial-panel` colour behind the cast, so an empty stage (legacy
+     debates) still reads as a panel. */
   background: transparent; /* was: var(--ui-color-surface-trial-panel) */
   pointer-events: none;
 }
@@ -74,9 +77,31 @@
   }
 }
 
+/* The Debate Log, expanded. Shares its cell with the full-width `.trialGameHole`, so it
+   needs an explicit `z-index` to paint over it — grid items honour `z-index` while
+   `position: static`, and relying on document order alone would be a trap for the next
+   edit. Only rendered while `debateLogStore.isExpanded`; `.trialDebateLogRecapCell` takes
+   the same cell when collapsed. */
 .trialFeedbackPanel {
   grid-column: 2;
   grid-row: 1;
+  z-index: 1;
+}
+
+/* Collapsed Debate Log: the recap chip, pinned to the top-right corner of the stage.
+   `pointer-events: none` here and `auto` on the chip itself keeps the rest of this cell
+   click-through to the Phaser canvas. */
+.trialDebateLogRecapCell {
+  z-index: 1;
+  display: flex;
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 0;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0.5rem;
+  pointer-events: none;
 }
 
 .trialWizardPanel {
@@ -89,9 +114,12 @@
   grid-row: 2;
 }
 
-/* Debate log, wizard, and interactive panels share typography scaled from `--ui-font-*` tokens. */
+/* Debate log, wizard, and interactive panels share typography scaled from `--ui-font-*` tokens.
+   The recap chip is in the list because it reuses debate-log controls, which size themselves
+   off `--ui-trial-panel-font-scale`. */
 .trialFeedbackPanel,
 .trialWizardPanel,
-.trialInteractivePanel {
+.trialInteractivePanel,
+.trialDebateLogRecapCell {
   @include trial-font.trial-panel-font-scale;
 }

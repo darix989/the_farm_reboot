@@ -84,6 +84,12 @@ const LABELS = {
   setting: 'Setting',
   minimize: 'Minimize',
   expand: 'Expand',
+  /** Whole-log collapse / expand. `{logTitle}` is the resolved `encounterLabels().logTitle`. */
+  expandDebateLog: 'Expand {logTitle}',
+  collapseDebateLog: 'Collapse {logTitle}',
+  /** Recap chip shown while the log is collapsed. */
+  debateLogRecapRound: 'Round {roundNumber}/{totalRounds}',
+  debateLogRecapAnalysisPending: 'Analyze the statement in the log to continue',
   notAvailableUntilRoundStarts: 'Not available until this round starts',
   statusActive: 'active',
   statusUpcoming: 'upcoming',

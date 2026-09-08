@@ -1,0 +1,39 @@
+/* =========================================================================
+   Debate Log — collapsed recap chip
+   ========================================================================= */
+
+.recapChip {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: calc(0.6rem * var(--ui-trial-panel-font-scale, 1));
+  border-radius: 0.5rem;
+  border: 2px solid var(--ui-color-border-ring);
+  background: var(--ui-color-overlay-card);
+  padding: calc(0.4rem * var(--ui-trial-panel-font-scale, 1))
+    calc(0.6rem * var(--ui-trial-panel-font-scale, 1));
+  color: var(--ui-color-white);
+  box-shadow: inset 0 1px 0 var(--ui-color-border-inset);
+  white-space: nowrap;
+
+  /* `.react-ui-overlay` is `pointer-events: none` and it inherits — without this the expand
+     button silently clicks through to the Phaser canvas. See `src/react/AGENTS.md`. */
+  pointer-events: auto;
+}
+
+/* The round demands an analysis the player has not done, so Continue is held disabled and
+   the control they need is behind this chip. */
+.needsAttention {
+  border-color: var(--ui-color-warning);
+}
+
+.recapRound {
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  font-weight: 600;
+  color: var(--ui-color-text-body);
+}
+
+.recapOpinion {
+  font-size: calc(var(--ui-font-moderator-opinion) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.375;
+}

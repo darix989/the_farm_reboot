@@ -3,7 +3,7 @@
 **Where things are and where to put new code.** This is a lookup index, not an explanation.
 
 > **Read [`docs/architecture.md`](docs/architecture.md) first** if you need to understand
-> *how the app works* — the Phaser/React sibling layout, scene-key routing, the four stores
+> *how the app works* — the Phaser/React sibling layout, scene-key routing, the six stores
 > and two event buses, content flow, and how to verify a change with no test runner. That
 > document owns the conceptual model; this one owns the file map. Where they overlap, this
 > file defers to it.
@@ -89,7 +89,9 @@ src/
       useScrollFade.ts
       useSpriteFrame.ts        # Steps a spritesheet frame index for clips played in the DOM
     trial/
-      TrialLayout.tsx           # 2×2 grid: game hole | Feedback / Wizard | Interactive
+      TrialLayout.tsx           # 2×2 grid: full-width game hole across the top, with the
+                                #   Debate Log (or its collapsed recap chip) over its right
+                                #   2fr; Wizard / Interactive along the bottom row
       panels/                   # Feedback, Wizard, Interactive
       roundAnalysisModal/       # Fallacy spotting
       roundRecapModal/          # Per-round summary
@@ -106,9 +108,10 @@ src/
     tutorialStore.ts    # Open tutorial overlay + its interaction gate
     farmStore.ts        # Overworld ↔ React handoff
     trialStageStore.ts  # Debate ↔ Phaser handoff: active speaker for the Trial cast
+    debateLogStore.ts   # Is the Trial's Debate Log expanded, or collapsed to its recap chip
     progressStore.ts    # Completed encounters (persisted to localStorage)
   utils/
-    constants.ts        # PHASER_PARENT_ID, stage design size, rem scaling
+    constants.ts        # PHASER_PARENT_ID, stage design size, rem scaling, TRIAL_STAGE_HOLE
     gameManager.ts      # Static Phaser helpers (switchScene, getScene, …)
 ```
 
@@ -183,6 +186,12 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
 - All debate content is declared in a **`DebateScenarioJson`** value (see `src/types/debateEntities.ts`).
 - The `TrialUI` overlay (see `src/react/AGENTS.md`) reads this value and drives the full interaction.
 - The game state machine lives in `src/react/hooks/useTrialRoundWorkflow.ts`.
+- The **Debate Log collapses as a whole**, not just its entries: collapsed (the default for
+  every encounter) it is a recap chip in the stage's top-right corner — round counter, Insight
+  balance and the moderator's mood — and expanded it is the panel it has always been, painting
+  over the right 2fr of the full-width cast. State lives in `src/store/debateLogStore.ts`
+  because the tutorial layer has to expand it *synchronously* before an overlay renders; see
+  that file and `src/react/trial/utils/debateLogTutorialNeeds.ts`.
 - A **Round Analysis Modal** (`src/react/trial/roundAnalysisModal/RoundAnalysisModal.tsx`) lets the player inspect any statement in the log: tag logical fallacies sentence by sentence, or review why their own line was effective or flawed. Three attempts per target by default; a correct solve pays 1 Insight, once per target.
 - Authoring reference — schema, rounds, options, unlock conditions, `mechanics` flags: [`docs/encounters.md`](docs/encounters.md).
 - **⚠️ Pointer-events gotcha:** `.react-ui-overlay` is `pointer-events: none`, which inherits to every descendant. Any new interactive element **must** set `pointer-events: auto` on its root, or clicks fall through to the Phaser canvas. This is the most common bug in the codebase — see [`docs/architecture.md`](docs/architecture.md) for why the layout works this way.

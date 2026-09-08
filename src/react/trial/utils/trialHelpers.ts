@@ -184,6 +184,16 @@ export function scoreColor(score: number): string {
   return uiColor.textEmphasis;
 }
 
+/**
+ * 1-based active round, for display and bus payloads. `null` when the scenario has no rounds
+ * at all. Clamped because `currentRoundIndex` runs past the last round in `debate_complete` —
+ * the same clamp `FeedbackPanel`'s auto-scroll applies to pick a card to scroll to.
+ */
+export function activeRoundNumber(currentRoundIndex: number, totalRounds: number): number | null {
+  if (totalRounds <= 0) return null;
+  return Math.min(currentRoundIndex + 1, totalRounds);
+}
+
 export const MODERATOR_OPINION_LABEL = getLabel('moderatorsOpinion');
 
 export function moderatorOpinionEmoji(score: number): string {

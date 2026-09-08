@@ -12,8 +12,11 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `screens/GameLoadingScreen.tsx` | Loading screen shown until `isGameReady`, and again while `isSceneLoading`. Also the interaction gate: it covers the stage and sets `pointer-events: auto`, so nothing behind it is clickable while `Boot`/`Preloader` or a scene pack load. |
 | `screens/BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
 | `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, `RoundRecapModal`, and `RoundAnalysisModal`. |
-| `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent "game hole" top-left, then Debate Log, Wizard and Interactive. |
-| `trial/panels/FeedbackPanel.tsx` | Left column: introduction, round counter, score, history, live crossfire prompt. |
+| `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent full-width "game hole" across the top row, then the Debate Log (or `DebateLogRecapChip` when collapsed) over its right 2fr, and Wizard / Interactive along the bottom. Reads `debateLogStore` and owns the collapsed/expanded branch. |
+| `trial/panels/FeedbackPanel.tsx` | The expanded Debate Log: title strip (log title, Insight + moderator mood, the whole-panel collapse button) and the scrollable round-card list. |
+| `trial/components/DebateLogRecapChip.tsx` | The collapsed Debate Log: round counter, the same Insight + mood strip, and the button back in. |
+| `trial/components/DebateLogToggleButton.tsx` | The whole-panel collapse / expand control, rendered by both of the above so they cannot drift. Exports `DEBATE_LOG_PANEL_ID`. |
+| `trial/utils/debateLogTutorialNeeds.ts` | `tutorialNeedsDebateLog(steps)` — does this tutorial point at something only present while the log is expanded? |
 | `trial/panels/WizardPanel.tsx` | Centre column: `wizardMessage` only. |
 | `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and footer (Back / Continue / Confirm). |
 | `hooks/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. Also emits `round:start` / `round:end` on the debate event bus. |
@@ -172,7 +175,31 @@ Two notes on this diagram:
 
 ## Three-panel layout
 
-`TrialLayout` (in `trial/TrialLayout.tsx`) arranges three named slots side-by-side. `TrialUI` passes in `FeedbackPanel`, `WizardPanel`, and `InteractivePanel` as those slots.
+`TrialLayout` (in `trial/TrialLayout.tsx`) arranges the named slots over the 2×2 grid. `TrialUI` passes in `FeedbackPanel`, `WizardPanel`, `InteractivePanel` and `DebateLogRecapChip`; the layout renders the log panel or the chip depending on `debateLogStore.isExpanded` (see **Collapsing the whole log** above).
+
+### Collapsing the whole log
+
+The Debate Log collapses **as a panel**, independently of the per-round card bodies, and
+**collapsed is the default** for every encounter (`TrialUI` calls `resetDebateLog()` per
+scenario). Collapsed, the stage's top-right corner holds `DebateLogRecapChip`; expanded, the
+panel is exactly what it always was, painting over the right 2fr of the full-width cast.
+
+Three things worth knowing before you touch it:
+
+- **The flag is a store (`src/store/debateLogStore.ts`), not `useState`.** `TutorialOverlay`
+  resolves a step's highlight target exactly once per step and gives up when the element is
+  missing — no retry, no observer. Expanding from an effect would mount the panel a commit
+  too late and every debate-log tutorial step would lose its spotlight silently. So
+  `useScenarioTutorials` calls `setExpanded(true)` **before** `openTutorial`, gated on
+  `tutorialNeedsDebateLog`, and both store writes land in one synchronous emit.
+- **Collapsing unmounts the panel, deliberately.** `display: none` would zero
+  `getBoundingClientRect`, leaving `FeedbackPanel`'s auto-scroll measuring garbage and never
+  re-running, so re-expanding would park the log at the top instead of the active round. A
+  fresh mount runs that effect with no previous index and scrolls to the current round. The
+  cost — per-round expand overrides reset — is harmless, since cards default to shrunk.
+- **The chip carries no tutorial hook.** `data-tutorial-debate-log-moderator-score` stays
+  unique to the log header; `resolveTutorialTargetElement` is a bare `querySelector`, and a
+  second match would make that spotlight ambiguous.
 
 ### Feedback panel (`trial/panels/FeedbackPanel.tsx`)
 
@@ -260,7 +287,8 @@ A compile-time assertion (`_AssertKeysMatch`) keeps `EventTrigger` and `DebateEv
 | `interactive:back` | `InteractiveBackPayload` | `InteractivePanel` — Back button. |
 | `round:recap:open` / `round:recap:close` | `RoundRecapTogglePayload` | `RoundRecapModal` — mount/unmount effect so any dismissal path stays balanced. |
 | `debate_log:round:analyze` | `DebateLogRoundPayload` | `DebateRoundLogCard` — every `AnalyzeButton` click site. |
-| `debate_log:round:shrink` / `debate_log:round:expand` | `DebateLogRoundPayload` | `DebateRoundLogCard` — expand/collapse toggle. |
+| `debate_log:round:shrink` / `debate_log:round:expand` | `DebateLogRoundPayload` | `DebateRoundLogCard` — per-card expand/collapse toggle. |
+| `debate_log:collapse` / `debate_log:expand` | `DebateLogPanelPayload` (`roundNumber`, null outside a round) | `DebateLogToggleButton` — the whole-panel toggle, from either the chip or the log header. |
 | `analysis:open` / `analysis:close` | `AnalysisOpenClosePayload` (`analysisRoundNumber`, `activeRoundNumber`, `targetKind`, `targetId`) | `RoundAnalysisModal` — mount/unmount effect; `activeRoundNumber` is passed from `TrialUI` (`fallacyGuessBucketRoundNumber`). |
 | `analysis:sentence_selected` / `analysis:sentence_deselected` | `AnalysisSentenceTogglePayload` | `RoundAnalysisModal` — sentence click in the NPC view. |
 | `analysis:fallacy_selected` / `analysis:fallacy_deselected` | `AnalysisFallacyTogglePayload` | `RoundAnalysisModal` — fallacy picker click. |

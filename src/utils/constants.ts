@@ -20,11 +20,20 @@ export const STAGE_REM_MAX_PX = 28;
  * The Trial layout's game hole, in 1920x1080 stage coords — where the Phaser `Trial`
  * scene draws its animated cast, behind the now-transparent `.trialGameHole` React cell.
  *
- * DERIVED FROM `TrialLayout.module.scss`: grid-template-columns `3fr 2fr` (3/5 * 1920 = 1152)
- * and grid-template-rows `repeat(2, 1fr)` (1/2 * 1080 = 540). Change both together, or use
- * `DEBUG_TRIAL_STAGE` in `Trial.ts` to check they still agree.
+ * DERIVED FROM `TrialLayout.module.scss`: `.trialGameHole` spans `grid-column: 1 / -1`
+ * (the full 1920) and `grid-template-rows: repeat(2, 1fr)` (1/2 * 1080 = 540). Change both
+ * together, or use `DEBUG_TRIAL_STAGE` in `Trial.ts` to check they still agree.
+ *
+ * The rect is deliberately **static**: when the player expands the Debate Log it paints over
+ * the right 2fr of this band (see `debateLogStore`) rather than the cast re-laying out, so
+ * the rightmost sprite of a 2-3 animal cast is hidden while the log is open.
  */
-export const TRIAL_STAGE_HOLE = { x: 0, y: 0, width: 1152, height: 540 } as const;
+export const TRIAL_STAGE_HOLE = {
+  x: 0,
+  y: 0,
+  width: STAGE_DESIGN_WIDTH,
+  height: 540,
+} as const;
 
 /**
  * Where the `AnimalGallery` scene draws its animal, in 1920x1080 stage coords.

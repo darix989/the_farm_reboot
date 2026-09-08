@@ -4,8 +4,10 @@ import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import DebateRoundLogCard from '../components/DebateRoundLogCard';
+import DebateLogToggleButton from '../components/DebateLogToggleButton';
 import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/IntroDebateLogCard';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
+import { activeRoundNumber } from '../utils/trialHelpers';
 import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
 import styles from './TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
@@ -129,21 +131,27 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
     <div className={styles.trialPanelContent}>
       <div className={styles.trialAreaTitle}>
         <h2 className={styles.trialPanelHeading}>{getLabel(encounterLabels(debate).logTitle)}</h2>
-        <p
-          className={styles.trialDebateLogTitleScore}
-          style={{ margin: 0, color: uiColor.textBody }}
-        >
-          <span
-            className={styles.debateLogModeratorScoreTutorialHook}
-            data-tutorial-debate-log-moderator-score
+        <div className={styles.trialAreaTitleEnd}>
+          <p
+            className={styles.trialDebateLogTitleScore}
+            style={{ margin: 0, color: uiColor.textBody }}
           >
-            <ModeratorOpinionInline
-              score={wf.totalScore}
-              insightPoints={mechanics.showInsightPoints ? insightPoints : undefined}
-              showOpinion={mechanics.showModeratorOpinion}
-            />
-          </span>
-        </p>
+            <span
+              className={styles.debateLogModeratorScoreTutorialHook}
+              data-tutorial-debate-log-moderator-score
+            >
+              <ModeratorOpinionInline
+                score={wf.totalScore}
+                insightPoints={mechanics.showInsightPoints ? insightPoints : undefined}
+                showOpinion={mechanics.showModeratorOpinion}
+              />
+            </span>
+          </p>
+          <DebateLogToggleButton
+            debate={debate}
+            roundNumber={activeRoundNumber(wf.currentRoundIndex, wf.totalRounds)}
+          />
+        </div>
       </div>
 
       <ScrollFadeContainer

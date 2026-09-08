@@ -16,7 +16,9 @@
 
 import { useEffect, useRef } from 'react';
 import type { DebateScenarioTutorialEntry, EventTrigger } from '../../types/debateEntities';
-import { useTutorialStore } from '../../store/tutorialStore';
+import { useTutorialStore, type TutorialStepInput } from '../../store/tutorialStore';
+import { useDebateLogStore } from '../../store/debateLogStore';
+import { tutorialNeedsDebateLog } from '../trial/utils/debateLogTutorialNeeds';
 import {
   debateEventBus,
   debateTutorialTriggerMatches,
@@ -78,19 +80,27 @@ export function useScenarioTutorials(
           if (store.isOpen) continue;
 
           firedRef.current.add(dedupKey);
-          store.openTutorial({
-            id: entry.id,
-            steps: entry.tutorial.steps.map((step) => ({
-              message: step.message,
-              modal: step.modal,
-              onlyForward: step.onlyForward,
-              onFinish: step.onFinish,
-              targetComponent: step.targetComponent,
-              interactionMode: step.interactionMode,
-              targetClassName: step.targetClassName,
-              artificialInteractions: step.artificialInteractions,
-            })),
-          });
+          const steps: TutorialStepInput[] = entry.tutorial.steps.map((step) => ({
+            message: step.message,
+            modal: step.modal,
+            onlyForward: step.onlyForward,
+            onFinish: step.onFinish,
+            targetComponent: step.targetComponent,
+            interactionMode: step.interactionMode,
+            targetClassName: step.targetClassName,
+            artificialInteractions: step.artificialInteractions,
+          }));
+
+          // Expand the Debate Log *before* opening the tutorial, not from an effect after
+          // it: `TutorialOverlay` resolves each step's highlight target once and gives up
+          // when the element is missing, so a panel that mounts a commit later loses its
+          // spotlight silently. Both store writes happen in this one synchronous emit, so
+          // React commits a single render with the log mounted and the tutorial open.
+          if (tutorialNeedsDebateLog(steps)) {
+            useDebateLogStore.getState().setExpanded(true);
+          }
+
+          store.openTutorial({ id: entry.id, steps });
           // First match wins per emission, even if several entries would match.
           return;
         }
