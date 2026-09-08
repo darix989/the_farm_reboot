@@ -28,25 +28,49 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   flex-direction: column;
 }
 
-.trialInteractiveScrollWrap {
-  margin-top: 1rem;
-  display: flex;
-  min-height: 0;
-  flex: 1;
-  flex-direction: column;
+/* "What do I do now" guidance, under the title strip and above the centred icon/letter
+   cluster. Clamped to two lines so the rewritten (shorter) copy always fits a 30% column. */
+.trialActionsHint {
+  margin: 0.75rem 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.4;
+  color: var(--ui-color-text-body);
+  text-align: center;
 }
 
-.trialInteractiveFooter {
-  flex-shrink: 0;
+/* Hint → icons → letters, centred both axes in the space below the title strip. */
+.trialActionsCenter {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+/* Icon-only action row (Analyze | Back | Continue) — a flex row since the button count
+   varies (two when the scenario disables analysis). Meaningless `max-width` dropped now
+   that this sits in a 30% column rather than a full-width footer. */
+.trialInteractiveFooterActions {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid var(--ui-color-border-soft);
-  padding-top: 1rem;
+  gap: 1.5rem;
+
+  --trial-footer-icon-btn-size: 6rem;
+
+  @include bp.compact {
+    --trial-footer-icon-btn-size: 5rem;
+  }
 }
 
+/* Multi-button modal footer grid (Back | primary) — shared with `TutorialOverlay`. */
 .trialFooterGrid {
   display: grid;
   width: 100%;
@@ -58,24 +82,6 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   padding: 0 0.5rem;
 
   /* Single uniform breakpoint — keep the largest gap & padding for expanded viewports. */
-  @include bp.expanded {
-    gap: 2rem;
-    padding: 0 1rem;
-  }
-}
-
-/* Icon-only footer row (Analyze | Back | Continue) — same centred sizing as
-   `.trialFooterGrid`, but a flex row since the button count varies (two when the
-   scenario disables analysis). */
-.trialInteractiveFooterActions {
-  display: flex;
-  width: 100%;
-  max-width: 56rem;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  padding: 0 0.5rem;
-
   @include bp.expanded {
     gap: 2rem;
     padding: 0 1rem;
@@ -125,7 +131,7 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   border-radius: 0.5rem;
   border: 1px solid var(--ui-color-border-strong);
   background: var(--ui-color-overlay-medium);
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  padding: 0.75rem 1rem 0.75rem 1.25rem;
 
   > h2 {
     margin: 0;
@@ -166,11 +172,23 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   margin: 0;
 }
 
+/* Trailing round label in the Dialog header strip: "DIALOG — ROUND 1 — OPENING CONSTRUCTIVE". */
+.trialDialogRoundLabel {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ui-color-text-caption);
+}
+
 /* =========================================================================
    Trial panels — wizard body
    ========================================================================= */
 
-/* Flex slot for `ScrollFadeContainer`; mirrors `trialInteractiveScrollWrap`. */
+/* Flex slot for `ScrollFadeContainer`. */
 .trialWizardBodySlot {
   box-sizing: border-box;
   display: flex;
@@ -207,20 +225,6 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   }
 }
 
-.trialWizardGuidanceText {
-  box-sizing: border-box;
-  flex-shrink: 0;
-  margin: 0;
-  max-width: 100%;
-  min-width: 0;
-  overflow-wrap: break-word;
-  padding: 0 0.25rem;
-  word-break: break-word;
-  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
-  line-height: 1.625;
-  color: var(--ui-color-text-body);
-}
-
 .trialWizardDetailLive {
   flex: 1 1 0%;
   min-height: 0;
@@ -241,23 +245,18 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   width: 1px;
 }
 
-.trialWizardMainText {
-  border: none;
-  border-radius: 0.5rem;
-  box-shadow: none;
-  box-sizing: border-box;
-  flex: 1 1 0%;
-  margin: 0;
-  max-width: 100%;
-  min-height: 0;
-  min-width: 0;
-  outline: none;
-  overflow-wrap: break-word;
-  padding: 1rem;
-  word-break: break-word;
-  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
-  line-height: 1.625;
-  color: var(--ui-color-text-body);
+/* Speaker portrait floated into the top-left of the Dialog statement box; both `<p>`s below
+   it are block boxes, so their line boxes shorten beside the portrait and run full-width
+   once it ends. */
+.trialWizardPortrait {
+  float: left;
+  margin: 0 1rem 0.5rem 0;
+
+  /* `AnimalFace` renders nothing for a character with no face art; without this the wrapper
+     survives as a zero-width float and still eats its own margin. */
+  &:empty {
+    display: none;
+  }
 }
 
 /* =========================================================================
@@ -668,36 +667,29 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
    Trial panels — choice list
    ========================================================================= */
 
+/* Three letters, always in a row — unlike the old preview cards, a bare letter fits at any
+   column width, so there is no `bp.compact` single-column override. */
 .trialChoices {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: stretch;
-
-  /* Both branches set the same gap; only the column count toggles between compact and expanded. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 1.25rem;
-
-  @include bp.compact {
-    grid-template-columns: 1fr;
-  }
 }
 
 .trialChoiceBtn {
   box-sizing: border-box;
   display: flex;
-  width: 100%;
-  min-width: 0;
-  min-height: 5.75rem;
-  align-items: flex-start;
-  justify-content: stretch;
+  width: calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8);
+  height: calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8);
+  min-height: 0;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   overflow: hidden;
   border-radius: 0.5rem;
   border: 1px solid var(--ui-color-border-strong);
   background: var(--ui-color-overlay-muted);
-  padding: 0.875rem;
-  text-align: left;
-  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
-  line-height: 1.4;
-  color: var(--ui-color-text-emphasis);
   box-shadow: 0 0 0 1px var(--ui-color-ring-subtle);
   transition:
     border-color 0.15s ease-in-out,
@@ -731,10 +723,6 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
       color: var(--ui-color-text-emphasis);
     }
   }
-
-  @include bp.expanded {
-    padding: 1rem;
-  }
 }
 
 .trialChoiceBtnSelected {
@@ -752,40 +740,13 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   }
 }
 
-.trialChoiceBtnRow {
-  display: flex;
-  width: 100%;
-  min-width: 0;
-  align-items: flex-start;
-  gap: 0.625rem;
-}
-
+/* The letter is the whole button now — no badge border/background of its own. */
 .trialChoiceLetter {
-  flex-shrink: 0;
-  box-sizing: border-box;
-  display: flex;
-  min-width: 1.5rem;
-  height: 1.5rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.3125rem;
-  border: 1px solid var(--ui-color-border-inner);
-  background: var(--ui-color-overlay-deep);
-  color: var(--ui-color-text-emphasis);
-  font-size: calc(var(--ui-font-label) * var(--ui-trial-panel-font-scale, 1));
+  font-size: calc(var(--ui-font-display) * var(--ui-trial-panel-font-scale, 1));
   font-weight: 700;
   line-height: 1;
-  transition:
-    border-color 0.15s ease-in-out,
-    background 0.15s ease-in-out,
-    color 0.15s ease-in-out;
-}
-
-.trialChoiceStatement {
-  flex: 1;
-  min-width: 0;
-  overflow-wrap: break-word;
-  word-break: break-word;
+  color: var(--ui-color-text-emphasis);
+  transition: color 0.15s ease-in-out;
 }
 
 /** Nudge when a locked option is guess-unlocked but not yet clicked open; slow shake, repeats every 10s */

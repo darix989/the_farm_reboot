@@ -11,8 +11,8 @@
   min-height: 0;
   width: 100%;
 
-  /* Left column (game + wizard) 60%, right (debate log + interactive) 40% */
-  grid-template-columns: 3fr 2fr;
+  /* Left column (game + dialog) 70%, right (debate log + actions) 30% */
+  grid-template-columns: 7fr 3fr;
   grid-template-rows: repeat(2, 1fr);
   align-items: stretch;
   pointer-events: none;
@@ -20,7 +20,7 @@
 
 .trialGameHole {
   /* Full stage width: the cast is framed across the whole top band, and the Debate Log
-     paints over its right 2fr when expanded (see `debateLogStore`). */
+     paints over its right 3fr when expanded (see `debateLogStore`). */
   grid-column: 1 / -1;
   grid-row: 1;
   display: flex;

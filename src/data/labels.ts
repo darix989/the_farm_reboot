@@ -71,8 +71,8 @@ const LABELS = {
   gossipLog: 'Trough Talk',
   sparringLog: 'Sparring Log',
   labLog: 'Lab Notes',
-  interactive: 'Interactive',
-  wizard: 'Wizard',
+  interactive: 'Actions',
+  wizard: 'Dialog',
   back: 'Back',
   continue: 'Continue',
   confirm: 'Confirm',
@@ -138,27 +138,22 @@ const LABELS = {
 
   // --- useTrialRoundWorkflow (wizard strip) ---
   // Opening guidance, one per `EncounterKind`.
-  workflowDebateIntro:
-    "We're about to play a debate. Read the introduction, and once you are ready, click Continue.",
-  workflowGossipIntro:
-    'Someone is talking. Read what they say, then open the magnifying glass and spot any logical fallacies.',
-  workflowSparringIntro:
-    'A practice bout — nothing is at stake. Read the line you are given, then pick the answer that actually addresses it.',
-  workflowLabIntro:
-    'A training exercise. Here the dirty answer is the one being asked for. Read the brief, then pick your line.',
+  workflowDebateIntro: 'Read the introduction, then click Continue.',
+  workflowGossipIntro: 'Read what they say, then spot the fallacies with the magnifying glass.',
+  workflowSparringIntro: 'A practice bout. Read the line, then pick the answer that addresses it.',
+  workflowLabIntro: 'A training exercise — the dirty answer is the one being asked for.',
   workflowRoundWithType: 'Round {roundNumber} — {typeDisplay}',
-  workflowNpcSpeaking: "{roundLabel}. Read {opponentName}'s statement, then click Continue.",
-  workflowNpcSpeakingMustAnalyze:
-    'Analyze this statement before you move on. Open it with the magnifying glass, then tag any logical fallacies — or mark it Clean.',
+  workflowNpcSpeaking: "Read {opponentName}'s statement, then click Continue.",
+  workflowNpcSpeakingMustAnalyze: 'Analyze this statement first — open the magnifying glass.',
   workflowPlayerChoosingQuestion:
-    '{roundLabel}. {opponentName} has asked a question. Choose your response.',
-  workflowPlayerChoosingStatement: '{roundLabel}. Choose your statement.',
-  workflowStatementSelected:
-    '{roundLabel}. Statement selected. Click Continue to submit, or Back to change it.',
+    '{opponentName} asked a question. Pick A, B or C to read your reply.',
+  workflowPlayerChoosingStatement: 'Pick A, B or C to read it in the Dialog.',
+  workflowStatementSelected: 'Click Continue to submit, or Back to change it.',
   workflowPlayerConfirming:
     'Review your choice below. Go back to change it, or confirm to lock it in.',
   workflowNpcResponding: '{opponentName} responds to your statement. Read it, then continue.',
   workflowRoundRecap: 'Review the round summary, then close the dialog to continue.',
+  workflowRevealing: 'Keep reading — click Continue for the next sentence.',
 
   // --- Tutorial overlay ---
   tutorialGotIt: 'Got it',

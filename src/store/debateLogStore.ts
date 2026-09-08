@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 /**
- * Whether the Trial screen's Debate Log is expanded (the full panel over the right 2fr of
+ * Whether the Trial screen's Debate Log is expanded (the full panel over the right 3fr of
  * the stage) or collapsed to its recap chip in the top-right corner.
  *
  * A store rather than `useState` in `TrialUI` because the tutorial layer has to expand the

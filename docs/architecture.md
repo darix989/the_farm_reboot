@@ -30,7 +30,7 @@ Three consequences that catch people out:
    empty `pointer-events: none` div — it is *not* a clip. A Phaser scene left running while
    the Trial UI is up paints behind the panels, not only in the hole. The hole spans the
    **full stage width** across the top band (`TRIAL_STAGE_HOLE`, 1920×540); when the player
-   expands the Debate Log it paints *over* the right 2fr of the cast rather than the cast
+   expands the Debate Log it paints *over* the right 3fr of the cast rather than the cast
    re-laying out, so the rightmost animal of a 2-3 strong cast is hidden while the log is
    open. That is deliberate — the stage rect is a compile-time constant, and nothing tells
    Phaser how much room it has.

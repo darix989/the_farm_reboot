@@ -7,14 +7,9 @@ import {
 } from '../roundAnalysisModal/RoundAnalysisModal';
 import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import type { ResolvedMechanics } from '../utils/scenarioMechanics';
-import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TrialTextButton from '../components/TrialTextButton';
 import cn from 'classnames';
-import {
-  statementText,
-  shuffleCopyDeterministic,
-  truncateStatementPreview,
-} from '../utils/trialHelpers';
+import { statementText, shuffleCopyDeterministic } from '../utils/trialHelpers';
 import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
 import { debateEventBus } from '../utils/debateEventBus';
 import { prefersReducedMotion } from '../../../utils/reducedMotion';
@@ -84,6 +79,8 @@ interface InteractivePanelProps {
   mechanics: ResolvedMechanics;
   /** The current round's line to analyze, or `null` when there is none (renders disabled). */
   analyzeTarget: AnalysisTarget | null;
+  /** 1-2 line "what do I do now" guidance, shown under the panel title above the icons. */
+  hint: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -92,7 +89,6 @@ interface InteractivePanelProps {
 
 function ChoiceButton({
   optionLetter,
-  statementText,
   accessibilityStatement,
   onClick,
   disabled,
@@ -102,10 +98,8 @@ function ChoiceButton({
   tutorialOptionId,
 }: {
   optionLetter: string;
-  /** Truncated label shown in the button */
-  statementText: string;
-  /** Full statement for screen readers (defaults to `statementText`) */
-  accessibilityStatement?: string;
+  /** Full statement text, for screen readers only — the button itself shows just the letter. */
+  accessibilityStatement: string;
   onClick: () => void;
   disabled?: boolean;
   selected?: boolean;
@@ -118,7 +112,7 @@ function ChoiceButton({
   const ariaLabel = getLabel('optionAriaLabel', {
     replacements: {
       optionLetter,
-      statement: accessibilityStatement ?? statementText,
+      statement: accessibilityStatement,
     },
   });
   return (
@@ -135,11 +129,8 @@ function ChoiceButton({
       disabled={disabled}
       data-tutorial-interactive-option-id={tutorialOptionId}
     >
-      <span className={styles.trialChoiceBtnRow}>
-        <span className={styles.trialChoiceLetter} aria-hidden>
-          {optionLetter}
-        </span>
-        <span className={styles.trialChoiceStatement}>{statementText}</span>
+      <span className={styles.trialChoiceLetter} aria-hidden>
+        {optionLetter}
       </span>
     </button>
   );
@@ -161,6 +152,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   getNpcGuessState,
   mechanics,
   analyzeTarget,
+  hint,
 }) => {
   const analyzeTargetId = analyzeTarget ? analysisTargetStatementId(analyzeTarget) : null;
   const analyzeGuessState = analyzeTargetId ? getNpcGuessState(analyzeTargetId) : null;
@@ -192,7 +184,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     return () => window.clearTimeout(t);
   }, [revealAnimOptionId]);
 
-  const renderContent = () => {
+  const renderChoices = () => {
     /** Only the player-choice grid belongs here; intro / NPC / responses live elsewhere. */
     if (wf.gamePhase !== 'player_choosing') return null;
 
@@ -200,76 +192,69 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     if (!playerRound || !choosingOptionsOrder) return null;
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div
-          className={styles.trialChoices}
-          data-tutorial-panel="interactive"
-          aria-hidden={hideOptions || undefined}
-          style={hideOptions ? { visibility: 'hidden' } : undefined}
-        >
-          {choosingOptionsOrder.map((opt, idx) => {
-            const guessUnlocked = isPlayerOptionUnlocked(opt, fallacyGuesses);
-            const revealed = !opt.unlockCondition || revealedLockedOptionIds.has(opt.id);
-            const locked = !!opt.unlockCondition && !guessUnlocked;
-            let body: string;
-            if (locked) {
-              body = statementText(resolvedOptionSentences(opt, false));
-            } else if (opt.unlockCondition && guessUnlocked && !revealed) {
-              body = getLabel('clickToUnlock');
-            } else {
-              body = statementText(resolvedOptionSentences(opt, true));
-            }
-            const awaitingReveal = !!opt.unlockCondition && guessUnlocked && !revealed;
-            const revealFlash = revealed && revealAnimOptionId === opt.id && !!opt.unlockCondition;
-            const optionLetter = String.fromCharCode(65 + idx);
-            return (
-              <ChoiceButton
-                key={opt.id}
-                optionLetter={optionLetter}
-                statementText={truncateStatementPreview(body)}
-                accessibilityStatement={body}
-                disabled={locked || hideOptions}
-                selected={wf.selectedOption?.id === opt.id}
-                unlockHint={awaitingReveal}
-                revealFlash={revealFlash}
-                tutorialOptionId={opt.id}
-                onClick={() => {
-                  const target = { kind: 'interactive_option', optionId: opt.id } as const;
-                  if (!canRunTutorialTargetAction(target)) return;
-                  if (
-                    opt.unlockCondition &&
-                    guessUnlocked &&
-                    !revealedLockedOptionIds.has(opt.id)
-                  ) {
-                    setRevealAnimOptionId(opt.id);
-                    debateEventBus.emit('interactive:statement_unlocked', {
-                      roundNumber: playerRound.roundNumber,
-                      roundId: playerRound.id,
-                      optionId: opt.id,
-                    });
-                    onRevealLockedOption(opt.id);
-                    notifyTutorialTargetAction(target);
-                    return;
-                  }
-                  if (wf.selectedOption?.id === opt.id) {
-                    wf.unselect();
-                    notifyTutorialTargetAction(target);
-                    return;
-                  }
-                  if (playerRound) {
-                    debateEventBus.emit('interactive:statement_selected', {
-                      roundNumber: playerRound.roundNumber,
-                      roundId: playerRound.id,
-                      optionId: opt.id,
-                    });
-                  }
-                  wf.dispatch({ type: 'select_option', optionId: opt.id });
+      <div
+        className={styles.trialChoices}
+        data-tutorial-panel="interactive"
+        aria-hidden={hideOptions || undefined}
+        style={hideOptions ? { visibility: 'hidden' } : undefined}
+      >
+        {choosingOptionsOrder.map((opt, idx) => {
+          const guessUnlocked = isPlayerOptionUnlocked(opt, fallacyGuesses);
+          const revealed = !opt.unlockCondition || revealedLockedOptionIds.has(opt.id);
+          const locked = !!opt.unlockCondition && !guessUnlocked;
+          let body: string;
+          if (locked) {
+            body = statementText(resolvedOptionSentences(opt, false));
+          } else if (opt.unlockCondition && guessUnlocked && !revealed) {
+            body = getLabel('clickToUnlock');
+          } else {
+            body = statementText(resolvedOptionSentences(opt, true));
+          }
+          const awaitingReveal = !!opt.unlockCondition && guessUnlocked && !revealed;
+          const revealFlash = revealed && revealAnimOptionId === opt.id && !!opt.unlockCondition;
+          const optionLetter = String.fromCharCode(65 + idx);
+          return (
+            <ChoiceButton
+              key={opt.id}
+              optionLetter={optionLetter}
+              accessibilityStatement={body}
+              disabled={locked || hideOptions}
+              selected={wf.selectedOption?.id === opt.id}
+              unlockHint={awaitingReveal}
+              revealFlash={revealFlash}
+              tutorialOptionId={opt.id}
+              onClick={() => {
+                const target = { kind: 'interactive_option', optionId: opt.id } as const;
+                if (!canRunTutorialTargetAction(target)) return;
+                if (opt.unlockCondition && guessUnlocked && !revealedLockedOptionIds.has(opt.id)) {
+                  setRevealAnimOptionId(opt.id);
+                  debateEventBus.emit('interactive:statement_unlocked', {
+                    roundNumber: playerRound.roundNumber,
+                    roundId: playerRound.id,
+                    optionId: opt.id,
+                  });
+                  onRevealLockedOption(opt.id);
                   notifyTutorialTargetAction(target);
-                }}
-              />
-            );
-          })}
-        </div>
+                  return;
+                }
+                if (wf.selectedOption?.id === opt.id) {
+                  wf.unselect();
+                  notifyTutorialTargetAction(target);
+                  return;
+                }
+                if (playerRound) {
+                  debateEventBus.emit('interactive:statement_selected', {
+                    roundNumber: playerRound.roundNumber,
+                    roundId: playerRound.id,
+                    optionId: opt.id,
+                  });
+                }
+                wf.dispatch({ type: 'select_option', optionId: opt.id });
+                notifyTutorialTargetAction(target);
+              }}
+            />
+          );
+        })}
       </div>
     );
   };
@@ -279,96 +264,92 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
       <div className={styles.trialAreaTitle}>
         <h2 className={styles.trialPanelHeading}>{getLabel('interactive')}</h2>
       </div>
+      <p className={styles.trialActionsHint}>{hint}</p>
 
-      <div className={styles.trialInteractiveScrollWrap}>
-        <ScrollFadeContainer className={styles.trialScrollArea}>
-          {renderContent()}
-        </ScrollFadeContainer>
-
-        <div className={styles.trialInteractiveFooter}>
-          <div className={styles.trialInteractiveFooterActions}>
-            {mechanics.analysisEnabled && (
-              <TrialTextButton
-                widthMode="square"
-                className={cn(styles.trialFooterAnalyzeBtn, {
-                  [styles.correct]: analyzeGuessState === 'correct',
-                  [styles.partial]: analyzeGuessState === 'partial',
-                  [styles.wrong]: analyzeGuessState === 'wrong',
-                })}
-                disabled={!analyzeTarget}
-                aria-label={analyzeTitle}
-                title={analyzeTitle}
-                onClick={() => {
-                  if (!analyzeTarget) return;
-                  const target = { kind: 'interactive_action', action: 'analyze' } as const;
-                  if (!canRunTutorialTargetAction(target)) return;
-                  debateEventBus.emit('interactive:analyze', {
-                    fromPhase: wf.gamePhase,
-                    roundNumber: wf.currentRound?.roundNumber ?? null,
-                    targetKind: analyzeTarget.kind,
-                  });
-                  onOpenAnalysis(analyzeTarget);
-                  notifyTutorialTargetAction(target);
-                }}
-                data-tutorial-interactive-action="analyze"
-              >
-                <img src={magnifyingIcon} alt="" className={styles.trialFooterIcon} />
-              </TrialTextButton>
-            )}
+      <div className={styles.trialActionsCenter}>
+        <div className={styles.trialInteractiveFooterActions}>
+          {mechanics.analysisEnabled && (
             <TrialTextButton
               widthMode="square"
-              disabled={
-                wf.gamePhase === 'debate_intro' ||
-                (wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo)
-              }
-              aria-label={getLabel('back')}
-              title={getLabel('back')}
+              className={cn(styles.trialFooterAnalyzeBtn, {
+                [styles.correct]: analyzeGuessState === 'correct',
+                [styles.partial]: analyzeGuessState === 'partial',
+                [styles.wrong]: analyzeGuessState === 'wrong',
+              })}
+              disabled={!analyzeTarget}
+              aria-label={analyzeTitle}
+              title={analyzeTitle}
               onClick={() => {
-                const target = { kind: 'interactive_action', action: 'back' } as const;
+                if (!analyzeTarget) return;
+                const target = { kind: 'interactive_action', action: 'analyze' } as const;
                 if (!canRunTutorialTargetAction(target)) return;
-                debateEventBus.emit('interactive:back', {
+                debateEventBus.emit('interactive:analyze', {
                   fromPhase: wf.gamePhase,
                   roundNumber: wf.currentRound?.roundNumber ?? null,
+                  targetKind: analyzeTarget.kind,
                 });
-                if (wf.gamePhase === 'player_choosing') {
-                  wf.unselect();
-                  notifyTutorialTargetAction(target);
-                  return;
-                }
-                wf.undo();
+                onOpenAnalysis(analyzeTarget);
                 notifyTutorialTargetAction(target);
               }}
-              data-tutorial-interactive-action="back"
+              data-tutorial-interactive-action="analyze"
             >
-              <img src={backIcon} alt="" className={styles.trialFooterIcon} />
+              <img src={magnifyingIcon} alt="" className={styles.trialFooterIcon} />
             </TrialTextButton>
-            <TrialTextButton
-              widthMode="square"
-              variant={interactiveFooter.submitIcon === 'reveal' ? 'dashed' : 'solid'}
-              disabled={interactiveFooter.submitDisabled || !interactiveFooter.onSubmit}
-              aria-label={interactiveFooter.submitLabel}
-              title={interactiveFooter.submitLabel}
-              onClick={() => {
-                const target = {
-                  kind: 'interactive_action',
-                  action: wf.gamePhase === 'player_confirming' ? 'confirm' : 'continue',
-                } as const;
-                if (!canRunTutorialTargetAction(target)) return;
-                interactiveFooter.onSubmit?.();
+          )}
+          <TrialTextButton
+            widthMode="square"
+            disabled={
+              wf.gamePhase === 'debate_intro' ||
+              (wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo)
+            }
+            aria-label={getLabel('back')}
+            title={getLabel('back')}
+            onClick={() => {
+              const target = { kind: 'interactive_action', action: 'back' } as const;
+              if (!canRunTutorialTargetAction(target)) return;
+              debateEventBus.emit('interactive:back', {
+                fromPhase: wf.gamePhase,
+                roundNumber: wf.currentRound?.roundNumber ?? null,
+              });
+              if (wf.gamePhase === 'player_choosing') {
+                wf.unselect();
                 notifyTutorialTargetAction(target);
-              }}
-              data-tutorial-interactive-action={
-                wf.gamePhase === 'player_confirming' ? 'confirm' : 'continue'
+                return;
               }
-            >
-              <img
-                src={SUBMIT_ICON_SRC[interactiveFooter.submitIcon]}
-                alt=""
-                className={styles.trialFooterIcon}
-              />
-            </TrialTextButton>
-          </div>
+              wf.undo();
+              notifyTutorialTargetAction(target);
+            }}
+            data-tutorial-interactive-action="back"
+          >
+            <img src={backIcon} alt="" className={styles.trialFooterIcon} />
+          </TrialTextButton>
+          <TrialTextButton
+            widthMode="square"
+            variant={interactiveFooter.submitIcon === 'reveal' ? 'dashed' : 'solid'}
+            disabled={interactiveFooter.submitDisabled || !interactiveFooter.onSubmit}
+            aria-label={interactiveFooter.submitLabel}
+            title={interactiveFooter.submitLabel}
+            onClick={() => {
+              const target = {
+                kind: 'interactive_action',
+                action: wf.gamePhase === 'player_confirming' ? 'confirm' : 'continue',
+              } as const;
+              if (!canRunTutorialTargetAction(target)) return;
+              interactiveFooter.onSubmit?.();
+              notifyTutorialTargetAction(target);
+            }}
+            data-tutorial-interactive-action={
+              wf.gamePhase === 'player_confirming' ? 'confirm' : 'continue'
+            }
+          >
+            <img
+              src={SUBMIT_ICON_SRC[interactiveFooter.submitIcon]}
+              alt=""
+              className={styles.trialFooterIcon}
+            />
+          </TrialTextButton>
         </div>
+        {renderChoices()}
       </div>
     </div>
   );

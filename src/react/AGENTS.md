@@ -12,7 +12,7 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `screens/GameLoadingScreen.tsx` | Loading screen shown until `isGameReady`, and again while `isSceneLoading`. Also the interaction gate: it covers the stage and sets `pointer-events: auto`, so nothing behind it is clickable while `Boot`/`Preloader` or a scene pack load. |
 | `screens/BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
 | `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, `RoundRecapModal`, and `RoundAnalysisModal`. |
-| `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent full-width "game hole" across the top row, then the Debate Log (or `DebateLogRecapChip` when collapsed) over its right 2fr, and Wizard / Interactive along the bottom. Reads `debateLogStore` and owns the collapsed/expanded branch. |
+| `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent full-width "game hole" across the top row, then the Debate Log (or `DebateLogRecapChip` when collapsed) over its right 3fr, and Dialog / Actions along the bottom. Reads `debateLogStore` and owns the collapsed/expanded branch. |
 | `trial/panels/FeedbackPanel.tsx` | The expanded Debate Log: title strip (log title, Insight + moderator mood, the whole-panel collapse button) and the scrollable round-card list. |
 | `trial/components/DebateLogRecapChip.tsx` | The collapsed Debate Log: round counter, the same Insight + mood strip, and the button back in. |
 | `trial/components/DebateLogToggleButton.tsx` | The whole-panel collapse / expand control, rendered by both of the above so they cannot drift. Exports `DEBATE_LOG_PANEL_ID`. |
@@ -189,7 +189,7 @@ Three notes on this diagram:
 The Debate Log collapses **as a panel**, independently of the per-round card bodies, and
 **collapsed is the default** for every encounter (`TrialUI` calls `resetDebateLog()` per
 scenario). Collapsed, the stage's top-right corner holds `DebateLogRecapChip`; expanded, the
-panel is exactly what it always was, painting over the right 2fr of the full-width cast.
+panel is exactly what it always was, painting over the right 3fr of the full-width cast.
 
 Three things worth knowing before you touch it:
 

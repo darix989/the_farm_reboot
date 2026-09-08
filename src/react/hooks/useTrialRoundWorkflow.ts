@@ -540,24 +540,22 @@ export function useTrialRoundWorkflow(
     if (state.gamePhase === 'debate_intro') {
       return getLabel(copy.intro);
     }
-    if (!currentRound || wizardRoundLabel === null) return '';
-
-    const roundLabel = wizardRoundLabel;
+    if (!currentRound) return '';
 
     switch (state.gamePhase) {
       case 'npc_speaking':
-        return getLabel('workflowNpcSpeaking', { replacements: { roundLabel, opponentName } });
+        return getLabel('workflowNpcSpeaking', { replacements: { opponentName } });
       case 'player_choosing':
         if (currentPlayerRound?.opponentPrompt) {
           return state.selectedOptionId
-            ? getLabel('workflowStatementSelected', { replacements: { roundLabel } })
+            ? getLabel('workflowStatementSelected')
             : getLabel('workflowPlayerChoosingQuestion', {
-                replacements: { roundLabel, opponentName },
+                replacements: { opponentName },
               });
         }
         return state.selectedOptionId
-          ? getLabel('workflowStatementSelected', { replacements: { roundLabel } })
-          : getLabel('workflowPlayerChoosingStatement', { replacements: { roundLabel } });
+          ? getLabel('workflowStatementSelected')
+          : getLabel('workflowPlayerChoosingStatement');
       case 'player_confirming':
         return getLabel('workflowPlayerConfirming');
       case 'npc_responding':
@@ -574,7 +572,6 @@ export function useTrialRoundWorkflow(
     currentPlayerRound,
     opponentName,
     scenario,
-    wizardRoundLabel,
   ]);
 
   const totalRounds = scenario.rounds.length;

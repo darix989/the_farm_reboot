@@ -6,6 +6,8 @@ import { WIZARD_SCROLL_KEY } from '../../tutorial/artificialInteractions';
 import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
+import AnimalFace from '../../characters/AnimalFace';
+import type { AnimalEmotion } from '../../../phaser/animals/animalEmotions';
 
 export interface WizardPanelDetail {
   title: string;
@@ -17,6 +19,8 @@ export interface WizardPanelDetail {
    * closing verdict): those titles already say what they need to on their own.
    */
   sentenceCount?: number;
+  /** Whoever is speaking this line, floated as a portrait in the top-left of the statement box. */
+  speaker?: { characterId: string; emotion: AnimalEmotion };
 }
 
 /** Set while `detail.body` is being paced out one sentence at a time. */
@@ -31,12 +35,13 @@ export interface WizardPanelReveal {
 }
 
 interface WizardPanelProps {
-  wizardMessage: string;
   detail: WizardPanelDetail | null;
   reveal?: WizardPanelReveal | null;
+  /** `"Round 4 — crossfire"`, or `null` outside the rounds (intro / complete). */
+  roundLabel: string | null;
 }
 
-const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail, reveal }) => {
+const WizardPanel: React.FC<WizardPanelProps> = ({ detail, reveal, roundLabel }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const revealIndex = reveal?.sentenceIndex ?? null;
 
@@ -61,6 +66,7 @@ const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail, reveal
     >
       <div className={styles.trialAreaTitle}>
         <h2 className={styles.trialPanelHeading}>{getLabel('wizard')}</h2>
+        {roundLabel && <span className={styles.trialDialogRoundLabel}>— {roundLabel}</span>}
       </div>
       <div className={styles.trialWizardBodySlot}>
         <ScrollFadeContainer
@@ -68,9 +74,6 @@ const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail, reveal
           className={styles.trialWizardBodyScroll}
           scrollElementDataKey={WIZARD_SCROLL_KEY}
         >
-          <p className={detail ? styles.trialWizardGuidanceText : styles.trialWizardMainText}>
-            {wizardMessage}
-          </p>
           {detail && (
             <div
               // No live region while revealing: the body changes on every character, and a
@@ -86,6 +89,15 @@ const WizardPanel: React.FC<WizardPanelProps> = ({ wizardMessage, detail, reveal
                   lineHeight: 1.375,
                 }}
               >
+                {detail.speaker && (
+                  <span className={styles.trialWizardPortrait}>
+                    <AnimalFace
+                      characterId={detail.speaker.characterId}
+                      emotion={detail.speaker.emotion}
+                      size="dialogue"
+                    />
+                  </span>
+                )}
                 <p style={{ color: uiColor.textCaption, margin: 0 }}>
                   {detail.title}
                   {detail.sentenceCount !== undefined && (

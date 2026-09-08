@@ -37,6 +37,8 @@ import {
   activeEmotionForWorkflow,
   activeRoundNumber,
   activeSpeakerIdForWorkflow,
+  emotionForOption,
+  emotionFromStatement,
   getSpeakerName,
   getStartingInsightPoints,
   moderatorOpinionPlainText,
@@ -54,7 +56,7 @@ import getLabel from '../../data/labels';
 import { useGameStore } from '../../store/gameStore';
 import { useProgressStore } from '../../store/progressStore';
 import { useTrialStageStore } from '../../store/trialStageStore';
-import { resolveCharacter } from '../../data/characters';
+import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import { GameManager } from '../../utils/gameManager';
 
 interface TrialUIProps {
@@ -756,6 +758,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           }),
           body: statementText(npc.statement.sentences),
           sentenceCount: npc.statement.sentences.length,
+          speaker: { characterId: npc.speakerId, emotion: emotionFromStatement(npc.statement) },
         };
       }
       case 'player_choosing': {
@@ -771,12 +774,14 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             }),
             body: statementText(prompt.sentences),
             sentenceCount: prompt.sentences.length,
+            speaker: { characterId: prompt.speakerId, emotion: emotionFromStatement(prompt) },
           };
         }
         const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
         return {
           title: getLabel('wizardDetailSelectedStatement'),
           body: statementText(resolvedOptionSentences(opt, showResolved)),
+          speaker: { characterId: PLAYER_CHARACTER_ID, emotion: emotionForOption(opt) },
         };
       }
       case 'player_confirming': {
@@ -786,6 +791,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         return {
           title: getLabel('wizardDetailYourChoice'),
           body: statementText(resolvedOptionSentences(opt, showResolved)),
+          speaker: { characterId: PLAYER_CHARACTER_ID, emotion: emotionForOption(opt) },
         };
       }
       case 'npc_responding': {
@@ -800,6 +806,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           }),
           body: statementText(response.statement.sentences),
           sentenceCount: response.statement.sentences.length,
+          speaker: {
+            characterId: response.statement.speakerId,
+            emotion: emotionFromStatement(response.statement),
+          },
         };
       }
       case 'round_recap': {
@@ -814,6 +824,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             }),
             body: statementText(response.statement.sentences),
             sentenceCount: response.statement.sentences.length,
+            speaker: {
+              characterId: response.statement.speakerId,
+              emotion: emotionFromStatement(response.statement),
+            },
           };
         }
         // NPC rounds also pass through `round_recap` now (after the player clicks
@@ -829,6 +843,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             }),
             body: statementText(npc.statement.sentences),
             sentenceCount: npc.statement.sentences.length,
+            speaker: { characterId: npc.speakerId, emotion: emotionFromStatement(npc.statement) },
           };
         }
         return {
@@ -855,13 +870,14 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     fallacyGuesses,
   ]);
 
-  // While a line is still being revealed the wizard shows the round label alone — the full
-  // message recaps a statement the player has not finished reading yet.
+  // While a line is still being revealed, Actions shows a generic "keep reading" hint — the
+  // full guidance recaps a statement the player has not finished reading yet. The round label
+  // itself now lives permanently in the Dialog header (`wf.wizardRoundLabel`), not here.
   //
   // The workflow hook is deliberately unaware of guess state, so the "you must analyse
   // this first" nudge is applied here rather than inside `wizardMessage`.
-  const wizardMessage = revealActive
-    ? (wf.wizardRoundLabel ?? wf.wizardMessage)
+  const actionsHint = revealActive
+    ? getLabel('workflowRevealing')
     : analysisGatePending
       ? getLabel('workflowNpcSpeakingMustAnalyze')
       : wf.wizardMessage;
@@ -981,7 +997,11 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           />
         }
         wizard={
-          <WizardPanel wizardMessage={wizardMessage} detail={wizardDetail} reveal={wizardReveal} />
+          <WizardPanel
+            detail={wizardDetail}
+            reveal={wizardReveal}
+            roundLabel={wf.wizardRoundLabel}
+          />
         }
         interactive={
           <InteractivePanel
@@ -997,6 +1017,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             getNpcGuessState={getNpcGuessState}
             mechanics={mechanics}
             analyzeTarget={currentAnalysisTarget}
+            hint={actionsHint}
           />
         }
       />
