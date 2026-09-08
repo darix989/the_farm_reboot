@@ -1,5 +1,5 @@
 import type { LogicalFallacy, Sentence } from '../../../types/debateEntities';
-import type { GuessRecord } from './fallacyGuessTypes';
+import type { FallacyGuessSession, GuessRecord } from './fallacyGuessTypes';
 
 export function pairKey(sentenceId: string, fallacyId: string): string {
   return `${sentenceId}\u001f${fallacyId}`;
@@ -187,4 +187,33 @@ export function guessStateFromAttempts(
     if (s === 'partial') best = 'partial';
   }
   return best;
+}
+
+/**
+ * Fallacies the player has correctly identified in this statement so far, cumulative across
+ * every attempt in the session (same "pinned" pairs `RoundAnalysisModal` keeps highlighted
+ * across retries) — one entry per distinct fallacy type, in the order it first appears in the
+ * statement's sentences. Used to badge the Debate Log entry with the fallacies it holds.
+ */
+export function spottedFallacies(
+  sentences: Sentence[],
+  session: FallacyGuessSession | undefined,
+  fallacyById: Map<string, LogicalFallacy>,
+): LogicalFallacy[] {
+  if (!session) return [];
+  const truth = truthMultisetFromSentences(sentences);
+  const pinned = pinnedMultisetFromAttempts(truth, session.attempts);
+  const seen = new Set<string>();
+  const result: LogicalFallacy[] = [];
+  for (const s of sentences) {
+    for (const f of s.logicalFallacies) {
+      if (seen.has(f.id)) continue;
+      if ((pinned.get(pairKey(s.id, f.id)) ?? 0) <= 0) continue;
+      const full = fallacyById.get(f.id);
+      if (!full) continue;
+      seen.add(f.id);
+      result.push(full);
+    }
+  }
+  return result;
 }

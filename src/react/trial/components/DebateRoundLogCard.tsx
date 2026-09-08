@@ -1,9 +1,10 @@
 import React, { useId } from 'react';
 import cn from 'classnames';
-import type { DebateScenarioJson } from '../../../types/debateEntities';
+import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import AnalyzeButton from './AnalyzeButton';
+import { getLogicalFallacyIconSrc } from '../utils/logicalFallacyIcons';
 import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
 import {
   emotionForOption,
@@ -40,9 +41,29 @@ interface DebateRoundLogCardProps {
   expandOverride: boolean | undefined;
   onExpandToggle: () => void;
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
+  /** Fallacies correctly spotted so far in one statement, for its icon badge. */
+  getSpottedFallacies: (statementId: string, sentences: Sentence[]) => LogicalFallacy[];
   onOpenAnalysis: (target: AnalysisTarget) => void;
   /** Scenario mode flags — gate the analyze buttons and the impact emoji. */
   mechanics: ResolvedMechanics;
+}
+
+/** Icon row for the fallacies spotted in one statement, pinned bottom-right under its text. */
+function SpottedFallacyIcons({ fallacies }: { fallacies: LogicalFallacy[] }) {
+  if (fallacies.length === 0) return null;
+  return (
+    <div className={styles.debateLogSpottedFallacies} aria-label={getLabel('spottedFallaciesAria')}>
+      {fallacies.map((f) => (
+        <img
+          key={f.id}
+          src={getLogicalFallacyIconSrc(f.id)}
+          alt={f.label}
+          title={f.label}
+          className={styles.debateLogSpottedFallacyIcon}
+        />
+      ))}
+    </div>
+  );
 }
 
 type DebateRoundStatus = 'active' | 'upcoming' | 'completed';
@@ -67,6 +88,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   expandOverride,
   onExpandToggle,
   getNpcGuessState,
+  getSpottedFallacies,
   onOpenAnalysis,
   mechanics,
 }) => {
@@ -321,6 +343,11 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(round.statement.sentences)}
                   </p>
+                  {mechanics.analysisEnabled && (
+                    <SpottedFallacyIcons
+                      fallacies={getSpottedFallacies(round.id, round.statement.sentences)}
+                    />
+                  )}
                 </div>
               )}
 
@@ -377,6 +404,14 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(round.opponentPrompt.sentences)}
                   </p>
+                  {showPromptAnalyze && (
+                    <SpottedFallacyIcons
+                      fallacies={getSpottedFallacies(
+                        round.opponentPrompt.id,
+                        round.opponentPrompt.sentences,
+                      )}
+                    />
+                  )}
                 </div>
               )}
 
@@ -430,6 +465,14 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                     )}
                   </div>
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>{playerBodyText}</p>
+                  {mechanics.analysisEnabled && (
+                    <SpottedFallacyIcons
+                      fallacies={getSpottedFallacies(
+                        chosenOption.id,
+                        resolvedOptionSentences(chosenOption, true),
+                      )}
+                    />
+                  )}
                 </div>
               )}
 
@@ -488,6 +531,14 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(displayResponse.statement.sentences)}
                   </p>
+                  {showResponseAnalyze && (
+                    <SpottedFallacyIcons
+                      fallacies={getSpottedFallacies(
+                        displayResponse.statement.id,
+                        displayResponse.statement.sentences,
+                      )}
+                    />
+                  )}
                 </div>
               )}
             </div>

@@ -568,6 +568,24 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   line-height: 1.375;
 }
 
+/* Icons for the fallacies the player has correctly spotted in one statement, pinned to the
+   bottom-right corner under its text — a quick "you got these" recap. */
+.debateLogSpottedFallacies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: calc(0.35rem * var(--ui-trial-panel-font-scale, 1));
+  margin-top: calc(0.5rem * var(--ui-trial-panel-font-scale, 1));
+}
+
+.debateLogSpottedFallacyIcon {
+  width: calc(1.25rem * var(--ui-trial-panel-font-scale, 1));
+  height: calc(1.25rem * var(--ui-trial-panel-font-scale, 1));
+  object-fit: contain;
+  opacity: 0.9;
+  filter: $trial-guess-tint-correct;
+}
+
 /* =========================================================================
    Trial panels — history entry
    ========================================================================= */

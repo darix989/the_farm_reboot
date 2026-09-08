@@ -113,6 +113,8 @@ const LABELS = {
   analyzeThisResponse: 'Analyze this response',
   analyzeThisRound: 'Analyze this round',
   analyzeImageAlt: 'Analyze',
+  /** Icon row of fallacies correctly spotted in a statement, under its text in the Debate Log. */
+  spottedFallaciesAria: 'Fallacies spotted in this statement',
 
   // --- Interactive panel ---
   clickToUnlock: 'Click to unlock',

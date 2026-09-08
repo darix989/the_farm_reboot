@@ -24,6 +24,7 @@ import {
   multisetsEqual,
   truthMultisetFromSentences,
   guessStateFromAttempts,
+  spottedFallacies,
 } from '../trial/utils/fallacyGuessUtils';
 import FeedbackPanel from '../trial/panels/FeedbackPanel';
 import WizardPanel, {
@@ -237,6 +238,18 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       return null;
     },
     [fallacyGuesses],
+  );
+
+  /** Fallacies correctly spotted so far in one statement, for the Debate Log's icon badge. */
+  const getSpottedFallacies = useCallback(
+    (statementId: string, sentences: Sentence[]): LogicalFallacy[] => {
+      for (const sess of fallacyGuesses.values()) {
+        if (sess.npcRoundId !== statementId) continue;
+        return spottedFallacies(sentences, sess, fallacyById);
+      }
+      return [];
+    },
+    [fallacyGuesses, fallacyById],
   );
 
   const handleGuess = (payload: GuessPayload) => {
@@ -982,6 +995,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             insightPoints={insightPoints}
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
+            getSpottedFallacies={getSpottedFallacies}
             mechanics={mechanics}
           />
         }
