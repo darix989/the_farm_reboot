@@ -35,6 +35,10 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+
+  /* Fixed to exactly two lines' worth of height (line-height 1.4 × 2) so a one-line hint
+     reserves the same space as a two-line one — the icons/letters below never shift. */
+  height: 2.8em;
   overflow: hidden;
   font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.4;
