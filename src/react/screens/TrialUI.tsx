@@ -733,7 +733,6 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           <CharacterStage
             participantIds={participantIds}
             activeSpeakerId={activeSpeakerId}
-            layout="hole"
             variant={hasPhaserCast ? 'nameplates' : 'busts'}
           />
         }

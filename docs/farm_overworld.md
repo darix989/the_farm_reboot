@@ -51,7 +51,7 @@ src/react/screens/FarmUI.tsx    the overlay
 src/react/farm/
   FarmDialogue.tsx              the conversation box (sequential beats)
   farmDialogueState.ts          which conversation an animal offers right now
-  CharacterStage.tsx            placeholder busts (farm talk + Trial hole)
+  CharacterStage.tsx            placeholder busts — Trial hole only, mounted by TrialUI
   FarmUI.module.scss
 src/data/farmTalk.ts            beat lists keyed by npc + offer slot
 src/phaser/animals/              placeholder animal spritesheets — see

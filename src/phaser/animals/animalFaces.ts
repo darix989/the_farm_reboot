@@ -72,6 +72,29 @@ export const FACE_BOX_PX = 112;
 export const FACE_BOX_FILL = 0.92;
 
 /**
+ * Numeric gates from `CROP_QUALITY_THRESHOLDS` in `scripts/ludo/qualityCheck.mjs`. Duplicated
+ * here so the gallery can classify a portrait without importing the Node pipeline — the same
+ * arrangement, for the same reason, as `EMOTION_QUALITY_THRESHOLDS`. Keep them in lockstep.
+ *
+ * Two of the body register's three gates are deliberately absent, and the omissions are the
+ * interesting part: `heightSwing` was the automatic detector for *the generator having zoomed*,
+ * which a fixed crop rect makes impossible, so what it measures on a portrait is the animal's
+ * own jaw and head tilt — the motion the portrait exists to show. `churn` catches an interior
+ * redrawn every frame, which cannot happen when the pixels are the same art moved.
+ */
+export const FACE_QUALITY_THRESHOLDS = {
+  /** A seam is a seam: unchanged from the body register, and cropping amplifies it 2-8x. */
+  loopPop: 2,
+  /**
+   * Fraction of `frameWidth`, not absolute pixels — a portrait cell is 256px where a body cell
+   * is 512px, so one px number cannot mean the same thing in both. Loosened from the body's
+   * ~4% because the head is pinned by the aligner rather than by a prompt; this is a backstop
+   * for a gross slide the aligner failed to remove.
+   */
+  driftXRatio: 0.06,
+} as const;
+
+/**
  * Metadata for one promoted portrait. Written by
  * `npm run sprites:emotions -- --faces --promote`, which crops rather than generates.
  *

@@ -20,7 +20,12 @@ import {
   type EmotionQuality,
 } from './animalEmotions';
 import { emotionAnimKey, emotionSheet } from './animalEmotionAnimations';
-import { emotionClipQualityStatus, type ClipQualityStatus } from './emotionQuality';
+import { faceSheet, type FaceSheet } from './animalFaces';
+import {
+  emotionClipQualityStatus,
+  faceClipQualityStatus,
+  type ClipQualityStatus,
+} from './emotionQuality';
 import type { AnimalSpriteId } from '../../data/characters';
 
 /** `emotion` clips are generated; `base` clips came with the source art. */
@@ -99,4 +104,56 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
 export function defaultClip(animalId: AnimalSpriteId): AnimalClip | null {
   const clips = animalClips(animalId);
   return clips.find((clip) => clip.isRest) ?? clips.find((clip) => clip.available) ?? null;
+}
+
+/**
+ * One emotion's dialogue portrait — the second register, listed separately.
+ *
+ * Not an `AnimalClip`, and deliberately not folded into `animalClips()`: a portrait shares its
+ * *name* with the body clip it was cut from, so one flat list would have two `talking` entries
+ * per animal, and everything that finds a clip by name (`AnimalGallery.findClip`, the store's
+ * `carryClipOver`) would pick whichever came first. They are also played by completely
+ * different machinery — Phaser owns the body sprite, React steps a portrait in the DOM — so
+ * there is no consumer that wants them interleaved.
+ */
+export interface AnimalFaceClip {
+  emotion: AnimalEmotion;
+  /** The promoted sheet, or null when no portrait has been cropped for this pairing. */
+  sheet: FaceSheet | null;
+  available: boolean;
+  frameCount: number;
+  frameRate: number;
+  qualityStatus: ClipQualityStatus;
+  quality?: EmotionQuality;
+  reviewNotes?: readonly string[];
+}
+
+/**
+ * Every emotion's portrait for one animal, in vocabulary order, **including the ones with no
+ * art** — same rule and same reason as the emotion half of `animalClips()`.
+ *
+ * Two traps, both of which produce a plausible-looking wrong answer rather than an error:
+ *
+ * - **Keyed by `animalId`, not `textureKey`.** `EMOTION_SHEETS` is per-texture because variants
+ *   share a Phaser atlas; `FACE_SHEETS` is per-id because a crop rect is authored per animal
+ *   and `white-sheep-1` has its own entry. Routing this through `animalSetup().textureKey`, as
+ *   the emotion branch above must, would ask for a sheet under the wrong key.
+ * - **`faceSheet`, never `resolvedFaceSheet`.** The `talking` fallback is right in game, where
+ *   a missing portrait should degrade quietly, and wrong in a review tool, which must never
+ *   show one clip under another clip's label.
+ */
+export function animalFaceClips(animalId: AnimalSpriteId): AnimalFaceClip[] {
+  return ANIMAL_EMOTIONS.map((emotion: AnimalEmotion) => {
+    const sheet = faceSheet(animalId, emotion);
+    return {
+      emotion,
+      sheet,
+      available: Boolean(sheet),
+      frameCount: sheet?.frameCount ?? 0,
+      frameRate: sheet?.frameRate ?? EMOTION_FRAME_RATE,
+      qualityStatus: faceClipQualityStatus(sheet),
+      quality: sheet?.quality,
+      reviewNotes: sheet?.reviewNotes,
+    };
+  });
 }

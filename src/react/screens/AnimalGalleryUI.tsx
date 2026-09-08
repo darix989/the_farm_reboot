@@ -2,24 +2,38 @@ import React, { useEffect, useMemo } from 'react';
 import cn from 'classnames';
 import { GameManager } from '../../utils/gameManager';
 import { useAnimalGalleryStore } from '../../store/animalGalleryStore';
-import { animalClips, type AnimalClip } from '../../phaser/animals/animalClipCatalogue';
+import {
+  animalClips,
+  animalFaceClips,
+  type AnimalClip,
+  type AnimalFaceClip,
+} from '../../phaser/animals/animalClipCatalogue';
 import { ANIMAL_SPRITE_IDS } from '../../phaser/animals/animalDescriptors';
 import { CURRENT_EMOTION_FRAME_COUNT } from '../../phaser/animals/animalEmotions';
+import { FACE_BOX_PX, preloadFaceSheets } from '../../phaser/animals/animalFaces';
 import {
   animalEmotionQualityStatus,
   type ClipQualityStatus,
 } from '../../phaser/animals/emotionQuality';
 import { CHARACTERS, type AnimalSpriteId } from '../../data/characters';
 import getLabel, { type Labels } from '../../data/labels';
+import FaceClip from '../characters/FaceClip';
 import styles from './AnimalGalleryUI.module.scss';
 
 /**
  * Controls for the `AnimalGallery` scene: pick an animal, hold any one of its clips, and
  * toggle whether switching cuts or crossfades.
  *
- * Every button is a store write and nothing more — the scene owns the sprite and reacts (see
- * `animalGalleryStore`). That keeps this file free of Phaser entirely, which is why it can
- * render the clip list from `animalClips()` without caring which loader owns each clip.
+ * Every body-clip button is a store write and nothing more — the scene owns the sprite and
+ * reacts (see `animalGalleryStore`). That keeps this file free of Phaser entirely, which is why
+ * it can render the clip list from `animalClips()` without caring which loader owns each clip.
+ *
+ * The **dialogue portraits** section is the exception, and the only part of the gallery that
+ * draws its own art: face clips are played in the DOM by design (`animalFaces.ts` explains at
+ * length why they are not Phaser textures), so there is no scene to delegate to. It renders
+ * them through the same `FaceClip` the game uses, so a portrait approved here is framed exactly
+ * as it will ship. The two registers select independently — a portrait plays beside the body
+ * clip it was cut from rather than replacing it, which is the comparison worth having.
  */
 
 /** Which character wears this skin, so the list reads as the cast rather than as asset ids. */
@@ -28,6 +42,20 @@ const WORN_BY: Partial<Record<AnimalSpriteId, string>> = Object.fromEntries(
     .filter((character) => character.animal)
     .map((character) => [character.animal!, getLabel(character.nameLabel)]),
 );
+
+/** Portrait thumbnail in the list. Big enough to see the mouth move, small enough for a grid. */
+const FACE_THUMB_PX = 56;
+
+/**
+ * The stage preview shows every portrait twice, at exactly the two sizes
+ * `.ludo-review-faces/boxes.html` uses: what ships, and what a 2x display asks the source
+ * pixels for. Softness only shows at the second — upscales run 1.23x (owl) to 2.21x
+ * (brown-wolf) — so judging at one size judges half the question.
+ */
+const FACE_PREVIEW_SIZES: readonly { px: number; label: Labels }[] = [
+  { px: FACE_BOX_PX, label: 'galleryFacePreviewShip' },
+  { px: FACE_BOX_PX * 2, label: 'galleryFacePreviewRetina' },
+];
 
 const QUALITY_PILL_LABEL: Record<Exclude<ClipQualityStatus, 'none'>, Labels> = {
   pass: 'galleryQualityPass',
@@ -41,13 +69,20 @@ const ANIMAL_QUALITY_TITLE: Record<Exclude<ClipQualityStatus, 'none'>, Labels> =
   unknown: 'galleryQualityAnimalUnknown',
 };
 
-function clipQualityTitle(clip: AnimalClip): string {
+/** The fields both registers' clips share, which is everything the badge tooltip reads. */
+type QualityBearing = Pick<AnimalClip, 'qualityStatus' | 'quality' | 'frameCount' | 'reviewNotes'>;
+
+/**
+ * Tooltip for one badge. `metrics` differs per register because a portrait's height swing is
+ * not a defect — see `FACE_QUALITY_THRESHOLDS`.
+ */
+function clipQualityTitle(clip: QualityBearing, metrics: Labels = 'galleryQualityMetrics'): string {
   const parts: string[] = [];
   if (clip.qualityStatus === 'unknown' || !clip.quality) {
     parts.push(getLabel('galleryQualityUnmeasured'));
   } else {
     parts.push(
-      getLabel('galleryQualityMetrics', {
+      getLabel(metrics, {
         replacements: {
           loopPop: clip.quality.loopPop,
           heightSwing: clip.quality.heightSwing,
@@ -91,18 +126,33 @@ const QualityBadge: React.FC<{ status: ClipQualityStatus; title: string }> = ({
 };
 
 const AnimalGalleryUI: React.FC = () => {
-  const { animalId, clipName, smoothTransitions, setAnimal, setClip, setSmoothTransitions } =
-    useAnimalGalleryStore();
+  const {
+    animalId,
+    clipName,
+    faceEmotion,
+    smoothTransitions,
+    setAnimal,
+    setClip,
+    setFaceEmotion,
+    setSmoothTransitions,
+  } = useAnimalGalleryStore();
 
   // Leaving the gallery should not strand the store mid-review: re-entering opens on the
   // first animal's rest pose, the same state a cold start gives.
   useEffect(() => () => useAnimalGalleryStore.getState().resetGallery(), []);
 
+  // A dialogue box warms these on open for the same reason: a 200KB sheet does not decode in
+  // one frame, and five of them appearing one at a time reads as the list being broken.
+  useEffect(() => preloadFaceSheets(animalId), [animalId]);
+
   const clips = useMemo(() => animalClips(animalId), [animalId]);
+  const faces = useMemo(() => animalFaceClips(animalId), [animalId]);
   const emotions = clips.filter((clip) => clip.kind === 'emotion');
   const base = clips.filter((clip) => clip.kind === 'base');
   const selected = clips.find((clip) => clip.name === clipName) ?? null;
+  const selectedFace = faces.find((face) => face.emotion === faceEmotion) ?? null;
   const missingArt = emotions.filter((clip) => !clip.available).length;
+  const missingFaces = faces.filter((face) => !face.available).length;
 
   const renderClip = (clip: AnimalClip) => (
     <button
@@ -141,8 +191,71 @@ const AnimalGalleryUI: React.FC = () => {
     </button>
   );
 
+  const renderFace = (face: AnimalFaceClip) => (
+    <button
+      key={face.emotion}
+      type="button"
+      className={cn(
+        styles.clipButton,
+        styles.faceButton,
+        face.emotion === faceEmotion && styles.clipButtonActive,
+        !face.available && styles.clipButtonMissing,
+      )}
+      // Missing portraits stay clickable for the same reason missing body clips do: selecting
+      // one says "nothing was cropped here", which is an answer. Selecting the one already
+      // showing clears the preview.
+      onClick={() => setFaceEmotion(face.emotion)}
+      aria-pressed={face.emotion === faceEmotion}
+    >
+      <span className={styles.faceThumb} style={{ width: FACE_THUMB_PX, height: FACE_THUMB_PX }}>
+        <FaceClip sheet={face.sheet} box={FACE_THUMB_PX} />
+      </span>
+      <span className={styles.faceText}>
+        <span className={styles.clipHeader}>
+          <span className={styles.clipName}>{face.emotion.replace(/_/g, ' ')}</span>
+          <QualityBadge
+            status={face.qualityStatus}
+            title={clipQualityTitle(face, 'galleryFaceQualityMetrics')}
+          />
+        </span>
+        <span className={styles.clipMeta}>
+          {face.available
+            ? getLabel('galleryClipMeta', {
+                replacements: { frames: String(face.frameCount), fps: String(face.frameRate) },
+              })
+            : getLabel('galleryNoArt')}
+        </span>
+        {face.reviewNotes?.map((note) => (
+          <span key={note} className={styles.clipNote}>
+            {note}
+          </span>
+        ))}
+      </span>
+    </button>
+  );
+
   return (
     <div className={styles.galleryUi}>
+      {/* Over the scene's stage, never inside the panel: a portrait is judged at a fixed pixel
+          size, and the panel is a scrolling column that would clip and move it. */}
+      {selectedFace && (
+        <div className={styles.facePreview}>
+          <p className={styles.facePreviewCaption}>{`${animalId} · ${selectedFace.emotion}`}</p>
+          {selectedFace.sheet ? (
+            <div className={styles.facePreviewBoxes}>
+              {FACE_PREVIEW_SIZES.map((size) => (
+                <div key={size.px} className={styles.facePreviewBox}>
+                  <FaceClip sheet={selectedFace.sheet} box={size.px} />
+                  <span className={styles.facePreviewSize}>{getLabel(size.label)}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className={styles.facePreviewEmpty}>{getLabel('galleryFaceNoPreview')}</p>
+          )}
+        </div>
+      )}
+
       <aside className={styles.panel}>
         <h1 className={styles.title}>{getLabel('galleryTitle')}</h1>
 
@@ -179,6 +292,18 @@ const AnimalGalleryUI: React.FC = () => {
           <p className={styles.note}>
             {getLabel('galleryMissingArtNote', {
               replacements: { count: String(missingArt), total: String(emotions.length) },
+            })}
+          </p>
+        )}
+
+        {/* Directly under the emotions: every portrait is a crop of the body clip above it with
+            the same name, so the two belong next to each other. */}
+        <h2 className={styles.heading}>{getLabel('galleryFacesHeading')}</h2>
+        <div className={styles.faceGrid}>{faces.map(renderFace)}</div>
+        {missingFaces > 0 && (
+          <p className={styles.note}>
+            {getLabel('galleryMissingFaceNote', {
+              replacements: { count: String(missingFaces), total: String(faces.length) },
             })}
           </p>
         )}

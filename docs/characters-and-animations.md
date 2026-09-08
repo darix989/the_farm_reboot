@@ -29,7 +29,8 @@ matching art exists yet:
 The mapping lives in one place: the optional `animal` field on
 [`CHARACTERS`](../src/data/characters.ts). A character with no `animal` entry (every
 legacy scenario's speakers — `barnaby`, `pip`, `monty`, `penny`, `bella`, `woolsey`)
-keeps the original tinted-circle placeholder (Farm) or CSS bust (Trial). Nothing else
+keeps the original CSS bust in the Trial (the Farm's corner busts are gone — its dialogue
+box shows an `AnimalFace` portrait instead, and nothing where there is no art). Nothing else
 needs to know a character has no art — `resolveCharacter()` never throws, and both
 scenes check `visual.animal` before doing anything sprite-related.
 
@@ -547,6 +548,16 @@ Three things worth knowing:
   `ANIMAL_EMOTIONS` entry with an `available` flag, and the UI shows the missing ones dashed
   and labelled "no art yet". With the cast generated one animal at a time, the gap between the
   vocabulary and the art is the thing you most need to see.
+- **Both registers are in the panel.** Under the body emotions sits a **Dialogue portraits**
+  section listing the same five emotions again, each with a live thumbnail of the crop, and a
+  large preview over the stage at the two sizes `.ludo-review-faces/boxes.html` uses — 112px as
+  it ships and 224px for a 2× display, where softness actually shows (§10). Portrait selection
+  is independent of clip selection on purpose: a portrait is cut from the body clip of the same
+  name, so you want them playing side by side, not one replacing the other.
+- **The portraits section is the one place React draws its own art.** Face clips are DOM-played
+  (§10), so there is no scene to delegate to — it mounts the game's own `FaceClip` with the
+  game's own `faceBoxTransform`, for the same reason the body clips share `applyEmotionStaging`.
+  A gallery that framed a portrait its own way would be worse than no gallery.
 - **The smooth-transition toggle is a diagnostic, not decoration.** Switching from an atlas
   clip to a generated one changes the sprite's texture, scale and origin on a single frame.
   The crossfade hides that; turning it off is how you check whether a switch that looks fine
@@ -619,6 +630,14 @@ The record is `scripts/ludo/promoted-faces.json` and the generated index
 `src/phaser/animals/faceSheets.generated.ts`, both siblings of the body register's and never
 merged with them. `AnimalFace.tsx` renders nothing for an animal with no entry, so the register
 ships one animal at a time.
+
+To look at the result, the gallery (§9.6) now has a **Dialogue portraits** section beside the
+body clips — the in-game counterpart to `boxes.html`, and the only place the two registers can be
+compared without walking into a conversation and hoping the right beat comes up. It renders
+through `FaceClip`, the presentational half of `AnimalFace`: `AnimalFace` resolves a *character*
+and asks for the game's forgiving behaviour (fall back to `talking`, render nothing at all when
+there is no art), which is exactly wrong for a review tool, so the gallery addresses sheets
+directly and shows "no portrait yet" where none was cropped.
 
 ### 10.3 What it costs
 

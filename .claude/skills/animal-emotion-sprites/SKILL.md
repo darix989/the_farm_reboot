@@ -264,6 +264,14 @@ Turn **off** the smooth-transition toggle to see the raw cut — switching betwe
 and a generated one changes texture, scale and origin on one frame, and the crossfade hides
 whether that switch is actually clean.
 
+The panel's **Dialogue portraits** section does the same job for the crop register: the five
+emotions again, each with a live thumbnail, and a large preview over the stage at 112px (as it
+ships) and 224px (a 2x display). It is the in-game counterpart to `boxes.html` and uses the
+game's own `FaceClip`, so what you approve there is framed exactly as it ships. Portrait
+selection is independent of clip selection — a portrait plays beside the body clip it was cut
+from, which is the comparison worth having. Badges use the crop thresholds, so **no height-swing
+gate**: a crop cannot zoom.
+
 ## Dialogue portraits (`--faces`) — cropped, never generated
 
 The second register: head-and-shoulders loops played by React in the farm dialogue box and the
@@ -300,6 +308,7 @@ retired `face` rect used. Rules C1-C6 are in the manifest's `$faceComment`. The 
   portrait instead of a floating head.
 - **Judge at both sizes the review page shows.** 112px is what ships; 224px is a 2x display, and
   softness only shows at the second. Upscales run x1.23 (owl, best) to x2.21 (brown-wolf, worst).
+  The gallery's portraits section shows the same pair, so this check can also be done in game.
 - **Read the alignment numbers, not the height swing.** The head bobs through a body clip — the
   fox's by 30px, its `thinking` by 40px — and the cropper tracks it per frame.
 

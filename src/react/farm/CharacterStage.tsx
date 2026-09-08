@@ -7,8 +7,6 @@ import styles from './CharacterStage.module.scss';
 export interface CharacterStageProps {
   participantIds: readonly string[];
   activeSpeakerId: string | null;
-  /** Overlay sits top-left on the farm; hole fills the Trial game cell. */
-  layout?: 'overlay' | 'hole';
   /**
    * 'busts' (default) draws the placeholder CSS busts. 'nameplates' draws only a name row,
    * for use over the Phaser `Trial` scene's animated cast (which now occupies the game hole
@@ -19,28 +17,25 @@ export interface CharacterStageProps {
 }
 
 /**
- * Identifies whoever is in the conversation. Display-only and `pointer-events: none` in
- * both layouts, so farm clicks still hit the canvas and Trial clicks still hit the panels.
+ * Identifies whoever is in the Trial's game hole. Display-only and `pointer-events: none`, so
+ * clicks still reach the panels behind it.
  *
- * Kept even though the Trial cast is now Phaser sprites: this is the only accessible
- * description of who is on stage (`role="group"` + `aria-label`) — a Phaser canvas is
- * opaque to assistive tech — and `FarmUI`'s dialogue busts still use it unchanged.
+ * Kept even though the cast is now Phaser sprites: this is the only accessible description of
+ * who is on stage (`role="group"` + `aria-label`) — a Phaser canvas is opaque to assistive
+ * tech. The farm used to mount it top-left over the overworld too, until the dialogue box grew
+ * a real animated portrait (`AnimalFace`) and made the placeholder busts a worse duplicate of
+ * what sits directly below them; that call site is gone, and with it the `overlay` layout.
  */
 const CharacterStage: React.FC<CharacterStageProps> = ({
   participantIds,
   activeSpeakerId,
-  layout = 'overlay',
   variant = 'busts',
 }) => {
   const names = participantIds.map((id) => resolveCharacter(id).displayName).join(', ');
 
   return (
     <div
-      className={cn(
-        styles.stage,
-        layout === 'hole' && styles.stageHole,
-        variant === 'nameplates' && styles.nameplateRow,
-      )}
+      className={cn(styles.stage, variant === 'nameplates' && styles.nameplateRow)}
       role="group"
       aria-label={getLabel('characterStage', { replacements: { names } })}
     >
