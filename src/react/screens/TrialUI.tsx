@@ -1016,29 +1016,31 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             variant={hasPhaserCast ? 'nameplates' : 'busts'}
           />
         }
-        feedback={
-          <FeedbackPanel
-            wf={wf}
-            debate={debate}
-            insightPoints={insightPoints}
-            onOpenAnalysis={setAnalysisTarget}
-            getNpcGuessState={getNpcGuessState}
-            getSpottedFallacies={getSpottedFallacies}
-            onOpenFallacyInfo={setFallacyInfoTarget}
-            mechanics={mechanics}
-          />
-        }
-        debateLogRecap={
-          <DebateLogRecapChip
-            debate={debate}
-            roundNumber={activeRoundNumber(wf.currentRoundIndex, wf.totalRounds)}
-            totalRounds={wf.totalRounds}
-            totalScore={wf.totalScore}
-            insightPoints={insightPoints}
-            mechanics={mechanics}
-            needsAttention={analysisGatePending}
-          />
-        }
+        log={{
+          panel: (
+            <FeedbackPanel
+              wf={wf}
+              debate={debate}
+              insightPoints={insightPoints}
+              onOpenAnalysis={setAnalysisTarget}
+              getNpcGuessState={getNpcGuessState}
+              getSpottedFallacies={getSpottedFallacies}
+              onOpenFallacyInfo={setFallacyInfoTarget}
+              mechanics={mechanics}
+            />
+          ),
+          recap: (
+            <DebateLogRecapChip
+              debate={debate}
+              roundNumber={activeRoundNumber(wf.currentRoundIndex, wf.totalRounds)}
+              totalRounds={wf.totalRounds}
+              totalScore={wf.totalScore}
+              insightPoints={insightPoints}
+              mechanics={mechanics}
+              needsAttention={analysisGatePending}
+            />
+          ),
+        }}
         wizard={
           <WizardPanel
             detail={wizardDetail}

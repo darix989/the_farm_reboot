@@ -12,10 +12,12 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `screens/GameLoadingScreen.tsx` | Loading screen shown until `isGameReady`, and again while `isSceneLoading`. Also the interaction gate: it covers the stage and sets `pointer-events: auto`, so nothing behind it is clickable while `Boot`/`Preloader` or a scene pack load. |
 | `screens/BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
 | `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, `RoundRecapModal`, and `RoundAnalysisModal`. |
-| `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent full-width "game hole" across the top row, then the Debate Log (or `DebateLogRecapChip` when collapsed) over its right 3fr, and Dialog / Actions along the bottom. Reads `debateLogStore` and owns the collapsed/expanded branch. |
+| `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent full-width "game hole" across the top row, then the Debate Log (or `DebateLogRecapChip` when collapsed) over its right 3fr when a `log` slot is passed, and Dialog / Actions along the bottom. Reads `debateLogStore` and owns the collapsed/expanded branch. Farm talks omit `log`. |
 | `trial/panels/FeedbackPanel.tsx` | The expanded Debate Log: title strip (log title, Insight + moderator mood, the whole-panel collapse button) and the scrollable round-card list. |
 | `trial/components/DebateLogRecapChip.tsx` | The collapsed Debate Log: round counter, the same Insight + mood strip, and the button back in. |
 | `trial/components/DebateLogToggleButton.tsx` | The whole-panel collapse / expand control, rendered by both of the above so they cannot drift. Exports `DEBATE_LOG_PANEL_ID`. |
+| `trial/components/TrialActionRow.tsx` | Analyze / Back / Continue icon row, shared by the debate Actions panel and the overworld talk. |
+| `trial/components/TrialChoiceButton.tsx` | A/B/C (or Talk / Leave) square, shared by the debate and the overworld talk. |
 | `trial/utils/debateLogTutorialNeeds.ts` | `tutorialNeedsDebateLog(steps)` — does this tutorial point at something only present while the log is expanded? |
 | `trial/panels/WizardPanel.tsx` | Centre column: the guidance line plus the statement box, which is revealed one sentence at a time (see "Wizard sentence reveal"). |
 | `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and an icon-only footer (Analyze / Back / Continue-Confirm-Leave). The Analyze button opens the opponent's current-round line — the debate log's own `AnalyzeButton` lenses stay the way into history. |
@@ -182,7 +184,7 @@ Three notes on this diagram:
 
 ## Three-panel layout
 
-`TrialLayout` (in `trial/TrialLayout.tsx`) arranges the named slots over the 2×2 grid. `TrialUI` passes in `FeedbackPanel`, `WizardPanel`, `InteractivePanel` and `DebateLogRecapChip`; the layout renders the log panel or the chip depending on `debateLogStore.isExpanded` (see **Collapsing the whole log** above).
+`TrialLayout` (in `trial/TrialLayout.tsx`) arranges the named slots over the 2×2 grid. Debates pass a grouped `log` slot (`FeedbackPanel` + `DebateLogRecapChip`) plus `WizardPanel` and `InteractivePanel`; the layout renders the log panel or the chip depending on `debateLogStore.isExpanded` (see **Collapsing the whole log** above). Farm talks reuse the same layout with no `log` slot — Dialog and Actions only, farm framed in the hole.
 
 ### Collapsing the whole log
 

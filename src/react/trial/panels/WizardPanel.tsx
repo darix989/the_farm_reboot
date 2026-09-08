@@ -49,7 +49,7 @@ interface WizardPanelProps {
   /** `"Round 4 — crossfire"`, or `null` outside the rounds (intro / complete). */
   roundLabel: string | null;
   /** Opens `FallacyInfoModal` describing one fallacy — passed down to each spotted-fallacy icon. */
-  onOpenFallacyInfo: (fallacy: LogicalFallacy) => void;
+  onOpenFallacyInfo?: (fallacy: LogicalFallacy) => void;
 }
 
 const WizardPanel: React.FC<WizardPanelProps> = ({
@@ -151,12 +151,15 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
                     )}
                   </p>
                 </div>
-                {!reveal && (
-                  <SpottedFallacyIcons
-                    fallacies={detail.spottedFallacies ?? []}
-                    onSelect={onOpenFallacyInfo}
-                  />
-                )}
+                {!reveal &&
+                  onOpenFallacyInfo &&
+                  detail.spottedFallacies &&
+                  detail.spottedFallacies.length > 0 && (
+                    <SpottedFallacyIcons
+                      fallacies={detail.spottedFallacies}
+                      onSelect={onOpenFallacyInfo}
+                    />
+                  )}
               </div>
             </div>
           )}

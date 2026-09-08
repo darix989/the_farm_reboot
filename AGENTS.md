@@ -91,18 +91,20 @@ src/
     trial/
       TrialLayout.tsx           # 2×2 grid: full-width game hole across the top, with the
                                 #   Debate Log (or its collapsed recap chip) over its right
-                                #   2fr; Wizard / Interactive along the bottom row
+                                #   3fr when a `log` slot is passed; Wizard / Interactive
+                                #   along the bottom. Shared with farm talks (no log).
       panels/                   # Feedback, Wizard, Interactive
       roundAnalysisModal/       # Fallacy spotting
       roundRecapModal/          # Per-round summary
       introSummaryModal/
-      components/               # Shared trial widgets
+      components/               # Shared trial widgets, including TrialActionRow and
+                                #   TrialChoiceButton (also used by the overworld talk)
       utils/                    # trialHelpers, optionUnlock, scenarioMechanics,
                                 #   fallacy guess types/utils, debateEventBus
     tutorial/                   # Overlay, spotlight geometry, interaction gate
-    farm/                       # Overworld overlay: dialogue box + styles
+    farm/                       # Overworld overlay: talk screen (TrialLayout) + styles
     characters/                 # AnimalFace — the DOM dialogue portrait, used by the farm
-                                #   dialogue box and the debate log
+                                #   talk Dialog panel and the debate log
   store/
     gameStore.ts        # Phaser refs, currentScene, activeDebateId, returnSceneKey
     tutorialStore.ts    # Open tutorial overlay + its interaction gate
@@ -193,6 +195,7 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
   because the tutorial layer has to expand it *synchronously* before an overlay renders; see
   that file and `src/react/trial/utils/debateLogTutorialNeeds.ts`.
 - A **Round Analysis Modal** (`src/react/trial/roundAnalysisModal/RoundAnalysisModal.tsx`) lets the player inspect any statement in the log: tag logical fallacies sentence by sentence, or review why their own line was effective or flawed. Three attempts per target by default; a correct solve pays 1 Insight, once per target.
+- **Farm talks reuse the debate chrome.** `TrialLayout`, `WizardPanel`, `TrialActionRow` and `TrialChoiceButton` are shared between the debate and the overworld talk. A farm talk runs *on the Farm scene* (no `scene.start`, so `gameStore.currentScene` stays `'Farm'` and `ReactApp` needs no new case); the camera is framed into `TRIAL_STAGE_HOLE` and the log slot is omitted.
 - Authoring reference — schema, rounds, options, unlock conditions, `mechanics` flags: [`docs/encounters.md`](docs/encounters.md).
 - **⚠️ Pointer-events gotcha:** `.react-ui-overlay` is `pointer-events: none`, which inherits to every descendant. Any new interactive element **must** set `pointer-events: auto` on its root, or clicks fall through to the Phaser canvas. This is the most common bug in the codebase — see [`docs/architecture.md`](docs/architecture.md) for why the layout works this way.
 

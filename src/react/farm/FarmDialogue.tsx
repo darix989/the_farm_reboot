@@ -1,16 +1,16 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import getLabel from '../../data/labels';
 import { resolveCharacter } from '../../data/characters';
 import type { DebateScenarioKey } from '../../data/levels';
 import type { FarmDialogueState } from './farmDialogueState';
-import TrialTextButton from '../trial/components/TrialTextButton';
-import AnimalFace from '../characters/AnimalFace';
-import styles from './FarmUI.module.scss';
+import { useWizardReveal } from '../hooks/useWizardReveal';
+import { splitIntoSentences } from '../trial/utils/trialHelpers';
+import TrialLayout from '../trial/TrialLayout';
+import WizardPanel, { type WizardPanelDetail } from '../trial/panels/WizardPanel';
+import FarmTalkActionsPanel from './FarmTalkActionsPanel';
 
 interface FarmDialogueProps {
   dialogue: FarmDialogueState;
-  beatIndex: number;
-  onAdvance: () => void;
   onStart: (scenario: DebateScenarioKey) => void;
   onClose: () => void;
 }
@@ -20,81 +20,95 @@ function isAdvanceKey(code: string): boolean {
 }
 
 /**
- * Sequential conversation box. Continue through beats, then offer the animal's
- * next encounter — or a closing Leave when they have none left.
+ * Farm talk screen. Same `TrialLayout` as a debate — Dialog bottom-left, Actions
+ * bottom-right, farm framed in the game hole — with no log and no Analyze / Back.
+ * Keyed on `dialogue.slotKey` at the call site so a new conversation remounts clean.
  */
-const FarmDialogue: React.FC<FarmDialogueProps> = ({
-  dialogue,
-  beatIndex,
-  onAdvance,
-  onStart,
-  onClose,
-}) => {
+const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose }) => {
+  const [beatIndex, setBeatIndex] = useState(0);
   const lastIndex = Math.max(0, dialogue.beats.length - 1);
   const index = Math.min(Math.max(0, beatIndex), lastIndex);
   const beat = dialogue.beats[index];
   const isLast = index >= lastIndex;
-  const speakerName = beat
-    ? resolveCharacter(beat.speakerId).displayName
-    : getLabel(dialogue.nameLabel);
 
-  const onPrimary = useCallback(() => {
-    if (!isLast) {
-      onAdvance();
-      return;
-    }
-    if (dialogue.scenario) {
-      onStart(dialogue.scenario);
-      return;
-    }
-    onClose();
-  }, [dialogue.scenario, isLast, onAdvance, onClose, onStart]);
+  const body = beat ? getLabel(beat.textLabel) : '';
+  const sentences = useMemo(() => splitIntoSentences(body), [body]);
+
+  const reveal = useWizardReveal(
+    beat ? { key: `farm:${dialogue.slotKey}:${index}`, sentences } : null,
+    { enabled: true, resetKey: dialogue.slotKey },
+  );
+  const revealActive = reveal.active;
+  const revealAdvance = reveal.advance;
+
+  const advanceBeat = useCallback(() => {
+    setBeatIndex((current) => Math.min(current + 1, lastIndex));
+  }, [lastIndex]);
+
+  const detail = useMemo((): WizardPanelDetail | null => {
+    if (!beat) return null;
+    return {
+      title: getLabel('wizardDetailSpeaks', {
+        replacements: { name: resolveCharacter(beat.speakerId).displayName },
+      }),
+      body,
+      sentenceCount: sentences.length,
+      speaker: { characterId: beat.speakerId, emotion: beat.emotion ?? 'talking' },
+    };
+  }, [beat, body, sentences.length]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.repeat || !isAdvanceKey(event.code)) return;
-      event.preventDefault();
-      onPrimary();
+      const target = event.target as HTMLElement | null;
+      if (target?.closest('button, a, input, textarea, select, [contenteditable]')) return;
+      if (revealActive) {
+        event.preventDefault();
+        revealAdvance();
+        return;
+      }
+      if (!isLast) {
+        event.preventDefault();
+        advanceBeat();
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onPrimary]);
+  }, [revealActive, revealAdvance, isLast, advanceBeat]);
 
   return (
-    <div className={styles.dialogueBackdrop} onClick={onClose} role="presentation">
-      <div
-        className={styles.dialogueBox}
-        role="dialog"
-        aria-modal="true"
-        aria-label={getLabel(dialogue.nameLabel)}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {beat && (
-          <AnimalFace
-            characterId={beat.speakerId}
-            emotion={beat.emotion ?? 'talking'}
-            size="dialogue"
+    <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
+      <TrialLayout
+        stage={null}
+        wizard={
+          <WizardPanel
+            detail={detail}
+            reveal={
+              revealActive
+                ? {
+                    sentence: reveal.sentence,
+                    sentenceIndex: reveal.sentenceIndex,
+                    sentenceCount: reveal.sentenceCount,
+                    skipToken: reveal.skipToken,
+                    onSentenceTyped: reveal.onSentenceTyped,
+                  }
+                : null
+            }
+            roundLabel={null}
           />
-        )}
-        <div className={styles.dialogueMain}>
-          <p className={styles.dialogueSpeaker}>{speakerName}</p>
-          <p className={styles.dialogueBody}>{beat ? getLabel(beat.textLabel) : ''}</p>
-          <div className={styles.dialogueActions}>
-            {!isLast ? (
-              <TrialTextButton onClick={onAdvance}>{getLabel('continue')}</TrialTextButton>
-            ) : dialogue.scenario ? (
-              <>
-                <TrialTextButton onClick={onClose}>{getLabel('farmNotNow')}</TrialTextButton>
-                <TrialTextButton onClick={() => onStart(dialogue.scenario as DebateScenarioKey)}>
-                  {getLabel('farmTalk')}
-                </TrialTextButton>
-              </>
-            ) : (
-              <TrialTextButton onClick={onClose}>{getLabel('farmLeave')}</TrialTextButton>
-            )}
-          </div>
-        </div>
-      </div>
+        }
+        interactive={
+          <FarmTalkActionsPanel
+            revealActive={revealActive}
+            isLastBeat={isLast}
+            scenario={dialogue.scenario}
+            onRevealAdvance={revealAdvance}
+            onAdvanceBeat={advanceBeat}
+            onStart={onStart}
+            onClose={onClose}
+          />
+        }
+      />
     </div>
   );
 };

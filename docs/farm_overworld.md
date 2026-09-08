@@ -22,7 +22,7 @@ gameplay was React. This is the first scene that does anything.
 | Terrain, collision, camera | ✓ | |
 | Movement, the virtual joystick | ✓ | |
 | Which animal is in range | ✓ | |
-| The talk prompt, the dialogue box | | ✓ |
+| The talk prompt, the talk screen | | ✓ |
 | Encounter copy, buttons, styling | | ✓ |
 
 The joystick is the apparent exception, and it is not: it is a *game control* driving a
@@ -49,7 +49,8 @@ src/store/farmStore.ts          Phaser <-> React handoff
 src/store/progressStore.ts      which encounters are finished (persisted)
 src/react/screens/FarmUI.tsx    the overlay
 src/react/farm/
-  FarmDialogue.tsx              the conversation box (sequential beats)
+  FarmDialogue.tsx              talk screen: TrialLayout + Dialog / Actions, no log
+  FarmTalkActionsPanel.tsx      Actions panel for a talk (Talk / Leave as word squares)
   farmDialogueState.ts          which conversation an animal offers right now
   CharacterStage.tsx            placeholder busts — Trial hole only, mounted by TrialUI
   FarmUI.module.scss
@@ -169,16 +170,20 @@ The tutorial's `onFinish: 'exit'` reads the same field instead of hard-coding `'
 > values — `015_duchess_vs_rue` vs `level1-boss-pond-motion` — and only the former is a
 > `DebateScenarioKey`.
 
-**Why `scene.start` and not `sleep`/`pause`:** the Phaser canvas is full-stage at all times
-(`.phaser-container` is `position: absolute; inset: 0`), and `TrialLayout`'s "game hole" is
-just an empty `pointer-events: none` div, **not a clip**. A scene left running underneath
-would paint the farm behind the Debate Log and Wizard panels, not only in the hole.
-Stopping the scene sidesteps that; the player's position is written to `gameStore` on
-`SHUTDOWN` and read back in `create`, so the round trip is seamless.
+**Why debates `scene.start` and not `sleep`/`pause`:** the Phaser canvas is full-stage at
+all times (`.phaser-container` is `position: absolute; inset: 0`), and `TrialLayout`'s
+"game hole" is just an empty `pointer-events: none` div, **not a clip**. A Farm scene
+left running underneath a *debate* would paint the farm behind the Debate Log and Dialog
+panels, not only in the hole. Stopping the scene sidesteps that; the player's position is
+written to `gameStore` on `SHUTDOWN` and read back in `create`, so the round trip is
+seamless.
 
-Showing the farm inside the hole later would need
-`cameras.main.setViewport(0, 0, 1920, 540)` (the hole spans the full stage width — see
-`TRIAL_STAGE_HOLE`) — a deliberate change, not a side effect.
+A **normal talk** stays on the Farm scene. `talkingToNpcId` reframes
+`cameras.main.setViewport(TRIAL_STAGE_HOLE)` so only the top band draws, centred on Rue
+and the animal, and `TrialLayout` is mounted without a log — Dialog and Actions cover
+the bottom half, the farm shows through the hole, and the top-right cell is empty. The
+clear colour behind the rounded panel corners is the game's `#1a1a1a` (same as Trial's
+camera), not the old Phaser-template blue.
 
 ---
 

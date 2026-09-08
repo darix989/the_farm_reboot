@@ -80,8 +80,9 @@
 /* The Debate Log, expanded. Shares its cell with the full-width `.trialGameHole`, so it
    needs an explicit `z-index` to paint over it — grid items honour `z-index` while
    `position: static`, and relying on document order alone would be a trap for the next
-   edit. Only rendered while `debateLogStore.isExpanded`; `.trialDebateLogRecapCell` takes
-   the same cell when collapsed. */
+   edit. Only rendered when a `log` slot is passed *and* `debateLogStore.isExpanded`;
+   `.trialDebateLogRecapCell` takes the same cell when collapsed. Farm talks omit `log`
+   entirely, so neither cell mounts and the farm shows through. */
 .trialFeedbackPanel {
   grid-column: 2;
   grid-row: 1;
