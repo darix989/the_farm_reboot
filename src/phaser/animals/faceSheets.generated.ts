@@ -44,7 +44,7 @@ export const FACE_SHEETS: Partial<
         ],
       },
       reviewNotes: [
-        'frame 14 churn is the mouth closing, not the flicker defect the warning looks for — checked frames 12-15 and the full sheet: the interior is one consistent dark patch whenever it is open, framing and head size hold throughout',
+        'REJECTED — glitchy, regenerate. The frame-14 churn warning was correct and an earlier note here wrongly dismissed it as the mouth closing. Measured per frame: the white of the eye ramps 0 -> 298 -> 71 px across the 25 frames (swing 211% of its mean), so the eyelid aperture is redrawn every frame rather than held; and an invented tooth pops on and off (83, 82, 66, 1, 1, 3, 33, 36, 3, 37, 2, 4, 1, 2, 56, 94, 112, 116, 116, 120, 36, 17...), which the reference forbids since its mouth is closed.',
       ],
     },
   },
