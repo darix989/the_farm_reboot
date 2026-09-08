@@ -8,6 +8,7 @@ import { splitIntoSentences } from '../trial/utils/trialHelpers';
 import TrialLayout from '../trial/TrialLayout';
 import WizardPanel, { type WizardPanelDetail } from '../trial/panels/WizardPanel';
 import FarmTalkActionsPanel from './FarmTalkActionsPanel';
+import { useUnmetConditionsHint } from '../hooks/useGameConditions';
 
 interface FarmDialogueProps {
   dialogue: FarmDialogueState;
@@ -44,6 +45,11 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
   const advanceBeat = useCallback(() => {
     setBeatIndex((current) => Math.min(current + 1, lastIndex));
   }, [lastIndex]);
+
+  // Subscribed rather than snapshotted, so an encounter that unlocks while this conversation is
+  // on screen un-greys its own Talk button. That is not hypothetical: the tutorial in Cass's
+  // encounter teaches a fallacy, and the player can walk straight to the animal it unlocks.
+  const lockedHint = useUnmetConditionsHint(dialogue.scenarioRequires);
 
   const detail = useMemo((): WizardPanelDetail | null => {
     if (!beat) return null;
@@ -102,6 +108,7 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
             revealActive={revealActive}
             isLastBeat={isLast}
             scenario={dialogue.scenario}
+            lockedHint={lockedHint}
             onRevealAdvance={revealAdvance}
             onAdvanceBeat={advanceBeat}
             onStart={onStart}

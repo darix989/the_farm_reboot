@@ -10,7 +10,12 @@ import type { ResolvedMechanics } from '../utils/scenarioMechanics';
 import TrialActionRow from '../components/TrialActionRow';
 import TrialChoiceButton from '../components/TrialChoiceButton';
 import { statementText, shuffleCopyDeterministic } from '../utils/trialHelpers';
-import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
+import {
+  isOptionGated,
+  isPlayerOptionUnlocked,
+  resolvedOptionSentences,
+} from '../utils/optionUnlock';
+import { useConditionContext } from '../../hooks/useGameConditions';
 import { debateEventBus } from '../utils/debateEventBus';
 import { prefersReducedMotion } from '../../../utils/reducedMotion';
 import {
@@ -86,6 +91,9 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   const analyzeTargetId = analyzeTarget ? analysisTargetStatementId(analyzeTarget) : null;
   const analyzeGuessState = analyzeTargetId ? getNpcGuessState(analyzeTargetId) : null;
   const analyzeTitle = analyzeTitleForTarget(analyzeTarget);
+  // Subscribed, so an option gated on the wider game stops being locked the moment its last
+  // requirement is met — including mid-round, when the requirement is spotting a fallacy here.
+  const conditions = useConditionContext();
   const [playthroughShuffleKey] = useState(() =>
     typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
       ? crypto.randomUUID()
@@ -128,19 +136,20 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         style={hideOptions ? { visibility: 'hidden' } : undefined}
       >
         {choosingOptionsOrder.map((opt, idx) => {
-          const guessUnlocked = isPlayerOptionUnlocked(opt, fallacyGuesses);
-          const revealed = !opt.unlockCondition || revealedLockedOptionIds.has(opt.id);
-          const locked = !!opt.unlockCondition && !guessUnlocked;
+          const gated = isOptionGated(opt);
+          const conditionsMet = isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
+          const revealed = !gated || revealedLockedOptionIds.has(opt.id);
+          const locked = gated && !conditionsMet;
           let body: string;
           if (locked) {
             body = statementText(resolvedOptionSentences(opt, false));
-          } else if (opt.unlockCondition && guessUnlocked && !revealed) {
+          } else if (gated && conditionsMet && !revealed) {
             body = getLabel('clickToUnlock');
           } else {
             body = statementText(resolvedOptionSentences(opt, true));
           }
-          const awaitingReveal = !!opt.unlockCondition && guessUnlocked && !revealed;
-          const revealFlash = revealed && revealAnimOptionId === opt.id && !!opt.unlockCondition;
+          const awaitingReveal = gated && conditionsMet && !revealed;
+          const revealFlash = revealed && revealAnimOptionId === opt.id && gated;
           const optionLetter = String.fromCharCode(65 + idx);
           return (
             <TrialChoiceButton
@@ -157,7 +166,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
               onClick={() => {
                 const target = { kind: 'interactive_option', optionId: opt.id } as const;
                 if (!canRunTutorialTargetAction(target)) return;
-                if (opt.unlockCondition && guessUnlocked && !revealedLockedOptionIds.has(opt.id)) {
+                if (gated && conditionsMet && !revealedLockedOptionIds.has(opt.id)) {
                   setRevealAnimOptionId(opt.id);
                   debateEventBus.emit('interactive:statement_unlocked', {
                     roundNumber: playerRound.roundNumber,

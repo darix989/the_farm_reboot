@@ -6,7 +6,7 @@ ten-beat Public Farm debate are the same schema with different flags.
 
 The schema itself is [`src/types/debateEntities.ts`](../src/types/debateEntities.ts) — that
 is the source of truth. This is the guide to using it. For the UI that renders it, see
-[`src/react/AGENTS.md`](../src/react/AGENTS.md); for a worked example of six encounters,
+[`src/react/AGENTS.md`](../src/react/AGENTS.md); for a worked example of eight encounters,
 [`level_01_the_pond_motion.md`](./level_01_the_pond_motion.md).
 
 ---
@@ -21,7 +21,8 @@ is the source of truth. This is the guide to using it. For the UI that renders i
    ([Recap summaries](#recap-summaries)).
 
 To hang it on an animal in the overworld, add the key to that NPC's `scenarios` in
-`src/data/farmMap.ts`. No engine changes for any of this.
+`src/data/farmMap.ts`, and add matching beats in `src/data/farmTalk.ts`. To gate it, set
+`requires` on the `ScenarioEntry`. No engine changes for any of this.
 
 ---
 
@@ -37,6 +38,8 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 | `logicalFallacies` | The fallacies this scenario uses, each with an `explanation` shown after a guess. **Write real prose** — several older scenarios still say `"TBD"`, and the player sees it. |
 | `availableLogicalFallacies` | Which icons appear on the picker. **This is the difficulty dial** — one icon is a tutorial, thirteen is a wall. |
 | `startingInsightPoints` | Insight to start with. Defaults to 0. |
+| `teachesFallacies` | Fallacies added to the Codex as known when the player **leaves a finished encounter**. Walking out halfway teaches nothing. |
+| `setsDialogFlags` | Dialog flags set on the same leave. Prefer these over `encounter_completed` for "this conversation happened" gates — a flag carries player-facing copy. |
 | `mechanics` | Mode flags, below. Omit for a full debate. |
 | `rounds` | The sequence. |
 | `tutorials` | Overlays triggered off the debate event bus. |
@@ -70,7 +73,8 @@ when position must be stable — scripted rounds, or a lab where the tutorial sa
 | `impact` | Signed integer, capped at ±50 (`PLAYER_OPTION_IMPACT_ABS_MAX`). |
 | `reason` | Why this line works or fails. Shown in the analysis modal, and in the recap when `revealChoiceAssessment` is on. **Always write one.** |
 | `summary` | Two-line paraphrase of the line, shown in the round recap. **Always write one** — see [Recap summaries](#recap-summaries). |
-| `unlockCondition` + `unlockedSentences` | Gate the line behind spotting a fallacy. Paired — set both or neither. |
+| `unlockCondition` + `unlockedSentences` | Gate the line behind spotting a fallacy *in this debate*. Paired — set both or neither. |
+| `unlockConditions` | Gate the line behind the rest of the game (`GameCondition[]`). ANDed with `unlockCondition` when both are present. |
 
 House style for the three options, from `pitch/001`: **A is a tempting fallacy** (it should
 feel satisfying), **B is plausible but beside the point** (never stupid), **C is effective**.
@@ -89,6 +93,41 @@ they click once to reveal, and again to select. `npcRoundId` also accepts a **st
 solved.
 
 This is the only mechanic where spotting and speaking touch. Use it for the payoff line.
+
+### Cross-encounter unlocks
+
+```json
+"unlockConditions": [{ "kind": "dialog_flag", "flagId": "bram-grate-conceded" }]
+```
+
+`unlockConditions` is a list of `GameCondition`s (see `src/utils/gameConditions.ts`) and is
+**ANDed** with `unlockCondition`. "You caught her doing it just now *and* Bram told you at
+the fence" is one option with both fields set. Presentation is shared: either field makes
+the option locked, and unlocking still goes through the click-to-reveal step.
+
+Kinds: `fallacy_known`, `fallacy_spotted` (optionally scoped to a scenario),
+`encounter_completed`, `dialog_flag`. Prefer a `dialog_flag` when the requirement is "this
+conversation happened" — `encounter_completed` can only name the encounter by key, which is
+not player-facing.
+
+A gated option's `summary` still describes the **unlocked** copy.
+
+### Overworld gates (`ScenarioEntry.requires`)
+
+The encounter itself can be gated, independently of any option inside it. Set `requires` on
+the entry in [`src/data/levels.ts`](../src/data/levels.ts):
+
+```ts
+requires: [
+  { kind: 'fallacy_known', fallacyId: 'ad-hominem' },
+  { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' },
+],
+```
+
+This disables Talk on the farm and shows `conditionHint` as the reason. The animal still
+talks — only the button is locked. The main menu is not gated. Hang the matching beats in
+`farmTalk.ts`; lengthening an NPC's `scenarios` list silently re-points every existing beat
+row (`cass1` becomes the new first encounter, not the old one).
 
 ---
 
@@ -198,6 +237,10 @@ encounter, confirm by hand:
 - every tagged fallacy also in `availableLogicalFallacies`
 - sentence ids unique across the file
 - `unlockCondition` naming a fallacy that is actually authored on that sentence
+- `unlockConditions` naming a flag / fallacy / scenario that exists
+- `teachesFallacies` / `setsDialogFlags` / `requires` agreeing with the fiction (the player
+  cannot be taught a fallacy they never hear named, and a flag must be set by the encounter
+  the copy describes)
 - no `"TBD"` explanations
 - best-case and worst-case totals give the spread you intended
 

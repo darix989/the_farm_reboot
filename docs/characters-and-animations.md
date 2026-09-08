@@ -19,12 +19,12 @@ matching art exists yet:
 
 | Character | Real species | Placeholder art (`AnimalSpriteId`) | Role                      |
 | --------- | ------------ | ---------------------------------- | ------------------------- |
-| Rue       | donkey       | `donkey-grey` (exact match)        | player                    |
+| Rue       | raccoon      | `raccoon` (exact match)            | player                    |
 | Hetty     | hen          | `white-sheep-1`                    | farm NPC                  |
 | Cass      | rooster      | `fox`                              | farm NPC                  |
 | Bram      | drake        | `brown-wolf`                       | farm NPC                  |
 | Duchess   | goose        | `owl`                              | farm NPC, Trial opponent  |
-| Tobias    | tortoise     | `raccoon`                          | farm NPC, Trial moderator |
+| Tobias    | tortoise     | `donkey-grey`                      | farm NPC, Trial moderator |
 
 The mapping lives in one place: the optional `animal` field on
 [`CHARACTERS`](../src/data/characters.ts). A character with no `animal` entry (every
@@ -141,9 +141,19 @@ the _character_ stops, not when the clip does. Only the player translates today;
 is on the descriptor rather than in `Farm.ts` so a wandering NPC or a cutscene tween gets
 the same cycle for free.
 
-Only Tobias (`raccoon`) uses `idleTrial`: he stands in the field but sits up
-(`sitting_up_idle`) once staged in a Trial. No animal uses `alertTrial`. The dog is the
-one user of `transitions`: a sitting dog must stand up before it can bark.
+Two animals use `idleTrial`:
+
+- **Rue (`raccoon`)** must. Every raccoon emotion clip was generated from
+  `__raccoon_sitting_up_idle-0.png`, so standing him at the podium would pop him from a
+  four-legged crouch to sitting upright the moment he speaks. `usesTrialIdle` is a
+  **casting** field on `CharacterVisual` (default `true`), not a property of the sprite —
+  the Trial scene passes `staging: visual.usesTrialIdle ? 'trial' : 'farm'`.
+- **Tobias (`donkey-grey`)** got a standing `idleTrial` because the donkey's field `idle`
+  grazes 70% of the time, which is wrong for a moderator at a podium. Its emotion clips
+  come from `__grey_donkey_idle-0.png`, so the standing trial idle is consistent with them.
+
+No animal uses `alertTrial`. The dog is the one user of `transitions`: a sitting dog must
+stand up before it can bark.
 
 ### 3.2 Building animations — `ensureAnimalAnimations`
 
@@ -193,10 +203,12 @@ to be called **every frame** from a scene's `update` — once the cycle is runni
 calls only retune playback rate — and `speed01` is the fraction of top speed the character
 is travelling at, so a half-pushed joystick steps at half rate (`Farm.update` passes the
 movement vector's length, which keeps the stick's analogue magnitude). At full speed the
-cycle plays at `MOVE_RATE_AT_TOP_SPEED` (0.77): the cast's clips were authored at a stroll —
-15 frames at 12fps — and the overworld moves Rue at 167px/s, so at rate 1 his feet skate.
+cycle plays at `MOVE_RATE_AT_TOP_SPEED` (0.52): the cast's clips were authored at a stroll —
+15 frames at 12fps — and the overworld moves Rue at 167px/s, so at rate 1 his paws skate.
 That constant tracks `PLAYER_SPEED` — the skate is a ratio of stride length to ground
-covered, so changing one without the other reintroduces it.
+speed, and it was retuned from 0.77 when the player swapped from donkey to raccoon. The
+floor is `MIN_MOVE_RATE` (0.28) so a barely-pushed joystick still reads as a walk.
+Changing one number without the other reintroduces the skate.
 Nothing ends the cycle by itself, because nothing but the caller knows the character has
 stopped: the scene calls `playIdle(true)` on that frame. That `immediate` argument (default
 off) cuts straight to idle instead of easing in after the current repeat, which for a
@@ -231,10 +243,19 @@ Two approaches were tried before this one and both looked wrong:
 So `animalStaging.ts` **keeps the prototype's relative scale ratios** — they are the
 actual art direction — and applies one flat multiplier per surface:
 `farmScale = sourceScale * 0.377`, `trialScale = sourceScale * 0.807`, chosen so the
-donkey (the player, the most-seen animal) lands at roughly 140px tall on the farm (next to
-the 56px placeholder NPCs) and roughly 300px in the 1920×540 Trial hole. That preserves
-the designed size hierarchy — donkey/wolf biggest, sheep mid-sized, fox/owl smaller,
-raccoon smallest and widest — while fitting this repo's very different pixel budget.
+donkey landed at roughly 140px tall on the farm (next to the 56px placeholder NPCs) and
+roughly 300px in the 1920×540 Trial hole, back when the donkey was the player. That
+preserves the designed size hierarchy — donkey/wolf biggest, sheep mid-sized, fox/owl
+smaller, raccoon smallest and widest — while fitting this repo's very different pixel
+budget.
+
+Rue wears the raccoon now. Unadjusted, its farm crouch renders 135×56 — exactly as tall
+as the 56px placeholder NPC boxes it is meant to be the protagonist among. Matching the
+donkey's old 140px height is not the fix either: at 2.4:1 the crouch would come out
+336px wide. `MANUAL_ADJUST` therefore accepts either a bare number (both surfaces, as
+before) or `{ farm?, trial? }`. The raccoon is `{ farm: 1.5 }` (~202×85 on the farm);
+`trial` stays at 1 because there Rue *sits up*, a taller and much narrower pose, and that
+is the pose the existing trial multiplier was already staging Tobias in.
 
 Measured visible pixel bounds of each animal's idle rest frame (`spriteSourceSize` in the
 descriptor JSON — what actually renders, not the shared `sourceSize` export canvas, which
@@ -445,9 +466,9 @@ exactly as it did before emotions existed.
 
 ### 9.4 The scale trap
 
-A generated cell is **not** the atlas canvas. Rue's idle frame is a 784×702 export canvas
-with the donkey filling most of it; a generated clip is a grid of 256×256 cells with the
-donkey somewhere inside at whatever size the generator chose. `ANIMAL_STAGING` (§4) assumes
+A generated cell is **not** the atlas canvas. An atlas idle frame is a large export canvas
+with the animal filling most of it; a generated clip is a grid of 256×256 cells with the
+animal somewhere inside at whatever size the generator chose. `ANIMAL_STAGING` (§4) assumes
 the frame _is_ the export canvas. Staging used to also assume the feet sat at that canvas
 bottom (`setOrigin(0.5, 1)`); that is only true of the owl, so Farm shadows and the Trial
 floor line floated below everyone else. Atlas sprites now call `applyAtlasFeetOrigin`,
@@ -658,8 +679,9 @@ portrait scale. This decides which animals work:
 
 Everything lands under the 2% gate except the donkey, whose body clips are the cast's weakest —
 the only ones that ever carried a loop-seam warning of their own. Its portraits are deliberately
-**not promoted**, which matters more than it would for the others: the donkey is Rue, so its
-portrait would be on screen most. Rue stays text-only until those body clips are regenerated.
+**not promoted**, which matters less than it did: the donkey is Tobias now, not Rue. Rue wears
+the raccoon, whose crops are the cast's cleanest. Tobias stays text-only until those body
+clips are regenerated.
 
 Two more things worth knowing:
 

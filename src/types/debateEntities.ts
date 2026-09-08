@@ -9,6 +9,10 @@ import type { TutorialModalSpec } from './tutorialModalLayout';
 // Type-only, and `animalEmotions` imports no Phaser — see its docstring for why the shared
 // emotion vocabulary lives under `src/phaser/animals/`.
 import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
+// Type-only. `gameConditions` reads the stores at runtime, so a value import here would drag
+// zustand into every module that only wants the content schema.
+import type { GameCondition } from '../utils/gameConditions';
+import type { DialogFlagId } from '../data/dialogFlags';
 
 /** Always exactly two sides in a debate. */
 export type Side = 'proposition' | 'opposition';
@@ -142,6 +146,17 @@ export interface PlayerOption {
    * If set, `sentences` is placeholder copy until unlock; full content lives in `unlockedSentences`.
    */
   unlockCondition?: PlayerOptionUnlockCondition;
+  /**
+   * Requirements drawn from the rest of the game rather than from this debate: a fallacy the
+   * player was taught by another animal, a conversation they had at the trough. Evaluated
+   * against `ConditionContext` (see `src/utils/gameConditions.ts`).
+   *
+   * ANDed with `unlockCondition` when both are present, so "you were told about this *and* you
+   * caught her doing it just now" is expressible. Presentation is shared: either field makes
+   * the option locked, and unlocking still goes through the click-to-reveal step, which turns a
+   * condition met an hour ago in another conversation into a discovery here.
+   */
+  unlockConditions?: readonly GameCondition[];
   unlockedSentences?: Sentence[];
 }
 
@@ -511,6 +526,21 @@ export interface DebateScenarioJson {
   startingInsightPoints?: number;
   /** Mode flags; omit for a full debate. See `DebateScenarioMechanics`. */
   mechanics?: DebateScenarioMechanics;
+  /**
+   * Fallacies the player can name once this encounter is finished — the only way the Codex's
+   * "fallacies you know" list grows, other than spotting one in the wild.
+   *
+   * Granted on leaving a finished encounter, not on reaching the round that explains the
+   * fallacy: an encounter the player walked out of halfway teaches them nothing.
+   * See `src/utils/encounterRewards.ts`.
+   */
+  teachesFallacies?: readonly LogicalFallacyId[];
+  /**
+   * Dialog flags set once this encounter is finished, whatever the player scored. Use these
+   * for "this conversation happened" gates rather than `encounter_completed`, because a flag
+   * carries player-facing copy for the Codex and for the locked-encounter hint.
+   */
+  setsDialogFlags?: readonly DialogFlagId[];
   rounds: RoundEntry[];
   /**
    * Overlay tutorials wired to specific debate events via the typed event bus.

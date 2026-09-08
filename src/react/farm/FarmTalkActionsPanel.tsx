@@ -9,15 +9,27 @@ interface FarmTalkActionsPanelProps {
   revealActive: boolean;
   isLastBeat: boolean;
   scenario: DebateScenarioKey | null;
+  /**
+   * Why this animal's encounter cannot be started yet, or null when it can. When set, Talk is
+   * disabled and this replaces the actions hint — the panel says what to go and do instead of
+   * leaving a greyed button unexplained.
+   */
+  lockedHint: string | null;
   onRevealAdvance: () => void;
   onAdvanceBeat: () => void;
   onStart: (scenario: DebateScenarioKey) => void;
   onClose: () => void;
 }
 
-function hintFor(revealActive: boolean, isLastBeat: boolean, hasScenario: boolean): string {
+function hintFor(
+  revealActive: boolean,
+  isLastBeat: boolean,
+  hasScenario: boolean,
+  lockedHint: string | null,
+): string {
   if (revealActive) return getLabel('workflowRevealing');
   if (!isLastBeat) return getLabel('farmTalkHintContinue');
+  if (hasScenario && lockedHint) return lockedHint;
   if (hasScenario) return getLabel('farmTalkHintChoose');
   return getLabel('farmTalkHintNothingMore');
 }
@@ -31,6 +43,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
   revealActive,
   isLastBeat,
   scenario,
+  lockedHint,
   onRevealAdvance,
   onAdvanceBeat,
   onStart,
@@ -45,7 +58,9 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
       <div className={styles.trialAreaTitle}>
         <h2 className={styles.trialPanelHeading}>{getLabel('interactive')}</h2>
       </div>
-      <p className={styles.trialActionsHint}>{hintFor(revealActive, isLastBeat, !!scenario)}</p>
+      <p className={styles.trialActionsHint}>
+        {hintFor(revealActive, isLastBeat, !!scenario, lockedHint)}
+      </p>
 
       <div className={styles.trialActionsCenter}>
         <TrialActionRow
@@ -83,8 +98,8 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
               <TrialChoiceButton
                 content={talkLabel}
                 shape="word"
-                ariaLabel={talkLabel}
-                disabled={revealActive}
+                ariaLabel={lockedHint ? `${talkLabel} — ${lockedHint}` : talkLabel}
+                disabled={revealActive || !!lockedHint}
                 onClick={() => onStart(scenario)}
               />
             )}

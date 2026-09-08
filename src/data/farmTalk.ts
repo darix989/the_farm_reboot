@@ -29,6 +29,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: RUE, textLabel: 'farmDialogHetty1b' },
     { speakerId: 'hetty', textLabel: 'farmDialogHetty1c' },
   ],
+  hetty2: [
+    { speakerId: 'hetty', textLabel: 'farmDialogHetty2a' },
+    { speakerId: RUE, textLabel: 'farmDialogHetty2b' },
+    { speakerId: 'hetty', textLabel: 'farmDialogHetty2c' },
+  ],
   hettyDone: [
     { speakerId: 'hetty', textLabel: 'farmDialogHettyDoneA' },
     { speakerId: 'hetty', textLabel: 'farmDialogHettyDoneB' },
@@ -42,6 +47,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'cass', textLabel: 'farmDialogCass2a' },
     { speakerId: RUE, textLabel: 'farmDialogCass2b' },
     { speakerId: 'cass', textLabel: 'farmDialogCass2c' },
+  ],
+  cass3: [
+    { speakerId: 'cass', textLabel: 'farmDialogCass3a' },
+    { speakerId: RUE, textLabel: 'farmDialogCass3b' },
+    { speakerId: 'cass', textLabel: 'farmDialogCass3c' },
   ],
   cassDone: [
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneA' },

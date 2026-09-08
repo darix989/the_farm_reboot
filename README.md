@@ -2,9 +2,9 @@
 
 A browser game about **spotting logical fallacies** in a farmyard debate.
 
-You play Rue, a donkey six weeks new to Green Meadows Farm. The Old Pond is going muddy, and
+You play Rue, a raccoon six weeks new to Green Meadows Farm. The Old Pond is going muddy, and
 Duchess the goose has put a motion to the Public Farm: the pond should be reserved for her
-flock, and the hoofed animals can drink from the trough by the road. She is charming, she has
+flock, and everyone else can drink from the trough by the road. She is charming, she has
 forty-one birds behind her, and almost none of her argument is about the water.
 
 Walk the farm, talk to the animals, and learn to tell the difference between what someone

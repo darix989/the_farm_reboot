@@ -1,7 +1,7 @@
 {
   "id": "level1-gossip-hetty",
-  "introduction": "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is. She has not quite worked out yet that you are the donkey she is talking about.",
-  "introductionSummary": "Hetty has a theory about the pond, and no idea she is telling it to the donkey in it.",
+  "introduction": "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is. She talks about you in the third person even when you are standing there, which is how you know it is not personal.",
+  "introductionSummary": "Hetty has a theory about the pond, delivered as gossip about a raccoon who happens to be you.",
   "playerSide": "opposition",
   "characters": {
     "hetty": "Hetty",
@@ -37,7 +37,7 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Morning! Did you hear? That new donkey — Rue, I think it is — has been complaining about the pond drain again.",
+            "text": "Morning! Did you hear? That new raccoon — Rue, I think it is — has been complaining about the pond drain again.",
             "logicalFallacies": []
           },
           {
@@ -56,7 +56,7 @@
             "logicalFallacies": []
           }
         ],
-        "summary": "Hetty dismisses the donkey's drain complaint by his arrival, not his argument."
+        "summary": "Hetty dismisses the raccoon's drain complaint by his arrival, not his argument."
       }
     },
     {

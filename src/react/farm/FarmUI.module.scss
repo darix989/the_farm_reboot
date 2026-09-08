@@ -57,3 +57,23 @@
   font-size: var(--ui-font-caption);
   font-weight: normal;
 }
+
+/* Top-right corner, opposite the centred move hint, so the two never collide. */
+.codexButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--ui-color-border-soft);
+  border-radius: 6px;
+  background: var(--ui-color-overlay-backdrop);
+  color: var(--ui-color-text-muted-2);
+  font-size: var(--ui-font-caption);
+  cursor: pointer;
+  pointer-events: auto;
+
+  &:hover {
+    color: var(--ui-color-accent);
+    border-color: var(--ui-color-accent);
+  }
+}

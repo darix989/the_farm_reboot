@@ -1,0 +1,137 @@
+{
+  "id": "level1-hetty-barrage",
+  "introduction": "Hetty has been going round the trough all morning, and every sentence has been about you. She does not think she is being unkind. She thinks she is being interesting.",
+  "introductionSummary": "Hetty talks about Rue the whole way round the trough — the cart, the straw, the six weeks — and never once about the water.",
+  "playerSide": "opposition",
+  "characters": {
+    "hetty": "Hetty",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Attacking the animal instead of the argument. How Rue arrived, how he looks, and how long he has been here tell us nothing about anything that needs deciding."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem"],
+  "setsDialogFlags": ["hetty-ad-hominem-witnessed"],
+  "mechanics": {
+    "showModeratorOpinion": false,
+    "showRoundRecap": false,
+    "showIntroSummary": false,
+    "encounterKind": "gossip"
+  },
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "gossip",
+      "speakerId": "hetty",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r1-hetty",
+        "speakerId": "hetty",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Have you heard about that raccoon? Rue, they call him.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "He arrived in a mud cart, you know. Straw still in his ears. You don't take advice from an animal who turns up like that.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "How Rue arrived is not a reason to dismiss what he says. Hetty has swapped the cart for an argument."
+              }
+            ]
+          },
+          {
+            "id": "s-r1-3",
+            "text": "I said as much to anyone who would listen this morning.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Hetty treats the mud cart Rue arrived in as a reason not to listen to him."
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "gossip",
+      "speakerId": "hetty",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r2-hetty",
+        "speakerId": "hetty",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r2-1",
+            "text": "And he still looks as if he slept in it. Straw in the fur, mud on the paws.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-2",
+            "text": "An animal who cannot keep himself tidy is hardly the animal you'd ask about anything that matters.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "Straw in the fur is not evidence. Hetty is judging the speaker's appearance in place of whatever is actually at issue."
+              }
+            ]
+          },
+          {
+            "id": "s-r2-3",
+            "text": "I don't mean it unkindly. I like him. He seems perfectly nice.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Hetty reads straw in the fur as a reason not to ask Rue about anything that matters, and means no harm by it."
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "gossip",
+      "speakerId": "hetty",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r3-hetty",
+        "speakerId": "hetty",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r3-1",
+            "text": "And only six weeks! Six weeks.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r3-2",
+            "text": "You cannot know a place in six weeks. The Flock has been here generations; that is whose opinion counts.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "How long Rue has lived here is not a fact about the thing under discussion. Tenure is being offered as a substitute for a reason."
+              }
+            ]
+          },
+          {
+            "id": "s-r3-3",
+            "text": "Anyway. I thought you should hear it from me rather than from the yard.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Hetty treats six weeks on the farm as a reason the Flock's opinion is the one that counts."
+      }
+    }
+  ]
+}

@@ -3,7 +3,7 @@
 **Where things are and where to put new code.** This is a lookup index, not an explanation.
 
 > **Read [`docs/architecture.md`](docs/architecture.md) first** if you need to understand
-> *how the app works* — the Phaser/React sibling layout, scene-key routing, the six stores
+> *how the app works* — the Phaser/React sibling layout, scene-key routing, the eight stores
 > and two event buses, content flow, and how to verify a change with no test runner. That
 > document owns the conceptual model; this one owns the file map. Where they overlap, this
 > file defers to it.
@@ -54,9 +54,13 @@ src/
   data/
     labels.ts           # Central UI strings + default export getLabel()
     levels.ts           # Scenario registry: DebateScenarioKey, DEBATES, menu order
+                        #   ScenarioEntry.requires is the overworld gate
     farmMap.ts          # Overworld zones + NPCs
+    farmTalk.ts         # Sequential talk beats, keyed by `{npcId}{suffix}`
     characters.ts       # Cast roster: name, tint, and (if any) animated `animal` sprite
     debateCast.ts        # Who's on the character stage for a scenario + their stage order
+    dialogFlags.ts      # Named conversations the Codex and gates can refer to
+    fallacyCatalog.ts   # Parsed logicalFallacies.json + id lookup
     debates/            # One JSON file per encounter
     logicalFallacies.json
   phaser/
@@ -88,6 +92,8 @@ src/
       useScenarioTutorials.ts  # Opens scenario tutorials off the debate bus
       useScrollFade.ts
       useSpriteFrame.ts        # Steps a spritesheet frame index for clips played in the DOM
+      useGameConditions.ts     # Subscribed ConditionContext for gates and option unlocks
+    codex/                    # Field Notes overlay (known / spotted / dialogs)
     trial/
       TrialLayout.tsx           # 2×2 grid: full-width game hole across the top, with the
                                 #   Debate Log (or its collapsed recap chip) over its right
@@ -112,9 +118,13 @@ src/
     trialStageStore.ts  # Debate ↔ Phaser handoff: active speaker for the Trial cast
     debateLogStore.ts   # Is the Trial's Debate Log expanded, or collapsed to its recap chip
     progressStore.ts    # Completed encounters (persisted to localStorage)
+    codexStore.ts       # Known fallacies, spotted fallacies, dialog flags (persisted)
+    codexUiStore.ts     # Field Notes overlay open/section (not persisted)
   utils/
     constants.ts        # PHASER_PARENT_ID, stage design size, rem scaling, TRIAL_STAGE_HOLE
     gameManager.ts      # Static Phaser helpers (switchScene, getScene, …)
+    gameConditions.ts   # GameCondition union; isConditionMet / conditionHint
+    encounterRewards.ts # mark-complete + teachesFallacies + setsDialogFlags in one write
 ```
 
 ## React UI design tokens (fonts and colors)
@@ -194,7 +204,8 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
   over the right 2fr of the full-width cast. State lives in `src/store/debateLogStore.ts`
   because the tutorial layer has to expand it *synchronously* before an overlay renders; see
   that file and `src/react/trial/utils/debateLogTutorialNeeds.ts`.
-- A **Round Analysis Modal** (`src/react/trial/roundAnalysisModal/RoundAnalysisModal.tsx`) lets the player inspect any statement in the log: tag logical fallacies sentence by sentence, or review why their own line was effective or flawed. Three attempts per target by default; a correct solve pays 1 Insight, once per target.
+- A **Round Analysis Modal** (`src/react/trial/roundAnalysisModal/RoundAnalysisModal.tsx`) lets the player inspect any statement in the log: tag logical fallacies sentence by sentence, or review why their own line was effective or flawed. Three attempts per target by default; a correct solve pays 1 Insight, once per target. A correct tag is also written to `codexStore` (`recordSpottedFallacy`), which marks the fallacy known.
+- **Field Notes (the Codex)** is a global React overlay (`src/react/codex/`), not a Phaser scene — routing to a Codex scene would tear down the overworld. It has three sections: fallacies you know, fallacies you have spotted, and important conversations (`dialogFlags`). Opened from the main menu and from `FarmUI` (hidden during a talk). `pointer-events: auto` on its root.
 - **Farm talks reuse the debate chrome.** `TrialLayout`, `WizardPanel`, `TrialActionRow` and `TrialChoiceButton` are shared between the debate and the overworld talk. A farm talk runs *on the Farm scene* (no `scene.start`, so `gameStore.currentScene` stays `'Farm'` and `ReactApp` needs no new case); the camera is framed into `TRIAL_STAGE_HOLE` and the log slot is omitted.
 - Authoring reference — schema, rounds, options, unlock conditions, `mechanics` flags: [`docs/encounters.md`](docs/encounters.md).
 - **⚠️ Pointer-events gotcha:** `.react-ui-overlay` is `pointer-events: none`, which inherits to every descendant. Any new interactive element **must** set `pointer-events: auto` on its root, or clicks fall through to the Phaser canvas. This is the most common bug in the codebase — see [`docs/architecture.md`](docs/architecture.md) for why the layout works this way.
@@ -209,7 +220,7 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
 
 - **[`docs/architecture.md`](docs/architecture.md)** — how the app fits together. The conceptual companion to this file; read it before any structural change.
 - `docs/README.md` — index of the docs folder.
-- `docs/encounters.md` — authoring reference for scenarios: schema, rounds, options, unlock conditions, `mechanics` flags.
+- `docs/encounters.md` — authoring reference for scenarios: schema, rounds, options, unlock conditions, overworld gates (`requires`), `mechanics` flags.
 - `docs/farm_overworld.md` — the Phaser overworld: the Phaser/React split, the placeholder-art texture contract, how encounters are launched and returned from, how to add an animal.
 - `docs/characters-and-animations.md` — how the placeholder animal spritesheets work: atlases, the weighted idle/alert behaviour model, the generated per-emotion clips and their asset pipeline (§9), and how to add a new animal.
 - `docs/level_01_the_pond_motion.md` — Level 1 story bible, cast, scenario ladder and authored dialog.
@@ -224,6 +235,8 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
 - **Cross-layer signals** → `EventBus` + optional `gameStore` actions.
 - Keep **`PHASER_PARENT_ID`** in sync between the Phaser parent div and `ReactRoot` layout logic.
 - New **debate content** → author a `DebateScenarioJson` JSON file under `src/data/debates/` and register it once in `src/data/levels.ts` (that file owns the `DebateScenarioKey` union, the `DEBATES` lookup and the main-menu ordering). No engine changes required.
+- New **gated encounter** → set `requires` on its `ScenarioEntry` in `levels.ts`. Prefer a `dialog_flag` over `encounter_completed` when the gate is "this conversation happened" — a flag carries player-facing copy. A gated animal still talks; only Talk is disabled. Hang the matching beats in `farmTalk.ts` (lengthening an NPC's `scenarios` list silently re-points every existing beat row).
+- New **dialog flag** → add the id to `DialogFlagId` in `src/data/dialogFlags.ts`, title/body labels, and declare it on the encounter that sets it via `setsDialogFlags`. Titles are authored as instructions ("hear Hetty out at the trough") because they double as the locked-encounter hint.
 - A scenario can ship as a **smaller mode** than a full debate via the optional `mechanics` block (`analysisEnabled`, `showInsightPoints`, `showModeratorOpinion`, `showRoundRecap`, `showIntroSummary`, `revealChoiceAssessment`, `targetQuality`, `maxAnalysisAttempts`, and `encounterKind` — which swaps UI copy so a non-debate is not labelled "Debate Log") plus `requiresAnalysis` on an NPC round. Defaults reproduce full-debate behaviour; resolve them with `resolveMechanics()` (`src/react/trial/utils/scenarioMechanics.ts`), never off the raw scenario. Full reference in `docs/encounters.md`; `docs/level_01_the_pond_motion.md` is a worked ladder.
 - **Looking at any animal's animations** → main menu → **Animation Gallery** (`AnimalGallery` scene + `AnimalGalleryUI`). Holds one clip on a loop, lists atlas and generated clips together, flags emotions with no art yet, and toggles between a crossfade and a raw cut when switching. `docs/characters-and-animations.md` §9.6.
 - New **animal emotion clip** (`talking`, `doubtful`, `angry`, `thinking`, `sneaky`) → **read `.claude/skills/animal-emotion-sprites/SKILL.md`**, the operating manual for this (Claude Code loads it as a skill; every other tool can simply open the file). In short: art is generated, not hand-drawn — `npm run sprites:emotions` drives the Ludo.ai API from `scripts/ludo/emotion-manifest.json` into a gitignored review dir, and `--promote` ships the clips you keep. Needs `LUDO_API_KEY` in `.env.local`, and **costs credits per clip**, so never generate without being asked. Design rationale (and the scale/origin trap that makes an un-normalized clip render at the wrong size) is in `docs/characters-and-animations.md` §9.

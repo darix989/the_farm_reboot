@@ -9,10 +9,12 @@ import type {
   Statement,
 } from '../../types/debateEntities';
 import {
+  isOptionGated,
   isPlayerOptionUnlocked,
   resolvedOptionSentences,
   type GuessSessionForUnlock,
 } from '../trial/utils/optionUnlock';
+import type { ConditionContext } from '../../utils/gameConditions';
 import { debateEventBus, type RoundLifecyclePayload } from '../trial/utils/debateEventBus';
 import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import getLabel from '../../data/labels';
@@ -193,6 +195,7 @@ function reduceWorkflow(
   scenario: DebateScenarioJson,
   fallacyGuesses: Map<number, GuessSessionForUnlock>,
   revealedLockedOptionIds: Set<string>,
+  conditions: ConditionContext | undefined,
 ): WorkflowState {
   if (action.type === 'undo') {
     if (state.past.length === 0) return state;
@@ -263,10 +266,11 @@ function reduceWorkflow(
       const valid = currentRound.options.some((o) => o.id === action.optionId);
       if (!valid) return state;
       const opt = currentRound.options.find((o) => o.id === action.optionId);
-      if (opt && !isPlayerOptionUnlocked(opt, fallacyGuesses)) return state;
+      if (opt && !isPlayerOptionUnlocked(opt, fallacyGuesses, conditions)) return state;
       if (
-        opt?.unlockCondition &&
-        isPlayerOptionUnlocked(opt, fallacyGuesses) &&
+        opt &&
+        isOptionGated(opt) &&
+        isPlayerOptionUnlocked(opt, fallacyGuesses, conditions) &&
         !revealedLockedOptionIds.has(opt.id)
       ) {
         return state;
@@ -377,13 +381,13 @@ export function optionTitle(
   opt: PlayerOption,
   fallacyGuesses?: Map<number, GuessSessionForUnlock>,
   revealedLockedOptionIds?: Set<string>,
+  conditions?: ConditionContext,
 ): string {
-  const guessUnlocked =
-    !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses ?? new Map());
+  const gated = isOptionGated(opt);
+  const unlocked = !gated || isPlayerOptionUnlocked(opt, fallacyGuesses ?? new Map(), conditions);
   const showRealCopy =
-    !opt.unlockCondition ||
-    (guessUnlocked &&
-      (revealedLockedOptionIds === undefined || revealedLockedOptionIds.has(opt.id)));
+    !gated ||
+    (unlocked && (revealedLockedOptionIds === undefined || revealedLockedOptionIds.has(opt.id)));
   const first = resolvedOptionSentences(opt, showRealCopy)[0]?.text ?? opt.id;
   return first.length > 80 ? `${first.slice(0, 77)}…` : first;
 }
@@ -396,6 +400,12 @@ export function useTrialRoundWorkflow(
   scenario: DebateScenarioJson,
   fallacyGuesses: Map<number, GuessSessionForUnlock> = new Map(),
   revealedLockedOptionIds: Set<string> = new Set(),
+  /**
+   * Context for options gated on the wider game (`PlayerOption.unlockConditions`). Mirrored
+   * into a ref like the other two: the reducer runs inside a `setState` updater, so reading
+   * these from the closure would see whatever they were when `dispatch` was created.
+   */
+  conditions?: ConditionContext,
 ) {
   const scenarioRef = useRef(scenario);
   scenarioRef.current = scenario;
@@ -405,6 +415,9 @@ export function useTrialRoundWorkflow(
 
   const revealedLockedOptionIdsRef = useRef(revealedLockedOptionIds);
   revealedLockedOptionIdsRef.current = revealedLockedOptionIds;
+
+  const conditionsRef = useRef(conditions);
+  conditionsRef.current = conditions;
 
   const [state, setState] = useState<WorkflowState>(() => createInitialState(scenario));
 
@@ -416,6 +429,7 @@ export function useTrialRoundWorkflow(
         scenarioRef.current,
         fallacyGuessesRef.current,
         revealedLockedOptionIdsRef.current,
+        conditionsRef.current,
       ),
     );
   }, []);

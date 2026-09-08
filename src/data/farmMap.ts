@@ -112,13 +112,17 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     id: 'hetty',
     x: 1800,
     y: 570,
-    scenarios: ['010_gossip_trough_hetty'],
+    scenarios: ['021_hetty_ad_hominem_barrage', '010_gossip_trough_hetty'],
   },
   {
     id: 'cass',
     x: 520,
     y: 860,
-    scenarios: ['011_sparring_cass_ad_hominem', '013_lab_cass_dirty_feathers'],
+    scenarios: [
+      '020_cass_teaches_ad_hominem',
+      '011_sparring_cass_ad_hominem',
+      '013_lab_cass_dirty_feathers',
+    ],
   },
   {
     id: 'bram',

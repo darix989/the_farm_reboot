@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTutorialStore } from '../../store/tutorialStore';
 import { useDebateLogStore } from '../../store/debateLogStore';
 import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../types/debateEntities';
-import logicalFallaciesData from '../../data/logicalFallacies.json';
+import { ALL_LOGICAL_FALLACIES, isCatalogedFallacyId } from '../../data/fallacyCatalog';
 import TrialLayout from '../trial/TrialLayout';
 import { useTrialRoundWorkflow } from '../hooks/useTrialRoundWorkflow';
 import { useWizardReveal, type WizardRevealSource } from '../hooks/useWizardReveal';
@@ -18,9 +18,11 @@ import type {
 } from '../trial/utils/fallacyGuessTypes';
 import {
   computeMissedPairs,
+  correctIntersectionMultiset,
   guessMultisetFromPicks,
   hasCorrectPairOverlap,
   isSessionTerminal,
+  multisetToPairList,
   multisetsEqual,
   truthMultisetFromSentences,
   guessStateFromAttempts,
@@ -48,7 +50,12 @@ import {
   statementText,
 } from '../trial/utils/trialHelpers';
 import { debateParticipantIds, stageOrder } from '../../data/debateCast';
-import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
+import {
+  isOptionGated,
+  isPlayerOptionUnlocked,
+  resolvedOptionSentences,
+} from '../trial/utils/optionUnlock';
+import { useConditionContext } from '../hooks/useGameConditions';
 import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
@@ -56,10 +63,11 @@ import CharacterStage from '../farm/CharacterStage';
 import DebateLogRecapChip from '../trial/components/DebateLogRecapChip';
 import getLabel from '../../data/labels';
 import { useGameStore } from '../../store/gameStore';
-import { useProgressStore } from '../../store/progressStore';
+import { useCodexStore } from '../../store/codexStore';
 import { useTrialStageStore } from '../../store/trialStageStore';
 import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import { GameManager } from '../../utils/gameManager';
+import { applyEncounterRewards } from '../../utils/encounterRewards';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
@@ -99,7 +107,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   );
   const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
   const introStartEmittedRef = useRef(false);
-  const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds);
+  const conditions = useConditionContext();
+  const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds, conditions);
 
   // Opens scenario-defined tutorial overlays in response to bus events,
   // including the onboarding overlay wired to `introduction:start`.
@@ -156,7 +165,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     setRevealedLockedOptionIds(new Set());
   }, [wf.currentPlayerRound?.id]);
 
-  const allFallacies = logicalFallaciesData.logicalFallacies as LogicalFallacy[];
+  const allFallacies = ALL_LOGICAL_FALLACIES;
   const fallacyById = useMemo(
     () => new Map(allFallacies.map((fallacy) => [fallacy.id, fallacy])),
     [allFallacies],
@@ -284,6 +293,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     }
 
     let record: GuessRecord;
+    /** (sentence, fallacy) pairs this attempt got right, for the Codex. */
+    let correctPairs: { sentenceId: string; fallacyId: string }[] = [];
 
     if (payload.type === 'no_fallacies') {
       const correct = sentences.every((s) => s.logicalFallacies.length === 0);
@@ -310,6 +321,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       const truth = truthMultisetFromSentences(sentences);
       const guess = guessMultisetFromPicks(picks);
       const missedPairs = computeMissedPairs(sentences, truth, guess, fallacyById);
+      correctPairs = multisetToPairList(correctIntersectionMultiset(truth, guess));
 
       let outcome: 'perfect' | 'partial' | 'none';
       if (multisetsEqual(truth, guess)) {
@@ -358,6 +370,26 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     // `useState` functional updaters run synchronously for this dispatch; the assignment
     // above always runs before we continue (TS does not model that flow).
     const session = sessionAfterCommit!;
+
+    // A correct tag is the one thing the player keeps after the encounter ends: it lands in the
+    // Codex and marks the fallacy known, which can open a gate elsewhere on the farm. Recorded
+    // per correct pair rather than only on a perfect guess — a partially correct attempt still
+    // spotted the pairs it got right, the same rule `pinnedMultisetFromAttempts` uses to keep
+    // them highlighted across retries. Written before the bus emits so a tutorial listening for
+    // `analysis:guess_correct` sees a Codex that already agrees with the screen.
+    if (correctPairs.length > 0) {
+      const { recordSpottedFallacy } = useCodexStore.getState();
+      const { activeDebateId } = useGameStore.getState();
+      for (const pair of correctPairs) {
+        if (!isCatalogedFallacyId(pair.fallacyId)) continue;
+        recordSpottedFallacy({
+          fallacyId: pair.fallacyId,
+          scenarioKey: activeDebateId,
+          statementId: targetId,
+          sentenceId: pair.sentenceId,
+        });
+      }
+    }
 
     const targetKind: AnalysisTargetKind = analysisTarget.kind;
     const roundNumberForEvent =
@@ -695,7 +727,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           // Mark by the scenario *key*, not `debate.id` — those differ
           // (`015_duchess_vs_rue` vs `level1-boss-pond-motion`) and only the key
           // is a `DebateScenarioKey`.
-          useProgressStore.getState().markCompleted(activeDebateId);
+          //
+          // Leaving is also where an encounter pays out what it taught: reaching the round
+          // that explains a fallacy is not the same as sitting through the encounter.
+          applyEncounterRewards(activeDebateId, debate);
           GameManager.switchScene(returnSceneKey);
         };
         break;
@@ -799,7 +834,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
               : undefined,
           };
         }
-        const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
+        const showResolved =
+          !isOptionGated(opt) || isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
         const resolvedSentences = resolvedOptionSentences(opt, showResolved);
         return {
           title: getLabel('wizardDetailSelectedStatement'),
@@ -813,7 +849,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'player_confirming': {
         const opt = wf.selectedOption;
         if (!opt) return null;
-        const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
+        const showResolved =
+          !isOptionGated(opt) || isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
         const resolvedSentences = resolvedOptionSentences(opt, showResolved);
         return {
           title: getLabel('wizardDetailYourChoice'),

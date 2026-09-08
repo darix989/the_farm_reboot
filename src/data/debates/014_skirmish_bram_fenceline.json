@@ -19,6 +19,7 @@
   ],
   "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
   "startingInsightPoints": 1,
+  "setsDialogFlags": ["bram-grate-conceded"],
   "rounds": [
     {
       "kind": "npc",
@@ -72,15 +73,15 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "You answered a crowd with a smaller crowd. Now the argument is about how many animals are on each side, which is the one contest you cannot win.",
-          "summary": "You count donkeys back at him and turn it into a headcount you cannot win.",
+          "summary": "You count the hauling crew back at him and turn it into a headcount you cannot win.",
           "sentences": [
             {
               "id": "s-r2-opt-a-1",
-              "text": "Every donkey on this farm thinks the grate is the problem — that's four of us, and we're the ones who carry the water.",
+              "text": "Everyone on the hauling crew thinks the grate is the problem — that's three of us, and we're the ones who carry the water.",
               "logicalFallacies": [
                 {
                   "id": "appeal-to-popularity",
-                  "explanation": "Counting donkeys is the same move Bram just made, only with a worse number. Whether the grate is the problem does not depend on who agrees."
+                  "explanation": "Counting haulers is the same move Bram just made, only with a worse number. Whether the grate is the problem does not depend on who agrees."
                 }
               ]
             }
@@ -138,11 +139,11 @@
             "sentences": [
               {
                 "id": "s-resp-r2-a-1",
-                "text": "Four donkeys against forty-one birds. Thank you, Rue. You've just made my argument for me.",
+                "text": "Three haulers against forty-one birds. Thank you, Rue. You've just made my argument for me.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Bram thanks you — four donkeys against forty-one birds makes his case for him."
+            "summary": "Bram thanks you — three haulers against forty-one birds makes his case for him."
           }
         },
         {
@@ -172,7 +173,7 @@
             "sentences": [
               {
                 "id": "s-resp-r2-c-1",
-                "text": "…It's bent. It's been bent since before the frost. That doesn't mean the hooves aren't also — look. Take it up with Duchess on Sunday.",
+                "text": "…It's bent. It's been bent since before the frost. That doesn't mean the newcomers aren't also — look. Take it up with Duchess on Sunday.",
                 "logicalFallacies": []
               }
             ],

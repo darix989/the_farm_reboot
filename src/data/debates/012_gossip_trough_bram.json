@@ -83,7 +83,7 @@
         "sentences": [
           {
             "id": "s-r2-1",
-            "text": "And frankly, the only one making a fuss is the donkey, and nobody knew his name a month ago.",
+            "text": "And frankly, the only one making a fuss is the raccoon, and nobody knew his name a month ago.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
@@ -93,7 +93,7 @@
           },
           {
             "id": "s-r2-2",
-            "text": "Everyone I've asked says the hooves are the problem.",
+            "text": "Everyone I've asked says the newcomers are the problem.",
             "logicalFallacies": [
               {
                 "id": "appeal-to-popularity",

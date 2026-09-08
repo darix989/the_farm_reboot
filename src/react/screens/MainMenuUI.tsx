@@ -2,6 +2,7 @@ import React from 'react';
 import { useGameStore, type DebateScenarioKey } from '../../store/gameStore';
 import { LEGACY_SCENARIOS, LEVEL_1_SCENARIOS, type ScenarioEntry } from '../../data/levels';
 import { GameManager } from '../../utils/gameManager';
+import { useCodexUiStore } from '../../store/codexUiStore';
 import styles from './MainMenuUI.module.scss';
 import getLabel, { type Labels } from '../../data/labels';
 
@@ -18,6 +19,9 @@ const MainMenuUI: React.FC = () => {
   const enterFarm = () => GameManager.switchScene('Farm');
 
   const openAnimationGallery = () => GameManager.switchScene('AnimalGallery');
+
+  // Not a scene switch — the Codex is a global overlay, so it opens on top of the menu.
+  const openCodex = useCodexUiStore((s) => s.openCodex);
 
   const renderGroup = (headingLabel: Labels, entries: readonly ScenarioEntry[]) => (
     <>
@@ -44,6 +48,9 @@ const MainMenuUI: React.FC = () => {
         <div className={styles.buttonContainer}>
           <button className={styles.menuButton} type="button" onClick={enterFarm}>
             {getLabel('enterTheFarm')}
+          </button>
+          <button className={styles.menuButton} type="button" onClick={() => openCodex()}>
+            {getLabel('codexOpen')}
           </button>
           <button className={styles.menuButton} type="button" onClick={openAnimationGallery}>
             {getLabel('animationGallery')}

@@ -49,18 +49,19 @@ const DEFAULT_DESYNC_DELAY: readonly [number, number] = [100, 1500];
 /**
  * Playback rate of a walk cycle for a character travelling at its top speed.
  *
- * The cast's walk clips were authored at a stroll — 15 frames at 12fps is a 1.25s stride —
- * and the overworld now moves Rue at 167px/s, a little over one of his own body heights per
- * second, so the clip's own rate slightly outpaces the ground and the feet skate. Tuned by
- * eye against the donkey (the most-seen animal); the same number then applies to the rest of
- * the cast, whose clips run at the same 12fps default.
+ * The cast's walk clips were authored at a stroll — the raccoon's is 16 frames at 12fps, a
+ * 1.33s stride — and the overworld moves Rue at 167px/s, so the clip's own rate outpaces the
+ * ground and the paws skate.
  *
- * It tracks `PLAYER_SPEED`: the skate is a ratio of stride length to ground covered, so
- * changing the one without the other just moves the mismatch to the opposite foot.
+ * The skate is a ratio of stride length to ground covered, which is why this tracks both
+ * `PLAYER_SPEED` *and* who the player is: it was 0.77, fit by eye against the donkey when the
+ * donkey was Rue. The raccoon covers the same 167px/s on a body roughly 35% longer at farm
+ * scale, so it needs proportionally less clip per metre. Only the player translates today, so
+ * this number is in practice the player's alone — re-eyeball it if that changes.
  */
-const MOVE_RATE_AT_TOP_SPEED = 0.77;
-/** A barely-pushed joystick should still lift the feet rather than crawl frame by frame. */
-const MIN_MOVE_RATE = 0.4;
+const MOVE_RATE_AT_TOP_SPEED = 0.52;
+/** A barely-pushed joystick should still lift the paws rather than crawl frame by frame. */
+const MIN_MOVE_RATE = 0.28;
 
 function moveRate(speed01: number): number {
   return Phaser.Math.Clamp(speed01 * MOVE_RATE_AT_TOP_SPEED, MIN_MOVE_RATE, MOVE_RATE_AT_TOP_SPEED);

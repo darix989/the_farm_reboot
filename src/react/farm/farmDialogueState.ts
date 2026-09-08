@@ -1,9 +1,10 @@
 import type { Labels } from '../../data/labels';
-import type { DebateScenarioKey } from '../../data/levels';
+import { scenarioRequirements, type DebateScenarioKey } from '../../data/levels';
 import { characterById } from '../../data/characters';
 import { farmTalkBeats, farmTalkSlotKey, type FarmTalkBeat } from '../../data/farmTalk';
 import { farmNpcById } from '../../data/farmMap';
 import { useProgressStore } from '../../store/progressStore';
+import type { GameCondition } from '../../utils/gameConditions';
 
 /**
  * What an animal has to say right now.
@@ -21,6 +22,18 @@ export interface FarmDialogueState {
   beats: FarmTalkBeat[];
   /** The encounter to launch, or null when this animal is done with you. */
   scenario: DebateScenarioKey | null;
+  /**
+   * `scenario`'s unlock requirements, passed through unevaluated.
+   *
+   * The animal offers their next *unfinished* encounter and never skips ahead to a later one
+   * just because this one is locked — the ladder is ordered, so jumping a rung would hand the
+   * player a conversation that assumes something they have not been told yet.
+   *
+   * Evaluation is left to the caller so it can happen inside React's subscription: a gate that
+   * opens while the dialogue is on screen should un-grey the button, and a snapshot taken here
+   * would be stale.
+   */
+  scenarioRequires: readonly GameCondition[];
 }
 
 export function farmDialogueFor(npcId: string): FarmDialogueState | null {
@@ -38,5 +51,19 @@ export function farmDialogueFor(npcId: string): FarmDialogueState | null {
     slotKey: farmTalkSlotKey(npc.id, suffix),
     beats: farmTalkBeats(npc.id, suffix),
     scenario: next,
+    scenarioRequires: next ? scenarioRequirements(next) : [],
   };
+}
+
+/**
+ * The requirements standing between the player and their next encounter with this animal.
+ *
+ * Lets the overworld prompt badge a locked animal before the player commits to a conversation,
+ * without building the whole dialogue state for every animal that wanders into range.
+ */
+export function farmNpcRequirements(npcId: string): readonly GameCondition[] {
+  const npc = farmNpcById(npcId);
+  if (!npc) return [];
+  const next = useProgressStore.getState().nextScenarioFor(npc.scenarios);
+  return next ? scenarioRequirements(next) : [];
 }

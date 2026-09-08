@@ -66,7 +66,7 @@ export interface AnimalDescriptor {
   transitions?: readonly (readonly [string, readonly string[]])[];
 }
 
-// rue -> donkey-grey (exact match)
+// tobias -> donkey-grey
 const DONKEY_GREY: AnimalDescriptor = {
   id: 'donkey-grey',
   baseAnimations: [
@@ -91,6 +91,10 @@ const DONKEY_GREY: AnimalDescriptor = {
       ],
     ],
   ],
+  // The field idle grazes 70% of the time, which is wrong for anyone standing at the podium —
+  // and doubly so for Tobias, who is presiding. This is also the pose the donkey's emotion
+  // clips were generated from (`__grey_donkey_idle-0.png`), so the cut into a clip holds.
+  idleTrial: [[1, [{ key: 'idle', repeat: -1 }]]],
   alert: [[1, [{ key: 'buck', repeat: -1 }]]],
   // The clip is named `walk_to_left` because that is the direction the art was drawn
   // walking; the whole cast faces left and the scene flips X to walk right (`Farm.update`).
@@ -140,7 +144,9 @@ const OWL: AnimalDescriptor = {
   move: [[1, [{ key: 'flap_wings', repeat: -1 }]]],
 };
 
-// tobias -> raccoon. Only user of `idleTrial`: sits up on the trial stand, stands in the field.
+// rue -> raccoon (exact match). Sits up on the trial stand, crouches on all fours in the
+// field. Every raccoon emotion clip was generated from `sitting_up_idle`, so the trial variant
+// is load-bearing rather than decorative — see `usesTrialIdle` in `src/data/characters.ts`.
 const RACCOON: AnimalDescriptor = {
   id: 'raccoon',
   baseAnimations: [

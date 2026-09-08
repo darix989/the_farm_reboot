@@ -190,17 +190,37 @@ camera), not the old Phaser-template blue.
 ## Progression
 
 `progressStore` is the repo's first use of zustand's `persist` middleware. It exists because
-Cass and Bram each own **two** encounters, so an animal has to know which one to offer next
-— it is load-bearing, not a nicety.
+an animal can own more than one encounter, so it has to know which one to offer next — Cass
+owns three, Hetty and Bram two each. It is load-bearing, not a nicety.
 
 `farmDialogueState.ts` derives the conversation from progress: an animal offers the first
 scenario the player has not finished, and the slot key is the animal's id plus how far
 down its list we are (`hetty1`, `cass2`, `bramDone`). Beats for that slot live in
 [`farmTalk.ts`](../src/data/farmTalk.ts). Adding an encounter to an animal means adding
-beats (and labels), not editing logic.
+beats (and labels), not editing logic. Lengthening a list silently re-points every existing
+beat row — the old `cass1` copy described the sparring bout, which became `#2`.
 
-Nothing is locked. The order is the animals' own, not a gate, so every rung stays testable
-out of sequence and the menu buttons still work.
+### Encounter gates
+
+`ScenarioEntry.requires` (on the entry in `levels.ts`) is the overworld gate. The chain is:
+
+```
+requires → farmDialogueState.scenarioRequires → useUnmetConditionsHint → disabled Talk button
+```
+
+A gated encounter is still *offered*. The animal talks; only Talk is disabled, and the
+conversation is where the reason is given. A silent animal is a bug report. The animal
+never skips a locked rung to offer a later unlocked one — the ladder is ordered.
+
+`Farm.ts` `tryInteract` is intentionally ungated: the gate is on *launching* an encounter,
+not on opening a dialogue. The main menu is also ungated, which is what makes the ladder
+testable without replaying the farm.
+
+Leaving a finished encounter goes through `applyEncounterRewards`, which marks it complete
+and grants `teachesFallacies` / `setsDialogFlags` in one write. Mark completion with the
+store's **`activeDebateId`**, not `debate.id` — they are different values
+(`015_duchess_vs_rue` vs `level1-boss-pond-motion`) and only the former is a
+`DebateScenarioKey`.
 
 The `merge` handler drops any saved key not in `DEBATES`, so a stale `localStorage` value
 naming a scenario that no longer exists cannot brick the farm.
@@ -270,8 +290,8 @@ sprite with a velocity and a depth sort — animated, as of
 Known rough edges:
 
 - **Terrain is still coloured blocks.** Only characters have real art.
-- **Rue walks, but never runs.** Movement plays the `move` behaviour (the donkey's
-  `walk_to_left` cycle, sped up with his ground speed); each animal's `run` clip is still
+- **Rue walks, but never runs.** Movement plays the `move` behaviour (the raccoon's
+  `walk_to_left` cycle, slowed to match his shorter stride); each animal's `run` clip is still
   unused, so there is no second gait above a threshold speed.
 - **NPCs never move.** They stand on their spawn point and idle. The `move` behaviour is on
   the descriptor, not in the player code, so a wandering NPC would animate correctly the day

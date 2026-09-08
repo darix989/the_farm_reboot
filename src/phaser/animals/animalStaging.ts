@@ -17,9 +17,10 @@
  *
  * So: **keep the source's relative scale ratios** (they are the actual art direction) and
  * apply one flat multiplier per surface — `farmScale` / `trialScale` below are
- * `sourceScale * surfaceMultiplier`, chosen so the donkey (the player, the most-seen
- * animal) lands at roughly 140px tall on the farm (next to the 56px placeholder NPCs) and
- * roughly 300px tall in the 1920x540 Trial hole. That preserves the designed size
+ * `sourceScale * surfaceMultiplier`, chosen so the donkey lands at roughly 140px tall on the
+ * farm (next to the 56px placeholder NPCs) and roughly 300px tall in the 1920x540 Trial hole.
+ * The donkey was the player when they were fit; Rue wears the raccoon now, which is why the
+ * raccoon carries a farm-only `MANUAL_ADJUST` below. That preserves the designed size
  * hierarchy — donkey/wolf biggest, sheep mid-sized, fox/owl smaller, raccoon smallest and
  * widest — while fitting this repo's very different pixel budget.
  *
@@ -58,24 +59,44 @@ const TRIAL_MULTIPLIER = 0.807; // donkey-grey -> ~300px tall in the 540px-tall 
 
 /**
  * Per-animal fudge factor applied on top of the ratio-derived scale, for the rare case
- * where the source ratio still doesn't read right once actually seen in this world.
- * Defaults to 1 (no adjustment) for every animal not listed.
+ * where the source ratio still doesn't read right once actually seen in this world. A bare
+ * number adjusts both surfaces; `{ farm, trial }` adjusts them independently, which the
+ * raccoon needs because it is the one animal that shows a *different pose* per surface.
+ * Defaults to 1 (no adjustment) for every animal and surface not listed.
  */
-const MANUAL_ADJUST: Partial<Record<AnimalSpriteId, number>> = {
+const MANUAL_ADJUST: Partial<Record<AnimalSpriteId, number | { farm?: number; trial?: number }>> = {
   'white-sheep-1': 0.8, // read a little large next to the rest of the cast; shrunk 20%
+  /**
+   * The two multipliers above were fit so *the player* lands at ~140px on the farm, back when
+   * the player was the donkey. Rue is the raccoon now, and the raccoon is the cast's smallest
+   * and widest animal: unadjusted its farm crouch renders 135x56, i.e. exactly as tall as the
+   * 56px placeholder NPC boxes it is supposed to be the protagonist among.
+   *
+   * Matching the donkey's old 140px height is not the fix — at 2.4:1 the crouch would come out
+   * 336px wide. 1.5 splits the difference at roughly 202x85: unmistakably the biggest thing
+   * moving on the farm, without a footprint wider than the barn door.
+   *
+   * `trial` stays at 1. There Rue sits up (`idleTrial`), a taller and much narrower pose, and
+   * that is the pose the existing trial multiplier was already staging Tobias in.
+   */
+  raccoon: { farm: 1.5 },
 };
 
+function adjustFor(id: AnimalSpriteId, surface: 'farm' | 'trial'): number {
+  const adjust = MANUAL_ADJUST[id];
+  if (adjust === undefined) return 1;
+  if (typeof adjust === 'number') return adjust;
+  return adjust[surface] ?? 1;
+}
+
 export const ANIMAL_STAGING: Record<AnimalSpriteId, AnimalStagingScale> = Object.fromEntries(
-  (Object.keys(SOURCE_SCALE) as AnimalSpriteId[]).map((id) => {
-    const adjust = MANUAL_ADJUST[id] ?? 1;
-    return [
-      id,
-      {
-        farmScale: SOURCE_SCALE[id] * FARM_MULTIPLIER * adjust,
-        trialScale: SOURCE_SCALE[id] * TRIAL_MULTIPLIER * adjust,
-      },
-    ];
-  }),
+  (Object.keys(SOURCE_SCALE) as AnimalSpriteId[]).map((id) => [
+    id,
+    {
+      farmScale: SOURCE_SCALE[id] * FARM_MULTIPLIER * adjustFor(id, 'farm'),
+      trialScale: SOURCE_SCALE[id] * TRIAL_MULTIPLIER * adjustFor(id, 'trial'),
+    },
+  ]),
 ) as Record<AnimalSpriteId, AnimalStagingScale>;
 
 /** A cast of three needs to be smaller than a cast of one or two to fit the hole. */
