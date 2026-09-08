@@ -26,6 +26,7 @@ gemini_gem_export
 
 # Ludo.ai generated art awaiting review (see scripts/generate-emotion-sprites.mjs)
 .ludo-review/
+.ludo-review-faces/
 
 # API keys for the asset pipeline (LUDO_API_KEY) — also covered by the `*.local` rule
 # above; named explicitly so it is obvious this file must never be committed.

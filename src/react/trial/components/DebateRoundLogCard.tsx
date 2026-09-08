@@ -6,6 +6,8 @@ import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import AnalyzeButton from './AnalyzeButton';
 import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
 import {
+  emotionForOption,
+  emotionFromStatement,
   getSpeakerName,
   MODERATOR_OPINION_LABEL,
   moderatorOpinionEmoji,
@@ -24,6 +26,8 @@ import {
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
+import { PLAYER_CHARACTER_ID } from '../../../data/characters';
+import AnimalFace from '../../characters/AnimalFace';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -275,12 +279,19 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
               {round.kind === 'npc' && (
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
-                    <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      {getSpeakerName(debate, round.speakerId)}
-                      {showSides
-                        ? ` — ${sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}`
-                        : ''}
-                    </p>
+                    <div className={styles.debateLogSpeakerRow}>
+                      <AnimalFace
+                        characterId={round.speakerId}
+                        emotion={emotionFromStatement(round.statement)}
+                        size="log"
+                      />
+                      <p style={{ color: uiColor.textCaption, margin: 0 }}>
+                        {getSpeakerName(debate, round.speakerId)}
+                        {showSides
+                          ? ` — ${sideDisplayLabel(sideForStatementSpeaker(debate, round.speakerId))}`
+                          : ''}
+                      </p>
+                    </div>
                     {mechanics.analysisEnabled && (
                       <div
                         className={styles.debateLogAnalyzeGroup}
@@ -316,16 +327,23 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
               {round.kind === 'player' && showOpponentPrompt && round.opponentPrompt && (
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
-                    <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      {getLabel('roundHeader', {
-                        replacements: { roundNumber: round.roundNumber },
-                      })}
-                      {getLabel('debaterQuestion', {
-                        replacements: {
-                          name: getSpeakerName(debate, round.opponentPrompt.speakerId),
-                        },
-                      })}
-                    </p>
+                    <div className={styles.debateLogSpeakerRow}>
+                      <AnimalFace
+                        characterId={round.opponentPrompt.speakerId}
+                        emotion={emotionFromStatement(round.opponentPrompt)}
+                        size="log"
+                      />
+                      <p style={{ color: uiColor.textCaption, margin: 0 }}>
+                        {getLabel('roundHeader', {
+                          replacements: { roundNumber: round.roundNumber },
+                        })}
+                        {getLabel('debaterQuestion', {
+                          replacements: {
+                            name: getSpeakerName(debate, round.opponentPrompt.speakerId),
+                          },
+                        })}
+                      </p>
+                    </div>
                     {showPromptAnalyze && (
                       <div
                         className={styles.debateLogAnalyzeGroup}
@@ -365,15 +383,22 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
               {round.kind === 'player' && showPlayerStatement && chosenOption && (
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
-                    <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      {getLabel('roundHeader', {
-                        replacements: {
-                          roundNumber: completedForRound?.roundNumber ?? round.roundNumber,
-                        },
-                      })}
-                      {getLabel('you')}
-                      {impactEmojiLine != null ? <> — {impactEmojiLine}</> : null}
-                    </p>
+                    <div className={styles.debateLogSpeakerRow}>
+                      <AnimalFace
+                        characterId={PLAYER_CHARACTER_ID}
+                        emotion={emotionForOption(chosenOption)}
+                        size="log"
+                      />
+                      <p style={{ color: uiColor.textCaption, margin: 0 }}>
+                        {getLabel('roundHeader', {
+                          replacements: {
+                            roundNumber: completedForRound?.roundNumber ?? round.roundNumber,
+                          },
+                        })}
+                        {getLabel('you')}
+                        {impactEmojiLine != null ? <> — {impactEmojiLine}</> : null}
+                      </p>
+                    </div>
                     {mechanics.analysisEnabled && (
                       <div
                         className={styles.debateLogAnalyzeGroup}
@@ -411,18 +436,25 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
               {round.kind === 'player' && showOpponentResponse && displayResponse && (
                 <div className={styles.debateLogStatementBlock}>
                   <div className={styles.debateLogStatementHeaderRow}>
-                    <p style={{ color: uiColor.textCaption, margin: 0 }}>
-                      {getLabel('roundHeader', {
-                        replacements: {
-                          roundNumber: completedForRound?.roundNumber ?? round.roundNumber,
-                        },
-                      })}
-                      {getLabel('responds', {
-                        replacements: {
-                          name: getSpeakerName(debate, displayResponse.statement.speakerId),
-                        },
-                      })}
-                    </p>
+                    <div className={styles.debateLogSpeakerRow}>
+                      <AnimalFace
+                        characterId={displayResponse.statement.speakerId}
+                        emotion={emotionFromStatement(displayResponse.statement)}
+                        size="log"
+                      />
+                      <p style={{ color: uiColor.textCaption, margin: 0 }}>
+                        {getLabel('roundHeader', {
+                          replacements: {
+                            roundNumber: completedForRound?.roundNumber ?? round.roundNumber,
+                          },
+                        })}
+                        {getLabel('responds', {
+                          replacements: {
+                            name: getSpeakerName(debate, displayResponse.statement.speakerId),
+                          },
+                        })}
+                      </p>
+                    </div>
                     {showResponseAnalyze && (
                       <div
                         className={styles.debateLogAnalyzeGroup}

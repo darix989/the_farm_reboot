@@ -42,25 +42,30 @@ const ANIMAL_QUALITY_TITLE: Record<Exclude<ClipQualityStatus, 'none'>, Labels> =
 };
 
 function clipQualityTitle(clip: AnimalClip): string {
+  const parts: string[] = [];
   if (clip.qualityStatus === 'unknown' || !clip.quality) {
-    return getLabel('galleryQualityUnmeasured');
-  }
-  const parts = [
-    getLabel('galleryQualityMetrics', {
-      replacements: {
-        loopPop: clip.quality.loopPop,
-        heightSwing: clip.quality.heightSwing,
-        driftX: clip.quality.driftX,
-      },
-    }),
-  ];
-  if (clip.frameCount !== CURRENT_EMOTION_FRAME_COUNT) {
+    parts.push(getLabel('galleryQualityUnmeasured'));
+  } else {
     parts.push(
-      getLabel('galleryQualityStale', { replacements: { frames: String(clip.frameCount) } }),
+      getLabel('galleryQualityMetrics', {
+        replacements: {
+          loopPop: clip.quality.loopPop,
+          heightSwing: clip.quality.heightSwing,
+          driftX: clip.quality.driftX,
+        },
+      }),
     );
+    if (clip.frameCount !== CURRENT_EMOTION_FRAME_COUNT) {
+      parts.push(
+        getLabel('galleryQualityStale', { replacements: { frames: String(clip.frameCount) } }),
+      );
+    }
+    if (clip.quality.warnings.length > 0) {
+      parts.push(clip.quality.warnings.join(' '));
+    }
   }
-  if (clip.quality.warnings.length > 0) {
-    parts.push(clip.quality.warnings.join(' '));
+  if (clip.reviewNotes && clip.reviewNotes.length > 0) {
+    parts.push(clip.reviewNotes.join(' '));
   }
   return parts.join(' · ');
 }
@@ -128,6 +133,11 @@ const AnimalGalleryUI: React.FC = () => {
           : getLabel('galleryNoArt')}
         {clip.isRest ? ` · ${getLabel('galleryRestPose')}` : ''}
       </span>
+      {clip.reviewNotes?.map((note) => (
+        <span key={note} className={styles.clipNote}>
+          {note}
+        </span>
+      ))}
     </button>
   );
 

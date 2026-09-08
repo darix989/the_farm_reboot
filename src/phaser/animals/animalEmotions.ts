@@ -76,6 +76,18 @@ export interface EmotionQuality {
   loopPop: number;
   heightSwing: number;
   driftX: number;
+  /**
+   * Face clips only: mean and worst difference between *consecutive* frames.
+   *
+   * `loopPop` compares the first frame to the last and is blind to a mouth interior or pupil
+   * that is redrawn differently in every single frame — the clip can return exactly to its
+   * start and still strobe throughout. That is a minor artifact on a 300px body sprite and
+   * the loudest thing in a portrait, so only the face register measures it. Absent on every
+   * body clip. `churnPeakIndex` names the frame worth zooming in on.
+   */
+  churnMean?: number;
+  churnPeak?: number;
+  churnPeakIndex?: number;
   warnings: readonly string[];
 }
 
@@ -118,4 +130,9 @@ export interface EmotionSheet {
    * Absent on clips promoted before quality was stored.
    */
   quality?: EmotionQuality;
+  /**
+   * Human review notes. Survive `--remeasure` (which rewrites `quality`) and turn the
+   * gallery badge to warn even when the numeric gates are clean.
+   */
+  reviewNotes?: readonly string[];
 }

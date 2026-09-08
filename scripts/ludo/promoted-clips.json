@@ -472,6 +472,9 @@
         "driftX": 3.5,
         "warnings": []
       },
+      "reviewNotes": [
+        "fleece sits a few pixels lower than the other emotions, so the clip reads slightly smaller"
+      ],
       "generatedAt": "2026-09-05T01:31:45.481Z"
     },
     "doubtful": {

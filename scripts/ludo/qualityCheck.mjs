@@ -19,7 +19,18 @@
  *
  * **`driftX`** — how far the character's centre wanders horizontally. The stage slot is fixed,
  * so a clip that slides is a clip that will look unmoored next to its neighbours.
+ *
+ * **`churn`** (generated clips only — see `CROP_QUALITY_THRESHOLDS`) — the mean difference
+ * between *consecutive* frames, and the
+ * worst such pair. `loopPop` compares frame 0 to frame N-1 and is therefore completely blind
+ * to a mouth interior or a pupil that is redrawn differently in every single frame: the clip
+ * can return exactly to its start and still strobe for the whole two seconds in between. That
+ * defect is a minor artifact on a 300px body sprite and the loudest thing in the clip on a
+ * portrait, where the mouth fills a fifth of the frame — so faces measure it and bodies do
+ * not. `churnPeakIndex` names the frame pair to zoom into, which automates the "crop the head
+ * from a handful of frames and lay them side by side" step SKILL.md rule 7 asks for by hand.
  */
+import sharp from 'sharp';
 import { boundsOf, frameAt } from './normalize.mjs';
 
 /**
@@ -33,6 +44,37 @@ export const QUALITY_THRESHOLDS = {
   heightSwing: 20,
   /** In frame pixels, half the total wander. */
   driftX: 20,
+};
+
+/**
+ * The gates for a **cropped** portrait, which is a different measurement problem again.
+ *
+ * These replaced a set calibrated for *generated* headshots, and the change is not a tweak —
+ * three of those four gates were measuring the wrong thing once portraits became crops of the
+ * body clips, and fired on 4 of the fox's 5 emotions. A review page full of warnings nobody
+ * should act on trains people to ignore warnings.
+ *
+ * - **`loopPop` 2%, unchanged.** A seam is a seam. The body clip's loop carries straight
+ *   through into the crop, so a portrait can still pop on every repeat.
+ * - **`heightSwing` dropped.** At 8% this was the automatic detector for the *generator having
+ *   zoomed* — the one failure a generated face clip must not have. A crop cannot zoom: the rect
+ *   is fixed and the cell is contain-fitted. What height swing now measures is the animal's own
+ *   jaw opening and head tilt, which is the motion the portrait exists to show.
+ * - **`driftX` loosened to 6% of the cell.** The head is pinned by the aligner rather than by a
+ *   prompt, so `summarizeAlignment` in `cropFace.mjs` is the sharper signal — it reports what
+ *   the aligner actually did. This stays as a backstop for a gross slide.
+ * - **`churn` dropped.** It exists to catch a mouth interior or pupil *redrawn differently in
+ *   every frame*, which is impossible in a crop: the pixels are the same drawn art, moved. What
+ *   it detects here is the mouth opening, i.e. the clip working. It flagged four fox crops.
+ *
+ * Keeping churn would also have been actively misleading, because it has a known blind spot —
+ * it compares consecutive frames, so it caught nothing at all on the worst generated clip,
+ * whose eye closed over six frames.
+ */
+export const CROP_QUALITY_THRESHOLDS = {
+  loopPop: 2,
+  /** Fraction of `frameWidth`, resolved against the actual grid. */
+  driftXRatio: 0.06,
 };
 
 /**
@@ -51,56 +93,99 @@ function meanDifference(a, b) {
   return total / (a.length / 4) / 510 * 100;
 }
 
-async function rawFrame(sheetBuffer, index, grid) {
-  const png = await frameAt(sheetBuffer, index, grid);
-  const { default: sharp } = await import('sharp');
-  return sharp(png).ensureAlpha().raw().toBuffer();
-}
-
 /**
- * Returns `{ loopPop, heightSwing, driftX, warnings }` for one generated clip.
+ * Returns `{ loopPop, heightSwing, driftX, warnings }` for one generated clip, plus
+ * `{ churnMean, churnPeak, churnPeakIndex }` when the threshold set asks for churn.
  *
  * `grid` is the `{ cols, frameWidth, frameHeight, frameCount }` the generator reported.
+ * `thresholds` selects the gate set — `QUALITY_THRESHOLDS` for body clips (the default, so
+ * every existing caller is unchanged) or `CROP_QUALITY_THRESHOLDS` for portraits. A set may
+ * omit a gate to disable it.
  */
-export async function measureClipQuality(sheetBuffer, grid) {
-  const first = await rawFrame(sheetBuffer, 0, grid);
-  const last = await rawFrame(sheetBuffer, grid.frameCount - 1, grid);
-  const loopPop = meanDifference(first, last);
+export async function measureClipQuality(sheetBuffer, grid, thresholds = QUALITY_THRESHOLDS) {
+  const wantsChurn = thresholds.churnPeakRatio != null;
 
   const heights = [];
   const centres = [];
+  const churn = [];
+  let first = null;
+  let last = null;
+  let previous = null;
+
+  // One pass over the grid. Each cell is decoded once and then used for every metric that
+  // needs it — bounds for height/drift, raw pixels for the loop seam and for churn against
+  // the frame before it. Decoding a 512px cell twice was measurable on a 25-frame sheet.
   for (let i = 0; i < grid.frameCount; i++) {
-    const box = await boundsOf(await frameAt(sheetBuffer, i, grid));
-    if (!box) continue;
-    heights.push(box.height);
-    centres.push(box.x + box.width / 2);
+    const png = await frameAt(sheetBuffer, i, grid);
+
+    const box = await boundsOf(png);
+    if (box) {
+      heights.push(box.height);
+      centres.push(box.x + box.width / 2);
+    }
+
+    if (i === 0 || i === grid.frameCount - 1 || wantsChurn) {
+      const raw = await sharp(png).ensureAlpha().raw().toBuffer();
+      if (i === 0) first = raw;
+      if (i === grid.frameCount - 1) last = raw;
+      if (wantsChurn && previous) churn.push(meanDifference(previous, raw));
+      previous = raw;
+    }
   }
+
+  const loopPop = first && last ? meanDifference(first, last) : 0;
 
   const span = (values) => (values.length ? Math.max(...values) - Math.min(...values) : 0);
   const heightSwing = heights.length ? (span(heights) / Math.max(...heights)) * 100 : 0;
   const driftX = span(centres) / 2;
 
+  // Absolute px for bodies, a fraction of the cell for crops — see CROP_QUALITY_THRESHOLDS.
+  // A threshold set may omit a gate entirely to disable it; `Infinity` rather than `undefined`
+  // so the comparison is a deliberate never-fires rather than a NaN that happens to be falsy.
+  const driftGate =
+    thresholds.driftX ?? (thresholds.driftXRatio != null ? thresholds.driftXRatio * grid.frameWidth : Infinity);
+  const heightGate = thresholds.heightSwing ?? Infinity;
+
   const warnings = [];
-  if (loopPop > QUALITY_THRESHOLDS.loopPop) {
+  if (loopPop > thresholds.loopPop) {
     warnings.push(
-      `loop seam ${loopPop.toFixed(2)}% (over ${QUALITY_THRESHOLDS.loopPop}%) — it will visibly jump on every repeat`,
+      `loop seam ${loopPop.toFixed(2)}% (over ${thresholds.loopPop}%) — it will visibly jump on every repeat`,
     );
   }
-  if (heightSwing > QUALITY_THRESHOLDS.heightSwing) {
+  if (heightSwing > heightGate) {
     warnings.push(
-      `height swing ${heightSwing.toFixed(0)}% (over ${QUALITY_THRESHOLDS.heightSwing}%) — check it is motion, not the character changing pose`,
+      `height swing ${heightSwing.toFixed(0)}% (over ${heightGate}%) — check it is motion, not the character changing pose`,
     );
   }
-  if (driftX > QUALITY_THRESHOLDS.driftX) {
+  if (driftX > driftGate) {
     warnings.push(
-      `horizontal drift ±${driftX.toFixed(0)}px (over ${QUALITY_THRESHOLDS.driftX}px) — it will look unmoored in a fixed stage slot`,
+      `horizontal drift ±${driftX.toFixed(0)}px (over ${driftGate.toFixed(0)}px) — it will look unmoored in a fixed stage slot`,
     );
   }
 
-  return {
+  const measured = {
     loopPop: Number(loopPop.toFixed(2)),
     heightSwing: Number(heightSwing.toFixed(1)),
     driftX: Number(driftX.toFixed(1)),
-    warnings,
   };
+
+  if (wantsChurn && churn.length > 0) {
+    const churnMean = churn.reduce((sum, value) => sum + value, 0) / churn.length;
+    const churnPeak = Math.max(...churn);
+    // +1 because churn[i] compares frame i to frame i+1, and the frame worth looking at is
+    // the one that changed.
+    const churnPeakIndex = churn.indexOf(churnPeak) + 1;
+    if (churnMean > 0 && churnPeak > churnMean * thresholds.churnPeakRatio) {
+      warnings.push(
+        `frame ${churnPeakIndex} churns ${(churnPeak / churnMean).toFixed(1)}x the clip average ` +
+          `(over ${thresholds.churnPeakRatio}x) — zoom in on frames ${churnPeakIndex - 1}-${churnPeakIndex} ` +
+          `for a mouth interior or pupil being redrawn`,
+      );
+    }
+    measured.churnMean = Number(churnMean.toFixed(2));
+    measured.churnPeak = Number(churnPeak.toFixed(2));
+    measured.churnPeakIndex = churnPeakIndex;
+  }
+
+  return { ...measured, warnings };
 }

@@ -4,6 +4,7 @@ import { resolveCharacter } from '../../data/characters';
 import type { DebateScenarioKey } from '../../data/levels';
 import type { FarmDialogueState } from './farmDialogueState';
 import TrialTextButton from '../trial/components/TrialTextButton';
+import AnimalFace from '../characters/AnimalFace';
 import styles from './FarmUI.module.scss';
 
 interface FarmDialogueProps {
@@ -68,21 +69,30 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({
         aria-label={getLabel(dialogue.nameLabel)}
         onClick={(e) => e.stopPropagation()}
       >
-        <p className={styles.dialogueSpeaker}>{speakerName}</p>
-        <p className={styles.dialogueBody}>{beat ? getLabel(beat.textLabel) : ''}</p>
-        <div className={styles.dialogueActions}>
-          {!isLast ? (
-            <TrialTextButton onClick={onAdvance}>{getLabel('continue')}</TrialTextButton>
-          ) : dialogue.scenario ? (
-            <>
-              <TrialTextButton onClick={onClose}>{getLabel('farmNotNow')}</TrialTextButton>
-              <TrialTextButton onClick={() => onStart(dialogue.scenario as DebateScenarioKey)}>
-                {getLabel('farmTalk')}
-              </TrialTextButton>
-            </>
-          ) : (
-            <TrialTextButton onClick={onClose}>{getLabel('farmLeave')}</TrialTextButton>
-          )}
+        {beat && (
+          <AnimalFace
+            characterId={beat.speakerId}
+            emotion={beat.emotion ?? 'talking'}
+            size="dialogue"
+          />
+        )}
+        <div className={styles.dialogueMain}>
+          <p className={styles.dialogueSpeaker}>{speakerName}</p>
+          <p className={styles.dialogueBody}>{beat ? getLabel(beat.textLabel) : ''}</p>
+          <div className={styles.dialogueActions}>
+            {!isLast ? (
+              <TrialTextButton onClick={onAdvance}>{getLabel('continue')}</TrialTextButton>
+            ) : dialogue.scenario ? (
+              <>
+                <TrialTextButton onClick={onClose}>{getLabel('farmNotNow')}</TrialTextButton>
+                <TrialTextButton onClick={() => onStart(dialogue.scenario as DebateScenarioKey)}>
+                  {getLabel('farmTalk')}
+                </TrialTextButton>
+              </>
+            ) : (
+              <TrialTextButton onClick={onClose}>{getLabel('farmLeave')}</TrialTextButton>
+            )}
+          </div>
         </div>
       </div>
     </div>

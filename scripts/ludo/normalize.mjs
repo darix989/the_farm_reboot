@@ -85,7 +85,7 @@ export async function frameAt(sheetBuffer, index, { cols, frameWidth, frameHeigh
 }
 
 /** Union of the character's box across every cell of the grid that holds a frame. */
-async function sheetBounds(sheetBuffer, grid) {
+export async function sheetBounds(sheetBuffer, grid) {
   let union = null;
 
   for (let i = 0; i < grid.frameCount; i++) {
@@ -140,4 +140,48 @@ export async function measureNormalization(sheetBuffer, referenceBuffer, grid) {
     originY: Number((anchorY / grid.frameHeight).toFixed(4)),
     measured: { reference, sheet, referenceCanvas: { width: referenceMeta.width, height: referenceMeta.height } },
   };
+}
+
+// ---------------------------------------------------------------------------
+// faces
+// ---------------------------------------------------------------------------
+
+/**
+ * How much of the portrait box the head fills. A runtime/review constant, not a shipped
+ * measurement, so re-framing the whole cast 8% tighter is a one-line edit with no credits
+ * spent and no re-promote. Mirrored in `src/phaser/animals/animalFaces.ts`.
+ */
+export const FACE_BOX_FILL = 0.92;
+
+/**
+ * A portrait's `fit` box is no longer measured here.
+ *
+ * There used to be a `measureFaceNormalization` alongside this, which measured a generated
+ * headshot's union alpha box the way `measureNormalization` measures a body's. Portraits are
+ * now crops of the body clips at a rect we choose, so the answer is arithmetic on that rect
+ * rather than a measurement of the art — and measuring it back out of the pixels actively did
+ * harm, because different emotions have different silhouette extents inside the same rect. See
+ * `fitForRect` in `cropFace.mjs`, which owns that calculation and explains it.
+ */
+
+/**
+ * Turns a face clip's `fit` box into the transform that centres the head in a `size`-px box.
+ *
+ * Exported from the pipeline and mirrored in `animalFaces.ts` so the review page and the game
+ * frame a portrait *identically*. A contact sheet that stages clips its own way is worse than
+ * no contact sheet — it is the reason `applyEmotionStaging` is shared between the Trial and
+ * the gallery rather than reimplemented in each.
+ *
+ * Uses `max(headW, headH)` so a non-square head box (every one of them: the crops are not
+ * square and the generator pads them to a square cell) is fitted without distortion.
+ * Apply as `transform: translate(x, y) scale(z)` with `transform-origin: 0 0` on a
+ * `frameWidth x frameHeight` element.
+ */
+export function faceBoxTransform(fit, frameWidth, frameHeight, size, fill = FACE_BOX_FILL) {
+  const headWidth = fit.width * frameWidth;
+  const headHeight = fit.height * frameHeight;
+  const z = (size * fill) / Math.max(headWidth, headHeight);
+  const centreX = (fit.x + fit.width / 2) * frameWidth;
+  const centreY = (fit.y + fit.height / 2) * frameHeight;
+  return { z, x: size / 2 - centreX * z, y: size / 2 - centreY * z };
 }

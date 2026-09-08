@@ -17,6 +17,7 @@
 import { readFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import sharp from 'sharp';
+import { boundsOf } from './normalize.mjs';
 
 const ATLAS_DIR = 'public/assets/characters';
 
@@ -87,6 +88,30 @@ export async function extractReferenceFrame(animalId, frameName) {
     .toBuffer();
 
   return { buffer, width: canvasWidth, height: canvasHeight };
+}
+
+/**
+ * The reference frame with a crop rect stroked over it, on a light checkerboard.
+ *
+ * This is the picture the head-box authoring loop is actually judged on: `head.png` shows what
+ * the portrait will be, but only this shows *what was left out* — an ear clipped by the top
+ * edge or a rect that has slid onto the shoulder is obvious here and invisible in the crop.
+ * Free to produce, so `--faces --dry-run` always writes it.
+ */
+export async function strokeRectPreview(referenceBuffer, rect) {
+  const { width, height } = await sharp(referenceBuffer).metadata();
+  const overlay = Buffer.from(
+    `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">` +
+      `<rect x="${rect.left}" y="${rect.top}" width="${rect.width}" height="${rect.height}" ` +
+      `fill="none" stroke="#ff00aa" stroke-width="${Math.max(2, Math.round(width / 200))}" />` +
+      `</svg>`,
+  );
+  return sharp({
+    create: { width, height, channels: 4, background: { r: 244, g: 244, b: 246, alpha: 1 } },
+  })
+    .composite([{ input: referenceBuffer }, { input: overlay }])
+    .png()
+    .toBuffer();
 }
 
 /** `data:` URI form, which is what both sprite endpoints accept for `initial_image`. */

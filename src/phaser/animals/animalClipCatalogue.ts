@@ -42,6 +42,8 @@ export interface AnimalClip {
   qualityStatus?: ClipQualityStatus;
   /** Present when the promoted record stored measurements for this emotion. */
   quality?: EmotionQuality;
+  /** Human review notes from the promoted record; also force a warn badge. */
+  reviewNotes?: readonly string[];
 }
 
 /**
@@ -70,6 +72,7 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
       isRest: false,
       qualityStatus: emotionClipQualityStatus(sheet),
       quality: sheet?.quality,
+      reviewNotes: sheet?.reviewNotes,
     };
   });
 

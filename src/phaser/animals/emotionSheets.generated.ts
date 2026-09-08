@@ -449,6 +449,9 @@ export const EMOTION_SHEETS: Partial<
         driftX: 3.5,
         warnings: [],
       },
+      reviewNotes: [
+        'fleece sits a few pixels lower than the other emotions, so the clip reads slightly smaller',
+      ],
     },
     doubtful: {
       file: 'white-sheep-1-doubtful.png',
