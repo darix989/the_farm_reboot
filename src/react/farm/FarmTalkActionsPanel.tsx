@@ -15,7 +15,8 @@ interface FarmTalkActionsPanelProps {
    * leaving a greyed button unexplained.
    */
   lockedHint: string | null;
-  onRevealAdvance: () => void;
+  /** `true` when the press was consumed by the sentence pacer. */
+  onRevealAdvance: () => boolean;
   onAdvanceBeat: () => void;
   onStart: (scenario: DebateScenarioKey) => void;
   onClose: () => void;
@@ -79,10 +80,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
             label: continueLabel,
             icon: revealActive ? 'reveal' : 'continue',
             onClick: () => {
-              if (revealActive) {
-                onRevealAdvance();
-                return;
-              }
+              if (revealActive && onRevealAdvance()) return;
               if (!isLastBeat) onAdvanceBeat();
             },
           }}

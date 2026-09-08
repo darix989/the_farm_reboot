@@ -588,7 +588,12 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   });
   // Destructured so the effects below can depend on the stable callbacks by name; the reveal
   // object itself is a fresh literal every render.
-  const { active: revealActive, advance: revealAdvance, complete: revealComplete } = reveal;
+  const {
+    active: revealActive,
+    settled: revealSettled,
+    advance: revealAdvance,
+    complete: revealComplete,
+  } = reveal;
 
   // Analysis lists every sentence of the line as its own card, and `requiresAnalysis` rounds
   // force the player through it. Clicking a typewriter through text they just analysed is
@@ -626,22 +631,6 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // Footer action state
   // -----------------------------------------------------------------------
   const interactiveFooter = useMemo((): InteractiveFooter => {
-    // While a line is still being paced out, Continue belongs to the reveal: it fills in the
-    // rest of the sentence, or steps to the next one. No `interactive:continue` emit and no
-    // dispatch — nothing about the debate has moved. This has to sit ahead of
-    // `analysisGatePending` below, or a `requiresAnalysis` round deadlocks: the gate disables
-    // Continue, and a disabled Continue can never finish the reveal.
-    if (revealActive) {
-      return {
-        submitLabel: getLabel('continue'),
-        submitDisabled: false,
-        submitIcon: 'reveal',
-        onSubmit: () => {
-          revealAdvance();
-        },
-      };
-    }
-
     let submitLabel = getLabel('continue');
     let submitDisabled = true;
     let submitIcon: InteractiveFooter['submitIcon'] = 'continue';
@@ -738,7 +727,28 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         submitDisabled = true;
     }
 
-    return { submitLabel, submitDisabled, submitIcon, onSubmit };
+    const phaseFooter: InteractiveFooter = { submitLabel, submitDisabled, submitIcon, onSubmit };
+
+    // While a line is still being paced out, Continue belongs to the reveal: it fills in the
+    // rest of the sentence, or steps to the next one. No `interactive:continue` emit and no
+    // dispatch — nothing about the debate has moved. This has to wrap the phase footer, not
+    // sit behind `analysisGatePending`, or a `requiresAnalysis` round deadlocks: the gate
+    // disables Continue, and a disabled Continue can never finish the reveal.
+    if (revealActive) {
+      return {
+        submitLabel: getLabel('continue'),
+        submitDisabled: false,
+        submitIcon: 'reveal',
+        onSubmit: () => {
+          if (revealAdvance()) return;
+          // Last sentence was already on screen; honor the phase gate (e.g. must-analyze).
+          if (phaseFooter.submitDisabled) return;
+          phaseFooter.onSubmit?.();
+        },
+      };
+    }
+
+    return phaseFooter;
     // eslint-disable-next-line react-hooks/exhaustive-deps -- wf.gamePhase + wf.dispatch cover footer behavior; setIntroSummaryOpen is stable
   }, [
     wf.gamePhase,
@@ -962,17 +972,19 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
   const wizardReveal = useMemo(
     (): WizardPanelReveal | null =>
-      revealActive
+      revealActive || revealSettled
         ? {
             sentence: reveal.sentence,
             sentenceIndex: reveal.sentenceIndex,
             sentenceCount: reveal.sentenceCount,
             skipToken: reveal.skipToken,
             onSentenceTyped: reveal.onSentenceTyped,
+            settled: revealSettled,
           }
         : null,
     [
       revealActive,
+      revealSettled,
       reveal.sentence,
       reveal.sentenceIndex,
       reveal.sentenceCount,
@@ -1099,9 +1111,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
             mechanics={mechanics}
-            // Disabled (not just gated by tutorial) until the line finishes revealing in the
-            // Dialog — opening analysis on a statement the player hasn't fully read yet would
-            // let them skip the reveal.
+            // Disabled (not just gated by tutorial) until the last sentence of the line has
+            // landed in the Dialog — opening analysis on a statement the player hasn't fully
+            // read yet would let them skip the reveal.
             analyzeTarget={revealActive ? null : currentAnalysisTarget}
             hint={actionsHint}
           />

@@ -149,8 +149,9 @@ debate_complete
 Three notes on this diagram:
 
 - **Continue is consumed by the wizard reveal first.** In every phase that reveals an incoming
-  line, the first presses step through its sentences and dispatch nothing; only once the whole
-  line is on screen does Continue advance the phase as drawn. See "Wizard sentence reveal".
+  line, the first presses step through its sentences and dispatch nothing; once the **last
+  sentence** has landed, Continue advances the phase as drawn (and Analyze unlocks). See
+  "Wizard sentence reveal".
 
 - **`player_confirming` is not in it on purpose.** The phase is declared in `GamePhase` and
   reduced, and `canUndo` keys off it — but nothing ever sets it, so it is unreachable.
@@ -221,7 +222,8 @@ Three things worth knowing before you touch it:
 ### Wizard panel (`trial/panels/WizardPanel.tsx`)
 
 - Displays `wizardMessage` — a single contextual hint that tells the player what to do next (e.g. "Read the opponent's statement, then click Continue").
-- Below it, the statement box: the title of the line being spoken (`"Duchess speaks:"`) and its text, either in full or one sentence at a time while a reveal is running.
+- Below it, the statement box: the title of the line being spoken (`"Duchess speaks:"`) and its
+  text, one sentence at a time while a reveal is running, then held on the last sentence.
 
 ### Interactive panel (`trial/panels/InteractivePanel.tsx`)
 
@@ -236,7 +238,7 @@ Content depends on `gamePhase`:
 | `round_recap` | Same response view as `npc_responding` when a crossfire reply exists; otherwise a short note to use the recap modal. The footer **Continue** is disabled — the player advances only from the `RoundRecapModal`. |
 | `debate_complete` | A "debate finished" message with the final score. |
 
-The panel footer is three icon-only squared buttons: **Analyze | Back | Continue**. Analyze always targets the opponent's *current* line (the NPC statement, the opponent's crossfire question, or its response — never the player's own choice), keyed off `gamePhase`; with nothing current to analyze (`debate_intro`, `player_confirming`, `round_recap`, `debate_complete`) it renders disabled rather than reflowing the row, and it is not rendered at all when `mechanics.analysisEnabled` is `false`. It carries the same green/amber/red guess-state tint as the debate log's `AnalyzeButton` lenses. **Back** is enabled only in `player_confirming` (or while an option can be unselected in `player_choosing`). The context-sensitive submit button's icon follows its three states — continue / confirm / leave — via `TrialUI`'s `interactiveFooter.submitIcon`.
+The panel footer is three icon-only squared buttons: **Analyze | Back | Continue**. Analyze always targets the opponent's *current* line (the NPC statement, the opponent's crossfire question, or its response — never the player's own choice), keyed off `gamePhase`; it stays disabled while that line is still being revealed, and with nothing current to analyze (`debate_intro`, `player_confirming`, `round_recap`, `debate_complete`) it renders disabled rather than reflowing the row, and it is not rendered at all when `mechanics.analysisEnabled` is `false`. It carries the same green/amber/red guess-state tint as the debate log's `AnalyzeButton` lenses. **Back** is enabled only in `player_confirming` (or while an option can be unselected in `player_choosing`). The context-sensitive submit button's icon follows its three states — continue / confirm / leave — via `TrialUI`'s `interactiveFooter.submitIcon`.
 
 ---
 
@@ -245,20 +247,20 @@ The panel footer is three icon-only squared buttons: **Analyze | Back | Continue
 Incoming speech is paced through the wizard one sentence at a time rather than dumped as a
 block. `TrialUI` builds a `WizardRevealSource` (`{ key, sentences }`) for the current phase and
 passes it to `useWizardReveal`; `WizardPanel` renders the current sentence through
-`TypewriterText`.
+`TypewriterText`, then holds the last sentence on screen (`settled`) instead of joining the
+whole line.
 
 **Press rules**
 
 - Continue (or Space / Enter) while characters are still appearing fills in the rest of the
   sentence.
 - Continue on a fully-shown sentence steps to the next one.
-- Continue past the **last** sentence puts the whole joined text in the panel and swaps the
-  guidance line from `wizardRoundLabel` ("Round 4 — crossfire") to the full `wizardMessage`
-  ("… Duchess has asked a question. Choose your response."). A further Continue advances the
-  phase.
-- **A single-sentence line skips that last step**: the sentence *is* the whole text, so
-  finishing the type finishes the reveal and the player keeps a press. Multi-sentence lines
-  never auto-advance — swapping the body out from under someone mid-read is worse than a press.
+- When the **last** sentence finishes (typewriter or skip), the reveal is done: the wizard
+  keeps that sentence (readout stays `(n/n)`), Analyze unlocks, and Continue becomes the
+  phase-advance button. Skipping the last sentence mid-type fills it in and does **not** also
+  advance the round on that same press.
+- Reduced motion and an open tutorial skip the pacer and show the joined body (`(all)`), as
+  they did before this feature.
 
 **What is revealed** — incoming speech only: `scenario.introduction` during `debate_intro`, the
 NPC statement during `npc_speaking`, `opponentPrompt` during `player_choosing` while no option
@@ -279,10 +281,12 @@ the analysis modal guesses on. `scenario.introduction` is the one prose source a
 | Analysis opened on the same line | The modal already lists every sentence, and `requiresAnalysis` rounds force the player through it. |
 | The scenario changes (`resetKey`) | The hook is not remounted on a scenario swap — only `InteractivePanel` is keyed on `debate.id`. |
 
-**Ordering constraint**: the reveal branch returns early from `TrialUI`'s `interactiveFooter`
-memo, *ahead* of `analysisGatePending`. Reversed, a `requiresAnalysis` round deadlocks — the
-gate disables Continue, and a disabled Continue can never finish the reveal. `analysisGatePending`
-itself is left alone because it also drives the debate-log attention chip.
+**Ordering constraint**: the reveal branch wraps `TrialUI`'s `interactiveFooter`
+memo, keeping Continue enabled *ahead* of `analysisGatePending`. Reversed, a `requiresAnalysis`
+round deadlocks — the gate disables Continue, and a disabled Continue can never finish the
+reveal. `analysisGatePending` itself is left alone because it also drives the debate-log
+attention chip. Once the last sentence has landed, Continue is the phase button again and the
+gate applies.
 
 **Where the state lives** — not in `reduceWorkflow`. That reducer snapshots every field for the
 undo stack (a reveal step would replay a typewriter on Back), cannot own a timer, and is kept
@@ -294,8 +298,8 @@ overlay ~36 times a second next to Phaser's own loop.
 
 **Accessibility** — the filling-in text is `aria-hidden`; `WizardPanel` carries a separate
 off-screen `aria-live` region, keyed on the sentence index, that announces each sentence once in
-full. The statement box's own `aria-live` is dropped while revealing, or a screen reader
-restarts the paragraph on every character.
+full. The statement box's own `aria-live` is dropped while the typewriter is running, or a
+screen reader restarts the paragraph on every character.
 
 ---
 

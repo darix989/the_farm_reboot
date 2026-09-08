@@ -11,11 +11,17 @@ export interface WizardRevealSource {
 export interface WizardReveal {
   /** The wizard is showing one chunk: the instruction line stays minimal, options stay hidden. */
   active: boolean;
-  /** The chunk being filled in (`''` when inactive). */
+  /**
+   * The pacer finished this line on its last sentence. The wizard should keep that sentence
+   * on screen (no concatenated dump). False while typing, and also false when the line was
+   * skipped (reduced motion / tutorial) so the wizard can show the full body.
+   */
+  settled: boolean;
+  /** The chunk being filled in, or the last shown chunk when `settled` (`''` otherwise). */
   sentence: string;
   /** Drives the wizard's scroll reset and remounts the live region once per chunk. */
   sentenceIndex: number;
-  /** Total chunks in the current source (0 when inactive), for a "(2/4)" progress readout. */
+  /** Total chunks in the current source (0 when inactive and not settled), for "(2/4)". */
   sentenceCount: number;
   /** The chunk is fully shown, so the next press steps on instead of skipping ahead. */
   sentenceComplete: boolean;
@@ -96,9 +102,14 @@ export function useWizardReveal(
 
   const active =
     source !== null && enabled && !reduced && sentences.length > 0 && !completed.has(source.key);
+  // Skipped pacers (reduced motion, a tutorial overlay) still mark the line read, but the
+  // wizard should show the joined body — not freeze on whichever chunk happened to be up.
+  const settled =
+    source !== null && sentences.length > 0 && completed.has(source.key) && enabled && !reduced;
 
   // Clamped so a shrinking source can never index past its last chunk.
   const sentenceIndex = Math.min(current.sentenceIndex, Math.max(0, sentences.length - 1));
+  const showingSentence = active || settled;
 
   const stateRef = useRef(current);
   stateRef.current = { ...current, sentenceIndex };
@@ -134,31 +145,31 @@ export function useWizardReveal(
       setState({ ...snapshot, sentenceIndex: snapshot.sentenceIndex + 1, sentenceComplete: false });
       return true;
     }
-    // Past the last sentence: the whole line lands in the panel, as it did before any of this.
+    // Last sentence is already on screen — do not dump the joined line. `false` lets Continue
+    // mean the caller's own action (phase advance, next farm beat).
     complete();
-    return true;
+    return false;
   }, [complete]);
 
   const onSentenceTyped = useCallback(() => {
-    // A single-chunk line has nothing left to swap in — the chunk *is* the whole text — so
-    // finishing the type finishes the reveal and the player keeps a press. Asking for one that
-    // changes nothing but the instruction line is friction; swapping the body out from under a
-    // multi-chunk read would be worse.
-    if (sentenceCountRef.current === 1) {
+    const snapshot = stateRef.current;
+    if (snapshot.sentenceComplete) return;
+    // The last chunk finishing *is* the line being read. A further Continue that only swapped
+    // in the concatenated body was an extra beat; Analyze and the real Continue unlock here.
+    if (snapshot.sentenceIndex + 1 >= sentenceCountRef.current) {
       complete();
       return;
     }
-    const snapshot = stateRef.current;
-    if (snapshot.sentenceComplete) return;
     setState({ ...snapshot, sentenceComplete: true });
   }, [complete]);
 
   return {
     active,
-    sentence: active ? (sentences[sentenceIndex] ?? '') : '',
+    settled,
+    sentence: showingSentence ? (sentences[sentenceIndex] ?? '') : '',
     sentenceIndex,
-    sentenceCount: active ? sentences.length : 0,
-    sentenceComplete: current.sentenceComplete,
+    sentenceCount: showingSentence ? sentences.length : 0,
+    sentenceComplete: settled || current.sentenceComplete,
     skipToken: current.skipToken,
     onSentenceTyped,
     advance,

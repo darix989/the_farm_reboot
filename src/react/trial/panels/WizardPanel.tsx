@@ -16,7 +16,8 @@ export interface WizardPanelDetail {
   body: string;
   /**
    * Total sentences in this line, when it is (or was) incoming speech paced through the
-   * wizard reveal — drives the "(2/4)" / "(all)" readout beside the title. Omit for content
+   * wizard reveal — drives the "(2/4)" readout beside the title, or "(all)" when the pacer
+   * was skipped (reduced motion / tutorial) and the joined body is showing. Omit for content
    * that never reveals a sentence at a time (the player's own choice, the round recap, the
    * closing verdict): those titles already say what they need to on their own.
    */
@@ -25,14 +26,14 @@ export interface WizardPanelDetail {
   speaker?: { characterId: string; emotion: AnimalEmotion };
   /**
    * Fallacies correctly spotted so far in this statement — mirrors the same badge in the
-   * Debate Log, so closing the analysis modal still shows the result here. Only shown once
-   * the line has finished revealing (see `reveal` below): a fallacy badge on a statement the
-   * player has not finished reading yet would spoil it.
+   * Debate Log, so closing the analysis modal still shows the result here. Shown once the
+   * line is settled or the pacer was skipped; a badge on a sentence still filling in would
+   * spoil it.
    */
   spottedFallacies?: LogicalFallacy[];
 }
 
-/** Set while `detail.body` is being paced out one sentence at a time. */
+/** Set while `detail.body` is being paced out one sentence at a time, or holding the last. */
 export interface WizardPanelReveal {
   /** The sentence to fill in, in place of the whole body. */
   sentence: string;
@@ -41,6 +42,11 @@ export interface WizardPanelReveal {
   sentenceCount: number;
   skipToken: number;
   onSentenceTyped: () => void;
+  /**
+   * The last sentence has landed: show it as static text (TypewriterText would replay) and
+   * allow spotted-fallacy badges. The readout stays "(n/n)", not "(all)".
+   */
+  settled?: boolean;
 }
 
 interface WizardPanelProps {
@@ -60,6 +66,7 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const revealIndex = reveal?.sentenceIndex ?? null;
+  const revealTyping = Boolean(reveal && !reveal.settled);
 
   // Each sentence replaces the last in the same box. Without this, a sentence that overflowed
   // (or a tutorial's `wizard:scroll_to_bottom`) leaves the next one filling in off-screen.
@@ -92,10 +99,9 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
         >
           {detail && (
             <div
-              // No live region while revealing: the body changes on every character, and a
-              // screen reader would restart the paragraph each time. The announcer below
-              // speaks each sentence once instead.
-              aria-live={reveal ? undefined : 'polite'}
+              // No live region while characters are landing: the body would restart the
+              // paragraph each time. The announcer below speaks each sentence once instead.
+              aria-live={revealTyping ? undefined : 'polite'}
               className={styles.trialWizardDetailLive}
             >
               <div
@@ -137,7 +143,7 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
                     )}
                   </p>
                   <p style={{ marginTop: '0.5rem', color: uiColor.textBody, marginBottom: 0 }}>
-                    {reveal ? (
+                    {revealTyping && reveal ? (
                       <TypewriterText
                         // Remount per sentence, so two identically-worded sentences in a row
                         // still restart rather than looking already-typed.
@@ -146,12 +152,14 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
                         skipToken={reveal.skipToken}
                         onComplete={reveal.onSentenceTyped}
                       />
+                    ) : reveal ? (
+                      reveal.sentence
                     ) : (
                       detail.body
                     )}
                   </p>
                 </div>
-                {!reveal &&
+                {(!reveal || reveal.settled) &&
                   onOpenFallacyInfo &&
                   detail.spottedFallacies &&
                   detail.spottedFallacies.length > 0 && (
@@ -163,7 +171,7 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
               </div>
             </div>
           )}
-          {reveal && (
+          {revealTyping && reveal && (
             // Keyed on the index so the region remounts per sentence and is announced once,
             // in full, rather than growing a character at a time.
             <p

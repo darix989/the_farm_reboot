@@ -40,6 +40,7 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
     { enabled: true, resetKey: dialogue.slotKey },
   );
   const revealActive = reveal.active;
+  const revealSettled = reveal.settled;
   const revealAdvance = reveal.advance;
 
   const advanceBeat = useCallback(() => {
@@ -70,7 +71,8 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
       if (target?.closest('button, a, input, textarea, select, [contenteditable]')) return;
       if (revealActive) {
         event.preventDefault();
-        revealAdvance();
+        if (revealAdvance()) return;
+        if (!isLast) advanceBeat();
         return;
       }
       if (!isLast) {
@@ -90,13 +92,14 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
           <WizardPanel
             detail={detail}
             reveal={
-              revealActive
+              revealActive || revealSettled
                 ? {
                     sentence: reveal.sentence,
                     sentenceIndex: reveal.sentenceIndex,
                     sentenceCount: reveal.sentenceCount,
                     skipToken: reveal.skipToken,
                     onSentenceTyped: reveal.onSentenceTyped,
+                    settled: revealSettled,
                   }
                 : null
             }
