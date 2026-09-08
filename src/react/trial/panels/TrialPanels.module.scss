@@ -578,12 +578,28 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   margin-top: calc(0.5rem * var(--ui-trial-panel-font-scale, 1));
 }
 
+/* Bare button wrapper — opens `FallacyInfoModal` for this fallacy. No border/background of
+   its own; the icon inside carries all the visible styling. */
+.debateLogSpottedFallacyBtn {
+  display: flex;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+
+  &:hover .debateLogSpottedFallacyIcon,
+  &:focus-visible .debateLogSpottedFallacyIcon {
+    opacity: 1;
+  }
+}
+
 .debateLogSpottedFallacyIcon {
   width: calc(1.25rem * var(--ui-trial-panel-font-scale, 1));
   height: calc(1.25rem * var(--ui-trial-panel-font-scale, 1));
   object-fit: contain;
   opacity: 0.9;
   filter: $trial-guess-tint-correct;
+  transition: opacity 0.15s ease-in-out;
 }
 
 /* =========================================================================

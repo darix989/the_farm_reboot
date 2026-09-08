@@ -34,6 +34,7 @@ import WizardPanel, {
 import InteractivePanel, { type InteractiveFooter } from '../trial/panels/InteractivePanel';
 import RoundRecapModal from '../trial/roundRecapModal/RoundRecapModal';
 import IntroSummaryModal from '../trial/introSummaryModal/IntroSummaryModal';
+import FallacyInfoModal from '../trial/fallacyInfoModal/FallacyInfoModal';
 import {
   activeEmotionForWorkflow,
   activeRoundNumber,
@@ -165,6 +166,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // Modal + fallacy-guess state
   // -----------------------------------------------------------------------
   const [analysisTarget, setAnalysisTarget] = useState<AnalysisTarget | null>(null);
+  /** The fallacy `FallacyInfoModal` is describing, or `null` when it is closed. */
+  const [fallacyInfoTarget, setFallacyInfoTarget] = useState<LogicalFallacy | null>(null);
 
   /**
    * Map key for in-progress fallacy sessions. Matches `currentRound.roundNumber` whenever the
@@ -772,6 +775,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           body: statementText(npc.statement.sentences),
           sentenceCount: npc.statement.sentences.length,
           speaker: { characterId: npc.speakerId, emotion: emotionFromStatement(npc.statement) },
+          spottedFallacies: mechanics.analysisEnabled
+            ? getSpottedFallacies(npc.id, npc.statement.sentences)
+            : undefined,
         };
       }
       case 'player_choosing': {
@@ -788,23 +794,34 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             body: statementText(prompt.sentences),
             sentenceCount: prompt.sentences.length,
             speaker: { characterId: prompt.speakerId, emotion: emotionFromStatement(prompt) },
+            spottedFallacies: mechanics.analysisEnabled
+              ? getSpottedFallacies(prompt.id, prompt.sentences)
+              : undefined,
           };
         }
         const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
+        const resolvedSentences = resolvedOptionSentences(opt, showResolved);
         return {
           title: getLabel('wizardDetailSelectedStatement'),
-          body: statementText(resolvedOptionSentences(opt, showResolved)),
+          body: statementText(resolvedSentences),
           speaker: { characterId: PLAYER_CHARACTER_ID, emotion: emotionForOption(opt) },
+          spottedFallacies: mechanics.analysisEnabled
+            ? getSpottedFallacies(opt.id, resolvedSentences)
+            : undefined,
         };
       }
       case 'player_confirming': {
         const opt = wf.selectedOption;
         if (!opt) return null;
         const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
+        const resolvedSentences = resolvedOptionSentences(opt, showResolved);
         return {
           title: getLabel('wizardDetailYourChoice'),
-          body: statementText(resolvedOptionSentences(opt, showResolved)),
+          body: statementText(resolvedSentences),
           speaker: { characterId: PLAYER_CHARACTER_ID, emotion: emotionForOption(opt) },
+          spottedFallacies: mechanics.analysisEnabled
+            ? getSpottedFallacies(opt.id, resolvedSentences)
+            : undefined,
         };
       }
       case 'npc_responding': {
@@ -823,6 +840,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             characterId: response.statement.speakerId,
             emotion: emotionFromStatement(response.statement),
           },
+          spottedFallacies: mechanics.analysisEnabled
+            ? getSpottedFallacies(response.statement.id, response.statement.sentences)
+            : undefined,
         };
       }
       case 'round_recap': {
@@ -841,6 +861,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
               characterId: response.statement.speakerId,
               emotion: emotionFromStatement(response.statement),
             },
+            spottedFallacies: mechanics.analysisEnabled
+              ? getSpottedFallacies(response.statement.id, response.statement.sentences)
+              : undefined,
           };
         }
         // NPC rounds also pass through `round_recap` now (after the player clicks
@@ -857,6 +880,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             body: statementText(npc.statement.sentences),
             sentenceCount: npc.statement.sentences.length,
             speaker: { characterId: npc.speakerId, emotion: emotionFromStatement(npc.statement) },
+            spottedFallacies: mechanics.analysisEnabled
+              ? getSpottedFallacies(npc.id, npc.statement.sentences)
+              : undefined,
           };
         }
         return {
@@ -881,6 +907,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     wf.totalScore,
     debate,
     fallacyGuesses,
+    mechanics.analysisEnabled,
+    getSpottedFallacies,
   ]);
 
   // While a line is still being revealed, Actions shows a generic "keep reading" hint — the
@@ -996,6 +1024,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
             getSpottedFallacies={getSpottedFallacies}
+            onOpenFallacyInfo={setFallacyInfoTarget}
             mechanics={mechanics}
           />
         }
@@ -1015,6 +1044,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             detail={wizardDetail}
             reveal={wizardReveal}
             roundLabel={wf.wizardRoundLabel}
+            onOpenFallacyInfo={setFallacyInfoTarget}
           />
         }
         interactive={
@@ -1071,6 +1101,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           onClose={() => wf.dispatch({ type: 'continue' })}
           mechanics={mechanics}
         />
+      )}
+      {fallacyInfoTarget && (
+        <FallacyInfoModal fallacy={fallacyInfoTarget} onClose={() => setFallacyInfoTarget(null)} />
       )}
     </div>
   );

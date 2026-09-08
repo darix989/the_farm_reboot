@@ -2,12 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import styles from './TrialPanels.module.scss';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TypewriterText from '../components/TypewriterText';
+import SpottedFallacyIcons from '../components/SpottedFallacyIcons';
 import { WIZARD_SCROLL_KEY } from '../../tutorial/artificialInteractions';
 import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
 import AnimalFace from '../../characters/AnimalFace';
 import type { AnimalEmotion } from '../../../phaser/animals/animalEmotions';
+import type { LogicalFallacy } from '../../../types/debateEntities';
 
 export interface WizardPanelDetail {
   title: string;
@@ -21,6 +23,13 @@ export interface WizardPanelDetail {
   sentenceCount?: number;
   /** Whoever is speaking this line, floated as a portrait in the top-left of the statement box. */
   speaker?: { characterId: string; emotion: AnimalEmotion };
+  /**
+   * Fallacies correctly spotted so far in this statement — mirrors the same badge in the
+   * Debate Log, so closing the analysis modal still shows the result here. Only shown once
+   * the line has finished revealing (see `reveal` below): a fallacy badge on a statement the
+   * player has not finished reading yet would spoil it.
+   */
+  spottedFallacies?: LogicalFallacy[];
 }
 
 /** Set while `detail.body` is being paced out one sentence at a time. */
@@ -39,9 +48,16 @@ interface WizardPanelProps {
   reveal?: WizardPanelReveal | null;
   /** `"Round 4 — crossfire"`, or `null` outside the rounds (intro / complete). */
   roundLabel: string | null;
+  /** Opens `FallacyInfoModal` describing one fallacy — passed down to each spotted-fallacy icon. */
+  onOpenFallacyInfo: (fallacy: LogicalFallacy) => void;
 }
 
-const WizardPanel: React.FC<WizardPanelProps> = ({ detail, reveal, roundLabel }) => {
+const WizardPanel: React.FC<WizardPanelProps> = ({
+  detail,
+  reveal,
+  roundLabel,
+  onOpenFallacyInfo,
+}) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const revealIndex = reveal?.sentenceIndex ?? null;
 
@@ -130,6 +146,12 @@ const WizardPanel: React.FC<WizardPanelProps> = ({ detail, reveal, roundLabel })
                     detail.body
                   )}
                 </p>
+                {!reveal && (
+                  <SpottedFallacyIcons
+                    fallacies={detail.spottedFallacies ?? []}
+                    onSelect={onOpenFallacyInfo}
+                  />
+                )}
               </div>
             </div>
           )}

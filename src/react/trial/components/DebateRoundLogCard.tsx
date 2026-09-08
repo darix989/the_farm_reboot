@@ -4,7 +4,7 @@ import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../../type
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import AnalyzeButton from './AnalyzeButton';
-import { getLogicalFallacyIconSrc } from '../utils/logicalFallacyIcons';
+import SpottedFallacyIcons from './SpottedFallacyIcons';
 import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
 import {
   emotionForOption,
@@ -43,27 +43,11 @@ interface DebateRoundLogCardProps {
   getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
   /** Fallacies correctly spotted so far in one statement, for its icon badge. */
   getSpottedFallacies: (statementId: string, sentences: Sentence[]) => LogicalFallacy[];
+  /** Opens `FallacyInfoModal` describing one fallacy — passed to each spotted-fallacy icon. */
+  onOpenFallacyInfo: (fallacy: LogicalFallacy) => void;
   onOpenAnalysis: (target: AnalysisTarget) => void;
   /** Scenario mode flags — gate the analyze buttons and the impact emoji. */
   mechanics: ResolvedMechanics;
-}
-
-/** Icon row for the fallacies spotted in one statement, pinned bottom-right under its text. */
-function SpottedFallacyIcons({ fallacies }: { fallacies: LogicalFallacy[] }) {
-  if (fallacies.length === 0) return null;
-  return (
-    <div className={styles.debateLogSpottedFallacies} aria-label={getLabel('spottedFallaciesAria')}>
-      {fallacies.map((f) => (
-        <img
-          key={f.id}
-          src={getLogicalFallacyIconSrc(f.id)}
-          alt={f.label}
-          title={f.label}
-          className={styles.debateLogSpottedFallacyIcon}
-        />
-      ))}
-    </div>
-  );
 }
 
 type DebateRoundStatus = 'active' | 'upcoming' | 'completed';
@@ -89,6 +73,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   onExpandToggle,
   getNpcGuessState,
   getSpottedFallacies,
+  onOpenFallacyInfo,
   onOpenAnalysis,
   mechanics,
 }) => {
@@ -346,6 +331,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                   {mechanics.analysisEnabled && (
                     <SpottedFallacyIcons
                       fallacies={getSpottedFallacies(round.id, round.statement.sentences)}
+                      onSelect={onOpenFallacyInfo}
                     />
                   )}
                 </div>
@@ -410,6 +396,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         round.opponentPrompt.id,
                         round.opponentPrompt.sentences,
                       )}
+                      onSelect={onOpenFallacyInfo}
                     />
                   )}
                 </div>
@@ -471,6 +458,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         chosenOption.id,
                         resolvedOptionSentences(chosenOption, true),
                       )}
+                      onSelect={onOpenFallacyInfo}
                     />
                   )}
                 </div>
@@ -537,6 +525,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         displayResponse.statement.id,
                         displayResponse.statement.sentences,
                       )}
+                      onSelect={onOpenFallacyInfo}
                     />
                   )}
                 </div>

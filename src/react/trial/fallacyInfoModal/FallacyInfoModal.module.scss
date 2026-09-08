@@ -1,0 +1,127 @@
+@use 'sass:math';
+@use '../trialModalCloseIconSizing' as modal-close;
+
+/* =========================================================================
+   FallacyInfoModal — small fixed-size popover, centred on the stage
+   ========================================================================= */
+
+.fallacyModalOverlay {
+  /* `absolute`, not `fixed` — see `RoundAnalysisModal.module.scss` for why: this keeps the
+     modal anchored to the letterboxed 16:9 stage rather than the viewport. */
+  position: absolute;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ui-color-overlay-modal);
+  backdrop-filter: blur(4px);
+  padding: 1.35rem;
+  pointer-events: auto;
+}
+
+.fallacyModalBox {
+  /* Fixed, not content-sized: the box never grows or shrinks with the description length,
+     unlike `RoundRecapModal`/`IntroSummaryModal`'s percentage-based sizing. */
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 26rem;
+  height: 17rem;
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 0.75rem;
+  border: 2px solid var(--ui-color-border-panel);
+  background: var(--ui-color-surface-modal);
+  box-shadow:
+    0 24px 64px var(--ui-color-shadow-deep),
+    0 0 0 1px var(--ui-color-border-faint);
+  overflow: hidden;
+  color: var(--ui-color-white);
+}
+
+.fallacyModalHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--ui-color-border-muted);
+  background: var(--ui-color-overlay-medium);
+}
+
+.fallacyModalIcon {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  object-fit: contain;
+  opacity: 0.85;
+  filter: invert(1);
+}
+
+.fallacyModalTitles {
+  flex: 1;
+  min-width: 0;
+}
+
+.fallacyModalTitle {
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  font-weight: 600;
+  color: var(--ui-color-text-title);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.fallacyModalSubtitle {
+  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  color: var(--ui-color-text-caption);
+  margin: 0.25rem 0 0;
+}
+
+.fallacyModalCloseBtn {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: modal-close.$trial-modal-close-icon-size;
+  height: modal-close.$trial-modal-close-icon-size;
+  border-radius: 0.375rem;
+  border: 1px solid var(--ui-color-border-default);
+  background: var(--ui-color-glass-06);
+  color: var(--ui-color-text-muted-2);
+  font-size: calc(
+    #{math.div(modal-close.$trial-modal-close-icon-size * 0.65, 1.85)} *
+      var(--ui-trial-panel-font-scale, 1)
+  );
+  cursor: pointer;
+  transition:
+    background 0.15s ease-in-out,
+    color 0.15s ease-in-out;
+
+  &:hover {
+    background: var(--ui-color-overlay-light);
+    color: var(--ui-color-text-title);
+  }
+}
+
+.fallacyModalBody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.25rem 1.5rem;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.fallacyModalDescription {
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.5;
+  color: var(--ui-color-text-body);
+  margin: 0;
+}
