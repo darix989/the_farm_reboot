@@ -52,10 +52,10 @@ Antagonists are sincere, not villainous — the house style established in `pitc
 
 ### How you arrive
 
-**Dot** is standing in the yard, just off spawn. Talking to her is the entry point: she
-welcomes you, names Duchess's motion and Sunday in front of Tobias, and sends you to Cass
-first, then Hetty, then the owl. She has no encounter. Her farm talk advances as you do
-those three things.
+**Dot** is standing in the yard, just off spawn. The first time the farm loads, her
+conversation opens on its own. She welcomes you, names Duchess's motion and Sunday in
+front of Tobias, and sends you to Cass first, then Hetty, then the owl. She has no
+encounter. Her farm talk advances as you do those three things.
 
 ### The ladder
 

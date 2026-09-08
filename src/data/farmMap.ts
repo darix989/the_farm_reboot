@@ -20,6 +20,9 @@ export const FARM_WORLD_HEIGHT = 1600;
 /** Where Rue stands the first time the farm loads (the yard, outside the barn). */
 export const FARM_SPAWN = { x: 1120, y: 720 } as const;
 
+/** Greeter whose conversation opens on the first visit to Level 1. */
+export const FARM_INTRO_NPC_ID = 'dot';
+
 /** How close Rue must be to an animal before the talk prompt appears. */
 export const FARM_INTERACT_RADIUS = 170;
 

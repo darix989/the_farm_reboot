@@ -203,6 +203,10 @@ down its list we are (`hetty1`, `cass2`, `bramDone`). Beats for that slot live i
 beats (and labels), not editing logic. Lengthening a list silently re-points every existing
 beat row — the old `cass1` copy described the sparring bout, which became `#2`.
 
+The first time the farm overlay mounts, `FarmUI` opens Dot's conversation and writes
+`level1Started` to `progressStore`. Returning from a debate, from the menu, or a reload
+does not force it again.
+
 ### Encounter gates
 
 `ScenarioEntry.requires` (on the entry in `levels.ts`) is the overworld gate. The chain is:

@@ -117,7 +117,7 @@ src/
     farmStore.ts        # Overworld ↔ React handoff
     trialStageStore.ts  # Debate ↔ Phaser handoff: active speaker for the Trial cast
     debateLogStore.ts   # Is the Trial's Debate Log expanded, or collapsed to its recap chip
-    progressStore.ts    # Completed encounters (persisted to localStorage)
+    progressStore.ts    # Completed encounters + whether Level 1 has started (persisted)
     codexStore.ts       # Known fallacies, spotted fallacies, dialog flags (persisted)
     codexUiStore.ts     # Field Notes overlay open/section (not persisted)
   utils/

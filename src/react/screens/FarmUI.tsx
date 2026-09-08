@@ -1,11 +1,12 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import getLabel from '../../data/labels';
 import type { DebateScenarioKey } from '../../data/levels';
 import { resolveCharacter } from '../../data/characters';
-import { farmNpcById } from '../../data/farmMap';
+import { FARM_INTRO_NPC_ID, farmNpcById } from '../../data/farmMap';
 import { useFarmStore } from '../../store/farmStore';
 import { useGameStore } from '../../store/gameStore';
 import { useCodexUiStore } from '../../store/codexUiStore';
+import { useProgressStore } from '../../store/progressStore';
 import { GameManager } from '../../utils/gameManager';
 import { farmDialogueFor, farmNpcRequirements } from '../farm/farmDialogueState';
 import {
@@ -51,6 +52,15 @@ const FarmUI: React.FC = () => {
   const conditionCtx = useConditionContext();
   const nearbyTalkLocked = nearbyNpcId ? farmNpcTalkLocked(nearbyNpcId, conditionCtx) : false;
   const nearbyLockedHint = useUnmetConditionsHint(nearbyTalkLocked ? nearbyRequires : []);
+
+  // After the loading overlay unmounts — not in Phaser `create`, which runs while that
+  // overlay still covers the stage, and which used to skip anyone who already had progress.
+  useEffect(() => {
+    const progress = useProgressStore.getState();
+    if (progress.level1Started) return;
+    openDialogue(FARM_INTRO_NPC_ID);
+    progress.markLevel1Started();
+  }, [openDialogue]);
 
   const startEncounter = useCallback((scenario: DebateScenarioKey) => {
     // Re-checked here rather than trusted from the button's disabled state: this is the one

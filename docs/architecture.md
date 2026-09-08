@@ -124,7 +124,7 @@ know about each other.
 | `farmStore` | Overworld ↔ React handoff: which animal is nearby, which one you are talking to | no |
 | `trialStageStore` | Debate ↔ Phaser handoff: which speaker the `Trial` scene's cast should react to | no |
 | `debateLogStore` | Whether the Trial's Debate Log is expanded or collapsed to its recap chip | no |
-| `progressStore` | Which encounters are finished | **yes** — `localStorage`, `the-farm-progress` |
+| `progressStore` | Which encounters are finished, whether Level 1 has been started | **yes** — `localStorage`, `the-farm-progress` |
 | `codexStore` | Known fallacies, spotted fallacies, dialog flags | **yes** — `localStorage`, `the-farm-codex` |
 | `codexUiStore` | Whether Field Notes is open, and which section | no |
 
