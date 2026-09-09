@@ -1,76 +1,107 @@
 /* =========================================================================
-   Main Menu UI
+   Main Menu UI — title screen over the Phaser farm painting
    ========================================================================= */
 
 .mainMenuUi {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: flex-start;
   pointer-events: none;
+
+  /* Darken the left so the panel reads, leave the painting open on the right. */
+  background: linear-gradient(
+    90deg,
+    var(--ui-color-overlay-backdrop) 0%,
+    var(--ui-color-overlay-deep) 38%,
+    var(--ui-color-overlay-subtle) 58%,
+    transparent 78%
+  );
 }
 
 .menuContainer {
-  background: var(--ui-color-overlay-backdrop);
-  border: 2px solid var(--ui-color-border-emphasis);
-  border-radius: 10px;
-  padding: 30px;
-  text-align: center;
-  pointer-events: all;
-  backdrop-filter: blur(5px);
-
-  /* Ten scenarios no longer fit a 1080-tall stage at every zoom level. */
-  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  width: 28rem;
+  max-width: 46%;
+  max-height: 92%;
+  margin: auto 0 auto 4.5%;
+  padding: 1.6rem 1.5rem 1.4rem;
   overflow-y: auto;
+  text-align: left;
+  pointer-events: auto;
+  border: 2px solid var(--ui-color-border-emphasis);
+  border-radius: 12px;
+  background: var(--ui-color-overlay-panel);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 12px 40px var(--ui-color-shadow-deep);
 }
 
-.menuGroupHeading {
-  font-size: var(--ui-font-caption);
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--ui-color-text-muted-2);
-  margin: 0 0 10px;
-  text-align: left;
+.menuHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .menuTitle {
+  margin: 0;
   font-size: var(--ui-font-display);
-  margin-bottom: 30px;
   color: var(--ui-color-accent);
-  text-shadow: 2px 2px 4px var(--ui-color-overlay-backdrop);
+  text-shadow: 0 2px 12px var(--ui-color-overlay-backdrop);
 }
 
-.buttonContainer {
+.menuTagline {
+  margin: 0;
+  font-size: var(--ui-font-subtitle);
+  color: var(--ui-color-text-muted-2);
+}
+
+.primaryActions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 0.55rem;
+}
+
+.secondaryActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.menuButton,
+.menuButtonPrimary,
+.scenarioButton {
+  width: 100%;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 .menuButton {
-  width: 26rem;
-  max-width: 100%;
-  padding: 12px 18px;
-  font-size: var(--ui-font-body);
-  font-weight: bold;
-  background: linear-gradient(45deg, var(--ui-color-bg), var(--ui-color-bg-soft));
+  padding: 0.7rem 0.9rem;
+  font-size: var(--ui-font-caption);
   color: var(--ui-color-text-emphasis);
+  background: var(--ui-color-glass-06);
   border: 2px solid var(--ui-color-border-emphasis);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: left;
 
   &:hover {
     border-color: var(--ui-color-accent);
     color: var(--ui-color-accent);
-    box-shadow: 0 0 15px var(--ui-color-accent-glow);
-    transform: translateY(-2px);
+    box-shadow: 0 0 12px var(--ui-color-accent-glow);
+    transform: translateY(-1px);
   }
 
   &:active {
@@ -80,8 +111,59 @@
   }
 }
 
-.sceneInfo {
+.menuButtonPrimary {
+  padding: 0.85rem 1rem;
+  font-size: var(--ui-font-body);
+  color: var(--ui-color-text-on-accent);
+  background: var(--ui-color-accent);
+  border: 2px solid var(--ui-color-accent);
+  text-align: center;
+
+  &:hover {
+    box-shadow: 0 0 18px var(--ui-color-accent-glow);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.menuGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.menuGroupHeading {
+  margin: 0.15rem 0 0;
   font-size: var(--ui-font-caption);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   color: var(--ui-color-text-muted-2);
-  margin-top: 15px;
+}
+
+.scenarioList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.scenarioButton {
+  padding: 0.45rem 0.75rem;
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-text-secondary);
+  background: var(--ui-color-glass-06);
+  border: 1px solid var(--ui-color-border-muted);
+
+  &:hover {
+    border-color: var(--ui-color-accent);
+    color: var(--ui-color-accent);
+  }
+
+  &:active {
+    background: var(--ui-color-accent);
+    color: var(--ui-color-text-on-accent);
+  }
 }

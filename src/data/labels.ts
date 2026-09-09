@@ -6,6 +6,8 @@ const LABELS = {
   // --- App shell / menus ---
   loadingGame: 'Loading Game...',
   loadingPercent: '{percent}%',
+  gameTitle: 'The Farm',
+  gameTagline: 'Spot the fallacies. Save the pond.',
   mainMenu: 'Main Menu',
   sampleDebate: 'Sample debate',
   tutorialBlueBarn: 'Tutorial: The Blue Barn',
