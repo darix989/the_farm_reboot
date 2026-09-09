@@ -144,16 +144,20 @@ Rue comes to the fence and asks for help — Dot sent him — and Bram is startl
 would walk down to the wolf. He says what he does all day (walks the fence, both ways, and
 overhears every conversation on this farm from the far side of a hedge) before he offers the
 lesson, and he is still apologising for giving it. A conversation here goes in
-**rounds**: one animal says a thing, the other answers, and that pair is a round. Three
+**rounds**: one animal says a thing, the other answers, and that pair is a round. Four
 beats. He explains (1), you speak (2, three options, no wrong one, `preventOptionsShuffle`;
 A is impact 0, B and C are a light +8 so the face can move), he closes (3): *"That was a
-round. That is the whole of it."* No fallacy appears in this file at all.
+round. That is the whole of it."*, then a goodbye (4): he sends Rue on to Cass and
+apologises for having kept him. No fallacy appears in this file at all.
 
-Three tutorials, all `medium` — the copy in each is two short paragraphs, and a larger box
+Four tutorials, all `medium` — the copy in each is two short paragraphs, and a larger box
 frames whitespace: what a round is (`introduction:start`, wizard); now you speak
-(`round:start` / `round-2`, interactive); then after confirm, the moderator emoji
-(`debate_log_moderator_score`) and Field Notes **Next** (no target — open it after Leave).
-Completing the lesson flips Next from Bram to Cass (and reveals the optional crossfire goal).
+(`round:start` / `round-2`, interactive); then after confirm, the moderator emoji **on the
+collapsed recap chip** (`debate_log_recap_moderator_score`) and the expand arrow
+(`debate_log_panel_toggle`); then Field Notes **Next** on `round:start` / `round-4` (no
+target — the Codex is a global overlay with no tutorial hook). The log stays collapsed
+here, unlike 1.8. Completing the lesson flips Next from Bram to Cass (and reveals the
+optional crossfire goal).
 
 ### 1.2 — "Answer Me Now" (Bram teaches crossfire)
 

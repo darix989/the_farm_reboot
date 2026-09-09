@@ -11,6 +11,10 @@ export function tutorialTargetEquals(a: TutorialTargetRef, b: TutorialTargetRef)
       return a.panel === (b as TutorialTargetRef & { kind: 'panel' }).panel;
     case 'debate_log_moderator_score':
       return true;
+    case 'debate_log_recap_moderator_score':
+      return true;
+    case 'debate_log_panel_toggle':
+      return true;
     case 'modal_round_recap_score':
       return true;
     case 'round_recap_action':
@@ -46,6 +50,10 @@ export function tutorialTargetSelector(target: TutorialTargetRef): string {
       return `[data-tutorial-panel="${esc(target.panel)}"]`;
     case 'debate_log_moderator_score':
       return '[data-tutorial-debate-log-moderator-score]';
+    case 'debate_log_recap_moderator_score':
+      return '[data-tutorial-debate-log-recap-moderator-score]';
+    case 'debate_log_panel_toggle':
+      return '[data-debate-log-toggle-panel]';
     case 'modal_round_recap_score':
       return '[data-tutorial-recap-section="main"]';
     case 'round_recap_action':

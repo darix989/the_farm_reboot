@@ -210,9 +210,13 @@ Three things worth knowing before you touch it:
   re-running, so re-expanding would park the log at the top instead of the active round. A
   fresh mount runs that effect with no previous index and scrolls to the current round. The
   cost — per-round expand overrides reset — is harmless, since cards default to shrunk.
-- **The chip carries no tutorial hook.** `data-tutorial-debate-log-moderator-score` stays
-  unique to the log header; `resolveTutorialTargetElement` is a bare `querySelector`, and a
-  second match would make that spotlight ambiguous.
+- **The chip and the panel are mutually exclusive in the DOM.** Collapsing unmounts the
+  panel and mounts the chip, so a bare `querySelector` can target either state on purpose.
+  The moderator emoji on the chip is `debate_log_recap_moderator_score`; the same strip in
+  the expanded header is `debate_log_moderator_score`. Only the header kind is in
+  `tutorialNeedsDebateLog` — adding the chip kinds there would auto-expand the panel and
+  unmount the controls they point at. The whole-panel ◀ / ▶ is `debate_log_panel_toggle`
+  (`data-debate-log-toggle-panel`, already on `DebateLogToggleButton`).
 
 ### Feedback panel (`trial/panels/FeedbackPanel.tsx`)
 

@@ -3,6 +3,10 @@ import type { TutorialStepInput } from '../../../store/tutorialStore';
 /**
  * Target kinds that only resolve to an element while the Debate Log panel is expanded.
  * `panel` is handled separately — only `panel: 'debate_log'` lives inside the log.
+ *
+ * Do **not** add `debate_log_recap_moderator_score` or `debate_log_panel_toggle`. Those two
+ * resolve while the log is *closed* (the recap chip, and the chip's expand arrow). Adding
+ * them would auto-expand the panel and unmount the very controls they point at.
  */
 const DEBATE_LOG_TARGET_KINDS = new Set([
   'debate_log_moderator_score',

@@ -421,7 +421,7 @@ const LABELS = {
   farmDialogDot1l: 'Then I will speak for it.',
   farmDialogDot1m: 'You — you have been here six — right. Yes. Somebody had to be somebody.',
   farmDialogDot1n:
-    'But there are rules, and nobody has written them down, which is how everybody breaks them. You will want to know how this farm argues before you go and stand in front of it.',
+    'But there are rules, and nobody has written them down. Partly because not one animal here knows what writing is. Mostly because rules nobody wrote are the easiest kind to break. You will want to know how this farm argues before you go and stand in front of it.',
   farmDialogDot1o: 'Where do I start?',
   farmDialogDot1p:
     'Bram. The wolf, down at the fence. He will pretend he is checking it. Let him. He is the one who will show you how a conversation works here, before Cass gets her teeth into you. Then Cass at the west post, then Hetty at the trough, then the barn when you want the floor.',

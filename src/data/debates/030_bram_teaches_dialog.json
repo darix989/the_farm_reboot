@@ -190,6 +190,31 @@
           }
         ]
       }
+    },
+    {
+      "kind": "npc",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "closing_constructive",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r4-bram",
+        "speakerId": "bram",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r4-1",
+            "text": "Cass is at the west post. She has the next piece.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-2",
+            "text": "I am sorry I kept you. Go on. I will pretend I am checking the fence.",
+            "logicalFallacies": []
+          }
+        ]
+      }
     }
   ],
   "tutorials": [
@@ -241,7 +266,7 @@
       }
     },
     {
-      "id": "dialog-the-face-and-next",
+      "id": "dialog-the-face",
       "trigger": {
         "event": "interactive:confirm",
         "where": {
@@ -254,13 +279,37 @@
             "message": "What you just said leans the **[accent]moderator[/accent]**. The **[accent]emoji[/accent]** is how you see it — a smile, a frown, or still waiting.\n\n**[muted]This is not a test. Later, it will matter.[/muted]**",
             "interactionMode": "modal_only",
             "targetComponent": {
-              "kind": "debate_log_moderator_score"
+              "kind": "debate_log_recap_moderator_score"
             },
             "modal": {
               "size": "medium",
               "position": "topLeft"
             }
           },
+          {
+            "message": "This **[accent]arrow[/accent]** opens **[accent]Lesson Notes[/accent]**. That panel holds the whole conversation back, round by round.\n\n**[muted]You can open it whenever you like. You do not have to open it now.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_panel_toggle"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "dialog-field-notes",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-4"
+        }
+      },
+      "tutorial": {
+        "steps": [
           {
             "message": "Your **[accent]progress[/accent]** is in **[accent]Field Notes[/accent]**, under **[accent]Next[/accent]**. Open it on the farm after you leave.\n\nIt will have moved on. That is who to talk to.",
             "interactionMode": "modal_only",

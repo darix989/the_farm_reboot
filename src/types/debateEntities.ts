@@ -351,6 +351,10 @@ export type TutorialTargetRef =
   | { kind: 'panel'; panel: 'debate_log' | 'wizard' | 'interactive' }
   /** Moderator opinion emoji (+ insight strip) in the debate log panel header. */
   | { kind: 'debate_log_moderator_score' }
+  /** Moderator opinion emoji on the *collapsed* log's recap chip. */
+  | { kind: 'debate_log_recap_moderator_score' }
+  /** The ◀ / ▶ button that collapses or expands the log panel as a whole. */
+  | { kind: 'debate_log_panel_toggle' }
   | { kind: 'modal_round_recap_score' }
   | { kind: 'round_recap_action'; action: 'continue' }
   | { kind: 'intro_summary_action'; action: 'begin_round_1' | 'close' }
