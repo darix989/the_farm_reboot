@@ -93,6 +93,12 @@ they click once to reveal, and again to select. `npcRoundId` also accepts a **st
 (for an `opponentPrompt`), because the matcher compares against whatever analysis target was
 solved.
 
+A gated letter stays clickable while it is still shut. It shows a lock badge; clicking it
+does not select the line — it shakes, writes *why* it is shut into the Actions hint, and
+pulses Analyze when the missing piece is an in-debate tag. Once the condition is met the
+same letter glows (ready). First click opens it (lock drops); second click says it. Reduced
+motion keeps the colours and drops the motion.
+
 This is the only mechanic where spotting and speaking touch. Use it for the payoff line.
 
 ### Cross-encounter unlocks

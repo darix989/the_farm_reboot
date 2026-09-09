@@ -33,7 +33,7 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `trial/roundAnalysisModal/RoundAnalysisModal.tsx` | Modal overlay for per-round analysis and fallacy guessing (see below). Emits `analysis:*` events for every open/close, sentence toggle, fallacy toggle, and guess outcome. |
 | `hooks/useScrollFade.ts` | Hook that tracks scroll edge state; drives animated fade overlays on scrollable containers. |
 | `trial/utils/trialHelpers.ts` | Shared helpers: speaker names, quality/score colours, statement text, statement type labels. |
-| `trial/utils/optionUnlock.ts` | Player-option unlock rules and resolved sentence text for locked choices. |
+| `trial/utils/optionUnlock.ts` | Player-option unlock rules, lock-phase hints, and resolved sentence text for gated choices. |
 | `trial/utils/fallacyGuessTypes.ts` / `fallacyGuessUtils.ts` | Types and multiset logic for the analysis-modal guessing game. |
 | `trial/components/AnalyzeButton.tsx` | Magnifying-glass analyse button (history / interactive). |
 | `trial/components/HistoryEntry.tsx` | Repeated history row layout (label, body, optional analyse button). |

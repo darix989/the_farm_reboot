@@ -129,6 +129,10 @@ const LABELS = {
 
   // --- Interactive panel ---
   clickToUnlock: 'Click to unlock',
+  optionReadyToOpen: 'ready to open',
+  optionLockedNeedAnalyze:
+    'This line is locked. Catch what they just did — open the magnifying glass.',
+  optionLockedWrongTag: 'Still locked. That tag is not the one this line is waiting for.',
   optionAriaLabel: 'Option {optionLetter}: {statement}',
 
   // --- TrialUI wizard detail ---
@@ -165,6 +169,7 @@ const LABELS = {
     '{opponentName} asked a question. Pick A, B or C to read your reply.',
   workflowPlayerChoosingStatement: 'Pick A, B or C to read it in the Dialog.',
   workflowStatementSelected: 'Click Continue to submit, or Back to change it.',
+  workflowStatementOpened: 'Opened. Click it again to say it, or pick another line.',
   workflowPlayerConfirming:
     'Review your choice below. Go back to change it, or confirm to lock it in.',
   workflowNpcResponding: '{opponentName} responds to your statement. Read it, then continue.',

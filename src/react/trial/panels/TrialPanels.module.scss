@@ -119,6 +119,41 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   }
 }
 
+.trialFooterAnalyzePulse {
+  animation: trial-footer-analyze-pulse 1.1s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trialFooterAnalyzePulse {
+    animation: trial-footer-analyze-pulse-static 1.1s ease-in-out;
+  }
+}
+
+@keyframes trial-footer-analyze-pulse {
+  0%,
+  100% {
+    box-shadow: 0 1px 2px 0 var(--ui-color-shadow-soft);
+  }
+
+  40% {
+    border-color: var(--ui-color-warning-border-active);
+    box-shadow:
+      0 0 0 3px var(--ui-color-warning-border),
+      0 0 16px -2px var(--ui-color-warning-bg-hover);
+  }
+}
+
+@keyframes trial-footer-analyze-pulse-static {
+  0%,
+  100% {
+    border-color: var(--ui-color-border-ring);
+  }
+
+  40% {
+    border-color: var(--ui-color-warning-border-strong);
+  }
+}
+
 /* =========================================================================
    Trial panels — area title strip
    ========================================================================= */
@@ -748,6 +783,7 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
 }
 
 .trialChoiceBtn {
+  position: relative;
   box-sizing: border-box;
   display: flex;
   width: calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8);
@@ -768,7 +804,7 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
     box-shadow 0.15s ease-in-out,
     color 0.15s ease-in-out;
 
-  &:hover:not(:disabled) {
+  &:hover:not(:disabled, .trialChoiceBtnLockShut, .trialChoiceBtnLockReady) {
     border-color: var(--ui-color-info-border-active);
     background: var(--ui-color-overlay-panel);
     box-shadow:
@@ -838,42 +874,190 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   transition: color 0.15s ease-in-out;
 }
 
-/** Nudge when a locked option is guess-unlocked but not yet clicked open; slow shake, repeats every 10s */
-.trialChoiceBtnUnlockHint {
-  animation: trial-unlock-hint-shake 10s ease-in-out infinite;
+.trialChoiceLockBadge {
+  position: absolute;
+  top: 0.22rem;
+  right: 0.26rem;
+  width: 0.95rem;
+  height: 0.95rem;
+  pointer-events: none;
+}
+
+.trialChoiceBtnLockShut {
+  cursor: pointer;
+  overflow: visible;
+  border-color: var(--ui-color-warning-border);
+  background: var(--ui-color-warning-bg-faint);
+  color: var(--ui-color-text-muted);
+
+  .trialChoiceLetter,
+  .trialChoiceWord {
+    color: var(--ui-color-text-subtle);
+  }
+
+  .trialChoiceLockBadge {
+    color: var(--ui-color-warning);
+    opacity: 0.85;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--ui-color-warning-border-active);
+    background: var(--ui-color-warning-bg);
+    box-shadow: 0 0 0 1px var(--ui-color-warning-border);
+    color: var(--ui-color-warning);
+
+    .trialChoiceLetter,
+    .trialChoiceWord {
+      color: var(--ui-color-text-muted);
+      background: transparent;
+      border-color: transparent;
+    }
+  }
+}
+
+.trialChoiceBtnLockReady {
+  cursor: pointer;
+  overflow: visible;
+  border-color: var(--ui-color-warning-border-active);
+  background: var(--ui-color-warning-bg);
+  box-shadow:
+    0 0 0 1px var(--ui-color-warning-border-active),
+    0 0 12px -2px var(--ui-color-warning-bg-hover);
+  color: var(--ui-color-warning);
+
+  .trialChoiceLetter,
+  .trialChoiceWord {
+    color: var(--ui-color-warning);
+  }
+
+  .trialChoiceLockBadge {
+    color: var(--ui-color-warning);
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--ui-color-warning-border-strong);
+    background: var(--ui-color-warning-bg-hover);
+    box-shadow:
+      0 0 0 1px var(--ui-color-warning-border-strong),
+      0 0 14px -2px var(--ui-color-warning-bg-hover);
+    color: var(--ui-color-warning);
+
+    .trialChoiceLetter,
+    .trialChoiceWord {
+      color: var(--ui-color-warning);
+      background: transparent;
+      border-color: transparent;
+    }
+  }
+}
+
+.trialChoiceBtnLockReady:not(.trialChoiceBtnBecameReady, .trialChoiceBtnDenyShake) {
+  animation: trial-choice-ready-pulse 1.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .trialChoiceBtnUnlockHint {
+  .trialChoiceBtnLockReady:not(.trialChoiceBtnBecameReady, .trialChoiceBtnDenyShake) {
     animation: none;
   }
 }
 
-@keyframes trial-unlock-hint-shake {
+@keyframes trial-choice-ready-pulse {
   0%,
-  12%,
+  100% {
+    box-shadow:
+      0 0 0 1px var(--ui-color-warning-border-active),
+      0 0 10px -2px var(--ui-color-warning-bg);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 2px var(--ui-color-warning-border-strong),
+      0 0 16px -1px var(--ui-color-warning-bg-hover);
+  }
+}
+
+.trialChoiceBtnDenyShake {
+  animation: trial-choice-deny-shake 0.42s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trialChoiceBtnDenyShake {
+    animation: trial-choice-deny-flash 0.42s ease;
+  }
+}
+
+@keyframes trial-choice-deny-shake {
+  0%,
   100% {
     transform: translate3d(0, 0, 0);
   }
 
-  2% {
-    transform: translate3d(-2px, 1px, 0) rotate(-0.4deg);
+  20% {
+    transform: translate3d(-4px, 0, 0);
   }
 
-  4% {
-    transform: translate3d(2px, -1px, 0) rotate(0.4deg);
+  40% {
+    transform: translate3d(4px, 0, 0);
   }
 
-  6% {
-    transform: translate3d(-2px, 0, 0) rotate(-0.3deg);
+  60% {
+    transform: translate3d(-3px, 0, 0);
   }
 
-  8% {
-    transform: translate3d(2px, 0, 0) rotate(0.3deg);
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
+
+@keyframes trial-choice-deny-flash {
+  0%,
+  100% {
+    opacity: 1;
   }
 
-  10% {
-    transform: translate3d(-1px, 0, 0);
+  40% {
+    opacity: 0.55;
+  }
+}
+
+.trialChoiceBtnBecameReady {
+  animation: trial-choice-became-ready 0.7s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trialChoiceBtnBecameReady {
+    animation: trial-choice-became-ready-static 0.7s ease;
+  }
+}
+
+@keyframes trial-choice-became-ready {
+  0% {
+    transform: scale(0.96);
+    filter: brightness(1.05);
+  }
+
+  35% {
+    transform: scale(1.06);
+    border-color: var(--ui-color-warning-border-strong);
+    box-shadow:
+      0 0 0 2px var(--ui-color-warning-border-active),
+      0 0 18px -2px var(--ui-color-warning-bg-hover);
+  }
+
+  100% {
+    transform: scale(1);
+    filter: none;
+  }
+}
+
+@keyframes trial-choice-became-ready-static {
+  0%,
+  100% {
+    border-color: var(--ui-color-warning-border-active);
+  }
+
+  40% {
+    border-color: var(--ui-color-warning-border-strong);
   }
 }
 

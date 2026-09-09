@@ -2,8 +2,10 @@ import type { PlayerOption, Sentence } from '../../../types/debateEntities';
 import {
   areConditionsMet,
   conditionContextSnapshot,
+  unmetConditionsHint,
   type ConditionContext,
 } from '../../../utils/gameConditions';
+import getLabel from '../../../data/labels';
 
 /** Subset of GuessRecord needed for unlock checks (structurally compatible with GuessRecord). */
 export type GuessRecordForUnlock =
@@ -64,6 +66,77 @@ export function isPlayerOptionUnlocked(
     }
   }
   return false;
+}
+
+/** Visual / interaction phase for a gated letter. Ungated options never enter this machine. */
+export type OptionLockPhase = 'ungated' | 'shut' | 'ready' | 'opened';
+
+export function optionLockPhase(
+  option: PlayerOption,
+  fallacyGuesses: Map<number, GuessSessionForUnlock>,
+  revealed: boolean,
+  conditions?: ConditionContext,
+): OptionLockPhase {
+  if (!isOptionGated(option)) return 'ungated';
+  if (!isPlayerOptionUnlocked(option, fallacyGuesses, conditions)) return 'shut';
+  if (!revealed) return 'ready';
+  return 'opened';
+}
+
+function hasAttemptOnUnlockTarget(
+  option: PlayerOption,
+  fallacyGuesses: Map<number, GuessSessionForUnlock>,
+): boolean {
+  const cond = option.unlockCondition;
+  if (!cond) return false;
+  for (const session of fallacyGuesses.values()) {
+    for (const record of session.attempts) {
+      if (record.npcRoundId === cond.npcRoundId) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Actions-panel copy for a gated option. `null` for ungated choices so the default
+ * workflow hint stays in charge.
+ */
+export function optionLockHint(
+  option: PlayerOption,
+  phase: OptionLockPhase,
+  fallacyGuesses: Map<number, GuessSessionForUnlock>,
+  conditions?: ConditionContext,
+): string | null {
+  if (phase === 'ungated') return null;
+  if (phase === 'ready') return getLabel('clickToUnlock');
+  if (phase === 'opened') return getLabel('workflowStatementOpened');
+
+  const ctx = conditions ?? conditionContextSnapshot();
+  if (option.unlockConditions?.length) {
+    const cross = unmetConditionsHint(option.unlockConditions, ctx);
+    if (cross) return cross;
+  }
+  if (option.unlockCondition) {
+    if (hasAttemptOnUnlockTarget(option, fallacyGuesses)) {
+      return getLabel('optionLockedWrongTag');
+    }
+    return getLabel('optionLockedNeedAnalyze');
+  }
+  return getLabel('optionLockedNeedAnalyze');
+}
+
+/** Pulse Analyze when a shut click is waiting on an in-debate tag, not a cross-encounter gate. */
+export function optionLockNeedsAnalyzePulse(
+  option: PlayerOption,
+  phase: OptionLockPhase,
+  conditions?: ConditionContext,
+): boolean {
+  if (phase !== 'shut' || !option.unlockCondition) return false;
+  const ctx = conditions ?? conditionContextSnapshot();
+  if (option.unlockConditions?.length && !areConditionsMet(option.unlockConditions, ctx)) {
+    return false;
+  }
+  return true;
 }
 
 export function resolvedOptionSentences(option: PlayerOption, unlocked: boolean): Sentence[] {

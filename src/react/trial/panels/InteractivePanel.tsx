@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { DebateScenarioJson, PlayerOption } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import {
@@ -13,6 +13,9 @@ import { statementText, shuffleCopyDeterministic } from '../utils/trialHelpers';
 import {
   isOptionGated,
   isPlayerOptionUnlocked,
+  optionLockHint,
+  optionLockNeedsAnalyzePulse,
+  optionLockPhase,
   resolvedOptionSentences,
 } from '../utils/optionUnlock';
 import { useConditionContext } from '../../hooks/useGameConditions';
@@ -121,6 +124,19 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   }, [wf.gamePhase, wf.currentPlayerRound, playthroughShuffleKey]);
 
   const [revealAnimOptionId, setRevealAnimOptionId] = useState<string | null>(null);
+  const [lockFeedback, setLockFeedback] = useState<{ optionId: string; hint: string } | null>(null);
+  const [denyShake, setDenyShake] = useState<{ optionId: string; token: number } | null>(null);
+  const [becameReadyOptionId, setBecameReadyOptionId] = useState<string | null>(null);
+  const [analyzePulse, setAnalyzePulse] = useState(false);
+  const prevUnlockedIdsRef = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    setLockFeedback(null);
+    setDenyShake(null);
+    setBecameReadyOptionId(null);
+    setAnalyzePulse(false);
+    prevUnlockedIdsRef.current = new Set();
+  }, [wf.currentPlayerRound?.id]);
 
   useEffect(() => {
     if (!revealAnimOptionId) return;
@@ -129,21 +145,76 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     return () => window.clearTimeout(t);
   }, [revealAnimOptionId]);
 
-  const isChoiceDisabled = (opt: PlayerOption): boolean => {
-    const gated = isOptionGated(opt);
-    const conditionsMet = isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
-    const locked = gated && !conditionsMet;
-    return locked || !!hideOptions;
-  };
+  useEffect(() => {
+    if (!denyShake) return;
+    const t = window.setTimeout(() => setDenyShake(null), 420);
+    return () => window.clearTimeout(t);
+  }, [denyShake]);
+
+  useEffect(() => {
+    if (!becameReadyOptionId) return;
+    const t = window.setTimeout(() => setBecameReadyOptionId(null), 700);
+    return () => window.clearTimeout(t);
+  }, [becameReadyOptionId]);
+
+  useEffect(() => {
+    if (!analyzePulse) return;
+    const t = window.setTimeout(() => setAnalyzePulse(false), 1100);
+    return () => window.clearTimeout(t);
+  }, [analyzePulse]);
+
+  useEffect(() => {
+    if (!choosingOptionsOrder) return;
+    const next = new Set<string>();
+    let newlyReadyId: string | null = null;
+    for (const opt of choosingOptionsOrder) {
+      if (!isOptionGated(opt)) continue;
+      const unlocked = isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
+      if (unlocked) next.add(opt.id);
+      if (
+        unlocked &&
+        !prevUnlockedIdsRef.current.has(opt.id) &&
+        !revealedLockedOptionIds.has(opt.id)
+      ) {
+        newlyReadyId = opt.id;
+      }
+    }
+    prevUnlockedIdsRef.current = next;
+    if (!newlyReadyId) return;
+    setBecameReadyOptionId(newlyReadyId);
+    setLockFeedback((prev) => {
+      if (!prev || prev.optionId !== newlyReadyId) return prev;
+      const opt = choosingOptionsOrder.find((o) => o.id === newlyReadyId);
+      if (!opt) return prev;
+      const hint = optionLockHint(opt, 'ready', fallacyGuesses, conditions);
+      return hint ? { optionId: newlyReadyId, hint } : prev;
+    });
+  }, [choosingOptionsOrder, fallacyGuesses, conditions, revealedLockedOptionIds]);
 
   const activateChoice = (opt: PlayerOption) => {
     const playerRound = wf.currentPlayerRound;
     if (!playerRound) return;
-    const gated = isOptionGated(opt);
-    const conditionsMet = isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
+    const revealed = revealedLockedOptionIds.has(opt.id);
+    const phase = optionLockPhase(opt, fallacyGuesses, revealed, conditions);
     const target = { kind: 'interactive_option', optionId: opt.id } as const;
     if (!canRunTutorialTargetAction(target)) return;
-    if (gated && conditionsMet && !revealedLockedOptionIds.has(opt.id)) {
+
+    if (phase === 'shut') {
+      const why = optionLockHint(opt, phase, fallacyGuesses, conditions);
+      if (why) setLockFeedback({ optionId: opt.id, hint: why });
+      setDenyShake(null);
+      requestAnimationFrame(() => {
+        setDenyShake({ optionId: opt.id, token: Date.now() });
+      });
+      if (optionLockNeedsAnalyzePulse(opt, phase, conditions) && analyzeTarget) {
+        setAnalyzePulse(false);
+        requestAnimationFrame(() => setAnalyzePulse(true));
+      }
+      return;
+    }
+
+    if (phase === 'ready') {
+      setBecameReadyOptionId(null);
       setRevealAnimOptionId(opt.id);
       debateEventBus.emit('interactive:statement_unlocked', {
         roundNumber: playerRound.roundNumber,
@@ -151,14 +222,29 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         optionId: opt.id,
       });
       onRevealLockedOption(opt.id);
+      setLockFeedback({
+        optionId: opt.id,
+        hint: getLabel('workflowStatementOpened'),
+      });
       notifyTutorialTargetAction(target);
       return;
     }
+
     if (wf.selectedOption?.id === opt.id) {
       wf.unselect();
+      if (phase === 'opened') {
+        setLockFeedback({
+          optionId: opt.id,
+          hint: getLabel('workflowStatementOpened'),
+        });
+      } else {
+        setLockFeedback(null);
+      }
       notifyTutorialTargetAction(target);
       return;
     }
+
+    setLockFeedback(null);
     debateEventBus.emit('interactive:statement_selected', {
       roundNumber: playerRound.roundNumber,
       roundId: playerRound.id,
@@ -174,7 +260,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     if (index == null) return;
     if (wf.gamePhase !== 'player_choosing') return;
     const opt = choosingOptionsOrder?.[index];
-    if (!opt || isChoiceDisabled(opt)) return;
+    if (!opt || hideOptions) return;
     event.preventDefault();
     activateChoice(opt);
   }, shortcutsEnabled);
@@ -194,20 +280,18 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
         style={hideOptions ? { visibility: 'hidden' } : undefined}
       >
         {choosingOptionsOrder.map((opt, idx) => {
-          const gated = isOptionGated(opt);
-          const conditionsMet = isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
-          const revealed = !gated || revealedLockedOptionIds.has(opt.id);
-          const locked = gated && !conditionsMet;
+          const revealed = revealedLockedOptionIds.has(opt.id);
+          const phase = optionLockPhase(opt, fallacyGuesses, revealed, conditions);
           let body: string;
-          if (locked) {
+          if (phase === 'shut') {
             body = statementText(resolvedOptionSentences(opt, false));
-          } else if (gated && conditionsMet && !revealed) {
-            body = getLabel('clickToUnlock');
+          } else if (phase === 'ready') {
+            body = getLabel('optionReadyToOpen');
           } else {
             body = statementText(resolvedOptionSentences(opt, true));
           }
-          const awaitingReveal = gated && conditionsMet && !revealed;
-          const revealFlash = revealed && revealAnimOptionId === opt.id && gated;
+          const lockState = phase === 'shut' || phase === 'ready' ? phase : undefined;
+          const revealFlash = phase === 'opened' && revealAnimOptionId === opt.id;
           const optionLetter = String.fromCharCode(65 + idx);
           return (
             <TrialChoiceButton
@@ -216,9 +300,11 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
               ariaLabel={getLabel('optionAriaLabel', {
                 replacements: { optionLetter, statement: body },
               })}
-              disabled={locked || hideOptions}
+              disabled={!!hideOptions}
               selected={wf.selectedOption?.id === opt.id}
-              unlockHint={awaitingReveal}
+              lockState={lockState}
+              denyShake={denyShake?.optionId === opt.id}
+              becameReady={phase === 'ready' && becameReadyOptionId === opt.id}
               revealFlash={revealFlash}
               tutorialOptionId={opt.id}
               onClick={() => activateChoice(opt)}
@@ -234,7 +320,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
       <div className={styles.trialAreaTitle}>
         <h2 className={styles.trialPanelHeading}>{getLabel('interactive')}</h2>
       </div>
-      <p className={styles.trialActionsHint}>{hint}</p>
+      <p className={styles.trialActionsHint}>{lockFeedback?.hint ?? hint}</p>
 
       <div className={styles.trialActionsCenter}>
         <TrialActionRow
@@ -244,6 +330,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                   disabled: !analyzeTarget,
                   label: analyzeTitle,
                   guessState: analyzeGuessState,
+                  attentionPulse: analyzePulse,
                   onClick: () => {
                     if (!analyzeTarget) return;
                     debateEventBus.emit('interactive:analyze', {
@@ -267,7 +354,20 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
                 roundNumber: wf.currentRound?.roundNumber ?? null,
               });
               if (wf.gamePhase === 'player_choosing') {
+                const selected = wf.selectedOption;
                 wf.unselect();
+                if (selected) {
+                  const revealed = revealedLockedOptionIds.has(selected.id);
+                  const phase = optionLockPhase(selected, fallacyGuesses, revealed, conditions);
+                  if (phase === 'opened') {
+                    setLockFeedback({
+                      optionId: selected.id,
+                      hint: getLabel('workflowStatementOpened'),
+                    });
+                  } else {
+                    setLockFeedback(null);
+                  }
+                }
                 return;
               }
               wf.undo();
