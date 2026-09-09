@@ -438,9 +438,32 @@ const LABELS = {
   codexSubtitle: 'Everything you have worked out on this farm.',
   codexOpen: 'Field Notes',
   codexClose: 'Close',
+  codexSectionNext: 'Next',
   codexSectionKnown: 'Fallacies you know',
   codexSectionSpotted: 'Fallacies you have spotted',
   codexSectionDialogs: 'Important conversations',
+  codexNextMainHeading: 'Main',
+  codexNextOptionalHeading: 'Optional',
+  codexNextDoneTitle: 'The pond motion is heard',
+  codexNextDoneBody:
+    'You have done what you came here to do. The rest of the farm is still here if you want it.',
+  levelGoalDotTitle: 'Dot, in the yard',
+  levelGoalDotBody:
+    'Hear her out. She will name Sunday in front of Duchess and tell you where to start.',
+  levelGoalBramTitle: 'Bram, down at the fence',
+  levelGoalBramBody:
+    'The wolf. He will pretend he is checking the fence. Let him. He is the one who will show you how a conversation works here.',
+  levelGoalCassTitle: 'Cass, at the west post',
+  levelGoalCassBody:
+    'The fox. She has something you need before Hetty will so much as look at you. Do not let anyone tell you about the fox first — let her do it.',
+  levelGoalHettyTitle: 'Hetty, at the trough',
+  levelGoalHettyBody:
+    'She will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her.',
+  levelGoalDuchessTitle: 'Duchess, at the barn',
+  levelGoalDuchessBody: 'She has the motion. That is the floor, whenever you want it.',
+  levelGoalBramCrossfireTitle: "Bram's second lesson, at the fence",
+  levelGoalBramCrossfireBody:
+    'There is a second thing, if you have a moment. You do not have to. Some rounds are not speeches.',
   codexKnownProgress: '{known} of {total} known',
   codexKnownEmpty:
     'Nobody has taught you a fallacy yet. Talk to the animals — one of them knows the name of the trick being played on you.',

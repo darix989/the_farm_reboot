@@ -11,7 +11,7 @@ import { create } from 'zustand';
  * `TutorialOverlay` — so it can open over the main menu and over the farm without a scene
  * switch, which would otherwise tear down the overworld just to read a list.
  */
-export type CodexSection = 'known' | 'spotted' | 'dialogs';
+export type CodexSection = 'next' | 'known' | 'spotted' | 'dialogs';
 
 interface CodexUiStore {
   isOpen: boolean;
@@ -23,7 +23,7 @@ interface CodexUiStore {
 
 export const useCodexUiStore = create<CodexUiStore>((set) => ({
   isOpen: false,
-  section: 'known',
+  section: 'next',
 
   openCodex: (section) => set((s) => ({ isOpen: true, section: section ?? s.section })),
   closeCodex: () => set({ isOpen: false }),

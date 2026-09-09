@@ -2,19 +2,59 @@ import React, { useEffect, useMemo } from 'react';
 import getLabel from '../../data/labels';
 import { ALL_LOGICAL_FALLACIES, logicalFallacyById } from '../../data/fallacyCatalog';
 import { DIALOG_FLAG_ORDER, DIALOG_FLAGS } from '../../data/dialogFlags';
+import { currentMainGoal, currentOptionalGoals, type LevelGoal } from '../../data/levelGoals';
 import { useCodexStore } from '../../store/codexStore';
 import { useCodexUiStore, type CodexSection } from '../../store/codexUiStore';
+import { useConditionContext } from '../hooks/useGameConditions';
 import { groupSpottedByFallacy } from './codexEntries';
 import styles from './CodexOverlay.module.scss';
 
 const SECTIONS: readonly {
   id: CodexSection;
-  label: 'codexSectionKnown' | 'codexSectionSpotted' | 'codexSectionDialogs';
+  label: 'codexSectionNext' | 'codexSectionKnown' | 'codexSectionSpotted' | 'codexSectionDialogs';
 }[] = [
+  { id: 'next', label: 'codexSectionNext' },
   { id: 'known', label: 'codexSectionKnown' },
   { id: 'spotted', label: 'codexSectionSpotted' },
   { id: 'dialogs', label: 'codexSectionDialogs' },
 ];
+
+function GoalCard({ goal }: { goal: LevelGoal }) {
+  return (
+    <div className={styles.codexEntry}>
+      <p className={styles.codexEntryTitle}>{getLabel(goal.titleLabel)}</p>
+      <p className={styles.codexEntryBody}>{getLabel(goal.bodyLabel)}</p>
+    </div>
+  );
+}
+
+function NextSection() {
+  const ctx = useConditionContext();
+  const main = currentMainGoal(ctx);
+  const optionals = currentOptionalGoals(ctx);
+
+  return (
+    <>
+      <p className={styles.codexGoalKind}>{getLabel('codexNextMainHeading')}</p>
+      {main ? (
+        <GoalCard goal={main} />
+      ) : (
+        <div className={styles.codexEntry}>
+          <p className={styles.codexEntryTitle}>{getLabel('codexNextDoneTitle')}</p>
+          <p className={styles.codexEntryBody}>{getLabel('codexNextDoneBody')}</p>
+        </div>
+      )}
+      {optionals.length > 0 && (
+        <>
+          <p className={styles.codexGoalKind}>{getLabel('codexNextOptionalHeading')}</p>
+          {optionals.map((goal) => (
+            <GoalCard key={goal.id} goal={goal} />
+          ))}
+        </>
+      )}
+    </>
+  );
+}
 
 function KnownSection() {
   const knownFallacies = useCodexStore((s) => s.knownFallacies);
@@ -105,8 +145,8 @@ function DialogsSection() {
 }
 
 /**
- * The player's journal: what they have been taught, what they have caught someone doing, and
- * which conversations mattered.
+ * The player's journal: who to talk to next, what they have been taught, what they have
+ * caught someone doing, and which conversations mattered.
  *
  * Mounted globally from `ReactApp` rather than being a scene of its own, so it can open over the
  * main menu and over the farm without a `scene.start` — routing to a Codex scene would tear down
@@ -162,6 +202,7 @@ const CodexOverlay: React.FC = () => {
         </div>
 
         <div className={styles.codexContent}>
+          {section === 'next' && <NextSection />}
           {section === 'known' && <KnownSection />}
           {section === 'spotted' && <SpottedSection />}
           {section === 'dialogs' && <DialogsSection />}

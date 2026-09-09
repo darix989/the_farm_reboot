@@ -82,6 +82,7 @@
 .codexTabs {
   flex-shrink: 0;
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem 0;
 }
@@ -118,6 +119,18 @@
 
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+.codexGoalKind {
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-text-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.5rem;
+
+  &:not(:first-child) {
+    margin-top: 1.25rem;
   }
 }
 

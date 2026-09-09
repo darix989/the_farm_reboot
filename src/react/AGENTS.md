@@ -11,6 +11,7 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `screens/MainMenuUI.tsx` | Overlay shown while the `MainMenu` scene is active. |
 | `screens/GameLoadingScreen.tsx` | Loading screen shown until `isGameReady`, and again while `isSceneLoading`. Also the interaction gate: it covers the stage and sets `pointer-events: auto`, so nothing behind it is clickable while `Boot`/`Preloader` or a scene pack load. |
 | `screens/BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
+| `codex/CodexOverlay.tsx` | Field Notes journal: Next (who to talk to), known / spotted fallacies, important conversations. |
 | `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, `RoundRecapModal`, and `RoundAnalysisModal`. |
 | `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent full-width "game hole" across the top row, then the Debate Log (or `DebateLogRecapChip` when collapsed) over its right 3fr when a `log` slot is passed, and Dialog / Actions along the bottom. Reads `debateLogStore` and owns the collapsed/expanded branch. Farm talks omit `log`. |
 | `trial/panels/FeedbackPanel.tsx` | The expanded Debate Log: title strip (log title, Insight + moderator mood, the whole-panel collapse button) and the scrollable round-card list. |

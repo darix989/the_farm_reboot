@@ -207,7 +207,9 @@ with the unlock, and the teaching encounter can still show the feature during pl
 **Field Notes is a React overlay, not a Phaser scene.** Mounted globally in `ReactApp`
 next to `TutorialOverlay`. Routing to a Codex scene would tear down the overworld (and
 Rue's position with it) just to read a list. It is `absolute` on the letterboxed stage,
-`pointer-events: auto` on its root, `z-index` above the trial modals.
+`pointer-events: auto` on its root, `z-index` above the trial modals. The Next tab is
+authored in `src/data/levelGoals.ts` and evaluated against the same `GameCondition`
+snapshot as the overworld gates.
 
 A gated encounter is still *offered*, by default — the animal talks, and only the Talk
 button is locked. Set `gateTalk` on the NPC to refuse the conversation itself (Hetty, Bram,
@@ -228,7 +230,7 @@ src/
   types/debateEntities.ts    the whole content schema — scenarios, rounds, options,
                              mechanics flags, tutorial triggers
   data/                      labels, the scenario registry, the farm map, the JSON,
-                             dialogFlags, gameFeatures, fallacyCatalog
+                             dialogFlags, levelGoals, gameFeatures, fallacyCatalog
   store/                     the eight zustand stores
   utils/gameManager.ts       imperative Phaser access (switchScene, getScene, …)
   utils/gameConditions.ts    GameCondition union; shared by gates and option unlocks
@@ -247,7 +249,7 @@ src/
     trial/                   the debate UI — panels, modals, utils
     tutorial/                the overlay system and its interaction gate
     farm/                    the overworld overlay
-    codex/                   Field Notes (known / spotted / dialogs)
+    codex/                   Field Notes (next / known / spotted / dialogs)
 ```
 
 ---

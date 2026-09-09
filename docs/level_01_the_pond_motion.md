@@ -120,6 +120,10 @@ Bram will not speak until Dot's welcome has been played to the end (`gateTalk` p
 available after Lesson 1 but not required for Cass — skipping it only keeps round-type
 labels hidden. The main menu lists every rung ungated.
 
+Field Notes' **Next** tab follows that same spine (`src/data/levelGoals.ts`, aligned with
+Dot's `talkStages`): main goal is the next character to talk to, and the optional goal is
+Bram's skippable crossfire lesson (1.2) once rounds have been taught.
+
 ---
 
 ## Part 2 — The rungs
