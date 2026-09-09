@@ -19,8 +19,8 @@
   ],
   "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
   "setsDialogFlags": ["hetty-grate-heard"],
-  "startingInsightPoints": 0,
   "mechanics": {
+    "showInsightPoints": false,
     "showModeratorOpinion": false,
     "showRoundRecap": false,
     "showIntroSummary": false,
@@ -109,29 +109,7 @@
   ],
   "tutorials": [
     {
-      "id": "gossip-what-this-is",
-      "trigger": {
-        "event": "introduction:start"
-      },
-      "tutorial": {
-        "steps": [
-          {
-            "message": "This is **[accent]not a debate[/accent]** — no sides, no moderator, no score.\n\nTwo animals are talking. Your only job is to **[accent]catch the bad reasoning[/accent]**.",
-            "interactionMode": "modal_only",
-            "targetComponent": {
-              "kind": "panel",
-              "panel": "wizard"
-            },
-            "modal": {
-              "size": "large",
-              "position": "topLeft"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "gossip-how-to-spot",
+      "id": "gossip-continue-locked",
       "trigger": {
         "event": "round:start",
         "where": {
@@ -140,30 +118,6 @@
       },
       "tutorial": {
         "steps": [
-          {
-            "message": "Round cards stay **[accent]minimized[/accent]**. Press **[accent]▶ Expand[/accent]** to open this one and read what Hetty said.",
-            "interactionMode": "target_only",
-            "targetComponent": {
-              "kind": "debate_log_round_toggle",
-              "roundId": "round-1"
-            },
-            "modal": {
-              "size": "medium",
-              "position": "topLeft"
-            }
-          },
-          {
-            "message": "Now open the **[accent]magnifying glass[/accent]** to read what was said, sentence by sentence.",
-            "interactionMode": "modal_only",
-            "targetComponent": {
-              "kind": "debate_log_round_analyze",
-              "roundId": "round-1"
-            },
-            "modal": {
-              "size": "medium",
-              "position": "topLeft"
-            }
-          },
           {
             "message": "**[warning]Continue is locked[/warning]** until you judge it.\n\nTag a fallacy — or press **[accent]Clean[/accent]**. Not every sentence is a trap.",
             "interactionMode": "modal_only",

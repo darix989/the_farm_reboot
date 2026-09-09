@@ -218,17 +218,19 @@ says why."*
 > switched on, which it is not, because five NPC rounds would each get a "Round complete."
 > modal for nothing.
 
-Three tutorials: what this is (`introduction:start`), **there is no right answer here**
-(`round:start` / `round-3`), and how to spot it (`round:start` / `round-5`, two steps).
-Do **not** add a step targeting an option in round 3 — the point is that any of the three
-works — and do not add a fourth step targeting Continue in round 5, because the analysis
-modal is covering it by then.
+Four tutorials: what this is (`introduction:start`), **there is no right answer here**
+(`round:start` / `round-3`), how to spot it (`round:start` / `round-5`, two steps), and
+the log-card route (`round:start` / `round-6`, pointing at round 5's glass so the
+**Sparring Log** expands). Do **not** add a step targeting an option in round 3 — the
+point is that any of the three works — and do not add a step targeting Continue in round
+5, because the analysis modal is covering it by then.
 
 ### 1.3 — "All About You" (Hetty)
 
 *Three NPC rounds, all `requiresAnalysis`. `setsDialogFlags: ['hetty-ad-hominem-witnessed']`.
 No `teachesFallacies` — the player already knows it by the time they can play this. Gated on
-`fallacy_known` / Ad Hominem.*
+`fallacy_known` / Ad Hominem. One tutorial on `introduction:start`: this is not a debate —
+moved here from 1.5, because this is the first gossip.*
 
 She never once mentions the water. That is the point, and she says it *to you*, not about
 you to somebody else. Three angles, one per round: the bins, the state of his fur, the six
@@ -259,6 +261,9 @@ step: playing Tobias, she runs **both** tricks back to back in one friendly brea
 tally, then the jab about the drain — and the picker has two icons on it for the first time.
 Round 5 hands over the phrase: *how many, against how do you know*, and sends him to Hetty.
 
+One tutorial, on `round:start` / `round-4`: **two** sentences are doing something this time,
+tag both. The "no score" / "no right answer" / "open the glass" beats already landed in 1.2.
+
 > The forty-one used to be Bram's line, in the gossip rung that is now parked. Cass takes it
 > over so the boss's `s-r5-*` callback is still earned.
 
@@ -278,6 +283,9 @@ and considers roughly as interesting as weather.
 > A round with no fallacy in it is deliberate: it teaches that not every sentence is a trap,
 > and it is the only way to teach the **Clean** button. Round 1 carrying two different
 > fallacies and round 2 carrying none, back to back, is the whole exercise.
+
+One tutorial on `round:start` / `round-1`: Continue is locked until you judge, including
+**Clean**. The gossip framing and the log-card route have already been taught.
 
 ### 1.6 — "The Line You Have to Earn" (Bram teaches the locked line)
 
@@ -299,7 +307,7 @@ horrible. Round 3's option C carries
 and it is the only one of the three that names the move and hands the question back. Round 4
 gives the habit to keep: look at what they said before you look at what you want to say.
 
-Four tutorial steps, and the last one is the point: an unlocked option needs **two** clicks —
+Three tutorial steps, and the last one is the point: an unlocked option needs **two** clicks —
 one to reveal, one to say — which nothing else in the game explains. It fires on
 `interactive:statement_unlocked`, so it only appears once the player has actually opened it.
 
@@ -308,8 +316,8 @@ one to reveal, one to say — which nothing else in the game explains. It fires 
 
 ### 1.7 — "The Bent Grate" (skirmish)
 
-*Full chrome: analysis on, `startingInsightPoints: 1`, moderator gauge on, recap on.
-3 rounds. `setsDialogFlags: ['bram-grate-conceded']`.*
+*Full chrome except Insight: analysis on, `showInsightPoints: false`, moderator gauge on,
+recap on. 3 rounds. `setsDialogFlags: ['bram-grate-conceded']`.*
 
 Bram's rehearsed courtesy at the fence line the evening before. Round 1 (`impact: -10`,
 `requiresAnalysis`) is the headcount and the six weeks. Round 2's option **C is locked**
@@ -320,7 +328,7 @@ halfway through the sentence.
 
 ### 1.8 — "The Pond Motion" (boss)
 
-*Full defaults. `playerSide: 'opposition'`, `startingInsightPoints: 2`,
+*Full defaults except `showInsightPoints: false`. `playerSide: 'opposition'`,
 `availableLogicalFallacies: ['ad-hominem', 'appeal-to-popularity', 'false-dilemma']` — one
 Level-2 distractor, per the "few other fallacy types" rule in
 [logical_fallacies_distribution.md](./logical_fallacies_distribution.md). Talking to
@@ -447,8 +455,8 @@ sounds coming from a fox. In here the dirty answer is the marked answer.
 | 1.4 | `023_cass_teaches_appeal_to_popularity.json` | `sparring`; `teachesFallacies` + `setsDialogFlags`; round 2 all-fallacy options; round 4 `requiresAnalysis` with **two** fallacies in one statement |
 | 1.5 | `010_gossip_trough_hetty.json` | `gossip`; `requiresAnalysis` on both rounds; two fallacies in round 1, round 2 entirely clean; `setsDialogFlags` |
 | 1.6 | `032_bram_teaches_unlocks.json` | `lesson` with `analysisEnabled: true` and `maxAnalysisAttempts: 5`; `unlockCondition` on option C of round 3; `setsDialogFlags` |
-| 1.7 | `014_skirmish_bram_fenceline.json` | full chrome; `unlockCondition` on option C of round 2; `setsDialogFlags` |
-| 1.8 | `015_tobias_vs_rue.json` | full defaults; `requires` on both fallacies **and** Bram's flag; round 6 C ANDs an in-debate spot with that same flag |
+| 1.7 | `014_skirmish_bram_fenceline.json` | full chrome except Insight hidden; `unlockCondition` on option C of round 2; `setsDialogFlags` |
+| 1.8 | `015_tobias_vs_rue.json` | full defaults except Insight hidden; `requires` on both fallacies **and** Bram's flag; round 6 C ANDs an in-debate spot with that same flag |
 
 Parked, and no longer rungs: `031_bram_teaches_crossfire.json`,
 `011_sparring_cass_ad_hominem.json`, `012_gossip_trough_bram.json`,
@@ -477,17 +485,18 @@ one beat of one, using the same chrome.
 Only the **first** encounter of each mechanic type carries one, and each is deliberately
 tiny:
 
-| Rung | Steps | Teaches |
+| Rung | Entries / steps | Teaches |
 |---|---|---|
-| 1.1 lesson | 4 (1 + 1 + 2) | What a round is; now you speak, three ways, no wrong one; the moderator emoji; Field Notes **Next**. |
-| 1.2 teaching | 4 (1 + 1 + 2) | No score; there is no right answer in round 3; open the magnifying glass; tag the sentence about *you*. Closing dialogue points at the two fallacy tabs. |
-| 1.4 teaching | 4 (1 + 1 + 2) | Same three beats as 1.2, and then: **two** sentences are doing something this time, tag both. |
-| 1.5 gossip | 4 (1 + 3) | This is not a debate; open a Debate Log card, then its magnifying glass; Continue is locked until you judge, including **Clean**. |
-| 1.6 lesson | 5 (1 + 2 + 1 + 1) | Some answers are locked; open the glass and tag him; the third line only exists because you caught him; **one click opens it, a second says it**. |
-| 1.7 skirmish | 1 | Full chrome: the moderator emoji and the Insight strip together. |
+| 1.1 lesson | 4 / 5 | What a round is; now you speak, three ways, no wrong one; the moderator emoji; Field Notes **Next**. |
+| 1.2 teaching | 4 / 5 | No score; there is no right answer in round 3; open the magnifying glass; tag the sentence about *you*; every Sparring Log card carries the same glass. Closing dialogue points at the two fallacy tabs. |
+| 1.3 gossip | 1 / 1 | This is not a debate. |
+| 1.4 teaching | 1 / 1 | **Two** sentences are doing something this time, tag both. |
+| 1.5 gossip | 1 / 1 | Continue is locked until you judge, including **Clean**. |
+| 1.6 lesson | 3 / 3 | Some answers are locked; catch him and the line opens; the third line only exists because you caught him; **one click opens it, a second says it**. |
+| 1.7 skirmish | 1 / 1 | The moderator is live again; the emoji is how she leans. |
 
-1.3 and 1.8 carry none: they repeat a mechanic the player has already met. 1.7 used to carry
-a second step explaining the locked option; 1.6 now teaches that properly, so the reminder
+1.8 carries none: it repeats mechanics the player has already met. 1.7 used to carry a
+second step explaining the locked option; 1.6 now teaches that properly, so the reminder
 was removed rather than said twice.
 
 Messages use the tutorial rich-text grammar, which supports only `**bold**` and the six

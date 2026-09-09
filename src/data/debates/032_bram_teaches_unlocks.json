@@ -252,49 +252,11 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Some answers are **[warning]locked[/warning]** until you have earned them.\n\n**[muted]Bram is about to show you how. No score here.[/muted]**",
+            "message": "Some answers are **[warning]locked[/warning]** until you have earned them.\n\n**[muted]Bram is about to show you how. Catch him at it and the line opens.[/muted]**",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "panel",
               "panel": "wizard"
-            },
-            "modal": {
-              "size": "medium",
-              "position": "topLeft"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "unlocks-spot-it",
-      "trigger": {
-        "event": "round:start",
-        "where": {
-          "roundId": "round-2"
-        }
-      },
-      "tutorial": {
-        "steps": [
-          {
-            "message": "He is doing it on purpose. Open the **[accent]magnifying glass[/accent]** and read his line sentence by sentence.",
-            "interactionMode": "target_only",
-            "targetComponent": {
-              "kind": "interactive_action",
-              "action": "analyze"
-            },
-            "modal": {
-              "size": "medium",
-              "position": "topLeft"
-            }
-          },
-          {
-            "message": "Pick the sentence about **[accent]you[/accent]** rather than about the water, tag it **[accent]Ad Hominem[/accent]**, submit.",
-            "interactionMode": "modal_only",
-            "onlyForward": true,
-            "targetComponent": {
-              "kind": "analysis_action",
-              "action": "submit_guess"
             },
             "modal": {
               "size": "medium",

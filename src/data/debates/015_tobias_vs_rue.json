@@ -23,6 +23,9 @@
     }
   ],
   "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity", "false-dilemma"],
+  "mechanics": {
+    "showInsightPoints": false
+  },
   "rounds": [
     {
       "kind": "npc",

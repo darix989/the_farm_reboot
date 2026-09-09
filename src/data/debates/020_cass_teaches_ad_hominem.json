@@ -453,6 +453,31 @@
           }
         ]
       }
+    },
+    {
+      "id": "teach-log-card-route",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-6"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Every card in the **[accent]Sparring Log[/accent]** carries the same **[accent]magnifying glass[/accent]**.\n\n**[muted]You can reopen any earlier line whenever you like.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_round_analyze",
+              "roundId": "round-5"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
     }
   ]
 }

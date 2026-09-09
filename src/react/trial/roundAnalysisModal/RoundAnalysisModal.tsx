@@ -782,12 +782,10 @@ function NpcRoundAnalysis({
                           })}
                         </div>
                       )}
-                      {insightRevealed && s.logicalFallacies.length > 0 && (
+                      {showInsightPoints && insightRevealed && s.logicalFallacies.length > 0 && (
                         <span
                           className={styles.trialSentenceHelpMark}
-                          aria-label={getLabel('helpConfirmTitle', {
-                            replacements: { cost: HELP_INSIGHT_COST },
-                          })}
+                          aria-label={getLabel('helpRevealedSentenceAria')}
                         >
                           <img
                             src={genericFallacyIcon}

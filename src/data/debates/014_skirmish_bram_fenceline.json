@@ -18,8 +18,10 @@
     }
   ],
   "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
-  "startingInsightPoints": 1,
   "setsDialogFlags": ["bram-grate-conceded"],
+  "mechanics": {
+    "showInsightPoints": false
+  },
   "rounds": [
     {
       "kind": "npc",
@@ -219,7 +221,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "A **[accent]real debate[/accent]**, just a very short one. Everything is switched on.\n\nThe **[accent]emoji[/accent]** is how the moderator leans; the number is your **[success]Insight[/success]**.",
+            "message": "A **[accent]real debate[/accent]**, just a very short one. The **[accent]moderator[/accent]** is live again.\n\nThe **[accent]emoji[/accent]** is how she leans.",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "debate_log_moderator_score"

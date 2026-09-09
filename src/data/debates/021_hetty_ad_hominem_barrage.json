@@ -16,6 +16,7 @@
   "availableLogicalFallacies": ["ad-hominem"],
   "setsDialogFlags": ["hetty-ad-hominem-witnessed"],
   "mechanics": {
+    "showInsightPoints": false,
     "showModeratorOpinion": false,
     "showRoundRecap": false,
     "showIntroSummary": false,
@@ -131,6 +132,30 @@
           }
         ],
         "summary": "Six weeks is turned into a disqualification, and the question is handed to Tobias on the strength of where he was born."
+      }
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "gossip-what-this-is",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This is **[accent]not a debate[/accent]** — no sides, no moderator, no score.\n\nTwo animals are talking. Your only job is to **[accent]catch the bad reasoning[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
       }
     }
   ]

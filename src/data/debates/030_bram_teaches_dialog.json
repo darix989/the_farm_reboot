@@ -312,7 +312,6 @@
         "steps": [
           {
             "message": "Your **[accent]progress[/accent]** is in **[accent]Field Notes[/accent]**, under **[accent]Next[/accent]**. Open it on the farm after you leave.\n\nIt will have moved on. That is who to talk to.",
-            "interactionMode": "modal_only",
             "modal": {
               "size": "medium",
               "position": "topLeft"

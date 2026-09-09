@@ -248,6 +248,7 @@ const LABELS = {
   helpConfirmTitle: 'Use {cost} Insights?',
   helpConfirmBody:
     'Spending {cost} Insights will reveal which sentences in this statement contain logical fallacies. This cannot be undone.',
+  helpRevealedSentenceAria: 'This sentence contains a logical fallacy',
   cancel: 'Cancel',
   modalRoundTitle: 'Round {roundNumber} — {tail}',
   opponentsQuestion: "{speakerName}'s question",

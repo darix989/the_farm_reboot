@@ -309,53 +309,6 @@
   ],
   "tutorials": [
     {
-      "id": "teach-atp-what-this-is",
-      "trigger": {
-        "event": "introduction:start"
-      },
-      "tutorial": {
-        "steps": [
-          {
-            "message": "A second trick, and a second name.\n\n**[muted]Same as before — no score here.[/muted]**",
-            "interactionMode": "modal_only",
-            "targetComponent": {
-              "kind": "panel",
-              "panel": "wizard"
-            },
-            "modal": {
-              "size": "small",
-              "position": "topLeft"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "teach-atp-no-right-answer",
-      "trigger": {
-        "event": "round:start",
-        "where": {
-          "roundId": "round-2"
-        }
-      },
-      "tutorial": {
-        "steps": [
-          {
-            "message": "She asked you to count instead of check, so **[accent]all three answers do it[/accent]**. Pick whichever one you like.\n\n**[muted]There is no right one. That is the lesson again.[/muted]**",
-            "interactionMode": "modal_only",
-            "targetComponent": {
-              "kind": "panel",
-              "panel": "interactive"
-            },
-            "modal": {
-              "size": "medium",
-              "position": "topLeft"
-            }
-          }
-        ]
-      }
-    },
-    {
       "id": "teach-atp-spot-both",
       "trigger": {
         "event": "round:start",
@@ -366,24 +319,11 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Now she is doing it to you. Open the **[accent]magnifying glass[/accent]** again.",
-            "interactionMode": "target_only",
+            "message": "**[warning]Two[/warning]** sentences are doing something this time — one counts the crowd, one is about you.\n\nTag them both, then submit.",
+            "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "interactive_action",
               "action": "analyze"
-            },
-            "modal": {
-              "size": "medium",
-              "position": "topLeft"
-            }
-          },
-          {
-            "message": "**[warning]Two[/warning]** sentences are doing something this time — one counts the crowd, one is about you.\n\nTag them both, then submit.",
-            "interactionMode": "modal_only",
-            "onlyForward": true,
-            "targetComponent": {
-              "kind": "analysis_action",
-              "action": "submit_guess"
             },
             "modal": {
               "size": "medium",
