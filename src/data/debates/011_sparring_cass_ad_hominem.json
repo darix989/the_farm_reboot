@@ -58,11 +58,11 @@
           "quality": "logical_fallacy",
           "impact": -10,
           "reason": "You answered an Ad Hominem with an Ad Hominem. There are now two attacks on the floor and still nothing at all about the water.",
-          "summary": "You hit back at her tail, and the exchange becomes a contest about which of you counts less.",
+          "summary": "You hit back at her retirement, and the exchange becomes a contest about which of you counts less.",
           "sentences": [
             {
               "id": "s-r1-opt-a-1",
-              "text": "And you have been here long enough that nobody will hear a word out of you, so I am not sure either of us is winning.",
+              "text": "And you are not even on the floor anymore, so I am not sure either of us is winning.",
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",

@@ -320,7 +320,7 @@ const LABELS = {
   farmDialogHettyDoneB:
     'The owl will want you on the floor. She never says so, of course. She never says anything.',
   farmDialogCass1:
-    'You. Come here. Something has been done to me on this farm for eleven seasons and you do not even know it has a name. That changes this morning.',
+    'You. Come here. They came at my tail until I put a name on it, and you do not even know it has a name. That changes this morning.',
   farmDialogCass1a: 'You. Come here.',
   farmDialogCass1b: 'You are the fox.',
   farmDialogCass1c:
@@ -529,7 +529,7 @@ const LABELS = {
     'Bram showed you that some rounds are not speeches: somebody asks and you answer on your feet. They call that crossfire, and he made you do both halves.',
   dialogFlagCassNamedAdHominemTitle: 'let Cass name the trick for you',
   dialogFlagCassNamedAdHominemBody:
-    'Eleven seasons on the floor and nobody ever argued with Cass — they argued with her tail. So she knows it by name: Ad Hominem, answering the animal instead of the argument. She made you use it on her first, so that you would recognise the shape of it from the inside.',
+    'Cass named Ad Hominem after a season on the floor — answering the animal instead of the argument — and beat it. She does not stand there anymore. She made you use it on her first, so that you would recognise the shape of it from the inside.',
   dialogFlagHettyWitnessedTitle: 'hear Hetty out at the trough',
   dialogFlagHettyWitnessedBody:
     'Hetty went the whole way round the trough and never once reached the water: the bins, the straw in your fur, the six weeks. She said every word of it to your face, meant no harm by any of it, and asked you to agree — which is exactly what makes it work.',

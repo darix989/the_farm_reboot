@@ -64,7 +64,7 @@ Every character is the animal their sprite draws — see
 | Name | Species | Role | Voice | Running gag |
 |---|---|---|---|---|
 | **Rue** | Raccoon | Player. Six weeks in; hauling and repairs. | Plain, literal, entirely unembarrassed about the bins. | Volunteers an incriminating detail nobody asked for. It keeps turning out to matter. |
-| **Cass** | Fox (she) | Coach. Eleven seasons on the Public Farm floor. | Cranky, dry, fond of Rue in a way she would deny. Runs the sparring post and the Lab. | Pre-empts the fox line herself, and is quietly furious that it still works. |
+| **Cass** | Fox (she) | Coach. Retired from the Public Farm floor; named every trick they threw at her. | Cranky, dry, fond of Rue in a way she would deny. Runs the sparring post and the Lab. | Pre-empts the fox line herself, and is quietly furious that it still works. |
 | **Hetty** | Sheep | The trough. Will not speak until you can name Ad Hominem. | Warm, relentless, entirely without malice or self-awareness. | Asks a question, answers it herself, thanks you for agreeing. |
 | **Bram** | Wolf | The fence line. Teaches how a conversation works, then Insight. | Anxious, over-polite, apologises mid-sentence. | "I'm not saying it because I'm a wolf." |
 | **Tobias** | Donkey | Boss antagonist. Speaks for the Meadow-Born. | Warm, gracious, never raises his voice. Sincere, and lethal. | Never gets Rue's name right — Roo, Rufus, Ruin. |
@@ -72,8 +72,8 @@ Every character is the animal their sprite draws — see
 | **Dot** | Dog | Yard greeter. No encounter. | Direct, breathless, kind. | Starts three sentences, finishes one. |
 
 Antagonists are sincere, not villainous — the house style established in `pitch/001`.
-**Cass is the reason Bram works**: two animals with the same problem, one who fought it for
-eleven seasons and one who bought his way out by agreeing louder than anybody in the crowd.
+**Cass is the reason Bram works**: two animals with the same problem, one who named it and
+beat it and one who bought his way out by agreeing louder than anybody in the crowd.
 
 ### How you arrive
 
@@ -175,8 +175,9 @@ optional crossfire goal).
 `revealChoiceAssessment: true`, `encounterKind: 'sparring'`. Rewards:
 `teachesFallacies: ['ad-hominem']`, `setsDialogFlags: ['cass-named-ad-hominem']`.*
 
-Cass spent eleven seasons on the floor and was never once *answered* — only ever met with
-"well, she would say that, she's a fox." Then her voice went and she stopped turning up.
+Cass used to stand on the floor. They came at her tail before she had finished her first
+sentence; it took her a season to name that one, and some of the others took longer. She
+named those too, then left the floor by choice and keeps the west post.
 
 Seven rounds. She sets up her own history (1–2), makes Rue commit the fallacy (3), debriefs
 what he just did (4), does it back to him in Tobias's voice (5, `requiresAnalysis`), names it
@@ -187,7 +188,7 @@ you know** is the name she just gave; **Fallacies you have spotted** is the line
 She does not repeat **Next** — Bram already sent them there.
 
 The lines the lesson turns on carry inline
-[emphasis](./encounters.md#emphasis-inside-a-spoken-line): the clause about her tail in the
+[emphasis](./encounters.md#emphasis-inside-a-spoken-line): the season she named the trick in the
 introduction, *"You did not argue with me. You priced me."* and *"That is the trick."* in
 round 4, the bins remark inside Tobias's line in round 5, and **Ad Hominem**, **Field Notes**
 and the two list names in round 6.
@@ -200,7 +201,7 @@ polite, and that is the design:
 | | Angle | Line |
 |---|---|---|
 | **A** | species | "You are a fox. Foxes say whatever suits them…" |
-| **B** | record | "You lost. Eleven seasons and you lost every one of them…" |
+| **B** | record | "You are not even on the floor anymore…" |
 | **C** | motive | "You only care about any of this because you are bitter." |
 
 Nothing is punished — the moderator is hidden and every impact is zero — so the player

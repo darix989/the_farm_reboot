@@ -1,7 +1,7 @@
 {
   "id": "level1-cass-teaches-ad-hominem",
-  "introduction": "Cass stood on the Public Farm floor for eleven seasons. In eleven seasons, nobody once argued with what she said — [accent]they argued with the fact that she is a fox[/accent]. She knows the name of that, and she has a way of teaching it that you are not going to enjoy.",
-  "introductionSummary": "Eleven seasons on the floor, and every reply Cass ever got was about her being a fox. She means to make you feel that from the other end.",
+  "introduction": "Cass used to stand on the Public Farm floor. They came at her tail; [accent]she named the trick in a season[/accent] and beat the rest of them after that. She does not stand there anymore. She keeps this post, and she has a way of teaching it that you are not going to enjoy.",
+  "introductionSummary": "A retired master at the west post. They came at her tail; she named it in a season. She means to make you feel that from the other end.",
   "playerSide": "opposition",
   "characters": {
     "cass": "Cass",
@@ -39,21 +39,21 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Eleven seasons I stood on that floor. Eleven.",
+            "text": "I used to stand on that floor. They came at my tail before I had finished my first sentence.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
-            "text": "In eleven seasons not one animal ever argued with me. They argued with my tail.",
+            "text": "It took me a season to put a name on that one. Some of the others took longer. I named those too.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-3",
-            "text": "\"Well. She would say that. She is a fox.\" Every season. Then my voice went, and I stopped turning up, and I expect they thought that settled it too.",
+            "text": "I do not stand there anymore. I keep this post. That is the whole of my retirement.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Eleven seasons on the floor, and every reply came back to her tail rather than to anything she had said."
+        "summary": "She used to stand on the floor; they came at her tail, she named it in a season, and she keeps this post now rather than the floor."
       }
     },
     {
@@ -142,12 +142,12 @@
           "quality": "logical_fallacy",
           "impact": 0,
           "emotion": "talking",
-          "reason": "You went at her record instead of her reasoning. Losing eleven times cannot make a sentence false, and winning cannot make one true.",
-          "summary": "You go at her record instead: she lost the floor, so why would her advice be worth anything.",
+          "reason": "You went at her record instead of her reasoning. Leaving the floor cannot make a sentence false, and staying on it cannot make one true.",
+          "summary": "You go at her record instead: she is not on the floor anymore, so why would her advice be worth anything.",
           "sentences": [
             {
               "id": "s-r3-opt-b-1",
-              "text": "You lost. Eleven seasons and you lost every one of them, and now you want to tell me how it is done.",
+              "text": "You are not even on the floor anymore. If you knew how it was done you would still be standing there on Sunday, not barking at me from a post.",
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
@@ -189,11 +189,11 @@
             "sentences": [
               {
                 "id": "s-resp-r3-a-1",
-                "text": "The tail. Straight to the tail. Eleven seasons it took them, and you managed it before you had finished sitting down.",
+                "text": "The tail. Straight to the tail. I spent a season putting a name on that, and you managed it before you had finished sitting down.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "She notes, sourly, that it took the floor eleven seasons to reach for her tail and it took Rue no time at all."
+            "summary": "She notes, sourly, that she spent a season naming the tail and Rue reached for it before he had finished sitting down."
           }
         },
         {
@@ -206,7 +206,7 @@
             "sentences": [
               {
                 "id": "s-resp-r3-b-1",
-                "text": "I lost, therefore I am wrong. Splendid. By that reasoning the pond went brown because you are new.",
+                "text": "I left, therefore I am wrong. Splendid. By that reasoning the pond went brown because you are new.",
                 "logicalFallacies": []
               }
             ],
