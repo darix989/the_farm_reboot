@@ -21,7 +21,6 @@ export type DialogFlagId =
   | 'hetty-grate-heard'
   | 'bram-taught-unlocks'
   | 'bram-grate-conceded'
-  /** Set only by `031_bram_teaches_crossfire`, which is parked out of the Level 1 ladder. */
   | 'bram-taught-crossfire';
 
 export interface DialogFlagEntry {

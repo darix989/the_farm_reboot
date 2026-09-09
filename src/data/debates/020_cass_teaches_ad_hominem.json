@@ -29,13 +29,13 @@
       "kind": "npc",
       "id": "round-1",
       "roundNumber": 1,
-      "type": "crossfire",
+      "type": "gossip",
       "speakerId": "cass",
       "impact": 0,
       "statement": {
         "id": "stmt-r1-cass",
         "speakerId": "cass",
-        "type": "crossfire",
+        "type": "gossip",
         "sentences": [
           {
             "id": "s-r1-1",
@@ -60,13 +60,13 @@
       "kind": "npc",
       "id": "round-2",
       "roundNumber": 2,
-      "type": "crossfire",
+      "type": "gossip",
       "speakerId": "cass",
       "impact": 0,
       "statement": {
         "id": "stmt-r2-cass",
         "speakerId": "cass",
-        "type": "crossfire",
+        "type": "gossip",
         "sentences": [
           {
             "id": "s-r2-1",
@@ -236,13 +236,13 @@
       "kind": "npc",
       "id": "round-4",
       "roundNumber": 4,
-      "type": "crossfire",
+      "type": "gossip",
       "speakerId": "cass",
       "impact": 0,
       "statement": {
         "id": "stmt-r4-cass",
         "speakerId": "cass",
-        "type": "crossfire",
+        "type": "gossip",
         "sentences": [
           {
             "id": "s-r4-1",
@@ -267,14 +267,14 @@
       "kind": "npc",
       "id": "round-5",
       "roundNumber": 5,
-      "type": "crossfire",
+      "type": "gossip",
       "speakerId": "cass",
       "impact": 0,
       "requiresAnalysis": true,
       "statement": {
         "id": "stmt-r5-cass",
         "speakerId": "cass",
-        "type": "crossfire",
+        "type": "gossip",
         "sentences": [
           {
             "id": "s-r5-1",
@@ -304,13 +304,13 @@
       "kind": "npc",
       "id": "round-6",
       "roundNumber": 6,
-      "type": "crossfire",
+      "type": "gossip",
       "speakerId": "cass",
       "impact": 0,
       "statement": {
         "id": "stmt-r6-cass",
         "speakerId": "cass",
-        "type": "crossfire",
+        "type": "gossip",
         "sentences": [
           {
             "id": "s-r6-1",
@@ -345,13 +345,13 @@
       "kind": "npc",
       "id": "round-7",
       "roundNumber": 7,
-      "type": "crossfire",
+      "type": "gossip",
       "speakerId": "cass",
       "impact": 0,
       "statement": {
         "id": "stmt-r7-cass",
         "speakerId": "cass",
-        "type": "crossfire",
+        "type": "gossip",
         "sentences": [
           {
             "id": "s-r7-1",

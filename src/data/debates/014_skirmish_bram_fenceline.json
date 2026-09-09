@@ -69,7 +69,7 @@
       "kind": "player",
       "id": "round-2",
       "roundNumber": 2,
-      "type": "crossfire",
+      "type": "rebuttal",
       "options": [
         {
           "id": "r2-opt-a",
@@ -138,7 +138,7 @@
           "statement": {
             "id": "resp-r2-a",
             "speakerId": "bram",
-            "type": "crossfire",
+            "type": "rebuttal",
             "sentences": [
               {
                 "id": "s-resp-r2-a-1",
@@ -155,7 +155,7 @@
           "statement": {
             "id": "resp-r2-b",
             "speakerId": "bram",
-            "type": "crossfire",
+            "type": "rebuttal",
             "sentences": [
               {
                 "id": "s-resp-r2-b-1",
@@ -172,7 +172,7 @@
           "statement": {
             "id": "resp-r2-c",
             "speakerId": "bram",
-            "type": "crossfire",
+            "type": "rebuttal",
             "sentences": [
               {
                 "id": "s-resp-r2-c-1",

@@ -33,13 +33,13 @@ export interface LevelGoal {
 }
 
 /**
- * Level 1 — "The Pond Motion". One main goal per rung of the eight-rung ladder, in play
- * order: Bram → Cass → Hetty → Cass → Hetty → Bram → Bram → Duchess. Each goal opens on
- * the previous rung's reward, which is also what Dot's `talkStages` key off, so the greeter
- * and the journal cannot disagree about who is next.
+ * Level 1 — "The Pond Motion". One main goal per rung of the nine-rung ladder, in play
+ * order: Bram → Bram → Cass → Hetty → Cass → Hetty → Bram → Bram → Duchess. Each goal
+ * opens on the previous rung's reward, which is also what Dot's `talkStages` key off, so
+ * the greeter and the journal cannot disagree about who is next.
  *
- * Level 1 has no optional goals since crossfire was parked out of the ladder, so the Next
- * tab's Optional section never renders. `currentOptionalGoals` stays for the levels that will.
+ * Level 1 has no optional goals, so the Next tab's Optional section never renders.
+ * `currentOptionalGoals` stays for the levels that will.
  */
 export const LEVEL_1_GOALS: readonly LevelGoal[] = [
   {
@@ -60,12 +60,21 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     completeWhen: { kind: 'dialog_flag', flagId: 'bram-taught-rounds' },
   },
   {
+    id: 'talk-bram-crossfire',
+    kind: 'main',
+    npcId: 'bram',
+    titleLabel: 'levelGoalBramCrossfireTitle',
+    bodyLabel: 'levelGoalBramCrossfireBody',
+    availableWhen: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
+    completeWhen: { kind: 'dialog_flag', flagId: 'bram-taught-crossfire' },
+  },
+  {
     id: 'talk-cass',
     kind: 'main',
     npcId: 'cass',
     titleLabel: 'levelGoalCassTitle',
     bodyLabel: 'levelGoalCassBody',
-    availableWhen: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
+    availableWhen: [{ kind: 'dialog_flag', flagId: 'bram-taught-crossfire' }],
     completeWhen: { kind: 'fallacy_known', fallacyId: 'ad-hominem' },
   },
   {

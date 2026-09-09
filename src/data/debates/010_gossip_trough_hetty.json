@@ -24,6 +24,7 @@
     "showModeratorOpinion": false,
     "showRoundRecap": false,
     "showIntroSummary": false,
+    "revealChoiceAssessment": true,
     "encounterKind": "gossip"
   },
   "rounds": [
@@ -75,35 +76,153 @@
       }
     },
     {
-      "kind": "npc",
+      "kind": "player",
       "id": "round-2",
       "roundNumber": 2,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "You asked about the trough's opinion, so she starts there and the grate has to wait its turn.",
+          "summary": "You ask whether anyone has been to the outflow, or whether the trough has simply decided.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-a-1",
+              "text": "Has anyone actually been down to the outflow, or has the trough just decided?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "You asked what she saw. She will tell you about the moth first, and the grate second.",
+          "summary": "You ask what she saw last time she was down that way.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-b-1",
+              "text": "What did you see, when you were last down that way?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "effective",
+          "impact": 0,
+          "reason": "You asked about the outflow itself. She has to answer that, and the grate comes out in one breath.",
+          "summary": "You ask what is actually on the outflow.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-c-1",
+              "text": "The outflow. What is actually on it?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r2-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-a",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-a-1",
+                "text": "The trough has decided, dear, forty-one of them, and I would not go poking about down there myself except I did, going after a moth.",
+                "logicalFallacies": []
+              },
+              {
+                "id": "s-resp-r2-a-2",
+                "text": "The grate is bent, you know. The water backs up behind it, so the mud settles in the pond instead of going out with the stream.",
+                "logicalFallacies": []
+              },
+              {
+                "id": "s-resp-r2-a-3",
+                "text": "Not that it matters. The trough has decided.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She defends the trough first, then mentions the bent grate as an aside, then returns to the count."
+          }
+        },
+        {
+          "forOptionId": "r2-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-b",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-b-1",
+                "text": "A moth. A brown one. I do not chase moths as a rule, I am not that sort of sheep, but this one went straight into the drain.",
+                "logicalFallacies": []
+              },
+              {
+                "id": "s-resp-r2-b-2",
+                "text": "The grate at the outflow is bent. I saw it myself. The water backs up, the mud stays.",
+                "logicalFallacies": []
+              },
+              {
+                "id": "s-resp-r2-b-3",
+                "text": "Anyway the moth got away, which is typical.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She tells the moth story at length and buries the bent grate in the middle of it."
+          }
+        },
+        {
+          "forOptionId": "r2-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-c",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-c-1",
+                "text": "The grate is bent. I saw it myself, going after a moth — the water backs up behind it, so the mud settles in the pond instead of going out with the stream.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "Asked about the outflow, she gives up the bent grate in a single sentence."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-3",
+      "roundNumber": 3,
       "type": "gossip",
       "speakerId": "hetty",
       "impact": 0,
       "requiresAnalysis": true,
       "statement": {
-        "id": "stmt-r2-hetty",
+        "id": "stmt-r3-hetty",
         "speakerId": "hetty",
         "type": "gossip",
         "sentences": [
           {
-            "id": "s-r2-1",
-            "text": "The grate at the outflow is bent, you know. I saw it myself, going after a moth.",
+            "id": "s-r3-1",
+            "text": "Anyway. Somebody ought to tell Tobias. He will not hear it from me.",
             "logicalFallacies": []
           },
           {
-            "id": "s-r2-2",
-            "text": "The water backs up behind it, so the mud settles in the pond instead of going out with the stream.",
-            "logicalFallacies": []
-          },
-          {
-            "id": "s-r2-3",
-            "text": "Somebody ought to tell Tobias. He will not hear it from me. He says sheep agree with everything, which is very unfair, and I said so, and everyone agreed with me.",
+            "id": "s-r3-2",
+            "text": "He says sheep agree with everything, which is very unfair, and I said so, and everyone agreed with me.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Then she describes the bent outflow grate and what it does to the water, and moves straight on as though it were weather."
+        "summary": "She moves on, will not take the grate to Tobias, and lands on a joke about sheep that she does not notice."
       }
     }
   ],

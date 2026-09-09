@@ -574,6 +574,17 @@ export function useTrialRoundWorkflow(
                 replacements: { opponentName },
               });
         }
+        if (
+          currentPlayerRound?.type === 'crossfire' &&
+          currentPlayerRound.opponentResponses &&
+          !currentPlayerRound.opponentPrompt
+        ) {
+          return state.selectedOptionId
+            ? getLabel('workflowStatementSelected')
+            : getLabel('workflowPlayerChoosingCrossfireQuestion', {
+                replacements: { opponentName },
+              });
+        }
         return state.selectedOptionId
           ? getLabel('workflowStatementSelected')
           : getLabel('workflowPlayerChoosingStatement');

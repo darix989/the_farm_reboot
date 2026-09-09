@@ -223,13 +223,13 @@ requires → farmDialogueState.scenarioRequires → useUnmetConditionsHint → d
 A gated encounter is still *offered*, by default. The animal talks; only Talk is disabled, and
 the conversation is where the reason is given. Set `gateTalk: true` on the NPC to close the
 conversation itself until the next encounter's `requires` are met (Hetty until Ad Hominem is
-known; Bram until Dot has welcomed you; Cass until Bram has taught rounds). `Farm.ts`
+known; Bram until Dot has welcomed you; Cass until Bram has taught crossfire). `Farm.ts`
 `tryInteract` and the overworld prompt both consult `farmNpcTalkLocked`. The main menu is
 ungated.
 
-The Level 1 unlock chain is Dot → Bram → Cass → Hetty → Duchess. Lesson 2 (`031`) is
-available after Lesson 1 but not required for Cass — skipping it only keeps round-type
-labels hidden.
+The Level 1 unlock chain is Dot → Bram → Bram → Cass → Hetty → Duchess. Lesson 2 (`031`)
+unlocks round-type labels and is required for Cass — she will not speak until
+`bram-taught-crossfire` is set.
 
 Bram's farm talk offers a **Lessons** menu once he has taught at least one lesson. Last beat,
 once it has been read in full: Talk / Lessons / Leave (collapsing to Lessons / Leave when he

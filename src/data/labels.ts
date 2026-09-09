@@ -18,15 +18,15 @@ const LABELS = {
   level1Heading: 'Level 1 — The Pond Motion',
   legacyScenariosHeading: 'Other scenarios',
   level1BramDialog: '1.1 · Down at the Fence: One at a Time',
-  level1CassTeaches: '1.2 · The Sparring Post: The Name of the Trick',
-  level1HettyBarrage: '1.3 · Gossip at the Trough: All About You',
-  level1CassPopularity: '1.4 · The Sparring Post: How Many, Not How',
-  level1GossipHetty: '1.5 · Gossip at the Trough: What Hetty Saw',
-  level1BramUnlocks: '1.6 · Down at the Fence: The Line You Have to Earn',
-  level1SkirmishBram: '1.7 · Fence-line Skirmish: The Bent Grate',
-  level1BossTobias: '1.8 · The Public Farm: The Pond Motion',
+  level1BramCrossfire: '1.2 · Down at the Fence: Answer Me Now',
+  level1CassTeaches: '1.3 · The Sparring Post: The Name of the Trick',
+  level1HettyBarrage: '1.4 · Gossip at the Trough: All About You',
+  level1CassPopularity: '1.5 · The Sparring Post: How Many, Not How',
+  level1GossipHetty: '1.6 · Gossip at the Trough: What Hetty Saw',
+  level1BramUnlocks: '1.7 · Down at the Fence: The Line You Have to Earn',
+  level1SkirmishBram: '1.8 · Fence-line Skirmish: The Bent Grate',
+  level1BossTobias: '1.9 · The Public Farm: The Pond Motion',
   // Parked out of the Level 1 ladder, still playable from "Other scenarios".
-  level1BramCrossfire: 'Down at the Fence: Answer Me Now',
   level1SparringCass: 'The Sparring Post: Answer Me',
   level1GossipBram: 'Down at the Fence: Forty-One',
   level1BramInsight: 'Down at the Fence: Looking Twice',
@@ -167,6 +167,7 @@ const LABELS = {
   workflowNpcSpeakingMustAnalyze: 'Analyze this statement first — open the magnifying glass.',
   workflowPlayerChoosingQuestion:
     '{opponentName} asked a question. Pick A, B or C to read your reply.',
+  workflowPlayerChoosingCrossfireQuestion: 'Pick A, B or C to put your question to {opponentName}.',
   workflowPlayerChoosingStatement: 'Pick A, B or C to read it in the Dialog.',
   workflowStatementSelected: 'Click Continue to submit, or Back to change it.',
   workflowStatementOpened: 'Opened. Click it again to say it, or pick another line.',
@@ -293,6 +294,9 @@ const LABELS = {
   tutorialLessonRounds: 'how a round works',
   tutorialLessonRoundsPreview:
     'How a round works. One animal says a thing, the other answers, and that pair is a round. I can walk you through it one piece at a time.',
+  tutorialLessonCrossfire: 'answering on your feet',
+  tutorialLessonCrossfirePreview:
+    'Crossfire. Somebody asks and you answer on your feet. Both halves: they ask, you answer. Or you ask, and they have to. I can walk you through it. You do not have to.',
   tutorialLessonUnlocks: 'opening a locked line',
   tutorialLessonUnlocksPreview:
     'The locked line. Some of what you could answer with is already yours, and some of it you cannot reach until you have caught the other animal at something. Bram does the trick on himself so that you can.',
@@ -351,16 +355,23 @@ const LABELS = {
   farmDialogBram1h:
     'I know how it goes wrong, which is the useful half. I could show you how a conversation works here, one piece at a time, before anybody else gets hold of you. You do not have to say yes. I would not blame you.',
   farmDialogBram2:
-    'There is a second piece, if you have a moment. I have to be unpleasant to you first, and I am sorry about that.',
-  farmDialogBram2a: 'There is a second piece, if you have a moment. You do not have to.',
+    'One more thing, if you have a moment. Some rounds are not speeches. You do not have to. I would not blame you.',
+  farmDialogBram2a:
+    'I am still here. One more thing, if you have a moment. You do not have to. I would not blame you.',
   farmDialogBram2b: 'Go on.',
   farmDialogBram2c:
-    'This one I cannot simply tell you. I have to be unpleasant to you first, on purpose, so that you can catch me at it. I am sorry in advance. I have been dreading it since breakfast.',
+    'Some rounds are not speeches. Somebody asks and you answer on your feet. I would rather not demonstrate it. That is not the same as not having to. I am sorry.',
   farmDialogBram3:
-    'No more lessons. I am one of the forty-one, and I would rather you had the argument from me than from Tobias on Sunday.',
-  farmDialogBram3a: 'No more lessons. I think we are past those.',
-  farmDialogBram3b: 'What is this, then?',
+    'There is another piece, if you have a moment. I have to be unpleasant to you first, and I am sorry about that.',
+  farmDialogBram3a: 'There is another piece, if you have a moment. You do not have to.',
+  farmDialogBram3b: 'Go on.',
   farmDialogBram3c:
+    'This one I cannot simply tell you. I have to be unpleasant to you first, on purpose, so that you can catch me at it. I am sorry in advance. I have been dreading it since breakfast.',
+  farmDialogBram4:
+    'No more lessons. I am one of the forty-one, and I would rather you had the argument from me than from Tobias on Sunday.',
+  farmDialogBram4a: 'No more lessons. I think we are past those.',
+  farmDialogBram4b: 'What is this, then?',
+  farmDialogBram4c:
     'I am one of the forty-one, Rue. I put my name to the motion. I would rather you had that argument from me, here, where it costs you nothing — than from Tobias on Sunday, where it costs you everything.',
   farmDialogBramDone:
     'I have said a great deal more than I should have. The grate is bent. You did not hear it from me.',
@@ -485,6 +496,9 @@ const LABELS = {
   levelGoalBramTitle: 'Bram, down at the fence',
   levelGoalBramBody:
     'The wolf. He will pretend he is checking the fence. Let him. He is the one who will show you how a conversation works here.',
+  levelGoalBramCrossfireTitle: 'Bram, still at the fence',
+  levelGoalBramCrossfireBody:
+    'He has one more thing, and he will apologise for it. Some rounds are not speeches: somebody asks, and you answer on your feet.',
   levelGoalCassTitle: 'Cass, at the west post',
   levelGoalCassBody:
     'The fox. She has something you need before Hetty will so much as look at you. Do not let anyone tell you about the fox first — let her do it.',
@@ -497,7 +511,7 @@ const LABELS = {
   levelGoalHettyGrateTitle: 'Hetty again, at the trough',
   levelGoalHettyGrateBody:
     'She has more news, and buried in the middle of it is the only thing on this farm anybody has actually seen with their own eyes.',
-  levelGoalBramUnlocksTitle: "Bram's second lesson, at the fence",
+  levelGoalBramUnlocksTitle: 'Bram, for the locked line',
   levelGoalBramUnlocksBody:
     'Some of what you could say back is locked until you catch the other animal at something. He will do something unkind on purpose so that you can.',
   levelGoalBramSkirmishTitle: 'Bram, for a real one',

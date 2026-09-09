@@ -132,13 +132,14 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     x: 1240,
     y: 760,
     scenarios: [],
-    // One stage per rung of the spine, so the greeter and Field Notes always name the same
-    // animal. Each stage ends on the condition the *next* rung is waiting for.
+    // One stage per stop on the spine, so the greeter and Field Notes always name the same
+    // animal. Stage 1 spans both fence lessons; each stage ends on the condition the *next*
+    // stop is waiting for.
     talkStages: [
       {
         suffix: '1',
         completesFlag: 'dot-welcomed',
-        until: { kind: 'encounter_completed', scenarioKey: '030_bram_teaches_dialog' },
+        until: { kind: 'dialog_flag', flagId: 'bram-taught-crossfire' },
       },
       { suffix: '2', until: { kind: 'fallacy_known', fallacyId: 'ad-hominem' } },
       { suffix: '3', until: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' } },
@@ -168,11 +169,12 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     id: 'bram',
     x: 1360,
     y: 1250,
-    // How a round works, then how to open a locked line, then the skirmish that needs it.
-    // He offers them strictly in order, so the lesson always lands before the encounter
-    // that uses it — see `farmDialogueState.ts`.
+    // How a round works, then crossfire, then how to open a locked line, then the
+    // skirmish that needs it. He offers them strictly in order, so the lesson always
+    // lands before the encounter that uses it — see `farmDialogueState.ts`.
     scenarios: [
       '030_bram_teaches_dialog',
+      '031_bram_teaches_crossfire',
       '032_bram_teaches_unlocks',
       '014_skirmish_bram_fenceline',
     ],

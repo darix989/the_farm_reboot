@@ -68,9 +68,9 @@ export interface ScenarioEntry {
  * file numbers are creation order, not ladder order. See
  * `docs/level_01_the_pond_motion.md` for the story and the authored dialog.
  *
- * The ladder was cut from eleven rungs to eight: Insight Points and round-type labels are
- * deferred out of Level 1, and the five encounters that taught or repeated them are parked
- * in {@link LEGACY_SCENARIOS} — still authored, still playable from the menu, off the farm.
+ * Nine rungs. Insight Points stay deferred; round-type labels come back with Bram's
+ * second fence lesson. Four encounters remain parked in {@link LEGACY_SCENARIOS} —
+ * still authored, still playable from the menu, off the farm.
  *
  * Overworld gates live on `requires`. The main menu still lists every rung ungated, which
  * is what makes the ladder testable without replaying the farm.
@@ -83,10 +83,16 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     requires: [{ kind: 'dialog_flag', flagId: 'dot-welcomed' }],
   },
   {
+    key: '031_bram_teaches_crossfire',
+    titleLabel: 'level1BramCrossfire',
+    scenario: bramCrossfireJson as unknown as DebateScenarioJson,
+    requires: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
+  },
+  {
     key: '020_cass_teaches_ad_hominem',
     titleLabel: 'level1CassTeaches',
     scenario: cassTeachesJson as unknown as DebateScenarioJson,
-    requires: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
+    requires: [{ kind: 'dialog_flag', flagId: 'bram-taught-crossfire' }],
   },
   {
     key: '021_hetty_ad_hominem_barrage',
@@ -137,14 +143,9 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
 
 /**
  * Scenarios that are not rungs of the Level 1 ladder but stay playable from the menu:
- * the pre-ladder encounters, and the five cut when Level 1 was trimmed to eight rungs.
+ * the pre-ladder encounters, and the four cut when Level 1 was trimmed to nine rungs.
  */
 export const LEGACY_SCENARIOS: readonly ScenarioEntry[] = [
-  {
-    key: '031_bram_teaches_crossfire',
-    titleLabel: 'level1BramCrossfire',
-    scenario: bramCrossfireJson as unknown as DebateScenarioJson,
-  },
   {
     key: '011_sparring_cass_ad_hominem',
     titleLabel: 'level1SparringCass',

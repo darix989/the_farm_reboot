@@ -20,6 +20,7 @@
     "showModeratorOpinion": false,
     "showRoundRecap": false,
     "showIntroSummary": false,
+    "revealChoiceAssessment": true,
     "encounterKind": "gossip"
   },
   "rounds": [
@@ -133,6 +134,136 @@
         ],
         "summary": "Six weeks is turned into a disqualification, and the question is handed to Tobias on the strength of where he was born."
       }
+    },
+    {
+      "kind": "player",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "crossfire",
+      "opponentPromptImpact": 0,
+      "opponentPrompt": {
+        "id": "stmt-r4-hetty",
+        "speakerId": "hetty",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r4-p1",
+            "text": "Rue. I have a question for you, and I am going to wait for the answer, because I have been doing all the talking and that is not fair of me.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-p2",
+            "text": "Do you think you are the animal to have an opinion about this water? Honestly.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-p3",
+            "text": "Well? I asked you. I am waiting. It is much harder than it looks.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "She puts a question to him about whether he counts, and then has to stand there while he answers it."
+      },
+      "options": [
+        {
+          "id": "r4-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "emotion": "talking",
+          "reason": "You answered a question about you by talking about her. Kind, and not what she asked, and she will hear whatever she likes in it.",
+          "summary": "You turn it back on her: she has been answering her own questions all morning.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-a-1",
+              "text": "I think you have been answering that one yourself all morning.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "emotion": "talking",
+          "reason": "You said yes to a question that was built to disqualify you. She will take it as agreement and move on.",
+          "summary": "You grant the frame: perhaps you are not the animal, after six weeks.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-b-1",
+              "text": "Perhaps not. Six weeks is not a long time.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-c",
+          "quality": "effective",
+          "impact": 0,
+          "emotion": "talking",
+          "reason": "You answered the question she asked without accepting that it was about you. The water does not care who is speaking.",
+          "summary": "You answer about the water, not about yourself: the pond does not check how long anyone has been here.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-c-1",
+              "text": "I think the water does not care how long I have been here.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r4-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r4-a",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r4-a-1",
+                "text": "There. You agree with me. I have been very clear, and you have noticed, which is all I was asking. Thank you, dear.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She thanks him for agreeing that she has been clear, which is not what he said."
+          }
+        },
+        {
+          "forOptionId": "r4-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r4-b",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r4-b-1",
+                "text": "Six weeks, you said it yourself. No time at all. There. You agree with me. I did think you would, you are a very reasonable sort.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She takes his caution as a confession and thanks him for coming round."
+          }
+        },
+        {
+          "forOptionId": "r4-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r4-c",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r4-c-1",
+                "text": "The water does not care. Yes. That is exactly what I have been saying — it wants closing, and we are agreed. Thank you, dear, I knew you would see it my way.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She hears a verdict on the pond in a sentence that was about how long he has lived here."
+          }
+        }
+      ]
     }
   ],
   "tutorials": [
