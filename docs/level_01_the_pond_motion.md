@@ -99,14 +99,14 @@ and then argues the motion properly, and Tobias requires all of it.
 
 | # | Scenario | Mode | Teaches | Fallacies on the picker | New for the player |
 |---|---|---|---|---|---|
-| 1.1 | `030_bram_teaches_dialog` | Lesson | **How a round works** / how you speak | — | A conversation is one animal, then the other. Three options, no wrong one. Brief look at the moderator emoji and Field Notes **Next**. |
-| 1.2 | `020_cass_teaches_ad_hominem` | Sparring | **The name** of Ad Hominem | ad-hominem | Analysis via the footer magnifying glass. Fallacy known on leave. |
-| 1.3 | `021_hetty_ad_hominem_barrage` | Gossip | **Spotting it in the wild**, three times | ad-hominem | Gated on knowing Ad Hominem. Sets the flag the rest of the level hangs off. |
-| 1.4 | `023_cass_teaches_appeal_to_popularity` | Sparring | **The name** of Appeal to Popularity | ad-hominem, appeal-to-popularity | Two icons on the picker, and a round carrying **two** fallacies at once. |
-| 1.5 | `010_gossip_trough_hetty` | Gossip | A **clean** round; the bent grate | ad-hominem, appeal-to-popularity | Not every sentence is a trap — and the two tricks side by side in one breath. |
-| 1.6 | `032_bram_teaches_unlocks` | Lesson | **The locked line** — spotting and speaking meet | ad-hominem | An option that cannot be said until the fallacy in the previous round is tagged. |
-| 1.7 | `014_skirmish_bram_fenceline` | Skirmish | Speaking **and** spotting together | ad-hominem, appeal-to-popularity | Full chrome and the moderator gauge, plus the unlock-gated option for real. Sets the grate flag. |
-| 1.8 | `015_tobias_vs_rue` | Boss debate | Everything, over 10 beats | + false-dilemma (distractor) | Full Public Farm. Gated on both fallacies **and** Bram's concession. |
+| 1.1 Bram | One at a Time | Lesson | **How a round works** / how you speak | — | A conversation is one animal, then the other. Three options, no wrong one. Brief look at the moderator emoji and Field Notes **Next**. |
+| 1.2 Cass | The Name of the Trick | Sparring | **The name** of Ad Hominem | ad-hominem | Analysis via the footer magnifying glass. Fallacy known on leave. |
+| 1.3 Hetty | All About You | Gossip | **Spotting it in the wild**, three times | ad-hominem | Gated on knowing Ad Hominem. Sets the flag the rest of the level hangs off. |
+| 1.4 Cass | How Many, Not How | Sparring | **The name** of Appeal to Popularity | ad-hominem, appeal-to-popularity | Two icons on the picker, and a round carrying **two** fallacies at once. |
+| 1.5 Hetty | What Hetty Saw | Gossip | A **clean** round; the bent grate | ad-hominem, appeal-to-popularity | Not every sentence is a trap — and the two tricks side by side in one breath. |
+| 1.6 Bram | The Line You Have to Earn | Lesson | **The locked line** — spotting and speaking meet | ad-hominem | An option that cannot be said until the fallacy in the previous round is tagged. |
+| 1.7 Bram | The Bent Grate | Skirmish | Speaking **and** spotting together | ad-hominem, appeal-to-popularity | Full chrome and the moderator gauge, plus the unlock-gated option for real. Sets the grate flag. |
+| 1.8 Tobias | The Pond Motion | Boss debate | Everything, over 10 beats | + false-dilemma (distractor) | Full Public Farm. Gated on both fallacies **and** Bram's concession. |
 
 **File numbers are creation order, not ladder order.** `020`–`023` were written after
 `010`–`015`; `030`–`032` after those. `LEVEL_1_SCENARIOS` in [`src/data/levels.ts`](../src/data/levels.ts) is the
