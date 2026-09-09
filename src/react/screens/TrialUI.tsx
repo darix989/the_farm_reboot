@@ -46,7 +46,7 @@ import {
   getSpeakerName,
   getStartingInsightPoints,
   moderatorOpinionPlainText,
-  splitIntoSentences,
+  revealChunks,
   statementText,
 } from '../trial/utils/trialHelpers';
 import { debateParticipantIds, stageOrder } from '../../data/debateCast';
@@ -519,9 +519,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     const build = (
       slot: string,
       analysisTargetId: string | null,
-      sentences: string[],
+      line: string | Sentence[],
     ): RevealSource | null => {
-      const chunks = sentences.map((text) => text.trim()).filter(Boolean);
+      const chunks = revealChunks(line);
       // An empty line would arm a reveal whose Continue is a permanent no-op.
       if (chunks.length === 0) return null;
       return {
@@ -536,36 +536,24 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         const intro = debate.introduction?.trim();
         if (!intro) return null;
         // The only reveal source authored as prose rather than as `Sentence[]`.
-        return build('intro', null, splitIntoSentences(intro));
+        return build('intro', null, intro);
       }
       case 'npc_speaking': {
         const npc = wf.currentNpcRound;
         if (!npc) return null;
-        return build(
-          'npc',
-          npc.id,
-          npc.statement.sentences.map((sentence) => sentence.text),
-        );
+        return build('npc', npc.id, npc.statement.sentences);
       }
       case 'player_choosing': {
         const prompt = wf.currentPlayerRound?.opponentPrompt;
         // Only the opponent's question is paced; once an option is picked the wizard shows the
         // player's own line back to them.
         if (!prompt || wf.selectedOption) return null;
-        return build(
-          'prompt',
-          prompt.id,
-          prompt.sentences.map((sentence) => sentence.text),
-        );
+        return build('prompt', prompt.id, prompt.sentences);
       }
       case 'npc_responding': {
         const response = wf.activeOpponentResponse;
         if (!response) return null;
-        return build(
-          'response',
-          response.statement.id,
-          response.statement.sentences.map((sentence) => sentence.text),
-        );
+        return build('response', response.statement.id, response.statement.sentences);
       }
       default:
         return null;
@@ -783,7 +771,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         return {
           title: getLabel('wizardDetailIntroduction'),
           body: intro,
-          sentenceCount: splitIntoSentences(intro).length,
+          // The same chunking the reveal uses, so "(n/n)" matches what was actually shown.
+          sentenceCount: revealChunks(intro).length,
         };
       }
       case 'npc_speaking': {
@@ -952,8 +941,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     (): WizardPanelReveal | null =>
       revealActive || revealSettled
         ? {
-            sentence: reveal.sentence,
-            sentenceIndex: reveal.sentenceIndex,
+            spoken: reveal.spoken,
+            typing: reveal.typing,
             sentenceCount: reveal.sentenceCount,
             skipToken: reveal.skipToken,
             onSentenceTyped: reveal.onSentenceTyped,
@@ -963,8 +952,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     [
       revealActive,
       revealSettled,
-      reveal.sentence,
-      reveal.sentenceIndex,
+      reveal.spoken,
+      reveal.typing,
       reveal.sentenceCount,
       reveal.skipToken,
       reveal.onSentenceTyped,

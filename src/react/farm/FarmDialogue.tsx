@@ -4,7 +4,7 @@ import { resolveCharacter } from '../../data/characters';
 import type { DebateScenarioKey } from '../../data/levels';
 import type { FarmDialogueState } from './farmDialogueState';
 import { useWizardReveal } from '../hooks/useWizardReveal';
-import { splitIntoSentences } from '../trial/utils/trialHelpers';
+import { revealChunks } from '../trial/utils/trialHelpers';
 import TrialLayout from '../trial/TrialLayout';
 import WizardPanel, { type WizardPanelDetail } from '../trial/panels/WizardPanel';
 import FarmTalkActionsPanel from './FarmTalkActionsPanel';
@@ -29,7 +29,7 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
   const isLast = index >= lastIndex;
 
   const body = beat ? getLabel(beat.textLabel) : '';
-  const sentences = useMemo(() => splitIntoSentences(body), [body]);
+  const sentences = useMemo(() => revealChunks(body), [body]);
 
   const reveal = useWizardReveal(
     beat ? { key: `farm:${dialogue.slotKey}:${index}`, sentences } : null,
@@ -70,8 +70,8 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
             reveal={
               revealActive || revealSettled
                 ? {
-                    sentence: reveal.sentence,
-                    sentenceIndex: reveal.sentenceIndex,
+                    spoken: reveal.spoken,
+                    typing: reveal.typing,
                     sentenceCount: reveal.sentenceCount,
                     skipToken: reveal.skipToken,
                     onSentenceTyped: reveal.onSentenceTyped,

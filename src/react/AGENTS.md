@@ -19,10 +19,10 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `trial/components/TrialActionRow.tsx` | Analyze / Back / Continue icon row, shared by the debate Actions panel and the overworld talk. Owns A / S / Enter / Space / D (and farm-talk E) shortcuts. |
 | `trial/components/TrialChoiceButton.tsx` | A/B/C (or Talk / Leave) square, shared by the debate and the overworld talk. |
 | `trial/utils/debateLogTutorialNeeds.ts` | `tutorialNeedsDebateLog(steps)` — does this tutorial point at something only present while the log is expanded? |
-| `trial/panels/WizardPanel.tsx` | Centre column: the guidance line plus the statement box, which is revealed one sentence at a time (see "Wizard sentence reveal"). |
+| `trial/panels/WizardPanel.tsx` | Centre column: the guidance line plus the statement box, which fills in a sentence at a time, each one added below the last (see "Wizard sentence reveal"). |
 | `trial/panels/InteractivePanel.tsx` | Right column: phase-specific content and an icon-only footer (Analyze / Back / Continue-Confirm-Leave). The Analyze button opens the opponent's current-round line — the debate log's own `AnalyzeButton` lenses stay the way into history. |
 | `hooks/useTrialRoundWorkflow.ts` | Reducer hook that owns the entire debate state machine. Also emits `round:start` / `round:end` on the debate event bus. |
-| `hooks/useWizardReveal.ts` | Paces one incoming line through the wizard a sentence at a time; owns which sentence is showing, not the character count. |
+| `hooks/useWizardReveal.ts` | Paces one incoming line through the wizard a sentence at a time; owns which sentences have been spoken, not the character count. |
 | `hooks/useWindowKeyDown.ts` | Window `keydown` subscription that always calls the latest handler (same ref pattern as `useDebateEvent`). |
 | `trial/utils/trialActionShortcuts.ts` | Action-key codes (Continue / Analyze / Back / options) and the ignore rules for focused controls. |
 | `trial/components/TypewriterText.tsx` | Leaf that fills in one line character by character. Owns the character count so a reveal re-renders one node, not the overlay. |
@@ -250,22 +250,44 @@ Keyboard shortcuts press those same buttons (no-op when the matching control is 
 
 Incoming speech is paced through the wizard one sentence at a time rather than dumped as a
 block. `TrialUI` builds a `WizardRevealSource` (`{ key, sentences }`) for the current phase and
-passes it to `useWizardReveal`; `WizardPanel` renders the current sentence through
-`TypewriterText`, then holds the last sentence on screen (`settled`) instead of joining the
-whole line.
+passes it to `useWizardReveal`, which returns the line as `spoken` (the sentences already fully
+shown) plus `typing` (the one still filling in, or `null`). `WizardPanel` renders `spoken` as
+static `<p>`s and `typing` through `TypewriterText` after them.
+
+**The box accumulates.** Each sentence is *added* below the ones before it, so a finished line
+shows in full. This is load-bearing, not cosmetic: `settled` is a "this line has been read" flag
+with no memory of how far the pacer got, and several things complete a line early (table below).
+While the wizard showed one chunk at a time, any of those froze it on whichever sentence was up
+— usually the first, with the rest of the statement unreachable and the readout stuck at `(1/4)`.
+With the whole line on screen the stale index cannot be seen. For the same reason the `(2/4)`
+readout counts `spoken`, never an index.
+
+Each sentence must stay a plain sibling `<p>`. Wrapping the stack in a flex or grid container
+would establish a BFC, and it would sit *beside* the floated speaker portrait
+(`.trialWizardPortrait`) instead of flowing around it.
+
+Because the box now holds a whole line it can outgrow the panel, which one sentence rarely did.
+`WizardPanel` keeps the newest text in view with a `ResizeObserver` on the scroll container's
+content — an effect keyed on the sentence count is not enough, since the character count lives in
+`TypewriterText` so that a line filling in re-renders one leaf, not the overlay. For the same
+reason `.trialWizardDetailLive` is `flex: 0 0 auto`: as a `1 1 0%` item it was shrunk below its
+own content, so its box never grew and nothing watching it could tell the text had.
 
 **Press rules**
 
 - Continue (or Enter / Space / D) while characters are still appearing fills in the rest of the
   sentence. Those keys invoke the footer Continue button, so they also advance the phase or
   farm beat once that button is enabled and the line is fully on screen.
-- Continue on a fully-shown sentence steps to the next one.
-- When the **last** sentence finishes (typewriter or skip), the reveal is done: the wizard
-  keeps that sentence (readout stays `(n/n)`), Analyze unlocks, and Continue becomes the
-  phase-advance button. Skipping the last sentence mid-type fills it in and does **not** also
-  advance the round on that same press.
-- Reduced motion and an open tutorial skip the pacer and show the joined body (`(all)`), as
-  they did before this feature.
+- Continue on a fully-shown sentence adds the next one below it.
+- When the **last** sentence finishes (typewriter or skip), the reveal is done: the whole line
+  is on screen at `(n/n)`, Analyze unlocks, and Continue becomes the phase-advance button.
+  Skipping the last sentence mid-type fills it in and does **not** also advance the round on
+  that same press.
+- Reduced motion and an open tutorial skip the pacer, which lands in `settled` like a line the
+  player paced through — the whole line, same rendering path. `settled` is deliberately *not*
+  gated on `enabled` / `reduced`: gating it was what made the wizard shrink back to sentence 1
+  when a tutorial closed. The `(all)` readout is now only for content shown whole with no
+  reveal attached (the round recap, the closing verdict).
 
 **What is revealed** — incoming speech only: `scenario.introduction` during `debate_intro`, the
 NPC statement during `npc_speaking`, `opponentPrompt` during `player_choosing` while no option
@@ -273,11 +295,15 @@ is selected, and the matched `OpponentResponse` during `npc_responding`. Never t
 selected line, the round recap, or the closing verdict. `TrialUI`'s source memo switches on
 `gamePhase` **first** — `activeOpponentResponse` is also non-null during `round_recap`.
 
-**Chunking** — the authored `Sentence[]` is the unit, so wizard chunks line up with the cards
-the analysis modal guesses on. `scenario.introduction` is the one prose source and goes through
-`splitIntoSentences` in `trial/utils/trialHelpers.ts`.
+**Chunking** — one entry point, `revealChunks(string | Sentence[])` in
+`trial/utils/trialHelpers.ts`, used by every source in `TrialUI` and by `FarmDialogue`. An
+authored `Sentence[]` maps 1:1, so wizard chunks line up with the cards the analysis modal
+guesses on; prose (`scenario.introduction`, farm talk beats) goes through `splitIntoSentences`.
+Do not fold authored sentences — that would unpair the wizard's chunks from the modal's cards.
 
-**What completes a reveal early** (`reveal.complete()`, and the line is never revealed again)
+**What completes a reveal early** (`reveal.complete()`, and the line is never revealed again).
+All four land in `settled`, which shows the whole line — none of them can strand the player
+part-way through a statement.
 
 | Trigger | Why |
 |---|---|
@@ -581,7 +607,8 @@ Equivalent structure (conceptually; actual class names come from CSS modules suc
 | `getSpeakerName(debate, speakerId)` | Display name from `characters` or capitalised id. |
 | `qualityColor` / `qualityLabel` | Colours and labels for `PlayerOption.quality` (used in history, modal, etc.). |
 | `statementText(sentences)` | Joins `Sentence` text with spaces. |
-| `splitIntoSentences(text)` | Reading chunks for the wizard reveal, for the one prose source (`scenario.introduction`). Folds short or mid-sentence fragments back into their predecessor. |
+| `revealChunks(string \| Sentence[])` | The one entry point for wizard-reveal chunking. `Sentence[]` maps 1:1; prose goes through `splitIntoSentences`. Trims and drops empties. |
+| `splitIntoSentences(text)` | Reading chunks for a prose source (`scenario.introduction`, farm talk beats). Folds short or mid-sentence fragments back into their predecessor. Reach for `revealChunks` instead. |
 | `scoreColor(score)` | Cyan / red / neutral for numeric totals and impacts. |
 | `statementTypeLabel(type)` | Human-readable title for `StatementType` strings. |
 
