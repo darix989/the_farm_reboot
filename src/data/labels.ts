@@ -17,15 +17,17 @@ const LABELS = {
   // --- Level 1: The Pond Motion ---
   level1Heading: 'Level 1 — The Pond Motion',
   legacyScenariosHeading: 'Other scenarios',
-  level1CassTeaches: '1.1 · The Sparring Post: The Name of the Trick',
-  level1HettyBarrage: '1.2 · Gossip at the Trough: All About You',
-  level1GossipHetty: '1.3 · Gossip at the Trough: What Hetty Saw',
-  level1SparringCass: '1.4 · The Sparring Post: Answer Me',
-  level1GossipBram: '1.5 · Down at the Fence: Forty-One',
-  level1BramInsight: '1.6 · Down at the Fence: Looking Twice',
-  level1LabCass: "1.7 · The Fox's Lab: Dirty Paws",
-  level1SkirmishBram: '1.8 · Fence-line Skirmish: The Bent Grate',
-  level1BossTobias: '1.9 · The Public Farm: The Pond Motion',
+  level1BramDialog: '1.1 · Down at the Fence: One at a Time',
+  level1BramCrossfire: '1.2 · Down at the Fence: Answer Me Now',
+  level1CassTeaches: '1.3 · The Sparring Post: The Name of the Trick',
+  level1HettyBarrage: '1.4 · Gossip at the Trough: All About You',
+  level1GossipHetty: '1.5 · Gossip at the Trough: What Hetty Saw',
+  level1SparringCass: '1.6 · The Sparring Post: Answer Me',
+  level1GossipBram: '1.7 · Down at the Fence: Forty-One',
+  level1BramInsight: '1.8 · Down at the Fence: Looking Twice',
+  level1LabCass: "1.9 · The Fox's Lab: Dirty Paws",
+  level1SkirmishBram: '1.10 · Fence-line Skirmish: The Bent Grate',
+  level1BossTobias: '1.11 · The Public Farm: The Pond Motion',
   animationGallery: 'Animation Gallery',
 
   // --- Animation gallery ---
@@ -76,6 +78,7 @@ const LABELS = {
   gossipLog: 'Trough Talk',
   sparringLog: 'Sparring Log',
   labLog: 'Lab Notes',
+  lessonLog: 'Lesson Notes',
   interactive: 'Actions',
   wizard: 'Dialog',
   back: 'Back',
@@ -142,6 +145,7 @@ const LABELS = {
   gossipFinished: 'There is nothing more to overhear.',
   sparringFinished: 'That is the session done.',
   labFinished: 'That is the exercise done.',
+  lessonFinished: 'That is the lesson done.',
 
   // --- useTrialRoundWorkflow (wizard strip) ---
   // Opening guidance, one per `EncounterKind`.
@@ -149,7 +153,9 @@ const LABELS = {
   workflowGossipIntro: 'Read what they say, then spot the fallacies with the magnifying glass.',
   workflowSparringIntro: 'A practice bout. Read the line, then pick the answer that addresses it.',
   workflowLabIntro: 'A training exercise — the dirty answer is the one being asked for.',
+  workflowLessonIntro: 'Read what he has to show you, then try it yourself.',
   workflowRoundWithType: 'Round {roundNumber} — {typeDisplay}',
+  workflowRoundPlain: 'Round {roundNumber}',
   workflowNpcSpeaking: "Read {opponentName}'s statement, then click Continue.",
   workflowNpcSpeakingMustAnalyze: 'Analyze this statement first — open the magnifying glass.',
   workflowPlayerChoosingQuestion:
@@ -264,9 +270,18 @@ const LABELS = {
   farmMoveHintTouch: 'Drag anywhere to move',
   farmTalk: 'Talk',
   farmLeave: 'Leave',
+  farmLessons: 'Lessons',
   farmTalkHintContinue: 'Click Continue to hear the next line.',
   farmTalkHintChoose: 'Pick Talk to start, or Leave to walk away.',
+  farmTalkHintChooseTalkLessons: 'Pick Talk to start, Lessons to replay, or Leave.',
+  farmTalkHintChooseLessonsOnly: 'Pick Lessons to replay, or Leave.',
+  farmTalkHintLessonsMode: 'Pick a lesson to replay, or Back to return.',
   farmTalkHintNothingMore: 'Nothing more to say — click Leave when you are ready.',
+  farmTalkLessonsPrompt: 'Which one? {list}.',
+  farmTalkLessonItem: '{letter} — {title}',
+  farmTalkLessonItemJoin: '. ',
+  tutorialLessonRounds: 'how a round works',
+  tutorialLessonCrossfire: 'crossfire',
   characterStage: 'Participants: {names}',
   /** Shown on the finished-encounter footer; returns to wherever you came from. */
   leaveEncounter: 'Leave',
@@ -314,22 +329,35 @@ const LABELS = {
   farmDialogCassDoneB:
     'And whatever he says about your supper — and he will — do not let him make it about you.',
   farmDialogBram1:
-    'Rue. A word, quickly, and if anyone asks I was checking the fence. I think you should hear how the meadow is voting.',
-  farmDialogBram1a: 'Rue. A word, quickly. If anyone asks, I was checking the fence.',
-  farmDialogBram1b: 'You are checking the fence.',
+    'Rue. I wondered whether I might — this is going to sound like a lecture, I am sorry.',
+  farmDialogBram1a:
+    'Rue. I wondered whether I might… this is going to sound like a lecture. I am sorry.',
+  farmDialogBram1b: 'Go on.',
   farmDialogBram1c:
-    'I am checking the fence. And I think you should hear how the meadow is voting, before Sunday, from somebody who will say it kindly.',
+    'How we talk here. Before anyone else gets hold of you. Would you — would you let me show you? You do not have to say yes. I would not blame you.',
   farmDialogBram2:
-    'Come down to the hedge where nobody is looking. I want to show you how I get through a day here.',
-  farmDialogBram2a: 'Come down to the hedge, where nobody is looking.',
-  farmDialogBram2b: 'Why the hedge?',
+    'There is a second thing, if you have a moment. You do not have to. I would not blame you.',
+  farmDialogBram2a: 'There is a second thing, if you have a moment. You do not have to.',
+  farmDialogBram2b: 'What is it?',
   farmDialogBram2c:
-    'Because I want to show you how I get through a day on this farm, and I would rather not be seen teaching a raccoon anything.',
+    'Some rounds are not speeches. I can show you, if you like. Completely optional. I will not be offended. I might be a little offended.',
   farmDialogBram3:
-    'One more before the Public Farm. Ask me whatever you like — I will answer straight, which is more than most will.',
-  farmDialogBram3a: 'One more, before the Public Farm.',
-  farmDialogBram3b: 'Go on, then.',
+    'Rue. A word, quickly, and if anyone asks I was checking the fence. I think you should hear how the meadow is voting.',
+  farmDialogBram3a: 'Rue. A word, quickly. If anyone asks, I was checking the fence.',
+  farmDialogBram3b: 'You are checking the fence.',
   farmDialogBram3c:
+    'I am checking the fence. And I think you should hear how the meadow is voting, before Sunday, from somebody who will say it kindly.',
+  farmDialogBram4:
+    'Come down to the hedge where nobody is looking. I want to show you how I get through a day here.',
+  farmDialogBram4a: 'Come down to the hedge, where nobody is looking.',
+  farmDialogBram4b: 'Why the hedge?',
+  farmDialogBram4c:
+    'Because I want to show you how I get through a day on this farm, and I would rather not be seen teaching a raccoon anything.',
+  farmDialogBram5:
+    'One more before the Public Farm. Ask me whatever you like — I will answer straight, which is more than most will.',
+  farmDialogBram5a: 'One more, before the Public Farm.',
+  farmDialogBram5b: 'Go on, then.',
+  farmDialogBram5c:
     'Ask me whatever you like. I will answer it straight, which is more than most on this farm will do, and I will regret it afterwards, which is also more than most.',
   farmDialogBramDone:
     'I have said a great deal more than I should have. The grate is bent. You did not hear it from me.',
@@ -360,24 +388,30 @@ const LABELS = {
   farmDialogTobiasDoneB:
     'I will say this once and not again: I have pulled a cart past that drain for eleven years and never once looked into it. Good morning, Rue.',
   farmDialogDot1:
-    'You are the new raccoon. Rue, is it? Welcome to Green Meadows. Tobias has put a motion on the pond — Sunday, in front of Duchess. Cass first, at the west post. Then Hetty at the trough. Then the owl at the barn.',
+    'You are the new raccoon. Rue, is it? Welcome to Green Meadows. Tobias has put a motion on the pond — Sunday, in front of Duchess. Bram first, at the fence. Then Cass at the west post.',
   farmDialogDot1a: 'You are the new raccoon! Rue, is it? Or Roo. Somebody said Roo.',
   farmDialogDot1b: 'Rue.',
   farmDialogDot1c:
     'Rue. Welcome to Green Meadows. Tobias has put a motion on the pond and it is heard Sunday in front of Duchess, and you will want to know how this farm argues before you go and stand in front of it.',
   farmDialogDot1d: 'Where do I start?',
   farmDialogDot1e:
-    'Cass. The fox, at the west post. She has something you need before Hetty will so much as look at you. Then Hetty at the trough. Then the barn, for the floor. Do not let anyone tell you about the fox first — let her do it.',
-  farmDialogDot2: 'Cass has done her piece. Hetty is at the trough, and she will talk to you now.',
-  farmDialogDot2a: 'Cass has done her piece. I heard it from here, some of it.',
-  farmDialogDot2b: 'And Hetty?',
+    'Bram. The wolf, down at the fence. He will pretend he is checking it. Let him. He is the one who will show you how a conversation works here, before Cass gets her teeth into you.',
+  farmDialogDot2:
+    'Bram has done his piece. Cass is at the west post, and she will talk to you now.',
+  farmDialogDot2a: 'Bram has done his piece. You know how a round works, then.',
+  farmDialogDot2b: 'And now?',
   farmDialogDot2c:
-    'At the trough, and she will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her — everyone does, and it has never once helped.',
-  farmDialogDot3:
-    'Duchess is at the barn with the motion. That is the floor. Bram is down at the fence if you have not been.',
-  farmDialogDot3a: 'Duchess has the motion at the barn. That is the floor, whenever you want it.',
-  farmDialogDot3b: 'And the fence line?',
+    'Cass. The fox, at the west post. She has something you need before Hetty will so much as look at you. Do not let anyone tell you about the fox first — let her do it.',
+  farmDialogDot3: 'Cass has done her piece. Hetty is at the trough, and she will talk to you now.',
+  farmDialogDot3a: 'Cass has done her piece. I heard it from here, some of it.',
+  farmDialogDot3b: 'And Hetty?',
   farmDialogDot3c:
+    'At the trough, and she will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her — everyone does, and it has never once helped.',
+  farmDialogDot4:
+    'Duchess is at the barn with the motion. That is the floor. Bram is down at the fence if you have not been.',
+  farmDialogDot4a: 'Duchess has the motion at the barn. That is the floor, whenever you want it.',
+  farmDialogDot4b: 'And the fence line?',
+  farmDialogDot4c:
     'Bram, if you have not been. He will pretend he is checking the fence. He is always checking the fence. He has the best-checked fence in the county and nobody has ever thanked him for it.',
   farmDialogDotDone: 'I have pointed you at everyone I can. The rest is the floor.',
   farmDialogDotDoneA: 'I have pointed you at everyone I can point you at.',
@@ -415,6 +449,15 @@ const LABELS = {
 
   // Dialog flags — the title doubles as the requirement phrase on a locked encounter, so it
   // reads as an instruction ("hear Hetty out at the trough"), not as a headline.
+  dialogFlagDotWelcomedTitle: 'get your bearings from Dot in the yard',
+  dialogFlagDotWelcomedBody:
+    'Dot met you in the yard, named Sunday in front of Duchess, and sent you to Bram at the fence before anyone else got hold of you.',
+  dialogFlagBramTaughtRoundsTitle: 'learn how a round works from Bram at the fence',
+  dialogFlagBramTaughtRoundsBody:
+    'Bram walked you through a conversation one piece at a time: one animal says a thing, the other answers, and that pair is a round. He apologised for the lecture the whole way through.',
+  dialogFlagBramTaughtCrossfireTitle: 'learn what crossfire is from Bram at the fence',
+  dialogFlagBramTaughtCrossfireBody:
+    'Bram showed you that some rounds are not speeches: somebody asks and you answer on your feet. They call that crossfire, and he made you do both halves.',
   dialogFlagCassNamedAdHominemTitle: 'let Cass name the trick for you',
   dialogFlagCassNamedAdHominemBody:
     'Eleven seasons on the floor and nobody ever argued with Cass — they argued with her tail. So she knows it by name: Ad Hominem, answering the animal instead of the argument. She made you use it on her first, so that you would recognise the shape of it from the inside.',
@@ -424,6 +467,14 @@ const LABELS = {
   dialogFlagBramGrateTitle: 'get Bram to talk about the grate',
   dialogFlagBramGrateBody:
     'At the fence line, before you had asked him anything: the outflow grate has been bent since before the frost. Bram is one of Tobias’s own forty-one, which makes him the best witness on this farm and the one it costs him most to be.',
+
+  // Feature unlocks — titles read as directions, same contract as dialog flags.
+  featureInsightPointsTitle: 'learn what Insight is from Bram at the fence',
+  featureInsightPointsBody:
+    'Bram handed you the habit he uses to survive a room that has already decided about him: never answer the first time. Insight is the one thing in this game you can spend, and you are never forced to.',
+  featureRoundTypesTitle: 'learn what crossfire is from Bram at the fence',
+  featureRoundTypesBody:
+    'Some rounds are not speeches. Somebody asks and you answer on your feet. Bram named that crossfire, and the round labels started saying so.',
 
   // --- Phaser placeholder scenes ---
   gameOver: 'Game Over',

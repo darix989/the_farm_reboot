@@ -11,8 +11,8 @@ import {
  * Whether this animal's *conversation* is closed until their next encounter unlocks.
  *
  * Distinct from the encounter gate: most animals still talk when locked, and the Talk button
- * inside the conversation carries the reason. `gateTalk` is for the rare animal (Hetty) who
- * should not speak at all until the player is ready to hear her.
+ * inside the conversation carries the reason. `gateTalk` is for the rare animal who should
+ * not speak at all until the player is ready (Hetty, and now Bram and Cass on the on-ramp).
  *
  * A finished animal (`nextScenarioFor` empty) is never silenced — the Done conversation is
  * always allowed.

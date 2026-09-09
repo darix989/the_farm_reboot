@@ -47,7 +47,7 @@ export const useProgressStore = create<ProgressStore>()(
     }),
     {
       name: 'the-farm-progress',
-      version: 4,
+      version: 5,
       /**
        * Saved data outlives the code that wrote it. A stale entry naming a scenario
        * that no longer exists must not break the farm, so anything unrecognised is
@@ -60,10 +60,14 @@ export const useProgressStore = create<ProgressStore>()(
        * so `merge` would silently drop the renamed pair and leave a part-played save sitting
        * between rungs that no longer follow each other. The level is different content now;
        * the honest migration is to start it again.
+       *
+       * v5 is Bram's mechanics lessons and the feature-unlock on-ramp. The level now starts
+       * with Dot then Bram, not Cass, so a part-played save sits between rungs that no
+       * longer follow each other.
        */
       migrate: (persisted, fromVersion) => {
         const saved = (persisted ?? {}) as Record<string, unknown>;
-        if (fromVersion < 4) {
+        if (fromVersion < 5) {
           return { ...saved, completedScenarios: [], level1Started: false };
         }
         return saved;

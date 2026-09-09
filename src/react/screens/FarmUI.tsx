@@ -36,9 +36,10 @@ const FarmUI: React.FC = () => {
   const closeDialogue = useFarmStore((s) => s.closeDialogue);
   const openCodex = useCodexUiStore((s) => s.openCodex);
 
+  const completedScenarios = useProgressStore((s) => s.completedScenarios);
   const dialogue = useMemo(
     () => (talkingToNpcId ? farmDialogueFor(talkingToNpcId) : null),
-    [talkingToNpcId],
+    [talkingToNpcId, completedScenarios],
   );
 
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;

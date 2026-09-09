@@ -25,6 +25,7 @@
     "showIntroSummary": false,
     "encounterKind": "gossip"
   },
+  "unlocksFeatures": ["insight_points"],
   "rounds": [
     {
       "kind": "npc",

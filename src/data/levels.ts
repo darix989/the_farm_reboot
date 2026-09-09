@@ -17,6 +17,8 @@ import bossTobiasJson from './debates/015_tobias_vs_rue.json';
 import cassTeachesJson from './debates/020_cass_teaches_ad_hominem.json';
 import hettyBarrageJson from './debates/021_hetty_ad_hominem_barrage.json';
 import bramInsightJson from './debates/022_bram_teaches_insight.json';
+import bramDialogJson from './debates/030_bram_teaches_dialog.json';
+import bramCrossfireJson from './debates/031_bram_teaches_crossfire.json';
 
 /** Keys map to debate JSON files under `src/data/debates/`. */
 export type DebateScenarioKey =
@@ -32,7 +34,9 @@ export type DebateScenarioKey =
   | '015_tobias_vs_rue'
   | '020_cass_teaches_ad_hominem'
   | '021_hetty_ad_hominem_barrage'
-  | '022_bram_teaches_insight';
+  | '022_bram_teaches_insight'
+  | '030_bram_teaches_dialog'
+  | '031_bram_teaches_crossfire';
 
 export interface ScenarioEntry {
   key: DebateScenarioKey;
@@ -56,9 +60,9 @@ export interface ScenarioEntry {
 
 /**
  * Level 1 — "The Pond Motion". Ordered as a ladder: each rung adds exactly one thing,
- * from Cass naming Ad Hominem up to the full Public Farm debate. Note that the file
- * numbers are creation order, not ladder order — Bram's Insight lesson (`022_`) is rung
- * 1.6, between his trough gossip and Cass's lab. See
+ * from Bram teaching how a round works up to the full Public Farm debate. Note that the
+ * file numbers are creation order, not ladder order — Bram's dialog lessons (`030_`,
+ * `031_`) are rungs 1.1 and 1.2, and his Insight lesson (`022_`) is rung 1.8. See
  * `docs/level_01_the_pond_motion.md` for the story and the authored dialog.
  *
  * Overworld gates live on `requires`. The main menu still lists every rung ungated, which
@@ -66,9 +70,22 @@ export interface ScenarioEntry {
  */
 export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
   {
+    key: '030_bram_teaches_dialog',
+    titleLabel: 'level1BramDialog',
+    scenario: bramDialogJson as unknown as DebateScenarioJson,
+    requires: [{ kind: 'dialog_flag', flagId: 'dot-welcomed' }],
+  },
+  {
+    key: '031_bram_teaches_crossfire',
+    titleLabel: 'level1BramCrossfire',
+    scenario: bramCrossfireJson as unknown as DebateScenarioJson,
+    requires: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
+  },
+  {
     key: '020_cass_teaches_ad_hominem',
     titleLabel: 'level1CassTeaches',
     scenario: cassTeachesJson as unknown as DebateScenarioJson,
+    requires: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
   },
   {
     key: '021_hetty_ad_hominem_barrage',

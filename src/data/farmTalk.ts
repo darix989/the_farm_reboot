@@ -74,6 +74,16 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: RUE, textLabel: 'farmDialogBram3b' },
     { speakerId: 'bram', textLabel: 'farmDialogBram3c' },
   ],
+  bram4: [
+    { speakerId: 'bram', textLabel: 'farmDialogBram4a' },
+    { speakerId: RUE, textLabel: 'farmDialogBram4b' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram4c', emotion: 'thinking' },
+  ],
+  bram5: [
+    { speakerId: 'bram', textLabel: 'farmDialogBram5a' },
+    { speakerId: RUE, textLabel: 'farmDialogBram5b' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram5c' },
+  ],
   bramDone: [
     { speakerId: 'bram', textLabel: 'farmDialogBramDoneA' },
     { speakerId: 'bram', textLabel: 'farmDialogBramDoneB' },
@@ -114,6 +124,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'dot', textLabel: 'farmDialogDot3a' },
     { speakerId: RUE, textLabel: 'farmDialogDot3b' },
     { speakerId: 'dot', textLabel: 'farmDialogDot3c' },
+  ],
+  dot4: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot4a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot4b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot4c' },
   ],
   dotDone: [
     { speakerId: 'dot', textLabel: 'farmDialogDotDoneA' },

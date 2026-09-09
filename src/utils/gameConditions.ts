@@ -19,6 +19,7 @@ import type { LogicalFallacyId } from '../types/debateEntities';
 import type { DebateScenarioKey } from '../data/levels';
 import { logicalFallacyLabel } from '../data/fallacyCatalog';
 import { dialogFlagById, type DialogFlagId } from '../data/dialogFlags';
+import { gameFeatureById, type GameFeatureId } from '../data/gameFeatures';
 import { useCodexStore, type SpottedFallacy } from '../store/codexStore';
 import { useProgressStore } from '../store/progressStore';
 import getLabel from '../data/labels';
@@ -34,13 +35,16 @@ export type GameCondition =
   /** The player has finished this encounter, however well or badly it went. */
   | { kind: 'encounter_completed'; scenarioKey: DebateScenarioKey }
   /** A named thing has happened to the player. See `src/data/dialogFlags.ts`. */
-  | { kind: 'dialog_flag'; flagId: DialogFlagId };
+  | { kind: 'dialog_flag'; flagId: DialogFlagId }
+  /** A named mechanic has been taught. See `src/data/gameFeatures.ts`. */
+  | { kind: 'feature_unlocked'; featureId: GameFeatureId };
 
 /** Everything {@link isConditionMet} is allowed to look at. */
 export interface ConditionContext {
   knownFallacies: readonly LogicalFallacyId[];
   spottedFallacies: readonly SpottedFallacy[];
   dialogFlags: readonly DialogFlagId[];
+  unlockedFeatures: readonly GameFeatureId[];
   completedScenarios: readonly DebateScenarioKey[];
 }
 
@@ -56,6 +60,7 @@ export function conditionContextSnapshot(): ConditionContext {
     knownFallacies: codex.knownFallacies,
     spottedFallacies: codex.spottedFallacies,
     dialogFlags: codex.dialogFlags,
+    unlockedFeatures: codex.unlockedFeatures,
     completedScenarios: useProgressStore.getState().completedScenarios,
   };
 }
@@ -74,6 +79,8 @@ export function isConditionMet(condition: GameCondition, ctx: ConditionContext):
       return ctx.completedScenarios.includes(condition.scenarioKey);
     case 'dialog_flag':
       return ctx.dialogFlags.includes(condition.flagId);
+    case 'feature_unlocked':
+      return ctx.unlockedFeatures.includes(condition.featureId);
   }
 }
 
@@ -118,6 +125,10 @@ export function conditionHint(condition: GameCondition): string {
     case 'dialog_flag': {
       const flag = dialogFlagById(condition.flagId);
       return flag ? getLabel(flag.titleLabel) : getLabel('conditionHintEncounterCompleted');
+    }
+    case 'feature_unlocked': {
+      const feature = gameFeatureById(condition.featureId);
+      return feature ? getLabel(feature.titleLabel) : getLabel('conditionHintEncounterCompleted');
     }
   }
 }

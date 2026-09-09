@@ -184,7 +184,7 @@ makes the ladder testable without replaying the farm.
 
 One vocabulary, two consumers. `GameCondition` (`src/utils/gameConditions.ts`) is a
 discriminated union — a fallacy the player knows, a fallacy they have spotted, an encounter
-they have finished, or a named dialog flag. The same predicate gates a Talk button
+they have finished, a named dialog flag, or a named feature unlock. The same predicate gates a Talk button
 (`ScenarioEntry.requires`) and a debate option (`PlayerOption.unlockConditions`). Evaluate
 it with `isConditionMet` / `areConditionsMet`; React subscribers go through
 `useGameConditions.ts` so a store write re-renders. Prefer a `dialog_flag` over
@@ -192,11 +192,17 @@ it with `isConditionMet` / `areConditionsMet`; React subscribers go through
 authored copy for the locked-button hint and for the Codex.
 
 Finishing an encounter goes through `applyEncounterRewards` (`src/utils/encounterRewards.ts`):
-it marks the scenario complete *and* grants `teachesFallacies` / `setsDialogFlags` in one
-write, so a two-part gate can never be half-written. Rewards land on leaving a finished
+it marks the scenario complete *and* grants `teachesFallacies` / `setsDialogFlags` /
+`unlocksFeatures` in one write, so a two-part gate can never be half-written. Rewards land on leaving a finished
 encounter, not on reaching the round that explains the fallacy. Spotting a fallacy in the
 analysis modal also marks it known (`recordSpottedFallacy`) — spotting one in the wild is
 strictly more than being told it exists.
+
+Feature unlocks (`src/data/gameFeatures.ts`, stored on `codexStore.unlockedFeatures`) hide UI
+for a concept nobody has introduced yet. Insight Points and round-type labels stay off until
+Bram teaches them. `resolveMechanics()` stays pure; `applyFeatureUnlocks` ANDs those flags
+with the unlock, and the teaching encounter can still show the feature during play via
+`unlocksFeatures`.
 
 **Field Notes is a React overlay, not a Phaser scene.** Mounted globally in `ReactApp`
 next to `TutorialOverlay`. Routing to a Codex scene would tear down the overworld (and
@@ -204,8 +210,8 @@ Rue's position with it) just to read a list. It is `absolute` on the letterboxed
 `pointer-events: auto` on its root, `z-index` above the trial modals.
 
 A gated encounter is still *offered*, by default — the animal talks, and only the Talk
-button is locked. Set `gateTalk` on the NPC to refuse the conversation itself (Hetty)
-until the next encounter's `requires` are met. `Farm.ts` `tryInteract` and the overworld
+button is locked. Set `gateTalk` on the NPC to refuse the conversation itself (Hetty, Bram,
+Cass) until the next encounter's `requires` are met. `Farm.ts` `tryInteract` and the overworld
 prompt both go through `farmNpcTalkLocked`. Being told "not yet, and here is why" is
 content; a silent animal without `gateTalk` is a bug report.
 
@@ -222,11 +228,11 @@ src/
   types/debateEntities.ts    the whole content schema — scenarios, rounds, options,
                              mechanics flags, tutorial triggers
   data/                      labels, the scenario registry, the farm map, the JSON,
-                             dialogFlags, fallacyCatalog
+                             dialogFlags, gameFeatures, fallacyCatalog
   store/                     the eight zustand stores
   utils/gameManager.ts       imperative Phaser access (switchScene, getScene, …)
   utils/gameConditions.ts    GameCondition union; shared by gates and option unlocks
-  utils/encounterRewards.ts  complete + teach + set flags in one write
+  utils/encounterRewards.ts  complete + teach + set flags + unlock features in one write
   phaser/
     main.ts                  game config: scale, physics, scene list
     EventBus.ts              the 5-event Phaser→React bus

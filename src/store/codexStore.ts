@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import type { LogicalFallacyId } from '../types/debateEntities';
 import { isCatalogedFallacyId } from '../data/fallacyCatalog';
 import { isDialogFlagId, type DialogFlagId } from '../data/dialogFlags';
+import { isGameFeatureId, type GameFeatureId } from '../data/gameFeatures';
 import { DEBATES, type DebateScenarioKey } from '../data/levels';
 
 /**
@@ -35,6 +36,7 @@ interface CodexStore {
   knownFallacies: LogicalFallacyId[];
   spottedFallacies: SpottedFallacy[];
   dialogFlags: DialogFlagId[];
+  unlockedFeatures: GameFeatureId[];
 
   learnFallacy: (id: LogicalFallacyId) => void;
   /**
@@ -46,11 +48,13 @@ interface CodexStore {
    */
   recordSpottedFallacy: (entry: SpottedFallacy) => void;
   setDialogFlag: (id: DialogFlagId) => void;
+  unlockFeature: (id: GameFeatureId) => void;
 
   knowsFallacy: (id: LogicalFallacyId) => boolean;
   /** Scoped to one encounter when `scenarioKey` is given, anywhere in the game otherwise. */
   hasSpottedFallacy: (id: LogicalFallacyId, scenarioKey?: DebateScenarioKey) => boolean;
   hasDialogFlag: (id: DialogFlagId) => boolean;
+  hasFeature: (id: GameFeatureId) => boolean;
 
   resetCodex: () => void;
 }
@@ -70,6 +74,7 @@ export const useCodexStore = create<CodexStore>()(
       knownFallacies: [],
       spottedFallacies: [],
       dialogFlags: [],
+      unlockedFeatures: [],
 
       learnFallacy: (id) =>
         set((s) =>
@@ -95,6 +100,13 @@ export const useCodexStore = create<CodexStore>()(
           s.dialogFlags.includes(id) ? s : { ...s, dialogFlags: [...s.dialogFlags, id] },
         ),
 
+      unlockFeature: (id) =>
+        set((s) =>
+          s.unlockedFeatures.includes(id)
+            ? s
+            : { ...s, unlockedFeatures: [...s.unlockedFeatures, id] },
+        ),
+
       knowsFallacy: (id) => get().knownFallacies.includes(id),
 
       hasSpottedFallacy: (id, scenarioKey) =>
@@ -104,11 +116,14 @@ export const useCodexStore = create<CodexStore>()(
 
       hasDialogFlag: (id) => get().dialogFlags.includes(id),
 
-      resetCodex: () => set({ knownFallacies: [], spottedFallacies: [], dialogFlags: [] }),
+      hasFeature: (id) => get().unlockedFeatures.includes(id),
+
+      resetCodex: () =>
+        set({ knownFallacies: [], spottedFallacies: [], dialogFlags: [], unlockedFeatures: [] }),
     }),
     {
       name: 'the-farm-codex',
-      version: 1,
+      version: 2,
       /**
        * Same contract as `progressStore`: a save naming a fallacy, encounter or flag that no
        * longer exists must not break the farm, so anything unrecognised is dropped rather than
@@ -138,7 +153,13 @@ export const useCodexStore = create<CodexStore>()(
           .filter(isDialogFlagId)
           .filter((id, i, all) => all.indexOf(id) === i);
 
-        return { ...current, knownFallacies, spottedFallacies, dialogFlags };
+        const unlockedFeatures = (
+          Array.isArray(saved?.unlockedFeatures) ? saved.unlockedFeatures : []
+        )
+          .filter(isGameFeatureId)
+          .filter((id, i, all) => all.indexOf(id) === i);
+
+        return { ...current, knownFallacies, spottedFallacies, dialogFlags, unlockedFeatures };
       },
     },
   ),

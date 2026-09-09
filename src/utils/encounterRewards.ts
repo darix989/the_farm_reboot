@@ -7,9 +7,9 @@ import { useCodexStore } from '../store/codexStore';
  * Everything a finished encounter grants, applied in one place.
  *
  * Marking the scenario complete used to be the whole story, and `TrialUI` did it inline. Now an
- * encounter can also teach a fallacy or set a dialog flag, and those have to land together: a
- * gate that reads "you know Ad Hominem and you have talked to Hetty" would be inconsistent for
- * a frame if the two were written from different call sites.
+ * encounter can also teach a fallacy, set a dialog flag, or unlock a feature, and those have
+ * to land together: a gate that reads "you know Ad Hominem and you have talked to Hetty"
+ * would be inconsistent for a frame if the two were written from different call sites.
  *
  * Idempotent, because it is wired to the player leaving a finished encounter — which they can do
  * again on a replay.
@@ -23,6 +23,7 @@ export function applyEncounterRewards(
   const codex = useCodexStore.getState();
   scenario.teachesFallacies?.forEach((fallacyId) => codex.learnFallacy(fallacyId));
   scenario.setsDialogFlags?.forEach((flagId) => codex.setDialogFlag(flagId));
+  scenario.unlocksFeatures?.forEach((featureId) => codex.unlockFeature(featureId));
 }
 
 /**

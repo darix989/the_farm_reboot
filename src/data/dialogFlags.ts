@@ -6,12 +6,16 @@
  * carries its own copy, so an unlock requirement and a journal entry are the same record.
  *
  * A flag is set when an encounter that declares it in `setsDialogFlags` is finished — see
- * `src/utils/encounterRewards.ts`. Ids are a closed union so a typo in scenario JSON is a
+ * `src/utils/encounterRewards.ts` — or when a farm-talk stage with `completesFlag` is
+ * played through to the last beat. Ids are a closed union so a typo in scenario JSON is a
  * compile error, and so a stale flag in `localStorage` can be dropped on load.
  */
 import type { Labels } from './labels';
 
 export type DialogFlagId =
+  | 'dot-welcomed'
+  | 'bram-taught-rounds'
+  | 'bram-taught-crossfire'
   | 'cass-named-ad-hominem'
   | 'hetty-ad-hominem-witnessed'
   | 'bram-grate-conceded';
@@ -24,6 +28,18 @@ export interface DialogFlagEntry {
 }
 
 export const DIALOG_FLAGS: Readonly<Record<DialogFlagId, DialogFlagEntry>> = {
+  'dot-welcomed': {
+    titleLabel: 'dialogFlagDotWelcomedTitle',
+    bodyLabel: 'dialogFlagDotWelcomedBody',
+  },
+  'bram-taught-rounds': {
+    titleLabel: 'dialogFlagBramTaughtRoundsTitle',
+    bodyLabel: 'dialogFlagBramTaughtRoundsBody',
+  },
+  'bram-taught-crossfire': {
+    titleLabel: 'dialogFlagBramTaughtCrossfireTitle',
+    bodyLabel: 'dialogFlagBramTaughtCrossfireBody',
+  },
   'cass-named-ad-hominem': {
     titleLabel: 'dialogFlagCassNamedAdHominemTitle',
     bodyLabel: 'dialogFlagCassNamedAdHominemBody',

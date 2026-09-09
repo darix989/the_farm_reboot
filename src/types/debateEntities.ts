@@ -13,6 +13,7 @@ import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 // zustand into every module that only wants the content schema.
 import type { GameCondition } from '../utils/gameConditions';
 import type { DialogFlagId } from '../data/dialogFlags';
+import type { GameFeatureId } from '../data/gameFeatures';
 
 /** Always exactly two sides in a debate. */
 export type Side = 'proposition' | 'opposition';
@@ -460,7 +461,7 @@ export interface DebateScenarioTutorialEntry {
  *
  * `'debate'` covers the full Public Farm and the one-beat skirmishes that use its chrome.
  */
-export type EncounterKind = 'debate' | 'gossip' | 'sparring' | 'lab';
+export type EncounterKind = 'debate' | 'gossip' | 'sparring' | 'lab' | 'lesson';
 
 /**
  * Feature flags that let a scenario ship as a *smaller mode* than a full Public Farm
@@ -500,6 +501,12 @@ export interface DebateScenarioMechanics {
   maxAnalysisAttempts?: number;
   /** Selects the encounter's UI copy. Presentation only. Default `'debate'`. */
   encounterKind?: EncounterKind;
+  /**
+   * The round-type half of the wizard label (`— crossfire`), the type line on debate-log
+   * cards, and the analysis-modal subtitle. Default `true`. Hidden globally until the
+   * `round_types` feature is unlocked, even when this flag is on.
+   */
+  showRoundType?: boolean;
 }
 
 /**
@@ -541,6 +548,13 @@ export interface DebateScenarioJson {
    * carries player-facing copy for the Codex and for the locked-encounter hint.
    */
   setsDialogFlags?: readonly DialogFlagId[];
+  /**
+   * Features unlocked once this encounter is finished. Same leave-timing as
+   * `teachesFallacies`: a walked-out lesson unlocks nothing. The teaching encounter can
+   * still *show* the feature during play — `applyFeatureUnlocks` treats these ids as
+   * visible for this scenario, and the store write persists them on leave.
+   */
+  unlocksFeatures?: readonly GameFeatureId[];
   rounds: RoundEntry[];
   /**
    * Overlay tutorials wired to specific debate events via the typed event bus.

@@ -1,0 +1,271 @@
+{
+  "id": "level1-bram-teaches-crossfire",
+  "introduction": "Bram is still at the fence, and he has one more thing, if you have a moment. He says you do not have to. He would not blame you.",
+  "playerSide": "opposition",
+  "characters": {
+    "bram": "Bram",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [],
+  "availableLogicalFallacies": [],
+  "setsDialogFlags": ["bram-taught-crossfire"],
+  "unlocksFeatures": ["round_types"],
+  "mechanics": {
+    "analysisEnabled": false,
+    "showInsightPoints": false,
+    "showModeratorOpinion": false,
+    "showRoundRecap": false,
+    "showIntroSummary": false,
+    "revealChoiceAssessment": true,
+    "encounterKind": "lesson",
+    "showRoundType": true
+  },
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "opening_constructive",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r1-bram",
+        "speakerId": "bram",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Some rounds are not speeches. Somebody asks and you answer on your feet. They call that crossfire.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "I know. It sounds like a fight. It is only a name. I did not pick it.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-3",
+            "text": "There are two halves. They ask, you answer. Or you ask, they have to answer. I thought we might try both, if that is all right.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "crossfire",
+      "preventOptionsShuffle": true,
+      "opponentPromptImpact": 0,
+      "opponentPrompt": {
+        "id": "stmt-r2-bram",
+        "speakerId": "bram",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r2-p1",
+            "text": "This is the first half. I ask, you answer. On your feet, as they say, which I have always found an odd way of putting it, given that we are standing anyway.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-p2",
+            "text": "Why did Dot send you to me, and not to Cass?",
+            "logicalFallacies": []
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "You answered a different question. Kind, and not what he asked.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-a-1",
+              "text": "Cass is a fox. I thought I would start somewhere quieter.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "effective",
+          "impact": 0,
+          "reason": "You answered the question he asked, about Dot, without decorating it.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-b-1",
+              "text": "She said you would show me how a conversation works here, before Cass got her teeth into me.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "effective",
+          "impact": 0,
+          "reason": "Short, and it is still an answer. Crossfire does not need a speech.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-c-1",
+              "text": "She said you first.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "crossfire",
+      "preventOptionsShuffle": true,
+      "options": [
+        {
+          "id": "r3-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "A yes-or-no about his feelings. He will apologise, and you will not have asked him anything that needed answering on his feet.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-a-1",
+              "text": "Are you all right? You look like you would rather be checking the fence.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-b",
+          "quality": "effective",
+          "impact": 0,
+          "reason": "You asked him something he has to answer. That is the other half of crossfire.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-b-1",
+              "text": "If I ask you a question in the middle of a conversation, do you have to answer it?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-c",
+          "quality": "effective",
+          "impact": 0,
+          "reason": "You named the thing and asked him to confirm it. He has to say yes.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-c-1",
+              "text": "This half is me asking, and you answering. Is that right?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r3-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-a",
+            "speakerId": "bram",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-a-1",
+                "text": "I — yes. I am sorry. That is a kind question and not the kind I meant. You are allowed to ask me something I have to answer, not something I can wriggle out of with an apology.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-b",
+            "speakerId": "bram",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-b-1",
+                "text": "In crossfire, yes. That is the point of it. I would rather not, usually, but that is not the same as not having to.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-c",
+            "speakerId": "bram",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-c-1",
+                "text": "Yes. You ask, I answer. I am doing it now, you see. I did tell you I would.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "closing_constructive",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r4-bram",
+        "speakerId": "bram",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r4-1",
+            "text": "That is crossfire. Both halves. They will put the word on the round when it is one, so you can see it coming.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-2",
+            "text": "I am sorry if that was a lot. You can come back and do it again, if you like. I will pretend I am checking the fence.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "crossfire-the-label",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-2"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "They call this **[accent]crossfire[/accent]**. Somebody asks, and you answer on your feet.\n\nThe round label says so, so you can see it coming.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -406,6 +406,7 @@ export function useTrialRoundWorkflow(
    * these from the closure would see whatever they were when `dispatch` was created.
    */
   conditions?: ConditionContext,
+  options?: { showRoundType?: boolean },
 ) {
   const scenarioRef = useRef(scenario);
   scenarioRef.current = scenario;
@@ -540,13 +541,18 @@ export function useTrialRoundWorkflow(
   const wizardRoundLabel = useMemo((): string | null => {
     if (state.gamePhase === 'debate_intro' || state.gamePhase === 'debate_complete') return null;
     if (!currentRound) return null;
+    if (options?.showRoundType === false) {
+      return getLabel('workflowRoundPlain', {
+        replacements: { roundNumber: currentRound.roundNumber },
+      });
+    }
     return getLabel('workflowRoundWithType', {
       replacements: {
         roundNumber: currentRound.roundNumber,
         typeDisplay: currentRound.type.replace(/_/g, ' '),
       },
     });
-  }, [state.gamePhase, currentRound]);
+  }, [state.gamePhase, currentRound, options?.showRoundType]);
 
   const wizardMessage = useMemo((): string => {
     const copy = encounterLabels(scenario);

@@ -40,6 +40,7 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 | `startingInsightPoints` | Insight to start with. Defaults to 0. |
 | `teachesFallacies` | Fallacies added to the Codex as known when the player **leaves a finished encounter**. Walking out halfway teaches nothing. |
 | `setsDialogFlags` | Dialog flags set on the same leave. Prefer these over `encounter_completed` for "this conversation happened" gates — a flag carries player-facing copy. |
+| `unlocksFeatures` | Features granted on the same leave (`insight_points`, `round_types`). Walking out halfway unlocks nothing. The teaching encounter can still show the feature during play. |
 | `mechanics` | Mode flags, below. Omit for a full debate. |
 | `rounds` | The sequence. |
 | `tutorials` | Overlays triggered off the debate event bus. |
@@ -106,7 +107,7 @@ the fence" is one option with both fields set. Presentation is shared: either fi
 the option locked, and unlocking still goes through the click-to-reveal step.
 
 Kinds: `fallacy_known`, `fallacy_spotted` (optionally scoped to a scenario),
-`encounter_completed`, `dialog_flag`. Prefer a `dialog_flag` when the requirement is "this
+`encounter_completed`, `dialog_flag`, `feature_unlocked`. Prefer a `dialog_flag` when the requirement is "this
 conversation happened" — `encounter_completed` can only name the encounter by key, which is
 not player-facing.
 
@@ -128,6 +129,10 @@ This disables Talk on the farm and shows `conditionHint` as the reason. The anim
 talks — only the button is locked. The main menu is not gated. Hang the matching beats in
 `farmTalk.ts`; lengthening an NPC's `scenarios` list silently re-points every existing beat
 row (`cass1` becomes the new first encounter, not the old one).
+
+Greeters with no encounter use `talkStages`. Set `completesFlag` on a stage to write a
+dialog flag when the last beat's reveal settles — that is "a real dialog happened till the
+end". Closing early sets nothing. Dot's welcome is the one that needs it.
 
 ---
 
@@ -179,6 +184,7 @@ raw scenario.
 | `targetQuality` | `'effective'` | Which quality reads as the win. |
 | `maxAnalysisAttempts` | `3` | Guesses per analysis target. |
 | `encounterKind` | `'debate'` | Swaps UI copy — see below. |
+| `showRoundType` | `true` | The `— crossfire` half of the wizard round label, the type line on debate-log cards, and the analysis-modal subtitle. Hidden globally until `round_types` is unlocked. |
 
 There is deliberately **no behavioural `mode` enum**. Each flag is consumed independently,
 which is what keeps the engine from forking per encounter type.
@@ -203,6 +209,7 @@ Presentation only; it never changes behaviour.
 | `gossip` | Trough Talk | "There is nothing more to overhear." | hidden |
 | `sparring` | Sparring Log | "That is the session done." | hidden |
 | `lab` | Lab Notes | "That is the exercise done." | hidden |
+| `lesson` | Lesson Notes | "That is the lesson done." | hidden |
 
 It also swaps the opening guidance and makes the intro card read "Setting" rather than
 "Moderator". A one-beat skirmish stays a `debate` — it is one beat of one, using the same
@@ -238,7 +245,7 @@ encounter, confirm by hand:
 - sentence ids unique across the file
 - `unlockCondition` naming a fallacy that is actually authored on that sentence
 - `unlockConditions` naming a flag / fallacy / scenario that exists
-- `teachesFallacies` / `setsDialogFlags` / `requires` agreeing with the fiction (the player
+- `teachesFallacies` / `setsDialogFlags` / `unlocksFeatures` / `requires` agreeing with the fiction (the player
   cannot be taught a fallacy they never hear named, and a flag must be set by the encounter
   the copy describes)
 - no `"TBD"` explanations

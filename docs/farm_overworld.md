@@ -192,9 +192,11 @@ camera), not the old Phaser-template blue.
 
 `progressStore` is the repo's first use of zustand's `persist` middleware. It exists because
 an animal can own more than one encounter, so it has to know which one to offer next — Cass
-owns three, Hetty two, Bram three, Duchess the boss. Tobias and Dot have no encounters;
+owns three, Hetty two, Bram five, Duchess the boss. Tobias and Dot have no encounters;
 their farm talk advances on `talkStages` (Tobias until the boss is done; Dot through the
-intro, then Hetty, then the debate). It is load-bearing, not a nicety.
+welcome, then Cass, then Hetty, then the debate). Dot's first stage sets `completesFlag:
+'dot-welcomed'` when the last beat's reveal settles, which is what unlocks Bram. It is
+load-bearing, not a nicety.
 
 `farmDialogueState.ts` derives the conversation from progress: an animal offers the first
 scenario the player has not finished, and the slot key is the animal's id plus how far
@@ -217,12 +219,21 @@ requires → farmDialogueState.scenarioRequires → useUnmetConditionsHint → d
 
 A gated encounter is still *offered*, by default. The animal talks; only Talk is disabled, and
 the conversation is where the reason is given. Set `gateTalk: true` on the NPC to close the
-conversation itself until the next encounter's `requires` are met (Hetty: she will not speak
-until you can name Ad Hominem). `Farm.ts` `tryInteract` and the overworld prompt both consult
-`farmNpcTalkLocked`. The main menu is ungated.
+conversation itself until the next encounter's `requires` are met (Hetty until Ad Hominem is
+known; Bram until Dot has welcomed you; Cass until Bram has taught rounds). `Farm.ts`
+`tryInteract` and the overworld prompt both consult `farmNpcTalkLocked`. The main menu is
+ungated.
+
+The Level 1 unlock chain is Dot → Bram → Cass → Hetty → Duchess. Lesson 2 (`031`) is
+available after Lesson 1 but not required for Cass — skipping it only keeps round-type
+labels hidden.
+
+Bram's farm talk offers a **Lessons** menu once he has taught at least one lesson. Last beat:
+Talk / Lessons / Leave (collapsing to Lessons / Leave when he is finished). Picking a lesson
+replays it; Back returns to the talk menu. Cap is three lettered buttons (Z / X / C).
 
 Leaving a finished encounter goes through `applyEncounterRewards`, which marks it complete
-and grants `teachesFallacies` / `setsDialogFlags` in one write. Mark completion with the
+and grants `teachesFallacies` / `setsDialogFlags` / `unlocksFeatures` in one write. Mark completion with the
 store's **`activeDebateId`**, not `debate.id` — they are different values
 (`015_tobias_vs_rue` vs `level1-boss-pond-motion`) and only the former is a
 `DebateScenarioKey`.

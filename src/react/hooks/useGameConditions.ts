@@ -22,11 +22,12 @@ export function useConditionContext(): ConditionContext {
   const knownFallacies = useCodexStore((s) => s.knownFallacies);
   const spottedFallacies = useCodexStore((s) => s.spottedFallacies);
   const dialogFlags = useCodexStore((s) => s.dialogFlags);
+  const unlockedFeatures = useCodexStore((s) => s.unlockedFeatures);
   const completedScenarios = useProgressStore((s) => s.completedScenarios);
 
   return useMemo(
-    () => ({ knownFallacies, spottedFallacies, dialogFlags, completedScenarios }),
-    [knownFallacies, spottedFallacies, dialogFlags, completedScenarios],
+    () => ({ knownFallacies, spottedFallacies, dialogFlags, unlockedFeatures, completedScenarios }),
+    [knownFallacies, spottedFallacies, dialogFlags, unlockedFeatures, completedScenarios],
   );
 }
 

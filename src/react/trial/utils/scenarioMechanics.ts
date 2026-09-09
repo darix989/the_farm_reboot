@@ -1,8 +1,11 @@
+import { useMemo } from 'react';
 import type {
   DebateScenarioJson,
   DebateScenarioMechanics,
   EncounterKind,
 } from '../../../types/debateEntities';
+import type { GameFeatureId } from '../../../data/gameFeatures';
+import { useCodexStore } from '../../../store/codexStore';
 import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './fallacyGuessTypes';
 import type { Labels } from '../../../data/labels';
 
@@ -23,6 +26,7 @@ export const DEFAULT_MECHANICS: ResolvedMechanics = {
   targetQuality: 'effective',
   maxAnalysisAttempts: DEFAULT_MAX_ANALYSIS_ATTEMPTS,
   encounterKind: 'debate',
+  showRoundType: true,
 };
 
 /**
@@ -59,6 +63,12 @@ const ENCOUNTER_LABELS: Record<
     logTitle: 'labLog',
     intro: 'workflowLabIntro',
     finished: 'labFinished',
+    showSides: false,
+  },
+  lesson: {
+    logTitle: 'lessonLog',
+    intro: 'workflowLessonIntro',
+    finished: 'lessonFinished',
     showSides: false,
   },
 };
@@ -102,5 +112,35 @@ export function resolveMechanics(debate: DebateScenarioJson): ResolvedMechanics 
     targetQuality: m.targetQuality ?? DEFAULT_MECHANICS.targetQuality,
     maxAnalysisAttempts,
     encounterKind: m.encounterKind ?? DEFAULT_MECHANICS.encounterKind,
+    showRoundType: boolOr(m.showRoundType, DEFAULT_MECHANICS.showRoundType),
   };
+}
+
+/**
+ * Hides Insight and round-type chrome until the matching feature is unlocked.
+ *
+ * A scenario that *teaches* a feature lists it in `unlocksFeatures` and can show it during
+ * play; the store write on leave is what persists the unlock for every other encounter.
+ * `resolveMechanics` stays pure — this is the only place progress is allowed to touch a flag.
+ */
+export function applyFeatureUnlocks(
+  m: ResolvedMechanics,
+  unlocked: readonly GameFeatureId[],
+  taughtHere: readonly GameFeatureId[] = [],
+): ResolvedMechanics {
+  const has = (id: GameFeatureId) => unlocked.includes(id) || taughtHere.includes(id);
+  return {
+    ...m,
+    showInsightPoints: m.showInsightPoints && has('insight_points'),
+    showRoundType: m.showRoundType && has('round_types'),
+  };
+}
+
+/** Resolved mechanics with the player's unlocked features applied. */
+export function useResolvedMechanics(debate: DebateScenarioJson): ResolvedMechanics {
+  const unlocked = useCodexStore((s) => s.unlockedFeatures);
+  return useMemo(
+    () => applyFeatureUnlocks(resolveMechanics(debate), unlocked, debate.unlocksFeatures),
+    [debate, unlocked],
+  );
 }

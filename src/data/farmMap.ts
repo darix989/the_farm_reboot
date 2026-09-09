@@ -13,6 +13,7 @@
 import type { DebateScenarioKey } from './levels';
 import type { Labels } from './labels';
 import type { GameCondition } from '../utils/gameConditions';
+import type { DialogFlagId } from './dialogFlags';
 
 export const FARM_WORLD_WIDTH = 2400;
 export const FARM_WORLD_HEIGHT = 1600;
@@ -72,7 +73,7 @@ export interface FarmNpc {
    * non-empty. Each stage is used while its `until` condition is unmet; after the last
    * one is met, the `Done` beats play.
    */
-  talkStages?: readonly { suffix: string; until: GameCondition }[];
+  talkStages?: readonly { suffix: string; until: GameCondition; completesFlag?: DialogFlagId }[];
 }
 
 /**
@@ -132,9 +133,14 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     y: 760,
     scenarios: [],
     talkStages: [
-      { suffix: '1', until: { kind: 'fallacy_known', fallacyId: 'ad-hominem' } },
-      { suffix: '2', until: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' } },
-      { suffix: '3', until: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' } },
+      {
+        suffix: '1',
+        completesFlag: 'dot-welcomed',
+        until: { kind: 'encounter_completed', scenarioKey: '030_bram_teaches_dialog' },
+      },
+      { suffix: '2', until: { kind: 'fallacy_known', fallacyId: 'ad-hominem' } },
+      { suffix: '3', until: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' } },
+      { suffix: '4', until: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' } },
     ],
   },
   {
@@ -154,19 +160,23 @@ export const FARM_NPCS: readonly FarmNpc[] = [
       '011_sparring_cass_ad_hominem',
       '013_lab_cass_dirty_tricks',
     ],
+    gateTalk: true,
   },
   {
     id: 'bram',
     x: 1360,
     y: 1250,
-    // Gossip, then the Insight lesson, then the skirmish. Insight lands between the two
-    // because the skirmish is the first rung that seeds any, and the lesson is the only
-    // thing in Level 1 that explains what the counter in the log header is for.
+    // Dialog lessons, then gossip, then Insight, then the skirmish. Lesson 2 is
+    // available after Lesson 1 but not required for Cass — skipping it only
+    // keeps round-type labels hidden.
     scenarios: [
+      '030_bram_teaches_dialog',
+      '031_bram_teaches_crossfire',
       '012_gossip_trough_bram',
       '022_bram_teaches_insight',
       '014_skirmish_bram_fenceline',
     ],
+    gateTalk: true,
   },
   {
     id: 'tobias',
