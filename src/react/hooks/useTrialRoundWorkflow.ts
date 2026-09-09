@@ -17,6 +17,7 @@ import {
 import type { ConditionContext } from '../../utils/gameConditions';
 import { debateEventBus, type RoundLifecyclePayload } from '../trial/utils/debateEventBus';
 import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
+import { plainSpokenText } from '../trial/utils/spokenMarkup';
 import getLabel from '../../data/labels';
 
 // ---------------------------------------------------------------------------
@@ -373,7 +374,7 @@ function reduceWorkflow(
 // ---------------------------------------------------------------------------
 
 export function statementTitle(st: Statement): string {
-  const first = st.sentences[0]?.text ?? st.id;
+  const first = plainSpokenText(st.sentences[0]?.text ?? st.id);
   return first.length > 80 ? `${first.slice(0, 77)}…` : first;
 }
 
@@ -388,7 +389,7 @@ export function optionTitle(
   const showRealCopy =
     !gated ||
     (unlocked && (revealedLockedOptionIds === undefined || revealedLockedOptionIds.has(opt.id)));
-  const first = resolvedOptionSentences(opt, showRealCopy)[0]?.text ?? opt.id;
+  const first = plainSpokenText(resolvedOptionSentences(opt, showRealCopy)[0]?.text ?? opt.id);
   return first.length > 80 ? `${first.slice(0, 77)}…` : first;
 }
 

@@ -13,6 +13,7 @@ import shared from '../trialShared.module.scss';
 import cn from 'classnames';
 import recapStyles from '../roundRecapModal/RoundRecapModal.module.scss';
 import getLabel from '../../../data/labels';
+import { plainSpokenText } from '../utils/spokenMarkup';
 
 /**
  * Fallback budget for a scenario that has no authored `introductionSummary`. Truncating
@@ -41,7 +42,8 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
   const authoredSummary = debate.introductionSummary?.trim() ?? '';
   const introSummary = useMemo(
     () =>
-      authoredSummary || summarizeIntroduction(debate.introduction ?? '', INTRO_SUMMARY_MAX_CHARS),
+      authoredSummary ||
+      summarizeIntroduction(plainSpokenText(debate.introduction ?? ''), INTRO_SUMMARY_MAX_CHARS),
     [authoredSummary, debate.introduction],
   );
 

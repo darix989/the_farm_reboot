@@ -20,6 +20,7 @@ import { getLogicalFallacyIconSrc } from '../utils/logicalFallacyIcons';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TrialTextButton from '../components/TrialTextButton';
 import { statementTypeLabel } from '../utils/trialHelpers';
+import { plainSpokenText } from '../utils/spokenMarkup';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { resolvedOptionSentences } from '../utils/optionUnlock';
 import type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
@@ -706,7 +707,7 @@ function NpcRoundAnalysis({
                       }}
                       data-tutorial-analysis-sentence-id={s.id}
                     >
-                      <p className={styles.trialSentenceText}>{s.text}</p>
+                      <p className={styles.trialSentenceText}>{plainSpokenText(s.text)}</p>
                       {canGuess && playerPickIds.length > 0 && (
                         <div className={styles.trialPlayerPickRow}>
                           {playerPickIds.map((fid, pillIdx) => {

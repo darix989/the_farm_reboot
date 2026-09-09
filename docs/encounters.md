@@ -31,7 +31,7 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 | Field | Meaning |
 |---|---|
 | `id` | Internal id — **not** the `DebateScenarioKey`. `015_tobias_vs_rue` is the key, `level1-boss-pond-motion` is the id. Progress is tracked by key. |
-| `introduction` | Sets the scene. Its presence is what creates the `debate_intro` phase. |
+| `introduction` | Sets the scene. Its presence is what creates the `debate_intro` phase. May carry inline [emphasis](#emphasis-inside-a-spoken-line). |
 | `introductionSummary` | Two-line paraphrase shown in the pre-round-1 briefing modal. **Required** whenever there is an `introduction` — see [Recap summaries](#recap-summaries). |
 | `playerSide` | `proposition` or `opposition`. |
 | `characters` | `speakerId` → display name. |
@@ -133,6 +133,30 @@ row (`cass1` becomes the new first encounter, not the old one).
 Greeters with no encounter use `talkStages`. Set `completesFlag` on a stage to write a
 dialog flag when the last beat's reveal settles — that is "a real dialog happened till the
 end". Closing early sets nothing. Dot's welcome is the one that needs it.
+
+---
+
+## Emphasis inside a spoken line
+
+A sentence's `text` — and `introduction` — may carry the same inline markup the tutorial
+overlay uses: `**bold**` and `[accent]…[/accent]` (also `danger`, `warning`, `success`, `info`,
+`muted`). Use it to make the one clause a line turns on impossible to miss:
+
+```json
+{ "text": "[accent]You did not argue with me. You priced me.[/accent] My tail, my record, my mood — three ways of saying she does not count." }
+```
+
+Only the **wizard panel** renders it — the box the player is reading, one sentence at a time,
+with the typewriter counting the plain characters so the tags cost the reveal nothing. Every
+other surface shows the line as prose: the debate log, the recap modals, the analysis modal's
+sentence cards, the option previews and the screen-reader announcer all strip it first
+(`plainSpokenText`, `src/react/trial/utils/spokenMarkup.ts`).
+
+**A span must stay inside one authored sentence.** The reveal maps `Sentence[]` 1:1 onto its
+chunks, so a tag opened in one sentence and closed in the next leaves both unbalanced and the
+markup prints literally. Prose in `introduction` is split by `splitIntoSentences`, so keep a
+span inside one sentence of it too. Spend it on one clause per statement at most; a line with
+three accents in it has emphasised nothing.
 
 ---
 
