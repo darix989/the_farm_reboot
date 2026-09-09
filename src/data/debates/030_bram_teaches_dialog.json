@@ -12,7 +12,7 @@
   "mechanics": {
     "analysisEnabled": false,
     "showInsightPoints": false,
-    "showModeratorOpinion": false,
+    "showModeratorOpinion": true,
     "showRoundRecap": false,
     "showIntroSummary": false,
     "revealChoiceAssessment": true,
@@ -91,7 +91,7 @@
         {
           "id": "r2-opt-b",
           "quality": "effective",
-          "impact": 0,
+          "impact": 8,
           "reason": "You said what a round is, in your own words. That is the whole of the lesson.",
           "sentences": [
             {
@@ -104,7 +104,7 @@
         {
           "id": "r2-opt-c",
           "quality": "effective",
-          "impact": 0,
+          "impact": 8,
           "reason": "You named the two halves. Short, and it covers it.",
           "sentences": [
             {
@@ -235,6 +235,38 @@
             "modal": {
               "size": "medium",
               "position": "topRight"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "dialog-the-face-and-next",
+      "trigger": {
+        "event": "interactive:confirm",
+        "where": {
+          "roundId": "round-2"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "What you just said leans the **[accent]moderator[/accent]**. The **[accent]emoji[/accent]** is how you see it — a smile, a frown, or still waiting.\n\n**[muted]This is not a test. Later, it will matter.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_moderator_score"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "Your **[accent]progress[/accent]** is in **[accent]Field Notes[/accent]**, under **[accent]Next[/accent]**. Open it on the farm after you leave.\n\nIt will have moved on. That is who to talk to.",
+            "interactionMode": "modal_only",
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
             }
           }
         ]
