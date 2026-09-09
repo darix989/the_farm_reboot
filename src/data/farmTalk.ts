@@ -59,10 +59,17 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneA' },
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneB' },
   ],
+  // Rue asks first — Dot sent him — and only then does Bram say what he does all day and
+  // offer the lesson. He is the one animal on this farm who volunteers nothing unprompted.
   bram1: [
-    { speakerId: 'bram', textLabel: 'farmDialogBram1a' },
-    { speakerId: RUE, textLabel: 'farmDialogBram1b' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram1c' },
+    { speakerId: RUE, textLabel: 'farmDialogBram1a' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram1b', emotion: 'doubtful' },
+    { speakerId: RUE, textLabel: 'farmDialogBram1c' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram1d' },
+    { speakerId: RUE, textLabel: 'farmDialogBram1e' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram1f', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogBram1g' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram1h' },
   ],
   bram2: [
     { speakerId: 'bram', textLabel: 'farmDialogBram2a' },
@@ -108,12 +115,26 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneA' },
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneB' },
   ],
+  // The level opener, and the only conversation that starts on its own. It takes its time:
+  // Dot asks after Rue before she gets to the motion, and Rue volunteers for the floor
+  // himself — the goals she hands over afterwards are the rules that come with having done so.
   dot1: [
     { speakerId: 'dot', textLabel: 'farmDialogDot1a' },
     { speakerId: RUE, textLabel: 'farmDialogDot1b' },
     { speakerId: 'dot', textLabel: 'farmDialogDot1c' },
     { speakerId: RUE, textLabel: 'farmDialogDot1d' },
-    { speakerId: 'dot', textLabel: 'farmDialogDot1e' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1e', emotion: 'doubtful' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1f' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1g' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1h' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1i' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1j' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1k', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1l' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1m' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1n' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1o' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1p' },
   ],
   dot2: [
     { speakerId: 'dot', textLabel: 'farmDialogDot2a' },

@@ -1,6 +1,6 @@
 {
   "id": "level1-bram-teaches-dialog",
-  "introduction": "Bram has caught you at the fence and is already apologising. He would like to show you how a conversation works on this farm, one piece at a time, before anyone else gets hold of you.",
+  "introduction": "You asked the wolf at the fence for help, and Bram is already apologising for giving it. He will show you how a conversation works on this farm, one piece at a time, before anyone else gets hold of you.",
   "playerSide": "opposition",
   "characters": {
     "bram": "Bram",
@@ -208,7 +208,7 @@
               "panel": "wizard"
             },
             "modal": {
-              "size": "large",
+              "size": "medium",
               "position": "topLeft"
             }
           }
@@ -257,7 +257,7 @@
               "kind": "debate_log_moderator_score"
             },
             "modal": {
-              "size": "large",
+              "size": "medium",
               "position": "topLeft"
             }
           },
@@ -265,7 +265,7 @@
             "message": "Your **[accent]progress[/accent]** is in **[accent]Field Notes[/accent]**, under **[accent]Next[/accent]**. Open it on the farm after you leave.\n\nIt will have moved on. That is who to talk to.",
             "interactionMode": "modal_only",
             "modal": {
-              "size": "large",
+              "size": "medium",
               "position": "topLeft"
             }
           }

@@ -78,11 +78,17 @@ eleven seasons and one who bought his way out by agreeing louder than anybody in
 ### How you arrive
 
 **Dot** stands in the yard just off spawn, and her conversation opens on its own the first
-time the farm loads. She welcomes you, names Tobias's motion and Sunday in front of
-Duchess, and sends you to **Bram** first, at the fence, then Cass, then Hetty, then the
-barn. Closing her talk early does not count: the `dot-welcomed` flag is set only when the
-last beat's reveal settles. She has no encounter; her farm talk advances as you do those
-things. She pointedly refuses to warn you about the fox.
+time the farm loads. It is deliberately unhurried — the level's only cold open, so it does
+not read as one. She asks after Rue first (six weeks, the hauling, the bins) and notices he
+is being talked about three steps away; that is what turns the conversation to the week the
+farm is having. Then the motion: Tobias wants the Old Pond drained, filled and forgotten,
+heard Sunday in front of Duchess, and **not one animal will speak against it**. Rue
+volunteers himself for the floor — the player is not assigned the fight, they take it — and
+only then does Dot mention that there are rules nobody has written down, which is where the
+goals come from: **Bram** first, at the fence, then Cass at the west post, then Hetty at the
+trough, then the barn. Closing her talk early does not count: the `dot-welcomed` flag is set
+only when the last beat's reveal settles. She has no encounter; her farm talk advances as you
+do those things. She pointedly refuses to warn you about the fox.
 
 ### The ladder
 
@@ -134,13 +140,17 @@ Bram's skippable crossfire lesson (1.2) once rounds have been taught.
 `revealChoiceAssessment: true`, `encounterKind: 'lesson'`, `showRoundType: false`. Rewards:
 `setsDialogFlags: ['bram-taught-rounds']`. Gated on `dot-welcomed`.*
 
-Bram catches you at the fence and is already apologising. A conversation here goes in
+Rue comes to the fence and asks for help — Dot sent him — and Bram is startled that anyone
+would walk down to the wolf. He says what he does all day (walks the fence, both ways, and
+overhears every conversation on this farm from the far side of a hedge) before he offers the
+lesson, and he is still apologising for giving it. A conversation here goes in
 **rounds**: one animal says a thing, the other answers, and that pair is a round. Three
 beats. He explains (1), you speak (2, three options, no wrong one, `preventOptionsShuffle`;
 A is impact 0, B and C are a light +8 so the face can move), he closes (3): *"That was a
 round. That is the whole of it."* No fallacy appears in this file at all.
 
-Three tutorials: what a round is (`introduction:start`, wizard); now you speak
+Three tutorials, all `medium` — the copy in each is two short paragraphs, and a larger box
+frames whitespace: what a round is (`introduction:start`, wizard); now you speak
 (`round:start` / `round-2`, interactive); then after confirm, the moderator emoji
 (`debate_log_moderator_score`) and Field Notes **Next** (no target — open it after Leave).
 Completing the lesson flips Next from Bram to Cass (and reveals the optional crossfire goal).

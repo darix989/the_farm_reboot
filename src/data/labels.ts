@@ -334,12 +334,19 @@ const LABELS = {
   farmDialogCassDoneB:
     'And whatever he says about your supper — and he will — do not let him make it about you.',
   farmDialogBram1:
-    'Rue. I wondered whether I might — this is going to sound like a lecture, I am sorry.',
+    'Dot sent you, then. Sunday, against Tobias. I could show you how a conversation works here, if you like — you do not have to say yes.',
   farmDialogBram1a:
-    'Rue. I wondered whether I might… this is going to sound like a lecture. I am sorry.',
-  farmDialogBram1b: 'Go on.',
-  farmDialogBram1c:
-    'How we talk here. Before anyone else gets hold of you. Would you — would you let me show you? You do not have to say yes. I would not blame you.',
+    'Bram? Dot sent me. There is a motion on the pond on Sunday, and I have put my name down to speak against it.',
+  farmDialogBram1b: 'You — against Tobias. On the floor. And you came down here. To the wolf.',
+  farmDialogBram1c: 'You were the first name she gave me. I need help.',
+  farmDialogBram1d:
+    'That was kind of her. I am not certain it was wise. Nobody sends anybody to the wolf — and I do not say that to be pitied, it is simply the traffic.',
+  farmDialogBram1e: 'What is it you do down here?',
+  farmDialogBram1f:
+    'I walk the fence. Both ways, every day. And from the far side of a hedge you hear every conversation on this farm and nobody remembers you are standing there. That is not a job. It has been an education.',
+  farmDialogBram1g: 'Then you know how the floor goes.',
+  farmDialogBram1h:
+    'I know how it goes wrong, which is the useful half. I could show you how a conversation works here, one piece at a time, before anybody else gets hold of you. You do not have to say yes. I would not blame you.',
   farmDialogBram2:
     'There is a second thing, if you have a moment. You do not have to. I would not blame you.',
   farmDialogBram2a: 'There is a second thing, if you have a moment. You do not have to.',
@@ -393,14 +400,31 @@ const LABELS = {
   farmDialogTobiasDoneB:
     'I will say this once and not again: I have pulled a cart past that drain for eleven years and never once looked into it. Good morning, Rue.',
   farmDialogDot1:
-    'You are the new raccoon. Rue, is it? Welcome to Green Meadows. Tobias has put a motion on the pond — Sunday, in front of Duchess. Bram first, at the fence. Then Cass at the west post.',
-  farmDialogDot1a: 'You are the new raccoon! Rue, is it? Or Roo. Somebody said Roo.',
-  farmDialogDot1b: 'Rue.',
+    'You are the new raccoon. Rue, is it? Tobias has put a motion on the pond — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, at the fence. Then Cass at the west post.',
+  farmDialogDot1a:
+    'You are the new raccoon! Rue, is it? Or Roo — somebody said Roo. I am Dot. I mind the yard.',
+  farmDialogDot1b: 'Rue. Six weeks now. I do the hauling, the repairs and the bins.',
   farmDialogDot1c:
-    'Rue. Welcome to Green Meadows. Tobias has put a motion on the pond and it is heard Sunday in front of Duchess, and you will want to know how this farm argues before you go and stand in front of it.',
-  farmDialogDot1d: 'Where do I start?',
+    'The bins! Nobody volunteers for the bins. Are the others being decent to you, at least?',
+  farmDialogDot1d: 'Mostly. Some of them talk about me when I am three steps away.',
   farmDialogDot1e:
-    'Bram. The wolf, down at the fence. He will pretend he is checking it. Let him. He is the one who will show you how a conversation works here, before Cass gets her teeth into you.',
+    'That is not about you, that is the week we are having. I would blame the weather. It is not the weather.',
+  farmDialogDot1f: 'What is wrong with the week?',
+  farmDialogDot1g:
+    'There is a debate coming. Tobias has put a motion on the Old Pond — that it is finished, and ought to be drained and filled in and forgotten. It is heard Sunday, on the floor of the Public Farm, in front of Duchess.',
+  farmDialogDot1h: 'That is a large thing to lose.',
+  farmDialogDot1i:
+    'It is. And he says it so warmly that everybody has agreed with him before they work out what they have agreed to.',
+  farmDialogDot1j: 'So who is speaking for the pond?',
+  farmDialogDot1k:
+    'Nobody. Not one animal. They nod at the trough and say the opposite at home, and out here only the nodding is counted.',
+  farmDialogDot1l: 'Then I will speak for it.',
+  farmDialogDot1m: 'You — you have been here six — right. Yes. Somebody had to be somebody.',
+  farmDialogDot1n:
+    'But there are rules, and nobody has written them down, which is how everybody breaks them. You will want to know how this farm argues before you go and stand in front of it.',
+  farmDialogDot1o: 'Where do I start?',
+  farmDialogDot1p:
+    'Bram. The wolf, down at the fence. He will pretend he is checking it. Let him. He is the one who will show you how a conversation works here, before Cass gets her teeth into you. Then Cass at the west post, then Hetty at the trough, then the barn when you want the floor.',
   farmDialogDot2:
     'Bram has done his piece. Cass is at the west post, and she will talk to you now.',
   farmDialogDot2a: 'Bram has done his piece. You know how a round works, then.',
