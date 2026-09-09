@@ -27,6 +27,7 @@ type TalkMode = 'talk' | 'lessons';
 const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose }) => {
   const [beatIndex, setBeatIndex] = useState(0);
   const [mode, setMode] = useState<TalkMode>('talk');
+  const [selectedLessonKey, setSelectedLessonKey] = useState<DebateScenarioKey | null>(null);
   const lastIndex = Math.max(0, dialogue.beats.length - 1);
   const index = Math.min(Math.max(0, beatIndex), lastIndex);
   const beat = dialogue.beats[index];
@@ -76,9 +77,30 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
 
   const lessonsBody = getLabel('farmTalkLessonsPrompt', { replacements: { list: lessonsList } });
   const lessonsSentences = useMemo(() => revealChunks(lessonsBody), [lessonsBody]);
+  const selectedLesson =
+    dialogue.lessons.find((lesson) => lesson.key === selectedLessonKey) ?? null;
+
+  const openLessons = useCallback(() => {
+    setSelectedLessonKey(null);
+    setMode('lessons');
+  }, []);
+
+  const backToTalk = useCallback(() => {
+    setSelectedLessonKey(null);
+    setMode('talk');
+  }, []);
 
   const detail = useMemo((): WizardPanelDetail | null => {
     if (mode === 'lessons') {
+      if (selectedLesson) {
+        return {
+          title: getLabel('wizardDetailSpeaks', {
+            replacements: { name: resolveCharacter(dialogue.npcId).displayName },
+          }),
+          body: getLabel(selectedLesson.previewLabel),
+          speaker: { characterId: dialogue.npcId, emotion: 'thinking' },
+        };
+      }
       return {
         title: getLabel('wizardDetailSpeaks', {
           replacements: { name: resolveCharacter(dialogue.npcId).displayName },
@@ -97,7 +119,16 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
       sentenceCount: sentences.length,
       speaker: { characterId: beat.speakerId, emotion: beat.emotion ?? 'talking' },
     };
-  }, [mode, beat, body, sentences.length, dialogue.npcId, lessonsBody, lessonsSentences.length]);
+  }, [
+    mode,
+    beat,
+    body,
+    sentences.length,
+    dialogue.npcId,
+    lessonsBody,
+    lessonsSentences.length,
+    selectedLesson,
+  ]);
 
   return (
     <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
@@ -129,12 +160,14 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
             lockedHint={lockedHint}
             lessons={dialogue.lessons}
             mode={mode}
+            selectedLessonKey={selectedLessonKey}
             onRevealAdvance={revealAdvance}
             onAdvanceBeat={advanceBeat}
             onStart={onStart}
             onClose={onClose}
-            onOpenLessons={() => setMode('lessons')}
-            onBackToTalk={() => setMode('talk')}
+            onOpenLessons={openLessons}
+            onBackToTalk={backToTalk}
+            onSelectLesson={setSelectedLessonKey}
           />
         }
       />

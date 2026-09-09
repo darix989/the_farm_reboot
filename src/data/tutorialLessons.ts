@@ -10,6 +10,8 @@ import type { DebateScenarioKey } from './levels';
 export interface TutorialLesson {
   key: DebateScenarioKey;
   titleLabel: Labels;
+  /** Shown in the Dialog panel after the player picks this letter, before Continue. */
+  previewLabel: Labels;
   teacherId: string;
 }
 
@@ -20,11 +22,13 @@ export const TUTORIAL_LESSONS: readonly TutorialLesson[] = [
   {
     key: '030_bram_teaches_dialog',
     titleLabel: 'tutorialLessonRounds',
+    previewLabel: 'tutorialLessonRoundsPreview',
     teacherId: 'bram',
   },
   {
     key: '031_bram_teaches_crossfire',
     titleLabel: 'tutorialLessonCrossfire',
+    previewLabel: 'tutorialLessonCrossfirePreview',
     teacherId: 'bram',
   },
 ];

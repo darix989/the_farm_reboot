@@ -25,6 +25,8 @@ interface FarmTalkActionsPanelProps {
   lockedHint: string | null;
   lessons: readonly TutorialLesson[];
   mode: TalkMode;
+  /** The lesson letter currently previewed in Dialog, or null while the list is showing. */
+  selectedLessonKey: DebateScenarioKey | null;
   /** `true` when the press was consumed by the sentence pacer. */
   onRevealAdvance: () => boolean;
   onAdvanceBeat: () => void;
@@ -32,6 +34,7 @@ interface FarmTalkActionsPanelProps {
   onClose: () => void;
   onOpenLessons: () => void;
   onBackToTalk: () => void;
+  onSelectLesson: (key: DebateScenarioKey | null) => void;
 }
 
 function hintFor(
@@ -41,8 +44,13 @@ function hintFor(
   lockedHint: string | null,
   hasLessons: boolean,
   mode: TalkMode,
+  lessonSelected: boolean,
 ): string {
-  if (mode === 'lessons') return getLabel('farmTalkHintLessonsMode');
+  if (mode === 'lessons') {
+    return lessonSelected
+      ? getLabel('farmTalkHintLessonSelected')
+      : getLabel('farmTalkHintLessonsMode');
+  }
   if (revealActive) return getLabel('workflowRevealing');
   if (!isLastBeat) return getLabel('farmTalkHintContinue');
   if (hasScenario && lockedHint) return lockedHint;
@@ -58,7 +66,8 @@ function hintFor(
  * with Analyze greyed and Talk / Leave / Lessons firing immediately.
  *
  * In `lessons` mode the wizard body lists the lessons and this panel shows lettered
- * A / B / C buttons; Back returns to the talk menu.
+ * A / B / C buttons. A letter previews the lesson in Dialog; Continue starts it.
+ * Back clears the preview, or returns to the talk menu when nothing is selected.
  */
 const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
   revealActive,
@@ -67,12 +76,14 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
   lockedHint,
   lessons,
   mode,
+  selectedLessonKey,
   onRevealAdvance,
   onAdvanceBeat,
   onStart,
   onClose,
   onOpenLessons,
   onBackToTalk,
+  onSelectLesson,
 }) => {
   const talkLabel = getLabel('farmTalk');
   const leaveLabel = getLabel('farmLeave');
@@ -111,8 +122,12 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
     ? talkActions.filter((action) => action.id === 'leave')
     : talkActions;
 
+  const toggleLesson = (key: DebateScenarioKey) => {
+    onSelectLesson(selectedLessonKey === key ? null : key);
+  };
+
   // Last-beat Talk / Lessons / Leave sit in the same A / B / C slots as debate options, so
-  // Z / X / C press them. In lessons mode those keys pick a replay instead.
+  // Z / X / C press them. In lessons mode those keys preview a replay instead of starting it.
   useWindowKeyDown((event) => {
     if (shouldIgnoreActionShortcut(event)) return;
     const index = optionIndexForCode(event.code);
@@ -122,7 +137,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
       const lesson = lessons[index];
       if (!lesson) return;
       event.preventDefault();
-      onStart(lesson.key);
+      toggleLesson(lesson.key);
       return;
     }
 
@@ -139,7 +154,15 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
         <h2 className={styles.trialPanelHeading}>{getLabel('interactive')}</h2>
       </div>
       <p className={styles.trialActionsHint}>
-        {hintFor(revealActive, isLastBeat, !!scenario, lockedHint, lessons.length > 0, mode)}
+        {hintFor(
+          revealActive,
+          isLastBeat,
+          !!scenario,
+          lockedHint,
+          lessons.length > 0,
+          mode,
+          !!selectedLessonKey,
+        )}
       </p>
 
       <div className={styles.trialActionsCenter}>
@@ -152,14 +175,23 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
           back={{
             disabled: mode !== 'lessons',
             label: getLabel('back'),
-            onClick: onBackToTalk,
+            onClick: () => {
+              if (selectedLessonKey) {
+                onSelectLesson(null);
+                return;
+              }
+              onBackToTalk();
+            },
           }}
           submit={{
-            disabled: (isLastBeat && !revealActive) || mode === 'lessons',
+            disabled: mode === 'lessons' ? !selectedLessonKey : isLastBeat && !revealActive,
             label: continueLabel,
             icon: revealActive ? 'reveal' : 'continue',
             onClick: () => {
-              if (mode === 'lessons') return;
+              if (mode === 'lessons') {
+                if (selectedLessonKey) onStart(selectedLessonKey);
+                return;
+              }
               if (revealActive && onRevealAdvance()) return;
               if (!isLastBeat) onAdvanceBeat();
             },
@@ -171,15 +203,16 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
           <div className={styles.trialChoices}>
             {lessons.map((lesson, idx) => {
               const optionLetter = String.fromCharCode(65 + idx);
-              const title = getLabel(lesson.titleLabel);
+              const preview = getLabel(lesson.previewLabel);
               return (
                 <TrialChoiceButton
                   key={lesson.key}
                   content={optionLetter}
                   ariaLabel={getLabel('optionAriaLabel', {
-                    replacements: { optionLetter, statement: title },
+                    replacements: { optionLetter, statement: preview },
                   })}
-                  onClick={() => onStart(lesson.key)}
+                  selected={selectedLessonKey === lesson.key}
+                  onClick={() => toggleLesson(lesson.key)}
                 />
               );
             })}

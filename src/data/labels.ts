@@ -276,12 +276,17 @@ const LABELS = {
   farmTalkHintChooseTalkLessons: 'Pick Talk to start, Lessons to replay, or Leave.',
   farmTalkHintChooseLessonsOnly: 'Pick Lessons to replay, or Leave.',
   farmTalkHintLessonsMode: 'Pick a lesson to replay, or Back to return.',
+  farmTalkHintLessonSelected: 'Click Continue to replay this lesson, or Back to change it.',
   farmTalkHintNothingMore: 'Nothing more to say — click Leave when you are ready.',
   farmTalkLessonsPrompt: 'Which one? {list}.',
   farmTalkLessonItem: '{letter} — {title}',
   farmTalkLessonItemJoin: '. ',
   tutorialLessonRounds: 'how a round works',
+  tutorialLessonRoundsPreview:
+    'How a round works. One animal says a thing, the other answers, and that pair is a round. I can walk you through it one piece at a time.',
   tutorialLessonCrossfire: 'crossfire',
+  tutorialLessonCrossfirePreview:
+    'Crossfire. Some rounds are not speeches: somebody asks and you answer on your feet, and I will make you do both halves.',
   characterStage: 'Participants: {names}',
   /** Shown on the finished-encounter footer; returns to wherever you came from. */
   leaveEncounter: 'Leave',
