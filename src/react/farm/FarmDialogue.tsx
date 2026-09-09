@@ -155,6 +155,7 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
         interactive={
           <FarmTalkActionsPanel
             revealActive={revealActive}
+            revealSettled={mode === 'talk' && revealSettled}
             isLastBeat={isLast}
             scenario={dialogue.scenario}
             lockedHint={lockedHint}

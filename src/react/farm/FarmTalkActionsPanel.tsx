@@ -15,6 +15,12 @@ type TalkMode = 'talk' | 'lessons';
 
 interface FarmTalkActionsPanelProps {
   revealActive: boolean;
+  /**
+   * The current beat has been read in full. On the last beat this is what mounts Talk /
+   * Lessons / Leave: `FarmDialogue` records the conversation as had on the same flag, so a
+   * Leave button offered a moment earlier is a button that silently throws the talk away.
+   */
+  revealSettled: boolean;
   isLastBeat: boolean;
   scenario: DebateScenarioKey | null;
   /**
@@ -39,7 +45,7 @@ interface FarmTalkActionsPanelProps {
 
 function hintFor(
   revealActive: boolean,
-  isLastBeat: boolean,
+  actionsReady: boolean,
   hasScenario: boolean,
   lockedHint: string | null,
   hasLessons: boolean,
@@ -52,7 +58,7 @@ function hintFor(
       : getLabel('farmTalkHintLessonsMode');
   }
   if (revealActive) return getLabel('workflowRevealing');
-  if (!isLastBeat) return getLabel('farmTalkHintContinue');
+  if (!actionsReady) return getLabel('farmTalkHintContinue');
   if (hasScenario && lockedHint) return lockedHint;
   if (hasScenario && hasLessons) return getLabel('farmTalkHintChooseTalkLessons');
   if (hasScenario) return getLabel('farmTalkHintChoose');
@@ -71,6 +77,7 @@ function hintFor(
  */
 const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
   revealActive,
+  revealSettled,
   isLastBeat,
   scenario,
   lockedHint,
@@ -90,9 +97,12 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
   const lessonsLabel = getLabel('farmLessons');
   const continueLabel = getLabel('continue');
 
-  const talkDisabled = !scenario || revealActive || !!lockedHint;
-  const leaveDisabled = false;
-  const lessonsDisabled = revealActive || lessons.length === 0;
+  // Talk / Lessons / Leave are mounted only once the last beat has been read in full. Leave
+  // used to be shown on its own while it was still revealing, which let the player end the
+  // conversation a sentence early — and `completesFlag` is set on the last reveal settling, so
+  // the talk did not count and whoever it unlocks stayed locked.
+  const actionsReady = isLastBeat && revealSettled;
+  const talkDisabled = !scenario || !!lockedHint;
   const startTalk = () => {
     if (!scenario) return;
     onStart(scenario);
@@ -112,15 +122,11 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
     talkActions.push({
       id: 'lessons',
       label: lessonsLabel,
-      disabled: lessonsDisabled,
+      disabled: false,
       onClick: onOpenLessons,
     });
   }
-  talkActions.push({ id: 'leave', label: leaveLabel, disabled: leaveDisabled, onClick: onClose });
-
-  const visibleTalkActions = revealActive
-    ? talkActions.filter((action) => action.id === 'leave')
-    : talkActions;
+  talkActions.push({ id: 'leave', label: leaveLabel, disabled: false, onClick: onClose });
 
   const toggleLesson = (key: DebateScenarioKey) => {
     onSelectLesson(selectedLessonKey === key ? null : key);
@@ -141,8 +147,8 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
       return;
     }
 
-    if (!isLastBeat) return;
-    const action = visibleTalkActions[index];
+    if (!actionsReady) return;
+    const action = talkActions[index];
     if (!action || action.disabled) return;
     event.preventDefault();
     action.onClick();
@@ -156,7 +162,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
       <p className={styles.trialActionsHint}>
         {hintFor(
           revealActive,
-          isLastBeat,
+          actionsReady,
           !!scenario,
           lockedHint,
           lessons.length > 0,
@@ -184,7 +190,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
             },
           }}
           submit={{
-            disabled: mode === 'lessons' ? !selectedLessonKey : isLastBeat && !revealActive,
+            disabled: mode === 'lessons' ? !selectedLessonKey : actionsReady,
             label: continueLabel,
             icon: revealActive ? 'reveal' : 'continue',
             onClick: () => {
@@ -218,9 +224,9 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
             })}
           </div>
         )}
-        {mode === 'talk' && isLastBeat && (
+        {mode === 'talk' && actionsReady && (
           <div className={styles.trialChoices}>
-            {visibleTalkActions.map((action) => (
+            {talkActions.map((action) => (
               <TrialChoiceButton
                 key={action.id}
                 content={action.label}

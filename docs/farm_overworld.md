@@ -196,7 +196,10 @@ owns three, Hetty two, Bram five, Duchess the boss. Tobias and Dot have no encou
 their farm talk advances on `talkStages` (Tobias until the boss is done; Dot through the
 welcome, then Cass, then Hetty, then the debate). Dot's first stage sets `completesFlag:
 'dot-welcomed'` when the last beat's reveal settles, which is what unlocks Bram. It is
-load-bearing, not a nicety.
+load-bearing, not a nicety — which is why `FarmTalkActionsPanel` mounts Talk / Lessons /
+Leave only once that last beat has settled. Leave was previously offered on its own while
+the line was still revealing, so ending the conversation one sentence early threw the whole
+talk away and left the next animal locked with nothing to explain why.
 
 `farmDialogueState.ts` derives the conversation from progress: an animal offers the first
 scenario the player has not finished, and the slot key is the animal's id plus how far
@@ -228,8 +231,9 @@ The Level 1 unlock chain is Dot → Bram → Cass → Hetty → Duchess. Lesson 
 available after Lesson 1 but not required for Cass — skipping it only keeps round-type
 labels hidden.
 
-Bram's farm talk offers a **Lessons** menu once he has taught at least one lesson. Last beat:
-Talk / Lessons / Leave (collapsing to Lessons / Leave when he is finished). Picking a lesson
+Bram's farm talk offers a **Lessons** menu once he has taught at least one lesson. Last beat,
+once it has been read in full: Talk / Lessons / Leave (collapsing to Lessons / Leave when he
+is finished). Picking a lesson
 replays it; Back returns to the talk menu. Cap is three lettered buttons (Z / X / C).
 
 Leaving a finished encounter goes through `applyEncounterRewards`, which marks it complete
