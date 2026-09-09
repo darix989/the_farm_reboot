@@ -1,6 +1,4 @@
 import React, { Fragment } from 'react';
-import cn from 'classnames';
-import panelStyles from '../trial/panels/TrialPanels.module.scss';
 import styles from './TutorialOverlay.module.scss';
 import {
   parseTutorialRichInline,
@@ -72,7 +70,7 @@ export const TutorialModalRichBody: React.FC<TutorialModalRichBodyProps> = ({ me
   return (
     <div className={styles.messageBody}>
       {blocks.map((para, i) => (
-        <p key={i} className={cn(panelStyles.trialWizardGuidanceText, styles.messageParagraph)}>
+        <p key={i} className={styles.messageParagraph}>
           <TutorialRichParagraph text={para} />
         </p>
       ))}
