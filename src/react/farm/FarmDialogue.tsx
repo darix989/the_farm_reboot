@@ -1,22 +1,19 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import getLabel from '../../data/labels';
 import { resolveCharacter } from '../../data/characters';
 import type { DebateScenarioKey } from '../../data/levels';
 import type { FarmDialogueState } from './farmDialogueState';
 import { useWizardReveal } from '../hooks/useWizardReveal';
-import { splitIntoSentences } from '../trial/utils/trialHelpers';
+import { revealChunks } from '../trial/utils/trialHelpers';
 import TrialLayout from '../trial/TrialLayout';
 import WizardPanel, { type WizardPanelDetail } from '../trial/panels/WizardPanel';
 import FarmTalkActionsPanel from './FarmTalkActionsPanel';
+import { useUnmetConditionsHint } from '../hooks/useGameConditions';
 
 interface FarmDialogueProps {
   dialogue: FarmDialogueState;
   onStart: (scenario: DebateScenarioKey) => void;
   onClose: () => void;
-}
-
-function isAdvanceKey(code: string): boolean {
-  return code === 'Space' || code === 'KeyE' || code === 'Enter';
 }
 
 /**
@@ -32,18 +29,24 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
   const isLast = index >= lastIndex;
 
   const body = beat ? getLabel(beat.textLabel) : '';
-  const sentences = useMemo(() => splitIntoSentences(body), [body]);
+  const sentences = useMemo(() => revealChunks(body), [body]);
 
   const reveal = useWizardReveal(
     beat ? { key: `farm:${dialogue.slotKey}:${index}`, sentences } : null,
     { enabled: true, resetKey: dialogue.slotKey },
   );
   const revealActive = reveal.active;
+  const revealSettled = reveal.settled;
   const revealAdvance = reveal.advance;
 
   const advanceBeat = useCallback(() => {
     setBeatIndex((current) => Math.min(current + 1, lastIndex));
   }, [lastIndex]);
+
+  // Subscribed rather than snapshotted, so an encounter that unlocks while this conversation is
+  // on screen un-greys its own Talk button. That is not hypothetical: the tutorial in Cass's
+  // encounter teaches a fallacy, and the player can walk straight to the animal it unlocks.
+  const lockedHint = useUnmetConditionsHint(dialogue.scenarioRequires);
 
   const detail = useMemo((): WizardPanelDetail | null => {
     if (!beat) return null;
@@ -57,25 +60,6 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
     };
   }, [beat, body, sentences.length]);
 
-  useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.repeat || !isAdvanceKey(event.code)) return;
-      const target = event.target as HTMLElement | null;
-      if (target?.closest('button, a, input, textarea, select, [contenteditable]')) return;
-      if (revealActive) {
-        event.preventDefault();
-        revealAdvance();
-        return;
-      }
-      if (!isLast) {
-        event.preventDefault();
-        advanceBeat();
-      }
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [revealActive, revealAdvance, isLast, advanceBeat]);
-
   return (
     <div style={{ height: '100%', minHeight: 0, width: '100%' }}>
       <TrialLayout
@@ -84,13 +68,14 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
           <WizardPanel
             detail={detail}
             reveal={
-              revealActive
+              revealActive || revealSettled
                 ? {
-                    sentence: reveal.sentence,
-                    sentenceIndex: reveal.sentenceIndex,
+                    spoken: reveal.spoken,
+                    typing: reveal.typing,
                     sentenceCount: reveal.sentenceCount,
                     skipToken: reveal.skipToken,
                     onSentenceTyped: reveal.onSentenceTyped,
+                    settled: revealSettled,
                   }
                 : null
             }
@@ -102,6 +87,7 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
             revealActive={revealActive}
             isLastBeat={isLast}
             scenario={dialogue.scenario}
+            lockedHint={lockedHint}
             onRevealAdvance={revealAdvance}
             onAdvanceBeat={advanceBeat}
             onStart={onStart}

@@ -90,11 +90,11 @@
           "quality": "effective",
           "impact": 0,
           "reason": "Clean, honest and evidence-led. Correct — and not what this exercise is for. Save it for Sunday.",
-          "summary": "You answer the claim itself: the bent outflow grate is where the mud comes from, not the hooves.",
+          "summary": "You answer the claim itself: the bent outflow grate is where the mud comes from, not the newcomers.",
           "sentences": [
             {
               "id": "s-r1-opt-c-1",
-              "text": "Bram says hooves foul the pond, but the outflow grate is bent. That's where the mud comes from.",
+              "text": "Bram says the newcomers foul the pond, but the outflow grate is bent. That's where the mud comes from.",
               "logicalFallacies": []
             }
           ]
@@ -204,15 +204,15 @@
           "quality": "logical_fallacy",
           "impact": 8,
           "reason": "Also dirty — but that is Ad Hominem. You attacked the objectors instead of inventing a crowd.",
-          "summary": "You pin the objection on donkey stubbornness instead of on the fence.",
+          "summary": "You pin the objection on newcomers being stubborn instead of on the fence.",
           "sentences": [
             {
               "id": "s-r2-opt-b-1",
-              "text": "Only the donkeys are against the fence, and donkeys are famously stubborn.",
+              "text": "Only the newcomers are against the fence, and newcomers are famously stubborn.",
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "This dismisses the objection by describing the objectors. Whether donkeys are stubborn has nothing to do with whether a fence would clear the pond."
+                  "explanation": "This dismisses the objection by describing the objectors. Whether newcomers are stubborn has nothing to do with whether a fence would clear the pond."
                 }
               ]
             }
@@ -307,11 +307,11 @@
           },
           {
             "id": "s-r3-2",
-            "text": "Now — the whole yard knows a donkey can't be trusted near a pond, so I don't see why we're still talking.",
+            "text": "Now — the whole yard knows a raccoon can't be trusted near water, so I don't see why we're still talking.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
-                "explanation": "'A donkey can't be trusted' dismisses Rue by what he is, not by anything he has said."
+                "explanation": "'A raccoon can't be trusted' dismisses Rue by what he is, not by anything he has said."
               },
               {
                 "id": "appeal-to-popularity",

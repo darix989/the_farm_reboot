@@ -1,8 +1,8 @@
 /**
  * Sequential farm-talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `cassDone`).
  *
- * The suffix is the animal's next unfinished scenario index (`1`, `2`, …) or
- * `Done` when the list is empty. A missing row falls back to the single
+ * The suffix is the animal's next unfinished scenario index (`1`, `2`, …), a
+ * `talkStages` suffix (`dot1`, `dot2`), or `Done` when the list is empty. A missing row falls back to the single
  * `farmDialog<Npc><suffix>` label so a new animal is never silent.
  */
 import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
@@ -29,6 +29,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: RUE, textLabel: 'farmDialogHetty1b' },
     { speakerId: 'hetty', textLabel: 'farmDialogHetty1c' },
   ],
+  hetty2: [
+    { speakerId: 'hetty', textLabel: 'farmDialogHetty2a' },
+    { speakerId: RUE, textLabel: 'farmDialogHetty2b' },
+    { speakerId: 'hetty', textLabel: 'farmDialogHetty2c' },
+  ],
   hettyDone: [
     { speakerId: 'hetty', textLabel: 'farmDialogHettyDoneA' },
     { speakerId: 'hetty', textLabel: 'farmDialogHettyDoneB' },
@@ -42,6 +47,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'cass', textLabel: 'farmDialogCass2a' },
     { speakerId: RUE, textLabel: 'farmDialogCass2b' },
     { speakerId: 'cass', textLabel: 'farmDialogCass2c' },
+  ],
+  cass3: [
+    { speakerId: 'cass', textLabel: 'farmDialogCass3a' },
+    { speakerId: RUE, textLabel: 'farmDialogCass3b' },
+    { speakerId: 'cass', textLabel: 'farmDialogCass3c' },
   ],
   cassDone: [
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneA' },
@@ -67,9 +77,35 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'duchess', textLabel: 'farmDialogDuchess1c' },
   ],
   duchessDone: [{ speakerId: 'duchess', textLabel: 'farmDialogDuchessDone' }],
+  tobias1: [
+    { speakerId: 'tobias', textLabel: 'farmDialogTobias1a' },
+    { speakerId: RUE, textLabel: 'farmDialogTobias1b' },
+    { speakerId: 'tobias', textLabel: 'farmDialogTobias1c' },
+  ],
   tobiasDone: [
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneA' },
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneB' },
+  ],
+  dot1: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot1a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1c' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1d' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1e' },
+  ],
+  dot2: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot2a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot2b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot2c' },
+  ],
+  dot3: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot3a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot3b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot3c' },
+  ],
+  dotDone: [
+    { speakerId: 'dot', textLabel: 'farmDialogDotDoneA' },
+    { speakerId: 'dot', textLabel: 'farmDialogDotDoneB' },
   ],
 };
 

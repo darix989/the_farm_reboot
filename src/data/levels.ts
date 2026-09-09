@@ -1,5 +1,8 @@
 import type { DebateScenarioJson } from '../types/debateEntities';
 import type { Labels } from './labels';
+// Type-only, and deliberately so: `gameConditions` imports this module back for
+// `DebateScenarioKey`, and a value import would make that a real cycle at runtime.
+import type { GameCondition } from '../utils/gameConditions';
 
 import tutorialBlueBarnJson from './debates/000_tutorial_the_blue_barn.json';
 import montyVsPennyJson from './debates/001_monty_vs_penny.json';
@@ -11,6 +14,8 @@ import gossipBramJson from './debates/012_gossip_trough_bram.json';
 import labCassJson from './debates/013_lab_cass_dirty_feathers.json';
 import skirmishBramJson from './debates/014_skirmish_bram_fenceline.json';
 import bossDuchessJson from './debates/015_duchess_vs_rue.json';
+import cassTeachesJson from './debates/020_cass_teaches_ad_hominem.json';
+import hettyBarrageJson from './debates/021_hetty_ad_hominem_barrage.json';
 
 /** Keys map to debate JSON files under `src/data/debates/`. */
 export type DebateScenarioKey =
@@ -23,23 +28,50 @@ export type DebateScenarioKey =
   | '012_gossip_trough_bram'
   | '013_lab_cass_dirty_feathers'
   | '014_skirmish_bram_fenceline'
-  | '015_duchess_vs_rue';
+  | '015_duchess_vs_rue'
+  | '020_cass_teaches_ad_hominem'
+  | '021_hetty_ad_hominem_barrage';
 
 export interface ScenarioEntry {
   key: DebateScenarioKey;
   /** `labels.ts` key for the menu button. */
   titleLabel: Labels;
   scenario: DebateScenarioJson;
+  /**
+   * What the player must have done elsewhere before an animal will start this encounter.
+   * Omit for an encounter that is always available.
+   *
+   * A gated encounter is still *offered* by default — the animal talks, and the Talk button
+   * carries the reason it is disabled. Set `FarmNpc.gateTalk` to refuse the conversation
+   * itself until this encounter's `requires` are met. Being told "not yet, and here is why"
+   * is content; a silent animal without `gateTalk` is a bug report.
+   *
+   * This gates the overworld only. The main menu lists every scenario and always has, which is
+   * what makes the ladder testable without replaying the farm.
+   */
+  requires?: readonly GameCondition[];
 }
 
 /**
  * Level 1 — "The Pond Motion". Ordered as a ladder: each rung adds exactly one thing,
- * from spotting alone up to the full Public Farm debate. See
+ * from Cass naming Ad Hominem up to the full Public Farm debate. See
  * `docs/level_01_the_pond_motion.md` for the story and the authored dialog.
  *
- * Nothing gates progression yet — the order is authorial, and any rung can be started.
+ * Overworld gates live on `requires`. The main menu still lists every rung ungated, which
+ * is what makes the ladder testable without replaying the farm.
  */
 export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
+  {
+    key: '020_cass_teaches_ad_hominem',
+    titleLabel: 'level1CassTeaches',
+    scenario: cassTeachesJson as unknown as DebateScenarioJson,
+  },
+  {
+    key: '021_hetty_ad_hominem_barrage',
+    titleLabel: 'level1HettyBarrage',
+    scenario: hettyBarrageJson as unknown as DebateScenarioJson,
+    requires: [{ kind: 'fallacy_known', fallacyId: 'ad-hominem' }],
+  },
   {
     key: '010_gossip_trough_hetty',
     titleLabel: 'level1GossipHetty',
@@ -69,6 +101,10 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     key: '015_duchess_vs_rue',
     titleLabel: 'level1BossDuchess',
     scenario: bossDuchessJson as unknown as DebateScenarioJson,
+    requires: [
+      { kind: 'fallacy_known', fallacyId: 'ad-hominem' },
+      { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' },
+    ],
   },
 ];
 
@@ -102,3 +138,16 @@ const ALL_SCENARIOS = [...LEVEL_1_SCENARIOS, ...LEGACY_SCENARIOS];
 export const DEBATES: Record<DebateScenarioKey, DebateScenarioJson> = Object.fromEntries(
   ALL_SCENARIOS.map((entry) => [entry.key, entry.scenario]),
 ) as Record<DebateScenarioKey, DebateScenarioJson>;
+
+const REQUIREMENTS: Partial<Record<DebateScenarioKey, readonly GameCondition[]>> =
+  Object.fromEntries(
+    ALL_SCENARIOS.filter((entry) => entry.requires?.length).map((entry) => [
+      entry.key,
+      entry.requires,
+    ]),
+  );
+
+/** `requires` for one encounter; an empty array when it is ungated. */
+export function scenarioRequirements(key: DebateScenarioKey): readonly GameCondition[] {
+  return REQUIREMENTS[key] ?? [];
+}

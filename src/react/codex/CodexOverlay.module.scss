@@ -1,0 +1,189 @@
+/*
+ * Field Notes overlay.
+ *
+ * `absolute`, not `fixed`, for the same reason as the trial modals: the overlay is anchored to
+ * the letterboxed 16:9 stage rather than the viewport, so it lands on the same rectangle as the
+ * rest of the UI at any aspect ratio.
+ */
+.codexOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ui-color-overlay-modal);
+  backdrop-filter: blur(4px);
+  padding: 1.5rem;
+
+  /* The React overlay is `pointer-events: none` and that inherits — see AGENTS.md. */
+  pointer-events: auto;
+}
+
+.codexBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 60%;
+  max-height: 88%;
+  min-height: 0;
+  border-radius: 0.75rem;
+  border: 2px solid var(--ui-color-border-panel);
+  background: var(--ui-color-surface-modal);
+  box-shadow:
+    0 24px 64px var(--ui-color-shadow-deep),
+    0 0 0 1px var(--ui-color-border-faint);
+  overflow: hidden;
+  color: var(--ui-color-white);
+}
+
+.codexHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-shrink: 0;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--ui-color-border-muted);
+  background: var(--ui-color-overlay-medium);
+}
+
+.codexTitle {
+  font-size: var(--ui-font-body);
+  font-weight: 600;
+  color: var(--ui-color-text-title);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.codexSubtitle {
+  font-size: var(--ui-font-subtitle);
+  color: var(--ui-color-text-caption);
+  margin: 0.35rem 0 0;
+}
+
+.codexCloseBtn {
+  flex-shrink: 0;
+  border: 1px solid var(--ui-color-border-soft);
+  border-radius: 0.5rem;
+  background: var(--ui-color-glass-06);
+  color: var(--ui-color-text-secondary);
+  font-size: var(--ui-font-subtitle);
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ui-color-text-title);
+    border-color: var(--ui-color-border-ring);
+  }
+}
+
+.codexTabs {
+  flex-shrink: 0;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem 0;
+}
+
+.codexTab {
+  border: 1px solid var(--ui-color-border-muted);
+  border-radius: 0.5rem 0.5rem 0 0;
+  border-bottom: none;
+  background: transparent;
+  color: var(--ui-color-text-hint);
+  font-size: var(--ui-font-subtitle);
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ui-color-text-secondary);
+  }
+}
+
+.codexTabActive {
+  color: var(--ui-color-info-text);
+  border-color: var(--ui-color-info-border);
+  background: var(--ui-color-info-bg-soft);
+}
+
+.codexContent {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.25rem 1.5rem 1.5rem;
+  border-top: 1px solid var(--ui-color-border-muted);
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.codexEmpty {
+  font-size: var(--ui-font-body);
+  line-height: 1.5;
+  color: var(--ui-color-text-hint);
+  margin: 0;
+}
+
+.codexEntry {
+  border: 1px solid var(--ui-color-border-hairline);
+  border-radius: 0.5rem;
+  background: var(--ui-color-overlay-card);
+  padding: 0.85rem 1rem;
+
+  & + & {
+    margin-top: 0.75rem;
+  }
+}
+
+.codexEntryTitle {
+  font-size: var(--ui-font-body);
+  font-weight: 600;
+  color: var(--ui-color-text-strong);
+  margin: 0;
+
+  /* Dialog flag titles are authored as instructions ("hear Hetty out at the trough") so they
+     can double as requirement text on a locked encounter. Here they are headings. */
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.codexEntryBody {
+  font-size: var(--ui-font-subtitle);
+  line-height: 1.5;
+  color: var(--ui-color-text-body);
+  margin: 0.4rem 0 0;
+}
+
+.codexQuote {
+  font-size: var(--ui-font-subtitle);
+  line-height: 1.5;
+  color: var(--ui-color-text-secondary);
+  font-style: italic;
+  border-left: 2px solid var(--ui-color-border-soft);
+  padding-left: 0.75rem;
+  margin: 0.6rem 0 0;
+}
+
+.codexAttribution {
+  display: block;
+  font-style: normal;
+  color: var(--ui-color-text-caption);
+  margin-top: 0.2rem;
+}
+
+.codexMeta {
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-text-caption);
+  margin: 0.5rem 0 0;
+}
+
+.codexFootnote {
+  font-size: var(--ui-font-subtitle);
+  color: var(--ui-color-text-faint);
+  margin: 1rem 0 0;
+}

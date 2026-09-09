@@ -16,6 +16,8 @@ import styles from './TutorialOverlay.module.scss';
 import { TutorialModalRichBody } from './tutorialRichMessage';
 import { GameManager } from '../../utils/gameManager';
 import { useGameStore } from '../../store/gameStore';
+import { useWindowKeyDown } from '../hooks/useWindowKeyDown';
+import { isContinueCode, isTextFieldTarget } from '../trial/utils/trialActionShortcuts';
 import type { TutorialModalAnchor } from '../../types/tutorialModalLayout';
 import {
   mergeTutorialModalSpecWithDevOverride,
@@ -69,6 +71,38 @@ const TutorialOverlay: React.FC = () => {
   const disableBackButton = !!step?.onlyForward;
   const exitsToMainMenu = step?.onFinish === 'exit';
 
+  const onPrimary = () => {
+    if (exitsToMainMenu) {
+      finishTutorial();
+      // Return to whoever launched this encounter (the farm, or the main menu),
+      // so the tutorial exit and the finished-encounter button agree on "back".
+      GameManager.switchScene(useGameStore.getState().returnSceneKey);
+      return;
+    }
+    if (isSingle || isLast) {
+      finishTutorial();
+    } else {
+      stepForward();
+    }
+  };
+
+  // Capture so this wins over footer Continue: on a reading step, D / Space / Enter
+  // dismiss or advance the dialog. `target_only` steps leave the keys alone so they
+  // can still press the highlighted control.
+  useWindowKeyDown(
+    (event) => {
+      if (event.repeat || event.metaKey || event.ctrlKey || event.altKey) return;
+      if (isTextFieldTarget(event)) return;
+      if (!isContinueCode(event.code)) return;
+      if (isTargetOnlyStep) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      onPrimary();
+    },
+    isOpen && !!step,
+    { capture: true },
+  );
+
   useEffect(() => {
     if (!isOpen || !step) return;
     const interactions = step.artificialInteractions;
@@ -108,21 +142,6 @@ const TutorialOverlay: React.FC = () => {
         maxHeight: 'none',
       }
     : undefined;
-
-  const onPrimary = () => {
-    if (exitsToMainMenu) {
-      finishTutorial();
-      // Return to whoever launched this encounter (the farm, or the main menu),
-      // so the tutorial exit and the finished-encounter button agree on "back".
-      GameManager.switchScene(useGameStore.getState().returnSceneKey);
-      return;
-    }
-    if (isSingle || isLast) {
-      finishTutorial();
-    } else {
-      stepForward();
-    }
-  };
 
   const primaryLabel = exitsToMainMenu
     ? getLabel('tutorialFinish')

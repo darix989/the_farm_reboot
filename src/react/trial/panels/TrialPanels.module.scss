@@ -229,8 +229,13 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   }
 }
 
+/* Content-sized, never shrunk: this wraps the whole statement box, which now holds every
+   sentence of a line at once. As a `1 1 0%` flex item it was shrunk below its content instead,
+   so a statement taller than the panel spilled out of its own wrapper — the scroll container
+   still scrolled (it measures the overflow), but the wrapper's box never grew, so nothing
+   watching it could tell the text had gotten taller. */
 .trialWizardDetailLive {
-  flex: 1 1 0%;
+  flex: 0 0 auto;
   min-height: 0;
   min-width: 0;
 }
@@ -270,6 +275,15 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
    panel font scale; 4 clears it with room to spare. */
 .trialWizardTextBlock {
   min-height: calc(1.375em * 4);
+}
+
+/* One spoken sentence of the statement, or the whole body when no reveal is attached. Sibling
+   block boxes on purpose (see `.trialWizardPortrait`): wrapping them in a flex or grid container
+   would establish a BFC, and the stack would sit beside the floated portrait instead of
+   flowing around it. */
+.trialWizardSentence {
+  color: var(--ui-color-text-body);
+  margin: 0.5rem 0 0;
 }
 
 /* =========================================================================

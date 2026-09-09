@@ -20,7 +20,8 @@ letterboxed 16:9 stage and share its coordinate space.
    │  │                      ⚠ pointer-events: none
    │  └ .react-root          mirrors the canvas margins/size
    │     ├ MainMenuUI | TrialUI | FarmUI | BoilerPlateUI
-   │     └ TutorialOverlay   (portals to document.body)
+   │     ├ TutorialOverlay   (portals to document.body)
+   │     └ CodexOverlay      (Field Notes; absolute to the stage, not a scene)
    └ ChromeAndroidFullscreenButton
 ```
 
@@ -111,9 +112,9 @@ field (`loadProgress`), so they cannot disagree.
 
 ---
 
-## State: six stores, two buses
+## State: eight stores, two buses
 
-Nothing here is Redux or Context. Six zustand stores, plus two event emitters that do not
+Nothing here is Redux or Context. Eight zustand stores, plus two event emitters that do not
 know about each other.
 
 | Store | Scope | Persisted |
@@ -123,7 +124,13 @@ know about each other.
 | `farmStore` | Overworld ↔ React handoff: which animal is nearby, which one you are talking to | no |
 | `trialStageStore` | Debate ↔ Phaser handoff: which speaker the `Trial` scene's cast should react to | no |
 | `debateLogStore` | Whether the Trial's Debate Log is expanded or collapsed to its recap chip | no |
-| `progressStore` | Which encounters are finished | **yes** — `localStorage`, `the-farm-progress` |
+| `progressStore` | Which encounters are finished, whether Level 1 has been started | **yes** — `localStorage`, `the-farm-progress` |
+| `codexStore` | Known fallacies, spotted fallacies, dialog flags | **yes** — `localStorage`, `the-farm-codex` |
+| `codexUiStore` | Whether Field Notes is open, and which section | no |
+
+`codexStore` and `codexUiStore` are split so a UI flag does not ride along on every persisted
+write. `SpottedFallacy` stores ids only (`fallacyId`, `scenarioKey`, `statementId`,
+`sentenceId`) — never prose — because saved data outlives the copy that wrote it.
 
 Everything else in a debate — the chosen options, the fallacy guesses, the Insight balance —
 is **component-local `useState` in `TrialUI`** and is discarded when it unmounts. That is
@@ -167,7 +174,40 @@ src/data/farmMap.ts              zones + NPCs; NPC.scenarios is typed
 ```
 
 `levels.ts` is the single place to register a scenario — it owns the key union, the lookup
-and the menu ordering. Adding an encounter is one edit there plus the JSON file.
+and the menu ordering. Adding an encounter is one edit there plus the JSON file. Overworld
+gates live on `ScenarioEntry.requires`; the menu lists every entry ungated, which is what
+makes the ladder testable without replaying the farm.
+
+---
+
+## Conditions, gates, and Field Notes
+
+One vocabulary, two consumers. `GameCondition` (`src/utils/gameConditions.ts`) is a
+discriminated union — a fallacy the player knows, a fallacy they have spotted, an encounter
+they have finished, or a named dialog flag. The same predicate gates a Talk button
+(`ScenarioEntry.requires`) and a debate option (`PlayerOption.unlockConditions`). Evaluate
+it with `isConditionMet` / `areConditionsMet`; React subscribers go through
+`useGameConditions.ts` so a store write re-renders. Prefer a `dialog_flag` over
+`encounter_completed` when the gate is "this conversation happened" — a flag carries
+authored copy for the locked-button hint and for the Codex.
+
+Finishing an encounter goes through `applyEncounterRewards` (`src/utils/encounterRewards.ts`):
+it marks the scenario complete *and* grants `teachesFallacies` / `setsDialogFlags` in one
+write, so a two-part gate can never be half-written. Rewards land on leaving a finished
+encounter, not on reaching the round that explains the fallacy. Spotting a fallacy in the
+analysis modal also marks it known (`recordSpottedFallacy`) — spotting one in the wild is
+strictly more than being told it exists.
+
+**Field Notes is a React overlay, not a Phaser scene.** Mounted globally in `ReactApp`
+next to `TutorialOverlay`. Routing to a Codex scene would tear down the overworld (and
+Rue's position with it) just to read a list. It is `absolute` on the letterboxed stage,
+`pointer-events: auto` on its root, `z-index` above the trial modals.
+
+A gated encounter is still *offered*, by default — the animal talks, and only the Talk
+button is locked. Set `gateTalk` on the NPC to refuse the conversation itself (Hetty)
+until the next encounter's `requires` are met. `Farm.ts` `tryInteract` and the overworld
+prompt both go through `farmNpcTalkLocked`. Being told "not yet, and here is why" is
+content; a silent animal without `gateTalk` is a bug report.
 
 **All user-visible fixed strings go through `getLabel` in `src/data/labels.ts`** — Phaser
 scenes included. Scenario prose (statements, options, introductions) lives in the JSON, not
@@ -181,9 +221,12 @@ in labels.
 src/
   types/debateEntities.ts    the whole content schema — scenarios, rounds, options,
                              mechanics flags, tutorial triggers
-  data/                      labels, the scenario registry, the farm map, the JSON
-  store/                     the six zustand stores
+  data/                      labels, the scenario registry, the farm map, the JSON,
+                             dialogFlags, fallacyCatalog
+  store/                     the eight zustand stores
   utils/gameManager.ts       imperative Phaser access (switchScene, getScene, …)
+  utils/gameConditions.ts    GameCondition union; shared by gates and option unlocks
+  utils/encounterRewards.ts  complete + teach + set flags in one write
   phaser/
     main.ts                  game config: scale, physics, scene list
     EventBus.ts              the 5-event Phaser→React bus
@@ -198,6 +241,7 @@ src/
     trial/                   the debate UI — panels, modals, utils
     tutorial/                the overlay system and its interaction gate
     farm/                    the overworld overlay
+    codex/                   Field Notes (known / spotted / dialogs)
 ```
 
 ---

@@ -5,6 +5,13 @@ import {
   canRunTutorialTargetAction,
   notifyTutorialTargetAction,
 } from '../../tutorial/tutorialInteractionGuard';
+import { useWindowKeyDown } from '../../hooks/useWindowKeyDown';
+import {
+  ANALYZE_CODE,
+  BACK_CODE,
+  isContinueCode,
+  shouldIgnoreActionShortcut,
+} from '../utils/trialActionShortcuts';
 import styles from '../panels/TrialPanels.module.scss';
 
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
@@ -37,6 +44,13 @@ export interface TrialActionRowProps {
   submit: TrialActionSpec & { icon: 'reveal' | 'continue' | 'confirm' | 'leave' };
   /** `data-tutorial-interactive-action` on the submit button. */
   submitTutorialAction: 'continue' | 'confirm';
+  /**
+   * When false, A / S / Enter / Space / D (and any `extraContinueCodes`) do nothing.
+   * Used to yield the keyboard to an overlay (analysis, intro summary).
+   */
+  shortcutsEnabled?: boolean;
+  /** Extra `event.code` values that also press Continue (farm talk keeps `KeyE`). */
+  extraContinueCodes?: readonly string[];
 }
 
 /**
@@ -48,7 +62,58 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
   back,
   submit,
   submitTutorialAction,
+  shortcutsEnabled = true,
+  extraContinueCodes,
 }) => {
+  const runAnalyze = () => {
+    if (analyze == null) return;
+    const target = { kind: 'interactive_action', action: 'analyze' } as const;
+    if (!canRunTutorialTargetAction(target)) return;
+    analyze.onClick();
+    notifyTutorialTargetAction(target);
+  };
+
+  const runBack = () => {
+    const target = { kind: 'interactive_action', action: 'back' } as const;
+    if (!canRunTutorialTargetAction(target)) return;
+    back.onClick();
+    notifyTutorialTargetAction(target);
+  };
+
+  const runSubmit = () => {
+    const target = {
+      kind: 'interactive_action',
+      action: submitTutorialAction,
+    } as const;
+    if (!canRunTutorialTargetAction(target)) return;
+    submit.onClick();
+    notifyTutorialTargetAction(target);
+  };
+
+  useWindowKeyDown((event) => {
+    if (shouldIgnoreActionShortcut(event)) return;
+
+    if (isContinueCode(event.code, extraContinueCodes)) {
+      if (submit.disabled) return;
+      event.preventDefault();
+      runSubmit();
+      return;
+    }
+
+    if (event.code === ANALYZE_CODE) {
+      if (analyze == null || analyze.disabled) return;
+      event.preventDefault();
+      runAnalyze();
+      return;
+    }
+
+    if (event.code === BACK_CODE) {
+      if (back.disabled) return;
+      event.preventDefault();
+      runBack();
+    }
+  }, shortcutsEnabled);
+
   return (
     <div className={styles.trialInteractiveFooterActions}>
       {analyze != null && (
@@ -62,12 +127,7 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
           disabled={analyze.disabled}
           aria-label={analyze.label}
           title={analyze.label}
-          onClick={() => {
-            const target = { kind: 'interactive_action', action: 'analyze' } as const;
-            if (!canRunTutorialTargetAction(target)) return;
-            analyze.onClick();
-            notifyTutorialTargetAction(target);
-          }}
+          onClick={runAnalyze}
           data-tutorial-interactive-action="analyze"
         >
           <img src={magnifyingIcon} alt="" className={styles.trialFooterIcon} />
@@ -78,12 +138,7 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
         disabled={back.disabled}
         aria-label={back.label}
         title={back.label}
-        onClick={() => {
-          const target = { kind: 'interactive_action', action: 'back' } as const;
-          if (!canRunTutorialTargetAction(target)) return;
-          back.onClick();
-          notifyTutorialTargetAction(target);
-        }}
+        onClick={runBack}
         data-tutorial-interactive-action="back"
       >
         <img src={backIcon} alt="" className={styles.trialFooterIcon} />
@@ -94,15 +149,7 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
         disabled={submit.disabled}
         aria-label={submit.label}
         title={submit.label}
-        onClick={() => {
-          const target = {
-            kind: 'interactive_action',
-            action: submitTutorialAction,
-          } as const;
-          if (!canRunTutorialTargetAction(target)) return;
-          submit.onClick();
-          notifyTutorialTargetAction(target);
-        }}
+        onClick={runSubmit}
         data-tutorial-interactive-action={submitTutorialAction}
       >
         <img src={SUBMIT_ICON_SRC[submit.icon]} alt="" className={styles.trialFooterIcon} />

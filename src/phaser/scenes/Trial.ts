@@ -127,7 +127,9 @@ export class Trial extends Scene {
         .setFlipX(x < centreX === animalArtFacesLeft(visual.animal));
 
       const animator = attachAnimalAnimator(sprite, setup, {
-        staging: 'trial', // selects idleTrial/alertTrial (Tobias sits up)
+        // `trial` selects idleTrial/alertTrial — Rue sits up, Duchess stops grazing. Which
+        // characters want that is cast data, not a property of the stage.
+        staging: visual.usesTrialIdle ? 'trial' : 'farm',
         desyncDelayMs: [0, 200], // near-zero: a reaction must land on the beat of dialogue
       });
       if (!animator) return;

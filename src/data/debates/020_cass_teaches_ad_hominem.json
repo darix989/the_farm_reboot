@@ -1,0 +1,353 @@
+{
+  "id": "level1-cass-teaches-ad-hominem",
+  "introduction": "Cass ran the Public Farm floor for nine seasons, and every season someone answered him by talking about his voice or his comb instead of his point. He has a name for that trick. He also has a way of teaching it, and you will not like the way.",
+  "introductionSummary": "Cass names a trick he has been on the receiving end of for nine seasons, then uses it on you so you will hear it coming.",
+  "playerSide": "opposition",
+  "characters": {
+    "cass": "Cass",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Attacking the animal instead of the argument. Whether Rue is a raccoon who arrived in a mud cart has nothing to do with the water."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem"],
+  "teachesFallacies": ["ad-hominem"],
+  "setsDialogFlags": ["cass-named-ad-hominem"],
+  "mechanics": {
+    "showInsightPoints": false,
+    "showModeratorOpinion": false,
+    "showRoundRecap": false,
+    "showIntroSummary": false,
+    "revealChoiceAssessment": true,
+    "encounterKind": "sparring"
+  },
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "crossfire",
+      "speakerId": "cass",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r1-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Nine seasons I ran the Public Farm floor. Nine.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "Every season, someone answered me by talking about my voice, or my comb, or how I look when I moult.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-3",
+            "text": "Never about the motion. Never once about what I had actually said.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Cass has spent nine seasons being answered by remarks about his voice and his comb instead of his point."
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "crossfire",
+      "speakerId": "cass",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r2-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r2-1",
+            "text": "There is a name for that trick.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-2",
+            "text": "A common misuse of speaking — so common the animals doing it rarely notice they are doing it.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-3",
+            "text": "I learned it the long way, by being the thing they pointed at.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Cass says the trick has a name, and that he learned it by being its target."
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "crossfire",
+      "opponentPromptImpact": 0,
+      "opponentPrompt": {
+        "id": "stmt-r3-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r3-p1",
+            "text": "I can give you the name and sit down.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r3-p2",
+            "text": "Or I can show you, which is how anyone actually learns it.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r3-p3",
+            "text": "Well?",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Cass offers the name as a word, or a demonstration, and waits."
+      },
+      "options": [
+        {
+          "id": "r3-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -10,
+          "reason": "You answered an offer to teach with an attack on the teacher. That is the trick. You just used it.",
+          "summary": "You dismiss Cass as a cranky old rooster nobody listens to, and so use the trick on the animal offering to name it.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-a-1",
+              "text": "You only know about it because you're a cranky old rooster nobody listens to.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "Whether Cass is cranky, old, or ignored has nothing to do with whether the trick has a name. You attacked the teacher instead of taking the lesson."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "A name without the thing is a word. You will forget it by Sunday.",
+          "summary": "You ask for the name and skip the demonstration.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-b-1",
+              "text": "Just tell me the name.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-c",
+          "quality": "effective",
+          "impact": 15,
+          "reason": "You asked to see it. That is the only way the name will stick.",
+          "summary": "You ask him to show you, which is the lesson he wanted.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-c-1",
+              "text": "Show me.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r3-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-a",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-a-1",
+                "text": "That's it. You just did it to me. Now watch me do it to you.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "Cass names what you just did, then turns the demonstration on you."
+          }
+        },
+        {
+          "forOptionId": "r3-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-b",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-b-1",
+                "text": "A word without the thing is a word. Watch first.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "Cass refuses to hand over a name without showing the trick."
+          }
+        },
+        {
+          "forOptionId": "r3-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-c",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-c-1",
+                "text": "Good. Watch.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "Cass approves, and the demonstration begins."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "crossfire",
+      "speakerId": "cass",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r4-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r4-1",
+            "text": "Right. I'll be Duchess.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-2",
+            "text": "Nobody's blaming you, dear. It's simply that a raccoon who arrived in a mud cart, straw still in his ears, can hardly be expected to know about water.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "The claim on the floor is about the water. This sentence answers it by describing Rue — raccoon, mud cart, straw — which tells us nothing about the pond."
+              }
+            ]
+          },
+          {
+            "id": "s-r4-3",
+            "text": "The Flock waters at the pond every morning, as they always have.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Cass plays Duchess: a gentle line about the mud cart and the straw, dressed as concern, instead of a line about the water."
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-5",
+      "roundNumber": 5,
+      "type": "crossfire",
+      "speakerId": "cass",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r5-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r5-1",
+            "text": "That is the whole trick.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-2",
+            "text": "She talked about what you are — a raccoon, a mud cart, six weeks — and never about what happened to the water.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-3",
+            "text": "The phrase to keep is this: what I am, against what happened. If a line is about you instead of the pond, you have heard it. The name is Ad Hominem.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Cass names the trick Ad Hominem and hands you the phrase: what I am, against what happened."
+      }
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "teach-what-this-is",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Cass is going to tell you something.\n\n**[muted]No score here.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "teach-spot-it",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-4"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Cass just used it on you. Open the **[accent]magnifying glass[/accent]** and read his line sentence by sentence.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "analyze"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "Pick the sentence that talks about **[accent]you[/accent]** instead of the water, tag it **[accent]Ad Hominem[/accent]**, submit.",
+            "interactionMode": "modal_only",
+            "onlyForward": true,
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "submit_guess"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

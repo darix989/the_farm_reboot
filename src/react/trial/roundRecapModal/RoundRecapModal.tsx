@@ -9,7 +9,12 @@ import {
   notifyTutorialTargetAction,
 } from '../../tutorial/tutorialInteractionGuard';
 import { debateEventBus } from '../utils/debateEventBus';
-import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../utils/optionUnlock';
+import {
+  isOptionGated,
+  isPlayerOptionUnlocked,
+  resolvedOptionSentences,
+} from '../utils/optionUnlock';
+import { useConditionContext } from '../../hooks/useGameConditions';
 import {
   getSpeakerName,
   moderatorOpinionEmoji,
@@ -21,6 +26,8 @@ import {
 } from '../utils/trialHelpers';
 import type { ResolvedMechanics } from '../utils/scenarioMechanics';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
+import { useWindowKeyDown } from '../../hooks/useWindowKeyDown';
+import { isContinueCode, shouldIgnoreActionShortcut } from '../utils/trialActionShortcuts';
 import cn from 'classnames';
 import shared from '../trialShared.module.scss';
 import styles from './RoundRecapModal.module.scss';
@@ -74,16 +81,38 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [round?.id]);
 
+  const conditions = useConditionContext();
+
+  const handleContinue = () => {
+    const target = { kind: 'round_recap_action', action: 'continue' } as const;
+    // Block dismissal while a tutorial step is open unless the step has
+    // `interactionMode: 'target_only'` and targets this Continue button.
+    // A missing `interactionMode` field falls back to `'modal_only'` (see
+    // `tutorialStore.openTutorial` / `canRunTargetAction`), so an authored
+    // step without the field also blocks the click.
+    if (!canRunTutorialTargetAction(target)) return;
+    onClose();
+    notifyTutorialTargetAction(target);
+  };
+
+  useWindowKeyDown((event) => {
+    if (shouldIgnoreActionShortcut(event)) return;
+    if (!isContinueCode(event.code)) return;
+    event.preventDefault();
+    handleContinue();
+  }, true);
+
   const choicePreview = useMemo(() => {
     if (!chosen) return recapText(undefined, '');
     const showRealCopy =
-      !chosen.unlockCondition ||
-      (isPlayerOptionUnlocked(chosen, fallacyGuesses) && revealedLockedOptionIds.has(chosen.id));
+      !isOptionGated(chosen) ||
+      (isPlayerOptionUnlocked(chosen, fallacyGuesses, conditions) &&
+        revealedLockedOptionIds.has(chosen.id));
     const spoken = statementText(resolvedOptionSentences(chosen, showRealCopy));
     // `summary` paraphrases the *unlocked* line, so a still-locked option keeps showing
     // its placeholder copy rather than leaking what the real line says.
     return recapText(showRealCopy ? chosen.summary : undefined, spoken);
-  }, [chosen, fallacyGuesses, revealedLockedOptionIds]);
+  }, [chosen, fallacyGuesses, revealedLockedOptionIds, conditions]);
 
   const responseSpeaker = wf.activeOpponentResponse
     ? getSpeakerName(debate, wf.activeOpponentResponse.statement.speakerId)
@@ -282,20 +311,7 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
         </ScrollFadeContainer>
 
         <div className={styles.recapFooter}>
-          <TrialTextButton
-            onClick={() => {
-              const target = { kind: 'round_recap_action', action: 'continue' } as const;
-              // Block dismissal while a tutorial step is open unless the step has
-              // `interactionMode: 'target_only'` and targets this Continue button.
-              // A missing `interactionMode` field falls back to `'modal_only'` (see
-              // `tutorialStore.openTutorial` / `canRunTargetAction`), so an authored
-              // step without the field also blocks the click.
-              if (!canRunTutorialTargetAction(target)) return;
-              onClose();
-              notifyTutorialTargetAction(target);
-            }}
-            data-tutorial-round-recap-action="continue"
-          >
+          <TrialTextButton onClick={handleContinue} data-tutorial-round-recap-action="continue">
             {getLabel('continue')}
           </TrialTextButton>
         </div>

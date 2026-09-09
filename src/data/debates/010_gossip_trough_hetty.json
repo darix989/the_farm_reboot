@@ -1,7 +1,7 @@
 {
   "id": "level1-gossip-hetty",
-  "introduction": "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is. She has not quite worked out yet that you are the donkey she is talking about.",
-  "introductionSummary": "Hetty has a theory about the pond, and no idea she is telling it to the donkey in it.",
+  "introduction": "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is — yours. She will say it to your face and mean no harm by it.",
+  "introductionSummary": "Hetty has a theory about the pond, and she is going to tell it to you.",
   "playerSide": "opposition",
   "characters": {
     "hetty": "Hetty",
@@ -37,12 +37,12 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Morning! Did you hear? That new donkey — Rue, I think it is — has been complaining about the pond drain again.",
+            "text": "Morning! You've been on about the pond drain again.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
-            "text": "I wouldn't put much stock in it, mind. He arrived in a mud cart with straw in his ears; he's hardly the sort who'd know about water.",
+            "text": "I wouldn't put much stock in it, mind. You arrived in a mud cart with straw in your ears; you're hardly the sort who'd know about water.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
@@ -56,7 +56,7 @@
             "logicalFallacies": []
           }
         ],
-        "summary": "Hetty dismisses the donkey's drain complaint by his arrival, not his argument."
+        "summary": "Hetty dismisses your drain complaint by how you arrived, not by the argument."
       }
     },
     {

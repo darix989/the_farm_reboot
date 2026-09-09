@@ -17,6 +17,7 @@ import { useGameStore } from '../../store/gameStore';
 import { useFarmStore } from '../../store/farmStore';
 import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import getLabel from '../../data/labels';
+import { farmNpcTalkLocked } from '../../utils/farmTalkGate';
 import { animalSetup } from '../animals/animalAnimations';
 import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
@@ -30,12 +31,17 @@ import {
 import { STAGE_DESIGN_HEIGHT, STAGE_DESIGN_WIDTH, TRIAL_STAGE_HOLE } from '../../utils/constants';
 
 const PLAYER_SPEED = 167; // slowed twice by 30% from the 340 the overworld shipped with
-/** Player body is smaller than the sprite so Rue's feet, not his head, hit walls. */
-const PLAYER_BODY = { width: 38, height: 28, offsetX: 9, offsetY: 24 };
+/**
+ * Player body is smaller than the sprite so Rue's feet, not his head, hit walls. Sized in
+ * world pixels against the 56px `farm-player` placeholder the body is attached to, and shaped
+ * like the animal's footprint rather than its silhouette: Rue is a raccoon, so the box is wide
+ * and shallow where the donkey's was narrow and deep.
+ */
+const PLAYER_BODY = { width: 48, height: 26, offsetX: 4, offsetY: 26 };
 /**
  * Vertical offset from the (invisible) physics body's centre down to the animated art's
- * feet. `applyAtlasFeetOrigin` now pins the sprite origin at the hooves, so this is purely
- * body alignment: 18 sits them near the bottom of the 28px collider (which ends 24px below
+ * feet. `applyAtlasFeetOrigin` now pins the sprite origin at the paws, so this is purely
+ * body alignment: 18 sits them near the bottom of the 26px collider (which ends 24px below
  * centre). Do not re-introduce canvas-padding fudge here.
  */
 const PLAYER_ART_FEET_OFFSET = 18;
@@ -291,10 +297,11 @@ export class Farm extends Scene {
     useFarmStore.getState().setNearbyNpc(closestId);
   }
 
-  /** Space / E / Enter opens the nearest animal's conversation. */
+  /** Space / E / Enter opens the nearest animal's conversation, unless `gateTalk` has it closed. */
   private tryInteract(): void {
     const { nearbyNpcId, talkingToNpcId, openDialogue } = useFarmStore.getState();
     if (talkingToNpcId || !nearbyNpcId) return;
+    if (farmNpcTalkLocked(nearbyNpcId)) return;
     openDialogue(nearbyNpcId);
   }
 

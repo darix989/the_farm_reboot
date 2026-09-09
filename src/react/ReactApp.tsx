@@ -8,6 +8,7 @@ import AnimalGalleryUI from './screens/AnimalGalleryUI';
 import GameLoadingScreen from './screens/GameLoadingScreen';
 import ReactRoot from './ReactRoot';
 import TutorialOverlay from './tutorial/TutorialOverlay';
+import CodexOverlay from './codex/CodexOverlay';
 import { useGameStore } from '../store/gameStore';
 import { DEBATES } from '../data/levels';
 
@@ -50,6 +51,9 @@ const ReactApp: React.FC = () => {
     <ReactRoot>
       {renderSceneUI()}
       <TutorialOverlay />
+      {/* Scene-independent, like the tutorial overlay: openable from the menu and the farm
+          alike, and it renders nothing until `codexUiStore.isOpen`. */}
+      <CodexOverlay />
     </ReactRoot>
   );
 };

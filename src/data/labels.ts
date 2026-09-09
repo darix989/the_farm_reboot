@@ -15,12 +15,14 @@ const LABELS = {
   // --- Level 1: The Pond Motion ---
   level1Heading: 'Level 1 — The Pond Motion',
   legacyScenariosHeading: 'Other scenarios',
-  level1GossipHetty: '1.1 · Gossip at the Trough: What Hetty Heard',
-  level1SparringCass: '1.2 · The Sparring Post',
-  level1GossipBram: '1.3 · Gossip at the Trough: Everyone Says',
-  level1LabCass: '1.4 · The Cranky Rooster Lab: Dirty Feathers',
-  level1SkirmishBram: '1.5 · Fence-line Skirmish: The Bent Grate',
-  level1BossDuchess: '1.6 · The Public Farm: The Pond Motion',
+  level1CassTeaches: '1.1 · The Sparring Post: The Name of the Trick',
+  level1HettyBarrage: '1.2 · Gossip at the Trough: All About You',
+  level1GossipHetty: '1.3 · Gossip at the Trough: What Hetty Heard',
+  level1SparringCass: '1.4 · The Sparring Post',
+  level1GossipBram: '1.5 · Gossip at the Trough: Everyone Says',
+  level1LabCass: '1.6 · The Cranky Rooster Lab: Dirty Feathers',
+  level1SkirmishBram: '1.7 · Fence-line Skirmish: The Bent Grate',
+  level1BossDuchess: '1.8 · The Public Farm: The Pond Motion',
   animationGallery: 'Animation Gallery',
 
   // --- Animation gallery ---
@@ -130,7 +132,7 @@ const LABELS = {
     'Review the round summary in the dialog. Close it when you are ready to continue.',
   /** Sentence-reveal progress beside the wizard detail title, e.g. "Duchess speaks: (2/4)". */
   wizardSentenceProgress: '({current}/{total})',
-  /** Shown in place of the fraction once the whole line is on screen. */
+  /** Shown in place of the fraction when the pacer was skipped and the joined body is showing. */
   wizardSentenceProgressAll: '(all)',
   // Closing line, one per `EncounterKind`.
   debateFinished: 'The debate is finished.',
@@ -250,6 +252,7 @@ const LABELS = {
   farmNpcBram: 'Bram',
   farmNpcDuchess: 'Duchess',
   farmNpcTobias: 'Tobias',
+  farmNpcDot: 'Dot',
   farmZoneBarn: 'THE BIG BARN',
   farmZonePond: 'THE OLD POND',
   farmTalkPrompt: 'Talk to {name}',
@@ -269,25 +272,37 @@ const LABELS = {
   // so a missing table row is never silent. Authored conversations live in
   // `farmTalk.ts` and point at the `a`/`b`/`c` keys.
   farmDialogHetty1:
-    'Oh — hello. You are the donkey, are you not? Never mind. Stand there a moment, I have news.',
-  farmDialogHetty1a: 'Oh — hello. You are the donkey, are you not?',
-  farmDialogHetty1b: 'I am. They call me Rue.',
-  farmDialogHetty1c: 'Never mind. Stand there a moment, I have news.',
+    'Rue. Come and stand here a moment. I have been thinking about the pond, and I should like to say it to you.',
+  farmDialogHetty1a: 'Rue. Come and stand here a moment.',
+  farmDialogHetty1b: 'I am here.',
+  farmDialogHetty1c: 'I have been thinking about the pond, and I should like to say it to you.',
+  farmDialogHetty2:
+    'Back again. I have other news — not about you this time. Well. Perhaps it is. Stand there a moment.',
+  farmDialogHetty2a:
+    'Back again. I have other news — not about you this time. Well. Perhaps it is.',
+  farmDialogHetty2b: 'Go on.',
+  farmDialogHetty2c: 'Stand there a moment.',
   farmDialogHettyDone:
-    'I have told you everything I know, and a little that I do not. Go and see the rooster.',
+    'I have told you everything I know, and a little that I do not. The owl will want you on the floor.',
   farmDialogHettyDoneA: 'I have told you everything I know, and a little that I do not.',
-  farmDialogHettyDoneB: 'Go and see the rooster.',
+  farmDialogHettyDoneB: 'The owl will want you on the floor.',
   farmDialogCass1:
-    'You. Stand at the post. I am going to say unpleasant things to you and you are going to answer them properly.',
-  farmDialogCass1a: 'You. Stand at the post.',
-  farmDialogCass1b: 'I can stand.',
+    'You. Come here. Someone has been using a trick on this farm for nine seasons, and you do not even know it has a name. That is about to change.',
+  farmDialogCass1a: 'You. Come here.',
+  farmDialogCass1b: 'I am here.',
   farmDialogCass1c:
-    'I am going to say unpleasant things to you and you are going to answer them properly.',
+    'Someone has been using a trick on this farm for nine seasons, and you do not even know it has a name. That is about to change.',
   farmDialogCass2:
-    'Back again. Good. This time you are going to be the unpleasant one, and you are going to enjoy it. That is the lesson.',
-  farmDialogCass2a: 'Back again. Good.',
-  farmDialogCass2b: 'I came back.',
+    'You. Stand at the post. I am going to say unpleasant things to you and you are going to answer them properly.',
+  farmDialogCass2a: 'You. Stand at the post.',
+  farmDialogCass2b: 'I can stand.',
   farmDialogCass2c:
+    'I am going to say unpleasant things to you and you are going to answer them properly.',
+  farmDialogCass3:
+    'Back again. Good. This time you are going to be the unpleasant one, and you are going to enjoy it. That is the lesson.',
+  farmDialogCass3a: 'Back again. Good.',
+  farmDialogCass3b: 'I came back.',
+  farmDialogCass3c:
     'This time you are going to be the unpleasant one, and you are going to enjoy it. That is the lesson.',
   farmDialogCassDone:
     'Nothing more from me. Save it for Sunday, and do not let her make it about you.',
@@ -307,16 +322,81 @@ const LABELS = {
     'I have said more than I should have. The grate is bent. You did not hear it from me.',
   farmDialogBramDoneA: 'I have said more than I should have.',
   farmDialogBramDoneB: 'The grate is bent. You did not hear it from me.',
-  farmDialogDuchess1:
-    'Ah. The newcomer. Tobias has the motion, and the Flock is ready. Shall we settle the pond?',
+  farmDialogDuchess1: 'Ah. The newcomer. Tobias has the floor. Speak to him when you are ready.',
   farmDialogDuchess1a: 'Ah. The newcomer.',
   farmDialogDuchess1b: 'Rue. I live here now.',
-  farmDialogDuchess1c: 'Tobias has the motion, and the Flock is ready. Shall we settle the pond?',
+  farmDialogDuchess1c: 'Tobias has the floor. Speak to him when you are ready.',
   farmDialogDuchessDone: 'The pond is settled, dear. For now.',
-  farmDialogTobiasDone:
-    'I moderate; I do not take sides. Speak to the others, and I shall see you on the floor.',
-  farmDialogTobiasDoneA: 'I moderate; I do not take sides.',
-  farmDialogTobiasDoneB: 'Speak to the others, and I shall see you on the floor.',
+  farmDialogTobias1:
+    'Rue. I have the motion. Cass at the post first, if you have not been. Then Hetty at the trough. Then come back to me, and we will hear it on the floor.',
+  farmDialogTobias1a: 'Rue. I have the motion.',
+  farmDialogTobias1b: 'I live here now.',
+  farmDialogTobias1c:
+    'Cass at the post first, if you have not been. Then Hetty at the trough. Then come back to me, and we will hear it on the floor.',
+  farmDialogTobiasDone: 'That is the floor finished, for now. I moderate; I do not take sides.',
+  farmDialogTobiasDoneA: 'That is the floor finished, for now.',
+  farmDialogTobiasDoneB: 'I moderate; I do not take sides.',
+  farmDialogDot1:
+    'You are the new raccoon. Rue, is it? Welcome to Green Meadows. Duchess has put a motion on the pond — Sunday, in front of Tobias the owl. Cass first, at the west post. Then Hetty at the trough. Then the owl, at the barn, for the Public Farm.',
+  farmDialogDot1a: 'You are the new raccoon. Rue, is it?',
+  farmDialogDot1b: 'I am.',
+  farmDialogDot1c:
+    'Welcome to Green Meadows. Duchess has put a motion on the pond — Sunday, in front of Tobias the owl. You will want to know how this farm talks before you stand there.',
+  farmDialogDot1d: 'Where do I start?',
+  farmDialogDot1e:
+    'Cass first. The rooster at the west post. He has something you need to hear before Hetty will even speak to you. Then Hetty at the trough. Then come back to the barn, to the owl, for the Public Farm.',
+  farmDialogDot2: 'Cass has done his piece. Hetty is at the trough. She will talk to you now.',
+  farmDialogDot2a: 'Cass has done his piece.',
+  farmDialogDot2b: 'And Hetty?',
+  farmDialogDot2c: 'She is at the trough. She will talk to you now.',
+  farmDialogDot3: 'Tobias is waiting at the barn. That is the debate. The owl has the floor.',
+  farmDialogDot3a: 'Tobias is waiting at the barn.',
+  farmDialogDot3b: 'The owl.',
+  farmDialogDot3c: 'That is the debate. He has the floor.',
+  farmDialogDotDone: 'I have pointed you at everyone I can. The rest is the floor.',
+  farmDialogDotDoneA: 'I have pointed you at everyone I can.',
+  farmDialogDotDoneB: 'The rest is the floor.',
+
+  // --- Encounter gates (src/utils/gameConditions.ts) ---
+  // Requirement phrases say what to do rather than what is missing, so a list of them reads
+  // as directions instead of as a list of failures.
+  conditionHintFallacyKnown: 'know the {fallacy} fallacy',
+  conditionHintFallacySpotted: 'spot {fallacy} in a conversation',
+  conditionHintEncounterCompleted: 'finish an earlier conversation',
+  listSeparator: ', ',
+  encounterLockedHint: 'Not yet — you need to {requirements}.',
+  farmPromptLocked: 'Locked',
+
+  // --- Field Notes (the Codex) ---
+  codexTitle: 'Field Notes',
+  codexSubtitle: 'Everything you have worked out on this farm.',
+  codexOpen: 'Field Notes',
+  codexClose: 'Close',
+  codexSectionKnown: 'Fallacies you know',
+  codexSectionSpotted: 'Fallacies you have spotted',
+  codexSectionDialogs: 'Important conversations',
+  codexKnownProgress: '{known} of {total} known',
+  codexKnownEmpty:
+    'Nobody has taught you a fallacy yet. Talk to the animals — one of them knows the name of the trick being played on you.',
+  codexSpottedEmpty:
+    'Nothing spotted yet. Open the lens during a conversation and tag a fallacy in what was actually said.',
+  codexDialogsEmpty: 'Nothing worth writing down yet.',
+  codexKnownRemaining: '{count} more that nobody has explained to you yet.',
+  codexSpottedQuote: '“{text}”',
+  codexSpottedAttribution: '— {speaker}',
+  codexSpottedTimes: 'spotted {count}×',
+
+  // Dialog flags — the title doubles as the requirement phrase on a locked encounter, so it
+  // reads as an instruction ("hear Hetty out at the trough"), not as a headline.
+  dialogFlagCassNamedAdHominemTitle: 'let Cass name the trick for you',
+  dialogFlagCassNamedAdHominemBody:
+    'Cass has been the target of it for nine seasons, so he knows it by name: Ad Hominem, arguing the animal instead of the argument. He used it on you on purpose, so that you would learn to hear it coming.',
+  dialogFlagHettyWitnessedTitle: 'hear Hetty out at the trough',
+  dialogFlagHettyWitnessedBody:
+    'Hetty went the whole way round the trough and never once mentioned the water: the mud cart, the straw, how long you have been here. She said it to your face and meant no harm by any of it, which is exactly what makes it work.',
+  dialogFlagBramGrateTitle: 'get Bram to talk about the grate',
+  dialogFlagBramGrateBody:
+    'At the fence line, before you had asked him anything: the outflow grate has been bent since before the frost. He is the Flock’s own second, which makes him the best witness you could possibly have.',
 
   // --- Phaser placeholder scenes ---
   gameOver: 'Game Over',

@@ -7,6 +7,8 @@ import {
   canRunTutorialTargetAction,
   notifyTutorialTargetAction,
 } from '../../tutorial/tutorialInteractionGuard';
+import { useWindowKeyDown } from '../../hooks/useWindowKeyDown';
+import { isContinueCode, shouldIgnoreActionShortcut } from '../utils/trialActionShortcuts';
 import shared from '../trialShared.module.scss';
 import cn from 'classnames';
 import recapStyles from '../roundRecapModal/RoundRecapModal.module.scss';
@@ -46,6 +48,19 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
   const sideLabel = sideDisplayLabel(debate.playerSide);
   const closeTarget = { kind: 'intro_summary_action', action: 'close' } as const;
   const beginRoundTarget = { kind: 'intro_summary_action', action: 'begin_round_1' } as const;
+
+  const handleBeginRound = () => {
+    if (!canRunTutorialTargetAction(beginRoundTarget)) return;
+    onClose();
+    notifyTutorialTargetAction(beginRoundTarget);
+  };
+
+  useWindowKeyDown((event) => {
+    if (shouldIgnoreActionShortcut(event)) return;
+    if (!isContinueCode(event.code)) return;
+    event.preventDefault();
+    handleBeginRound();
+  }, true);
 
   return (
     <div
@@ -108,11 +123,7 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
 
         <div className={recapStyles.recapFooter}>
           <TrialTextButton
-            onClick={() => {
-              if (!canRunTutorialTargetAction(beginRoundTarget)) return;
-              onClose();
-              notifyTutorialTargetAction(beginRoundTarget);
-            }}
+            onClick={handleBeginRound}
             data-tutorial-intro-summary-action="begin_round_1"
           >
             {getLabel('beginRound1')}

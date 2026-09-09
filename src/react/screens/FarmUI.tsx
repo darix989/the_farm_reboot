@@ -1,12 +1,22 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import getLabel from '../../data/labels';
 import type { DebateScenarioKey } from '../../data/levels';
 import { resolveCharacter } from '../../data/characters';
-import { farmNpcById } from '../../data/farmMap';
+import { FARM_INTRO_NPC_ID, farmNpcById } from '../../data/farmMap';
 import { useFarmStore } from '../../store/farmStore';
 import { useGameStore } from '../../store/gameStore';
+import { useCodexUiStore } from '../../store/codexUiStore';
+import { useProgressStore } from '../../store/progressStore';
 import { GameManager } from '../../utils/gameManager';
-import { farmDialogueFor } from '../farm/farmDialogueState';
+import { farmDialogueFor, farmNpcRequirements } from '../farm/farmDialogueState';
+import {
+  useConditionContext,
+  useConditionsMet,
+  useUnmetConditionsHint,
+} from '../hooks/useGameConditions';
+import { areConditionsMet, conditionContextSnapshot } from '../../utils/gameConditions';
+import { farmNpcTalkLocked } from '../../utils/farmTalkGate';
+import { scenarioRequirements } from '../../data/levels';
 import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
 import FarmDialogue from '../farm/FarmDialogue';
 import styles from '../farm/FarmUI.module.scss';
@@ -24,6 +34,7 @@ const FarmUI: React.FC = () => {
   const talkingToNpcId = useFarmStore((s) => s.talkingToNpcId);
   const openDialogue = useFarmStore((s) => s.openDialogue);
   const closeDialogue = useFarmStore((s) => s.closeDialogue);
+  const openCodex = useCodexUiStore((s) => s.openCodex);
 
   const dialogue = useMemo(
     () => (talkingToNpcId ? farmDialogueFor(talkingToNpcId) : null),
@@ -31,8 +42,33 @@ const FarmUI: React.FC = () => {
   );
 
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;
+  // Recomputed whenever the nearby animal changes; the requirements themselves are static
+  // authored data, so `useConditionsMet` is what makes the badge react to progress.
+  const nearbyRequires = useMemo(
+    () => (nearbyNpcId ? farmNpcRequirements(nearbyNpcId) : []),
+    [nearbyNpcId],
+  );
+  const nearbyUnlocked = useConditionsMet(nearbyRequires);
+  const conditionCtx = useConditionContext();
+  const nearbyTalkLocked = nearbyNpcId ? farmNpcTalkLocked(nearbyNpcId, conditionCtx) : false;
+  const nearbyLockedHint = useUnmetConditionsHint(nearbyTalkLocked ? nearbyRequires : []);
+
+  // After the loading overlay unmounts — not in Phaser `create`, which runs while that
+  // overlay still covers the stage, and which used to skip anyone who already had progress.
+  useEffect(() => {
+    const progress = useProgressStore.getState();
+    if (progress.level1Started) return;
+    openDialogue(FARM_INTRO_NPC_ID);
+    progress.markLevel1Started();
+  }, [openDialogue]);
 
   const startEncounter = useCallback((scenario: DebateScenarioKey) => {
+    // Re-checked here rather than trusted from the button's disabled state: this is the one
+    // door into the Trial scene from the overworld, and a locked encounter reached through a
+    // stale render would strand the player in a conversation that assumes things they have not
+    // been told.
+    if (!areConditionsMet(scenarioRequirements(scenario), conditionContextSnapshot())) return;
+
     const store = useGameStore.getState();
     // Order matters: the scenario must be set before the scene switch, or TrialUI
     // mounts with the previous encounter for a frame.
@@ -46,16 +82,34 @@ const FarmUI: React.FC = () => {
     <div className={styles.farmUi}>
       {!dialogue && <p className={styles.moveHint}>{getLabel(MOVE_HINT_LABEL)}</p>}
 
+      {/* Hidden during a conversation: the talk screen fills the stage, and the Codex opening
+          over it would cover the line the player is reading. */}
+      {!dialogue && (
+        <button className={styles.codexButton} type="button" onClick={() => openCodex()}>
+          {getLabel('codexOpen')}
+        </button>
+      )}
+
       {nearbyNpc && !dialogue && (
         <button
           type="button"
           className={styles.talkPrompt}
-          onClick={() => openDialogue(nearbyNpc.id)}
+          disabled={nearbyTalkLocked}
+          onClick={() => {
+            if (nearbyTalkLocked) return;
+            openDialogue(nearbyNpc.id);
+          }}
         >
           {getLabel('farmTalkPrompt', {
             replacements: { name: resolveCharacter(nearbyNpc.id).displayName },
           })}
-          <span className={styles.talkPromptKey}>{getLabel('farmInteractHint')}</span>
+          <span className={styles.talkPromptKey}>
+            {nearbyTalkLocked
+              ? (nearbyLockedHint ?? getLabel('farmPromptLocked'))
+              : nearbyUnlocked
+                ? getLabel('farmInteractHint')
+                : getLabel('farmPromptLocked')}
+          </span>
         </button>
       )}
 

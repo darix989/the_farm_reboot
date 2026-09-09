@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTutorialStore } from '../../store/tutorialStore';
 import { useDebateLogStore } from '../../store/debateLogStore';
 import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../types/debateEntities';
-import logicalFallaciesData from '../../data/logicalFallacies.json';
+import { ALL_LOGICAL_FALLACIES, isCatalogedFallacyId } from '../../data/fallacyCatalog';
 import TrialLayout from '../trial/TrialLayout';
 import { useTrialRoundWorkflow } from '../hooks/useTrialRoundWorkflow';
 import { useWizardReveal, type WizardRevealSource } from '../hooks/useWizardReveal';
@@ -18,9 +18,11 @@ import type {
 } from '../trial/utils/fallacyGuessTypes';
 import {
   computeMissedPairs,
+  correctIntersectionMultiset,
   guessMultisetFromPicks,
   hasCorrectPairOverlap,
   isSessionTerminal,
+  multisetToPairList,
   multisetsEqual,
   truthMultisetFromSentences,
   guessStateFromAttempts,
@@ -44,11 +46,16 @@ import {
   getSpeakerName,
   getStartingInsightPoints,
   moderatorOpinionPlainText,
-  splitIntoSentences,
+  revealChunks,
   statementText,
 } from '../trial/utils/trialHelpers';
 import { debateParticipantIds, stageOrder } from '../../data/debateCast';
-import { isPlayerOptionUnlocked, resolvedOptionSentences } from '../trial/utils/optionUnlock';
+import {
+  isOptionGated,
+  isPlayerOptionUnlocked,
+  resolvedOptionSentences,
+} from '../trial/utils/optionUnlock';
+import { useConditionContext } from '../hooks/useGameConditions';
 import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
@@ -56,10 +63,11 @@ import CharacterStage from '../farm/CharacterStage';
 import DebateLogRecapChip from '../trial/components/DebateLogRecapChip';
 import getLabel from '../../data/labels';
 import { useGameStore } from '../../store/gameStore';
-import { useProgressStore } from '../../store/progressStore';
+import { useCodexStore } from '../../store/codexStore';
 import { useTrialStageStore } from '../../store/trialStageStore';
 import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import { GameManager } from '../../utils/gameManager';
+import { applyEncounterRewards } from '../../utils/encounterRewards';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
@@ -99,7 +107,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   );
   const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
   const introStartEmittedRef = useRef(false);
-  const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds);
+  const conditions = useConditionContext();
+  const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds, conditions);
 
   // Opens scenario-defined tutorial overlays in response to bus events,
   // including the onboarding overlay wired to `introduction:start`.
@@ -156,7 +165,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     setRevealedLockedOptionIds(new Set());
   }, [wf.currentPlayerRound?.id]);
 
-  const allFallacies = logicalFallaciesData.logicalFallacies as LogicalFallacy[];
+  const allFallacies = ALL_LOGICAL_FALLACIES;
   const fallacyById = useMemo(
     () => new Map(allFallacies.map((fallacy) => [fallacy.id, fallacy])),
     [allFallacies],
@@ -284,6 +293,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     }
 
     let record: GuessRecord;
+    /** (sentence, fallacy) pairs this attempt got right, for the Codex. */
+    let correctPairs: { sentenceId: string; fallacyId: string }[] = [];
 
     if (payload.type === 'no_fallacies') {
       const correct = sentences.every((s) => s.logicalFallacies.length === 0);
@@ -310,6 +321,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       const truth = truthMultisetFromSentences(sentences);
       const guess = guessMultisetFromPicks(picks);
       const missedPairs = computeMissedPairs(sentences, truth, guess, fallacyById);
+      correctPairs = multisetToPairList(correctIntersectionMultiset(truth, guess));
 
       let outcome: 'perfect' | 'partial' | 'none';
       if (multisetsEqual(truth, guess)) {
@@ -358,6 +370,26 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     // `useState` functional updaters run synchronously for this dispatch; the assignment
     // above always runs before we continue (TS does not model that flow).
     const session = sessionAfterCommit!;
+
+    // A correct tag is the one thing the player keeps after the encounter ends: it lands in the
+    // Codex and marks the fallacy known, which can open a gate elsewhere on the farm. Recorded
+    // per correct pair rather than only on a perfect guess — a partially correct attempt still
+    // spotted the pairs it got right, the same rule `pinnedMultisetFromAttempts` uses to keep
+    // them highlighted across retries. Written before the bus emits so a tutorial listening for
+    // `analysis:guess_correct` sees a Codex that already agrees with the screen.
+    if (correctPairs.length > 0) {
+      const { recordSpottedFallacy } = useCodexStore.getState();
+      const { activeDebateId } = useGameStore.getState();
+      for (const pair of correctPairs) {
+        if (!isCatalogedFallacyId(pair.fallacyId)) continue;
+        recordSpottedFallacy({
+          fallacyId: pair.fallacyId,
+          scenarioKey: activeDebateId,
+          statementId: targetId,
+          sentenceId: pair.sentenceId,
+        });
+      }
+    }
 
     const targetKind: AnalysisTargetKind = analysisTarget.kind;
     const roundNumberForEvent =
@@ -487,9 +519,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     const build = (
       slot: string,
       analysisTargetId: string | null,
-      sentences: string[],
+      line: string | Sentence[],
     ): RevealSource | null => {
-      const chunks = sentences.map((text) => text.trim()).filter(Boolean);
+      const chunks = revealChunks(line);
       // An empty line would arm a reveal whose Continue is a permanent no-op.
       if (chunks.length === 0) return null;
       return {
@@ -504,36 +536,24 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         const intro = debate.introduction?.trim();
         if (!intro) return null;
         // The only reveal source authored as prose rather than as `Sentence[]`.
-        return build('intro', null, splitIntoSentences(intro));
+        return build('intro', null, intro);
       }
       case 'npc_speaking': {
         const npc = wf.currentNpcRound;
         if (!npc) return null;
-        return build(
-          'npc',
-          npc.id,
-          npc.statement.sentences.map((sentence) => sentence.text),
-        );
+        return build('npc', npc.id, npc.statement.sentences);
       }
       case 'player_choosing': {
         const prompt = wf.currentPlayerRound?.opponentPrompt;
         // Only the opponent's question is paced; once an option is picked the wizard shows the
         // player's own line back to them.
         if (!prompt || wf.selectedOption) return null;
-        return build(
-          'prompt',
-          prompt.id,
-          prompt.sentences.map((sentence) => sentence.text),
-        );
+        return build('prompt', prompt.id, prompt.sentences);
       }
       case 'npc_responding': {
         const response = wf.activeOpponentResponse;
         if (!response) return null;
-        return build(
-          'response',
-          response.statement.id,
-          response.statement.sentences.map((sentence) => sentence.text),
-        );
+        return build('response', response.statement.id, response.statement.sentences);
       }
       default:
         return null;
@@ -556,7 +576,12 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   });
   // Destructured so the effects below can depend on the stable callbacks by name; the reveal
   // object itself is a fresh literal every render.
-  const { active: revealActive, advance: revealAdvance, complete: revealComplete } = reveal;
+  const {
+    active: revealActive,
+    settled: revealSettled,
+    advance: revealAdvance,
+    complete: revealComplete,
+  } = reveal;
 
   // Analysis lists every sentence of the line as its own card, and `requiresAnalysis` rounds
   // force the player through it. Clicking a typewriter through text they just analysed is
@@ -568,48 +593,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     revealComplete();
   }, [revealAnalysisTargetId, analysisStatementTargetId, revealComplete]);
 
-  /**
-   * Space / Enter mirror Continue, but only while a line is being revealed: this is a reading
-   * pacer, not a way to play the whole debate from the keyboard. The modal checks stop it
-   * stealing a press that belongs to the analysis or intro-summary dialog, and the target check
-   * leaves a focused button's own Space/Enter activation alone — without it, clicking Continue
-   * once and then pressing Space advances twice.
-   */
-  useEffect(() => {
-    if (!revealActive) return;
-    if (analysisTarget || introSummaryOpen || isTutorialOpen) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.repeat) return;
-      if (event.code !== 'Space' && event.code !== 'Enter') return;
-      const target = event.target as HTMLElement | null;
-      if (target?.closest('button, a, input, textarea, select, [contenteditable]')) return;
-      event.preventDefault();
-      revealAdvance();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [revealActive, revealAdvance, analysisTarget, introSummaryOpen, isTutorialOpen]);
-
   // -----------------------------------------------------------------------
   // Footer action state
   // -----------------------------------------------------------------------
   const interactiveFooter = useMemo((): InteractiveFooter => {
-    // While a line is still being paced out, Continue belongs to the reveal: it fills in the
-    // rest of the sentence, or steps to the next one. No `interactive:continue` emit and no
-    // dispatch — nothing about the debate has moved. This has to sit ahead of
-    // `analysisGatePending` below, or a `requiresAnalysis` round deadlocks: the gate disables
-    // Continue, and a disabled Continue can never finish the reveal.
-    if (revealActive) {
-      return {
-        submitLabel: getLabel('continue'),
-        submitDisabled: false,
-        submitIcon: 'reveal',
-        onSubmit: () => {
-          revealAdvance();
-        },
-      };
-    }
-
     let submitLabel = getLabel('continue');
     let submitDisabled = true;
     let submitIcon: InteractiveFooter['submitIcon'] = 'continue';
@@ -695,7 +682,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           // Mark by the scenario *key*, not `debate.id` — those differ
           // (`015_duchess_vs_rue` vs `level1-boss-pond-motion`) and only the key
           // is a `DebateScenarioKey`.
-          useProgressStore.getState().markCompleted(activeDebateId);
+          //
+          // Leaving is also where an encounter pays out what it taught: reaching the round
+          // that explains a fallacy is not the same as sitting through the encounter.
+          applyEncounterRewards(activeDebateId, debate);
           GameManager.switchScene(returnSceneKey);
         };
         break;
@@ -703,7 +693,28 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         submitDisabled = true;
     }
 
-    return { submitLabel, submitDisabled, submitIcon, onSubmit };
+    const phaseFooter: InteractiveFooter = { submitLabel, submitDisabled, submitIcon, onSubmit };
+
+    // While a line is still being paced out, Continue belongs to the reveal: it fills in the
+    // rest of the sentence, or steps to the next one. No `interactive:continue` emit and no
+    // dispatch — nothing about the debate has moved. This has to wrap the phase footer, not
+    // sit behind `analysisGatePending`, or a `requiresAnalysis` round deadlocks: the gate
+    // disables Continue, and a disabled Continue can never finish the reveal.
+    if (revealActive) {
+      return {
+        submitLabel: getLabel('continue'),
+        submitDisabled: false,
+        submitIcon: 'reveal',
+        onSubmit: () => {
+          if (revealAdvance()) return;
+          // Last sentence was already on screen; honor the phase gate (e.g. must-analyze).
+          if (phaseFooter.submitDisabled) return;
+          phaseFooter.onSubmit?.();
+        },
+      };
+    }
+
+    return phaseFooter;
     // eslint-disable-next-line react-hooks/exhaustive-deps -- wf.gamePhase + wf.dispatch cover footer behavior; setIntroSummaryOpen is stable
   }, [
     wf.gamePhase,
@@ -760,7 +771,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         return {
           title: getLabel('wizardDetailIntroduction'),
           body: intro,
-          sentenceCount: splitIntoSentences(intro).length,
+          // The same chunking the reveal uses, so "(n/n)" matches what was actually shown.
+          sentenceCount: revealChunks(intro).length,
         };
       }
       case 'npc_speaking': {
@@ -799,7 +811,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
               : undefined,
           };
         }
-        const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
+        const showResolved =
+          !isOptionGated(opt) || isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
         const resolvedSentences = resolvedOptionSentences(opt, showResolved);
         return {
           title: getLabel('wizardDetailSelectedStatement'),
@@ -813,7 +826,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'player_confirming': {
         const opt = wf.selectedOption;
         if (!opt) return null;
-        const showResolved = !opt.unlockCondition || isPlayerOptionUnlocked(opt, fallacyGuesses);
+        const showResolved =
+          !isOptionGated(opt) || isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
         const resolvedSentences = resolvedOptionSentences(opt, showResolved);
         return {
           title: getLabel('wizardDetailYourChoice'),
@@ -925,19 +939,21 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
 
   const wizardReveal = useMemo(
     (): WizardPanelReveal | null =>
-      revealActive
+      revealActive || revealSettled
         ? {
-            sentence: reveal.sentence,
-            sentenceIndex: reveal.sentenceIndex,
+            spoken: reveal.spoken,
+            typing: reveal.typing,
             sentenceCount: reveal.sentenceCount,
             skipToken: reveal.skipToken,
             onSentenceTyped: reveal.onSentenceTyped,
+            settled: revealSettled,
           }
         : null,
     [
       revealActive,
-      reveal.sentence,
-      reveal.sentenceIndex,
+      revealSettled,
+      reveal.spoken,
+      reveal.typing,
       reveal.sentenceCount,
       reveal.skipToken,
       reveal.onSentenceTyped,
@@ -1062,11 +1078,12 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             onOpenAnalysis={setAnalysisTarget}
             getNpcGuessState={getNpcGuessState}
             mechanics={mechanics}
-            // Disabled (not just gated by tutorial) until the line finishes revealing in the
-            // Dialog — opening analysis on a statement the player hasn't fully read yet would
-            // let them skip the reveal.
+            // Disabled (not just gated by tutorial) until the last sentence of the line has
+            // landed in the Dialog — opening analysis on a statement the player hasn't fully
+            // read yet would let them skip the reveal.
             analyzeTarget={revealActive ? null : currentAnalysisTarget}
             hint={actionsHint}
+            shortcutsEnabled={!analysisTarget && !introSummaryOpen}
           />
         }
       />

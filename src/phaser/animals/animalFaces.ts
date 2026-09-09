@@ -156,9 +156,11 @@ export function faceSheet(
  * The clip to actually play for a pairing, falling back to `talking` before giving up.
  *
  * This is what lets the register ship one animal at a time: `donkey-grey` has no portraits at
- * all (its body clips carry the cast's worst loop seams, which cropping amplifies ~4x), so Rue
- * stays text-only while everyone else has all five. Callers never have to check — the same
- * discipline `AnimalAnimator.playEmotion()` follows when it falls back to `playAlert()`.
+ * all (its body clips carry the cast's worst loop seams, which cropping amplifies ~4x), so
+ * Duchess stays text-only while the owl, raccoon, fox, sheep and wolf have all five. Dot the
+ * dog never debates and has no emotion clips, so her farm-talk portrait is also text-only.
+ * Callers never have to check — the same discipline `AnimalAnimator.playEmotion()` follows
+ * when it falls back to `playAlert()`.
  */
 export function resolvedFaceSheet(
   animalId: AnimalSpriteId | null,

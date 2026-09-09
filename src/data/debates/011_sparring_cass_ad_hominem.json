@@ -173,16 +173,16 @@
           },
           {
             "id": "s-r2-p2",
-            "text": "'Nobody's blaming you, dear. It's simply that hooves and clean water don't mix. It isn't personal.'",
+            "text": "'Nobody's blaming you, dear. It's simply that paws and clean water don't mix. It isn't personal.'",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-p3",
-            "text": "She has just insulted every hoofed animal on this farm and made it sound like weather. Answer.",
+            "text": "She has just insulted every animal on this farm who isn't a bird and made it sound like weather. Answer.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Cass plays Duchess: a gentle line that blames hooves as though it were weather rather than an insult."
+        "summary": "Cass plays Duchess: a gentle line that blames your paws as though it were weather rather than an insult."
       },
       "options": [
         {
@@ -198,7 +198,7 @@
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "This answers a claim about hooves by describing what geese are like. Neither side is talking about the pond any more."
+                  "explanation": "This answers a claim about paws by describing what geese are like. Neither side is talking about the pond any more."
                 }
               ]
             }
@@ -208,7 +208,7 @@
           "id": "r2-opt-b",
           "quality": "ineffective",
           "impact": 0,
-          "reason": "It was rude. But now the debate is about her manners, not about whether hooves are the cause.",
+          "reason": "It was rude. But now the debate is about her manners, not about whether your paws are the cause.",
           "summary": "You call the remark rude and ask for an apology.",
           "sentences": [
             {
@@ -223,11 +223,11 @@
           "quality": "effective",
           "impact": 15,
           "reason": "Spots a soft Ad Hominem inside a polite sentence and converts it into a question that can actually be settled.",
-          "summary": "You name it as a claim about what you are, and trade hoofprints for the bent grate.",
+          "summary": "You name it as a claim about what you are, and trade pawprints for the bent grate.",
           "sentences": [
             {
               "id": "s-r2-opt-c-1",
-              "text": "It sounds gentle, but it's still a claim about what I am instead of what happened. If hooves foul the pond, show me the hoofprints. I'll show you the bent grate.",
+              "text": "It sounds gentle, but it's still a claim about what I am instead of what happened. If my paws foul the pond, show me the pawprints. I'll show you the bent grate.",
               "logicalFallacies": []
             }
           ]
@@ -244,11 +244,11 @@
             "sentences": [
               {
                 "id": "s-resp-r2-a-1",
-                "text": "Now it's geese against donkeys and nobody's fixing anything. She'd let you win that one, and you'd still lose the vote.",
+                "text": "Now it's geese against the rest of us and nobody's fixing anything. She'd let you win that one, and you'd still lose the vote.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Cass: geese against donkeys fixes nothing, and the vote is lost anyway."
+            "summary": "Cass: geese against the rest of us fixes nothing, and the vote is lost anyway."
           }
         },
         {

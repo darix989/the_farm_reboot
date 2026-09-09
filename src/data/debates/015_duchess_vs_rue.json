@@ -1,6 +1,6 @@
 {
   "id": "level1-boss-pond-motion",
-  "introduction": "The Public Farm sits on Sunday, and old Tobias the Tortoise has the motion in front of him: the Old Pond shall be reserved for the Flock, and the hoofed animals shall water at the road trough. Duchess speaks for it, and forty-one birds have already said yes. You are Rue. You have been on this farm six weeks, you have no crowd behind you, and you know why the water is brown.",
+  "introduction": "The Public Farm sits on Sunday, and Tobias the owl has the motion in front of him: the Old Pond shall be reserved for the Flock, and every animal not of the Flock shall water at the road trough. Duchess speaks for it, and forty-one birds have already said yes. You are Rue. You have been on this farm six weeks, you have no crowd behind you, and you know why the water is brown.",
   "introductionSummary": "The Public Farm votes on reserving the Old Pond for the Flock. Duchess has forty-one birds; you have the reason the water is brown.",
   "playerSide": "opposition",
   "characters": {
@@ -39,7 +39,7 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Friends, the motion is a simple one: the Old Pond shall be reserved for the Flock, and our hoofed neighbours shall water at the road trough.",
+            "text": "Friends, the motion is a simple one: the Old Pond shall be reserved for the Flock, and every animal not of the Flock shall water at the road trough.",
             "logicalFallacies": []
           },
           {
@@ -77,15 +77,15 @@
           "quality": "logical_fallacy",
           "impact": -12,
           "reason": "You answered a crowd with a crowd. The floor is now counting animals instead of looking at the water, and the Flock has more animals.",
-          "summary": "You answer her headcount with your own — every hoofed animal, and the ones who work the farm.",
+          "summary": "You answer her headcount with your own — every animal outside the Flock, and the ones who work the farm.",
           "sentences": [
             {
               "id": "s-r2-opt-a-1",
-              "text": "Every hoofed animal on this farm knows the pond is fine. That is a good deal of the farm, and we are the ones who work it.",
+              "text": "Every animal outside the Flock knows the pond is fine. That is most of this farm, and we are the ones who work it.",
               "logicalFallacies": [
                 {
                   "id": "appeal-to-popularity",
-                  "explanation": "This offers the hoofed animals' agreement in place of a reason, which is exactly the move Duchess opened with."
+                  "explanation": "This offers the rest of the farm's agreement in place of a reason, which is exactly the move Duchess opened with."
                 }
               ]
             }
@@ -131,7 +131,7 @@
           "id": "r3-opt-a",
           "quality": "logical_fallacy",
           "impact": -12,
-          "reason": "Attacking Duchess's popularity is still attacking Duchess. The floor now hears a donkey being rude to a goose, not a question about the pond.",
+          "reason": "Attacking Duchess's popularity is still attacking Duchess. The floor now hears a raccoon being rude to a goose, not a question about the pond.",
           "summary": "You suggest the Flock only agrees because Duchess is the prettiest bird on the farm.",
           "sentences": [
             {
@@ -150,7 +150,7 @@
           "id": "r3-opt-b",
           "quality": "ineffective",
           "impact": 0,
-          "reason": "A reasonable procedural question, and Duchess will answer it comfortably. It does not touch whether the hooves are the cause.",
+          "reason": "A reasonable procedural question, and Duchess will answer it comfortably. It does not touch whether the newcomers are the cause.",
           "summary": "You ask whether the Flock actually voted or simply said yes when asked.",
           "sentences": [
             {
@@ -247,7 +247,7 @@
           },
           {
             "id": "s-r4-p2",
-            "text": "Forty-one animals who have lived on this water their whole lives say the hooves are fouling it, and one donkey who arrived six weeks ago says they are not.",
+            "text": "Forty-one animals who have lived on this water their whole lives say the newcomers are fouling it, and one raccoon who arrived six weeks ago says they are not.",
             "logicalFallacies": [
               {
                 "id": "appeal-to-popularity",
@@ -255,7 +255,7 @@
               },
               {
                 "id": "ad-hominem",
-                "explanation": "'One donkey who arrived six weeks ago' is a description of Rue standing in for an answer to Rue."
+                "explanation": "'One raccoon who arrived six weeks ago' is a description of Rue standing in for an answer to Rue."
               }
             ]
           },
@@ -281,7 +281,7 @@
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "This answers a claim about hooves by describing the habits of geese. It is the same trick, pointed the other way."
+                  "explanation": "This answers a claim about newcomers by describing the habits of geese. It is the same trick, pointed the other way."
                 }
               ]
             }
@@ -377,7 +377,7 @@
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "This dismisses Duchess by describing her rather than by addressing the claim that hooves foul the pond."
+                  "explanation": "This dismisses Duchess by describing her rather than by addressing the claim that the newcomers foul the pond."
                 }
               ]
             }
@@ -387,7 +387,7 @@
           "id": "r6-opt-b",
           "quality": "ineffective",
           "impact": 0,
-          "reason": "Defending yourself accepts that you were the subject. The floor will decide whether you are a credible donkey instead of whether the grate is bent.",
+          "reason": "Defending yourself accepts that you were the subject. The floor will decide whether you are a credible raccoon instead of whether the grate is bent.",
           "summary": "You list three farms of water-hauling to establish your standing.",
           "sentences": [
             {
@@ -408,6 +408,7 @@
             "sentenceId": "s-r5-2",
             "fallacyId": "ad-hominem"
           },
+          "unlockConditions": [{ "kind": "dialog_flag", "flagId": "bram-grate-conceded" }],
           "sentences": [
             {
               "id": "s-r6-opt-c-locked",
@@ -443,7 +444,7 @@
           },
           {
             "id": "s-r7-p2",
-            "text": "Forty-one animals are wrong and one donkey is right. Is that what you are asking this farm to believe?",
+            "text": "Forty-one animals are wrong and one raccoon is right. Is that what you are asking this farm to believe?",
             "logicalFallacies": [
               {
                 "id": "appeal-to-popularity",
@@ -452,7 +453,7 @@
             ]
           }
         ],
-        "summary": "Duchess presses you to say outright that forty-one animals are wrong and one donkey is right."
+        "summary": "Duchess presses you to say outright that forty-one animals are wrong and one raccoon is right."
       },
       "options": [
         {
@@ -523,7 +524,7 @@
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "This argues about what the Flock secretly wants rather than about whether hooves foul the pond."
+                  "explanation": "This argues about what the Flock secretly wants rather than about whether the newcomers foul the pond."
                 }
               ]
             }
@@ -641,7 +642,7 @@
           },
           {
             "id": "s-r9-3",
-            "text": "Vote with the Flock, who have always been here — and not, I say this kindly, with a donkey who has been here since the frost.",
+            "text": "Vote with the Flock, who have always been here — and not, I say this kindly, with a raccoon who has been here since the frost.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",

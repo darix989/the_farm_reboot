@@ -189,6 +189,20 @@ export function splitIntoSentences(text: string): string[] {
 }
 
 /**
+ * The reading chunks the wizard reveal paces out, for either shape a line is authored in.
+ *
+ * The one place chunking happens, so every source is split the same way: an authored
+ * `Sentence[]` maps 1:1 (the same unit the analysis modal guesses on — folding it here would
+ * invent a second, competing definition of "one sentence" and unpair the wizard's chunks from
+ * the modal's cards), while prose goes through `splitIntoSentences`. Both are trimmed with
+ * empties dropped: a blank chunk would arm a reveal whose Continue is a permanent no-op.
+ */
+export function revealChunks(source: string | Sentence[]): string[] {
+  const texts = typeof source === 'string' ? splitIntoSentences(source) : source.map((s) => s.text);
+  return texts.map((text) => text.trim()).filter(Boolean);
+}
+
+/**
  * One block of recap copy: the authored `summary` when there is one, the spoken text
  * otherwise. `isSummary` tells the caller whether it may clamp the paragraph — the
  * fallback is full-length prose and must not be cut.
