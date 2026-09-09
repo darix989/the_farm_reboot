@@ -179,13 +179,21 @@ Bram's farm talk offers a lettered **Lessons** menu for any lesson he has alread
 Cass spent eleven seasons on the floor and was never once *answered* — only ever met with
 "well, she would say that, she's a fox." Then her voice went and she stopped turning up.
 
-Six rounds. She sets up her own history (1–2), makes Rue commit the fallacy (3), debriefs
-what he just did (4), does it back to him in Tobias's voice (5, `requiresAnalysis`), and
-names it (6). Round 6 also points at Field Notes after Leave: **Fallacies you know** is the
-name she just gave; **Fallacies you have spotted** is the line they tagged. She does not
-repeat **Next** — Bram already sent them there.
+Seven rounds. She sets up her own history (1–2), makes Rue commit the fallacy (3), debriefs
+what he just did (4), does it back to him in Tobias's voice (5, `requiresAnalysis`), names it
+(6) and sends him off her post (7). Round 2 states the deal plainly — the name comes at the
+end, once he has felt it, because a name you are handed is gone by Sunday — rather than
+teasing a name it will not say. Round 6 also points at Field Notes after Leave: **Fallacies
+you know** is the name she just gave; **Fallacies you have spotted** is the line they tagged.
+She does not repeat **Next** — Bram already sent them there.
 
-**Round 3 is the load-bearing beat: all three options are insults.** Cass asks for the
+The lines the lesson turns on carry inline
+[emphasis](./encounters.md#emphasis-inside-a-spoken-line): the clause about her tail in the
+introduction, *"You did not argue with me. You priced me."* and *"That is the trick."* in
+round 4, the bins remark inside Tobias's line in round 5, and **Ad Hominem**, **Field Notes**
+and the two list names in round 6.
+
+**Round 3 is the load-bearing beat: all three options are personal attacks.** Cass asks for the
 first thing in his head — *about her, pointedly not about the pond* — and every available
 answer is an Ad Hominem, `quality: 'logical_fallacy'`, `impact: 0`. There is no way to be
 polite, and that is the design:

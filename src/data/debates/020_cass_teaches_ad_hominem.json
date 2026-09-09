@@ -1,6 +1,6 @@
 {
   "id": "level1-cass-teaches-ad-hominem",
-  "introduction": "Cass stood on the Public Farm floor for eleven seasons. In eleven seasons, nobody once argued with what she said — they argued with the fact that she is a fox. She knows the name of that, and she has a way of teaching it that you are not going to enjoy.",
+  "introduction": "Cass stood on the Public Farm floor for eleven seasons. In eleven seasons, nobody once argued with what she said — [accent]they argued with the fact that she is a fox[/accent]. She knows the name of that, and she has a way of teaching it that you are not going to enjoy.",
   "introductionSummary": "Eleven seasons on the floor, and every reply Cass ever got was about her being a fox. She means to make you feel that from the other end.",
   "playerSide": "opposition",
   "characters": {
@@ -70,21 +70,21 @@
         "sentences": [
           {
             "id": "s-r2-1",
-            "text": "There is a name for it. It is the oldest one there is, and it is the one they will use on you.",
+            "text": "It has a name. You get the name at the end, once you have felt it.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-2",
-            "text": "You are a raccoon who takes his supper out of a bin. Nobody is going to have to work very hard.",
+            "text": "And you will feel it. You are a raccoon who takes his supper out of a bin — nobody is going to have to work very hard.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-3",
-            "text": "I could hand you the name now. You would nod, and you would have lost it by Sunday. So we are not doing it that way.",
+            "text": "A name you are handed is gone by Sunday. So you are going to do the trick to me first.",
             "logicalFallacies": []
           }
         ],
-        "summary": "She has the name and refuses to simply hand it over, because a word learned that way is gone again by Sunday."
+        "summary": "The name comes at the end. First he has to play the trick on her, because a word handed over is gone again by Sunday."
       }
     },
     {
@@ -251,12 +251,12 @@
           },
           {
             "id": "s-r4-2",
-            "text": "You did not argue with me. You priced me. My tail, my record, my mood — three ways of saying she does not count, and not one of them says why.",
+            "text": "[accent]You did not argue with me. You priced me.[/accent] My tail, my record, my mood — three ways of saying she does not count, and not one of them says why.",
             "logicalFallacies": []
           },
           {
             "id": "s-r4-3",
-            "text": "That is the trick. You have just used it, on purpose, on somebody who asked you to. That is why you are going to remember it.",
+            "text": "[accent]That is the trick.[/accent] You have just used it, on purpose, on somebody who asked you to. That is why you are going to remember it.",
             "logicalFallacies": []
           }
         ],
@@ -283,7 +283,7 @@
           },
           {
             "id": "s-r5-2",
-            "text": "Nobody blames the newcomer. It is simply that an animal who takes his supper out of a bin has a rather different notion of clean from the rest of us.",
+            "text": "Nobody blames the newcomer. It is simply that [accent]an animal who takes his supper out of a bin has a rather different notion of clean from the rest of us[/accent].",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
@@ -324,21 +324,47 @@
           },
           {
             "id": "s-r6-3",
-            "text": "So here is the phrase you keep: what I am, against what happened. When a line is about you instead of about the pond, you have heard it. The name is Ad Hominem.",
+            "text": "So here is the phrase you keep: what I am, against what happened. When a line is about you instead of about the pond, you have heard it. The name is [accent]Ad Hominem[/accent].",
             "logicalFallacies": []
           },
           {
             "id": "s-r6-4",
-            "text": "When you leave, open Field Notes again.",
+            "text": "When you leave, open [accent]Field Notes[/accent] again.",
             "logicalFallacies": []
           },
           {
             "id": "s-r6-5",
-            "text": "Fallacies you know is the names you have been given. Fallacies you have spotted is what you caught just now. They are not the same list.",
+            "text": "[accent]Fallacies you know[/accent] is the names you have been given. [accent]Fallacies you have spotted[/accent] is what you caught just now. They are not the same list.",
             "logicalFallacies": []
           }
         ],
         "summary": "She names it Ad Hominem, hands over the phrase to hold on to, and points at the two Field Notes lists."
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-7",
+      "roundNumber": 7,
+      "type": "crossfire",
+      "speakerId": "cass",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r7-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r7-1",
+            "text": "Right. Off my post, then.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r7-2",
+            "text": "Come back when somebody tries it on you and you want to know what to say next. You will not be waiting long.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "She sends him off her post and tells him to come back the first time somebody tries it on him."
       }
     }
   ],
@@ -358,7 +384,7 @@
               "panel": "wizard"
             },
             "modal": {
-              "size": "large",
+              "size": "small",
               "position": "topLeft"
             }
           }
@@ -376,7 +402,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "She asked to be insulted, so **[accent]all three answers are insults[/accent]**. Pick whichever one you like.\n\n**[muted]There is no right one. That is the lesson.[/muted]**",
+            "message": "She asked to be insulted, so **[accent]all three answers are personal attacks[/accent]**. Pick whichever one you like.\n\n**[muted]There is no right one. That is the lesson.[/muted]**",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "panel",
