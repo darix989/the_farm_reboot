@@ -132,6 +132,8 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     x: 1240,
     y: 760,
     scenarios: [],
+    // One stage per rung of the spine, so the greeter and Field Notes always name the same
+    // animal. Each stage ends on the condition the *next* rung is waiting for.
     talkStages: [
       {
         suffix: '1',
@@ -140,7 +142,10 @@ export const FARM_NPCS: readonly FarmNpc[] = [
       },
       { suffix: '2', until: { kind: 'fallacy_known', fallacyId: 'ad-hominem' } },
       { suffix: '3', until: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' } },
-      { suffix: '4', until: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' } },
+      { suffix: '4', until: { kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' } },
+      { suffix: '5', until: { kind: 'dialog_flag', flagId: 'hetty-grate-heard' } },
+      { suffix: '6', until: { kind: 'dialog_flag', flagId: 'bram-grate-conceded' } },
+      { suffix: '7', until: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' } },
     ],
   },
   {
@@ -155,25 +160,20 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     id: 'cass',
     x: 520,
     y: 860,
-    scenarios: [
-      '020_cass_teaches_ad_hominem',
-      '011_sparring_cass_ad_hominem',
-      '013_lab_cass_dirty_tricks',
-    ],
+    // Names Ad Hominem, then Appeal to Popularity once Hetty has used the first on him.
+    scenarios: ['020_cass_teaches_ad_hominem', '023_cass_teaches_appeal_to_popularity'],
     gateTalk: true,
   },
   {
     id: 'bram',
     x: 1360,
     y: 1250,
-    // Dialog lessons, then gossip, then Insight, then the skirmish. Lesson 2 is
-    // available after Lesson 1 but not required for Cass — skipping it only
-    // keeps round-type labels hidden.
+    // How a round works, then how to open a locked line, then the skirmish that needs it.
+    // He offers them strictly in order, so the lesson always lands before the encounter
+    // that uses it — see `farmDialogueState.ts`.
     scenarios: [
       '030_bram_teaches_dialog',
-      '031_bram_teaches_crossfire',
-      '012_gossip_trough_bram',
-      '022_bram_teaches_insight',
+      '032_bram_teaches_unlocks',
       '014_skirmish_bram_fenceline',
     ],
     gateTalk: true,

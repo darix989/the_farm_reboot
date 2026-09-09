@@ -33,9 +33,13 @@ export interface LevelGoal {
 }
 
 /**
- * Level 1 — "The Pond Motion". Main goals are the character unlock spine
- * (Dot → Bram → Cass → Hetty → Duchess). The optional goal is Bram's skippable
- * crossfire lesson (rung 1.2), which is not required for Cass.
+ * Level 1 — "The Pond Motion". One main goal per rung of the eight-rung ladder, in play
+ * order: Bram → Cass → Hetty → Cass → Hetty → Bram → Bram → Duchess. Each goal opens on
+ * the previous rung's reward, which is also what Dot's `talkStages` key off, so the greeter
+ * and the journal cannot disagree about who is next.
+ *
+ * Level 1 has no optional goals since crossfire was parked out of the ladder, so the Next
+ * tab's Optional section never renders. `currentOptionalGoals` stays for the levels that will.
  */
 export const LEVEL_1_GOALS: readonly LevelGoal[] = [
   {
@@ -74,22 +78,51 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     completeWhen: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' },
   },
   {
+    id: 'talk-cass-popularity',
+    kind: 'main',
+    npcId: 'cass',
+    titleLabel: 'levelGoalCassPopularityTitle',
+    bodyLabel: 'levelGoalCassPopularityBody',
+    availableWhen: [{ kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' }],
+    completeWhen: { kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' },
+  },
+  {
+    id: 'talk-hetty-grate',
+    kind: 'main',
+    npcId: 'hetty',
+    titleLabel: 'levelGoalHettyGrateTitle',
+    bodyLabel: 'levelGoalHettyGrateBody',
+    availableWhen: [{ kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' }],
+    completeWhen: { kind: 'dialog_flag', flagId: 'hetty-grate-heard' },
+  },
+  {
+    // Playable from the moment Ad Hominem has a name — this is only where the journal
+    // points at it, beside the skirmish it exists to prepare.
+    id: 'bram-unlock-options',
+    kind: 'main',
+    npcId: 'bram',
+    titleLabel: 'levelGoalBramUnlocksTitle',
+    bodyLabel: 'levelGoalBramUnlocksBody',
+    availableWhen: [{ kind: 'dialog_flag', flagId: 'hetty-grate-heard' }],
+    completeWhen: { kind: 'dialog_flag', flagId: 'bram-taught-unlocks' },
+  },
+  {
+    id: 'talk-bram-skirmish',
+    kind: 'main',
+    npcId: 'bram',
+    titleLabel: 'levelGoalBramSkirmishTitle',
+    bodyLabel: 'levelGoalBramSkirmishBody',
+    availableWhen: [{ kind: 'dialog_flag', flagId: 'bram-taught-unlocks' }],
+    completeWhen: { kind: 'dialog_flag', flagId: 'bram-grate-conceded' },
+  },
+  {
     id: 'talk-duchess',
     kind: 'main',
     npcId: 'duchess',
     titleLabel: 'levelGoalDuchessTitle',
     bodyLabel: 'levelGoalDuchessBody',
-    availableWhen: [{ kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' }],
+    availableWhen: [{ kind: 'dialog_flag', flagId: 'bram-grate-conceded' }],
     completeWhen: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' },
-  },
-  {
-    id: 'bram-crossfire',
-    kind: 'optional',
-    npcId: 'bram',
-    titleLabel: 'levelGoalBramCrossfireTitle',
-    bodyLabel: 'levelGoalBramCrossfireBody',
-    availableWhen: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
-    completeWhen: { kind: 'dialog_flag', flagId: 'bram-taught-crossfire' },
   },
 ];
 

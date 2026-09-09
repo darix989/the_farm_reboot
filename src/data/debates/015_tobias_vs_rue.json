@@ -23,7 +23,6 @@
     }
   ],
   "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity", "false-dilemma"],
-  "startingInsightPoints": 2,
   "rounds": [
     {
       "kind": "npc",
@@ -408,7 +407,12 @@
             "sentenceId": "s-r5-2",
             "fallacyId": "ad-hominem"
           },
-          "unlockConditions": [{ "kind": "dialog_flag", "flagId": "bram-grate-conceded" }],
+          "unlockConditions": [
+            {
+              "kind": "dialog_flag",
+              "flagId": "bram-grate-conceded"
+            }
+          ],
           "sentences": [
             {
               "id": "s-r6-opt-c-locked",

@@ -123,7 +123,25 @@ export const useCodexStore = create<CodexStore>()(
     }),
     {
       name: 'the-farm-codex',
-      version: 2,
+      version: 3,
+      /**
+       * v3 goes with `progressStore` v5→v6, the trim of Level 1 to eight rungs. Progress alone
+       * is not enough to reset: `unlockedFeatures` lives here, so an old save would keep
+       * `insight_points` and show an Insight counter in a level that no longer teaches it.
+       */
+      migrate: (persisted, fromVersion) => {
+        const saved = (persisted ?? {}) as Record<string, unknown>;
+        if (fromVersion < 3) {
+          return {
+            ...saved,
+            knownFallacies: [],
+            spottedFallacies: [],
+            dialogFlags: [],
+            unlockedFeatures: [],
+          };
+        }
+        return saved;
+      },
       /**
        * Same contract as `progressStore`: a save naming a fallacy, encounter or flag that no
        * longer exists must not break the farm, so anything unrecognised is dropped rather than

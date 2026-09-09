@@ -47,7 +47,7 @@ export const useProgressStore = create<ProgressStore>()(
     }),
     {
       name: 'the-farm-progress',
-      version: 5,
+      version: 6,
       /**
        * Saved data outlives the code that wrote it. A stale entry naming a scenario
        * that no longer exists must not break the farm, so anything unrecognised is
@@ -64,10 +64,15 @@ export const useProgressStore = create<ProgressStore>()(
        * v5 is Bram's mechanics lessons and the feature-unlock on-ramp. The level now starts
        * with Dot then Bram, not Cass, so a part-played save sits between rungs that no
        * longer follow each other.
+       *
+       * v6 trims Level 1 from eleven rungs to eight: five encounters left the ladder, two
+       * arrived, and every animal's offer order changed. Same reasoning again — a part-played
+       * save is sitting in a sequence that no longer exists. Bump `codexStore` alongside this
+       * one; the feature unlocks live over there.
        */
       migrate: (persisted, fromVersion) => {
         const saved = (persisted ?? {}) as Record<string, unknown>;
-        if (fromVersion < 5) {
+        if (fromVersion < 6) {
           return { ...saved, completedScenarios: [], level1Started: false };
         }
         return saved;

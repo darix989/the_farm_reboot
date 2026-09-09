@@ -11,9 +11,14 @@
     {
       "id": "ad-hominem",
       "explanation": "Answering the animal instead of the argument. That Rue goes into drains is a fact about Rue, not a reason to disbelieve what he found in one."
+    },
+    {
+      "id": "appeal-to-popularity",
+      "explanation": "Counting the animals who agree instead of the reasons they have. Forty-one names tell you what the meadow believes, not what is in the water."
     }
   ],
-  "availableLogicalFallacies": ["ad-hominem"],
+  "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
+  "setsDialogFlags": ["hetty-grate-heard"],
   "startingInsightPoints": 0,
   "mechanics": {
     "showModeratorOpinion": false,
@@ -54,9 +59,19 @@
             "id": "s-r1-3",
             "text": "And the pond has been going brown since before the frost, in any case. Long before you turned up, whatever anyone says.",
             "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-4",
+            "text": "And it is settled at the trough in any case. Forty-one of the Meadow-Born have said the pond wants closing, and forty-one animals do not all imagine a thing.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The forty-one are offered in place of a reason. How many animals agree is a different question from what fouled the water."
+              }
+            ]
           }
         ],
-        "summary": "She dismisses whatever he found in the drain on the grounds that only an odd animal would have been in one."
+        "summary": "She throws out what he found on the grounds that only an odd animal goes into drains, then settles the pond with a headcount."
       }
     },
     {

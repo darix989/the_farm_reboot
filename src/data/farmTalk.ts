@@ -50,11 +50,6 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: RUE, textLabel: 'farmDialogCass2b' },
     { speakerId: 'cass', textLabel: 'farmDialogCass2c' },
   ],
-  cass3: [
-    { speakerId: 'cass', textLabel: 'farmDialogCass3a' },
-    { speakerId: RUE, textLabel: 'farmDialogCass3b' },
-    { speakerId: 'cass', textLabel: 'farmDialogCass3c' },
-  ],
   cassDone: [
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneA' },
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneB' },
@@ -79,17 +74,7 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
   bram3: [
     { speakerId: 'bram', textLabel: 'farmDialogBram3a' },
     { speakerId: RUE, textLabel: 'farmDialogBram3b' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram3c' },
-  ],
-  bram4: [
-    { speakerId: 'bram', textLabel: 'farmDialogBram4a' },
-    { speakerId: RUE, textLabel: 'farmDialogBram4b' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram4c', emotion: 'thinking' },
-  ],
-  bram5: [
-    { speakerId: 'bram', textLabel: 'farmDialogBram5a' },
-    { speakerId: RUE, textLabel: 'farmDialogBram5b' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram5c' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram3c', emotion: 'doubtful' },
   ],
   bramDone: [
     { speakerId: 'bram', textLabel: 'farmDialogBramDoneA' },
@@ -150,6 +135,21 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'dot', textLabel: 'farmDialogDot4a' },
     { speakerId: RUE, textLabel: 'farmDialogDot4b' },
     { speakerId: 'dot', textLabel: 'farmDialogDot4c' },
+  ],
+  dot5: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot5a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot5b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot5c' },
+  ],
+  dot6: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot6a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot6b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot6c', emotion: 'thinking' },
+  ],
+  dot7: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot7a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot7b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot7c' },
   ],
   dotDone: [
     { speakerId: 'dot', textLabel: 'farmDialogDotDoneA' },

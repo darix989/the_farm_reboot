@@ -15,10 +15,14 @@ import type { Labels } from './labels';
 export type DialogFlagId =
   | 'dot-welcomed'
   | 'bram-taught-rounds'
-  | 'bram-taught-crossfire'
   | 'cass-named-ad-hominem'
   | 'hetty-ad-hominem-witnessed'
-  | 'bram-grate-conceded';
+  | 'cass-named-appeal-to-popularity'
+  | 'hetty-grate-heard'
+  | 'bram-taught-unlocks'
+  | 'bram-grate-conceded'
+  /** Set only by `031_bram_teaches_crossfire`, which is parked out of the Level 1 ladder. */
+  | 'bram-taught-crossfire';
 
 export interface DialogFlagEntry {
   /** One-line heading, also used as the requirement text on a locked encounter. */
@@ -36,10 +40,6 @@ export const DIALOG_FLAGS: Readonly<Record<DialogFlagId, DialogFlagEntry>> = {
     titleLabel: 'dialogFlagBramTaughtRoundsTitle',
     bodyLabel: 'dialogFlagBramTaughtRoundsBody',
   },
-  'bram-taught-crossfire': {
-    titleLabel: 'dialogFlagBramTaughtCrossfireTitle',
-    bodyLabel: 'dialogFlagBramTaughtCrossfireBody',
-  },
   'cass-named-ad-hominem': {
     titleLabel: 'dialogFlagCassNamedAdHominemTitle',
     bodyLabel: 'dialogFlagCassNamedAdHominemBody',
@@ -48,9 +48,25 @@ export const DIALOG_FLAGS: Readonly<Record<DialogFlagId, DialogFlagEntry>> = {
     titleLabel: 'dialogFlagHettyWitnessedTitle',
     bodyLabel: 'dialogFlagHettyWitnessedBody',
   },
+  'cass-named-appeal-to-popularity': {
+    titleLabel: 'dialogFlagCassNamedPopularityTitle',
+    bodyLabel: 'dialogFlagCassNamedPopularityBody',
+  },
+  'hetty-grate-heard': {
+    titleLabel: 'dialogFlagHettyGrateHeardTitle',
+    bodyLabel: 'dialogFlagHettyGrateHeardBody',
+  },
+  'bram-taught-unlocks': {
+    titleLabel: 'dialogFlagBramTaughtUnlocksTitle',
+    bodyLabel: 'dialogFlagBramTaughtUnlocksBody',
+  },
   'bram-grate-conceded': {
     titleLabel: 'dialogFlagBramGrateTitle',
     bodyLabel: 'dialogFlagBramGrateBody',
+  },
+  'bram-taught-crossfire': {
+    titleLabel: 'dialogFlagBramTaughtCrossfireTitle',
+    bodyLabel: 'dialogFlagBramTaughtCrossfireBody',
   },
 };
 

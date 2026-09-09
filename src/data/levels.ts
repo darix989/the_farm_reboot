@@ -19,6 +19,8 @@ import hettyBarrageJson from './debates/021_hetty_ad_hominem_barrage.json';
 import bramInsightJson from './debates/022_bram_teaches_insight.json';
 import bramDialogJson from './debates/030_bram_teaches_dialog.json';
 import bramCrossfireJson from './debates/031_bram_teaches_crossfire.json';
+import bramUnlocksJson from './debates/032_bram_teaches_unlocks.json';
+import cassPopularityJson from './debates/023_cass_teaches_appeal_to_popularity.json';
 
 /** Keys map to debate JSON files under `src/data/debates/`. */
 export type DebateScenarioKey =
@@ -35,8 +37,10 @@ export type DebateScenarioKey =
   | '020_cass_teaches_ad_hominem'
   | '021_hetty_ad_hominem_barrage'
   | '022_bram_teaches_insight'
+  | '023_cass_teaches_appeal_to_popularity'
   | '030_bram_teaches_dialog'
-  | '031_bram_teaches_crossfire';
+  | '031_bram_teaches_crossfire'
+  | '032_bram_teaches_unlocks';
 
 export interface ScenarioEntry {
   key: DebateScenarioKey;
@@ -61,9 +65,12 @@ export interface ScenarioEntry {
 /**
  * Level 1 — "The Pond Motion". Ordered as a ladder: each rung adds exactly one thing,
  * from Bram teaching how a round works up to the full Public Farm debate. Note that the
- * file numbers are creation order, not ladder order — Bram's dialog lessons (`030_`,
- * `031_`) are rungs 1.1 and 1.2, and his Insight lesson (`022_`) is rung 1.8. See
+ * file numbers are creation order, not ladder order. See
  * `docs/level_01_the_pond_motion.md` for the story and the authored dialog.
+ *
+ * The ladder was cut from eleven rungs to eight: Insight Points and round-type labels are
+ * deferred out of Level 1, and the five encounters that taught or repeated them are parked
+ * in {@link LEGACY_SCENARIOS} — still authored, still playable from the menu, off the farm.
  *
  * Overworld gates live on `requires`. The main menu still lists every rung ungated, which
  * is what makes the ladder testable without replaying the farm.
@@ -74,12 +81,6 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     titleLabel: 'level1BramDialog',
     scenario: bramDialogJson as unknown as DebateScenarioJson,
     requires: [{ kind: 'dialog_flag', flagId: 'dot-welcomed' }],
-  },
-  {
-    key: '031_bram_teaches_crossfire',
-    titleLabel: 'level1BramCrossfire',
-    scenario: bramCrossfireJson as unknown as DebateScenarioJson,
-    requires: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
   },
   {
     key: '020_cass_teaches_ad_hominem',
@@ -94,9 +95,55 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     requires: [{ kind: 'fallacy_known', fallacyId: 'ad-hominem' }],
   },
   {
+    key: '023_cass_teaches_appeal_to_popularity',
+    titleLabel: 'level1CassPopularity',
+    scenario: cassPopularityJson as unknown as DebateScenarioJson,
+    requires: [{ kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' }],
+  },
+  {
     key: '010_gossip_trough_hetty',
     titleLabel: 'level1GossipHetty',
     scenario: gossipHettyJson as unknown as DebateScenarioJson,
+    requires: [{ kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' }],
+  },
+  {
+    // Unlocks as soon as Ad Hominem has a name — Bram offers it the moment you next walk
+    // past the fence. The goal list points at it later, beside the skirmish it prepares.
+    key: '032_bram_teaches_unlocks',
+    titleLabel: 'level1BramUnlocks',
+    scenario: bramUnlocksJson as unknown as DebateScenarioJson,
+    requires: [{ kind: 'fallacy_known', fallacyId: 'ad-hominem' }],
+  },
+  {
+    key: '014_skirmish_bram_fenceline',
+    titleLabel: 'level1SkirmishBram',
+    scenario: skirmishBramJson as unknown as DebateScenarioJson,
+    requires: [
+      { kind: 'dialog_flag', flagId: 'bram-taught-unlocks' },
+      { kind: 'dialog_flag', flagId: 'hetty-grate-heard' },
+    ],
+  },
+  {
+    key: '015_tobias_vs_rue',
+    titleLabel: 'level1BossTobias',
+    scenario: bossTobiasJson as unknown as DebateScenarioJson,
+    requires: [
+      { kind: 'fallacy_known', fallacyId: 'ad-hominem' },
+      { kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' },
+      { kind: 'dialog_flag', flagId: 'bram-grate-conceded' },
+    ],
+  },
+];
+
+/**
+ * Scenarios that are not rungs of the Level 1 ladder but stay playable from the menu:
+ * the pre-ladder encounters, and the five cut when Level 1 was trimmed to eight rungs.
+ */
+export const LEGACY_SCENARIOS: readonly ScenarioEntry[] = [
+  {
+    key: '031_bram_teaches_crossfire',
+    titleLabel: 'level1BramCrossfire',
+    scenario: bramCrossfireJson as unknown as DebateScenarioJson,
   },
   {
     key: '011_sparring_cass_ad_hominem',
@@ -118,24 +165,6 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     titleLabel: 'level1LabCass',
     scenario: labCassJson as unknown as DebateScenarioJson,
   },
-  {
-    key: '014_skirmish_bram_fenceline',
-    titleLabel: 'level1SkirmishBram',
-    scenario: skirmishBramJson as unknown as DebateScenarioJson,
-  },
-  {
-    key: '015_tobias_vs_rue',
-    titleLabel: 'level1BossTobias',
-    scenario: bossTobiasJson as unknown as DebateScenarioJson,
-    requires: [
-      { kind: 'fallacy_known', fallacyId: 'ad-hominem' },
-      { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' },
-    ],
-  },
-];
-
-/** Scenarios that predate the Level 1 ladder; kept playable from the menu. */
-export const LEGACY_SCENARIOS: readonly ScenarioEntry[] = [
   {
     key: '000_tutorial_the_blue_barn',
     titleLabel: 'tutorialBlueBarn',

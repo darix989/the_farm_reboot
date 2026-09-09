@@ -18,16 +18,19 @@ const LABELS = {
   level1Heading: 'Level 1 — The Pond Motion',
   legacyScenariosHeading: 'Other scenarios',
   level1BramDialog: '1.1 · Down at the Fence: One at a Time',
-  level1BramCrossfire: '1.2 · Down at the Fence: Answer Me Now',
-  level1CassTeaches: '1.3 · The Sparring Post: The Name of the Trick',
-  level1HettyBarrage: '1.4 · Gossip at the Trough: All About You',
+  level1CassTeaches: '1.2 · The Sparring Post: The Name of the Trick',
+  level1HettyBarrage: '1.3 · Gossip at the Trough: All About You',
+  level1CassPopularity: '1.4 · The Sparring Post: How Many, Not How',
   level1GossipHetty: '1.5 · Gossip at the Trough: What Hetty Saw',
-  level1SparringCass: '1.6 · The Sparring Post: Answer Me',
-  level1GossipBram: '1.7 · Down at the Fence: Forty-One',
-  level1BramInsight: '1.8 · Down at the Fence: Looking Twice',
-  level1LabCass: "1.9 · The Fox's Lab: Dirty Paws",
-  level1SkirmishBram: '1.10 · Fence-line Skirmish: The Bent Grate',
-  level1BossTobias: '1.11 · The Public Farm: The Pond Motion',
+  level1BramUnlocks: '1.6 · Down at the Fence: The Line You Have to Earn',
+  level1SkirmishBram: '1.7 · Fence-line Skirmish: The Bent Grate',
+  level1BossTobias: '1.8 · The Public Farm: The Pond Motion',
+  // Parked out of the Level 1 ladder, still playable from "Other scenarios".
+  level1BramCrossfire: 'Down at the Fence: Answer Me Now',
+  level1SparringCass: 'The Sparring Post: Answer Me',
+  level1GossipBram: 'Down at the Fence: Forty-One',
+  level1BramInsight: 'Down at the Fence: Looking Twice',
+  level1LabCass: "The Fox's Lab: Dirty Paws",
   animationGallery: 'Animation Gallery',
 
   // --- Animation gallery ---
@@ -284,9 +287,9 @@ const LABELS = {
   tutorialLessonRounds: 'how a round works',
   tutorialLessonRoundsPreview:
     'How a round works. One animal says a thing, the other answers, and that pair is a round. I can walk you through it one piece at a time.',
-  tutorialLessonCrossfire: 'crossfire',
-  tutorialLessonCrossfirePreview:
-    'Crossfire. Some rounds are not speeches: somebody asks and you answer on your feet, and I will make you do both halves.',
+  tutorialLessonUnlocks: 'opening a locked line',
+  tutorialLessonUnlocksPreview:
+    'The locked line. Some of what you could answer with is already yours, and some of it you cannot reach until you have caught the other animal at something. Bram does the trick on himself so that you can.',
   characterStage: 'Participants: {names}',
   /** Shown on the finished-encounter footer; returns to wherever you came from. */
   leaveEncounter: 'Leave',
@@ -317,17 +320,11 @@ const LABELS = {
   farmDialogCass1c:
     'Yes. I am the fox. Get it out of your system, because in about a minute I am going to make you say it properly.',
   farmDialogCass2:
-    'Stand at the post. I am going to say unpleasant things to you and you are going to answer them properly.',
-  farmDialogCass2a: 'Stand at the post.',
-  farmDialogCass2b: 'What are we doing?',
+    'Back at the post. Somebody has been counting at you, and there is a name for that one as well.',
+  farmDialogCass2a: 'Back already. And somebody has been counting at you.',
+  farmDialogCass2b: 'Forty-one of them, she said.',
   farmDialogCass2c:
-    'I am going to say unpleasant things to you, and you are going to answer them properly, and neither of us is going to enjoy it.',
-  farmDialogCass3:
-    'Back again. Good. This time you are the unpleasant one, and you are going to enjoy it. That is the lesson.',
-  farmDialogCass3a: 'Back again. Good.',
-  farmDialogCass3b: 'What is it this time?',
-  farmDialogCass3c:
-    'This time you are the unpleasant one, and you are going to enjoy it, and afterwards you will not like that you did. That is the lesson.',
+    'Forty-one. She said the number and you felt it land, and not one of the forty-one has been down to the water. There is a name for that as well. Stand at the post.',
   farmDialogCassDone:
     'Nothing more from me. Save it for Sunday, and whatever he says, do not let him make it about you.',
   farmDialogCassDoneA: 'Nothing more from me. Save it for Sunday.',
@@ -348,29 +345,17 @@ const LABELS = {
   farmDialogBram1h:
     'I know how it goes wrong, which is the useful half. I could show you how a conversation works here, one piece at a time, before anybody else gets hold of you. You do not have to say yes. I would not blame you.',
   farmDialogBram2:
-    'There is a second thing, if you have a moment. You do not have to. I would not blame you.',
-  farmDialogBram2a: 'There is a second thing, if you have a moment. You do not have to.',
-  farmDialogBram2b: 'What is it?',
+    'There is a second piece, if you have a moment. I have to be unpleasant to you first, and I am sorry about that.',
+  farmDialogBram2a: 'There is a second piece, if you have a moment. You do not have to.',
+  farmDialogBram2b: 'Go on.',
   farmDialogBram2c:
-    'Some rounds are not speeches. I can show you, if you like. Completely optional. I will not be offended. I might be a little offended.',
+    'This one I cannot simply tell you. I have to be unpleasant to you first, on purpose, so that you can catch me at it. I am sorry in advance. I have been dreading it since breakfast.',
   farmDialogBram3:
-    'Rue. A word, quickly, and if anyone asks I was checking the fence. I think you should hear how the meadow is voting.',
-  farmDialogBram3a: 'Rue. A word, quickly. If anyone asks, I was checking the fence.',
-  farmDialogBram3b: 'You are checking the fence.',
+    'No more lessons. I am one of the forty-one, and I would rather you had the argument from me than from Tobias on Sunday.',
+  farmDialogBram3a: 'No more lessons. I think we are past those.',
+  farmDialogBram3b: 'What is this, then?',
   farmDialogBram3c:
-    'I am checking the fence. And I think you should hear how the meadow is voting, before Sunday, from somebody who will say it kindly.',
-  farmDialogBram4:
-    'Come down to the hedge where nobody is looking. I want to show you how I get through a day here.',
-  farmDialogBram4a: 'Come down to the hedge, where nobody is looking.',
-  farmDialogBram4b: 'Why the hedge?',
-  farmDialogBram4c:
-    'Because I want to show you how I get through a day on this farm, and I would rather not be seen teaching a raccoon anything.',
-  farmDialogBram5:
-    'One more before the Public Farm. Ask me whatever you like — I will answer straight, which is more than most will.',
-  farmDialogBram5a: 'One more, before the Public Farm.',
-  farmDialogBram5b: 'Go on, then.',
-  farmDialogBram5c:
-    'Ask me whatever you like. I will answer it straight, which is more than most on this farm will do, and I will regret it afterwards, which is also more than most.',
+    'I am one of the forty-one, Rue. I put my name to the motion. I would rather you had that argument from me, here, where it costs you nothing — than from Tobias on Sunday, where it costs you everything.',
   farmDialogBramDone:
     'I have said a great deal more than I should have. The grate is bent. You did not hear it from me.',
   farmDialogBramDoneA: 'I have said a great deal more than I should have.',
@@ -437,11 +422,28 @@ const LABELS = {
   farmDialogDot3c:
     'At the trough, and she will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her — everyone does, and it has never once helped.',
   farmDialogDot4:
-    'Duchess is at the barn with the motion. That is the floor. Bram is down at the fence if you have not been.',
-  farmDialogDot4a: 'Duchess has the motion at the barn. That is the floor, whenever you want it.',
-  farmDialogDot4b: 'And the fence line?',
+    'Hetty has had her go at you. Back to Cass — she will know what to call the rest of it.',
+  farmDialogDot4a: 'Hetty has had her go at you. I could hear it from the yard.',
+  farmDialogDot4b: 'Some of it was about me.',
   farmDialogDot4c:
-    'Bram, if you have not been. He will pretend he is checking the fence. He is always checking the fence. He has the best-checked fence in the county and nobody has ever thanked him for it.',
+    'Most of it was about how many animals agree with her, which is the half that will do you real harm on Sunday. Back to Cass. She will know what to call it.',
+  farmDialogDot5:
+    'Hetty again, I am afraid. She was not finished, and the part she has not said yet is the useful one.',
+  farmDialogDot5a: 'Hetty again, I am afraid.',
+  farmDialogDot5b: 'She talked for a very long time already.',
+  farmDialogDot5c:
+    'She was not finished. She never is. And the one true thing she has to give you is somewhere near the end of it, so you will have to sit through the rest of it to get there.',
+  farmDialogDot6:
+    'Bram, at the fence. He has one more piece for you, and then he will argue the motion at you properly.',
+  farmDialogDot6a: 'Bram, at the fence. Twice, I should think.',
+  farmDialogDot6b: 'Twice?',
+  farmDialogDot6c:
+    'He has one more piece to show you, and then he will argue the motion at you for real. He put his name to it, you know. He will hate every minute of it and he will do it anyway, which is the most wolf thing about him.',
+  farmDialogDot7: 'Duchess has the motion at the barn. That is the floor, whenever you want it.',
+  farmDialogDot7a: 'Duchess has the motion at the barn. That is the floor, whenever you want it.',
+  farmDialogDot7b: 'And that is everyone?',
+  farmDialogDot7c:
+    'That is everyone I can point you at. The rest of it is Sunday, and Sunday is not mine. Mind the drain on your way.',
   farmDialogDotDone: 'I have pointed you at everyone I can. The rest is the floor.',
   farmDialogDotDoneA: 'I have pointed you at everyone I can point you at.',
   farmDialogDotDoneB:
@@ -483,11 +485,20 @@ const LABELS = {
   levelGoalHettyTitle: 'Hetty, at the trough',
   levelGoalHettyBody:
     'She will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her.',
+  levelGoalCassPopularityTitle: 'Cass again, at the west post',
+  levelGoalCassPopularityBody:
+    'Hetty counted heads at you and called it a reason. Cass knows the name of that one too, and she will make you say it before she hands it over.',
+  levelGoalHettyGrateTitle: 'Hetty again, at the trough',
+  levelGoalHettyGrateBody:
+    'She has more news, and buried in the middle of it is the only thing on this farm anybody has actually seen with their own eyes.',
+  levelGoalBramUnlocksTitle: "Bram's second lesson, at the fence",
+  levelGoalBramUnlocksBody:
+    'Some of what you could say back is locked until you catch the other animal at something. He will do something unkind on purpose so that you can.',
+  levelGoalBramSkirmishTitle: 'Bram, for a real one',
+  levelGoalBramSkirmishBody:
+    'No more lessons. He is one of Tobias’s forty-one, and he will argue the motion at you properly — bring what you have.',
   levelGoalDuchessTitle: 'Duchess, at the barn',
   levelGoalDuchessBody: 'She has the motion. That is the floor, whenever you want it.',
-  levelGoalBramCrossfireTitle: "Bram's second lesson, at the fence",
-  levelGoalBramCrossfireBody:
-    'There is a second thing, if you have a moment. You do not have to. Some rounds are not speeches.',
   codexKnownProgress: '{known} of {total} known',
   codexKnownEmpty:
     'Nobody has taught you a fallacy yet. Talk to the animals — one of them knows the name of the trick being played on you.',
@@ -516,6 +527,15 @@ const LABELS = {
   dialogFlagHettyWitnessedTitle: 'hear Hetty out at the trough',
   dialogFlagHettyWitnessedBody:
     'Hetty went the whole way round the trough and never once reached the water: the bins, the straw in your fur, the six weeks. She said every word of it to your face, meant no harm by any of it, and asked you to agree — which is exactly what makes it work.',
+  dialogFlagCassNamedPopularityTitle: 'let Cass name the second trick for you',
+  dialogFlagCassNamedPopularityBody:
+    'Forty-one of the Meadow-Born have put their names to the motion, and not one animal will say what any of the forty-one went and looked at. Cass calls that Appeal to Popularity, and left you a phrase to hold on to: how many, against how do you know.',
+  dialogFlagHettyGrateHeardTitle: 'let Hetty finish at the trough',
+  dialogFlagHettyGrateHeardBody:
+    'Somewhere between a headcount and a jab about drains, Hetty mentioned that she has seen the outflow grate bent with her own eyes, and that the mud settles behind it. She moved straight on as though it were weather.',
+  dialogFlagBramTaughtUnlocksTitle: 'learn how to open a locked line from Bram at the fence',
+  dialogFlagBramTaughtUnlocksBody:
+    'Bram was unpleasant to you on purpose so that you could catch him at it, and the answer that had been greyed out all along opened up. Spotting and speaking are the same game; that is where they meet.',
   dialogFlagBramGrateTitle: 'get Bram to talk about the grate',
   dialogFlagBramGrateBody:
     'At the fence line, before you had asked him anything: the outflow grate has been bent since before the frost. Bram is one of Tobias’s own forty-one, which makes him the best witness on this farm and the one it costs him most to be.',
