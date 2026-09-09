@@ -168,7 +168,7 @@ coexist: the menu's direct-launch buttons return to the menu, the farm returns t
 The tutorial's `onFinish: 'exit'` reads the same field instead of hard-coding `'MainMenu'`.
 
 > Mark completion with the store's **`activeDebateId`**, not `debate.id`. They are different
-> values — `015_duchess_vs_rue` vs `level1-boss-pond-motion` — and only the former is a
+> values — `015_tobias_vs_rue` vs `level1-boss-pond-motion` — and only the former is a
 > `DebateScenarioKey`.
 
 **Why debates `scene.start` and not `sleep`/`pause`:** the Phaser canvas is full-stage at
@@ -192,8 +192,8 @@ camera), not the old Phaser-template blue.
 
 `progressStore` is the repo's first use of zustand's `persist` middleware. It exists because
 an animal can own more than one encounter, so it has to know which one to offer next — Cass
-owns three, Hetty and Bram two each, Tobias the boss. Duchess and Dot have no encounters;
-their farm talk advances on `talkStages` (Duchess until the boss is done; Dot through the
+owns three, Hetty two, Bram three, Duchess the boss. Tobias and Dot have no encounters;
+their farm talk advances on `talkStages` (Tobias until the boss is done; Dot through the
 intro, then Hetty, then the debate). It is load-bearing, not a nicety.
 
 `farmDialogueState.ts` derives the conversation from progress: an animal offers the first
@@ -224,7 +224,7 @@ until you can name Ad Hominem). `Farm.ts` `tryInteract` and the overworld prompt
 Leaving a finished encounter goes through `applyEncounterRewards`, which marks it complete
 and grants `teachesFallacies` / `setsDialogFlags` in one write. Mark completion with the
 store's **`activeDebateId`**, not `debate.id` — they are different values
-(`015_duchess_vs_rue` vs `level1-boss-pond-motion`) and only the former is a
+(`015_tobias_vs_rue` vs `level1-boss-pond-motion`) and only the former is a
 `DebateScenarioKey`.
 
 The `merge` handler drops any saved key not in `DEBATES`, so a stale `localStorage` value

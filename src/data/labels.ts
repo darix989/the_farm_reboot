@@ -17,12 +17,13 @@ const LABELS = {
   legacyScenariosHeading: 'Other scenarios',
   level1CassTeaches: '1.1 · The Sparring Post: The Name of the Trick',
   level1HettyBarrage: '1.2 · Gossip at the Trough: All About You',
-  level1GossipHetty: '1.3 · Gossip at the Trough: What Hetty Heard',
-  level1SparringCass: '1.4 · The Sparring Post',
-  level1GossipBram: '1.5 · Gossip at the Trough: Everyone Says',
-  level1LabCass: '1.6 · The Cranky Rooster Lab: Dirty Feathers',
-  level1SkirmishBram: '1.7 · Fence-line Skirmish: The Bent Grate',
-  level1BossDuchess: '1.8 · The Public Farm: The Pond Motion',
+  level1GossipHetty: '1.3 · Gossip at the Trough: What Hetty Saw',
+  level1SparringCass: '1.4 · The Sparring Post: Answer Me',
+  level1GossipBram: '1.5 · Down at the Fence: Forty-One',
+  level1BramInsight: '1.6 · Down at the Fence: Looking Twice',
+  level1LabCass: "1.7 · The Fox's Lab: Dirty Paws",
+  level1SkirmishBram: '1.8 · Fence-line Skirmish: The Bent Grate',
+  level1BossTobias: '1.9 · The Public Farm: The Pond Motion',
   animationGallery: 'Animation Gallery',
 
   // --- Animation gallery ---
@@ -272,90 +273,114 @@ const LABELS = {
   // so a missing table row is never silent. Authored conversations live in
   // `farmTalk.ts` and point at the `a`/`b`/`c` keys.
   farmDialogHetty1:
-    'Rue. Come and stand here a moment. I have been thinking about the pond, and I should like to say it to you.',
-  farmDialogHetty1a: 'Rue. Come and stand here a moment.',
-  farmDialogHetty1b: 'I am here.',
-  farmDialogHetty1c: 'I have been thinking about the pond, and I should like to say it to you.',
+    'Rue! Stand there a moment. I have been thinking about you all morning and I mean to say every word of it to your face, because I am not a gossip.',
+  farmDialogHetty1a: 'Rue! Stand there a moment, I have been thinking about you all morning.',
+  farmDialogHetty1b: 'That sounds bad.',
+  farmDialogHetty1c:
+    'It is not bad at all, it is friendly. And I mean to say every word of it to your face, because I am not a gossip.',
   farmDialogHetty2:
-    'Back again. I have other news — not about you this time. Well. Perhaps it is. Stand there a moment.',
-  farmDialogHetty2a:
-    'Back again. I have other news — not about you this time. Well. Perhaps it is.',
-  farmDialogHetty2b: 'Go on.',
-  farmDialogHetty2c: 'Stand there a moment.',
+    'Back again. I have more news, and this time it is not about you. Well. Some of it is. Stand there.',
+  farmDialogHetty2a: 'Back again! I have more news, and this time it is not about you.',
+  farmDialogHetty2b: 'Some of it is, though.',
+  farmDialogHetty2c: 'Some of it is, yes. Stand there, it will not take a moment.',
   farmDialogHettyDone:
-    'I have told you everything I know, and a little that I do not. The owl will want you on the floor.',
+    'I have told you everything I know and a little that I do not. The owl will want you on the floor.',
   farmDialogHettyDoneA: 'I have told you everything I know, and a little that I do not.',
-  farmDialogHettyDoneB: 'The owl will want you on the floor.',
+  farmDialogHettyDoneB:
+    'The owl will want you on the floor. She never says so, of course. She never says anything.',
   farmDialogCass1:
-    'You. Come here. Someone has been using a trick on this farm for nine seasons, and you do not even know it has a name. That is about to change.',
+    'You. Come here. Something has been done to me on this farm for eleven seasons and you do not even know it has a name. That changes this morning.',
   farmDialogCass1a: 'You. Come here.',
-  farmDialogCass1b: 'I am here.',
+  farmDialogCass1b: 'You are the fox.',
   farmDialogCass1c:
-    'Someone has been using a trick on this farm for nine seasons, and you do not even know it has a name. That is about to change.',
+    'Yes. I am the fox. Get it out of your system, because in about a minute I am going to make you say it properly.',
   farmDialogCass2:
-    'You. Stand at the post. I am going to say unpleasant things to you and you are going to answer them properly.',
-  farmDialogCass2a: 'You. Stand at the post.',
-  farmDialogCass2b: 'I can stand.',
+    'Stand at the post. I am going to say unpleasant things to you and you are going to answer them properly.',
+  farmDialogCass2a: 'Stand at the post.',
+  farmDialogCass2b: 'What are we doing?',
   farmDialogCass2c:
-    'I am going to say unpleasant things to you and you are going to answer them properly.',
+    'I am going to say unpleasant things to you, and you are going to answer them properly, and neither of us is going to enjoy it.',
   farmDialogCass3:
-    'Back again. Good. This time you are going to be the unpleasant one, and you are going to enjoy it. That is the lesson.',
+    'Back again. Good. This time you are the unpleasant one, and you are going to enjoy it. That is the lesson.',
   farmDialogCass3a: 'Back again. Good.',
-  farmDialogCass3b: 'I came back.',
+  farmDialogCass3b: 'What is it this time?',
   farmDialogCass3c:
-    'This time you are going to be the unpleasant one, and you are going to enjoy it. That is the lesson.',
+    'This time you are the unpleasant one, and you are going to enjoy it, and afterwards you will not like that you did. That is the lesson.',
   farmDialogCassDone:
-    'Nothing more from me. Save it for Sunday, and do not let her make it about you.',
-  farmDialogCassDoneA: 'Nothing more from me.',
-  farmDialogCassDoneB: 'Save it for Sunday, and do not let her make it about you.',
+    'Nothing more from me. Save it for Sunday, and whatever he says, do not let him make it about you.',
+  farmDialogCassDoneA: 'Nothing more from me. Save it for Sunday.',
+  farmDialogCassDoneB:
+    'And whatever he says about your supper — and he will — do not let him make it about you.',
   farmDialogBram1:
-    'Rue, is it? A courtesy, before Sunday. You should hear how the Flock is voting.',
-  farmDialogBram1a: 'Rue, is it?',
-  farmDialogBram1b: 'I am.',
-  farmDialogBram1c: 'A courtesy, before Sunday. You should hear how the Flock is voting.',
+    'Rue. A word, quickly, and if anyone asks I was checking the fence. I think you should hear how the meadow is voting.',
+  farmDialogBram1a: 'Rue. A word, quickly. If anyone asks, I was checking the fence.',
+  farmDialogBram1b: 'You are checking the fence.',
+  farmDialogBram1c:
+    'I am checking the fence. And I think you should hear how the meadow is voting, before Sunday, from somebody who will say it kindly.',
   farmDialogBram2:
-    'One more word before the Public Farm. Ask me whatever you like — I will answer straight, which is more than most.',
-  farmDialogBram2a: 'One more word before the Public Farm.',
-  farmDialogBram2b: 'Go on.',
-  farmDialogBram2c: 'Ask me whatever you like — I will answer straight, which is more than most.',
+    'Come down to the hedge where nobody is looking. I want to show you how I get through a day here.',
+  farmDialogBram2a: 'Come down to the hedge, where nobody is looking.',
+  farmDialogBram2b: 'Why the hedge?',
+  farmDialogBram2c:
+    'Because I want to show you how I get through a day on this farm, and I would rather not be seen teaching a raccoon anything.',
+  farmDialogBram3:
+    'One more before the Public Farm. Ask me whatever you like — I will answer straight, which is more than most will.',
+  farmDialogBram3a: 'One more, before the Public Farm.',
+  farmDialogBram3b: 'Go on, then.',
+  farmDialogBram3c:
+    'Ask me whatever you like. I will answer it straight, which is more than most on this farm will do, and I will regret it afterwards, which is also more than most.',
   farmDialogBramDone:
-    'I have said more than I should have. The grate is bent. You did not hear it from me.',
-  farmDialogBramDoneA: 'I have said more than I should have.',
-  farmDialogBramDoneB: 'The grate is bent. You did not hear it from me.',
-  farmDialogDuchess1: 'Ah. The newcomer. Tobias has the floor. Speak to him when you are ready.',
-  farmDialogDuchess1a: 'Ah. The newcomer.',
-  farmDialogDuchess1b: 'Rue. I live here now.',
-  farmDialogDuchess1c: 'Tobias has the floor. Speak to him when you are ready.',
-  farmDialogDuchessDone: 'The pond is settled, dear. For now.',
+    'I have said a great deal more than I should have. The grate is bent. You did not hear it from me.',
+  farmDialogBramDoneA: 'I have said a great deal more than I should have.',
+  farmDialogBramDoneB:
+    'The grate is bent. You did not hear that from me. You may say on Sunday that you heard it from me.',
+  farmDialogDuchess1:
+    'The motion is with me and it is heard on Sunday. When you are ready to stand on the floor, say so, and I will call it.',
+  farmDialogDuchess1a: 'The motion is with me. It is heard on Sunday.',
+  farmDialogDuchess1b: 'Whose side are you on?',
+  farmDialogDuchess1c: 'No.',
+  farmDialogDuchess1d: 'That was not a yes-or-no question.',
+  farmDialogDuchess1e:
+    'It was not, and I have answered it as far as I intend to. Say the word and I will call the floor.',
+  farmDialogDuchessDone:
+    'The floor is finished for now. I moderate. I do not take sides, and I did not take one.',
+  farmDialogDuchessDoneA: 'The floor is finished, for now.',
+  farmDialogDuchessDoneB:
+    'I moderate. I do not take sides, and I did not take one. It is going to be a fine week, I imagine. I would not know.',
   farmDialogTobias1:
-    'Rue. I have the motion. Cass at the post first, if you have not been. Then Hetty at the trough. Then come back to me, and we will hear it on the floor.',
-  farmDialogTobias1a: 'Rue. I have the motion.',
-  farmDialogTobias1b: 'I live here now.',
+    'Ah. The newcomer. No hard feelings about Sunday, I hope — Duchess has the motion, and it is her floor. Speak to her when you are ready.',
+  farmDialogTobias1a: 'Ah. The newcomer. Roo, is it?',
+  farmDialogTobias1b: 'Rue. I live here now.',
   farmDialogTobias1c:
-    'Cass at the post first, if you have not been. Then Hetty at the trough. Then come back to me, and we will hear it on the floor.',
-  farmDialogTobiasDone: 'That is the floor finished, for now. I moderate; I do not take sides.',
-  farmDialogTobiasDoneA: 'That is the floor finished, for now.',
-  farmDialogTobiasDoneB: 'I moderate; I do not take sides.',
+    'Of course you do, and nobody says otherwise, and I hope there are no hard feelings about Sunday. Duchess has the motion. Speak to her when you are ready.',
+  farmDialogTobiasDone: 'The pond is settled, then. For this year.',
+  farmDialogTobiasDoneA: 'The pond is settled, then. For this year.',
+  farmDialogTobiasDoneB:
+    'I will say this once and not again: I have pulled a cart past that drain for eleven years and never once looked into it. Good morning, Rue.',
   farmDialogDot1:
-    'You are the new raccoon. Rue, is it? Welcome to Green Meadows. Duchess has put a motion on the pond — Sunday, in front of Tobias the owl. Cass first, at the west post. Then Hetty at the trough. Then the owl, at the barn, for the Public Farm.',
-  farmDialogDot1a: 'You are the new raccoon. Rue, is it?',
-  farmDialogDot1b: 'I am.',
+    'You are the new raccoon. Rue, is it? Welcome to Green Meadows. Tobias has put a motion on the pond — Sunday, in front of Duchess. Cass first, at the west post. Then Hetty at the trough. Then the owl at the barn.',
+  farmDialogDot1a: 'You are the new raccoon! Rue, is it? Or Roo. Somebody said Roo.',
+  farmDialogDot1b: 'Rue.',
   farmDialogDot1c:
-    'Welcome to Green Meadows. Duchess has put a motion on the pond — Sunday, in front of Tobias the owl. You will want to know how this farm talks before you stand there.',
+    'Rue. Welcome to Green Meadows. Tobias has put a motion on the pond and it is heard Sunday in front of Duchess, and you will want to know how this farm argues before you go and stand in front of it.',
   farmDialogDot1d: 'Where do I start?',
   farmDialogDot1e:
-    'Cass first. The rooster at the west post. He has something you need to hear before Hetty will even speak to you. Then Hetty at the trough. Then come back to the barn, to the owl, for the Public Farm.',
-  farmDialogDot2: 'Cass has done his piece. Hetty is at the trough. She will talk to you now.',
-  farmDialogDot2a: 'Cass has done his piece.',
+    'Cass. The fox, at the west post. She has something you need before Hetty will so much as look at you. Then Hetty at the trough. Then the barn, for the floor. Do not let anyone tell you about the fox first — let her do it.',
+  farmDialogDot2: 'Cass has done her piece. Hetty is at the trough, and she will talk to you now.',
+  farmDialogDot2a: 'Cass has done her piece. I heard it from here, some of it.',
   farmDialogDot2b: 'And Hetty?',
-  farmDialogDot2c: 'She is at the trough. She will talk to you now.',
-  farmDialogDot3: 'Tobias is waiting at the barn. That is the debate. The owl has the floor.',
-  farmDialogDot3a: 'Tobias is waiting at the barn.',
-  farmDialogDot3b: 'The owl.',
-  farmDialogDot3c: 'That is the debate. He has the floor.',
+  farmDialogDot2c:
+    'At the trough, and she will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her — everyone does, and it has never once helped.',
+  farmDialogDot3:
+    'Duchess is at the barn with the motion. That is the floor. Bram is down at the fence if you have not been.',
+  farmDialogDot3a: 'Duchess has the motion at the barn. That is the floor, whenever you want it.',
+  farmDialogDot3b: 'And the fence line?',
+  farmDialogDot3c:
+    'Bram, if you have not been. He will pretend he is checking the fence. He is always checking the fence. He has the best-checked fence in the county and nobody has ever thanked him for it.',
   farmDialogDotDone: 'I have pointed you at everyone I can. The rest is the floor.',
-  farmDialogDotDoneA: 'I have pointed you at everyone I can.',
-  farmDialogDotDoneB: 'The rest is the floor.',
+  farmDialogDotDoneA: 'I have pointed you at everyone I can point you at.',
+  farmDialogDotDoneB:
+    'The rest is the floor, and the floor is not mine. Good luck. Mind the drain.',
 
   // --- Encounter gates (src/utils/gameConditions.ts) ---
   // Requirement phrases say what to do rather than what is missing, so a list of them reads
@@ -390,13 +415,13 @@ const LABELS = {
   // reads as an instruction ("hear Hetty out at the trough"), not as a headline.
   dialogFlagCassNamedAdHominemTitle: 'let Cass name the trick for you',
   dialogFlagCassNamedAdHominemBody:
-    'Cass has been the target of it for nine seasons, so he knows it by name: Ad Hominem, arguing the animal instead of the argument. He used it on you on purpose, so that you would learn to hear it coming.',
+    'Eleven seasons on the floor and nobody ever argued with Cass — they argued with her tail. So she knows it by name: Ad Hominem, answering the animal instead of the argument. She made you use it on her first, so that you would recognise the shape of it from the inside.',
   dialogFlagHettyWitnessedTitle: 'hear Hetty out at the trough',
   dialogFlagHettyWitnessedBody:
-    'Hetty went the whole way round the trough and never once mentioned the water: the mud cart, the straw, how long you have been here. She said it to your face and meant no harm by any of it, which is exactly what makes it work.',
+    'Hetty went the whole way round the trough and never once reached the water: the bins, the straw in your fur, the six weeks. She said every word of it to your face, meant no harm by any of it, and asked you to agree — which is exactly what makes it work.',
   dialogFlagBramGrateTitle: 'get Bram to talk about the grate',
   dialogFlagBramGrateBody:
-    'At the fence line, before you had asked him anything: the outflow grate has been bent since before the frost. He is the Flock’s own second, which makes him the best witness you could possibly have.',
+    'At the fence line, before you had asked him anything: the outflow grate has been bent since before the frost. Bram is one of Tobias’s own forty-one, which makes him the best witness on this farm and the one it costs him most to be.',
 
   // --- Phaser placeholder scenes ---
   gameOver: 'Game Over',

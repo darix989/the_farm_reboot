@@ -1,7 +1,7 @@
 {
   "id": "level1-gossip-hetty",
-  "introduction": "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is — yours. She will say it to your face and mean no harm by it.",
-  "introductionSummary": "Hetty has a theory about the pond, and she is going to tell it to you.",
+  "introduction": "Hetty has more news. Hetty always has more news. This lot is about the pond, and somewhere in the middle of it she is going to hand you the most useful thing anybody on this farm has said to you — without noticing, and without stopping.",
+  "introductionSummary": "Hetty has a theory about the pond, and buried in it is something she has seen with her own eyes and thinks is not worth mentioning.",
   "playerSide": "opposition",
   "characters": {
     "hetty": "Hetty",
@@ -10,7 +10,7 @@
   "logicalFallacies": [
     {
       "id": "ad-hominem",
-      "explanation": "Attacking the animal instead of the argument. Whether Rue arrived in a mud cart has nothing to do with whether the pond is muddy."
+      "explanation": "Answering the animal instead of the argument. That Rue goes into drains is a fact about Rue, not a reason to disbelieve what he found in one."
     }
   ],
   "availableLogicalFallacies": ["ad-hominem"],
@@ -37,26 +37,26 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Morning! You've been on about the pond drain again.",
+            "text": "Morning! You have been down at the outflow again. Somebody saw you with your whole arm in the drain, up to the shoulder.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
-            "text": "I wouldn't put much stock in it, mind. You arrived in a mud cart with straw in your ears; you're hardly the sort who'd know about water.",
+            "text": "I would not put much stock in whatever you found down there, mind. An animal who goes into drains for pleasure has a very odd notion of what counts as evidence.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
-                "explanation": "The claim is about the pond. Hetty answers it by describing how Rue turned up and what he looks like, which tells us nothing about the water."
+                "explanation": "Where Rue puts his arm is a fact about Rue. It is being used to throw away what he found, which is a separate thing entirely."
               }
             ]
           },
           {
             "id": "s-r1-3",
-            "text": "Anyway, the pond's been going brown since before the frost.",
+            "text": "And the pond has been going brown since before the frost, in any case. Long before you turned up, whatever anyone says.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Hetty dismisses your drain complaint by how you arrived, not by the argument."
+        "summary": "She dismisses whatever he found in the drain on the grounds that only an odd animal would have been in one."
       }
     },
     {
@@ -74,21 +74,21 @@
         "sentences": [
           {
             "id": "s-r2-1",
-            "text": "The grate at the outflow is bent, you know. I saw it myself, chasing a beetle.",
+            "text": "The grate at the outflow is bent, you know. I saw it myself, going after a moth.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-2",
-            "text": "Water backs up behind it, so the mud goes into the pond instead of out of it.",
+            "text": "The water backs up behind it, so the mud settles in the pond instead of going out with the stream.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-3",
-            "text": "Someone ought to tell the Flock. They don't much listen to hens.",
+            "text": "Somebody ought to tell Tobias. He will not hear it from me. He says sheep agree with everything, which is very unfair, and I said so, and everyone agreed with me.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Hetty has seen the real cause — a bent outflow grate — and assumes no one will listen to a hen."
+        "summary": "Then she describes the bent outflow grate and what it does to the water, and moves straight on as though it were weather."
       }
     }
   ],

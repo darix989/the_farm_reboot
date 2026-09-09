@@ -1,7 +1,7 @@
 {
   "id": "level1-cass-teaches-ad-hominem",
-  "introduction": "Cass ran the Public Farm floor for nine seasons, and every season someone answered him by talking about his voice or his comb instead of his point. He has a name for that trick. He also has a way of teaching it, and you will not like the way.",
-  "introductionSummary": "Cass names a trick he has been on the receiving end of for nine seasons, then uses it on you so you will hear it coming.",
+  "introduction": "Cass stood on the Public Farm floor for eleven seasons. In eleven seasons, nobody once argued with what she said — they argued with the fact that she is a fox. She knows the name of that, and she has a way of teaching it that you are not going to enjoy.",
+  "introductionSummary": "Eleven seasons on the floor, and every reply Cass ever got was about her being a fox. She means to make you feel that from the other end.",
   "playerSide": "opposition",
   "characters": {
     "cass": "Cass",
@@ -10,7 +10,7 @@
   "logicalFallacies": [
     {
       "id": "ad-hominem",
-      "explanation": "Attacking the animal instead of the argument. Whether Rue is a raccoon who arrived in a mud cart has nothing to do with the water."
+      "explanation": "Answering the animal instead of the argument. What Cass is, or what Rue eats, settles nothing about the water."
     }
   ],
   "availableLogicalFallacies": ["ad-hominem"],
@@ -39,21 +39,21 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Nine seasons I ran the Public Farm floor. Nine.",
+            "text": "Eleven seasons I stood on that floor. Eleven.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
-            "text": "Every season, someone answered me by talking about my voice, or my comb, or how I look when I moult.",
+            "text": "In eleven seasons not one animal ever argued with me. They argued with my tail.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-3",
-            "text": "Never about the motion. Never once about what I had actually said.",
+            "text": "\"Well. She would say that. She is a fox.\" Every season. Then my voice went, and I stopped turning up, and I expect they thought that settled it too.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Cass has spent nine seasons being answered by remarks about his voice and his comb instead of his point."
+        "summary": "Eleven seasons on the floor, and every reply came back to her tail rather than to anything she had said."
       }
     },
     {
@@ -70,21 +70,21 @@
         "sentences": [
           {
             "id": "s-r2-1",
-            "text": "There is a name for that trick.",
+            "text": "There is a name for it. It is the oldest one there is, and it is the one they will use on you.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-2",
-            "text": "A common misuse of speaking — so common the animals doing it rarely notice they are doing it.",
+            "text": "You are a raccoon who takes his supper out of a bin. Nobody is going to have to work very hard.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-3",
-            "text": "I learned it the long way, by being the thing they pointed at.",
+            "text": "I could hand you the name now. You would nod, and you would have lost it by Sunday. So we are not doing it that way.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Cass says the trick has a name, and that he learned it by being its target."
+        "summary": "She has the name and refuses to simply hand it over, because a word learned that way is gone again by Sunday."
       }
     },
     {
@@ -100,37 +100,38 @@
         "sentences": [
           {
             "id": "s-r3-p1",
-            "text": "I can give you the name and sit down.",
+            "text": "Look at me and say the first thing that comes into your head.",
             "logicalFallacies": []
           },
           {
             "id": "s-r3-p2",
-            "text": "Or I can show you, which is how anyone actually learns it.",
+            "text": "Not about the pond. About me. Do not be polite — I have heard all of it, and I would like it fresh.",
             "logicalFallacies": []
           },
           {
             "id": "s-r3-p3",
-            "text": "Well?",
+            "text": "Go on.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Cass offers the name as a word, or a demonstration, and waits."
+        "summary": "She demands the first thing in Rue's head about her — about her, pointedly not about the pond."
       },
       "options": [
         {
           "id": "r3-opt-a",
           "quality": "logical_fallacy",
-          "impact": -10,
-          "reason": "You answered an offer to teach with an attack on the teacher. That is the trick. You just used it.",
-          "summary": "You dismiss Cass as a cranky old rooster nobody listens to, and so use the trick on the animal offering to name it.",
+          "impact": 0,
+          "emotion": "talking",
+          "reason": "Straight to the species. You did not answer her, you priced her — and you did it in about a heartbeat, which is roughly how long it will take somebody to do it to you.",
+          "summary": "You reach for the species: a fox says what suits a fox, so nothing she says counts.",
           "sentences": [
             {
               "id": "s-r3-opt-a-1",
-              "text": "You only know about it because you're a cranky old rooster nobody listens to.",
+              "text": "You are a fox. Foxes say whatever suits them, so I have no idea why I would believe any of this.",
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "Whether Cass is cranky, old, or ignored has nothing to do with whether the trick has a name. You attacked the teacher instead of taking the lesson."
+                  "explanation": "Being a fox is a fact about Cass, not about the claim. It disposes of her without touching a word she said."
                 }
               ]
             }
@@ -138,29 +139,41 @@
         },
         {
           "id": "r3-opt-b",
-          "quality": "ineffective",
+          "quality": "logical_fallacy",
           "impact": 0,
-          "reason": "A name without the thing is a word. You will forget it by Sunday.",
-          "summary": "You ask for the name and skip the demonstration.",
+          "emotion": "talking",
+          "reason": "You went at her record instead of her reasoning. Losing eleven times cannot make a sentence false, and winning cannot make one true.",
+          "summary": "You go at her record instead: she lost the floor, so why would her advice be worth anything.",
           "sentences": [
             {
               "id": "s-r3-opt-b-1",
-              "text": "Just tell me the name.",
-              "logicalFallacies": []
+              "text": "You lost. Eleven seasons and you lost every one of them, and now you want to tell me how it is done.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "Her record is a fact about Cass. It is an answer to who she is rather than to anything she has argued."
+                }
+              ]
             }
           ]
         },
         {
           "id": "r3-opt-c",
-          "quality": "effective",
-          "impact": 15,
-          "reason": "You asked to see it. That is the only way the name will stick.",
-          "summary": "You ask him to show you, which is the lesson he wanted.",
+          "quality": "logical_fallacy",
+          "impact": 0,
+          "emotion": "talking",
+          "reason": "You explained her away by her motive. Even if she is bitter, bitterness cannot make a true thing false — it only saves you the trouble of checking.",
+          "summary": "You put the whole lesson down to her motive: she is bitter, so this is really about her.",
           "sentences": [
             {
               "id": "s-r3-opt-c-1",
-              "text": "Show me.",
-              "logicalFallacies": []
+              "text": "You only care about any of this because you are bitter. This is not a lesson, it is a grudge with a pupil.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "Her motive is a fact about Cass. Naming it settles how she feels, not whether she is right."
+                }
+              ]
             }
           ]
         }
@@ -176,11 +189,11 @@
             "sentences": [
               {
                 "id": "s-resp-r3-a-1",
-                "text": "That's it. You just did it to me. Now watch me do it to you.",
+                "text": "The tail. Straight to the tail. Eleven seasons it took them, and you managed it before you had finished sitting down.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Cass names what you just did, then turns the demonstration on you."
+            "summary": "She notes, sourly, that it took the floor eleven seasons to reach for her tail and it took Rue no time at all."
           }
         },
         {
@@ -193,11 +206,11 @@
             "sentences": [
               {
                 "id": "s-resp-r3-b-1",
-                "text": "A word without the thing is a word. Watch first.",
+                "text": "I lost, therefore I am wrong. Splendid. By that reasoning the pond went brown because you are new.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Cass refuses to hand over a name without showing the trick."
+            "summary": "She runs the same reasoning back at him and it comes out saying the water went bad because Rue arrived."
           }
         },
         {
@@ -210,11 +223,11 @@
             "sentences": [
               {
                 "id": "s-resp-r3-c-1",
-                "text": "Good. Watch.",
+                "text": "Bitter. Yes. Now notice that you settled the whole question of whether I am right without once looking at the pond.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Cass approves, and the demonstration begins."
+            "summary": "She concedes the bitterness and points out he closed the question without going anywhere near the water."
           }
         }
       ]
@@ -226,7 +239,6 @@
       "type": "crossfire",
       "speakerId": "cass",
       "impact": 0,
-      "requiresAnalysis": true,
       "statement": {
         "id": "stmt-r4-cass",
         "speakerId": "cass",
@@ -234,26 +246,21 @@
         "sentences": [
           {
             "id": "s-r4-1",
-            "text": "Right. I'll be Duchess.",
+            "text": "Now. Whichever of those you reached for, notice what you did not do.",
             "logicalFallacies": []
           },
           {
             "id": "s-r4-2",
-            "text": "Nobody's blaming you, dear. It's simply that a raccoon who arrived in a mud cart, straw still in his ears, can hardly be expected to know about water.",
-            "logicalFallacies": [
-              {
-                "id": "ad-hominem",
-                "explanation": "The claim on the floor is about the water. This sentence answers it by describing Rue — raccoon, mud cart, straw — which tells us nothing about the pond."
-              }
-            ]
+            "text": "You did not argue with me. You priced me. My tail, my record, my mood — three ways of saying she does not count, and not one of them says why.",
+            "logicalFallacies": []
           },
           {
             "id": "s-r4-3",
-            "text": "The Flock waters at the pond every morning, as they always have.",
+            "text": "That is the trick. You have just used it, on purpose, on somebody who asked you to. That is why you are going to remember it.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Cass plays Duchess: a gentle line about the mud cart and the straw, dressed as concern, instead of a line about the water."
+        "summary": "Every answer available to him priced her instead of answering her, and she made him use the trick so that it would stick."
       }
     },
     {
@@ -263,6 +270,7 @@
       "type": "crossfire",
       "speakerId": "cass",
       "impact": 0,
+      "requiresAnalysis": true,
       "statement": {
         "id": "stmt-r5-cass",
         "speakerId": "cass",
@@ -270,21 +278,57 @@
         "sentences": [
           {
             "id": "s-r5-1",
-            "text": "That is the whole trick.",
+            "text": "Other way round now. I am Tobias, it is Sunday, and you are standing on the floor.",
             "logicalFallacies": []
           },
           {
             "id": "s-r5-2",
-            "text": "She talked about what you are — a raccoon, a mud cart, six weeks — and never about what happened to the water.",
-            "logicalFallacies": []
+            "text": "Nobody blames the newcomer. It is simply that an animal who takes his supper out of a bin has a rather different notion of clean from the rest of us.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "The question on the floor is what fouled the water. This answers it by describing Rue's supper, which tells you nothing about the pond."
+              }
+            ]
           },
           {
             "id": "s-r5-3",
-            "text": "The phrase to keep is this: what I am, against what happened. If a line is about you instead of the pond, you have heard it. The name is Ad Hominem.",
+            "text": "The Meadow-Born have watered there every morning since my grandmother pulled the same cart I pull.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Cass names the trick Ad Hominem and hands you the phrase: what I am, against what happened."
+        "summary": "Cass plays Tobias, and the middle of it is a gracious remark about bins standing in for an argument about water."
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-6",
+      "roundNumber": 6,
+      "type": "crossfire",
+      "speakerId": "cass",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r6-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r6-1",
+            "text": "There. That is the whole of it.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r6-2",
+            "text": "He talked about what you are — a raccoon, a bin, six weeks of it — and never once about what happened to the water.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r6-3",
+            "text": "So here is the phrase you keep: what I am, against what happened. When a line is about you instead of about the pond, you have heard it. The name is Ad Hominem.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "She names it Ad Hominem and hands over the phrase to hold on to: what I am, against what happened."
       }
     }
   ],
@@ -312,17 +356,42 @@
       }
     },
     {
-      "id": "teach-spot-it",
+      "id": "teach-no-right-answer",
       "trigger": {
         "event": "round:start",
         "where": {
-          "roundId": "round-4"
+          "roundId": "round-3"
         }
       },
       "tutorial": {
         "steps": [
           {
-            "message": "Cass just used it on you. Open the **[accent]magnifying glass[/accent]** and read his line sentence by sentence.",
+            "message": "She asked to be insulted, so **[accent]all three answers are insults[/accent]**. Pick whichever one you like.\n\n**[muted]There is no right one. That is the lesson.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "teach-spot-it",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-5"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Now she is doing it to you. Open the **[accent]magnifying glass[/accent]** and read her line sentence by sentence.",
             "interactionMode": "target_only",
             "targetComponent": {
               "kind": "interactive_action",
@@ -334,7 +403,7 @@
             }
           },
           {
-            "message": "Pick the sentence that talks about **[accent]you[/accent]** instead of the water, tag it **[accent]Ad Hominem[/accent]**, submit.",
+            "message": "Pick the sentence about **[accent]you[/accent]** rather than about the water, tag it **[accent]Ad Hominem[/accent]**, submit.",
             "interactionMode": "modal_only",
             "onlyForward": true,
             "targetComponent": {

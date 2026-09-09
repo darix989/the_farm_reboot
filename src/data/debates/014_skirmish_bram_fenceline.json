@@ -1,7 +1,7 @@
 {
   "id": "level1-skirmish-bram",
-  "introduction": "Bram has caught you at the fence line the evening before the Public Farm. He calls it a courtesy. You have one question to put to him before he waddles off.",
-  "introductionSummary": "Bram catches you at the fence the evening before the Public Farm, calls it a courtesy, and leaves you one question.",
+  "introduction": "Bram has caught you at the fence line the evening before the Public Farm. He calls it a courtesy. He has clearly rehearsed it, and he is going to get all the way to the end of it before he notices what he has said.",
+  "introductionSummary": "The evening before the floor, Bram delivers a rehearsed courtesy at the fence and does not survive being asked one question.",
   "playerSide": "opposition",
   "characters": {
     "bram": "Bram",
@@ -10,11 +10,11 @@
   "logicalFallacies": [
     {
       "id": "ad-hominem",
-      "explanation": "Attacking the animal instead of the argument. How long Rue has been here is not a fact about the water."
+      "explanation": "Answering the animal instead of the argument. Six weeks on the farm is a fact about Rue, not about the water."
     },
     {
       "id": "appeal-to-popularity",
-      "explanation": "Treating a crowd as a reason. Forty-one animals agreeing is not forty-one animals having checked."
+      "explanation": "Treating a count of who agreed as a reason. Forty-one animals agreeing is forty-one animals agreeing."
     }
   ],
   "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
@@ -28,6 +28,7 @@
       "type": "opening_constructive",
       "speakerId": "bram",
       "impact": -10,
+      "requiresAnalysis": true,
       "statement": {
         "id": "stmt-r1-bram",
         "speakerId": "bram",
@@ -35,31 +36,31 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Rue — a courtesy, before Sunday. The Flock is putting the motion regardless.",
+            "text": "Rue. A courtesy, before Sunday. The motion is going up whatever either of us does about it.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
-            "text": "Forty-one birds have already said yes, and forty-one is not a mistake.",
+            "text": "Forty-one of the Meadow-Born have already said yes, and forty-one is not a mistake.",
             "logicalFallacies": [
               {
                 "id": "appeal-to-popularity",
-                "explanation": "The number of birds who said yes is offered as the reason the motion is right. None of them is said to have looked at the water."
+                "explanation": "It counts agreement and treats the count as the argument. None of the forty-one is claimed to have looked at anything."
               }
             ]
           },
           {
             "id": "s-r1-3",
-            "text": "You'd be arguing against the whole pond, and you've been on this farm six weeks.",
+            "text": "You would be standing up against the whole meadow, and you have been here six weeks.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
-                "explanation": "Six weeks is a fact about Rue, not about the pond. It is used to retire his objection without answering it."
+                "explanation": "Six weeks is a fact about Rue. It is offered as the reason he should sit down, which is not a reason about the pond."
               }
             ]
           }
         ],
-        "summary": "Bram says the motion goes ahead regardless: forty-one birds agreed, and you have only been here six weeks."
+        "summary": "The rehearsed courtesy: the count is settled, the meadow is unanimous, and Rue has not been here long enough to disagree."
       }
     },
     {
@@ -72,16 +73,16 @@
           "id": "r2-opt-a",
           "quality": "logical_fallacy",
           "impact": -10,
-          "reason": "You answered a crowd with a smaller crowd. Now the argument is about how many animals are on each side, which is the one contest you cannot win.",
-          "summary": "You count the hauling crew back at him and turn it into a headcount you cannot win.",
+          "reason": "You answered a crowd with a smaller crowd. Once the question is whose animals are better animals, you have picked the one contest you cannot win.",
+          "summary": "You counter forty-one with three, which concedes that counting was the right way to settle it.",
           "sentences": [
             {
               "id": "s-r2-opt-a-1",
-              "text": "Everyone on the hauling crew thinks the grate is the problem — that's three of us, and we're the ones who carry the water.",
+              "text": "Everyone on the hauling crew thinks it is the grate. That is three of us, and we are the ones who carry the water.",
               "logicalFallacies": [
                 {
                   "id": "appeal-to-popularity",
-                  "explanation": "Counting haulers is the same move Bram just made, only with a worse number. Whether the grate is the problem does not depend on who agrees."
+                  "explanation": "It answers a headcount with a headcount. Three haulers agreeing is no more a finding about water than forty-one Meadow-Born agreeing."
                 }
               ]
             }
@@ -91,8 +92,8 @@
           "id": "r2-opt-b",
           "quality": "ineffective",
           "impact": 0,
-          "reason": "A fair question about the arithmetic, but it accepts that the vote count is what settles the pond. Bram is happy to argue about numbers all evening.",
-          "summary": "You query whether forty-one is actually a majority.",
+          "reason": "A fair question, and he will answer it honestly, and it will not help. You have accepted that the vote is what settles what is in the pond.",
+          "summary": "You query the arithmetic of the majority, which keeps the argument on headcounts.",
           "sentences": [
             {
               "id": "s-r2-opt-b-1",
@@ -105,8 +106,8 @@
           "id": "r2-opt-c",
           "quality": "effective",
           "impact": 20,
-          "reason": "Names both moves — the crowd and the newcomer jab — as things that are not about the water, then offers a check anyone can run. Bram concedes the grate on the record.",
-          "summary": "You set the headcount and the six weeks aside, and offer to walk to the outflow and look at the grate.",
+          "reason": "Names both moves — the crowd and the newcomer jab — as things that are not about the water, then offers a check anybody can run before dark. Bram concedes the grate on the record.",
+          "summary": "You set both of his moves aside and offer him a walk to the outflow with your case staked on it.",
           "unlockCondition": {
             "npcRoundId": "round-1",
             "sentenceId": "s-r1-3",
@@ -122,7 +123,7 @@
           "unlockedSentences": [
             {
               "id": "s-r2-opt-c-1",
-              "text": "You said forty-one agreed, and that I've only been here six weeks. Neither of those is about the water. So let's do the one that is: come to the outflow with me now, and if the grate isn't bent, I'll drop it before Sunday.",
+              "text": "You said forty-one agreed, and you said I have been here six weeks. Neither of those is about the water. So let us do the one that is: come to the outflow with me now, and if the grate is not bent I will drop the whole thing before Sunday.",
               "logicalFallacies": []
             }
           ]
@@ -139,11 +140,11 @@
             "sentences": [
               {
                 "id": "s-resp-r2-a-1",
-                "text": "Three haulers against forty-one birds. Thank you, Rue. You've just made my argument for me.",
+                "text": "Three haulers against forty-one. Thank you, Rue, you have just made my argument for me and saved me saying it.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Bram thanks you — three haulers against forty-one birds makes his case for him."
+            "summary": "He takes the smaller number gratefully, because the argument he wanted was always about numbers."
           }
         },
         {
@@ -156,16 +157,16 @@
             "sentences": [
               {
                 "id": "s-resp-r2-b-1",
-                "text": "More than forty-one, I expect. But they didn't turn up, did they.",
+                "text": "More than forty-one, I should think. But they did not turn up, did they, and the ones who turn up are the ones who count.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Bram concedes there are more animals, then notes they did not turn up."
+            "summary": "He answers honestly, shrugs off the rest of the farm for not attending, and nothing has moved."
           }
         },
         {
           "forOptionId": "r2-opt-c",
-          "impact": 0,
+          "impact": -5,
           "statement": {
             "id": "resp-r2-c",
             "speakerId": "bram",
@@ -173,11 +174,11 @@
             "sentences": [
               {
                 "id": "s-resp-r2-c-1",
-                "text": "…It's bent. It's been bent since before the frost. That doesn't mean the newcomers aren't also — look. Take it up with Duchess on Sunday.",
+                "text": "It is bent. It has been bent since before the frost, and I have known that the whole time, and that does not mean the newcomers are not also — look. Take it up with Tobias.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Bram admits the grate is bent, then hands you off to Duchess on Sunday."
+            "summary": "He concedes it without going anywhere, tries to keep the other half of his case, and gives up halfway through."
           }
         }
       ]
@@ -188,7 +189,7 @@
       "roundNumber": 3,
       "type": "closing_constructive",
       "speakerId": "bram",
-      "impact": 0,
+      "impact": -5,
       "statement": {
         "id": "stmt-r3-bram",
         "speakerId": "bram",
@@ -196,16 +197,16 @@
         "sentences": [
           {
             "id": "s-r3-1",
-            "text": "Sunday, then. Tobias has the motion. Duchess speaks first.",
+            "text": "Sunday, then. Duchess has the floor and Tobias speaks first, and he will be very kind to you about it.",
             "logicalFallacies": []
           },
           {
             "id": "s-r3-2",
-            "text": "And Rue — she's much better at this than I am.",
+            "text": "And Rue — he is a great deal better at this than I am. I only have to be believed by animals who already like me, and there are not many.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Bram sets the scene for Sunday and warns that Duchess is far better at this than he is."
+        "summary": "He sets the order of Sunday, warns that Tobias is the better hand at it, and says something sadder than he means to."
       }
     }
   ],
@@ -218,7 +219,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "A **[accent]real debate[/accent]**, just a very short one. Everything is switched on.\n\nThe **[accent]emoji[/accent]** is how the moderator leans; the number is your **[success]Insights[/success]**.",
+            "message": "A **[accent]real debate[/accent]**, just a very short one. Everything is switched on.\n\nThe **[accent]emoji[/accent]** is how the moderator leans; the number is your **[success]Insight[/success]**.",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "debate_log_moderator_score"

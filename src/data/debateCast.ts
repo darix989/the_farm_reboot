@@ -28,7 +28,7 @@ export function debateParticipantIds(debate: DebateScenarioJson): string[] {
 
 /** Puts a moderator, if present, in the centre slot of a 3+ cast; otherwise player-first,
  *  then scenario order. The schema has no explicit moderator flag, so this is a short list. */
-const MODERATOR_IDS = new Set(['tobias']);
+const MODERATOR_IDS = new Set(['duchess']);
 
 /**
  * Left-to-right stage order for a cast. Shared by the Phaser `Trial` scene (which lays

@@ -88,7 +88,7 @@ export const FARM_ZONES: readonly FarmZone[] = [
   { id: 'path-west', kind: 'path', x: 520, y: 780, width: 560, height: 120 },
   { id: 'path-south', kind: 'path', x: 1180, y: 1180, width: 620, height: 120 },
 
-  // The Big Barn (north-west) — Duchess and Tobias.
+  // The Big Barn (north-west) — Tobias, and Duchess who has the floor.
   {
     id: 'barn-body',
     kind: 'barn',
@@ -134,7 +134,7 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     talkStages: [
       { suffix: '1', until: { kind: 'fallacy_known', fallacyId: 'ad-hominem' } },
       { suffix: '2', until: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' } },
-      { suffix: '3', until: { kind: 'encounter_completed', scenarioKey: '015_duchess_vs_rue' } },
+      { suffix: '3', until: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' } },
     ],
   },
   {
@@ -152,29 +152,38 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     scenarios: [
       '020_cass_teaches_ad_hominem',
       '011_sparring_cass_ad_hominem',
-      '013_lab_cass_dirty_feathers',
+      '013_lab_cass_dirty_tricks',
     ],
   },
   {
     id: 'bram',
     x: 1360,
     y: 1250,
-    scenarios: ['012_gossip_trough_bram', '014_skirmish_bram_fenceline'],
-  },
-  {
-    id: 'duchess',
-    x: 700,
-    y: 620,
-    scenarios: [],
-    talkStages: [
-      { suffix: '1', until: { kind: 'encounter_completed', scenarioKey: '015_duchess_vs_rue' } },
+    // Gossip, then the Insight lesson, then the skirmish. Insight lands between the two
+    // because the skirmish is the first rung that seeds any, and the lesson is the only
+    // thing in Level 1 that explains what the counter in the log header is for.
+    scenarios: [
+      '012_gossip_trough_bram',
+      '022_bram_teaches_insight',
+      '014_skirmish_bram_fenceline',
     ],
   },
   {
     id: 'tobias',
+    x: 700,
+    y: 620,
+    scenarios: [],
+    talkStages: [
+      { suffix: '1', until: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' } },
+    ],
+  },
+  {
+    // The moderator holds the motion, so she is the animal you go to when you are ready
+    // for the floor. Tobias will only ever point you at her.
+    id: 'duchess',
     x: 880,
     y: 640,
-    scenarios: ['015_duchess_vs_rue'],
+    scenarios: ['015_tobias_vs_rue'],
   },
 ];
 

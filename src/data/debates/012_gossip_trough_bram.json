@@ -1,7 +1,7 @@
 {
   "id": "level1-gossip-bram",
-  "introduction": "Bram the Drake has come down to the trough to be fair to you. He genuinely thinks that is what he is doing.",
-  "introductionSummary": "Bram corners you at the trough, certain he is doing you a kindness.",
+  "introduction": "Bram works the fence line, and he has come all the way up to the trough to be fair to you. It has plainly cost him something. He would also rather nobody saw him doing it.",
+  "introductionSummary": "Bram comes to be fair to you, wants no witnesses, and lets go of something on his way out that he does not think matters.",
   "playerSide": "opposition",
   "characters": {
     "bram": "Bram",
@@ -10,11 +10,11 @@
   "logicalFallacies": [
     {
       "id": "ad-hominem",
-      "explanation": "Attacking the animal instead of the argument. How long Rue has been on the farm is not evidence about the pond."
+      "explanation": "Answering the animal instead of the argument. That nobody knew Rue's name a month ago is not evidence about the pond."
     },
     {
       "id": "appeal-to-popularity",
-      "explanation": "Treating a crowd as a reason. Forty-one animals agreeing is not forty-one animals having checked."
+      "explanation": "Treating a count of who agrees as though it were a reason. Forty-one animals can all be repeating the same thing nobody checked."
     }
   ],
   "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
@@ -41,31 +41,31 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "You'll want to hear this before Sunday: the whole Flock has already agreed the pond should be ours.",
-            "logicalFallacies": [
-              {
-                "id": "appeal-to-popularity",
-                "explanation": "The Flock agreeing is offered as the reason the pond should be theirs. Agreement is not a reason — it is just a number of animals."
-              }
-            ]
+            "text": "Rue. A word, and I would rather you did not mention to anyone that I came and had it.",
+            "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
-            "text": "Forty-one of us. You can't have forty-one animals be wrong about water.",
+            "text": "The Meadow-Born have settled it between them already. Forty-one of them have said yes, and you cannot have forty-one animals be wrong about their own water.",
             "logicalFallacies": [
               {
                 "id": "appeal-to-popularity",
-                "explanation": "Forty-one animals absolutely can be wrong about water, especially if none of them has been to the outflow."
+                "explanation": "The number counts who agreed, not what any of them looked at. Forty-one animals repeating each other is one opinion, forty-one times."
               }
             ]
           },
           {
             "id": "s-r1-3",
-            "text": "Duchess puts the motion to Tobias at the Public Farm.",
-            "logicalFallacies": []
+            "text": "Forty-one, Rue. That is not a mistake. That is a number.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "Saying the number again makes it feel heavier without making it evidence. Size of crowd is still not a reason."
+              }
+            ]
           }
         ],
-        "summary": "Bram counts heads instead of evidence: forty-one ducks agree, so the pond is settled before Sunday."
+        "summary": "He arrives in secret and lays out the count as though counting were the same thing as checking."
       }
     },
     {
@@ -83,33 +83,32 @@
         "sentences": [
           {
             "id": "s-r2-1",
-            "text": "And frankly, the only one making a fuss is the raccoon, and nobody knew his name a month ago.",
+            "text": "And frankly the only one making a noise about any of this is the raccoon, and a month ago not one animal here knew your name.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
-                "explanation": "How recently the farm learned Rue's name is a fact about Rue, not about the pond. The objection is dismissed without ever being answered."
+                "explanation": "How recently the farm learned Rue's name is a fact about Rue. It is offered as a reason to stop listening to him."
               }
             ]
           },
           {
             "id": "s-r2-2",
-            "text": "Everyone I've asked says the newcomers are the problem.",
+            "text": "Sorry. Sorry, that came out badly, and I am not saying it because I am a wolf. Everyone I have asked says the same thing, that is all I meant.",
             "logicalFallacies": [
               {
                 "id": "appeal-to-popularity",
-                "explanation": "Everyone Bram asked is the Flock, and the Flock already agreed. Asking a crowd that shares a view is not evidence."
+                "explanation": "Everyone he asked agreeing is a fact about who he asked. It is doing the work of a reason without being one."
               }
             ]
           },
           {
             "id": "s-r2-3",
-            "text": "The grate at the outflow's bent, but that's been bent for ages.",
+            "text": "The grate at the outflow is bent, mind. Been bent since before the frost. But that is a different thing and I would not bring it up on Sunday.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Bram waves off the one animal raising the drain, then drops the bent grate as old news."
+        "summary": "He apologises mid-insult, leans on the crowd instead, and lets go of the bent grate as though it were unrelated."
       }
     }
-  ],
-  "tutorials": []
+  ]
 }

@@ -155,10 +155,13 @@ export function faceSheet(
 /**
  * The clip to actually play for a pairing, falling back to `talking` before giving up.
  *
- * This is what lets the register ship one animal at a time: `donkey-grey` has no portraits at
- * all (its body clips carry the cast's worst loop seams, which cropping amplifies ~4x), so
- * Duchess stays text-only while the owl, raccoon, fox, sheep and wolf have all five. Dot the
- * dog never debates and has no emotion clips, so her farm-talk portrait is also text-only.
+ * This is what lets the register ship one animal at a time, and coverage is still uneven:
+ * `donkey-grey` has only `talking`, `sneaky` and `angry` cropped (its body clips carry the
+ * cast's worst loop seams, which cropping amplifies ~4x), so Tobias falls back to `talking`
+ * for the other two — which costs nothing, because a boss antagonist derives `sneaky` on any
+ * line carrying a fallacy and `talking` on the rest. The owl, raccoon, fox, sheep and wolf
+ * have all five. Dot the dog never debates and has no emotion clips, so her farm-talk
+ * portrait is text-only.
  * Callers never have to check — the same discipline `AnimalAnimator.playEmotion()` follows
  * when it falls back to `playAlert()`.
  */

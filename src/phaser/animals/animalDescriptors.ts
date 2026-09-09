@@ -66,7 +66,7 @@ export interface AnimalDescriptor {
   transitions?: readonly (readonly [string, readonly string[]])[];
 }
 
-// duchess -> donkey-grey
+// tobias -> donkey-grey
 const DONKEY_GREY: AnimalDescriptor = {
   id: 'donkey-grey',
   baseAnimations: [
@@ -92,7 +92,7 @@ const DONKEY_GREY: AnimalDescriptor = {
     ],
   ],
   // The field idle grazes 70% of the time, which is wrong for anyone standing at the podium.
-  // Duchess wears this sprite now; this is also the pose the donkey's emotion clips were
+  // Tobias wears this sprite; this is also the pose the donkey's emotion clips were
   // generated from (`__grey_donkey_idle-0.png`), so the cut into a clip holds.
   idleTrial: [[1, [{ key: 'idle', repeat: -1 }]]],
   alert: [[1, [{ key: 'buck', repeat: -1 }]]],

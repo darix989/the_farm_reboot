@@ -11,11 +11,12 @@ import sampleDebateJson from './debates/sample-debate.json';
 import gossipHettyJson from './debates/010_gossip_trough_hetty.json';
 import sparringCassJson from './debates/011_sparring_cass_ad_hominem.json';
 import gossipBramJson from './debates/012_gossip_trough_bram.json';
-import labCassJson from './debates/013_lab_cass_dirty_feathers.json';
+import labCassJson from './debates/013_lab_cass_dirty_tricks.json';
 import skirmishBramJson from './debates/014_skirmish_bram_fenceline.json';
-import bossDuchessJson from './debates/015_duchess_vs_rue.json';
+import bossTobiasJson from './debates/015_tobias_vs_rue.json';
 import cassTeachesJson from './debates/020_cass_teaches_ad_hominem.json';
 import hettyBarrageJson from './debates/021_hetty_ad_hominem_barrage.json';
+import bramInsightJson from './debates/022_bram_teaches_insight.json';
 
 /** Keys map to debate JSON files under `src/data/debates/`. */
 export type DebateScenarioKey =
@@ -26,11 +27,12 @@ export type DebateScenarioKey =
   | '010_gossip_trough_hetty'
   | '011_sparring_cass_ad_hominem'
   | '012_gossip_trough_bram'
-  | '013_lab_cass_dirty_feathers'
+  | '013_lab_cass_dirty_tricks'
   | '014_skirmish_bram_fenceline'
-  | '015_duchess_vs_rue'
+  | '015_tobias_vs_rue'
   | '020_cass_teaches_ad_hominem'
-  | '021_hetty_ad_hominem_barrage';
+  | '021_hetty_ad_hominem_barrage'
+  | '022_bram_teaches_insight';
 
 export interface ScenarioEntry {
   key: DebateScenarioKey;
@@ -54,7 +56,9 @@ export interface ScenarioEntry {
 
 /**
  * Level 1 — "The Pond Motion". Ordered as a ladder: each rung adds exactly one thing,
- * from Cass naming Ad Hominem up to the full Public Farm debate. See
+ * from Cass naming Ad Hominem up to the full Public Farm debate. Note that the file
+ * numbers are creation order, not ladder order — Bram's Insight lesson (`022_`) is rung
+ * 1.6, between his trough gossip and Cass's lab. See
  * `docs/level_01_the_pond_motion.md` for the story and the authored dialog.
  *
  * Overworld gates live on `requires`. The main menu still lists every rung ungated, which
@@ -88,7 +92,12 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     scenario: gossipBramJson as unknown as DebateScenarioJson,
   },
   {
-    key: '013_lab_cass_dirty_feathers',
+    key: '022_bram_teaches_insight',
+    titleLabel: 'level1BramInsight',
+    scenario: bramInsightJson as unknown as DebateScenarioJson,
+  },
+  {
+    key: '013_lab_cass_dirty_tricks',
     titleLabel: 'level1LabCass',
     scenario: labCassJson as unknown as DebateScenarioJson,
   },
@@ -98,9 +107,9 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     scenario: skirmishBramJson as unknown as DebateScenarioJson,
   },
   {
-    key: '015_duchess_vs_rue',
-    titleLabel: 'level1BossDuchess',
-    scenario: bossDuchessJson as unknown as DebateScenarioJson,
+    key: '015_tobias_vs_rue',
+    titleLabel: 'level1BossTobias',
+    scenario: bossTobiasJson as unknown as DebateScenarioJson,
     requires: [
       { kind: 'fallacy_known', fallacyId: 'ad-hominem' },
       { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' },

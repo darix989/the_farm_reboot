@@ -30,7 +30,7 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 
 | Field | Meaning |
 |---|---|
-| `id` | Internal id — **not** the `DebateScenarioKey`. `015_duchess_vs_rue` is the key, `level1-boss-pond-motion` is the id. Progress is tracked by key. |
+| `id` | Internal id — **not** the `DebateScenarioKey`. `015_tobias_vs_rue` is the key, `level1-boss-pond-motion` is the id. Progress is tracked by key. |
 | `introduction` | Sets the scene. Its presence is what creates the `debate_intro` phase. |
 | `introductionSummary` | Two-line paraphrase shown in the pre-round-1 briefing modal. **Required** whenever there is an `introduction` — see [Recap summaries](#recap-summaries). |
 | `playerSide` | `proposition` or `opposition`. |
@@ -147,7 +147,7 @@ So every line those two modals show has an authored paraphrase beside the spoken
 
 Rules:
 
-- **Paraphrase, never trim.** Say what the statement *did* — "Duchess opens on the forty-one
+- **Paraphrase, never trim.** Say what the statement *did* — "Tobias opens on the forty-one
   who already agreed" — not what it said. Copying the wording back defeats the point, and
   `lint:scenarios` rejects a summary that repeats or prefixes the spoken text.
 - **Two lines, ~160 characters** (`RECAP_SUMMARY_MAX_LINES` / `RECAP_SUMMARY_MAX_CHARS` in

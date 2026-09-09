@@ -47,7 +47,7 @@ export const useProgressStore = create<ProgressStore>()(
     }),
     {
       name: 'the-farm-progress',
-      version: 3,
+      version: 4,
       /**
        * Saved data outlives the code that wrote it. A stale entry naming a scenario
        * that no longer exists must not break the farm, so anything unrecognised is
@@ -55,11 +55,16 @@ export const useProgressStore = create<ProgressStore>()(
        *
        * v1–v2 treated any completed encounter as "Level 1 started", which skipped Dot's
        * greeting for anyone who had already played. v3 only trusts the explicit flag.
+       *
+       * v4 is the Level 1 rewrite. Two scenario keys were renamed and a rung was inserted,
+       * so `merge` would silently drop the renamed pair and leave a part-played save sitting
+       * between rungs that no longer follow each other. The level is different content now;
+       * the honest migration is to start it again.
        */
       migrate: (persisted, fromVersion) => {
         const saved = (persisted ?? {}) as Record<string, unknown>;
-        if (fromVersion < 3) {
-          return { ...saved, level1Started: false };
+        if (fromVersion < 4) {
+          return { ...saved, completedScenarios: [], level1Started: false };
         }
         return saved;
       },

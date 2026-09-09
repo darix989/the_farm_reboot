@@ -29,7 +29,7 @@ export function applyEncounterRewards(
  * Same thing when only the key is to hand.
  *
  * The scenario key and `scenario.id` are documented to differ (`'level1-boss-pond-motion'` vs
- * `'015_duchess_vs_rue'`), and `DEBATES` is keyed by the former — so this looks the content up
+ * `'015_tobias_vs_rue'`), and `DEBATES` is keyed by the former — so this looks the content up
  * rather than letting a caller guess.
  */
 export function applyEncounterRewardsByKey(scenarioKey: DebateScenarioKey): void {

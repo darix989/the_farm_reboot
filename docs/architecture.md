@@ -270,10 +270,11 @@ every physics body outline.
 
 ### Known pre-existing breakage
 
-- **`npx tsc --noEmit` reports 7 errors on a clean tree.** Four are
-  `GameManager.whenReady` / `whenSceneReady` passing a zustand v3/v4 `(selector, listener)`
-  pair to a v5 `subscribe` — the callbacks are silently dropped at runtime, so **do not use
-  those two functions**. The rest are unused-`React`-import and `navigator.userAgentData`.
+- **`npx tsc --noEmit` reports 3 errors on a clean tree** (re-measured Sept 2026): two
+  unused-`React`-imports and `navigator.userAgentData`. Separately, and no longer surfaced
+  by the compiler, `GameManager.whenReady` / `whenSceneReady` pass a zustand v3/v4
+  `(selector, listener)` pair to a v5 `subscribe` — the callbacks are silently dropped at
+  runtime, so **do not use those two functions**.
 - **8 files fail `npm run format:check`** — template leftovers never formatted. `lint-staged`
   formats files as you touch them, so this shrinks over time.
 - `Preloader` and `MainMenu` position things at 512/384 — leftovers from the template's

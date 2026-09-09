@@ -680,7 +680,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         onSubmit = () => {
           const { activeDebateId, returnSceneKey } = useGameStore.getState();
           // Mark by the scenario *key*, not `debate.id` — those differ
-          // (`015_duchess_vs_rue` vs `level1-boss-pond-motion`) and only the key
+          // (`015_tobias_vs_rue` vs `level1-boss-pond-motion`) and only the key
           // is a `DebateScenarioKey`.
           //
           // Leaving is also where an encounter pays out what it taught: reaching the round

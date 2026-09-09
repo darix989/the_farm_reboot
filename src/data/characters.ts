@@ -16,14 +16,18 @@ const FALLBACK_TINT = 0x9ca3af;
 
 /**
  * Placeholder spritesheet cast, copied from the `the_farm` prototype. These are Phaser
- * texture keys, not always the character's real species — the six sprites with generated
- * emotion clips (`donkey-grey`, `owl`, `raccoon`, `fox`, `white-sheep-1`, `brown-wolf`) map
- * one-to-one onto the six debate characters. Rue is the raccoon (exact match). Tobias is
- * the owl (exact match): he is the moderator, and the owl reads as the animal in the middle
- * of the floor. That leaves Duchess, a goose, on the donkey — a mismatch, and her debate-log
- * portrait stays text-only until the donkey clips are good enough to crop. Cass is a rooster
- * played by a fox, Hetty a hen by a sheep, Bram a drake by a wolf. Dot the greeter is a dog
- * and never debates, so she can use an animal with no emotion clips.
+ * texture keys, and since the Level 1 rewrite every one of them is also the character's real
+ * species: the six sprites with generated emotion clips (`raccoon`, `fox`, `white-sheep-1`,
+ * `brown-wolf`, `owl`, `donkey-grey`) map one-to-one onto the six debate characters, and the
+ * writing was moved onto the art rather than the other way round.
+ *
+ * That is load-bearing for Level 1, not tidiness. The level teaches Ad Hominem, so its three
+ * outsiders have to be animals a farm already has an opinion about before they open their
+ * mouths: Rue the raccoon eats out of the bins, Cass the fox is a known trickster, Bram the
+ * wolf has teeth. The in-group is Hetty the sheep and Tobias the donkey, with Duchess the owl
+ * moderating — the owl reads as the animal in the middle of the floor. Dot the greeter is a
+ * dog and never debates, so she can use an animal with no emotion clips.
+ *
  * Frame data and behaviour live in `src/phaser/animals/animalDescriptors.ts`.
  */
 export type AnimalSpriteId =
@@ -79,19 +83,19 @@ export const CHARACTERS: Readonly<Record<string, CharacterVisual>> = {
   duchess: {
     id: 'duchess',
     nameLabel: 'farmNpcDuchess',
-    tint: 0xf5f2e8,
+    tint: 0x6b8f3f,
+    kind: 'npc',
+    animal: 'owl',
+  },
+  tobias: {
+    id: 'tobias',
+    nameLabel: 'farmNpcTobias',
+    tint: 0xa9a29b,
     kind: 'npc',
     animal: 'donkey-grey',
     // Standing idle at the podium, not the field graze. The donkey's emotion clips were
     // generated from `__grey_donkey_idle-0.png`, so the cut into a clip holds.
     usesTrialIdle: true,
-  },
-  tobias: {
-    id: 'tobias',
-    nameLabel: 'farmNpcTobias',
-    tint: 0x6b8f3f,
-    kind: 'npc',
-    animal: 'owl',
   },
   dot: {
     id: 'dot',
