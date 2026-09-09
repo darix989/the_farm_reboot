@@ -68,9 +68,9 @@ the flag, the script gets no arguments, and no arguments means the whole manifes
 
 Animal ids are the atlas names, not the species: `donkey-grey`, `white-sheep-1`, `brown-wolf`,
 `fox`, `owl`, `raccoon`, `cow`, `cow-female-001`, `dog`, `mouse`, `pig`. Emotions: `talking`,
-`doubtful`, `angry`, `thinking`, `sneaky`. Only the original six have generated clips; the
-other five are imported but ungenerated — do not run a generating command for them unless
-asked.
+`doubtful`, `angry`, `thinking`, `sneaky`. Seven animals have generated clips; `cow`,
+`cow-female-001`, `mouse` and `pig` are imported but ungenerated — do not run a generating
+command for them unless asked.
 
 ## Four things not to re-derive
 

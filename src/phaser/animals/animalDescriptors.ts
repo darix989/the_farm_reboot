@@ -324,7 +324,7 @@ const COW_FEMALE_001: AnimalDescriptor = {
   alert: [[1, [{ key: 'speak_worried' }]]],
 };
 
-// dot -> dog (exact match). No emotion clips; farm greeter only.
+// dot -> dog (exact match). Farm greeter; emotion clips feed her dialogue portraits.
 const DOG: AnimalDescriptor = {
   id: 'dog',
   baseAnimations: [

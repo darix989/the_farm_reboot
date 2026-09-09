@@ -17,16 +17,16 @@ const FALLBACK_TINT = 0x9ca3af;
 /**
  * Placeholder spritesheet cast, copied from the `the_farm` prototype. These are Phaser
  * texture keys, and since the Level 1 rewrite every one of them is also the character's real
- * species: the six sprites with generated emotion clips (`raccoon`, `fox`, `white-sheep-1`,
- * `brown-wolf`, `owl`, `donkey-grey`) map one-to-one onto the six debate characters, and the
- * writing was moved onto the art rather than the other way round.
+ * species: the six sprites with generated emotion clips that map onto debate characters
+ * (`raccoon`, `fox`, `white-sheep-1`, `brown-wolf`, `owl`, `donkey-grey`) plus `dog` for Dot
+ * the greeter. The writing was moved onto the art rather than the other way round.
  *
  * That is load-bearing for Level 1, not tidiness. The level teaches Ad Hominem, so its three
  * outsiders have to be animals a farm already has an opinion about before they open their
  * mouths: Rue the raccoon eats out of the bins, Cass the fox is a known trickster, Bram the
  * wolf has teeth. The in-group is Hetty the sheep and Tobias the donkey, with Duchess the owl
- * moderating — the owl reads as the animal in the middle of the floor. Dot the greeter is a
- * dog and never debates, so she can use an animal with no emotion clips.
+ * moderating — the owl reads as the animal in the middle of the floor. Dot never debates; her
+ * clips feed farm-talk portraits, not a Trial stage.
  *
  * Frame data and behaviour live in `src/phaser/animals/animalDescriptors.ts`.
  */

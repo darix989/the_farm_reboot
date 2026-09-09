@@ -91,6 +91,103 @@
       "generatedAt": "2026-09-05T01:44:47.545Z"
     }
   },
+  "dog": {
+    "angry": {
+      "file": "dog-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.7212,
+      "originX": 0.5177,
+      "originY": 0.7031,
+      "prompt": "Side view, facing left. The tan alsatian dog stands in place on all fours, ears flattened hard back against its skull for the whole clip, muzzle wrinkled open in a snarl showing teeth, head lowered until it is level with its shoulders and pushed toward the target, and its tail held low. All four feet stay planted exactly where they are in the reference image and never move — it does not step, lunge, walk or pounce, and the body stays standing, never sits, never lies down. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.22,
+        "heightSwing": 16.3,
+        "driftX": 5.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-09T01:49:50.286Z"
+    },
+    "doubtful": {
+      "file": "dog-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.7212,
+      "originX": 0.4963,
+      "originY": 0.7031,
+      "prompt": "Side view, facing left. The tan alsatian dog stands in place on all fours and is unconvinced: its head draws back and tilts, one pointed ear swivels back and returns, its muzzle stays shut, and its tail hangs still. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never sits, never lies down. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.12,
+        "heightSwing": 12,
+        "driftX": 1.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-09T01:48:41.760Z"
+    },
+    "sneaky": {
+      "file": "dog-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.7212,
+      "originX": 0.5392,
+      "originY": 0.7031,
+      "prompt": "Side view, facing left. The tan alsatian dog stands in place on all fours and speaks conspiratorially: its head lowers and cranes slowly forward toward the listener, its ears tilt back, and its eyes flick sideways. Its tail stays whole and fully drawn for every frame, held low. All four feet stay planted exactly where they are in the reference image and never move; it stays standing the whole time and never crouches flat, never lies down, never sits. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.22,
+        "heightSwing": 27.4,
+        "driftX": 14.5,
+        "warnings": [
+          "height swing 27% (over 20%) — check it is motion, not the character changing pose"
+        ]
+      },
+      "reviewNotes": [
+        "height swing is a head dip, not a pose collapse — accepted, same class as donkey sneaky"
+      ],
+      "generatedAt": "2026-09-09T01:52:23.394Z"
+    },
+    "talking": {
+      "file": "dog-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.7212,
+      "originX": 0.505,
+      "originY": 0.7031,
+      "prompt": "Side view, facing left. The tan alsatian dog stands in place on all fours and talks: its muzzle opens and closes with each phrase, its head bobs gently in time, its pointed ears stay upright and flick once, and the tip of its tail sways slowly. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never sits, never lies down. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.11,
+        "heightSwing": 4.3,
+        "driftX": 3.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-09T01:47:26.345Z"
+    },
+    "thinking": {
+      "file": "dog-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.7081,
+      "originX": 0.5246,
+      "originY": 0.7031,
+      "prompt": "Side view, facing left. The tan alsatian dog stands in place on all fours and considers something: nearly still, its head lowered and turned slightly away, its pointed ears rotating slowly back and forward again, its muzzle closed, its tail hanging still. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never sits, never lies down. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.3,
+        "heightSwing": 12.9,
+        "driftX": 8.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-09T01:51:05.373Z"
+    }
+  },
   "donkey-grey": {
     "angry": {
       "file": "donkey-grey-angry.png",
