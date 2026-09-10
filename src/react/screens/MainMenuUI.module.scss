@@ -72,6 +72,7 @@
 
 .menuButton,
 .menuButtonPrimary,
+.menuButtonDanger,
 .scenarioButton {
   width: 100%;
   font-weight: bold;
@@ -108,6 +109,79 @@
     background: var(--ui-color-accent);
     color: var(--ui-color-text-on-accent);
     transform: translateY(0);
+  }
+}
+
+.menuButtonDanger {
+  padding: 0.7rem 0.9rem;
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-danger);
+  background: var(--ui-color-danger-bg);
+  border: 2px solid var(--ui-color-danger-border);
+
+  &:hover {
+    border-color: var(--ui-color-danger-border-strong);
+    background: var(--ui-color-danger-bg-hover);
+    box-shadow: 0 0 12px var(--ui-color-danger-bg-strong);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    background: var(--ui-color-danger-bg-strong);
+    border-color: var(--ui-color-danger-border-active);
+    transform: translateY(0);
+  }
+}
+
+.confirmOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--ui-color-overlay-confirm);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.confirmBox {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 26rem;
+  padding: 1.5rem;
+  background: var(--ui-color-surface-confirm);
+  border: 1px solid var(--ui-color-border-default);
+  border-radius: 0.625rem;
+  box-shadow: 0 12px 40px var(--ui-color-shadow-deep);
+}
+
+.confirmTitle {
+  margin: 0;
+  font-size: var(--ui-font-body);
+  font-weight: 600;
+  color: var(--ui-color-text-strong);
+}
+
+.confirmBody {
+  margin: 0;
+  font-size: var(--ui-font-caption);
+  line-height: 1.55;
+  color: var(--ui-color-text-muted-2);
+}
+
+.confirmActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+
+  .menuButton,
+  .menuButtonDanger {
+    text-align: center;
   }
 }
 

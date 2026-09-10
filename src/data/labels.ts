@@ -32,6 +32,11 @@ const LABELS = {
   level1BramInsight: 'Down at the Fence: Looking Twice',
   level1LabCass: "The Fox's Lab: Dirty Paws",
   animationGallery: 'Animation Gallery',
+  resetProgress: 'Reset Progress',
+  resetProgressConfirmTitle: 'Reset all progress?',
+  resetProgressConfirmBody:
+    'This clears your saved encounters, Field Notes, and tutorials from this browser. It cannot be undone.',
+  resetProgressConfirmAction: 'Reset',
 
   // --- Animation gallery ---
   galleryTitle: 'Animation Gallery',
