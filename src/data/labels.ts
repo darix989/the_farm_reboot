@@ -472,6 +472,7 @@ const LABELS = {
   conditionHintFallacyKnown: 'know the {fallacy} fallacy',
   conditionHintFallacySpotted: 'spot {fallacy} in a conversation',
   conditionHintEncounterCompleted: 'finish an earlier conversation',
+  conditionHintTutorialCompleted: 'open Field Notes on the farm',
   listSeparator: ', ',
   encounterLockedHint: 'Not yet — you need to {requirements}.',
   farmPromptLocked: 'Locked',

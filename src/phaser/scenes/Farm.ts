@@ -15,6 +15,7 @@ import { VirtualJoystick } from '../farm/VirtualJoystick';
 import { farmPalette } from '../farm/farmPalette';
 import { useGameStore } from '../../store/gameStore';
 import { useFarmStore } from '../../store/farmStore';
+import { useTutorialStore } from '../../store/tutorialStore';
 import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import getLabel from '../../data/labels';
 import { farmNpcTalkLocked } from '../../utils/farmTalkGate';
@@ -235,12 +236,16 @@ export class Farm extends Scene {
   update(): void {
     if (!this.player.body) return;
 
-    // Freeze while a conversation is open so Rue does not wander mid-sentence.
-    if (useFarmStore.getState().talkingToNpcId) {
+    // Freeze while a conversation or farm tutorial is open so Rue does not wander.
+    const talking = useFarmStore.getState().talkingToNpcId;
+    const tutorialOpen = useTutorialStore.getState().isOpen;
+    if (talking || tutorialOpen) {
       this.player.setVelocity(0, 0);
       this.stopWalking();
+      if (tutorialOpen && !talking) this.joystick?.setEnabled(false);
       return;
     }
+    this.joystick?.setEnabled(true);
 
     const dir = movementVector(this.keys, this.joystick, this.moveVector);
     this.player.setVelocity(dir.x * PLAYER_SPEED, dir.y * PLAYER_SPEED);
@@ -301,6 +306,7 @@ export class Farm extends Scene {
   private tryInteract(): void {
     const { nearbyNpcId, talkingToNpcId, openDialogue } = useFarmStore.getState();
     if (talkingToNpcId || !nearbyNpcId) return;
+    if (useTutorialStore.getState().isOpen) return;
     if (farmNpcTalkLocked(nearbyNpcId)) return;
     openDialogue(nearbyNpcId);
   }

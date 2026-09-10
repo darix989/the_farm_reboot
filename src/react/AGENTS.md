@@ -28,6 +28,7 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `trial/utils/trialActionShortcuts.ts` | Action-key codes (Continue / Analyze / Back / options) and the ignore rules for focused controls. |
 | `trial/components/TypewriterText.tsx` | Leaf that fills in one line character by character. Owns the character count so a reveal re-renders one node, not the overlay. |
 | `hooks/useScenarioTutorials.ts` | Subscribes to bus events declared by `scenario.tutorials` and opens the matching overlay via `useTutorialStore` (see "Scenario tutorials" below). |
+| `hooks/useFarmTutorials.ts` | Opens farm overlay tutorials from `src/data/farmTutorials.ts` when their `GameCondition`s are met (see "Farm tutorials" below). |
 | `trial/utils/debateEventBus.ts` | Typed pub/sub singleton keyed on `EventTrigger`, plus the `useDebateEvent` React hook and tutorial-trigger helpers (`DebateTutorialTrigger`, `debatePayloadSatisfies`, `debateTutorialTriggerMatches`). |
 | `trial/roundRecapModal/RoundRecapModal.tsx` | Post–player-round summary modal; closing it dispatches `continue` and advances the workflow. Emits `round:recap:open` / `round:recap:close` on mount/unmount. Each block renders the authored `summary` (clamped to two lines), falling back to the spoken text — see [`docs/encounters.md`](../../docs/encounters.md#recap-summaries). |
 | `trial/roundAnalysisModal/RoundAnalysisModal.tsx` | Modal overlay for per-round analysis and fallacy guessing (see below). Emits `analysis:*` events for every open/close, sentence toggle, fallacy toggle, and guess outcome. |
@@ -571,6 +572,14 @@ The onboarding overlay that used to live on a dedicated `introTutorial` field is
 ### Gotcha: emits that trigger tutorials run synchronously
 
 `useScenarioTutorials` handles bus events synchronously and calls `openTutorial(...)` on the tutorial store in the same tick. That scheduling hits `TutorialOverlay` immediately, so any emit at the authoring site must come from event-handler or effect scope — not from a render-phase callback (function component body, `useMemo` / `useCallback` factory, functional `setState` updater, `useReducer` reducer). See **Debate event bus → Emitting safely** above for the full rule and an example pattern.
+
+---
+
+## Farm tutorials (`src/data/farmTutorials.ts`)
+
+The same `TutorialOverlay` can run on the farm. Entries live in `farmTutorials.ts`, not on a scenario: each has an `id`, a `triggerWhen: GameCondition[]`, and a `DebateTutorialJson`. `useFarmTutorials` (called from `FarmUI`) opens the first unmet entry whose conditions are satisfied, skips while a talk is open, and writes `progressStore.completedTutorials` on Got it so a reload does not replay it.
+
+Field Notes targets (`codex_open`, `codex_tab`, `codex_tabs`, `codex_content`, `codex_close`) are stamped as `data-tutorial-*` on `FarmUI` and `CodexOverlay`. A step that points at the opening button keeps the Codex **closed**; a step that points at tabs or content opens it on `next` before the highlight lookup (same reason the Debate Log is expanded before a log target). `interactionMode: 'highlight'` spotlights a control without freezing sibling Field Notes tabs — overlay Continue still works.
 
 ---
 

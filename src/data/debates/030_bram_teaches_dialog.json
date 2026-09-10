@@ -299,26 +299,6 @@
           }
         ]
       }
-    },
-    {
-      "id": "dialog-field-notes",
-      "trigger": {
-        "event": "round:start",
-        "where": {
-          "roundId": "round-4"
-        }
-      },
-      "tutorial": {
-        "steps": [
-          {
-            "message": "Your **[accent]progress[/accent]** is in **[accent]Field Notes[/accent]**, under **[accent]Next[/accent]**. Open it on the farm after you leave.\n\nIt will have moved on. That is who to talk to.",
-            "modal": {
-              "size": "medium",
-              "position": "topLeft"
-            }
-          }
-        ]
-      }
     }
   ]
 }

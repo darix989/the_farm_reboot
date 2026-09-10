@@ -7,6 +7,7 @@ import { useFarmStore } from '../../store/farmStore';
 import { useGameStore } from '../../store/gameStore';
 import { useCodexUiStore } from '../../store/codexUiStore';
 import { useProgressStore } from '../../store/progressStore';
+import { useTutorialStore } from '../../store/tutorialStore';
 import { GameManager } from '../../utils/gameManager';
 import { farmDialogueFor, farmNpcRequirements } from '../farm/farmDialogueState';
 import {
@@ -14,11 +15,18 @@ import {
   useConditionsMet,
   useUnmetConditionsHint,
 } from '../hooks/useGameConditions';
+import { useFarmTutorials } from '../hooks/useFarmTutorials';
 import { areConditionsMet, conditionContextSnapshot } from '../../utils/gameConditions';
 import { farmNpcTalkLocked } from '../../utils/farmTalkGate';
 import { scenarioRequirements } from '../../data/levels';
 import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
 import FarmDialogue from '../farm/FarmDialogue';
+import {
+  canRunTutorialTargetAction,
+  canRunTutorialUntargetedAction,
+  notifyTutorialTargetAction,
+} from '../tutorial/tutorialInteractionGuard';
+import type { TutorialTargetRef } from '../../types/debateEntities';
 import styles from '../farm/FarmUI.module.scss';
 
 /**
@@ -28,6 +36,7 @@ import styles from '../farm/FarmUI.module.scss';
  */
 /** Phones have no keyboard, and the joystick is summoned by touching anywhere. */
 const MOVE_HINT_LABEL = isSmartphone() ? 'farmMoveHintTouch' : 'farmMoveHint';
+const CODEX_OPEN_TARGET: TutorialTargetRef = { kind: 'codex_open' };
 
 const FarmUI: React.FC = () => {
   const nearbyNpcId = useFarmStore((s) => s.nearbyNpcId);
@@ -35,6 +44,7 @@ const FarmUI: React.FC = () => {
   const openDialogue = useFarmStore((s) => s.openDialogue);
   const closeDialogue = useFarmStore((s) => s.closeDialogue);
   const openCodex = useCodexUiStore((s) => s.openCodex);
+  const tutorialOpen = useTutorialStore((s) => s.isOpen);
 
   const completedScenarios = useProgressStore((s) => s.completedScenarios);
   const dialogue = useMemo(
@@ -53,6 +63,8 @@ const FarmUI: React.FC = () => {
   const conditionCtx = useConditionContext();
   const nearbyTalkLocked = nearbyNpcId ? farmNpcTalkLocked(nearbyNpcId, conditionCtx) : false;
   const nearbyLockedHint = useUnmetConditionsHint(nearbyTalkLocked ? nearbyRequires : []);
+
+  useFarmTutorials();
 
   // After the loading overlay unmounts — not in Phaser `create`, which runs while that
   // overlay still covers the stage, and which used to skip anyone who already had progress.
@@ -86,7 +98,16 @@ const FarmUI: React.FC = () => {
       {/* Hidden during a conversation: the talk screen fills the stage, and the Codex opening
           over it would cover the line the player is reading. */}
       {!dialogue && (
-        <button className={styles.codexButton} type="button" onClick={() => openCodex()}>
+        <button
+          className={styles.codexButton}
+          type="button"
+          data-tutorial-codex-open
+          onClick={() => {
+            if (!canRunTutorialTargetAction(CODEX_OPEN_TARGET)) return;
+            openCodex();
+            notifyTutorialTargetAction(CODEX_OPEN_TARGET);
+          }}
+        >
           {getLabel('codexOpen')}
         </button>
       )}
@@ -95,9 +116,10 @@ const FarmUI: React.FC = () => {
         <button
           type="button"
           className={styles.talkPrompt}
-          disabled={nearbyTalkLocked}
+          disabled={nearbyTalkLocked || tutorialOpen}
           onClick={() => {
             if (nearbyTalkLocked) return;
+            if (!canRunTutorialUntargetedAction()) return;
             openDialogue(nearbyNpc.id);
           }}
         >

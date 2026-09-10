@@ -124,7 +124,7 @@ know about each other.
 | `farmStore` | Overworld ↔ React handoff: which animal is nearby, which one you are talking to | no |
 | `trialStageStore` | Debate ↔ Phaser handoff: which speaker the `Trial` scene's cast should react to | no |
 | `debateLogStore` | Whether the Trial's Debate Log is expanded or collapsed to its recap chip | no |
-| `progressStore` | Which encounters are finished, whether Level 1 has been started | **yes** — `localStorage`, `the-farm-progress` |
+| `progressStore` | Which encounters and farm tutorials are finished, whether Level 1 has been started | **yes** — `localStorage`, `the-farm-progress` |
 | `codexStore` | Known fallacies, spotted fallacies, dialog flags | **yes** — `localStorage`, `the-farm-codex` |
 | `codexUiStore` | Whether Field Notes is open, and which section | no |
 
@@ -184,7 +184,8 @@ makes the ladder testable without replaying the farm.
 
 One vocabulary, two consumers. `GameCondition` (`src/utils/gameConditions.ts`) is a
 discriminated union — a fallacy the player knows, a fallacy they have spotted, an encounter
-they have finished, a named dialog flag, or a named feature unlock. The same predicate gates a Talk button
+they have finished, a named dialog flag, a named feature unlock, or a finished farm overlay
+tutorial. The same predicate gates a Talk button
 (`ScenarioEntry.requires`) and a debate option (`PlayerOption.unlockConditions`). Evaluate
 it with `isConditionMet` / `areConditionsMet`; React subscribers go through
 `useGameConditions.ts` so a store write re-renders. Prefer a `dialog_flag` over
@@ -209,7 +210,8 @@ next to `TutorialOverlay`. Routing to a Codex scene would tear down the overworl
 Rue's position with it) just to read a list. It is `absolute` on the letterboxed stage,
 `pointer-events: auto` on its root, `z-index` above the trial modals. The Next tab is
 authored in `src/data/levelGoals.ts` and evaluated against the same `GameCondition`
-snapshot as the overworld gates.
+snapshot as the overworld gates. Farm overlay tutorials can spotlight the opening button
+and the tabs (`codex_open` / `codex_tab` / `codex_tabs`); see `src/data/farmTutorials.ts`.
 
 A gated encounter is still *offered*, by default — the animal talks, and only the Talk
 button is locked. Set `gateTalk` on the NPC to refuse the conversation itself (Hetty, Bram,

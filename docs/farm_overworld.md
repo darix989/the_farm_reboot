@@ -212,6 +212,15 @@ The first time the farm overlay mounts, `FarmUI` opens Dot's conversation and wr
 `level1Started` to `progressStore`. Returning from a debate, from the menu, or a reload
 does not force it again.
 
+### Farm overlay tutorials
+
+After Bram's first lesson, `useFarmTutorials` opens the same `TutorialOverlay` used in
+debates, triggered by `GameCondition`s in [`farmTutorials.ts`](../src/data/farmTutorials.ts)
+rather than the debate bus. Completing an entry writes `tutorial_completed` into
+`progressStore` so it does not replay. Field Notes (`codex_open`, tabs, content) are
+spotlight targets; `interactionMode: 'highlight'` keeps those controls usable. Rue is
+frozen for the same reason a talk freezes him.
+
 ### Encounter gates
 
 `ScenarioEntry.requires` (on the entry in `levels.ts`) is the overworld gate. The chain is:

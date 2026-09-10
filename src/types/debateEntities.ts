@@ -340,8 +340,11 @@ export interface TutorialArtificialInteraction {
   action: TutorialArtificialInteractionAction;
 }
 
-export type TutorialInteractionMode = 'modal_only' | 'target_only';
+export type TutorialInteractionMode = 'modal_only' | 'target_only' | 'highlight';
 export type TutorialStepOnFinish = 'exit';
+
+/** Field Notes sections. Mirrors `CodexSection` in `codexUiStore` so this file stays store-free. */
+export type TutorialCodexSection = 'next' | 'known' | 'spotted' | 'dialogs';
 
 /**
  * Typed reference to a UI element that can be highlighted (and optionally be
@@ -375,7 +378,17 @@ export type TutorialTargetRef =
         | 'close';
     }
   /** Attempts remaining + Insight Points recap row in the analysis modal body. */
-  | { kind: 'analysis_resources' };
+  | { kind: 'analysis_resources' }
+  /** Overworld / menu button that opens Field Notes. */
+  | { kind: 'codex_open' }
+  /** One Field Notes tab (`next` / `known` / `spotted` / `dialogs`). */
+  | { kind: 'codex_tab'; section: TutorialCodexSection }
+  /** The Field Notes tablist as a whole. */
+  | { kind: 'codex_tabs' }
+  /** The Field Notes body (current section's content). */
+  | { kind: 'codex_content' }
+  /** Field Notes Close control. */
+  | { kind: 'codex_close' };
 
 /** One panel in the intro tutorial. */
 export interface DebateTutorialStep {
@@ -409,6 +422,8 @@ export interface DebateTutorialStep {
    *   interactable (`scenario 2.1`).
    * - Present + `interactionMode: 'target_only'`: target is the only allowed
    *   in-app interaction (`scenario 2.2`).
+   * - Present + `interactionMode: 'highlight'`: visual spotlight only; overlay
+   *   Continue / Got it still work, and sibling Field Notes controls stay live.
    */
   targetComponent?: TutorialTargetRef;
   /** Behavior used when `targetComponent` is present. Defaults to `modal_only`. */

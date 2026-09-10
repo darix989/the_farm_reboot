@@ -99,7 +99,7 @@ teaches the locked line and then argues the motion properly, and Tobias requires
 
 | # | Scenario | Mode | Teaches | Fallacies on the picker | New for the player |
 |---|---|---|---|---|---|
-| 1.1 Bram | One at a Time | Lesson | **How a round works** / how you speak | — | A conversation is one animal, then the other. Three options, no wrong one. Brief look at the moderator emoji and Field Notes **Next**. |
+| 1.1 Bram | One at a Time | Lesson | **How a round works** / how you speak | — | A conversation is one animal, then the other. Three options, no wrong one. Brief look at the moderator emoji. Field Notes **Next** is taught on the farm after Leave. |
 | 1.2 Bram | Answer Me Now | Lesson | **Crossfire** — both halves | — | Somebody asks, you answer on your feet. Round-type labels unlock. |
 | 1.3 Cass | The Name of the Trick | Sparring | **The name** of Ad Hominem | ad-hominem | Analysis via the footer magnifying glass. Fallacy known on leave. |
 | 1.4 Hetty | All About You | Gossip | **Spotting it in the wild**, three times | ad-hominem | Gated on knowing Ad Hominem. Sets the flag the rest of the level hangs off. Then she has to wait while he answers. |
@@ -162,14 +162,15 @@ round. That is the whole of it."*, then a goodbye (4): he will still be at the f
 can stand another minute of him, and he apologises for having kept them. No fallacy appears
 in this file at all.
 
-Four tutorials, all `medium` — the copy in each is two short paragraphs, and a larger box
+Three tutorials, all `medium` — the copy in each is two short paragraphs, and a larger box
 frames whitespace: what a round is (`introduction:start`, wizard); now you speak
 (`round:start` / `round-2`, interactive); then after confirm, the moderator emoji **on the
 collapsed recap chip** (`debate_log_recap_moderator_score`) and the expand arrow
-(`debate_log_panel_toggle`); then Field Notes **Next** on `round:start` / `round-4` (no
-target — the Codex is a global overlay with no tutorial hook). The log stays collapsed
-here, unlike 1.9. Completing the lesson flips Next from this Bram to the next: he is still
-at the fence, and he has one more thing.
+(`debate_log_panel_toggle`). Field Notes **Next** is not in this file: it fires on the farm
+after Leave (`farmTutorials.ts`, `field-notes-intro`), once `bram-taught-rounds` is set, and
+points at the opening button then the Codex tabs. The log stays collapsed here, unlike 1.9.
+Completing the lesson flips Next from this Bram to the next: he is still at the fence, and
+he has one more thing.
 
 ### 1.2 — "Answer Me Now" (Bram teaches crossfire)
 
@@ -504,7 +505,7 @@ tiny:
 
 | Rung | Entries / steps | Teaches |
 |---|---|---|
-| 1.1 lesson | 4 / 5 | What a round is; now you speak, three ways, no wrong one; the moderator emoji; Field Notes **Next**. |
+| 1.1 lesson | 3 / 4 | What a round is; now you speak, three ways, no wrong one; the moderator emoji. Field Notes **Next** is a farm overlay after Leave. |
 | 1.2 lesson | 1 / 1 | They call this **crossfire**. The round label says so. |
 | 1.3 teaching | 4 / 5 | No score; there is no right answer in round 3; open the magnifying glass; tag the sentence about *you*; every Sparring Log card carries the same glass. Closing dialogue points at the two fallacy tabs. |
 | 1.4 gossip | 1 / 1 | This is not a debate. |

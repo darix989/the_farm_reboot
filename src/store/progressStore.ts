@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { DEBATES, type DebateScenarioKey } from '../data/levels';
+import { isFarmTutorialId, type FarmTutorialId } from '../data/farmTutorials';
 
 /**
  * Which encounters the player has finished, and whether they have opened Level 1.
@@ -14,11 +15,15 @@ import { DEBATES, type DebateScenarioKey } from '../data/levels';
  */
 interface ProgressStore {
   completedScenarios: DebateScenarioKey[];
+  /** Farm overlay tutorials the player has finished. See `src/data/farmTutorials.ts`. */
+  completedTutorials: FarmTutorialId[];
   /** True once the farm has opened the intro (or the player already had progress). */
   level1Started: boolean;
   markCompleted: (key: DebateScenarioKey) => void;
+  markTutorialCompleted: (id: FarmTutorialId) => void;
   markLevel1Started: () => void;
   isCompleted: (key: DebateScenarioKey) => boolean;
+  isTutorialCompleted: (id: FarmTutorialId) => boolean;
   /** First scenario in `keys` not yet completed, or null when the animal is done. */
   nextScenarioFor: (keys: readonly DebateScenarioKey[]) => DebateScenarioKey | null;
   resetProgress: () => void;
@@ -28,6 +33,7 @@ export const useProgressStore = create<ProgressStore>()(
   persist(
     (set, get) => ({
       completedScenarios: [],
+      completedTutorials: [],
       level1Started: false,
 
       markCompleted: (key) =>
@@ -37,17 +43,27 @@ export const useProgressStore = create<ProgressStore>()(
             : { ...s, completedScenarios: [...s.completedScenarios, key] },
         ),
 
+      markTutorialCompleted: (id) =>
+        set((s) =>
+          s.completedTutorials.includes(id)
+            ? s
+            : { ...s, completedTutorials: [...s.completedTutorials, id] },
+        ),
+
       markLevel1Started: () => set((s) => (s.level1Started ? s : { ...s, level1Started: true })),
 
       isCompleted: (key) => get().completedScenarios.includes(key),
 
+      isTutorialCompleted: (id) => get().completedTutorials.includes(id),
+
       nextScenarioFor: (keys) => keys.find((k) => !get().isCompleted(k)) ?? null,
 
-      resetProgress: () => set({ completedScenarios: [], level1Started: false }),
+      resetProgress: () =>
+        set({ completedScenarios: [], completedTutorials: [], level1Started: false }),
     }),
     {
       name: 'the-farm-progress',
-      version: 6,
+      version: 7,
       /**
        * Saved data outlives the code that wrote it. A stale entry naming a scenario
        * that no longer exists must not break the farm, so anything unrecognised is
@@ -69,11 +85,22 @@ export const useProgressStore = create<ProgressStore>()(
        * arrived, and every animal's offer order changed. Same reasoning again — a part-played
        * save is sitting in a sequence that no longer exists. Bump `codexStore` alongside this
        * one; the feature unlocks live over there.
+       *
+       * v7 adds `completedTutorials` for farm overlay tutorials. Existing v6 saves keep their
+       * encounters; the new field starts empty so the Field Notes intro can still fire.
        */
       migrate: (persisted, fromVersion) => {
         const saved = (persisted ?? {}) as Record<string, unknown>;
         if (fromVersion < 6) {
-          return { ...saved, completedScenarios: [], level1Started: false };
+          return {
+            ...saved,
+            completedScenarios: [],
+            completedTutorials: [],
+            level1Started: false,
+          };
+        }
+        if (fromVersion < 7) {
+          return { ...saved, completedTutorials: [] };
         }
         return saved;
       },
@@ -83,9 +110,15 @@ export const useProgressStore = create<ProgressStore>()(
         const clean = Array.isArray(raw)
           ? raw.filter((k): k is DebateScenarioKey => typeof k === 'string' && k in DEBATES)
           : [];
+        const tutorials = Array.isArray(saved?.completedTutorials)
+          ? saved.completedTutorials
+              .filter(isFarmTutorialId)
+              .filter((id, i, all) => all.indexOf(id) === i)
+          : [];
         return {
           ...current,
           completedScenarios: clean,
+          completedTutorials: tutorials,
           level1Started: saved?.level1Started === true,
         };
       },

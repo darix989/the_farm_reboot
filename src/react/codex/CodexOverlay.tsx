@@ -5,8 +5,15 @@ import { DIALOG_FLAG_ORDER, DIALOG_FLAGS } from '../../data/dialogFlags';
 import { currentMainGoal, currentOptionalGoals, type LevelGoal } from '../../data/levelGoals';
 import { useCodexStore } from '../../store/codexStore';
 import { useCodexUiStore, type CodexSection } from '../../store/codexUiStore';
+import { useTutorialStore } from '../../store/tutorialStore';
 import { useConditionContext } from '../hooks/useGameConditions';
 import { groupSpottedByFallacy } from './codexEntries';
+import {
+  canRunTutorialTargetAction,
+  notifyTutorialTargetAction,
+} from '../tutorial/tutorialInteractionGuard';
+import { tutorialStepNeedsCodexOpen } from '../tutorial/tutorialCodexNeeds';
+import type { TutorialTargetRef } from '../../types/debateEntities';
 import styles from './CodexOverlay.module.scss';
 
 const SECTIONS: readonly {
@@ -18,6 +25,14 @@ const SECTIONS: readonly {
   { id: 'spotted', label: 'codexSectionSpotted' },
   { id: 'dialogs', label: 'codexSectionDialogs' },
 ];
+
+const CODEX_CLOSE_TARGET: TutorialTargetRef = { kind: 'codex_close' };
+
+function canDismissCodex(): boolean {
+  const { isOpen, steps, stepIndex } = useTutorialStore.getState();
+  if (!isOpen) return true;
+  return !tutorialStepNeedsCodexOpen(steps[stepIndex]?.targetComponent);
+}
 
 function GoalCard({ goal }: { goal: LevelGoal }) {
   return (
@@ -163,7 +178,10 @@ const CodexOverlay: React.FC = () => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
       event.preventDefault();
+      if (!canRunTutorialTargetAction(CODEX_CLOSE_TARGET)) return;
+      if (!canDismissCodex()) return;
       closeCodex();
+      notifyTutorialTargetAction(CODEX_CLOSE_TARGET);
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -179,29 +197,49 @@ const CodexOverlay: React.FC = () => {
             <h2 className={styles.codexTitle}>{getLabel('codexTitle')}</h2>
             <p className={styles.codexSubtitle}>{getLabel('codexSubtitle')}</p>
           </div>
-          <button className={styles.codexCloseBtn} type="button" onClick={closeCodex}>
+          <button
+            className={styles.codexCloseBtn}
+            type="button"
+            data-tutorial-codex-close
+            onClick={() => {
+              if (!canRunTutorialTargetAction(CODEX_CLOSE_TARGET)) return;
+              if (!canDismissCodex()) return;
+              closeCodex();
+              notifyTutorialTargetAction(CODEX_CLOSE_TARGET);
+            }}
+          >
             {getLabel('codexClose')}
           </button>
         </div>
 
-        <div className={styles.codexTabs} role="tablist">
-          {SECTIONS.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              role="tab"
-              aria-selected={section === tab.id}
-              className={
-                section === tab.id ? `${styles.codexTab} ${styles.codexTabActive}` : styles.codexTab
-              }
-              onClick={() => setSection(tab.id)}
-            >
-              {getLabel(tab.label)}
-            </button>
-          ))}
+        <div className={styles.codexTabs} role="tablist" data-tutorial-codex-tabs>
+          {SECTIONS.map((tab) => {
+            const tabTarget: TutorialTargetRef = { kind: 'codex_tab', section: tab.id };
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={section === tab.id}
+                data-tutorial-codex-tab={tab.id}
+                className={
+                  section === tab.id
+                    ? `${styles.codexTab} ${styles.codexTabActive}`
+                    : styles.codexTab
+                }
+                onClick={() => {
+                  if (!canRunTutorialTargetAction(tabTarget)) return;
+                  setSection(tab.id);
+                  notifyTutorialTargetAction(tabTarget);
+                }}
+              >
+                {getLabel(tab.label)}
+              </button>
+            );
+          })}
         </div>
 
-        <div className={styles.codexContent}>
+        <div className={styles.codexContent} data-tutorial-codex-content>
           {section === 'next' && <NextSection />}
           {section === 'known' && <KnownSection />}
           {section === 'spotted' && <SpottedSection />}

@@ -57,6 +57,7 @@ src/
                         #   ScenarioEntry.requires is the overworld gate
     farmMap.ts          # Overworld zones + NPCs; `gateTalk` / `talkStages` on FarmNpc
     farmTalk.ts         # Sequential talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `dot2`)
+    farmTutorials.ts    # Overworld overlay tutorials + FarmTutorialId
     characters.ts       # Cast roster: name, tint, and (if any) animated `animal` sprite
     debateCast.ts        # Who's on the character stage for a scenario + their stage order
     dialogFlags.ts      # Named conversations the Codex and gates can refer to
@@ -91,6 +92,7 @@ src/
       useGame.ts
       useTrialRoundWorkflow.ts # Reducer hook driving the debate state machine
       useScenarioTutorials.ts  # Opens scenario tutorials off the debate bus
+      useFarmTutorials.ts      # Opens farm overlay tutorials off GameCondition triggers
       useScrollFade.ts
       useSpriteFrame.ts        # Steps a spritesheet frame index for clips played in the DOM
       useGameConditions.ts     # Subscribed ConditionContext for gates and option unlocks
@@ -118,7 +120,7 @@ src/
     farmStore.ts        # Overworld ↔ React handoff
     trialStageStore.ts  # Debate ↔ Phaser handoff: active speaker for the Trial cast
     debateLogStore.ts   # Is the Trial's Debate Log expanded, or collapsed to its recap chip
-    progressStore.ts    # Completed encounters + whether Level 1 has started (persisted)
+    progressStore.ts    # Completed encounters + farm tutorials + whether Level 1 has started (persisted)
     codexStore.ts       # Known fallacies, spotted fallacies, dialog flags (persisted)
     codexUiStore.ts     # Field Notes overlay open/section (not persisted)
   utils/
