@@ -958,7 +958,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_complete':
         return {
           title: getLabel(encounterLabels(debate).finished),
-          body: moderatorOpinionPlainText(wf.totalScore),
+          body: mechanics.showModeratorOpinion ? moderatorOpinionPlainText(wf.totalScore) : '',
         };
       default:
         return null;
@@ -974,6 +974,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     fallacyGuesses,
     conditions,
     mechanics.analysisEnabled,
+    mechanics.showModeratorOpinion,
     getSpottedFallacies,
   ]);
 
