@@ -151,16 +151,19 @@ section never renders.
 Rue comes to the fence and asks for help — Dot sent him — and Bram is startled that anyone
 would walk down to the wolf. He says what he does all day (walks the fence, both ways, and
 overhears every conversation on this farm from the far side of a hedge) and then shows it,
-without apologising for the showing. A conversation here goes in **rounds**: one animal
-says a thing, the other answers, and that pair is a round. Then some rounds are not
-speeches — somebody asks and you answer on your feet. They call that **crossfire**. Four
-beats. He explains (1), you speak (2, three options, no wrong one, `preventOptionsShuffle`;
+without apologising for the showing. The introduction — every talk and every debate has
+one — is Bram naming that, with emphasis on **introduction**. Then a conversation here
+goes in **rounds**: one animal says a thing, the other answers, and that pair is a round;
+the spoken line highlights **rounds**. Then some rounds are not speeches — somebody asks
+and you answer on your feet. They call that **crossfire**. Four beats. He explains (1),
+you speak (2, three options, no wrong one, `preventOptionsShuffle`;
 A is impact 0, B and C are a light +8 so the face can move), he asks and you answer (3,
 NPC-raises), you ask and he has to answer (4, player-raises). No fallacy appears in this
 file at all. This is where the word **crossfire** first appears on the round label, and
 where every later `— crossfire` in the level is unlocked.
 
-Four tutorials, all `medium`: what a round is (`introduction:start`, wizard); now you speak
+Five tutorials, all `medium`: this is the **introduction** (`introduction:start`, wizard);
+what a round is (`round:start` / `round-1`, wizard); now you speak
 (`round:start` / `round-2`, interactive); then after confirm, the moderator emoji **on the
 collapsed recap chip** (`debate_log_recap_moderator_score`) and the expand arrow
 (`debate_log_panel_toggle`); then they call this **crossfire** (`round:start` / `round-3`,
@@ -496,7 +499,7 @@ tiny:
 
 | Rung | Entries / steps | Teaches |
 |---|---|---|
-| 1.1 lesson | 4 / 5 | What a round is; now you speak, three ways, no wrong one; the moderator emoji; they call this **crossfire**. Field Notes **Next** is a farm overlay after Leave. |
+| 1.1 lesson | 5 / 6 | This is the **introduction**, every conversation has one; what a round is; now you speak, three ways, no wrong one; the moderator emoji; they call this **crossfire**. Field Notes **Next** is a farm overlay after Leave. |
 | 1.2 teaching | 4 / 5 | No score; there is no right answer in round 3; open the magnifying glass; tag the sentence about *you*; every Sparring Log card carries the same glass. Closing dialogue points at the two fallacy tabs. |
 | 1.3 gossip | 1 / 1 | This is not a debate. |
 | 1.4 teaching | 1 / 1 | **Two** sentences are doing something this time, tag both. |

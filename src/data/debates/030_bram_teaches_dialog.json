@@ -1,6 +1,6 @@
 {
   "id": "level1-bram-teaches-dialog",
-  "introduction": "The wolf at the fence will show you how a conversation works on this farm, one piece at a time, before anyone else gets hold of you.",
+  "introduction": "Every talk and every debate on this farm starts with an [accent]introduction[/accent]. This is that — the setting, so you know what you walked into.",
   "playerSide": "opposition",
   "characters": {
     "bram": "Bram",
@@ -35,11 +35,16 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "A conversation here goes in rounds. One animal says a thing. The other answers. That pair is a round.",
+            "text": "After the introduction, a conversation here goes in [accent]rounds[/accent].",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
+            "text": "One animal says a thing. The other answers. That pair is a round.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-3",
             "text": "I go, then you go. That is the whole of it.",
             "logicalFallacies": []
           }
@@ -324,9 +329,34 @@
   ],
   "tutorials": [
     {
-      "id": "dialog-what-a-round-is",
+      "id": "dialog-the-introduction",
       "trigger": {
         "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Every talk and every debate starts with an **[accent]introduction[/accent]**.\n\nThis box is that. Read it, then Continue.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "dialog-what-a-round-is",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-1"
+        }
       },
       "tutorial": {
         "steps": [
