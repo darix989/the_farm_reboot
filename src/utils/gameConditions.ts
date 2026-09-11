@@ -3,9 +3,10 @@
  *
  * Several features are built on this and they share the vocabulary deliberately:
  *
- * - **Encounter gates** (`ScenarioEntry.requires`) — by default an animal will talk to you,
- *   but the button that starts their encounter stays disabled until the conditions are met.
- *   `FarmNpc.gateTalk` is the exception: the conversation itself stays closed.
+ * - **Encounter gates** (`ScenarioEntry.requires`) — an animal will always talk to you.
+ *   If their next encounter is still locked they give a `Meet` placeholder, or replay
+ *   their last follow-up; they do not offer a conversation that assumes something the player
+ *   has not been told yet.
  * - **Cross-encounter option unlocks** (`PlayerOption.unlockConditions`) — a debate choice that
  *   only appears because of something that happened in a *different* conversation. The older
  *   `PlayerOption.unlockCondition` still handles the in-debate case (spot a fallacy here, unlock

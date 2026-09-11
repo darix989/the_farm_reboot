@@ -18,7 +18,7 @@ import { useFarmStore } from '../../store/farmStore';
 import { useTutorialStore } from '../../store/tutorialStore';
 import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import getLabel from '../../data/labels';
-import { farmNpcTalkLocked } from '../../utils/farmTalkGate';
+import { animalSetup } from '../animals/animalAnimations';
 import { animalSetup } from '../animals/animalAnimations';
 import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
@@ -74,6 +74,7 @@ export class Farm extends Scene {
   private walking = false;
   private solids!: Phaser.Physics.Arcade.StaticGroup;
   private unsubscribeFarmUi: (() => void) | null = null;
+  private unsubscribeTutorial: (() => void) | null = null;
 
   constructor() {
     super('Farm');
@@ -115,6 +116,15 @@ export class Farm extends Scene {
       }
     });
     this.applyTalkViewport(useFarmStore.getState().talkingToNpcId);
+
+    // zustand `set` notifies listeners in the same tick, so Phaser input is
+    // already off before a tap after the overlay opens can reach the canvas.
+    this.unsubscribeTutorial = useTutorialStore.subscribe((state, prevState) => {
+      if (state.isOpen !== prevState.isOpen) {
+        this.applyTutorialInputLock(state.isOpen);
+      }
+    });
+    this.applyTutorialInputLock(useTutorialStore.getState().isOpen);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.persistPosition, this);
 
@@ -237,15 +247,15 @@ export class Farm extends Scene {
     if (!this.player.body) return;
 
     // Freeze while a conversation or farm tutorial is open so Rue does not wander.
+    // Phaser input itself is gated in `applyTutorialInputLock` — this only holds
+    // leftover velocity at zero if a lock and a physics step overlap.
     const talking = useFarmStore.getState().talkingToNpcId;
     const tutorialOpen = useTutorialStore.getState().isOpen;
     if (talking || tutorialOpen) {
       this.player.setVelocity(0, 0);
       this.stopWalking();
-      if (tutorialOpen && !talking) this.joystick?.setEnabled(false);
       return;
     }
-    this.joystick?.setEnabled(true);
 
     const dir = movementVector(this.keys, this.joystick, this.moveVector);
     this.player.setVelocity(dir.x * PLAYER_SPEED, dir.y * PLAYER_SPEED);
@@ -302,12 +312,31 @@ export class Farm extends Scene {
     useFarmStore.getState().setNearbyNpc(closestId);
   }
 
-  /** Space / E / Enter opens the nearest animal's conversation, unless `gateTalk` has it closed. */
+  /**
+   * While a farm overlay tutorial is up, Phaser must not walk, talk, or summon
+   * the stick. The React overlay's root is `pointer-events: none`, so those
+   * events would otherwise fall through to the canvas.
+   */
+  private applyTutorialInputLock(tutorialOpen: boolean): void {
+    this.input.enabled = !tutorialOpen;
+    if (tutorialOpen) {
+      this.joystick?.setEnabled(false);
+      if (this.player?.body) {
+        this.player.setVelocity(0, 0);
+        this.stopWalking();
+      }
+      return;
+    }
+    if (!useFarmStore.getState().talkingToNpcId) {
+      this.joystick?.setEnabled(true);
+    }
+  }
+
+  /** Space / E / Enter opens the nearest animal's conversation. */
   private tryInteract(): void {
-    const { nearbyNpcId, talkingToNpcId, openDialogue } = useFarmStore.getState();
-    if (talkingToNpcId || !nearbyNpcId) return;
+    const { nearbyNpcId, talkingToNpcId, pendingFollowUp, openDialogue } = useFarmStore.getState();
+    if (talkingToNpcId || pendingFollowUp || !nearbyNpcId) return;
     if (useTutorialStore.getState().isOpen) return;
-    if (farmNpcTalkLocked(nearbyNpcId)) return;
     openDialogue(nearbyNpcId);
   }
 
@@ -336,12 +365,17 @@ export class Farm extends Scene {
     }
     cam.setViewport(0, 0, STAGE_DESIGN_WIDTH, STAGE_DESIGN_HEIGHT);
     cam.startFollow(this.player, true, 0.12, 0.12);
-    this.joystick?.setEnabled(true);
+    if (!useTutorialStore.getState().isOpen) {
+      this.joystick?.setEnabled(true);
+    }
   }
 
   private persistPosition(): void {
     this.unsubscribeFarmUi?.();
     this.unsubscribeFarmUi = null;
+    this.unsubscribeTutorial?.();
+    this.unsubscribeTutorial = null;
+    this.input.enabled = true;
     if (!this.player) return;
     useGameStore.getState().updatePlayerPosition(this.player.x, this.player.y);
     this.joystick?.destroy();

@@ -1,6 +1,6 @@
 {
   "id": "level1-bram-teaches-unlocks",
-  "introduction": "Bram is at the fence again, and he has one more piece, and he is sorry about it in advance. This one he cannot explain at you. He has to do something unkind first, and he would rather you knew that going in.",
+  "introduction": "Bram is at the fence again, and he has one more piece. This one he cannot explain at you. He has to do something unkind first, and he would rather you knew that going in.",
   "playerSide": "opposition",
   "characters": {
     "bram": "Bram",
@@ -40,7 +40,7 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Sorry. One more piece and then I will let you get on. You have the name for the trick now — Cass will have seen to that.",
+            "text": "You have the name for the trick now — Cass will have seen to that.",
             "logicalFallacies": []
           },
           {
@@ -50,7 +50,7 @@
           },
           {
             "id": "s-r1-3",
-            "text": "It sounds unfair. It is not, quite — you cannot name a thing you have not noticed. I thought I would show you rather than explain it badly. On myself, if that is all right.",
+            "text": "It sounds unfair. It is not, quite — you cannot name a thing you have not noticed. I thought I would show you rather than explain it badly. On myself.",
             "logicalFallacies": []
           }
         ]

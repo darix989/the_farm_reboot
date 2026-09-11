@@ -55,9 +55,11 @@ src/
     labels.ts           # Central UI strings + default export getLabel()
     levels.ts           # Scenario registry: DebateScenarioKey, DEBATES, menu order
                         #   ScenarioEntry.requires is the overworld gate
-    farmMap.ts          # Overworld zones + NPCs; `gateTalk` / `talkStages` on FarmNpc
+    farmMap.ts          # Overworld zones + NPCs; `talkStages` on FarmNpc
     farmTalk.ts         # Sequential talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `dot2`)
+                        #   and `followUp:{scenarioKey}` for post-Trial pointers
     farmTutorials.ts    # Overworld overlay tutorials + FarmTutorialId
+    encounterFollowUps.ts # After Trial Leave: farm talk or tutorial, then dialog flags / Next
     characters.ts       # Cast roster: name, tint, and (if any) animated `animal` sprite
     debateCast.ts        # Who's on the character stage for a scenario + their stage order
     dialogFlags.ts      # Named conversations the Codex and gates can refer to
@@ -117,18 +119,18 @@ src/
   store/
     gameStore.ts        # Phaser refs, currentScene, activeDebateId, returnSceneKey
     tutorialStore.ts    # Open tutorial overlay + its interaction gate
-    farmStore.ts        # Overworld ↔ React handoff
+    farmStore.ts        # Overworld ↔ React handoff (nearby / talking / pendingFollowUp)
     trialStageStore.ts  # Debate ↔ Phaser handoff: active speaker for the Trial cast
     debateLogStore.ts   # Is the Trial's Debate Log expanded, or collapsed to its recap chip
     progressStore.ts    # Completed encounters + farm tutorials + whether Level 1 has started (persisted)
+    devSettingsStore.ts # Dev UI prefs (farm-talk skip button); persisted, not wiped by Reset Progress
     codexStore.ts       # Known fallacies, spotted fallacies, dialog flags (persisted)
     codexUiStore.ts     # Field Notes overlay open/section (not persisted)
   utils/
     constants.ts        # PHASER_PARENT_ID, stage design size, rem scaling, TRIAL_STAGE_HOLE
     gameManager.ts      # Static Phaser helpers (switchScene, getScene, …)
     gameConditions.ts   # GameCondition union; isConditionMet / conditionHint
-    encounterRewards.ts # mark-complete + teachesFallacies + setsDialogFlags in one write
-    farmTalkGate.ts     # farmNpcTalkLocked — conversation-level gate (`gateTalk`)
+    encounterRewards.ts # mark-complete + teach + flags (flags may wait for a farm follow-up)
 ```
 
 ## React UI design tokens (fonts and colors)
@@ -210,7 +212,7 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
   that file and `src/react/trial/utils/debateLogTutorialNeeds.ts`.
 - A **Round Analysis Modal** (`src/react/trial/roundAnalysisModal/RoundAnalysisModal.tsx`) lets the player inspect any statement in the log: tag logical fallacies sentence by sentence, or review why their own line was effective or flawed. Three attempts per target by default; a correct solve pays 1 Insight, once per target. A correct tag is also written to `codexStore` (`recordSpottedFallacy`), which marks the fallacy known.
 - **Field Notes (the Codex)** is a global React overlay (`src/react/codex/`), not a Phaser scene — routing to a Codex scene would tear down the overworld. It has four sections: who to talk to next (`levelGoals`), fallacies you know, fallacies you have spotted, and important conversations (`dialogFlags`). Opened from the main menu and from `FarmUI` (hidden during a talk). `pointer-events: auto` on its root.
-- **Farm talks reuse the debate chrome.** `TrialLayout`, `WizardPanel`, `TrialActionRow` and `TrialChoiceButton` are shared between the debate and the overworld talk. A farm talk runs *on the Farm scene* (no `scene.start`, so `gameStore.currentScene` stays `'Farm'` and `ReactApp` needs no new case); the camera is framed into `TRIAL_STAGE_HOLE` and the log slot is omitted.
+- **Farm talks reuse the debate chrome.** `TrialLayout`, `WizardPanel`, `TrialActionRow` and `TrialChoiceButton` are shared between the debate and the overworld talk. A farm talk runs *on the Farm scene* (no `scene.start`, so `gameStore.currentScene` stays `'Farm'` and `ReactApp` needs no new case); the camera is framed into `TRIAL_STAGE_HOLE` and the log slot is omitted. Leaving a finished Trial back to the farm queues a Leave-only follow-up (`src/data/encounterFollowUps.ts`) on the same animal; `setsDialogFlags` (and therefore Field Notes Next) wait until that pointer's last beat settles.
 - Authoring reference — schema, rounds, options, unlock conditions, `mechanics` flags: [`docs/encounters.md`](docs/encounters.md).
 - **⚠️ Pointer-events gotcha:** `.react-ui-overlay` is `pointer-events: none`, which inherits to every descendant. Any new interactive element **must** set `pointer-events: auto` on its root, or clicks fall through to the Phaser canvas. This is the most common bug in the codebase — see [`docs/architecture.md`](docs/architecture.md) for why the layout works this way.
 
@@ -239,8 +241,9 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
 - **Cross-layer signals** → `EventBus` + optional `gameStore` actions.
 - Keep **`PHASER_PARENT_ID`** in sync between the Phaser parent div and `ReactRoot` layout logic.
 - New **debate content** → author a `DebateScenarioJson` JSON file under `src/data/debates/` and register it once in `src/data/levels.ts` (that file owns the `DebateScenarioKey` union, the `DEBATES` lookup and the main-menu ordering). No engine changes required.
-- New **gated encounter** → set `requires` on its `ScenarioEntry` in `levels.ts`. Prefer a `dialog_flag` over `encounter_completed` when the gate is "this conversation happened" — a flag carries player-facing copy. By default a gated animal still talks; only Talk is disabled. Set `FarmNpc.gateTalk` to refuse the conversation itself until the next encounter unlocks. Hang the matching beats in `farmTalk.ts` (lengthening an NPC's `scenarios` list silently re-points every existing beat row).
-- New **dialog flag** → add the id to `DialogFlagId` in `src/data/dialogFlags.ts`, title/body labels, and declare it on the encounter that sets it via `setsDialogFlags`. Titles are authored as instructions ("hear Hetty out at the trough") because they double as the locked-encounter hint.
+- New **gated encounter** → set `requires` on its `ScenarioEntry` in `levels.ts`. Prefer a `dialog_flag` over `encounter_completed` when the gate is "this conversation happened" — a flag carries player-facing copy. Until it unlocks, the animal still talks: `Meet` if you have never finished one of theirs, or a replay of their last follow-up if you have. Hang the matching beats in `farmTalk.ts` (lengthening an NPC's `scenarios` list silently re-points every existing beat row).
+- New **dialog flag** → add the id to `DialogFlagId` in `src/data/dialogFlags.ts`, title/body labels, and declare it on the encounter that sets it via `setsDialogFlags`. Titles are authored as instructions ("hear Hetty out at the trough") because they double as the locked-encounter hint. On a farm Leave the flags wait for the follow-up in `encounterFollowUps.ts`.
+- New **post-Trial follow-up** → add an `ENCOUNTER_FOLLOW_UPS` entry (`farm_talk` or `tutorial`) and, for a talk, beats under `followUp:{scenarioKey}` in `farmTalk.ts`. Leave-only; Next moves when the last beat settles.
 - A scenario can ship as a **smaller mode** than a full debate via the optional `mechanics` block (`analysisEnabled`, `showInsightPoints`, `showModeratorOpinion`, `showRoundRecap`, `showIntroSummary`, `revealChoiceAssessment`, `targetQuality`, `maxAnalysisAttempts`, and `encounterKind` — which swaps UI copy so a non-debate is not labelled "Debate Log") plus `requiresAnalysis` on an NPC round. Defaults reproduce full-debate behaviour; resolve them with `resolveMechanics()` (`src/react/trial/utils/scenarioMechanics.ts`), never off the raw scenario. Full reference in `docs/encounters.md`; `docs/level_01_the_pond_motion.md` is a worked ladder.
 - **Looking at any animal's animations** → main menu → **Animation Gallery** (`AnimalGallery` scene + `AnimalGalleryUI`). Holds one clip on a loop, lists atlas and generated clips together, flags emotions with no art yet, and toggles between a crossfade and a raw cut when switching. `docs/characters-and-animations.md` §9.6.
 - New **animal emotion clip** (`talking`, `doubtful`, `angry`, `thinking`, `sneaky`) → **read `.claude/skills/animal-emotion-sprites/SKILL.md`**, the operating manual for this (Claude Code loads it as a skill; every other tool can simply open the file). In short: art is generated, not hand-drawn — `npm run sprites:emotions` drives the Ludo.ai API from `scripts/ludo/emotion-manifest.json` into a gitignored review dir, and `--promote` ships the clips you keep. Needs `LUDO_API_KEY` in `.env.local`, and **costs credits per clip**, so never generate without being asked. Design rationale (and the scale/origin trap that makes an un-normalized clip render at the wrong size) is in `docs/characters-and-animations.md` §9.

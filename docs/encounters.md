@@ -39,7 +39,7 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 | `availableLogicalFallacies` | Which icons appear on the picker. **This is the difficulty dial** — one icon is a tutorial, thirteen is a wall. |
 | `startingInsightPoints` | Insight to start with. Defaults to 0. |
 | `teachesFallacies` | Fallacies added to the Codex as known when the player **leaves a finished encounter**. Walking out halfway teaches nothing. |
-| `setsDialogFlags` | Dialog flags set on the same leave. Prefer these over `encounter_completed` for "this conversation happened" gates — a flag carries player-facing copy. |
+| `setsDialogFlags` | Dialog flags for "this conversation happened" gates. On a farm Leave they wait until the follow-up in `encounterFollowUps.ts` is heard, so Field Notes Next does not jump first. Main-menu Leave and replays write them immediately. |
 | `unlocksFeatures` | Features granted on the same leave (`insight_points`, `round_types`). Walking out halfway unlocks nothing. The teaching encounter can still show the feature during play. |
 | `mechanics` | Mode flags, below. Omit for a full debate. |
 | `rounds` | The sequence. |
@@ -131,14 +131,21 @@ requires: [
 ],
 ```
 
-This disables Talk on the farm and shows `conditionHint` as the reason. The animal still
-talks — only the button is locked. The main menu is not gated. Hang the matching beats in
+This gates the encounter on the farm. Until it unlocks the animal still talks — a `Meet`
+placeholder, or a replay of their last follow-up — but they do not offer that conversation.
+The main menu is not gated. Hang the matching beats in
 `farmTalk.ts`; lengthening an NPC's `scenarios` list silently re-points every existing beat
 row (`cass1` becomes the new first encounter, not the old one).
 
 Greeters with no encounter use `talkStages`. Set `completesFlag` on a stage to write a
 dialog flag when the last beat's reveal settles — that is "a real dialog happened till the
 end". Closing early sets nothing. Dot's welcome is the one that needs it.
+
+Every Level 1 Trial also has a **follow-up** in [`encounterFollowUps.ts`](../src/data/encounterFollowUps.ts):
+a short Leave-only farm talk on the same animal, keyed `followUp:{scenarioKey}` in
+`farmTalk.ts`. That is what names the next stop. The encounter's `setsDialogFlags` land when
+the pointer's last beat settles, which is when Field Notes Next moves. A later rung can
+use `{ kind: 'tutorial' }` instead of a talk.
 
 ---
 

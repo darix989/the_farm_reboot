@@ -33,8 +33,8 @@ export interface LevelGoal {
 }
 
 /**
- * Level 1 — "The Pond Motion". One main goal per rung of the nine-rung ladder, in play
- * order: Bram → Bram → Cass → Hetty → Cass → Hetty → Bram → Bram → Duchess. Each goal
+ * Level 1 — "The Pond Motion". One main goal per rung of the eight-rung ladder, in play
+ * order: Bram → Cass → Hetty → Cass → Hetty → Bram → Bram → Duchess. Each goal
  * opens on the previous rung's reward, which is also what Dot's `talkStages` key off, so
  * the greeter and the journal cannot disagree about who is next.
  *
@@ -57,15 +57,6 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     titleLabel: 'levelGoalBramTitle',
     bodyLabel: 'levelGoalBramBody',
     availableWhen: [{ kind: 'dialog_flag', flagId: 'dot-welcomed' }],
-    completeWhen: { kind: 'dialog_flag', flagId: 'bram-taught-rounds' },
-  },
-  {
-    id: 'talk-bram-crossfire',
-    kind: 'main',
-    npcId: 'bram',
-    titleLabel: 'levelGoalBramCrossfireTitle',
-    bodyLabel: 'levelGoalBramCrossfireBody',
-    availableWhen: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
     completeWhen: { kind: 'dialog_flag', flagId: 'bram-taught-crossfire' },
   },
   {
@@ -75,7 +66,7 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     titleLabel: 'levelGoalCassTitle',
     bodyLabel: 'levelGoalCassBody',
     availableWhen: [{ kind: 'dialog_flag', flagId: 'bram-taught-crossfire' }],
-    completeWhen: { kind: 'fallacy_known', fallacyId: 'ad-hominem' },
+    completeWhen: { kind: 'dialog_flag', flagId: 'cass-named-ad-hominem' },
   },
   {
     id: 'talk-hetty',
@@ -83,7 +74,7 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     npcId: 'hetty',
     titleLabel: 'levelGoalHettyTitle',
     bodyLabel: 'levelGoalHettyBody',
-    availableWhen: [{ kind: 'fallacy_known', fallacyId: 'ad-hominem' }],
+    availableWhen: [{ kind: 'dialog_flag', flagId: 'cass-named-ad-hominem' }],
     completeWhen: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' },
   },
   {
@@ -93,7 +84,7 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     titleLabel: 'levelGoalCassPopularityTitle',
     bodyLabel: 'levelGoalCassPopularityBody',
     availableWhen: [{ kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' }],
-    completeWhen: { kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' },
+    completeWhen: { kind: 'dialog_flag', flagId: 'cass-named-appeal-to-popularity' },
   },
   {
     id: 'talk-hetty-grate',
@@ -101,7 +92,7 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     npcId: 'hetty',
     titleLabel: 'levelGoalHettyGrateTitle',
     bodyLabel: 'levelGoalHettyGrateBody',
-    availableWhen: [{ kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' }],
+    availableWhen: [{ kind: 'dialog_flag', flagId: 'cass-named-appeal-to-popularity' }],
     completeWhen: { kind: 'dialog_flag', flagId: 'hetty-grate-heard' },
   },
   {

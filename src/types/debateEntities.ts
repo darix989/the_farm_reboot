@@ -565,6 +565,9 @@ export interface DebateScenarioJson {
    * Dialog flags set once this encounter is finished, whatever the player scored. Use these
    * for "this conversation happened" gates rather than `encounter_completed`, because a flag
    * carries player-facing copy for the Codex and for the locked-encounter hint.
+   *
+   * On a farm Leave they wait until the follow-up pointer is heard
+   * (`src/data/encounterFollowUps.ts`). Main-menu Leave and replays write them immediately.
    */
   setsDialogFlags?: readonly DialogFlagId[];
   /**

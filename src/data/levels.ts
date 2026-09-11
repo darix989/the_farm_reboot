@@ -51,10 +51,10 @@ export interface ScenarioEntry {
    * What the player must have done elsewhere before an animal will start this encounter.
    * Omit for an encounter that is always available.
    *
-   * A gated encounter is still *offered* by default — the animal talks, and the Talk button
-   * carries the reason it is disabled. Set `FarmNpc.gateTalk` to refuse the conversation
-   * itself until this encounter's `requires` are met. Being told "not yet, and here is why"
-   * is content; a silent animal without `gateTalk` is a bug report.
+   * A gated encounter is not offered until the conditions are met — the animal still talks
+   * (`Meet` if you have never finished one of theirs, or a replay of their last follow-up if
+   * you have). The Talk button never starts a conversation that assumes something the player
+   * has not been told yet.
    *
    * This gates the overworld only. The main menu lists every scenario and always has, which is
    * what makes the ladder testable without replaying the farm.
@@ -68,8 +68,8 @@ export interface ScenarioEntry {
  * file numbers are creation order, not ladder order. See
  * `docs/level_01_the_pond_motion.md` for the story and the authored dialog.
  *
- * Nine rungs. Insight Points stay deferred; round-type labels come back with Bram's
- * second fence lesson. Four encounters remain parked in {@link LEGACY_SCENARIOS} —
+ * Eight rungs. Insight Points stay deferred; round-type labels come back with Bram's
+ * first fence lesson. Five encounters remain parked in {@link LEGACY_SCENARIOS} —
  * still authored, still playable from the menu, off the farm.
  *
  * Overworld gates live on `requires`. The main menu still lists every rung ungated, which
@@ -83,12 +83,6 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     requires: [{ kind: 'dialog_flag', flagId: 'dot-welcomed' }],
   },
   {
-    key: '031_bram_teaches_crossfire',
-    titleLabel: 'level1BramCrossfire',
-    scenario: bramCrossfireJson as unknown as DebateScenarioJson,
-    requires: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
-  },
-  {
     key: '020_cass_teaches_ad_hominem',
     titleLabel: 'level1CassTeaches',
     scenario: cassTeachesJson as unknown as DebateScenarioJson,
@@ -98,7 +92,7 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     key: '021_hetty_ad_hominem_barrage',
     titleLabel: 'level1HettyBarrage',
     scenario: hettyBarrageJson as unknown as DebateScenarioJson,
-    requires: [{ kind: 'fallacy_known', fallacyId: 'ad-hominem' }],
+    requires: [{ kind: 'dialog_flag', flagId: 'cass-named-ad-hominem' }],
   },
   {
     key: '023_cass_teaches_appeal_to_popularity',
@@ -110,7 +104,7 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     key: '010_gossip_trough_hetty',
     titleLabel: 'level1GossipHetty',
     scenario: gossipHettyJson as unknown as DebateScenarioJson,
-    requires: [{ kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' }],
+    requires: [{ kind: 'dialog_flag', flagId: 'cass-named-appeal-to-popularity' }],
   },
   {
     // Unlocks as soon as Ad Hominem has a name — Bram offers it the moment you next walk
@@ -143,9 +137,14 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
 
 /**
  * Scenarios that are not rungs of the Level 1 ladder but stay playable from the menu:
- * the pre-ladder encounters, and the four cut when Level 1 was trimmed to nine rungs.
+ * the pre-ladder encounters, and the ones cut when Level 1 was trimmed.
  */
 export const LEGACY_SCENARIOS: readonly ScenarioEntry[] = [
+  {
+    key: '031_bram_teaches_crossfire',
+    titleLabel: 'level1BramCrossfire',
+    scenario: bramCrossfireJson as unknown as DebateScenarioJson,
+  },
   {
     key: '011_sparring_cass_ad_hominem',
     titleLabel: 'level1SparringCass',

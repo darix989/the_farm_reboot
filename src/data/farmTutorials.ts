@@ -24,7 +24,7 @@ export interface FarmTutorialEntry {
 export const FARM_TUTORIALS: readonly FarmTutorialEntry[] = [
   {
     id: 'field-notes-intro',
-    triggerWhen: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
+    triggerWhen: [{ kind: 'dialog_flag', flagId: 'bram-taught-crossfire' }],
     tutorial: {
       steps: [
         {

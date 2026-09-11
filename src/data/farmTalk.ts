@@ -1,12 +1,16 @@
 /**
- * Sequential farm-talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `cassDone`).
+ * Sequential farm-talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `cassDone`)
+ * or `followUp:{scenarioKey}` for the pointer talk after a Trial.
  *
  * The suffix is the animal's next unfinished scenario index (`1`, `2`, …), a
- * `talkStages` suffix (`dot1`, `dot2`), or `Done` when the list is empty. A missing row falls back to the single
- * `farmDialog<Npc><suffix>` label so a new animal is never silent.
+ * `talkStages` suffix (`dot1`, `dot2`), `Meet` when their next encounter is still
+ * locked and you have never finished one with them, or `Done` when the list is empty.
+ * A missing row falls back to the single `farmDialog<Npc><suffix>` label so a new animal
+ * is never silent.
  */
 import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 import { PLAYER_CHARACTER_ID } from './characters';
+import type { DebateScenarioKey } from './levels';
 import type { Labels } from './labels';
 
 export interface FarmTalkBeat {
@@ -40,6 +44,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'hetty', textLabel: 'farmDialogHettyDoneA' },
     { speakerId: 'hetty', textLabel: 'farmDialogHettyDoneB' },
   ],
+  hettyMeet: [
+    { speakerId: 'hetty', textLabel: 'farmDialogHettyMeetA' },
+    { speakerId: RUE, textLabel: 'farmDialogHettyMeetB' },
+    { speakerId: 'hetty', textLabel: 'farmDialogHettyMeetC' },
+  ],
   cass1: [
     { speakerId: 'cass', textLabel: 'farmDialogCass1a' },
     { speakerId: RUE, textLabel: 'farmDialogCass1b' },
@@ -54,17 +63,18 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneA' },
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneB' },
   ],
+  cassMeet: [
+    { speakerId: 'cass', textLabel: 'farmDialogCassMeetA' },
+    { speakerId: RUE, textLabel: 'farmDialogCassMeetB' },
+    { speakerId: 'cass', textLabel: 'farmDialogCassMeetC', emotion: 'doubtful' },
+  ],
   // Rue asks first — Dot sent him — and only then does Bram say what he does all day and
   // offer the lesson. He is the one animal on this farm who volunteers nothing unprompted.
   bram1: [
     { speakerId: RUE, textLabel: 'farmDialogBram1a' },
     { speakerId: 'bram', textLabel: 'farmDialogBram1b', emotion: 'doubtful' },
     { speakerId: RUE, textLabel: 'farmDialogBram1c' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram1d' },
-    { speakerId: RUE, textLabel: 'farmDialogBram1e' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram1f', emotion: 'thinking' },
-    { speakerId: RUE, textLabel: 'farmDialogBram1g' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram1h' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram1d', emotion: 'thinking' },
   ],
   bram2: [
     { speakerId: 'bram', textLabel: 'farmDialogBram2a' },
@@ -74,16 +84,16 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
   bram3: [
     { speakerId: 'bram', textLabel: 'farmDialogBram3a' },
     { speakerId: RUE, textLabel: 'farmDialogBram3b' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram3c', emotion: 'thinking' },
-  ],
-  bram4: [
-    { speakerId: 'bram', textLabel: 'farmDialogBram4a' },
-    { speakerId: RUE, textLabel: 'farmDialogBram4b' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram4c', emotion: 'doubtful' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram3c', emotion: 'doubtful' },
   ],
   bramDone: [
     { speakerId: 'bram', textLabel: 'farmDialogBramDoneA' },
     { speakerId: 'bram', textLabel: 'farmDialogBramDoneB' },
+  ],
+  bramMeet: [
+    { speakerId: 'bram', textLabel: 'farmDialogBramMeetA', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogBramMeetB' },
+    { speakerId: 'bram', textLabel: 'farmDialogBramMeetC' },
   ],
   duchess1: [
     { speakerId: 'duchess', textLabel: 'farmDialogDuchess1a' },
@@ -95,6 +105,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
   duchessDone: [
     { speakerId: 'duchess', textLabel: 'farmDialogDuchessDoneA' },
     { speakerId: 'duchess', textLabel: 'farmDialogDuchessDoneB' },
+  ],
+  duchessMeet: [
+    { speakerId: 'duchess', textLabel: 'farmDialogDuchessMeetA' },
+    { speakerId: RUE, textLabel: 'farmDialogDuchessMeetB' },
+    { speakerId: 'duchess', textLabel: 'farmDialogDuchessMeetC', emotion: 'doubtful' },
   ],
   tobias1: [
     { speakerId: 'tobias', textLabel: 'farmDialogTobias1a' },
@@ -160,6 +175,48 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'dot', textLabel: 'farmDialogDotDoneA' },
     { speakerId: 'dot', textLabel: 'farmDialogDotDoneB' },
   ],
+  // Post-Trial pointers. Leave-only; they must not reuse the next offer slot or the player
+  // would start Cass's Ad Hominem talk after Bram's lesson, when Next is already Cass.
+  'followUp:030_bram_teaches_dialog': [
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramRoundsA', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpBramRoundsB' },
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramRoundsC' },
+  ],
+  'followUp:020_cass_teaches_ad_hominem': [
+    { speakerId: 'cass', textLabel: 'farmDialogFollowUpCassAdHominemA' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpCassAdHominemB' },
+    { speakerId: 'cass', textLabel: 'farmDialogFollowUpCassAdHominemC', emotion: 'doubtful' },
+  ],
+  'followUp:021_hetty_ad_hominem_barrage': [
+    { speakerId: 'hetty', textLabel: 'farmDialogFollowUpHettyBarrageA' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpHettyBarrageB' },
+    { speakerId: 'hetty', textLabel: 'farmDialogFollowUpHettyBarrageC' },
+  ],
+  'followUp:023_cass_teaches_appeal_to_popularity': [
+    { speakerId: 'cass', textLabel: 'farmDialogFollowUpCassPopularityA' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpCassPopularityB' },
+    { speakerId: 'cass', textLabel: 'farmDialogFollowUpCassPopularityC' },
+  ],
+  'followUp:010_gossip_trough_hetty': [
+    { speakerId: 'hetty', textLabel: 'farmDialogFollowUpHettyGrateA' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpHettyGrateB' },
+    { speakerId: 'hetty', textLabel: 'farmDialogFollowUpHettyGrateC' },
+  ],
+  'followUp:032_bram_teaches_unlocks': [
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramUnlocksA', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpBramUnlocksB' },
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramUnlocksC' },
+  ],
+  'followUp:014_skirmish_bram_fenceline': [
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramSkirmishA', emotion: 'doubtful' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpBramSkirmishB' },
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramSkirmishC' },
+  ],
+  'followUp:015_tobias_vs_rue': [
+    { speakerId: 'duchess', textLabel: 'farmDialogFollowUpDuchessBossA' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpDuchessBossB' },
+    { speakerId: 'duchess', textLabel: 'farmDialogFollowUpDuchessBossC', emotion: 'doubtful' },
+  ],
 };
 
 function capitalize(id: string): string {
@@ -170,9 +227,20 @@ export function farmTalkSlotKey(npcId: string, suffix: string): string {
   return `${npcId}${suffix}`;
 }
 
+export function farmFollowUpSlotKey(scenarioKey: DebateScenarioKey): string {
+  return `followUp:${scenarioKey}`;
+}
+
 export function farmTalkBeats(npcId: string, suffix: string): FarmTalkBeat[] {
   const authored = FARM_TALK[farmTalkSlotKey(npcId, suffix)];
   if (authored && authored.length > 0) return [...authored];
   const fallback = `farmDialog${capitalize(npcId)}${suffix}` as Labels;
+  return [{ speakerId: npcId, textLabel: fallback }];
+}
+
+export function farmFollowUpBeats(scenarioKey: DebateScenarioKey, npcId: string): FarmTalkBeat[] {
+  const authored = FARM_TALK[farmFollowUpSlotKey(scenarioKey)];
+  if (authored && authored.length > 0) return [...authored];
+  const fallback = `farmDialog${capitalize(npcId)}Done` as Labels;
   return [{ speakerId: npcId, textLabel: fallback }];
 }

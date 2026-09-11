@@ -135,6 +135,9 @@ npc_speaking
     ▼
 player_choosing
     │  pick one of the 3 options, then Continue
+    ▼
+player_speaking
+    │  wizard typewrites the chosen line; Continue after it settles
     ├─► npc_responding   (round has opponentResponses)
     │        │  Continue
     │        ▼
@@ -146,6 +149,7 @@ player_choosing
     ▼
 debate_complete
     │  Leave → mark complete, return to `gameStore.returnSceneKey`
+    │          (farm follow-up may hold dialog flags until the pointer is heard)
     ▼
 [MainMenu or Farm]
 ```
@@ -159,8 +163,9 @@ Three notes on this diagram:
 
 - **`player_confirming` is not in it on purpose.** The phase is declared in `GamePhase` and
   reduced, and `canUndo` keys off it — but nothing ever sets it, so it is unreachable.
-  `player_choosing` + Continue goes straight to `npc_responding` / `round_recap`. Treat it as
-  dead code until something enters it.
+  `player_choosing` + Continue goes to `player_speaking` (the chosen line is paced in the
+  wizard), then to `npc_responding` / `round_recap`. Treat `player_confirming` as dead code
+  until something enters it.
 - **`debate_complete` used to be a dead end** — it fell through to `default:` in `TrialUI`'s
   footer, leaving Continue disabled forever. It now has a Leave action; see
   [`docs/farm_overworld.md`](../../docs/farm_overworld.md) for the return-trip plumbing.
@@ -175,7 +180,7 @@ Three notes on this diagram:
 | `totalRounds` | Total number of rounds in the scenario. |
 | `currentNpcRound` | Typed shortcut when the current round is NPC. |
 | `currentPlayerRound` | Typed shortcut when the current round is player. |
-| `selectedOption` | The `PlayerOption` the player has clicked but not yet confirmed. |
+| `selectedOption` | The `PlayerOption` the player has clicked. Still set during `player_speaking` after the choice is committed. |
 | `activeOpponentResponse` | The `OpponentResponse` matched to the confirmed option (during `npc_responding` and `round_recap`). |
 | `completedRounds` | Array of `CompletedRound` records for all past player turns. |
 | `totalScore` | Running sum of `impact` values from confirmed options. |
@@ -241,12 +246,13 @@ Content depends on `gamePhase`:
 |-------|-----------------|
 | `npc_speaking` | The NPC's full statement text (`StatementBlock`). |
 | `player_choosing` | Three choice buttons labelled A / B / C — mounted but invisible and disabled (`hideOptions`) while the wizard is still revealing the opponent's question. |
+| `player_speaking` | No choice grid — the wizard is pacing the confirmed option. |
 | `player_confirming` | The full text of the selected option plus a reminder that confirming is irreversible. |
 | `npc_responding` | The NPC's response matched to the confirmed option (`StatementBlock` + `AnalyzeButton`). |
 | `round_recap` | Same response view as `npc_responding` when a crossfire reply exists; otherwise a short note to use the recap modal. The footer **Continue** is disabled — the player advances only from the `RoundRecapModal`. |
 | `debate_complete` | A "debate finished" message with the final score. |
 
-The panel footer is three icon-only squared buttons: **Analyze | Back | Continue**. Analyze always targets the opponent's *current* line (the NPC statement, the opponent's crossfire question, or its response — never the player's own choice), keyed off `gamePhase`; it stays disabled while that line is still being revealed, and with nothing current to analyze (`debate_intro`, `player_confirming`, `round_recap`, `debate_complete`) it renders disabled rather than reflowing the row, and it is not rendered at all when `mechanics.analysisEnabled` is `false`. It carries the same green/amber/red guess-state tint as the debate log's `AnalyzeButton` lenses. **Back** is enabled only in `player_confirming` (or while an option can be unselected in `player_choosing`). The context-sensitive submit button's icon follows its three states — continue / confirm / leave — via `TrialUI`'s `interactiveFooter.submitIcon`.
+The panel footer is three icon-only squared buttons: **Analyze | Back | Continue**. Analyze always targets the opponent's *current* line (the NPC statement, the opponent's crossfire question, or its response — never the player's own choice), keyed off `gamePhase`; it stays disabled while that line is still being revealed, and with nothing current to analyze (`debate_intro`, `player_speaking`, `player_confirming`, `round_recap`, `debate_complete`) it renders disabled rather than reflowing the row, and it is not rendered at all when `mechanics.analysisEnabled` is `false`. It carries the same green/amber/red guess-state tint as the debate log's `AnalyzeButton` lenses. **Back** is enabled only in `player_confirming` (or while an option can be unselected in `player_choosing`). The context-sensitive submit button's icon follows its three states — continue / confirm / leave — via `TrialUI`'s `interactiveFooter.submitIcon`.
 
 Keyboard shortcuts press those same buttons (no-op when the matching control is disabled, hidden, or tutorial-blocked): **A** Analyze, **S** Back, **Enter / Space / D** Continue (Confirm / Leave), **Z / X / C** options A / B / C. Analysis and intro-summary overlays suspend the footer/option map so they do not steal keys; recap and intro-summary Continue / Begin bind Enter / Space / D themselves. Farm talk keeps **E** as an extra Continue alias, and last-beat **Talk / Leave** take the A / B slots (**Z / X**). An open tutorial takes **Enter / Space / D** for Got it / Continue unless the step is `target_only` (those keys then press the highlighted control instead).
 
@@ -295,11 +301,13 @@ own content, so its box never grew and nothing watching it could tell the text h
   when a tutorial closed. The `(all)` readout is now only for content shown whole with no
   reveal attached (the round recap, the closing verdict).
 
-**What is revealed** — incoming speech only: `scenario.introduction` during `debate_intro`, the
-NPC statement during `npc_speaking`, `opponentPrompt` during `player_choosing` while no option
-is selected, and the matched `OpponentResponse` during `npc_responding`. Never the player's own
-selected line, the round recap, or the closing verdict. `TrialUI`'s source memo switches on
-`gamePhase` **first** — `activeOpponentResponse` is also non-null during `round_recap`.
+**What is revealed** — `scenario.introduction` during `debate_intro`, the NPC statement during
+`npc_speaking`, `opponentPrompt` during `player_choosing` while no option is selected, the
+confirmed option during `player_speaking`, and the matched `OpponentResponse` during
+`npc_responding`. A pick during `player_choosing` dumps the option as a static preview (the
+A/B/C buttons are letters only). Never the round recap or the closing verdict. `TrialUI`'s
+source memo switches on `gamePhase` **first** — `activeOpponentResponse` is also non-null
+during `round_recap`.
 
 **Chunking** — one entry point, `revealChunks(string | Sentence[])` in
 `trial/utils/trialHelpers.ts`, used by every source in `TrialUI` and by `FarmDialogue`. An
@@ -349,7 +357,7 @@ A full-screen overlay opened by clicking the magnifying glass button on any hist
 ### NPC round view
 
 - Lists each sentence of the NPC's statement as an individual clickable card.
-- While it is the **player's active turn** (`player_choosing` or `player_confirming`) and no guess has been used for this turn yet, the player can:
+- While it is the **player's active turn** (`player_choosing`, `player_speaking`, or `player_confirming`) and no guess has been used for this turn yet, the player can:
   1. Click a sentence to select it.
   2. Pick a fallacy from the grid (5 per row, `fallacy_placeholder.svg` icon + label, drawn from `debate.logicalFallacies`).
   3. Click **Submit guess** to record the result.
@@ -392,7 +400,7 @@ A compile-time assertion (`_AssertKeysMatch`) keeps `EventTrigger` and `DebateEv
 | `introduction:start` | `IntroductionStartPayload` | `TrialUI` — fires once per scenario when the `debate_intro` phase begins. Drives the onboarding tutorial overlay via `scenario.tutorials`. |
 | `round:start` / `round:end` | `RoundLifecyclePayload` | `useTrialRoundWorkflow` — on `currentRoundIndex` / `gamePhase` transitions, including the step into `debate_complete`. |
 | `interactive:continue` | `InteractiveContinuePayload` | `TrialUI` — the Continue footer in `debate_intro`, `npc_speaking`, `npc_responding`. |
-| `interactive:confirm` | `InteractiveConfirmPayload` | `TrialUI` — the Confirm footer in `player_choosing` / `player_confirming`. |
+| `interactive:confirm` | `InteractiveConfirmPayload` | `TrialUI` — Continue after the chosen line has been spoken (`player_speaking`), so a tutorial on this event cannot `reveal.complete()` the typewriter. The dead `player_confirming` footer still emits it too. |
 | `interactive:statement_selected` | `InteractiveStatementSelectedPayload` | `InteractivePanel` — option click (selection only, not unselect). |
 | `interactive:back` | `InteractiveBackPayload` | `InteractivePanel` — Back button. |
 | `interactive:analyze` | `InteractiveAnalyzePayload` | `InteractivePanel` — the footer Analyze button, current-round only. Distinct from `debate_log:round:analyze` so a tutorial `where` filter can tell a footer click from a log-card click. |
@@ -577,7 +585,7 @@ The onboarding overlay that used to live on a dedicated `introTutorial` field is
 
 ## Farm tutorials (`src/data/farmTutorials.ts`)
 
-The same `TutorialOverlay` can run on the farm. Entries live in `farmTutorials.ts`, not on a scenario: each has an `id`, a `triggerWhen: GameCondition[]`, and a `DebateTutorialJson`. `useFarmTutorials` (called from `FarmUI`) opens the first unmet entry whose conditions are satisfied, skips while a talk is open, and writes `progressStore.completedTutorials` on Got it so a reload does not replay it.
+The same `TutorialOverlay` can run on the farm. Entries live in `farmTutorials.ts`, not on a scenario: each has an `id`, a `triggerWhen: GameCondition[]`, and a `DebateTutorialJson`. `useFarmTutorials` (called from `FarmUI`) opens the first unmet entry whose conditions are satisfied, skips while a talk is open or a Trial follow-up is pending, and writes `progressStore.completedTutorials` on Got it so a reload does not replay it.
 
 Field Notes targets (`codex_open`, `codex_tab`, `codex_tabs`, `codex_content`, `codex_close`) are stamped as `data-tutorial-*` on `FarmUI` and `CodexOverlay`. A step that points at the opening button keeps the Codex **closed**; a step that points at tabs or content opens it on `next` before the highlight lookup (same reason the Debate Log is expanded before a log target). `interactionMode: 'highlight'` spotlights a control without freezing sibling Field Notes tabs — overlay Continue still works.
 

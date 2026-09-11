@@ -62,12 +62,6 @@ export interface FarmNpc {
    */
   scenarios: readonly DebateScenarioKey[];
   /**
-   * When true, the player cannot open this animal's conversation until their next
-   * encounter's `requires` are met. Default (omit) is the usual rule: the animal talks,
-   * and only the Talk button inside is disabled.
-   */
-  gateTalk?: boolean;
-  /**
    * Farm-only conversations that advance on conditions rather than completed encounters.
    * Used by animals who have nothing to play (a greeter). Ignored when `scenarios` is
    * non-empty. Each stage is used while its `until` condition is unmet; after the last
@@ -133,17 +127,17 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     y: 760,
     scenarios: [],
     // One stage per stop on the spine, so the greeter and Field Notes always name the same
-    // animal. Stage 1 spans both fence lessons; each stage ends on the condition the *next*
-    // stop is waiting for.
+    // animal. Stage 1 is Bram's opening lesson (rounds and crossfire); each stage ends on
+    // the condition the *next* stop is waiting for.
     talkStages: [
       {
         suffix: '1',
         completesFlag: 'dot-welcomed',
         until: { kind: 'dialog_flag', flagId: 'bram-taught-crossfire' },
       },
-      { suffix: '2', until: { kind: 'fallacy_known', fallacyId: 'ad-hominem' } },
+      { suffix: '2', until: { kind: 'dialog_flag', flagId: 'cass-named-ad-hominem' } },
       { suffix: '3', until: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' } },
-      { suffix: '4', until: { kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' } },
+      { suffix: '4', until: { kind: 'dialog_flag', flagId: 'cass-named-appeal-to-popularity' } },
       { suffix: '5', until: { kind: 'dialog_flag', flagId: 'hetty-grate-heard' } },
       { suffix: '6', until: { kind: 'dialog_flag', flagId: 'bram-grate-conceded' } },
       { suffix: '7', until: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' } },
@@ -154,8 +148,6 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     x: 1800,
     y: 570,
     scenarios: ['021_hetty_ad_hominem_barrage', '010_gossip_trough_hetty'],
-    // She uses Ad Hominem to your face; it is not a conversation to have before you can name it.
-    gateTalk: true,
   },
   {
     id: 'cass',
@@ -163,22 +155,19 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     y: 860,
     // Names Ad Hominem, then Appeal to Popularity once Hetty has used the first on him.
     scenarios: ['020_cass_teaches_ad_hominem', '023_cass_teaches_appeal_to_popularity'],
-    gateTalk: true,
   },
   {
     id: 'bram',
     x: 1360,
     y: 1250,
-    // How a round works, then crossfire, then how to open a locked line, then the
-    // skirmish that needs it. He offers them strictly in order, so the lesson always
-    // lands before the encounter that uses it — see `farmDialogueState.ts`.
+    // How a conversation works (rounds and crossfire), then how to open a locked line,
+    // then the skirmish that needs it. He offers them strictly in order, so the lesson
+    // always lands before the encounter that uses it — see `farmDialogueState.ts`.
     scenarios: [
       '030_bram_teaches_dialog',
-      '031_bram_teaches_crossfire',
       '032_bram_teaches_unlocks',
       '014_skirmish_bram_fenceline',
     ],
-    gateTalk: true,
   },
   {
     id: 'tobias',

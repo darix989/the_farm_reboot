@@ -72,6 +72,19 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   @include bp.compact {
     --trial-footer-icon-btn-size: 5rem;
   }
+
+  /* Four slots (Analyze | Back | Continue | Skip) have to fit the same 30% column. */
+  &:has(> :nth-child(4)) {
+    gap: 1rem;
+
+    --trial-footer-icon-btn-size: 5.5rem;
+
+    @include bp.compact {
+      gap: 0.75rem;
+
+      --trial-footer-icon-btn-size: 4.5rem;
+    }
+  }
 }
 
 /* Multi-button modal footer grid (Back | primary) — shared with `TutorialOverlay`. */

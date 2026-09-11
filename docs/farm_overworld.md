@@ -38,8 +38,7 @@ drawn in Phaser text objects and re-tuned for every aspect ratio.
 ## File map
 
 ```
-src/data/farmMap.ts             the world: zones, NPCs (`gateTalk` / `talkStages`), spawn
-src/utils/farmTalkGate.ts       conversation-level lock (`gateTalk`)
+src/data/farmMap.ts             the world: zones, NPCs (`talkStages`), spawn
 src/phaser/scenes/Farm.ts       the scene
 src/phaser/farm/
   farmTextures.ts               placeholder art, generated at runtime
@@ -55,7 +54,8 @@ src/react/farm/
   farmDialogueState.ts          which conversation an animal offers right now
   CharacterStage.tsx            placeholder busts — Trial hole only, mounted by TrialUI
   FarmUI.module.scss
-src/data/farmTalk.ts            beat lists keyed by npc + offer slot
+src/data/farmTalk.ts            beat lists keyed by npc + offer slot, or `followUp:{key}`
+src/data/encounterFollowUps.ts  post-Trial pointer (farm talk or tutorial)
 src/phaser/animals/              placeholder animal spritesheets — see
                                   docs/characters-and-animations.md
 ```
@@ -212,33 +212,33 @@ The first time the farm overlay mounts, `FarmUI` opens Dot's conversation and wr
 `level1Started` to `progressStore`. Returning from a debate, from the menu, or a reload
 does not force it again.
 
+Leaving a finished Trial back to the farm queues a **follow-up** (`pendingFollowUp` on
+`farmStore`, which `resetFarmUi` does not clear). `FarmUI` auto-opens a Leave-only talk on
+the animal they just left — not that animal's next offer slot, which would be the wrong
+pre-talk whenever the spine moves on. Dialog flags wait until the last beat settles, so
+Field Notes Next updates after the pointer, not on Leave. Main-menu Leave and replays skip
+the follow-up and write flags immediately.
+
 ### Farm overlay tutorials
 
-After Bram's first lesson, `useFarmTutorials` opens the same `TutorialOverlay` used in
-debates, triggered by `GameCondition`s in [`farmTutorials.ts`](../src/data/farmTutorials.ts)
-rather than the debate bus. Completing an entry writes `tutorial_completed` into
-`progressStore` so it does not replay. Field Notes (`codex_open`, tabs, content) are
-spotlight targets; `interactionMode: 'highlight'` keeps those controls usable. Rue is
-frozen for the same reason a talk freezes him.
+After Bram's first lesson, the follow-up pointer talks first; then `useFarmTutorials` opens
+the same `TutorialOverlay` used in debates, triggered by `GameCondition`s in
+[`farmTutorials.ts`](../src/data/farmTutorials.ts) rather than the debate bus. Completing an
+entry writes `tutorial_completed` into `progressStore` so it does not replay. Field Notes
+(`codex_open`, tabs, content) are spotlight targets; `interactionMode: 'highlight'` keeps
+those controls usable. Rue is frozen for the same reason a talk freezes him.
 
 ### Encounter gates
 
-`ScenarioEntry.requires` (on the entry in `levels.ts`) is the overworld gate. The chain is:
+`ScenarioEntry.requires` (on the entry in `levels.ts`) is the overworld gate. Until it is
+met, `farmDialogueFor` does not offer that encounter: a first meeting uses the `Meet` beats,
+and walking back after a Trial replays that animal's last follow-up (with Lessons if they
+have any). The Talk button never starts a conversation that assumes something the player has
+not been told yet. The main menu is ungated.
 
-```
-requires → farmDialogueState.scenarioRequires → useUnmetConditionsHint → disabled Talk button
-```
-
-A gated encounter is still *offered*, by default. The animal talks; only Talk is disabled, and
-the conversation is where the reason is given. Set `gateTalk: true` on the NPC to close the
-conversation itself until the next encounter's `requires` are met (Hetty until Ad Hominem is
-known; Bram until Dot has welcomed you; Cass until Bram has taught crossfire). `Farm.ts`
-`tryInteract` and the overworld prompt both consult `farmNpcTalkLocked`. The main menu is
-ungated.
-
-The Level 1 unlock chain is Dot → Bram → Bram → Cass → Hetty → Duchess. Lesson 2 (`031`)
-unlocks round-type labels and is required for Cass — she will not speak until
-`bram-taught-crossfire` is set.
+The Level 1 unlock chain is Dot → Bram → Cass → Hetty → Duchess. Bram's first lesson
+(`030`) unlocks round-type labels and is required for Cass — her Ad Hominem lesson waits on
+`bram-taught-crossfire`.
 
 Bram's farm talk offers a **Lessons** menu once he has taught at least one lesson. Last beat,
 once it has been read in full: Talk / Lessons / Leave (collapsing to Lessons / Leave when he
@@ -246,7 +246,8 @@ is finished). Picking a lesson
 replays it; Back returns to the talk menu. Cap is three lettered buttons (Z / X / C).
 
 Leaving a finished encounter goes through `applyEncounterRewards`, which marks it complete
-and grants `teachesFallacies` / `setsDialogFlags` / `unlocksFeatures` in one write. Mark completion with the
+and grants `teachesFallacies` / `unlocksFeatures` on Leave. `setsDialogFlags` wait for the
+farm follow-up when there is one. Mark completion with the
 store's **`activeDebateId`**, not `debate.id` — they are different values
 (`015_tobias_vs_rue` vs `level1-boss-pond-motion`) and only the former is a
 `DebateScenarioKey`.
@@ -301,8 +302,8 @@ class of bug obvious in one screenshot.
    `solid: true` to block the player; `label` draws a world caption).
 2. Add a `FarmNpc` to `FARM_NPCS`. Animals with encounters list them in `scenarios` in the
    order they should be offered. A greeter with no encounter uses `talkStages` instead
-   (condition → suffix, then `Done`). Set `gateTalk: true` if the conversation itself should
-   stay closed until the next encounter's `requires` are met.
+   (condition → suffix, then `Done`). Add `Meet` beats for the walk-up before their first
+   encounter unlocks.
 3. Add labels: the name (`farmNpc<Name>`), then sequential talk beats in
    [`src/data/farmTalk.ts`](../src/data/farmTalk.ts) plus the copy in `labels.ts`
    (`farmDialog<Name>1a`, `1b`, … and a `Done` conversation). A missing table row

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import getLabel from '../../data/labels';
 import { resolveCharacter } from '../../data/characters';
 import type { DebateScenarioKey } from '../../data/levels';
@@ -43,19 +43,39 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
   const revealActive = mode === 'talk' && reveal.active;
   const revealSettled = reveal.settled;
   const revealAdvance = reveal.advance;
+  const completeReveal = reveal.complete;
 
   const advanceBeat = useCallback(() => {
     setBeatIndex((current) => Math.min(current + 1, lastIndex));
   }, [lastIndex]);
 
+  // Jump the index first; `complete()` keys off the current reveal source, so the last
+  // beat's typewriter is settled on the next commit. Already on the last beat: complete now.
+  const pendingSkipRef = useRef(false);
+  const skipToLastBeat = useCallback(() => {
+    if (isLast) {
+      completeReveal();
+      return;
+    }
+    pendingSkipRef.current = true;
+    setBeatIndex(lastIndex);
+  }, [isLast, lastIndex, completeReveal]);
+
+  useEffect(() => {
+    if (!pendingSkipRef.current || index !== lastIndex) return;
+    pendingSkipRef.current = false;
+    completeReveal();
+  }, [index, lastIndex, completeReveal]);
+
   // A real dialog happened till the end: the last beat's reveal has settled. Closing
-  // early (walk away mid-conversation) must not set the flag — Bram stays locked.
+  // early (walk away mid-conversation) must not set the flags — Bram stays locked.
   useEffect(() => {
     if (!isLast || !revealSettled) return;
-    const flag = dialogue.completesFlag;
-    if (!flag) return;
-    useCodexStore.getState().setDialogFlag(flag);
-  }, [isLast, revealSettled, dialogue.completesFlag]);
+    const flags = dialogue.completesFlags;
+    if (!flags?.length) return;
+    const codex = useCodexStore.getState();
+    flags.forEach((flag) => codex.setDialogFlag(flag));
+  }, [isLast, revealSettled, dialogue.completesFlags]);
 
   // Subscribed rather than snapshotted, so an encounter that unlocks while this conversation is
   // on screen un-greys its own Talk button. That is not hypothetical: the tutorial in Cass's
@@ -164,6 +184,7 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
             selectedLessonKey={selectedLessonKey}
             onRevealAdvance={revealAdvance}
             onAdvanceBeat={advanceBeat}
+            onSkipToLast={skipToLastBeat}
             onStart={onStart}
             onClose={onClose}
             onOpenLessons={openLessons}

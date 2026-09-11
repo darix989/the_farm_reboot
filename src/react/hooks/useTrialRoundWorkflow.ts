@@ -28,6 +28,7 @@ export type GamePhase =
   | 'debate_intro' // read scenario introduction; Continue opens summary then starts round 1
   | 'npc_speaking' // player reads NPC statement, clicks Continue
   | 'player_choosing' // player sees 3 options
+  | 'player_speaking' // wizard paces the confirmed option; Continue then advances
   | 'player_confirming' // player reviews chosen option, can go Back or Confirm
   | 'npc_responding' // NPC response matched to the chosen option (crossfire)
   | 'round_recap' // summary modal; dismiss advances to next round
@@ -190,6 +191,26 @@ function toRecapOrAdvance(
   };
 }
 
+/**
+ * After the chosen line has been spoken: show the matched NPC reply when the round has
+ * `opponentResponses`, otherwise recap or skip-to-next. Score is already on `state`.
+ */
+function advanceAfterPlayerSpeech(
+  state: WorkflowState,
+  scenario: DebateScenarioJson,
+  currentRound: PlayerRoundEntry,
+): WorkflowState {
+  const hasResponses = Boolean(currentRound.opponentResponses?.length);
+  if (hasResponses) {
+    return {
+      ...state,
+      past: pushHistory(state),
+      gamePhase: 'npc_responding',
+    };
+  }
+  return toRecapOrAdvance(state, scenario, state.completedRounds, state.totalScore);
+}
+
 function reduceWorkflow(
   state: WorkflowState,
   action: Action,
@@ -300,18 +321,21 @@ function reduceWorkflow(
     ];
     const newScore = state.totalScore + roundImpact;
 
-    // If the round has opponent responses, enter responding; else go straight to recap.
-    const hasResponses = Boolean(currentRound.opponentResponses?.length);
-    if (hasResponses) {
-      return {
-        ...state,
-        past: pushHistory(state),
-        gamePhase: 'npc_responding',
-        completedRounds: newCompleted,
-        totalScore: newScore,
-      };
-    }
-    return toRecapOrAdvance(state, scenario, newCompleted, newScore);
+    // Score now so the log / moderator update while the wizard paces the line.
+    return {
+      ...state,
+      past: pushHistory(state),
+      gamePhase: 'player_speaking',
+      completedRounds: newCompleted,
+      totalScore: newScore,
+    };
+  }
+
+  // --- Player speaking: Continue after the wizard has paced the confirmed option ---
+  if (state.gamePhase === 'player_speaking') {
+    if (action.type !== 'continue') return state;
+    if (currentRound.kind !== 'player') return state;
+    return advanceAfterPlayerSpeech(state, scenario, currentRound);
   }
 
   // --- Player confirming: player can go back (undo) or confirm ---
@@ -588,6 +612,8 @@ export function useTrialRoundWorkflow(
         return state.selectedOptionId
           ? getLabel('workflowStatementSelected')
           : getLabel('workflowPlayerChoosingStatement');
+      case 'player_speaking':
+        return getLabel('workflowPlayerSpeaking');
       case 'player_confirming':
         return getLabel('workflowPlayerConfirming');
       case 'npc_responding':

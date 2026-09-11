@@ -5,6 +5,7 @@ import { GameManager } from '../../utils/gameManager';
 import { useCodexStore } from '../../store/codexStore';
 import { useCodexUiStore } from '../../store/codexUiStore';
 import { useProgressStore } from '../../store/progressStore';
+import { useDevSettingsStore } from '../../store/devSettingsStore';
 import { useWindowKeyDown } from '../hooks/useWindowKeyDown';
 import styles from './MainMenuUI.module.scss';
 import getLabel, { type Labels } from '../../data/labels';
@@ -12,6 +13,8 @@ import getLabel, { type Labels } from '../../data/labels';
 const MainMenuUI: React.FC = () => {
   const setActiveDebate = useGameStore((s) => s.setActiveDebate);
   const setReturnSceneKey = useGameStore((s) => s.setReturnSceneKey);
+  const showFarmTalkSkip = useDevSettingsStore((s) => s.showFarmTalkSkip);
+  const toggleFarmTalkSkip = useDevSettingsStore((s) => s.toggleFarmTalkSkip);
   const [confirmingReset, setConfirmingReset] = useState(false);
   const confirmTitleId = useId();
   const confirmBodyId = useId();
@@ -86,6 +89,18 @@ const MainMenuUI: React.FC = () => {
               {getLabel('animationGallery')}
             </button>
           </div>
+          <button
+            className={styles.menuButton}
+            type="button"
+            onClick={toggleFarmTalkSkip}
+            aria-pressed={showFarmTalkSkip}
+          >
+            {getLabel('devFarmTalkSkipToggle', {
+              replacements: {
+                state: getLabel(showFarmTalkSkip ? 'devFarmTalkSkipOn' : 'devFarmTalkSkipOff'),
+              },
+            })}
+          </button>
           <button
             className={styles.menuButtonDanger}
             type="button"

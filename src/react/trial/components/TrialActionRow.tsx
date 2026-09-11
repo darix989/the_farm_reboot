@@ -20,6 +20,7 @@ import revealIcon from '../../../static/icons/reveal.svg';
 import continueIcon from '../../../static/icons/continue.svg';
 import confirmIcon from '../../../static/icons/confirm.svg';
 import leaveIcon from '../../../static/icons/leave.svg';
+import skipIcon from '../../../static/icons/skip.svg';
 
 const SUBMIT_ICON_SRC: Record<'reveal' | 'continue' | 'confirm' | 'leave', string> = {
   reveal: revealIcon,
@@ -48,6 +49,11 @@ export interface TrialActionRowProps {
     | null;
   back: TrialActionSpec;
   submit: TrialActionSpec & { icon: 'reveal' | 'continue' | 'confirm' | 'leave' };
+  /**
+   * Optional fourth slot after Continue. Farm talks pass this when the dialog-skip
+   * toggle is on; debates omit it. Click-only — no shortcut, no tutorial target.
+   */
+  skip?: TrialActionSpec | null;
   /** `data-tutorial-interactive-action` on the submit button. */
   submitTutorialAction: 'continue' | 'confirm';
   /**
@@ -61,12 +67,14 @@ export interface TrialActionRowProps {
 
 /**
  * Analyze / Back / Continue icon row. Shared by the debate Actions panel and the
- * overworld talk so the three buttons cannot drift.
+ * overworld talk so the three buttons cannot drift. Farm talks may add Skip after
+ * Continue when the dialog-skip toggle is on.
  */
 const TrialActionRow: React.FC<TrialActionRowProps> = ({
   analyze,
   back,
   submit,
+  skip,
   submitTutorialAction,
   shortcutsEnabled = true,
   extraContinueCodes,
@@ -161,6 +169,20 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
       >
         <img src={SUBMIT_ICON_SRC[submit.icon]} alt="" className={styles.trialFooterIcon} />
       </TrialTextButton>
+      {skip != null && (
+        <TrialTextButton
+          widthMode="square"
+          disabled={skip.disabled}
+          aria-label={skip.label}
+          title={skip.label}
+          onClick={() => {
+            if (skip.disabled) return;
+            skip.onClick();
+          }}
+        >
+          <img src={skipIcon} alt="" className={styles.trialFooterIcon} />
+        </TrialTextButton>
+      )}
     </div>
   );
 };
