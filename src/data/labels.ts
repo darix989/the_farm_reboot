@@ -62,6 +62,13 @@ const LABELS = {
   galleryFacePreviewShip: '112 px · as it ships',
   galleryFacePreviewRetina: '224 px · 2× display',
   galleryFaceNoPreview: 'No portrait cropped for this emotion yet.',
+  galleryStatusFacesHeading: "Moderator's opinion (still frames)",
+  galleryStatusFacesNote:
+    'Three frames of the approving portrait above, held still — the eyes open from nearly shut to fully round, and how much yellow is left is the whole signal. Shown at roughly the size they ship at.',
+  galleryStatusFaceDisapproval: 'disapproves',
+  galleryStatusFaceNeutral: 'undecided',
+  galleryStatusFaceApproval: 'approves',
+  galleryStatusFaceMeta: '{emotion} · frame {frame}',
   galleryQualityPass: 'OK',
   galleryQualityWarn: 'check',
   galleryQualityUnknown: '?',

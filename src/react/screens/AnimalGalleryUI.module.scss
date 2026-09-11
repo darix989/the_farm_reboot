@@ -46,6 +46,16 @@
   margin: 1.25rem 0 0.5rem;
 }
 
+/* A rung below `.heading`: the status stills sit inside the portraits section rather than
+   starting one of their own. */
+.subHeading {
+  font-size: var(--ui-font-caption);
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  color: var(--ui-color-text-muted-2);
+  margin: 1rem 0 0.5rem;
+}
+
 .animalGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -289,6 +299,48 @@
   gap: 0.1rem;
   min-width: 0;
   flex: 1 1 auto;
+}
+
+/* Stills, not clips, so they are laid out as a plain row rather than as selectable buttons:
+   nothing here drives the stage or the preview box. */
+.statusFaceRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.statusFaceItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0.6rem 0.4rem;
+  background: var(--ui-color-glass-06);
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* The face sizes itself in `em`, so this is what pins it to the size it ships at — the same
+   token the debate log header and the recap chip set on the text the face sits in. */
+.statusFaceBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--ui-font-moderator-opinion);
+  line-height: 1;
+}
+
+.statusFaceLabel {
+  font-size: var(--ui-font-caption);
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.statusFaceMeta {
+  font-size: var(--ui-font-caption);
+  color: var(--ui-color-text-muted-2);
 }
 
 .facePreview {

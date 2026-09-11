@@ -15,9 +15,12 @@ import {
   animalEmotionQualityStatus,
   type ClipQualityStatus,
 } from '../../phaser/animals/emotionQuality';
-import { CHARACTERS, type AnimalSpriteId } from '../../data/characters';
+import { CHARACTERS, resolveCharacter, type AnimalSpriteId } from '../../data/characters';
+import { DEFAULT_MODERATOR_ID } from '../../data/debateCast';
 import getLabel, { type Labels } from '../../data/labels';
 import FaceClip from '../characters/FaceClip';
+import ModeratorStatusFace from '../trial/components/ModeratorStatusFace';
+import { moderatorOpinionFace } from '../trial/utils/trialHelpers';
 import styles from './AnimalGalleryUI.module.scss';
 
 /**
@@ -34,6 +37,12 @@ import styles from './AnimalGalleryUI.module.scss';
  * them through the same `FaceClip` the game uses, so a portrait approved here is framed exactly
  * as it will ship. The two registers select independently — a portrait plays beside the body
  * clip it was cut from rather than replacing it, which is the comparison worth having.
+ *
+ * That section ends with the **moderator status stills** for the owl alone, since Duchess is the
+ * only animal whose face is held still anywhere in the game. They are frames of the `approving`
+ * portrait listed directly above them, not art of their own, which is why they are a row inside
+ * that section rather than a register of their own — and why they are not selectable: there is
+ * no clip to play and nothing for the stage to do with them.
  */
 
 /** Which character wears this skin, so the list reads as the cast rather than as asset ids. */
@@ -56,6 +65,23 @@ const FACE_PREVIEW_SIZES: readonly { px: number; label: Labels }[] = [
   { px: FACE_BOX_PX, label: 'galleryFacePreviewShip' },
   { px: FACE_BOX_PX * 2, label: 'galleryFacePreviewRetina' },
 ];
+
+/**
+ * The moderator status stills, shown for the one animal that wears them.
+ *
+ * Scores rather than frame indices, and rendered through the game's own `ModeratorStatusFace`,
+ * so this section cannot disagree with what a debate shows — the same discipline that has the
+ * portraits above go through `FaceClip`. `moderatorOpinionFace()` is consulted only for the
+ * caption, which names the sheet and frame each still is cut from.
+ */
+const STATUS_FACE_STATES: readonly { score: number; label: Labels }[] = [
+  { score: -1, label: 'galleryStatusFaceDisapproval' },
+  { score: 0, label: 'galleryStatusFaceNeutral' },
+  { score: 1, label: 'galleryStatusFaceApproval' },
+];
+
+/** Whose portraits carry the status stills. Everyone else's portrait list ends at the crops. */
+const STATUS_FACE_ANIMAL = resolveCharacter(DEFAULT_MODERATOR_ID).animal;
 
 const QUALITY_PILL_LABEL: Record<Exclude<ClipQualityStatus, 'none'>, Labels> = {
   pass: 'galleryQualityPass',
@@ -306,6 +332,36 @@ const AnimalGalleryUI: React.FC = () => {
               replacements: { count: String(missingFaces), total: String(faces.length) },
             })}
           </p>
+        )}
+
+        {/* Still frames of a portrait above, so they belong under this heading rather than in a
+            section of their own — and only for the animal the debate's moderator wears. */}
+        {animalId === STATUS_FACE_ANIMAL && (
+          <>
+            <h3 className={styles.subHeading}>{getLabel('galleryStatusFacesHeading')}</h3>
+            <div className={styles.statusFaceRow}>
+              {STATUS_FACE_STATES.map(({ score, label }) => {
+                const source = moderatorOpinionFace(score);
+                return (
+                  <div key={label} className={styles.statusFaceItem}>
+                    <span className={styles.statusFaceBox}>
+                      <ModeratorStatusFace score={score} />
+                    </span>
+                    <span className={styles.statusFaceLabel}>{getLabel(label)}</span>
+                    <span className={styles.statusFaceMeta}>
+                      {getLabel('galleryStatusFaceMeta', {
+                        replacements: {
+                          emotion: source.emotion,
+                          frame: String(source.frame),
+                        },
+                      })}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+            <p className={styles.note}>{getLabel('galleryStatusFacesNote')}</p>
+          </>
         )}
 
         <h2 className={styles.heading}>{getLabel('galleryBaseHeading')}</h2>
