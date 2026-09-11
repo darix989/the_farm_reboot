@@ -1,4 +1,4 @@
-import { PLAYER_CHARACTER_ID } from '../../../data/characters';
+import { PLAYER_CHARACTER_ID, type AnimalSpriteId } from '../../../data/characters';
 import getLabel, { type Labels } from '../../../data/labels';
 import type { GamePhase } from '../../hooks/useTrialRoundWorkflow';
 import {
@@ -251,39 +251,82 @@ export function moderatorOpinionEmoji(score: number): string {
   return '😐';
 }
 
+export type ModeratorOpinionFace = { emotion: AnimalEmotion; frame: number };
+
+type ScoreBand = 'approval' | 'neutral' | 'disapproval';
+
+function scoreBand(score: number): ScoreBand {
+  if (score > 0) return 'approval';
+  if (score < 0) return 'disapproval';
+  return 'neutral';
+}
+
+/**
+ * Duchess: three frames of one clip. `approving` opens the owl's eyes from nearly shut to
+ * fully round over its 25 frames, so these are the same head in the same pose at three eye
+ * apertures — how much bright yellow is left is the whole signal at ~1.6em.
+ *
+ * Mixing sheets was the first arrangement and moved head pose along with the eyes. One clip,
+ * one axis. If `approving` is regenerated, open the new frames and re-pick all three.
+ */
+const OWL_STATUS_FACES: Record<ScoreBand, ModeratorOpinionFace> = {
+  approval: { emotion: 'approving', frame: 20 },
+  neutral: { emotion: 'approving', frame: 6 },
+  disapproval: { emotion: 'approving', frame: 4 },
+};
+
+/**
+ * Cass: three portraits, because the fox has no single clip that opens along one axis the
+ * way the owl's eyes do. Approval is the sly grin (`sneaky` 17), neutral the half-lid
+ * (`doubtful` 9), disapproval the snarl (`angry` 3). Frame indices are part of the art.
+ */
+const FOX_STATUS_FACES: Record<ScoreBand, ModeratorOpinionFace> = {
+  approval: { emotion: 'sneaky', frame: 17 },
+  neutral: { emotion: 'doubtful', frame: 9 },
+  disapproval: { emotion: 'angry', frame: 3 },
+};
+
+const MODERATOR_STATUS_FACES: Partial<
+  Record<AnimalSpriteId, Record<ScoreBand, ModeratorOpinionFace>>
+> = {
+  owl: OWL_STATUS_FACES,
+  fox: FOX_STATUS_FACES,
+};
+
+function statusFacesFor(
+  animalId: AnimalSpriteId | null | undefined,
+): Record<ScoreBand, ModeratorOpinionFace> {
+  return (animalId && MODERATOR_STATUS_FACES[animalId]) ?? OWL_STATUS_FACES;
+}
+
 /**
  * The moderator's face for a score: which portrait sheet, and which frame of it to hold.
  *
- * Three states off one animal rather than three emoji, because the emoji were the one place in
- * the trial chrome where the art stopped — a yellow smiley next to a stage of hand-drawn
- * animals. `ModeratorStatusFace` renders these; `moderatorOpinionEmoji` stays for the plain
- * strings (a wizard body is text, and cannot hold a portrait).
+ * Three states off a character's portraits rather than three emoji, because the emoji were
+ * the one place in the trial chrome where the art stopped — a yellow smiley next to a stage
+ * of hand-drawn animals. `ModeratorStatusFace` renders these; `moderatorOpinionEmoji` stays
+ * for the plain strings (a wizard body is text, and cannot hold a portrait).
  *
- * **All three come from one clip**, and that is the whole design. `approving` opens the owl's
- * eyes from nearly shut to fully round over its 25 frames, so three frames of it are the same
- * head in the same pose at three eye apertures:
+ * Duchess (the default) uses three frames of `approving`. Cass uses three different fox
+ * portraits. Unknown animals fall back to the owl table.
  *
- * | score | frame | eyes |
- * |---|---|---|
- * | `> 0` | 20 | fully open, big and round, bright yellow |
- * | `= 0` | 6 | half open — yellow below, lid above |
- * | `< 0` | 4 | nearly shut, only slivers of yellow left in the corners |
- *
- * The axis a player reads is therefore **how much bright yellow is left in the eyes**: one
- * continuous quantity, monotonic with the score, on a face that is otherwise identical between
- * states. That is what survives the downscale to the ~1.6em this renders at, where a change of
- * *expression* would not — and it is why these are not three frames of three different emotion
- * clips, which was the first arrangement: mixing sheets changed head pose and tilt along with
- * the eyes, giving the player two signals to reconcile instead of one to read.
- *
- * **The frame indices are part of the art, not arbitrary.** If `approving` is ever regenerated,
- * open the new frames and re-pick all three: a diffusion clip's frames are in no fixed order
- * across generations, so an index means nothing once the pixels change.
+ * **The frame indices are part of the art, not arbitrary.** If a source clip is regenerated,
+ * open the new frames and re-pick: a diffusion clip's frames are in no fixed order across
+ * generations, so an index means nothing once the pixels change.
  */
-export function moderatorOpinionFace(score: number): { emotion: AnimalEmotion; frame: number } {
-  if (score > 0) return { emotion: 'approving', frame: 20 };
-  if (score < 0) return { emotion: 'approving', frame: 4 };
-  return { emotion: 'approving', frame: 6 };
+export function moderatorOpinionFace(
+  score: number,
+  animalId: AnimalSpriteId | null = 'owl',
+): ModeratorOpinionFace {
+  return statusFacesFor(animalId)[scoreBand(score)];
+}
+
+/** Every still a given animal can hold — used to warm the sheets before a score change. */
+export function moderatorOpinionFacesForAnimal(
+  animalId: AnimalSpriteId | null | undefined,
+): readonly ModeratorOpinionFace[] {
+  const table = statusFacesFor(animalId);
+  return [table.disapproval, table.neutral, table.approval];
 }
 
 /** Plain text for wizard strings and similar (emoji is first for quick scanning). */

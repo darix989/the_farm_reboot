@@ -788,17 +788,23 @@ the player two signals to reconcile where one will do — and the positive and n
 being two wide-eyed owls that differed mainly by a head tilt, were the pair that read least
 clearly. One clip, one axis.
 
-The frame indices are part of the art. **If `approving` is regenerated, open the new frames and
-re-pick all three** — a diffusion clip's frames are in no fixed order across generations, so an
-index means nothing once the pixels change.
+Cass's fox stills are the exception that arrangement was built for: no single fox clip opens
+along one axis the way the owl's eyes do, so 1.7 holds three portraits — `sneaky` 17 (approval),
+`doubtful` 9 (neutral), `angry` 3 (disapproval).
+
+The frame indices are part of the art. **If a source clip is regenerated, open the new frames and
+re-pick** — a diffusion clip's frames are in no fixed order across generations, so an index means
+nothing once the pixels change.
 
 ### 11.2 Duchess lends her face to debates she is not in
 
 Most debates show a moderator's opinion with no moderator on stage: the score is the room's
-judgement, not a character's, and a fenceline skirmish has no owl in it. The indicator still
-needs a face, so it always uses `DEFAULT_MODERATOR_ID` from
-[`debateCast.ts`](../src/data/debateCast.ts) — the same constant `stageOrder()` uses to put a
-moderator in the centre slot, so the two cannot drift.
+judgement, not a character's, and Bram's first lesson has no owl in it. The indicator still
+needs a face, so it uses `debateModeratorId()` from
+[`debateCast.ts`](../src/data/debateCast.ts) — an authored `moderatorId` if present (Cass in
+1.7, so the fence stays Rue vs Bram), else a staged moderator in the cast (Duchess in 1.8),
+else `DEFAULT_MODERATOR_ID`. `stageOrder()` only centres someone who is actually in the
+cast, so a face-only moderator cannot steal the opponent slot.
 
 ### 11.3 `FaceStill`, and why the register needed a third renderer
 

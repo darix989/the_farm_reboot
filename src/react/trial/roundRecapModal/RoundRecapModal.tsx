@@ -32,6 +32,7 @@ import cn from 'classnames';
 import shared from '../trialShared.module.scss';
 import styles from './RoundRecapModal.module.scss';
 import getLabel from '../../../data/labels';
+import { debateModeratorId } from '../../../data/debateCast';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -293,14 +294,20 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                       <p className={styles.recapSectionLabel}>{getLabel('activeRoundImpact')}</p>
                       <p className={cn(styles.recapBody, styles.recapScoreFace)}>
                         <span aria-label={activeRoundImpactAriaLabel}>
-                          <ModeratorStatusFace score={recap.lastCompleted.impact} />
+                          <ModeratorStatusFace
+                            score={recap.lastCompleted.impact}
+                            characterId={debateModeratorId(debate)}
+                          />
                         </span>
                       </p>
                     </div>
                     <div className={styles.recapScoreColumn}>
                       <p className={styles.recapSectionLabel}>{getLabel('overallScore')}</p>
                       <p className={cn(styles.recapBody, styles.recapScoreFace)}>
-                        <ModeratorOpinionInline score={wf.totalScore} />
+                        <ModeratorOpinionInline
+                          score={wf.totalScore}
+                          characterId={debateModeratorId(debate)}
+                        />
                       </p>
                     </div>
                   </div>

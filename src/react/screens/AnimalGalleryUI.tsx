@@ -15,8 +15,8 @@ import {
   animalEmotionQualityStatus,
   type ClipQualityStatus,
 } from '../../phaser/animals/emotionQuality';
-import { CHARACTERS, resolveCharacter, type AnimalSpriteId } from '../../data/characters';
-import { DEFAULT_MODERATOR_ID } from '../../data/debateCast';
+import { CHARACTERS, type AnimalSpriteId } from '../../data/characters';
+import { moderatorCharacterIdForAnimal } from '../../data/debateCast';
 import getLabel, { type Labels } from '../../data/labels';
 import FaceClip from '../characters/FaceClip';
 import ModeratorStatusFace from '../trial/components/ModeratorStatusFace';
@@ -38,10 +38,10 @@ import styles from './AnimalGalleryUI.module.scss';
  * as it will ship. The two registers select independently — a portrait plays beside the body
  * clip it was cut from rather than replacing it, which is the comparison worth having.
  *
- * That section ends with the **moderator status stills** for the owl alone, since Duchess is the
- * only animal whose face is held still anywhere in the game. They are frames of the `approving`
- * portrait listed directly above them, not art of their own, which is why they are a row inside
- * that section rather than a register of their own — and why they are not selectable: there is
+ * That section ends with the **moderator status stills** for every animal a debate
+ * moderator wears (owl for Duchess, fox for Cass). They are frames of portraits listed
+ * directly above them, not art of their own, which is why they are a row inside that
+ * section rather than a register of their own — and why they are not selectable: there is
  * no clip to play and nothing for the stage to do with them.
  */
 
@@ -67,7 +67,7 @@ const FACE_PREVIEW_SIZES: readonly { px: number; label: Labels }[] = [
 ];
 
 /**
- * The moderator status stills, shown for the one animal that wears them.
+ * The moderator status stills, shown for every animal a debate moderator wears.
  *
  * Scores rather than frame indices, and rendered through the game's own `ModeratorStatusFace`,
  * so this section cannot disagree with what a debate shows — the same discipline that has the
@@ -79,9 +79,6 @@ const STATUS_FACE_STATES: readonly { score: number; label: Labels }[] = [
   { score: 0, label: 'galleryStatusFaceNeutral' },
   { score: 1, label: 'galleryStatusFaceApproval' },
 ];
-
-/** Whose portraits carry the status stills. Everyone else's portrait list ends at the crops. */
-const STATUS_FACE_ANIMAL = resolveCharacter(DEFAULT_MODERATOR_ID).animal;
 
 const QUALITY_PILL_LABEL: Record<Exclude<ClipQualityStatus, 'none'>, Labels> = {
   pass: 'galleryQualityPass',
@@ -179,6 +176,7 @@ const AnimalGalleryUI: React.FC = () => {
   const selectedFace = faces.find((face) => face.emotion === faceEmotion) ?? null;
   const missingArt = emotions.filter((clip) => !clip.available).length;
   const missingFaces = faces.filter((face) => !face.available).length;
+  const statusCharacterId = moderatorCharacterIdForAnimal(animalId);
 
   const renderClip = (clip: AnimalClip) => (
     <button
@@ -335,17 +333,17 @@ const AnimalGalleryUI: React.FC = () => {
         )}
 
         {/* Still frames of a portrait above, so they belong under this heading rather than in a
-            section of their own — and only for the animal the debate's moderator wears. */}
-        {animalId === STATUS_FACE_ANIMAL && (
+            section of their own — and only for animals a debate moderator wears. */}
+        {statusCharacterId && (
           <>
             <h3 className={styles.subHeading}>{getLabel('galleryStatusFacesHeading')}</h3>
             <div className={styles.statusFaceRow}>
               {STATUS_FACE_STATES.map(({ score, label }) => {
-                const source = moderatorOpinionFace(score);
+                const source = moderatorOpinionFace(score, animalId);
                 return (
                   <div key={label} className={styles.statusFaceItem}>
                     <span className={styles.statusFaceBox}>
-                      <ModeratorStatusFace score={score} />
+                      <ModeratorStatusFace score={score} characterId={statusCharacterId} />
                     </span>
                     <span className={styles.statusFaceLabel}>{getLabel(label)}</span>
                     <span className={styles.statusFaceMeta}>
@@ -360,7 +358,11 @@ const AnimalGalleryUI: React.FC = () => {
                 );
               })}
             </div>
-            <p className={styles.note}>{getLabel('galleryStatusFacesNote')}</p>
+            <p className={styles.note}>
+              {getLabel(
+                animalId === 'fox' ? 'galleryStatusFacesNoteFox' : 'galleryStatusFacesNote',
+              )}
+            </p>
           </>
         )}
 

@@ -12,6 +12,7 @@ export function ModeratorOpinionInline({
   showOpinion = true,
   opinionClassName,
   opinionTutorialData,
+  characterId,
 }: {
   score: number;
   /** When set (e.g. debate log header), shows inspect icon and balance to the left of the moderator's face. */
@@ -25,6 +26,8 @@ export function ModeratorOpinionInline({
   opinionTutorialData?:
     | 'data-tutorial-debate-log-moderator-score'
     | 'data-tutorial-debate-log-recap-moderator-score';
+  /** Whose stills to hold. Omit for Duchess. Pass `debateModeratorId(debate)` in a Trial. */
+  characterId?: string;
 }) {
   // Nothing left to render once both halves are suppressed — a speaking-only rung has
   // neither an Insight economy nor a moderator.
@@ -59,10 +62,10 @@ export function ModeratorOpinionInline({
             className={opinionClassName}
             {...(opinionTutorialData ? { [opinionTutorialData]: true } : undefined)}
           >
-            <ModeratorStatusFace score={score} />
+            <ModeratorStatusFace score={score} characterId={characterId} />
           </span>
         ) : (
-          <ModeratorStatusFace score={score} />
+          <ModeratorStatusFace score={score} characterId={characterId} />
         ))}
     </span>
   );

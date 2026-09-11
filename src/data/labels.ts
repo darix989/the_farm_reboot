@@ -65,6 +65,8 @@ const LABELS = {
   galleryStatusFacesHeading: "Moderator's opinion (still frames)",
   galleryStatusFacesNote:
     'Three frames of the approving portrait above, held still — the eyes open from nearly shut to fully round, and how much yellow is left is the whole signal. Shown at roughly the size they ship at.',
+  galleryStatusFacesNoteFox:
+    'Three frames of three portraits above, held still — a sly grin, a half-lid, a snarl. Shown at roughly the size they ship at.',
   galleryStatusFaceDisapproval: 'disapproves',
   galleryStatusFaceNeutral: 'undecided',
   galleryStatusFaceApproval: 'approves',

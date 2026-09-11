@@ -3,7 +3,7 @@ import { DEFAULT_MODERATOR_ID } from '../../../data/debateCast';
 import { resolveCharacter } from '../../../data/characters';
 import { preloadFaceSheet, resolvedFaceSheet } from '../../../phaser/animals/animalFaces';
 import FaceStill from '../../characters/FaceStill';
-import { moderatorOpinionFace } from '../utils/trialHelpers';
+import { moderatorOpinionFace, moderatorOpinionFacesForAnimal } from '../utils/trialHelpers';
 
 /** Box side. `em` so it tracks whatever type it sits in, as the emoji it replaces did.
  *  Keep in lockstep with `.moderatorStatusFaceTutorialHook` in `trialShared.module.scss`. */
@@ -12,28 +12,41 @@ const STATUS_FACE_SIZE = '1.6em';
 interface ModeratorStatusFaceProps {
   /** Cumulative debate score, or one round's impact — whichever the surface is showing. */
   score: number;
+  /**
+   * Whose portraits to hold. Defaults to Duchess — she lends her face to debates that
+   * show a score with nobody staged as moderator. Pass `debateModeratorId(debate)` so
+   * 1.7 wears Cass's fox stills without putting her on stage.
+   */
+  characterId?: string;
 }
 
 /**
- * The moderator's verdict on a score, as Duchess's face.
+ * The moderator's verdict on a score, as a still frame of their portrait.
  *
  * Replaces the 😊 / 😐 / 😠 that used to sit in the debate log header, the recap chip, the round
  * recap and each player round's log card. Held still on one frame rather than looped: this is a
  * status indicator, and four of them animating permanently beside the text they label would
- * pull the eye away from the debate. The three states are three frames of the owl's `approving`
- * clip at three eye apertures — see `moderatorOpinionFace()`.
+ * pull the eye away from the debate. Which sheet and frame is `moderatorOpinionFace()`.
  *
- * Duchess wears it even in the debates she is not staged in — see `DEFAULT_MODERATOR_ID`.
+ * Duchess wears it in debates she is not staged in; 1.7 names Cass via `moderatorId`
+ * without putting her on the fence. See `debateModeratorId`.
  */
-const ModeratorStatusFace: React.FC<ModeratorStatusFaceProps> = ({ score }) => {
-  const animal = resolveCharacter(DEFAULT_MODERATOR_ID).animal;
-  const { emotion, frame } = moderatorOpinionFace(score);
+const ModeratorStatusFace: React.FC<ModeratorStatusFaceProps> = ({
+  score,
+  characterId = DEFAULT_MODERATOR_ID,
+}) => {
+  const animal = resolveCharacter(characterId).animal;
+  const { emotion, frame } = moderatorOpinionFace(score, animal);
   const sheet = resolvedFaceSheet(animal, emotion);
 
-  // All three states are frames of one sheet, so warming that sheet covers every score this
-  // indicator can reach — and it is mounted in debates Duchess is not in, where fetching her
-  // whole portrait set would be ~2.5MB to draw one 440KB file.
-  useEffect(() => preloadFaceSheet(sheet), [sheet]);
+  // Warm every sheet this character's three states can reach, so a score change does not
+  // flash a missing PNG. Owl is one sheet (three frames of `approving`); fox is three.
+  // Still cheaper than fetching the whole portrait set in a debate the moderator is not in.
+  useEffect(() => {
+    for (const pick of moderatorOpinionFacesForAnimal(animal)) {
+      preloadFaceSheet(resolvedFaceSheet(animal, pick.emotion));
+    }
+  }, [animal]);
 
   return <FaceStill sheet={sheet} frame={frame} size={STATUS_FACE_SIZE} />;
 };

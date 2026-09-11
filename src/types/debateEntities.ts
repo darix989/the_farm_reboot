@@ -546,6 +546,13 @@ export interface DebateScenarioJson {
   playerSide: Side;
   /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
   characters?: Record<string, string>;
+  /**
+   * Whose face the moderator status stills wear, when that animal is not also on stage.
+   * 1.7 names Cass so the fence skirmish stays Rue-vs-Bram while the score stills use her
+   * fox portraits. Omit to use a staged moderator (`characters` ∩ `MODERATOR_IDS`) or
+   * Duchess. See `debateModeratorId`.
+   */
+  moderatorId?: string;
   logicalFallacies: LogicalFallacyScenario[];
   availableLogicalFallacies: LogicalFallacyId[];
   /** Initial Insight Points balance the player starts the debate with. Defaults to 0. */

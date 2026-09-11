@@ -34,7 +34,8 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 | `introduction` | Sets the scene. Its presence is what creates the `debate_intro` phase. May carry inline [emphasis](#emphasis-inside-a-spoken-line). |
 | `introductionSummary` | Two-line paraphrase shown in the pre-round-1 briefing modal. **Required** whenever there is an `introduction` — see [Recap summaries](#recap-summaries). |
 | `playerSide` | `proposition` or `opposition`. |
-| `characters` | `speakerId` → display name. |
+| `characters` | `speakerId` → display name. Keys here are the staged cast. |
+| `moderatorId` | Whose face the score stills wear when that animal is **not** on stage (1.7 names Cass so Bram stays the opponent). Omit to use a staged moderator, or Duchess. |
 | `logicalFallacies` | The fallacies this scenario uses, each with an `explanation` shown after a guess. **Write real prose** — several older scenarios still say `"TBD"`, and the player sees it. |
 | `availableLogicalFallacies` | Which icons appear on the picker. **This is the difficulty dial** — one icon is a tutorial, thirteen is a wall. |
 | `startingInsightPoints` | Insight to start with. Defaults to 0. |

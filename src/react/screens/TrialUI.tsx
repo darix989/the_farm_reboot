@@ -49,7 +49,7 @@ import {
   revealChunks,
   statementText,
 } from '../trial/utils/trialHelpers';
-import { debateParticipantIds, stageOrder } from '../../data/debateCast';
+import { debateModeratorId, debateParticipantIds, stageOrder } from '../../data/debateCast';
 import {
   isOptionGated,
   isPlayerOptionUnlocked,
@@ -1158,6 +1158,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           maxAnalysisAttempts={mechanics.maxAnalysisAttempts}
           showInsightPoints={mechanics.showInsightPoints}
           showRoundType={mechanics.showRoundType}
+          moderatorCharacterId={debateModeratorId(debate)}
         />
       )}
       {introSummaryOpen && mechanics.showIntroSummary && wf.gamePhase === 'debate_intro' && (

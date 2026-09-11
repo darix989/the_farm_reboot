@@ -9,6 +9,7 @@ import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/Intr
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { activeRoundNumber } from '../utils/trialHelpers';
 import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
+import { debateModeratorId } from '../../../data/debateCast';
 import styles from './TrialPanels.module.scss';
 import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
@@ -149,6 +150,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
               showOpinion={mechanics.showModeratorOpinion}
               opinionClassName={shared.moderatorStatusFaceTutorialHook}
               opinionTutorialData="data-tutorial-debate-log-moderator-score"
+              characterId={debateModeratorId(debate)}
             />
           </p>
           <DebateLogToggleButton

@@ -93,6 +93,8 @@ interface RoundAnalysisModalProps {
   showInsightPoints?: boolean;
   /** Round-type subtitle under the modal title. Default `true`. */
   showRoundType?: boolean;
+  /** Whose stills the player-assessment score wears. Omit for Duchess. */
+  moderatorCharacterId?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -908,7 +910,13 @@ function NpcRoundAnalysis({
 // Player assessment (impact / reason) — after fallacy guessing ends
 // ---------------------------------------------------------------------------
 
-function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
+function PlayerAssessmentSection({
+  option,
+  moderatorCharacterId,
+}: {
+  option: PlayerOption;
+  moderatorCharacterId?: string;
+}) {
   return (
     <div className={styles.trialAnalysisBody} style={{ marginTop: '1rem' }}>
       <div className={shared.trialSectionBox} style={{ marginBottom: '0' }}>
@@ -928,7 +936,7 @@ function PlayerAssessmentSection({ option }: { option: PlayerOption }) {
             color: uiColor.textBody,
           }}
         >
-          <ModeratorOpinionInline score={option.impact} />
+          <ModeratorOpinionInline score={option.impact} characterId={moderatorCharacterId} />
         </p>
         {option.reason && (
           <p
@@ -1070,6 +1078,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   maxAnalysisAttempts,
   showInsightPoints = true,
   showRoundType = true,
+  moderatorCharacterId,
 }) => {
   const [showNoFallaciesConfirm, setShowNoFallaciesConfirm] = useState(false);
   const [showHelpConfirm, setShowHelpConfirm] = useState(false);
@@ -1268,7 +1277,10 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                   showInsightPoints={showInsightPoints}
                 />
                 {playerRevealAssessment ? (
-                  <PlayerAssessmentSection option={target.chosenOption} />
+                  <PlayerAssessmentSection
+                    option={target.chosenOption}
+                    moderatorCharacterId={moderatorCharacterId}
+                  />
                 ) : null}
               </>
             ) : null

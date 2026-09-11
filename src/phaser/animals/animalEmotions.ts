@@ -66,13 +66,14 @@ export const ANIMAL_EMOTIONS = [
  * `activeEmotionForWorkflow` derives it — the status indicator picks its frames directly. Playing
  * it on stage is not wrong (a convinced listener nodding is a real beat), just currently unused.
  *
- * It ended up carrying **all three** status states rather than one, which is the better design
- * and was not the plan. Its 25 frames open the owl's eyes from nearly shut to fully round, so
- * three frames of this one clip give three apertures of an otherwise identical head — the eyes
- * are the only thing that changes, and "how much bright yellow is left" is a single monotonic
- * quantity a player can read at ~1.6em. The arrangement it replaced took one frame each from
- * `approving`, `talking` and `angry`, which moved head pose and tilt along with the eyes. See
- * `moderatorOpinionFace()` in `src/react/trial/utils/trialHelpers.ts`.
+ * It ended up carrying **all three** of Duchess's status states rather than one, which is
+ * the better design for her and was not the plan. Its 25 frames open the owl's eyes from
+ * nearly shut to fully round, so three frames of this one clip give three apertures of an
+ * otherwise identical head — the eyes are the only thing that changes, and "how much bright
+ * yellow is left" is a single monotonic quantity a player can read at ~1.6em. Cass's fox
+ * stills do the opposite on purpose: three portraits (`sneaky` / `doubtful` / `angry`),
+ * because no single fox clip opens along one axis that way. See `moderatorOpinionFace()` in
+ * `src/react/trial/utils/trialHelpers.ts`.
  *
  * ## Still variants (`<emotion>_still`)
  *

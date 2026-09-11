@@ -232,16 +232,14 @@ Full contract in [references/ludo-api.md](references/ludo-api.md). The four that
 
 The debate's moderator status is **one still frame** of an existing portrait sheet — no separate
 asset, no export step. `moderatorOpinionFace()` in `src/react/trial/utils/trialHelpers.ts` maps a
-score to a frame index and `FaceStill` holds that frame in an `em`-sized box.
+score to a frame index and `FaceStill` holds that frame in an `em`-sized box. Duchess (the
+default) uses three frames of the owl's **`approving`** clip, which opens its eyes from nearly
+shut to fully round: frame 20 (open) / 6 (half) / 4 (nearly shut). Cass wears the 1.7 fence-skirmish stills (`moderatorId`, not on stage) with three fox
+portraits instead: `sneaky` 17 / `doubtful` 9 / `angry` 3.
 
-All three states are frames of the owl's **`approving`** clip, which opens its eyes from nearly
-shut to fully round: frame 20 (open) / 6 (half) / 4 (nearly shut). One clip, so the head pose is
-identical between states and the only thing that changes is how much bright yellow is left in the
-eyes — a monotonic area-and-value signal, which is what reads at ~1.6em.
-
-**The frame indices are part of the art.** If you regenerate `owl/approving`, open the new frames
-and re-pick all three — a diffusion clip's frames are in no fixed order across generations, so an
-index means nothing once the pixels change. `docs/characters-and-animations.md` §11 has the rest.
+**The frame indices are part of the art.** If you regenerate a source clip, open the new frames
+and re-pick — a diffusion clip's frames are in no fixed order across generations, so an index
+means nothing once the pixels change. `docs/characters-and-animations.md` §11 has the rest.
 
 **Seven animals are generated** (`donkey-grey`, `owl`, `raccoon`, `fox`, `white-sheep-1`,
 `brown-wolf`, `dog`). Four more atlases are imported (`cow`, `cow-female-001`, `mouse`,

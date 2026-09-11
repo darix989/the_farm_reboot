@@ -289,10 +289,11 @@ export function preloadFaceSheets(animalId: AnimalSpriteId | null): void {
 /**
  * Warms one sheet.
  *
- * For a caller that knows it will only ever show the one — the moderator status face holds three
- * frames of a single clip, and is mounted in every debate that shows a score, most of which
- * Duchess is not in. Warming her whole portrait set there would fetch ~2.5MB of sheets to draw
- * 440KB of one.
+ * For a caller that knows it will only ever show a few — the moderator status face holds three
+ * frames (one owl clip, or three fox portraits), and is mounted in every debate that shows a
+ * score, most of which Duchess is not in. Warming her whole portrait set there would fetch
+ * ~2.5MB of sheets to draw 440KB of one. `ModeratorStatusFace` warms only the sheets its
+ * character's table names.
  */
 export function preloadFaceSheet(sheet: FaceSheet | null): void {
   if (!sheet || typeof Image === 'undefined') return;

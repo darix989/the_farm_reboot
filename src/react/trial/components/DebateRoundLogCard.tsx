@@ -27,6 +27,7 @@ import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
 import { PLAYER_CHARACTER_ID } from '../../../data/characters';
+import { debateModeratorId } from '../../../data/debateCast';
 import AnimalFace from '../../characters/AnimalFace';
 import ModeratorStatusFace from './ModeratorStatusFace';
 
@@ -195,7 +196,10 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
           completedForRound.impact > 0 ? '+' : ''
         }${completedForRound.impact}`}
       >
-        <ModeratorStatusFace score={completedForRound.impact} />
+        <ModeratorStatusFace
+          score={completedForRound.impact}
+          characterId={debateModeratorId(debate)}
+        />
       </span>
     ) : null;
 

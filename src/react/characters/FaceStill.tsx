@@ -25,7 +25,7 @@ interface FaceStillProps {
  *   indicator that animates permanently beside the text it labels is noise, and a pixel box
  *   cannot follow a font size that scales with the stage.
  * - **not an exported PNG per state**, because the frames are already shipped — the moderator
- *   status set is three frames of two sheets the game loads anyway. Cutting stills at promote
+ *   status set is frames of portrait sheets the game loads anyway. Cutting stills at promote
  *   time would add a pipeline step, three assets and a way for them to fall out of sync with
  *   the clips they came from.
  *

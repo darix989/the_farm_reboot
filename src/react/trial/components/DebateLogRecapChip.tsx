@@ -4,6 +4,7 @@ import type { DebateScenarioJson } from '../../../types/debateEntities';
 import DebateLogToggleButton from './DebateLogToggleButton';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import type { ResolvedMechanics } from '../utils/scenarioMechanics';
+import { debateModeratorId } from '../../../data/debateCast';
 import styles from './DebateLogRecapChip.module.scss';
 import shared from '../trialShared.module.scss';
 import getLabel from '../../../data/labels';
@@ -65,6 +66,7 @@ const DebateLogRecapChip: React.FC<DebateLogRecapChipProps> = ({
         showOpinion={mechanics.showModeratorOpinion}
         opinionClassName={shared.moderatorStatusFaceTutorialHook}
         opinionTutorialData="data-tutorial-debate-log-recap-moderator-score"
+        characterId={debateModeratorId(debate)}
       />
       <DebateLogToggleButton debate={debate} roundNumber={roundNumber} />
     </div>
