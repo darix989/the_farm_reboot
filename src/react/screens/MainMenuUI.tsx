@@ -36,6 +36,7 @@ const MainMenuUI: React.FC = () => {
     // Persist middleware writes the empty snapshot to `localStorage` on `set`.
     useProgressStore.getState().resetProgress();
     useCodexStore.getState().resetCodex();
+    useCodexUiStore.getState().resetAnimatedNotices();
     useCodexUiStore.getState().closeCodex();
     setConfirmingReset(false);
   };

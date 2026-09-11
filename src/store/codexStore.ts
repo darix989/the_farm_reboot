@@ -37,6 +37,12 @@ interface CodexStore {
   spottedFallacies: SpottedFallacy[];
   dialogFlags: DialogFlagId[];
   unlockedFeatures: GameFeatureId[];
+  /**
+   * Field Notes cards the player has clicked through. `null` means this save has not been
+   * seeded yet — the first hydrated compute copies every currently live notice into the list
+   * so an existing journal does not light up as all-new.
+   */
+  seenNoticeIds: string[] | null;
 
   learnFallacy: (id: LogicalFallacyId) => void;
   /**
@@ -55,6 +61,13 @@ interface CodexStore {
   hasSpottedFallacy: (id: LogicalFallacyId, scenarioKey?: DebateScenarioKey) => boolean;
   hasDialogFlag: (id: DialogFlagId) => boolean;
   hasFeature: (id: GameFeatureId) => boolean;
+
+  /**
+   * First-run seed. No-ops once `seenNoticeIds` is an array so a later live-set change
+   * cannot wipe unread state.
+   */
+  hydrateNotices: (liveIds: readonly string[]) => void;
+  markNoticesSeen: (ids: readonly string[]) => void;
 
   resetCodex: () => void;
 }
@@ -75,6 +88,7 @@ export const useCodexStore = create<CodexStore>()(
       spottedFallacies: [],
       dialogFlags: [],
       unlockedFeatures: [],
+      seenNoticeIds: null,
 
       learnFallacy: (id) =>
         set((s) =>
@@ -118,29 +132,60 @@ export const useCodexStore = create<CodexStore>()(
 
       hasFeature: (id) => get().unlockedFeatures.includes(id),
 
+      hydrateNotices: (liveIds) =>
+        set((s) => (s.seenNoticeIds === null ? { ...s, seenNoticeIds: [...liveIds] } : s)),
+
+      markNoticesSeen: (ids) =>
+        set((s) => {
+          // Not seeded yet — acknowledging a card now would persist a partial list and skip
+          // the hydrate that treats the rest of the journal as already seen.
+          if (s.seenNoticeIds === null) return s;
+          let changed = false;
+          const next = [...s.seenNoticeIds];
+          for (const id of ids) {
+            if (next.includes(id)) continue;
+            next.push(id);
+            changed = true;
+          }
+          return changed ? { ...s, seenNoticeIds: next } : s;
+        }),
+
       resetCodex: () =>
-        set({ knownFallacies: [], spottedFallacies: [], dialogFlags: [], unlockedFeatures: [] }),
+        set({
+          knownFallacies: [],
+          spottedFallacies: [],
+          dialogFlags: [],
+          unlockedFeatures: [],
+          seenNoticeIds: null,
+        }),
     }),
     {
       name: 'the-farm-codex',
-      version: 3,
+      version: 4,
       /**
        * v3 goes with `progressStore` v5→v6, the trim of Level 1 to eight rungs. Progress alone
        * is not enough to reset: `unlockedFeatures` lives here, so an old save would keep
        * `insight_points` and show an Insight counter in a level that no longer teaches it.
+       *
+       * v4 adds Field Notes unread tracking. `seenNoticeIds: null` forces a one-shot seed from
+       * whatever is currently live, so an existing save does not light up as all-new.
        */
       migrate: (persisted, fromVersion) => {
         const saved = (persisted ?? {}) as Record<string, unknown>;
+        let next = saved;
         if (fromVersion < 3) {
-          return {
-            ...saved,
+          next = {
+            ...next,
             knownFallacies: [],
             spottedFallacies: [],
             dialogFlags: [],
             unlockedFeatures: [],
           };
         }
-        return saved;
+        if (fromVersion < 4) {
+          next = { ...next, seenNoticeIds: null };
+        }
+        return next;
       },
       /**
        * Same contract as `progressStore`: a save naming a fallacy, encounter or flag that no
@@ -177,7 +222,20 @@ export const useCodexStore = create<CodexStore>()(
           .filter(isGameFeatureId)
           .filter((id, i, all) => all.indexOf(id) === i);
 
-        return { ...current, knownFallacies, spottedFallacies, dialogFlags, unlockedFeatures };
+        const seenNoticeIds = Array.isArray(saved?.seenNoticeIds)
+          ? saved.seenNoticeIds.filter(
+              (id, i, all): id is string => typeof id === 'string' && all.indexOf(id) === i,
+            )
+          : null;
+
+        return {
+          ...current,
+          knownFallacies,
+          spottedFallacies,
+          dialogFlags,
+          unlockedFeatures,
+          seenNoticeIds,
+        };
       },
     },
   ),

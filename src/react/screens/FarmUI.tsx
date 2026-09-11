@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import cn from 'classnames';
 import getLabel from '../../data/labels';
 import type { DebateScenarioKey } from '../../data/levels';
 import { resolveCharacter } from '../../data/characters';
@@ -21,6 +22,7 @@ import { farmNpcTalkLocked } from '../../utils/farmTalkGate';
 import { scenarioRequirements } from '../../data/levels';
 import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
 import FarmDialogue from '../farm/FarmDialogue';
+import { useCodexNotices } from '../codex/useCodexNotices';
 import {
   canRunTutorialTargetAction,
   canRunTutorialUntargetedAction,
@@ -45,6 +47,10 @@ const FarmUI: React.FC = () => {
   const closeDialogue = useFarmStore((s) => s.closeDialogue);
   const openCodex = useCodexUiStore((s) => s.openCodex);
   const tutorialOpen = useTutorialStore((s) => s.isOpen);
+  const { hasUnread, unreadIds, firstUnreadSection } = useCodexNotices();
+  const animatedNoticeIds = useCodexUiStore((s) => s.animatedNoticeIds);
+  const markNoticesAnimated = useCodexUiStore((s) => s.markNoticesAnimated);
+  const [codexBursting, setCodexBursting] = useState(false);
 
   const completedScenarios = useProgressStore((s) => s.completedScenarios);
   const dialogue = useMemo(
@@ -65,6 +71,21 @@ const FarmUI: React.FC = () => {
   const nearbyLockedHint = useUnmetConditionsHint(nearbyTalkLocked ? nearbyRequires : []);
 
   useFarmTutorials();
+
+  // One-shot burst when unread ids appear while the HUD button is on screen. Talks and Trial
+  // hide it; the lingering cue stays, but those ids are marked animated so coming back from a
+  // talk does not replay. New ids after Trial still pulse.
+  const hudCodexVisible = !dialogue;
+  useEffect(() => {
+    if (!hudCodexVisible) {
+      setCodexBursting(false);
+      return;
+    }
+    const pending = unreadIds.filter((id) => !animatedNoticeIds.includes(id));
+    if (pending.length === 0) return;
+    markNoticesAnimated(pending);
+    setCodexBursting(true);
+  }, [hudCodexVisible, unreadIds, animatedNoticeIds, markNoticesAnimated]);
 
   // After the loading overlay unmounts — not in Phaser `create`, which runs while that
   // overlay still covers the stage, and which used to skip anyone who already had progress.
@@ -99,12 +120,21 @@ const FarmUI: React.FC = () => {
           over it would cover the line the player is reading. */}
       {!dialogue && (
         <button
-          className={styles.codexButton}
+          className={cn(
+            styles.codexButton,
+            hasUnread && styles.codexButtonHasCue,
+            codexBursting && styles.codexButtonBurst,
+          )}
           type="button"
           data-tutorial-codex-open
+          aria-label={hasUnread ? getLabel('codexOpenHasNew') : undefined}
+          onAnimationEnd={(event) => {
+            if (event.target !== event.currentTarget) return;
+            setCodexBursting(false);
+          }}
           onClick={() => {
             if (!canRunTutorialTargetAction(CODEX_OPEN_TARGET)) return;
-            openCodex();
+            openCodex(firstUnreadSection ?? undefined);
             notifyTutorialTargetAction(CODEX_OPEN_TARGET);
           }}
         >
