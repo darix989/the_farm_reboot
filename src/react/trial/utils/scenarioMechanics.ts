@@ -4,8 +4,10 @@ import type {
   DebateScenarioMechanics,
   EncounterKind,
 } from '../../../types/debateEntities';
+import { featuresUnlockedBefore } from '../../../data/levels';
 import type { GameFeatureId } from '../../../data/gameFeatures';
 import { useCodexStore } from '../../../store/codexStore';
+import { useGameStore } from '../../../store/gameStore';
 import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './fallacyGuessTypes';
 import type { Labels } from '../../../data/labels';
 
@@ -139,8 +141,13 @@ export function applyFeatureUnlocks(
 /** Resolved mechanics with the player's unlocked features applied. */
 export function useResolvedMechanics(debate: DebateScenarioJson): ResolvedMechanics {
   const unlocked = useCodexStore((s) => s.unlockedFeatures);
-  return useMemo(
-    () => applyFeatureUnlocks(resolveMechanics(debate), unlocked, debate.unlocksFeatures),
-    [debate, unlocked],
-  );
+  const returnSceneKey = useGameStore((s) => s.returnSceneKey);
+  const activeDebateId = useGameStore((s) => s.activeDebateId);
+  return useMemo(() => {
+    // Menu launches skip farm gates, so preview the features earlier rungs would
+    // already have taught — otherwise Tobias round 3 hides `— crossfire`.
+    const previewed = returnSceneKey === 'MainMenu' ? featuresUnlockedBefore(activeDebateId) : [];
+    const combined = previewed.length === 0 ? unlocked : [...new Set([...unlocked, ...previewed])];
+    return applyFeatureUnlocks(resolveMechanics(debate), combined, debate.unlocksFeatures);
+  }, [debate, unlocked, returnSceneKey, activeDebateId]);
 }

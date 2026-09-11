@@ -135,12 +135,16 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
     : null;
 
   const roundHeading = round
-    ? getLabel('roundHeadingWithStatementType', {
-        replacements: {
-          roundNumber: round.roundNumber,
-          statementType: statementTypeLabel(round.type),
-        },
-      })
+    ? mechanics.showRoundType
+      ? getLabel('roundHeadingWithStatementType', {
+          replacements: {
+            roundNumber: round.roundNumber,
+            statementType: statementTypeLabel(round.type),
+          },
+        })
+      : getLabel('workflowRoundPlain', {
+          replacements: { roundNumber: round.roundNumber },
+        })
     : getLabel('roundRecap');
 
   // NPC round body: speaker name + statement text shown in place of "Your statement".

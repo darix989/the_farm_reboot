@@ -1,5 +1,5 @@
 import { PLAYER_CHARACTER_ID } from '../../../data/characters';
-import getLabel from '../../../data/labels';
+import getLabel, { type Labels } from '../../../data/labels';
 import type { GamePhase } from '../../hooks/useTrialRoundWorkflow';
 import {
   PLAYER_OPTION_IMPACT_ABS_MAX,
@@ -12,6 +12,7 @@ import {
   type Sentence,
   type Side,
   type Statement,
+  type StatementType,
 } from '../../../types/debateEntities';
 import { uiColor } from '../../uiColor';
 import type { AnimalEmotion } from '../../../phaser/animals/animalEmotions';
@@ -267,7 +268,17 @@ export function debateTotalScoreBounds(debate: DebateScenarioJson): { min: numbe
   return { min: -cap, max: cap };
 }
 
+const STATEMENT_TYPE_LABELS: Record<StatementType, Labels> = {
+  opening_constructive: 'statementTypeOpeningConstructive',
+  rebuttal: 'statementTypeRebuttal',
+  crossfire: 'statementTypeCrossfire',
+  closing_constructive: 'statementTypeClosingConstructive',
+  gossip: 'statementTypeGossip',
+};
+
 export function statementTypeLabel(type: string): string {
+  const key = STATEMENT_TYPE_LABELS[type as StatementType];
+  if (key) return getLabel(key);
   return type.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
