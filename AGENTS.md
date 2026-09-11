@@ -121,6 +121,7 @@ src/
     trialStageStore.ts  # Debate ↔ Phaser handoff: active speaker for the Trial cast
     debateLogStore.ts   # Is the Trial's Debate Log expanded, or collapsed to its recap chip
     progressStore.ts    # Completed encounters + farm tutorials + whether Level 1 has started (persisted)
+    devSettingsStore.ts # Dev UI prefs (farm-talk skip button); persisted, not wiped by Reset Progress
     codexStore.ts       # Known fallacies, spotted fallacies, dialog flags (persisted)
     codexUiStore.ts     # Field Notes overlay open/section (not persisted)
   utils/

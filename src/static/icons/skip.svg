@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>skip</title>
+    <g id="skip" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M4,4.5 L11,12 L4,19.5 L2,17.5 L7,12 L2,6.5 Z M12,4.5 L19,12 L12,19.5 L10,17.5 L15,12 L10,6.5 Z M20.5,4.5 L22.5,4.5 L22.5,19.5 L20.5,19.5 Z" fill="#000000"></path>
+    </g>
+</svg>

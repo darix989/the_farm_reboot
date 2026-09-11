@@ -32,6 +32,10 @@ const LABELS = {
   level1BramInsight: 'Down at the Fence: Looking Twice',
   level1LabCass: "The Fox's Lab: Dirty Paws",
   animationGallery: 'Animation Gallery',
+  /** Main-menu toggle for the farm-talk skip button. `{state}` is On / Off. */
+  devFarmTalkSkipToggle: 'Dialog skip: {state}',
+  devFarmTalkSkipOn: 'On',
+  devFarmTalkSkipOff: 'Off',
   resetProgress: 'Reset Progress',
   resetProgressConfirmTitle: 'Reset all progress?',
   resetProgressConfirmBody:
@@ -284,6 +288,7 @@ const LABELS = {
   farmMoveHint: 'Arrows or WASD to move',
   farmMoveHintTouch: 'Drag anywhere to move',
   farmTalk: 'Talk',
+  farmTalkSkip: 'Skip to last line',
   farmLeave: 'Leave',
   farmLessons: 'Lessons',
   farmTalkHintContinue: 'Click Continue to hear the next line.',

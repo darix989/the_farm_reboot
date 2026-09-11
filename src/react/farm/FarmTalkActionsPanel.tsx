@@ -10,6 +10,7 @@ import {
   shouldIgnoreActionShortcut,
 } from '../trial/utils/trialActionShortcuts';
 import styles from '../trial/panels/TrialPanels.module.scss';
+import { useDevSettingsStore } from '../../store/devSettingsStore';
 
 type TalkMode = 'talk' | 'lessons';
 
@@ -36,6 +37,7 @@ interface FarmTalkActionsPanelProps {
   /** `true` when the press was consumed by the sentence pacer. */
   onRevealAdvance: () => boolean;
   onAdvanceBeat: () => void;
+  onSkipToLast: () => void;
   onStart: (scenario: DebateScenarioKey) => void;
   onClose: () => void;
   onOpenLessons: () => void;
@@ -86,6 +88,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
   selectedLessonKey,
   onRevealAdvance,
   onAdvanceBeat,
+  onSkipToLast,
   onStart,
   onClose,
   onOpenLessons,
@@ -96,6 +99,8 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
   const leaveLabel = getLabel('farmLeave');
   const lessonsLabel = getLabel('farmLessons');
   const continueLabel = getLabel('continue');
+  const skipLabel = getLabel('farmTalkSkip');
+  const showSkip = useDevSettingsStore((s) => s.showFarmTalkSkip);
 
   // Talk / Lessons / Leave are mounted only once the last beat has been read in full. Leave
   // used to be shown on its own while it was still revealing, which let the player end the
@@ -204,6 +209,15 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
           }}
           submitTutorialAction="continue"
           extraContinueCodes={['KeyE']}
+          skip={
+            showSkip && mode === 'talk'
+              ? {
+                  disabled: actionsReady,
+                  label: skipLabel,
+                  onClick: onSkipToLast,
+                }
+              : null
+          }
         />
         {mode === 'lessons' && (
           <div className={styles.trialChoices}>
