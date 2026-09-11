@@ -428,8 +428,10 @@ from the source pack.
 ### 9.1 The vocabulary
 
 [`animalEmotions.ts`](../src/phaser/animals/animalEmotions.ts) owns `ANIMAL_EMOTIONS`:
-`talking`, `doubtful`, `angry`, `thinking`, `sneaky`. Each names a **posture**, not a facial
-expression — a Trial sprite is ~300px tall, so its face is 50–80px and a raised eyebrow does
+`talking`, `doubtful`, `angry`, `thinking`, `sneaky`, plus two entries that exist for the
+other two registers rather than for the stage — `talking_still` (a portrait source, §10.5) and
+`approving` (the moderator status face, §11). Each of the five stage entries names a
+**posture**, not a facial expression — a Trial sprite is ~300px tall, so its face is 50–80px and a raised eyebrow does
 not survive the downscale. Anything that has to read on the stage has to read in the
 silhouette.
 
@@ -754,3 +756,79 @@ wobbly head beats a visible jump every two seconds, so Rue now has `talking`, `a
 **Do not generate the other four still variants expecting stillness.** Generate one only when an
 animal's body clip has a loop seam bad enough to disqualify its portrait — that is the problem
 these actually solve.
+
+## 11. The moderator status face — the third register
+
+One **still frame**, in the debate log header, the collapsed log's recap chip, the round recap
+modal and each player round's log card. It is the moderator's verdict on the score, and until
+this it was three text emoji — 😊 / 😐 / 😠 — which were the one place in the trial chrome where
+the art stopped, a yellow smiley beside a stage of hand-drawn animals.
+
+### 11.1 Three states, and why they are frames rather than expressions
+
+Duchess the owl is the farm's moderator, so the status wears her face. `moderatorOpinionFace()`
+in [`trialHelpers.ts`](../src/react/trial/utils/trialHelpers.ts) maps a score to a frame index,
+and **all three come from the same clip** — `approving` opens the owl's eyes from nearly shut to
+fully round over its 25 frames, so three of them are one head in one pose at three apertures:
+
+| score | frame | eyes |
+| --- | --- | --- |
+| `> 0` | 20 | fully open, big and round, bright yellow |
+| `= 0` | 6 | half open — yellow below, lid above |
+| `< 0` | 4 | nearly shut, only slivers of yellow left in the corners |
+
+The axis a player reads is therefore **how much bright yellow is left in the eyes**: one
+continuous quantity, monotonic with the score, on a face that is otherwise identical between
+states. That is a change in *area and value*, so it survives the downscale — this icon renders at
+about 1.6em, roughly the size of the glyph it replaced, where an expression would not.
+
+The first arrangement took its three frames from three different emotion clips (`approving` /
+`talking` / `angry`). It worked, but it moved head pose and tilt along with the eyes, which gives
+the player two signals to reconcile where one will do — and the positive and neutral states,
+being two wide-eyed owls that differed mainly by a head tilt, were the pair that read least
+clearly. One clip, one axis.
+
+The frame indices are part of the art. **If `approving` is regenerated, open the new frames and
+re-pick all three** — a diffusion clip's frames are in no fixed order across generations, so an
+index means nothing once the pixels change.
+
+### 11.2 Duchess lends her face to debates she is not in
+
+Most debates show a moderator's opinion with no moderator on stage: the score is the room's
+judgement, not a character's, and a fenceline skirmish has no owl in it. The indicator still
+needs a face, so it always uses `DEFAULT_MODERATOR_ID` from
+[`debateCast.ts`](../src/data/debateCast.ts) — the same constant `stageOrder()` uses to put a
+moderator in the centre slot, so the two cannot drift.
+
+### 11.3 `FaceStill`, and why the register needed a third renderer
+
+[`FaceStill`](../src/react/characters/FaceStill.tsx) holds one frame and takes its box as a **CSS
+length** rather than a number of pixels. Both existing renderers were wrong for this:
+
+- `FaceClip` plays the loop and sizes in px. Four permanently animating faces beside the text they
+  label is noise, and a pixel box cannot follow a font size that scales with the stage — the
+  game's root `rem` ranges over 5–28px (`STAGE_REM_MIN_PX`/`STAGE_REM_MAX_PX`), so a fixed 40px
+  icon is a third of the panel's height on a small stage and a postage stamp on a large one.
+- An exported PNG per state would add a pipeline step and three assets that can fall out of sync
+  with the clips they came from — for frames the game already loads.
+
+Its staging is **derived from `faceBoxTransform`, not a second copy of it**: `faceBoxPercent()`
+evaluates that function at `size = 100`, which works because the transform is linear in `size`.
+The whole register frames portraits one way, which is what lets the offline review page stand in
+for the game.
+
+### 11.4 What it cost, and the lesson
+
+Eight credits, two generations. The first `approving` passed every numeric gate — loop seam 0.1%,
+height swing 5.8%, drift 0.8px — and was **useless**, which is the clearest example in this
+project of the metrics measuring the frames rather than the clip. It asked for the inverse of
+`angry` (brow lifting, eyes curving into happy upward crescents); the generator read the crescent
+as pupil dilation, turning the owl's signature yellow eyes almost fully black mid-clip, and left
+every other frame an ordinary wide-eyed owl — identical to the neutral state it exists to be told
+apart from.
+
+The fix was to stop competing for a carrier that was already spent. The owl's eyes belong to
+`angry` and `sneaky`; `approving` moved its signal onto the **silhouette** — the whole head
+cocking to one side with the ear tufts, eyes explicitly pinned wide and round — and held first
+try. **When two emotions have to be distinguishable at icon size, one of them needs a different
+carrier entirely.**

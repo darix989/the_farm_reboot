@@ -352,9 +352,9 @@ export type TutorialCodexSection = 'next' | 'known' | 'spotted' | 'dialogs';
  */
 export type TutorialTargetRef =
   | { kind: 'panel'; panel: 'debate_log' | 'wizard' | 'interactive' }
-  /** Moderator opinion emoji (+ insight strip) in the debate log panel header. */
+  /** Moderator opinion face (+ insight strip) in the debate log panel header. */
   | { kind: 'debate_log_moderator_score' }
-  /** Moderator opinion emoji on the *collapsed* log's recap chip. */
+  /** Moderator opinion face on the *collapsed* log's recap chip. */
   | { kind: 'debate_log_recap_moderator_score' }
   /** The ◀ / ▶ button that collapses or expands the log panel as a whole. */
   | { kind: 'debate_log_panel_toggle' }
@@ -497,7 +497,7 @@ export interface DebateScenarioMechanics {
   analysisEnabled?: boolean;
   /** Insight Points counter in the debate log header. Default `true`. */
   showInsightPoints?: boolean;
-  /** Moderator gauge, opinion emoji and per-round impact numbers. Default `true`. */
+  /** Moderator gauge, opinion face and per-round impact numbers. Default `true`. */
   showModeratorOpinion?: boolean;
   /** The per-round recap modal. When `false`, rounds advance straight through. Default `true`. */
   showRoundRecap?: boolean;

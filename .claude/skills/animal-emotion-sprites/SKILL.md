@@ -1,7 +1,7 @@
 ---
 name: animal-emotion-sprites
 argument-hint: "[--faces] [--animal <id>] [--emotion <name>] [--dry-run|--promote|--reindex|--remeasure|--force]"
-description: Ship the cast's two animation registers — whole-body per-emotion clips (talking, doubtful, angry, thinking, sneaky) generated via the Ludo.ai API, and the dialogue portraits cropped locally out of those clips for free with --faces. Use when asked to generate, regenerate, add or fix an animal's emotion animation or spritesheet, to add a new emotion to the vocabulary, to give a newly added animal its emotion art, to author or retune a head crop for a dialogue portrait, or when a clip or portrait looks wrong in game (wrong size, floating off the floor, popping on loop, head drifting inside its portrait). Also covers the Animation Gallery used to review the results.
+description: Ship the cast's animation registers — whole-body per-emotion clips (talking, doubtful, angry, thinking, sneaky, approving) generated via the Ludo.ai API, the dialogue portraits cropped locally out of those clips for free with --faces, and the still frames the debate's moderator status face holds. Use when asked to generate, regenerate, add or fix an animal's emotion animation or spritesheet, to add a new emotion to the vocabulary, to give a newly added animal its emotion art, to author or retune a head crop for a dialogue portrait, or when a clip or portrait looks wrong in game (wrong size, floating off the floor, popping on loop, head drifting inside its portrait). Also covers the Animation Gallery used to review the results.
 ---
 
 # Animal emotion sprites
@@ -200,6 +200,17 @@ because ears-pinned-back plus a snarl is an unambiguous canid anger signal that 
 downscale. If `angry` is not landing, the fix is usually a better carrier, not a stronger
 adjective.
 
+8. **A carrier can only be spent once.** The owl's eyes belong to `angry` (slits under a hard V)
+   and `sneaky` (narrowed, glancing). `approving` was added later and asked for the inverse —
+   brow lifting, eyes curving into happy upward crescents — and the generator read the crescent
+   as **pupil dilation**, blacking out the owl's signature yellow mid-clip and leaving every
+   other frame an ordinary wide-eyed owl, indistinguishable from the neutral state it exists to
+   contrast with. Every metric was clean: seam 0.1%, swing 5.8%, drift 0.8px. The second attempt
+   moved the signal onto the **silhouette** (whole head cocking over with the ear tufts, eyes
+   pinned wide and round) and held first try. When two emotions have to read differently at icon
+   size, one of them needs a different carrier entirely — and the numbers cannot tell you it
+   failed, only your eyes can.
+
 ## Things about the Ludo API that will bite you
 
 Full contract in [references/ludo-api.md](references/ludo-api.md). The four that cost time:
@@ -216,6 +227,21 @@ Full contract in [references/ludo-api.md](references/ludo-api.md). The four that
   construction (measured 5.88% → 0.22% seam).
 - **The REST default flips from synchronous to async on 2026-09-10.** The client already sends
   `async: true` and long-polls, so it is unaffected. Do not "simplify" that away.
+
+### The third register: the moderator status face
+
+The debate's moderator status is **one still frame** of an existing portrait sheet — no separate
+asset, no export step. `moderatorOpinionFace()` in `src/react/trial/utils/trialHelpers.ts` maps a
+score to a frame index and `FaceStill` holds that frame in an `em`-sized box.
+
+All three states are frames of the owl's **`approving`** clip, which opens its eyes from nearly
+shut to fully round: frame 20 (open) / 6 (half) / 4 (nearly shut). One clip, so the head pose is
+identical between states and the only thing that changes is how much bright yellow is left in the
+eyes — a monotonic area-and-value signal, which is what reads at ~1.6em.
+
+**The frame indices are part of the art.** If you regenerate `owl/approving`, open the new frames
+and re-pick all three — a diffusion clip's frames are in no fixed order across generations, so an
+index means nothing once the pixels change. `docs/characters-and-animations.md` §11 has the rest.
 
 **Seven animals are generated** (`donkey-grey`, `owl`, `raccoon`, `fox`, `white-sheep-1`,
 `brown-wolf`, `dog`). Four more atlases are imported (`cow`, `cow-female-001`, `mouse`,

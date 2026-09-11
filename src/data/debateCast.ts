@@ -26,9 +26,19 @@ export function debateParticipantIds(debate: DebateScenarioJson): string[] {
   return [...ids];
 }
 
+/**
+ * Who the farm's moderator is when nobody is staged as one.
+ *
+ * Most debates show a moderator's opinion without a moderator on stage — a fenceline
+ * skirmish has no owl in it — because the score is the room's judgement, not a character's.
+ * The status indicator still needs a face to wear, and Duchess is the farm's moderator, so
+ * she lends hers. See `ModeratorStatusFace`.
+ */
+export const DEFAULT_MODERATOR_ID = 'duchess';
+
 /** Puts a moderator, if present, in the centre slot of a 3+ cast; otherwise player-first,
  *  then scenario order. The schema has no explicit moderator flag, so this is a short list. */
-const MODERATOR_IDS = new Set(['duchess']);
+const MODERATOR_IDS = new Set([DEFAULT_MODERATOR_ID]);
 
 /**
  * Left-to-right stage order for a cast. Shared by the Phaser `Trial` scene (which lays

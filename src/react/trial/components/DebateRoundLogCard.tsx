@@ -11,7 +11,6 @@ import {
   emotionFromStatement,
   getSpeakerName,
   MODERATOR_OPINION_LABEL,
-  moderatorOpinionEmoji,
   sideDisplayLabel,
   sideForRoundHeader,
   sideForStatementSpeaker,
@@ -29,6 +28,7 @@ import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
 import { PLAYER_CHARACTER_ID } from '../../../data/characters';
 import AnimalFace from '../../characters/AnimalFace';
+import ModeratorStatusFace from './ModeratorStatusFace';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -184,7 +184,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
     wf.gamePhase === 'debate_complete' ||
     (isThisPlayerRound && wf.gamePhase === 'round_recap');
 
-  const impactEmojiLine =
+  const impactFaceLine =
     mechanics.showModeratorOpinion &&
     round.kind === 'player' &&
     chosenOption &&
@@ -195,7 +195,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
           completedForRound.impact > 0 ? '+' : ''
         }${completedForRound.impact}`}
       >
-        <span aria-hidden="true">{moderatorOpinionEmoji(completedForRound.impact)}</span>
+        <ModeratorStatusFace score={completedForRound.impact} />
       </span>
     ) : null;
 
@@ -424,7 +424,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                           },
                         })}
                         {getLabel('you')}
-                        {impactEmojiLine != null ? <> — {impactEmojiLine}</> : null}
+                        {impactFaceLine != null ? <> — {impactFaceLine}</> : null}
                       </p>
                     </div>
                     {mechanics.analysisEnabled && (

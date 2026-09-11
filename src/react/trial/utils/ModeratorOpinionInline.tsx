@@ -1,7 +1,8 @@
 import cn from 'classnames';
 import inspectIcon from '../../../static/icons/inspect.svg';
 import getLabel from '../../../data/labels';
-import { MODERATOR_OPINION_LABEL, moderatorOpinionEmoji } from './trialHelpers';
+import { MODERATOR_OPINION_LABEL } from './trialHelpers';
+import ModeratorStatusFace from '../components/ModeratorStatusFace';
 import shared from '../trialShared.module.scss';
 
 export function ModeratorOpinionInline({
@@ -11,17 +12,16 @@ export function ModeratorOpinionInline({
   showOpinion = true,
 }: {
   score: number;
-  /** When set (e.g. debate log header), shows inspect icon and balance to the left of the opinion emoji. */
+  /** When set (e.g. debate log header), shows inspect icon and balance to the left of the moderator's face. */
   insightPoints?: number;
   className?: string;
-  /** `false` hides the opinion emoji (scenarios with no moderator). Defaults to `true`. */
+  /** `false` hides the moderator's face (scenarios with no moderator). Defaults to `true`. */
   showOpinion?: boolean;
 }) {
   // Nothing left to render once both halves are suppressed — a speaking-only rung has
   // neither an Insight economy nor a moderator.
   if (!showOpinion && insightPoints === undefined) return null;
 
-  const emoji = moderatorOpinionEmoji(score);
   const scoreBit = `${score > 0 ? '+' : ''}${score}`;
   const opinionAria = showOpinion ? `${MODERATOR_OPINION_LABEL}: ${scoreBit}` : '';
   const insightAria =
@@ -45,7 +45,7 @@ export function ModeratorOpinionInline({
           )}
         </>
       )}
-      {showOpinion && <span aria-hidden="true">{emoji}</span>}
+      {showOpinion && <ModeratorStatusFace score={score} />}
     </span>
   );
 }

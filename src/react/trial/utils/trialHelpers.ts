@@ -251,6 +251,41 @@ export function moderatorOpinionEmoji(score: number): string {
   return '😐';
 }
 
+/**
+ * The moderator's face for a score: which portrait sheet, and which frame of it to hold.
+ *
+ * Three states off one animal rather than three emoji, because the emoji were the one place in
+ * the trial chrome where the art stopped — a yellow smiley next to a stage of hand-drawn
+ * animals. `ModeratorStatusFace` renders these; `moderatorOpinionEmoji` stays for the plain
+ * strings (a wizard body is text, and cannot hold a portrait).
+ *
+ * **All three come from one clip**, and that is the whole design. `approving` opens the owl's
+ * eyes from nearly shut to fully round over its 25 frames, so three frames of it are the same
+ * head in the same pose at three eye apertures:
+ *
+ * | score | frame | eyes |
+ * |---|---|---|
+ * | `> 0` | 20 | fully open, big and round, bright yellow |
+ * | `= 0` | 6 | half open — yellow below, lid above |
+ * | `< 0` | 4 | nearly shut, only slivers of yellow left in the corners |
+ *
+ * The axis a player reads is therefore **how much bright yellow is left in the eyes**: one
+ * continuous quantity, monotonic with the score, on a face that is otherwise identical between
+ * states. That is what survives the downscale to the ~1.6em this renders at, where a change of
+ * *expression* would not — and it is why these are not three frames of three different emotion
+ * clips, which was the first arrangement: mixing sheets changed head pose and tilt along with
+ * the eyes, giving the player two signals to reconcile instead of one to read.
+ *
+ * **The frame indices are part of the art, not arbitrary.** If `approving` is ever regenerated,
+ * open the new frames and re-pick all three: a diffusion clip's frames are in no fixed order
+ * across generations, so an index means nothing once the pixels change.
+ */
+export function moderatorOpinionFace(score: number): { emotion: AnimalEmotion; frame: number } {
+  if (score > 0) return { emotion: 'approving', frame: 20 };
+  if (score < 0) return { emotion: 'approving', frame: 4 };
+  return { emotion: 'approving', frame: 6 };
+}
+
 /** Plain text for wizard strings and similar (emoji is first for quick scanning). */
 export function moderatorOpinionPlainText(score: number): string {
   return `${moderatorOpinionEmoji(score)} ${MODERATOR_OPINION_LABEL}`;

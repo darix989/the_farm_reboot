@@ -1,0 +1,18 @@
+.box {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  overflow: hidden;
+  vertical-align: middle;
+
+  // Same trap as `FaceClip`: `.react-ui-overlay` inherits `pointer-events: none` to every
+  // descendant, and a decorative portrait must not opt back in or it swallows clicks meant
+  // for what sits behind it.
+  pointer-events: none;
+}
+
+.frame {
+  position: absolute;
+  display: block;
+  background-repeat: no-repeat;
+}
