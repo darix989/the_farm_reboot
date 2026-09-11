@@ -422,7 +422,7 @@
           "unlockedSentences": [
             {
               "id": "s-r6-opt-c-1",
-              "text": "You told this floor what I am. Now I will tell it what happened. The grate on the outflow is bent. The water backs up behind it. The mud sits in the pond instead of going out with the stream. Bram told me that himself, at the fence, before I had asked him anything. Bram is one of your forty-one. That is not a story I brought with me. That is your own witness.",
+              "text": "You told this floor what I am. Now I will tell it what happened. The grate on the outflow is bent. The water backs up behind it. The mud sits in the pond instead of going out with the stream. Bram told me that himself, at the fence, when I put it to him straight. Bram is one of your forty-one. That is not a story I brought with me. That is your own witness.",
               "logicalFallacies": []
             }
           ]
@@ -442,7 +442,7 @@
         "sentences": [
           {
             "id": "s-r7-p1",
-            "text": "Then let me ask it plainly, Ruin. Rue. Forgive me.",
+            "text": "Then let me ask it plainly, Ruin.",
             "logicalFallacies": []
           },
           {
@@ -566,7 +566,7 @@
           "sentences": [
             {
               "id": "s-r8-opt-c-1",
-              "text": "If we straighten the grate and the pond runs clear by the frost — does this motion drop?",
+              "text": "If we straighten the grate and the pond runs clear by the next frost — does this motion drop?",
               "logicalFallacies": []
             }
           ]
@@ -600,11 +600,11 @@
             "sentences": [
               {
                 "id": "s-resp-r8-b-1",
-                "text": "It is bent. It has been bent for years. The pond only went brown this spring. You will need more than a bent thing.",
+                "text": "It is bent. It has been bent since before the frost, and nobody minded then. A bent thing is not a reason, it is a bent thing. You will need more than that.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "He grants it at once, then points out that something bent for years does not explain a change this spring."
+            "summary": "He grants the grate at once, and then refuses to let a bent thing count as a reason on its own."
           }
         },
         {
@@ -715,7 +715,7 @@
           "sentences": [
             {
               "id": "s-r10-opt-c-1",
-              "text": "He is right. I eat out of the bins. Tuesdays are the good day. That is also how I know what is in your water. I have had my arm in that drain up to the shoulder. Only two of your forty-one have been near it — Hetty, going after a moth, and Bram, who told me at the fence. So straighten the grate. If the pond is not clear by the frost, bring the motion back and I will haul the fence posts myself.",
+              "text": "He is right. I eat out of the bins. Tuesdays are the good day. That is also how I know what is in your water. I have had my arm in that drain up to the shoulder. Only two of your forty-one have been near it — Hetty, going after a moth, and Bram, who told me at the fence. So straighten the grate. If the pond is not clear by the next frost, bring the motion back and I will haul the fence posts myself.",
               "logicalFallacies": []
             }
           ]

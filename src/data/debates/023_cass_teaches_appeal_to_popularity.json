@@ -221,7 +221,7 @@
           },
           {
             "id": "s-r3-3",
-            "text": "That is the trick. [accent]How many, instead of how do you know.[/accent]",
+            "text": "That is the trick. [accent]How many, against how do you know.[/accent]",
             "logicalFallacies": []
           }
         ],
@@ -258,7 +258,7 @@
           },
           {
             "id": "s-r4-3",
-            "text": "And the objection, as I understand it, comes from an animal who has been on this farm six weeks and keeps his supper in a drain.",
+            "text": "And the objection, as I understand it, comes from an animal who has been on this farm six weeks and takes his supper out of a bin.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",

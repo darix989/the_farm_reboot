@@ -2,7 +2,7 @@
 
 The authoring source of truth for Level 1: the story, the cast, the ladder of scenarios,
 and the intent of every rung. Scenario JSON under `src/data/debates/010_*` … `015_*`,
-`020_*` … `022_*` and `030_*` … `031_*` is transcribed from this document — when the two
+`020_*` … `023_*` and `030_*` … `032_*` is transcribed from this document — when the two
 disagree, this document is wrong and should be corrected to match what shipped.
 
 Level 1 teaches the two simplest fallacies in the curriculum, both from Level 1 of
@@ -109,7 +109,7 @@ requires all of it.
 | 1.5 Hetty | What Hetty Saw | Gossip | A **clean** round; the bent grate | ad-hominem, appeal-to-popularity | Not every sentence is a trap — and the player extracts the grate with a question. |
 | 1.6 Bram | The Line You Have to Earn | Lesson | **The locked line** — spotting and speaking meet | ad-hominem | An option that cannot be said until the fallacy in the previous round is tagged. |
 | 1.7 Bram | The Bent Grate | Skirmish | Speaking **and** spotting together | ad-hominem, appeal-to-popularity | Full chrome and the moderator gauge, plus the unlock-gated option for real. Sets the grate flag. |
-| 1.8 Tobias | The Pond Motion | Boss debate | Everything, over 10 beats | ad-hominem, appeal-to-popularity | Full Public Farm. Gated on both fallacies **and** Bram's concession. **Two** statements carry two fallacies each (5 and 7), which is where the difficulty lives now. |
+| 1.8 Tobias | The Pond Motion | Boss debate | Everything, over 10 beats | ad-hominem, appeal-to-popularity | Full Public Farm. Gated on both fallacies **and** Bram's concession. Four NPC beats (1, 5, 7, 9) carry two fallacies across two sentences, and beat 4 fuses both into a single sentence — which is where the difficulty lives now. |
 
 **File numbers are creation order, not ladder order.** `020`–`023` were written after
 `010`–`015`; `030`–`032` after those. `LEVEL_1_SCENARIOS` in [`src/data/levels.ts`](../src/data/levels.ts) is the
@@ -242,7 +242,7 @@ point is that any of the three works — and do not add a step targeting Continu
 
 *Three NPC gossip rounds, all `requiresAnalysis`, then a fourth that is crossfire. `setsDialogFlags: ['hetty-ad-hominem-witnessed']`.
 No `teachesFallacies` — the player already knows it by the time they can play this. Gated on
-`fallacy_known` / Ad Hominem. `revealChoiceAssessment: true`. One tutorial on `introduction:start`: this is not a debate —
+`dialog_flag: cass-named-ad-hominem`. `revealChoiceAssessment: true`. One tutorial on `introduction:start`: this is not a debate —
 moved here from 1.5, because this is the first gossip.*
 
 She never once mentions the water. That is the point, and she says it *to you*, not about
@@ -359,7 +359,7 @@ picker on the strength of the "few other fallacy types" rule in
 [logical_fallacies_distribution.md](./logical_fallacies_distribution.md); an icon the player
 has never been taught is noise rather than difficulty, and it made the picker a
 three-way guess on a two-way lesson. The difficulty it used to supply now comes from
-**doubling up what the player does know**: rounds 4, 5 and 7 each carry two fallacies, so the
+**doubling up what the player does know**: rounds 1, 5, 7 and 9 each carry two fallacies, and round 4 puts both in one sentence, so the
 boss asks the 1.4 question — *which of these two is it, and is it both?* — three times.
 
 Duchess is in `characters` and on stage and **speaks not one line** — she is the moderator,
@@ -373,7 +373,7 @@ the recap heading. Beats 3 and 8 (Rue asks) use the player-asks wizard copy.
 | 2 | Player — opening | **C** *effective:* the question is what is dirtying the water, not who drinks there; a thing like that has a cause, and a cause can be gone and looked at tonight. |
 | 3 | Player — crossfire, Rue asks | **C:** "Of your forty-one — how many have walked down to the outflow?" He has to say he does not know, and hears himself do it. |
 | 4 | Player — crossfire, Tobias asks | `opponentPrompt` fuses **both** fallacies into one gracious sentence. **C** takes it apart and answers only the part about the water. |
-| 5 | NPC — Tobias, rebuttal | The set piece: the mud cart and the bin (**ad-hominem**), then the count handed back to the floor as though the farm had spoken for itself (**appeal-to-popularity**). Cass's 1.4 shape — both tricks in one breath — under full chrome. The round the player must analyse. |
+| 5 | NPC — Tobias, rebuttal | The set piece: the mud cart and the bin (**ad-hominem**), then the count handed back to the floor as though the farm had spoken for itself (**appeal-to-popularity**). Cass's 1.4 shape — both tricks in one breath — under full chrome. The round beat 6's payoff line depends on the player tagging — though no boss round sets `requiresAnalysis`, so nothing forces it. |
 | 6 | Player — rebuttal | **C** is gated on tagging the ad-hominem in round 5 *and* on `bram-grate-conceded`. Pays off *"what I am versus what happened"* and quotes Bram — possible only if the player actually went to the fence. |
 | 7 | Player — crossfire, Tobias asks | The bandwagon closer (**appeal-to-popularity**), and then the fox and the wolf who coached him, named and generously excused (**ad-hominem**). **C** owns the coaching, turns it into Cass's phrase, and produces **Hetty** — one of his own forty-one — and her moth. |
 | 8 | Player — crossfire, Rue asks | The exit question: if the grate is fixed and the pond clears, does the motion lapse? He cannot say yes without conceding cause. |
@@ -560,8 +560,9 @@ plain text, so an asterisk in a scenario line shows up as an asterisk.
   the parked gossip rung; the trimmed ladder gets it from Hetty and then from Bram under
   pressure, which is enough.
 - The teaching phrase **"what I am" versus "what happened"** is handed to the player by Cass
-  in 1.2, and **"how many, against how do you know"** in 1.4. Both are paid off in boss round
-  6. Later levels should introduce their own.
+  in 1.2, and **"how many, against how do you know"** in 1.4. The first is paid off in boss
+  round 6; the second never appears in the boss verbatim — its nearest echo is round 7's
+  *"agreeing is not checking"*. Later levels should introduce their own.
 - **The insult is the evidence.** Rue's answer to "you eat out of the bins" is never a
   denial; it is "yes, and that is why I know." Any later level that teaches a fallacy aimed
   at *who someone is* should look for the same move, because it is the only one that beats

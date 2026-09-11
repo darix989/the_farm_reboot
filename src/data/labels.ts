@@ -351,7 +351,7 @@ const LABELS = {
   farmDialogCass2a: 'Back already. And somebody has been counting at you.',
   farmDialogCass2b: 'Forty-one of them, she said.',
   farmDialogCass2c:
-    'Forty-one. She said the number and you felt it land, and not one of the forty-one has been down to the water. There is a name for that as well. Stand at the post.',
+    'Forty-one. She said the number and you felt it land, and not one of them will tell you what any of the forty-one went and looked at. There is a name for that as well. Stand at the post.',
   farmDialogCassDone:
     'Nothing more from me. Save it for Sunday, and whatever he says, do not let him make it about you.',
   farmDialogCassDoneA: 'Nothing more from me. Save it for Sunday.',
@@ -608,7 +608,7 @@ const LABELS = {
     'Bram was unpleasant to you on purpose so that you could catch him at it, and the answer that had been greyed out all along opened up. Spotting and speaking are the same game; that is where they meet.',
   dialogFlagBramGrateTitle: 'get Bram to talk about the grate',
   dialogFlagBramGrateBody:
-    'At the fence line, before you had asked him anything: the outflow grate has been bent since before the frost. Bram is one of Tobias’s own forty-one, which makes him the best witness on this farm and the one it costs him most to be.',
+    'You put it to him straight at the fence line and he gave it up on the spot: the outflow grate has been bent since before the frost, and he has known the whole time. Bram is one of Tobias’s own forty-one, which makes him the best witness on this farm and the one it costs him most to be.',
 
   // Feature unlocks — titles read as directions, same contract as dialog flags.
   featureInsightPointsTitle: 'learn what Insight is from Bram at the fence',

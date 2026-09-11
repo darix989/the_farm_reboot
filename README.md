@@ -3,13 +3,15 @@
 A browser game about **spotting logical fallacies** in a farmyard debate.
 
 You play Rue, a raccoon six weeks new to Green Meadows Farm. The Old Pond is going muddy, and
-Duchess the goose has put a motion to the Public Farm: the pond should be reserved for her
-flock, and everyone else can drink from the trough by the road. She is charming, she has
-forty-one birds behind her, and almost none of her argument is about the water.
+Tobias the donkey has put a motion to the Public Farm: the pond should be kept for the
+Meadow-Born, and everyone who arrived later can walk half a mile to the trough by the road.
+He is warm, he is gracious, he has forty-one animals behind him, and almost none of his
+argument is about the water.
 
 Walk the farm, talk to the animals, and learn to tell the difference between what someone
-*is* and what actually *happened* — first with Cass at the post, then in gossip at the trough,
-then in front of Tobias the owl.
+*is* and what actually *happened* — first with Bram at the fence, then Cass at the post, then
+in gossip at the trough, and finally on the floor of the Public Farm with Duchess the owl
+moderating and Tobias across from you.
 
 <img src="screenshot.png" alt="Screenshot" width="600" />
 
