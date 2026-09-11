@@ -38,8 +38,7 @@ drawn in Phaser text objects and re-tuned for every aspect ratio.
 ## File map
 
 ```
-src/data/farmMap.ts             the world: zones, NPCs (`gateTalk` / `talkStages`), spawn
-src/utils/farmTalkGate.ts       conversation-level lock (`gateTalk`)
+src/data/farmMap.ts             the world: zones, NPCs (`talkStages`), spawn
 src/phaser/scenes/Farm.ts       the scene
 src/phaser/farm/
   farmTextures.ts               placeholder art, generated at runtime
@@ -231,22 +230,15 @@ those controls usable. Rue is frozen for the same reason a talk freezes him.
 
 ### Encounter gates
 
-`ScenarioEntry.requires` (on the entry in `levels.ts`) is the overworld gate. The chain is:
-
-```
-requires → farmDialogueState.scenarioRequires → useUnmetConditionsHint → disabled Talk button
-```
-
-A gated encounter is still *offered*, by default. The animal talks; only Talk is disabled, and
-the conversation is where the reason is given. Set `gateTalk: true` on the NPC to close the
-conversation itself until the next encounter's `requires` are met (Hetty until Cass has
-named Ad Hominem and pointed you at the trough; Bram until Dot has welcomed you; Cass until Bram has taught crossfire). `Farm.ts`
-`tryInteract` and the overworld prompt both consult `farmNpcTalkLocked`. The main menu is
-ungated.
+`ScenarioEntry.requires` (on the entry in `levels.ts`) is the overworld gate. Until it is
+met, `farmDialogueFor` does not offer that encounter: a first meeting uses the `Meet` beats,
+and walking back after a Trial replays that animal's last follow-up (with Lessons if they
+have any). The Talk button never starts a conversation that assumes something the player has
+not been told yet. The main menu is ungated.
 
 The Level 1 unlock chain is Dot → Bram → Bram → Cass → Hetty → Duchess. Lesson 2 (`031`)
-unlocks round-type labels and is required for Cass — she will not speak until
-`bram-taught-crossfire` is set.
+unlocks round-type labels and is required for Cass — her Ad Hominem lesson waits on
+`bram-taught-crossfire`.
 
 Bram's farm talk offers a **Lessons** menu once he has taught at least one lesson. Last beat,
 once it has been read in full: Talk / Lessons / Leave (collapsing to Lessons / Leave when he
@@ -310,8 +302,8 @@ class of bug obvious in one screenshot.
    `solid: true` to block the player; `label` draws a world caption).
 2. Add a `FarmNpc` to `FARM_NPCS`. Animals with encounters list them in `scenarios` in the
    order they should be offered. A greeter with no encounter uses `talkStages` instead
-   (condition → suffix, then `Done`). Set `gateTalk: true` if the conversation itself should
-   stay closed until the next encounter's `requires` are met.
+   (condition → suffix, then `Done`). Add `Meet` beats for the walk-up before their first
+   encounter unlocks.
 3. Add labels: the name (`farmNpc<Name>`), then sequential talk beats in
    [`src/data/farmTalk.ts`](../src/data/farmTalk.ts) plus the copy in `labels.ts`
    (`farmDialog<Name>1a`, `1b`, … and a `Done` conversation). A missing table row

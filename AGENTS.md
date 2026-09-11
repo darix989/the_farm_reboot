@@ -55,7 +55,7 @@ src/
     labels.ts           # Central UI strings + default export getLabel()
     levels.ts           # Scenario registry: DebateScenarioKey, DEBATES, menu order
                         #   ScenarioEntry.requires is the overworld gate
-    farmMap.ts          # Overworld zones + NPCs; `gateTalk` / `talkStages` on FarmNpc
+    farmMap.ts          # Overworld zones + NPCs; `talkStages` on FarmNpc
     farmTalk.ts         # Sequential talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `dot2`)
                         #   and `followUp:{scenarioKey}` for post-Trial pointers
     farmTutorials.ts    # Overworld overlay tutorials + FarmTutorialId
@@ -131,7 +131,6 @@ src/
     gameManager.ts      # Static Phaser helpers (switchScene, getScene, …)
     gameConditions.ts   # GameCondition union; isConditionMet / conditionHint
     encounterRewards.ts # mark-complete + teach + flags (flags may wait for a farm follow-up)
-    farmTalkGate.ts     # farmNpcTalkLocked — conversation-level gate (`gateTalk`)
 ```
 
 ## React UI design tokens (fonts and colors)
@@ -242,7 +241,7 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
 - **Cross-layer signals** → `EventBus` + optional `gameStore` actions.
 - Keep **`PHASER_PARENT_ID`** in sync between the Phaser parent div and `ReactRoot` layout logic.
 - New **debate content** → author a `DebateScenarioJson` JSON file under `src/data/debates/` and register it once in `src/data/levels.ts` (that file owns the `DebateScenarioKey` union, the `DEBATES` lookup and the main-menu ordering). No engine changes required.
-- New **gated encounter** → set `requires` on its `ScenarioEntry` in `levels.ts`. Prefer a `dialog_flag` over `encounter_completed` when the gate is "this conversation happened" — a flag carries player-facing copy. By default a gated animal still talks; only Talk is disabled. Set `FarmNpc.gateTalk` to refuse the conversation itself until the next encounter unlocks. Hang the matching beats in `farmTalk.ts` (lengthening an NPC's `scenarios` list silently re-points every existing beat row).
+- New **gated encounter** → set `requires` on its `ScenarioEntry` in `levels.ts`. Prefer a `dialog_flag` over `encounter_completed` when the gate is "this conversation happened" — a flag carries player-facing copy. Until it unlocks, the animal still talks: `Meet` if you have never finished one of theirs, or a replay of their last follow-up if you have. Hang the matching beats in `farmTalk.ts` (lengthening an NPC's `scenarios` list silently re-points every existing beat row).
 - New **dialog flag** → add the id to `DialogFlagId` in `src/data/dialogFlags.ts`, title/body labels, and declare it on the encounter that sets it via `setsDialogFlags`. Titles are authored as instructions ("hear Hetty out at the trough") because they double as the locked-encounter hint. On a farm Leave the flags wait for the follow-up in `encounterFollowUps.ts`.
 - New **post-Trial follow-up** → add an `ENCOUNTER_FOLLOW_UPS` entry (`farm_talk` or `tutorial`) and, for a talk, beats under `followUp:{scenarioKey}` in `farmTalk.ts`. Leave-only; Next moves when the last beat settles.
 - A scenario can ship as a **smaller mode** than a full debate via the optional `mechanics` block (`analysisEnabled`, `showInsightPoints`, `showModeratorOpinion`, `showRoundRecap`, `showIntroSummary`, `revealChoiceAssessment`, `targetQuality`, `maxAnalysisAttempts`, and `encounterKind` — which swaps UI copy so a non-debate is not labelled "Debate Log") plus `requiresAnalysis` on an NPC round. Defaults reproduce full-debate behaviour; resolve them with `resolveMechanics()` (`src/react/trial/utils/scenarioMechanics.ts`), never off the raw scenario. Full reference in `docs/encounters.md`; `docs/level_01_the_pond_motion.md` is a worked ladder.

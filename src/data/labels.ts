@@ -333,6 +333,10 @@ const LABELS = {
   farmDialogHettyDoneA: 'I have told you everything I know, and a little that I do not.',
   farmDialogHettyDoneB:
     'The owl will want you on the floor. She never says so, of course. She never says anything.',
+  farmDialogHettyMeetA: 'Rue! Stand there a moment. No — not yet. I have not finished thinking.',
+  farmDialogHettyMeetB: 'I can wait.',
+  farmDialogHettyMeetC:
+    'You are very good about standing still. Come back when I have something friendly to say, which I will.',
   farmDialogCass1:
     'You. Come here. They came at my tail until I put a name on it, and you do not even know it has a name. That changes this morning.',
   farmDialogCass1a: 'You. Come here.',
@@ -350,6 +354,9 @@ const LABELS = {
   farmDialogCassDoneA: 'Nothing more from me. Save it for Sunday.',
   farmDialogCassDoneB:
     'And whatever he says about your supper — and he will — do not let him make it about you.',
+  farmDialogCassMeetA: 'You. Not yet.',
+  farmDialogCassMeetB: 'I am looking for the fox.',
+  farmDialogCassMeetC: 'Come back when you have something to ask. I am not here to be looked at.',
   farmDialogBram1:
     'Dot sent you, then. Sunday, against Tobias. I could show you how a conversation works here, if you like — you do not have to say yes.',
   farmDialogBram1a:
@@ -388,6 +395,10 @@ const LABELS = {
   farmDialogBramDoneA: 'I have said a great deal more than I should have.',
   farmDialogBramDoneB:
     'The grate is bent. You did not hear that from me. You may say on Sunday that you heard it from me.',
+  farmDialogBramMeetA: 'I walk the fence. Both ways, every day. You do not have to stop.',
+  farmDialogBramMeetB: 'Dot mentioned you.',
+  farmDialogBramMeetC:
+    'Then she is ahead of me. I would not know what to show you yet. I am sorry.',
   farmDialogDuchess1:
     'The motion is with me and it is heard on Sunday. When you are ready to stand on the floor, say so, and I will call it.',
   farmDialogDuchess1a: 'The motion is with me. It is heard on Sunday.',
@@ -401,6 +412,10 @@ const LABELS = {
   farmDialogDuchessDoneA: 'The floor is finished, for now.',
   farmDialogDuchessDoneB:
     'I moderate. I do not take sides, and I did not take one. It is going to be a fine week, I imagine. I would not know.',
+  farmDialogDuchessMeetA: 'The motion is with me. It is heard on Sunday.',
+  farmDialogDuchessMeetB: 'Can I speak?',
+  farmDialogDuchessMeetC:
+    'Not yet. I will call the floor when you are ready. I do not take sides, including about whether you are ready.',
   farmDialogTobias1:
     'Ah. The newcomer. No hard feelings about Sunday, I hope — Duchess has the motion, and it is her floor. Speak to her when you are ready.',
   farmDialogTobias1a: 'Ah. The newcomer. Roo, is it?',

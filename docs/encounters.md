@@ -131,8 +131,9 @@ requires: [
 ],
 ```
 
-This disables Talk on the farm and shows `conditionHint` as the reason. The animal still
-talks — only the button is locked. The main menu is not gated. Hang the matching beats in
+This gates the encounter on the farm. Until it unlocks the animal still talks — a `Meet`
+placeholder, or a replay of their last follow-up — but they do not offer that conversation.
+The main menu is not gated. Hang the matching beats in
 `farmTalk.ts`; lengthening an NPC's `scenarios` list silently re-points every existing beat
 row (`cass1` becomes the new first encounter, not the old one).
 

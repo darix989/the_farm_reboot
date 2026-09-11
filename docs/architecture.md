@@ -215,11 +215,10 @@ authored in `src/data/levelGoals.ts` and evaluated against the same `GameConditi
 snapshot as the overworld gates. Farm overlay tutorials can spotlight the opening button
 and the tabs (`codex_open` / `codex_tab` / `codex_tabs`); see `src/data/farmTutorials.ts`.
 
-A gated encounter is still *offered*, by default — the animal talks, and only the Talk
-button is locked. Set `gateTalk` on the NPC to refuse the conversation itself (Hetty, Bram,
-Cass) until the next encounter's `requires` are met. `Farm.ts` `tryInteract` and the overworld
-prompt both go through `farmNpcTalkLocked`. Being told "not yet, and here is why" is
-content; a silent animal without `gateTalk` is a bug report.
+A gated encounter is not offered until its `requires` are met. The animal still talks:
+a short `Meet` if you have never finished one of theirs, or a replay of their last
+follow-up if you have. `Farm.ts` `tryInteract` and the overworld prompt always open a
+conversation.
 
 **All user-visible fixed strings go through `getLabel` in `src/data/labels.ts`** — Phaser
 scenes included. Scenario prose (statements, options, introductions) lives in the JSON, not

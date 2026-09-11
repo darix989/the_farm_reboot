@@ -10,19 +10,10 @@ import { useCodexUiStore } from '../../store/codexUiStore';
 import { useProgressStore } from '../../store/progressStore';
 import { useTutorialStore } from '../../store/tutorialStore';
 import { GameManager } from '../../utils/gameManager';
-import {
-  farmDialogueFor,
-  farmFollowUpDialogue,
-  farmNpcRequirements,
-} from '../farm/farmDialogueState';
-import {
-  useConditionContext,
-  useConditionsMet,
-  useUnmetConditionsHint,
-} from '../hooks/useGameConditions';
+import { farmDialogueFor, farmFollowUpDialogue } from '../farm/farmDialogueState';
 import { useFarmTutorials } from '../hooks/useFarmTutorials';
+import { useConditionContext } from '../hooks/useGameConditions';
 import { areConditionsMet, conditionContextSnapshot } from '../../utils/gameConditions';
-import { farmNpcTalkLocked } from '../../utils/farmTalkGate';
 import { scenarioRequirements } from '../../data/levels';
 import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
 import FarmDialogue from '../farm/FarmDialogue';
@@ -57,25 +48,16 @@ const FarmUI: React.FC = () => {
   const [codexBursting, setCodexBursting] = useState(false);
 
   const completedScenarios = useProgressStore((s) => s.completedScenarios);
+  const conditionCtx = useConditionContext();
   const dialogue = useMemo(() => {
     if (!talkingToNpcId) return null;
     if (pendingFollowUp?.kind === 'farm_talk' && pendingFollowUp.npcId === talkingToNpcId) {
       return farmFollowUpDialogue(pendingFollowUp.npcId, pendingFollowUp.scenarioKey);
     }
     return farmDialogueFor(talkingToNpcId);
-  }, [talkingToNpcId, completedScenarios, pendingFollowUp]);
+  }, [talkingToNpcId, completedScenarios, pendingFollowUp, conditionCtx]);
 
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;
-  // Recomputed whenever the nearby animal changes; the requirements themselves are static
-  // authored data, so `useConditionsMet` is what makes the badge react to progress.
-  const nearbyRequires = useMemo(
-    () => (nearbyNpcId ? farmNpcRequirements(nearbyNpcId) : []),
-    [nearbyNpcId],
-  );
-  const nearbyUnlocked = useConditionsMet(nearbyRequires);
-  const conditionCtx = useConditionContext();
-  const nearbyTalkLocked = nearbyNpcId ? farmNpcTalkLocked(nearbyNpcId, conditionCtx) : false;
-  const nearbyLockedHint = useUnmetConditionsHint(nearbyTalkLocked ? nearbyRequires : []);
 
   useFarmTutorials();
 
@@ -170,9 +152,7 @@ const FarmUI: React.FC = () => {
         <button
           type="button"
           className={styles.talkPrompt}
-          disabled={nearbyTalkLocked}
           onClick={() => {
-            if (nearbyTalkLocked) return;
             if (!canRunTutorialUntargetedAction()) return;
             openDialogue(nearbyNpc.id);
           }}
@@ -180,13 +160,7 @@ const FarmUI: React.FC = () => {
           {getLabel('farmTalkPrompt', {
             replacements: { name: resolveCharacter(nearbyNpc.id).displayName },
           })}
-          <span className={styles.talkPromptKey}>
-            {nearbyTalkLocked
-              ? (nearbyLockedHint ?? getLabel('farmPromptLocked'))
-              : nearbyUnlocked
-                ? getLabel('farmInteractHint')
-                : getLabel('farmPromptLocked')}
-          </span>
+          <span className={styles.talkPromptKey}>{getLabel('farmInteractHint')}</span>
         </button>
       )}
 

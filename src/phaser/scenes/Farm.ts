@@ -18,7 +18,7 @@ import { useFarmStore } from '../../store/farmStore';
 import { useTutorialStore } from '../../store/tutorialStore';
 import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import getLabel from '../../data/labels';
-import { farmNpcTalkLocked } from '../../utils/farmTalkGate';
+import { animalSetup } from '../animals/animalAnimations';
 import { animalSetup } from '../animals/animalAnimations';
 import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
@@ -332,12 +332,11 @@ export class Farm extends Scene {
     }
   }
 
-  /** Space / E / Enter opens the nearest animal's conversation, unless `gateTalk` has it closed. */
+  /** Space / E / Enter opens the nearest animal's conversation. */
   private tryInteract(): void {
     const { nearbyNpcId, talkingToNpcId, pendingFollowUp, openDialogue } = useFarmStore.getState();
     if (talkingToNpcId || pendingFollowUp || !nearbyNpcId) return;
     if (useTutorialStore.getState().isOpen) return;
-    if (farmNpcTalkLocked(nearbyNpcId)) return;
     openDialogue(nearbyNpcId);
   }
 

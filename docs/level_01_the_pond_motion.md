@@ -125,17 +125,12 @@ the farm and out of the goal spine, still playable from the main menu. Their wri
 kept at the end of Part 2.
 
 Overworld gates: the spine walks Bram → Bram → Cass → Hetty → Cass → Hetty → Bram → Bram → Duchess.
-Bram will not speak until Dot's welcome has been played to the end (`gateTalk` plus
-`dot-welcomed`); Cass will not until Bram has taught crossfire; Hetty will not until Ad Hominem
-is known. Duchess still talks when locked. Each animal offers its encounters strictly in
-list order and never skips ahead (`farmDialogueState.ts`), which is what guarantees Bram's
-locked-line lesson lands before the skirmish that needs it. The main menu lists every rung
-ungated.
-
-⚠️ **`gateTalk` has one carve-out** (`src/utils/farmTalkGate.ts`): an animal who has already
-taught a lesson is never silenced. Bram's 1.7 sits behind a fallacy *Cass* teaches, so
-without it he would go quiet for the whole middle of the level and take his lesson-replay
-menu with him. He greets you instead, with Talk disabled and the reason on the button.
+Until a rung unlocks, the animal still talks: a short `Meet` if you have never finished one
+of theirs, or a replay of their last follow-up if you have. Bram's first lesson waits on
+`dot-welcomed`; Cass waits on `bram-taught-crossfire`; Hetty waits on Cass's Ad Hominem
+pointer. Each animal offers its encounters strictly in list order and never skips ahead
+(`farmDialogueState.ts`), which is what guarantees Bram's locked-line lesson lands before
+the skirmish that needs it. The main menu lists every rung ungated.
 
 Field Notes' **Next** tab is that same spine, one main goal per rung (`src/data/levelGoals.ts`,
 aligned with Dot's seven `talkStages`). Level 1 has no optional goals, so the Optional

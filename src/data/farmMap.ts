@@ -62,12 +62,6 @@ export interface FarmNpc {
    */
   scenarios: readonly DebateScenarioKey[];
   /**
-   * When true, the player cannot open this animal's conversation until their next
-   * encounter's `requires` are met. Default (omit) is the usual rule: the animal talks,
-   * and only the Talk button inside is disabled.
-   */
-  gateTalk?: boolean;
-  /**
    * Farm-only conversations that advance on conditions rather than completed encounters.
    * Used by animals who have nothing to play (a greeter). Ignored when `scenarios` is
    * non-empty. Each stage is used while its `until` condition is unmet; after the last
@@ -154,8 +148,6 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     x: 1800,
     y: 570,
     scenarios: ['021_hetty_ad_hominem_barrage', '010_gossip_trough_hetty'],
-    // She uses Ad Hominem to your face; it is not a conversation to have before you can name it.
-    gateTalk: true,
   },
   {
     id: 'cass',
@@ -163,7 +155,6 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     y: 860,
     // Names Ad Hominem, then Appeal to Popularity once Hetty has used the first on him.
     scenarios: ['020_cass_teaches_ad_hominem', '023_cass_teaches_appeal_to_popularity'],
-    gateTalk: true,
   },
   {
     id: 'bram',
@@ -178,7 +169,6 @@ export const FARM_NPCS: readonly FarmNpc[] = [
       '032_bram_teaches_unlocks',
       '014_skirmish_bram_fenceline',
     ],
-    gateTalk: true,
   },
   {
     id: 'tobias',

@@ -3,8 +3,10 @@
  * or `followUp:{scenarioKey}` for the pointer talk after a Trial.
  *
  * The suffix is the animal's next unfinished scenario index (`1`, `2`, …), a
- * `talkStages` suffix (`dot1`, `dot2`), or `Done` when the list is empty. A missing row falls back to the single
- * `farmDialog<Npc><suffix>` label so a new animal is never silent.
+ * `talkStages` suffix (`dot1`, `dot2`), `Meet` when their next encounter is still
+ * locked and you have never finished one with them, or `Done` when the list is empty.
+ * A missing row falls back to the single `farmDialog<Npc><suffix>` label so a new animal
+ * is never silent.
  */
 import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 import { PLAYER_CHARACTER_ID } from './characters';
@@ -42,6 +44,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'hetty', textLabel: 'farmDialogHettyDoneA' },
     { speakerId: 'hetty', textLabel: 'farmDialogHettyDoneB' },
   ],
+  hettyMeet: [
+    { speakerId: 'hetty', textLabel: 'farmDialogHettyMeetA' },
+    { speakerId: RUE, textLabel: 'farmDialogHettyMeetB' },
+    { speakerId: 'hetty', textLabel: 'farmDialogHettyMeetC' },
+  ],
   cass1: [
     { speakerId: 'cass', textLabel: 'farmDialogCass1a' },
     { speakerId: RUE, textLabel: 'farmDialogCass1b' },
@@ -55,6 +62,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
   cassDone: [
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneA' },
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneB' },
+  ],
+  cassMeet: [
+    { speakerId: 'cass', textLabel: 'farmDialogCassMeetA' },
+    { speakerId: RUE, textLabel: 'farmDialogCassMeetB' },
+    { speakerId: 'cass', textLabel: 'farmDialogCassMeetC', emotion: 'doubtful' },
   ],
   // Rue asks first — Dot sent him — and only then does Bram say what he does all day and
   // offer the lesson. He is the one animal on this farm who volunteers nothing unprompted.
@@ -87,6 +99,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'bram', textLabel: 'farmDialogBramDoneA' },
     { speakerId: 'bram', textLabel: 'farmDialogBramDoneB' },
   ],
+  bramMeet: [
+    { speakerId: 'bram', textLabel: 'farmDialogBramMeetA', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogBramMeetB' },
+    { speakerId: 'bram', textLabel: 'farmDialogBramMeetC' },
+  ],
   duchess1: [
     { speakerId: 'duchess', textLabel: 'farmDialogDuchess1a' },
     { speakerId: RUE, textLabel: 'farmDialogDuchess1b' },
@@ -97,6 +114,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
   duchessDone: [
     { speakerId: 'duchess', textLabel: 'farmDialogDuchessDoneA' },
     { speakerId: 'duchess', textLabel: 'farmDialogDuchessDoneB' },
+  ],
+  duchessMeet: [
+    { speakerId: 'duchess', textLabel: 'farmDialogDuchessMeetA' },
+    { speakerId: RUE, textLabel: 'farmDialogDuchessMeetB' },
+    { speakerId: 'duchess', textLabel: 'farmDialogDuchessMeetC', emotion: 'doubtful' },
   ],
   tobias1: [
     { speakerId: 'tobias', textLabel: 'farmDialogTobias1a' },

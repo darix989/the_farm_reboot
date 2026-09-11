@@ -1,5 +1,6 @@
 import type { Labels } from '../../data/labels';
 import { DEBATES, scenarioRequirements, type DebateScenarioKey } from '../../data/levels';
+import { encounterFollowUpFor } from '../../data/encounterFollowUps';
 import { characterById } from '../../data/characters';
 import {
   farmFollowUpBeats,
@@ -13,6 +14,7 @@ import { completedLessonsFor, type TutorialLesson } from '../../data/tutorialLes
 import type { DialogFlagId } from '../../data/dialogFlags';
 import { useProgressStore } from '../../store/progressStore';
 import {
+  areConditionsMet,
   conditionContextSnapshot,
   isConditionMet,
   type GameCondition,
@@ -24,8 +26,9 @@ import {
  * Each animal owns an ordered list of encounters; they offer the first one the
  * player has not finished. Once the list is exhausted they fall back to a closing
  * conversation. Beats come from `farmTalk.ts`; the slot key is the animal's id
- * plus how far down its list we are (`hetty1`, `cass2`, `bramDone`), or
- * `followUp:{scenarioKey}` for a post-Trial pointer.
+ * plus how far down its list we are (`hetty1`, `cass2`, `bramDone`), `Meet` when
+ * the next encounter is still locked, or `followUp:{scenarioKey}` for a post-Trial
+ * pointer (and for walking back up to someone whose next rung is not open yet).
  */
 export interface FarmDialogueState {
   npcId: string;
@@ -57,21 +60,44 @@ export interface FarmDialogueState {
   lessons: readonly TutorialLesson[];
 }
 
+function lastCompletedScenario(
+  keys: readonly DebateScenarioKey[],
+  completed: readonly DebateScenarioKey[],
+): DebateScenarioKey | null {
+  for (let index = keys.length - 1; index >= 0; index -= 1) {
+    const key = keys[index];
+    if (completed.includes(key)) return key;
+  }
+  return null;
+}
+
 export function farmDialogueFor(npcId: string): FarmDialogueState | null {
   const npc = farmNpcById(npcId);
   const visual = characterById(npcId);
   if (!npc || !visual) return null;
 
+  const progress = useProgressStore.getState();
+  const ctx = conditionContextSnapshot();
   let next: DebateScenarioKey | null = null;
   let suffix: string;
   let completesFlags: readonly DialogFlagId[] | undefined;
+  const lessons = completedLessonsFor(npc.id, progress.completedScenarios);
 
   if (npc.scenarios.length > 0) {
-    next = useProgressStore.getState().nextScenarioFor(npc.scenarios);
-    const index = next ? npc.scenarios.indexOf(next) + 1 : 0;
-    suffix = next ? String(index) : 'Done';
+    next = progress.nextScenarioFor(npc.scenarios);
+    if (next && !areConditionsMet(scenarioRequirements(next), ctx)) {
+      const last = lastCompletedScenario(npc.scenarios, progress.completedScenarios);
+      const followUp = last ? encounterFollowUpFor(last) : undefined;
+      if (last && followUp?.kind === 'farm_talk') {
+        return farmFollowUpDialogue(npc.id, last, { includeLessons: true });
+      }
+      next = null;
+      suffix = 'Meet';
+    } else {
+      const index = next ? npc.scenarios.indexOf(next) + 1 : 0;
+      suffix = next ? String(index) : 'Done';
+    }
   } else if (npc.talkStages?.length) {
-    const ctx = conditionContextSnapshot();
     const stage = npc.talkStages.find((entry) => !isConditionMet(entry.until, ctx));
     suffix = stage?.suffix ?? 'Done';
     completesFlags = stage?.completesFlag ? [stage.completesFlag] : undefined;
@@ -87,22 +113,27 @@ export function farmDialogueFor(npcId: string): FarmDialogueState | null {
     scenario: next,
     scenarioRequires: next ? scenarioRequirements(next) : [],
     completesFlags,
-    lessons: completedLessonsFor(npc.id, useProgressStore.getState().completedScenarios),
+    lessons,
   };
 }
 
 /**
  * Leave-only pointer after a Trial. Must not reuse {@link farmDialogueFor}: that would
  * open the *next* offer slot, which is the wrong animal's pre-talk whenever the spine
- * moves on (Bram 1.2 → Cass).
+ * moves on (Bram 1.2 → Cass). Walking up later while the next rung is still locked
+ * replays this same slot, with Lessons if they have any.
  */
 export function farmFollowUpDialogue(
   npcId: string,
   scenarioKey: DebateScenarioKey,
+  options?: { includeLessons?: boolean },
 ): FarmDialogueState | null {
   const visual = characterById(npcId);
   if (!visual) return null;
   const scenario = DEBATES[scenarioKey];
+  const lessons = options?.includeLessons
+    ? completedLessonsFor(npcId, useProgressStore.getState().completedScenarios)
+    : [];
   return {
     npcId,
     nameLabel: visual.nameLabel,
@@ -111,19 +142,6 @@ export function farmFollowUpDialogue(
     scenario: null,
     scenarioRequires: [],
     completesFlags: scenario?.setsDialogFlags,
-    lessons: [],
+    lessons,
   };
-}
-
-/**
- * The requirements standing between the player and their next encounter with this animal.
- *
- * Lets the overworld prompt badge a locked animal before the player commits to a conversation,
- * without building the whole dialogue state for every animal that wanders into range.
- */
-export function farmNpcRequirements(npcId: string): readonly GameCondition[] {
-  const npc = farmNpcById(npcId);
-  if (!npc) return [];
-  const next = useProgressStore.getState().nextScenarioFor(npc.scenarios);
-  return next ? scenarioRequirements(next) : [];
 }
