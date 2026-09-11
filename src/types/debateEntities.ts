@@ -356,7 +356,7 @@ export type TutorialTargetRef =
   | { kind: 'debate_log_moderator_score' }
   /** Moderator opinion face on the *collapsed* log's recap chip. */
   | { kind: 'debate_log_recap_moderator_score' }
-  /** The ◀ / ▶ button that collapses or expands the log panel as a whole. */
+  /** The maximize / minimize button that collapses or expands the log panel as a whole. */
   | { kind: 'debate_log_panel_toggle' }
   | { kind: 'modal_round_recap_score' }
   | { kind: 'round_recap_action'; action: 'continue' }

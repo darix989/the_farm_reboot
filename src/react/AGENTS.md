@@ -221,7 +221,7 @@ Three things worth knowing before you touch it:
   The moderator face on the chip is `debate_log_recap_moderator_score`; the same strip in
   the expanded header is `debate_log_moderator_score`. Only the header kind is in
   `tutorialNeedsDebateLog` — adding the chip kinds there would auto-expand the panel and
-  unmount the controls they point at. The whole-panel ◀ / ▶ is `debate_log_panel_toggle`
+  unmount the controls they point at. The whole-panel maximize / minimize is `debate_log_panel_toggle`
   (`data-debate-log-toggle-panel`, already on `DebateLogToggleButton`).
 
 ### Feedback panel (`trial/panels/FeedbackPanel.tsx`)
