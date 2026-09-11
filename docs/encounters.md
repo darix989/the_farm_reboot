@@ -30,8 +30,8 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 
 | Field | Meaning |
 |---|---|
-| `id` | Internal id — **not** the `DebateScenarioKey`. `015_duchess_vs_rue` is the key, `level1-boss-pond-motion` is the id. Progress is tracked by key. |
-| `introduction` | Sets the scene. Its presence is what creates the `debate_intro` phase. |
+| `id` | Internal id — **not** the `DebateScenarioKey`. `015_tobias_vs_rue` is the key, `level1-boss-pond-motion` is the id. Progress is tracked by key. |
+| `introduction` | Sets the scene. Its presence is what creates the `debate_intro` phase. May carry inline [emphasis](#emphasis-inside-a-spoken-line). |
 | `introductionSummary` | Two-line paraphrase shown in the pre-round-1 briefing modal. **Required** whenever there is an `introduction` — see [Recap summaries](#recap-summaries). |
 | `playerSide` | `proposition` or `opposition`. |
 | `characters` | `speakerId` → display name. |
@@ -40,6 +40,7 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 | `startingInsightPoints` | Insight to start with. Defaults to 0. |
 | `teachesFallacies` | Fallacies added to the Codex as known when the player **leaves a finished encounter**. Walking out halfway teaches nothing. |
 | `setsDialogFlags` | Dialog flags set on the same leave. Prefer these over `encounter_completed` for "this conversation happened" gates — a flag carries player-facing copy. |
+| `unlocksFeatures` | Features granted on the same leave (`insight_points`, `round_types`). Walking out halfway unlocks nothing. The teaching encounter can still show the feature during play. |
 | `mechanics` | Mode flags, below. Omit for a full debate. |
 | `rounds` | The sequence. |
 | `tutorials` | Overlays triggered off the debate event bus. |
@@ -92,6 +93,12 @@ they click once to reveal, and again to select. `npcRoundId` also accepts a **st
 (for an `opponentPrompt`), because the matcher compares against whatever analysis target was
 solved.
 
+A gated letter stays clickable while it is still shut. It shows a lock badge; clicking it
+does not select the line — it shakes, writes *why* it is shut into the Actions hint, and
+pulses Analyze when the missing piece is an in-debate tag. Once the condition is met the
+same letter glows (ready). First click opens it (lock drops); second click says it. Reduced
+motion keeps the colours and drops the motion.
+
 This is the only mechanic where spotting and speaking touch. Use it for the payoff line.
 
 ### Cross-encounter unlocks
@@ -106,7 +113,7 @@ the fence" is one option with both fields set. Presentation is shared: either fi
 the option locked, and unlocking still goes through the click-to-reveal step.
 
 Kinds: `fallacy_known`, `fallacy_spotted` (optionally scoped to a scenario),
-`encounter_completed`, `dialog_flag`. Prefer a `dialog_flag` when the requirement is "this
+`encounter_completed`, `dialog_flag`, `feature_unlocked`. Prefer a `dialog_flag` when the requirement is "this
 conversation happened" — `encounter_completed` can only name the encounter by key, which is
 not player-facing.
 
@@ -129,6 +136,34 @@ talks — only the button is locked. The main menu is not gated. Hang the matchi
 `farmTalk.ts`; lengthening an NPC's `scenarios` list silently re-points every existing beat
 row (`cass1` becomes the new first encounter, not the old one).
 
+Greeters with no encounter use `talkStages`. Set `completesFlag` on a stage to write a
+dialog flag when the last beat's reveal settles — that is "a real dialog happened till the
+end". Closing early sets nothing. Dot's welcome is the one that needs it.
+
+---
+
+## Emphasis inside a spoken line
+
+A sentence's `text` — and `introduction` — may carry the same inline markup the tutorial
+overlay uses: `**bold**` and `[accent]…[/accent]` (also `danger`, `warning`, `success`, `info`,
+`muted`). Use it to make the one clause a line turns on impossible to miss:
+
+```json
+{ "text": "[accent]You did not argue with me. You priced me.[/accent] My tail, my record, my mood — three ways of saying she does not count." }
+```
+
+Only the **wizard panel** renders it — the box the player is reading, one sentence at a time,
+with the typewriter counting the plain characters so the tags cost the reveal nothing. Every
+other surface shows the line as prose: the debate log, the recap modals, the analysis modal's
+sentence cards, the option previews and the screen-reader announcer all strip it first
+(`plainSpokenText`, `src/react/trial/utils/spokenMarkup.ts`).
+
+**A span must stay inside one authored sentence.** The reveal maps `Sentence[]` 1:1 onto its
+chunks, so a tag opened in one sentence and closed in the next leaves both unbalanced and the
+markup prints literally. Prose in `introduction` is split by `splitIntoSentences`, so keep a
+span inside one sentence of it too. Spend it on one clause per statement at most; a line with
+three accents in it has emphasised nothing.
+
 ---
 
 ## Recap summaries
@@ -147,7 +182,7 @@ So every line those two modals show has an authored paraphrase beside the spoken
 
 Rules:
 
-- **Paraphrase, never trim.** Say what the statement *did* — "Duchess opens on the forty-one
+- **Paraphrase, never trim.** Say what the statement *did* — "Tobias opens on the forty-one
   who already agreed" — not what it said. Copying the wording back defeats the point, and
   `lint:scenarios` rejects a summary that repeats or prefixes the spoken text.
 - **Two lines, ~160 characters** (`RECAP_SUMMARY_MAX_LINES` / `RECAP_SUMMARY_MAX_CHARS` in
@@ -179,6 +214,7 @@ raw scenario.
 | `targetQuality` | `'effective'` | Which quality reads as the win. |
 | `maxAnalysisAttempts` | `3` | Guesses per analysis target. |
 | `encounterKind` | `'debate'` | Swaps UI copy — see below. |
+| `showRoundType` | `true` | The `— crossfire` half of the wizard round label, the type line on debate-log cards, and the analysis-modal subtitle. Hidden globally until `round_types` is unlocked. |
 
 There is deliberately **no behavioural `mode` enum**. Each flag is consumed independently,
 which is what keeps the engine from forking per encounter type.
@@ -203,6 +239,7 @@ Presentation only; it never changes behaviour.
 | `gossip` | Trough Talk | "There is nothing more to overhear." | hidden |
 | `sparring` | Sparring Log | "That is the session done." | hidden |
 | `lab` | Lab Notes | "That is the exercise done." | hidden |
+| `lesson` | Lesson Notes | "That is the lesson done." | hidden |
 
 It also swaps the opening guidance and makes the intro card read "Setting" rather than
 "Moderator". A one-beat skirmish stays a `debate` — it is one beat of one, using the same
@@ -238,7 +275,7 @@ encounter, confirm by hand:
 - sentence ids unique across the file
 - `unlockCondition` naming a fallacy that is actually authored on that sentence
 - `unlockConditions` naming a flag / fallacy / scenario that exists
-- `teachesFallacies` / `setsDialogFlags` / `requires` agreeing with the fiction (the player
+- `teachesFallacies` / `setsDialogFlags` / `unlocksFeatures` / `requires` agreeing with the fiction (the player
   cannot be taught a fallacy they never hear named, and a flag must be set by the encounter
   the copy describes)
 - no `"TBD"` explanations

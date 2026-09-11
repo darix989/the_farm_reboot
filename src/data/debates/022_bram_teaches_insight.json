@@ -1,0 +1,196 @@
+{
+  "id": "level1-bram-teaches-insight",
+  "introduction": "Bram wants to show you something, and he wants to show it to you down at the fence line where the hedge is thick. He has worked out a way of getting through a day on a farm full of animals who watch him. He has decided you should have it too.",
+  "introductionSummary": "Bram takes you somewhere nobody is looking and hands over the habit he uses to survive a room that has already decided about him.",
+  "playerSide": "opposition",
+  "characters": {
+    "bram": "Bram",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Answering the animal instead of the argument. It is easiest to miss when it is the last item in a list of true things."
+    },
+    {
+      "id": "appeal-to-popularity",
+      "explanation": "Treating a count of who agrees as a reason. It hides in a list for exactly the same reason."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
+  "startingInsightPoints": 2,
+  "mechanics": {
+    "showModeratorOpinion": false,
+    "showRoundRecap": false,
+    "showIntroSummary": false,
+    "encounterKind": "gossip"
+  },
+  "unlocksFeatures": ["insight_points"],
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "gossip",
+      "speakerId": "bram",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r1-bram",
+        "speakerId": "bram",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "This is how I live. I never answer anything the first time I hear it. I let it go past, and then I go back over it slowly.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "Because Hetty will come at you with four things at once, all of them warm, all of them friendly, and three of them perfectly true.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-3",
+            "text": "It is the fourth one that does the work, and you will nod at it, because you have spent the whole sentence nodding.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-4",
+            "text": "Like so. The meadow is dry, the trough is low, the frost came late, and a raccoon who eats out of bins is not the animal to ask about water.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "Three true remarks about the weather, then a fourth about Rue. The fourth is the only one doing any arguing, and it argues about him rather than about the pond."
+              }
+            ]
+          }
+        ],
+        "summary": "He demonstrates the trick he guards against: three true things and then a fourth, riding out on the nodding."
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "gossip",
+      "speakerId": "bram",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r2-bram",
+        "speakerId": "bram",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r2-1",
+            "text": "Now the same shape with a crowd in it, because that is Tobias's other one and he is very good at it.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-2",
+            "text": "The meadow is dry, the trough is low, forty-one animals have already agreed, and nobody is blaming anybody.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The count sits in the list looking like one more plain fact. It is the only item pretending to be a reason, and it is a headcount, not evidence."
+              }
+            ]
+          },
+          {
+            "id": "s-r2-3",
+            "text": "You will not need any of this on Sunday, mind. You will have had time to think. I need it because I get one look at a room before it has decided about me.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "The same shape again with a headcount buried in it, and he admits the habit is his to need, not Rue's."
+      }
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "insight-what-this-is",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Bram is going to hand you **[accent]Insight[/accent]** — the one thing in this game you can spend.\n\n**[muted]You will never be forced to. It is help, not homework.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "insight-the-counter",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-1"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "That is your **[accent]Insight[/accent]** balance. Bram has lent you **[accent]two[/accent]**.\n\nYou earn one back every time you read a statement **[success]exactly right[/success]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_moderator_score"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topRight"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "insight-spend-it",
+      "trigger": {
+        "event": "analysis:open",
+        "where": {
+          "activeRoundNumber": 1
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[accent]Four sentences[/accent]**, and only one of them is doing anything.\n\nPress **[accent]Help[/accent]** to spend your Insight rather than guess.",
+            "interactionMode": "target_only",
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "help"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "**[warning]Two Insight[/warning]** — the whole loan — and it marks **[accent]which sentence[/accent]** hides something.\n\nIt will not tell you what. That part is still yours.",
+            "interactionMode": "modal_only",
+            "onlyForward": true,
+            "targetComponent": {
+              "kind": "analysis_action",
+              "action": "help_confirm"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

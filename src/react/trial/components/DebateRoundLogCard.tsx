@@ -222,7 +222,9 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
             <div className={`${styles.debateLogRoundSideLine} ${sideLineClass}`}>
               {stackedSideLabel}
             </div>
-            <div className={styles.debateLogRoundTypeLine}>{statementTypeLabel(round.type)}</div>
+            {mechanics.showRoundType && (
+              <div className={styles.debateLogRoundTypeLine}>{statementTypeLabel(round.type)}</div>
+            )}
           </div>
         </div>
 

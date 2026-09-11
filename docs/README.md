@@ -71,7 +71,10 @@ Worth knowing before trusting a doc end to end:
   in `level_01_the_pond_motion.md` it means a chapter of the game. They are unrelated
   numbers that happen to line up for Level 1.
 - **The shipped order does not match the distribution rule.** The four older scenarios teach
-  Level-2 False Dilemma first. Level 1's own ladder (`010`–`015`) does follow the rule.
+  Level-2 False Dilemma first. Level 1's own ladder does follow the rule.
+- **Scenario file numbers are creation order, not ladder order.** `020`–`022` were added
+  after `010`–`015` and sit in the middle of the ladder. `LEVEL_1_SCENARIOS` in
+  `src/data/levels.ts` is the only thing that says what order a rung is played in.
 - **Straw Man's tier is an open question** — `logical_fallacies_intro.md` carries the
   author's own "(isn't this level 2 or 3?)" note.
 - **`no-true-scotsman` has an icon and a catalogue entry but no `LogicalFallacyId`**, so it

@@ -28,10 +28,11 @@ export interface DebateLogRecapChipProps {
  * The Debate Log while collapsed: round counter, the same moderator/insight strip the log
  * header shows, and the button back into the full panel.
  *
- * It carries no tutorial hook of its own — `data-tutorial-debate-log-moderator-score` stays
- * unique to the log header, since `resolveTutorialTargetElement` is a bare `querySelector`
- * and a second match would make that spotlight ambiguous. Tutorials expand the log instead
- * (`tutorialNeedsDebateLog`).
+ * The chip and the expanded panel are mutually exclusive in the DOM (`TrialLayout` unmounts
+ * one to mount the other), and the two moderator hooks are distinct kinds
+ * (`debate_log_recap_moderator_score` here, `debate_log_moderator_score` on the header), so a
+ * tutorial can target either state on purpose. `resolveTutorialTargetElement` is still a
+ * bare `querySelector`; that stays unambiguous because only one of the two is mounted.
  */
 const DebateLogRecapChip: React.FC<DebateLogRecapChipProps> = ({
   debate,
@@ -55,13 +56,15 @@ const DebateLogRecapChip: React.FC<DebateLogRecapChipProps> = ({
           })}
         </span>
       )}
-      <ModeratorOpinionInline
-        className={styles.recapOpinion}
-        score={totalScore}
-        // Same gating as the log header, from the same flags — the two must never disagree.
-        insightPoints={mechanics.showInsightPoints ? insightPoints : undefined}
-        showOpinion={mechanics.showModeratorOpinion}
-      />
+      <span className={styles.recapOpinionHook} data-tutorial-debate-log-recap-moderator-score>
+        <ModeratorOpinionInline
+          className={styles.recapOpinion}
+          score={totalScore}
+          // Same gating as the log header, from the same flags — the two must never disagree.
+          insightPoints={mechanics.showInsightPoints ? insightPoints : undefined}
+          showOpinion={mechanics.showModeratorOpinion}
+        />
+      </span>
       <DebateLogToggleButton debate={debate} roundNumber={roundNumber} />
     </div>
   );

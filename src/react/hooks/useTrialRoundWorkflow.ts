@@ -17,6 +17,7 @@ import {
 import type { ConditionContext } from '../../utils/gameConditions';
 import { debateEventBus, type RoundLifecyclePayload } from '../trial/utils/debateEventBus';
 import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
+import { plainSpokenText } from '../trial/utils/spokenMarkup';
 import getLabel from '../../data/labels';
 
 // ---------------------------------------------------------------------------
@@ -373,7 +374,7 @@ function reduceWorkflow(
 // ---------------------------------------------------------------------------
 
 export function statementTitle(st: Statement): string {
-  const first = st.sentences[0]?.text ?? st.id;
+  const first = plainSpokenText(st.sentences[0]?.text ?? st.id);
   return first.length > 80 ? `${first.slice(0, 77)}…` : first;
 }
 
@@ -388,7 +389,7 @@ export function optionTitle(
   const showRealCopy =
     !gated ||
     (unlocked && (revealedLockedOptionIds === undefined || revealedLockedOptionIds.has(opt.id)));
-  const first = resolvedOptionSentences(opt, showRealCopy)[0]?.text ?? opt.id;
+  const first = plainSpokenText(resolvedOptionSentences(opt, showRealCopy)[0]?.text ?? opt.id);
   return first.length > 80 ? `${first.slice(0, 77)}…` : first;
 }
 
@@ -406,6 +407,7 @@ export function useTrialRoundWorkflow(
    * these from the closure would see whatever they were when `dispatch` was created.
    */
   conditions?: ConditionContext,
+  options?: { showRoundType?: boolean },
 ) {
   const scenarioRef = useRef(scenario);
   scenarioRef.current = scenario;
@@ -540,13 +542,18 @@ export function useTrialRoundWorkflow(
   const wizardRoundLabel = useMemo((): string | null => {
     if (state.gamePhase === 'debate_intro' || state.gamePhase === 'debate_complete') return null;
     if (!currentRound) return null;
+    if (options?.showRoundType === false) {
+      return getLabel('workflowRoundPlain', {
+        replacements: { roundNumber: currentRound.roundNumber },
+      });
+    }
     return getLabel('workflowRoundWithType', {
       replacements: {
         roundNumber: currentRound.roundNumber,
         typeDisplay: currentRound.type.replace(/_/g, ' '),
       },
     });
-  }, [state.gamePhase, currentRound]);
+  }, [state.gamePhase, currentRound, options?.showRoundType]);
 
   const wizardMessage = useMemo((): string => {
     const copy = encounterLabels(scenario);
@@ -564,6 +571,17 @@ export function useTrialRoundWorkflow(
           return state.selectedOptionId
             ? getLabel('workflowStatementSelected')
             : getLabel('workflowPlayerChoosingQuestion', {
+                replacements: { opponentName },
+              });
+        }
+        if (
+          currentPlayerRound?.type === 'crossfire' &&
+          currentPlayerRound.opponentResponses &&
+          !currentPlayerRound.opponentPrompt
+        ) {
+          return state.selectedOptionId
+            ? getLabel('workflowStatementSelected')
+            : getLabel('workflowPlayerChoosingCrossfireQuestion', {
                 replacements: { opponentName },
               });
         }

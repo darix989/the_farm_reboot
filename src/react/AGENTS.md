@@ -11,6 +11,7 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `screens/MainMenuUI.tsx` | Overlay shown while the `MainMenu` scene is active. |
 | `screens/GameLoadingScreen.tsx` | Loading screen shown until `isGameReady`, and again while `isSceneLoading`. Also the interaction gate: it covers the stage and sets `pointer-events: auto`, so nothing behind it is clickable while `Boot`/`Preloader` or a scene pack load. |
 | `screens/BoilerPlateUI.tsx` | Fallback overlay for scenes without a dedicated UI. |
+| `codex/CodexOverlay.tsx` | Field Notes journal: Next (who to talk to), known / spotted fallacies, important conversations. |
 | `screens/TrialUI.tsx` | Thin orchestrator: workflow hook, modal/guess state, `TrialLayout`, `RoundRecapModal`, and `RoundAnalysisModal`. |
 | `trial/TrialLayout.tsx` | 2×2 grid shell: a transparent full-width "game hole" across the top row, then the Debate Log (or `DebateLogRecapChip` when collapsed) over its right 3fr when a `log` slot is passed, and Dialog / Actions along the bottom. Reads `debateLogStore` and owns the collapsed/expanded branch. Farm talks omit `log`. |
 | `trial/panels/FeedbackPanel.tsx` | The expanded Debate Log: title strip (log title, Insight + moderator mood, the whole-panel collapse button) and the scrollable round-card list. |
@@ -27,12 +28,13 @@ This document describes the React UI layer under `src/react/` with a focus on th
 | `trial/utils/trialActionShortcuts.ts` | Action-key codes (Continue / Analyze / Back / options) and the ignore rules for focused controls. |
 | `trial/components/TypewriterText.tsx` | Leaf that fills in one line character by character. Owns the character count so a reveal re-renders one node, not the overlay. |
 | `hooks/useScenarioTutorials.ts` | Subscribes to bus events declared by `scenario.tutorials` and opens the matching overlay via `useTutorialStore` (see "Scenario tutorials" below). |
+| `hooks/useFarmTutorials.ts` | Opens farm overlay tutorials from `src/data/farmTutorials.ts` when their `GameCondition`s are met (see "Farm tutorials" below). |
 | `trial/utils/debateEventBus.ts` | Typed pub/sub singleton keyed on `EventTrigger`, plus the `useDebateEvent` React hook and tutorial-trigger helpers (`DebateTutorialTrigger`, `debatePayloadSatisfies`, `debateTutorialTriggerMatches`). |
 | `trial/roundRecapModal/RoundRecapModal.tsx` | Post–player-round summary modal; closing it dispatches `continue` and advances the workflow. Emits `round:recap:open` / `round:recap:close` on mount/unmount. Each block renders the authored `summary` (clamped to two lines), falling back to the spoken text — see [`docs/encounters.md`](../../docs/encounters.md#recap-summaries). |
 | `trial/roundAnalysisModal/RoundAnalysisModal.tsx` | Modal overlay for per-round analysis and fallacy guessing (see below). Emits `analysis:*` events for every open/close, sentence toggle, fallacy toggle, and guess outcome. |
 | `hooks/useScrollFade.ts` | Hook that tracks scroll edge state; drives animated fade overlays on scrollable containers. |
 | `trial/utils/trialHelpers.ts` | Shared helpers: speaker names, quality/score colours, statement text, statement type labels. |
-| `trial/utils/optionUnlock.ts` | Player-option unlock rules and resolved sentence text for locked choices. |
+| `trial/utils/optionUnlock.ts` | Player-option unlock rules, lock-phase hints, and resolved sentence text for gated choices. |
 | `trial/utils/fallacyGuessTypes.ts` / `fallacyGuessUtils.ts` | Types and multiset logic for the analysis-modal guessing game. |
 | `trial/components/AnalyzeButton.tsx` | Magnifying-glass analyse button (history / interactive). |
 | `trial/components/HistoryEntry.tsx` | Repeated history row layout (label, body, optional analyse button). |
@@ -209,9 +211,13 @@ Three things worth knowing before you touch it:
   re-running, so re-expanding would park the log at the top instead of the active round. A
   fresh mount runs that effect with no previous index and scrolls to the current round. The
   cost — per-round expand overrides reset — is harmless, since cards default to shrunk.
-- **The chip carries no tutorial hook.** `data-tutorial-debate-log-moderator-score` stays
-  unique to the log header; `resolveTutorialTargetElement` is a bare `querySelector`, and a
-  second match would make that spotlight ambiguous.
+- **The chip and the panel are mutually exclusive in the DOM.** Collapsing unmounts the
+  panel and mounts the chip, so a bare `querySelector` can target either state on purpose.
+  The moderator emoji on the chip is `debate_log_recap_moderator_score`; the same strip in
+  the expanded header is `debate_log_moderator_score`. Only the header kind is in
+  `tutorialNeedsDebateLog` — adding the chip kinds there would auto-expand the panel and
+  unmount the controls they point at. The whole-panel ◀ / ▶ is `debate_log_panel_toggle`
+  (`data-debate-log-toggle-panel`, already on `DebateLogToggleButton`).
 
 ### Feedback panel (`trial/panels/FeedbackPanel.tsx`)
 
@@ -566,6 +572,14 @@ The onboarding overlay that used to live on a dedicated `introTutorial` field is
 ### Gotcha: emits that trigger tutorials run synchronously
 
 `useScenarioTutorials` handles bus events synchronously and calls `openTutorial(...)` on the tutorial store in the same tick. That scheduling hits `TutorialOverlay` immediately, so any emit at the authoring site must come from event-handler or effect scope — not from a render-phase callback (function component body, `useMemo` / `useCallback` factory, functional `setState` updater, `useReducer` reducer). See **Debate event bus → Emitting safely** above for the full rule and an example pattern.
+
+---
+
+## Farm tutorials (`src/data/farmTutorials.ts`)
+
+The same `TutorialOverlay` can run on the farm. Entries live in `farmTutorials.ts`, not on a scenario: each has an `id`, a `triggerWhen: GameCondition[]`, and a `DebateTutorialJson`. `useFarmTutorials` (called from `FarmUI`) opens the first unmet entry whose conditions are satisfied, skips while a talk is open, and writes `progressStore.completedTutorials` on Got it so a reload does not replay it.
+
+Field Notes targets (`codex_open`, `codex_tab`, `codex_tabs`, `codex_content`, `codex_close`) are stamped as `data-tutorial-*` on `FarmUI` and `CodexOverlay`. A step that points at the opening button keeps the Codex **closed**; a step that points at tabs or content opens it on `next` before the highlight lookup (same reason the Debate Log is expanded before a log target). `interactionMode: 'highlight'` spotlights a control without freezing sibling Field Notes tabs — overlay Continue still works.
 
 ---
 

@@ -15,6 +15,7 @@ import {
 } from '../../../types/debateEntities';
 import { uiColor } from '../../uiColor';
 import type { AnimalEmotion } from '../../../phaser/animals/animalEmotions';
+import { plainSpokenText } from './spokenMarkup';
 
 export function getSpeakerName(debate: DebateScenarioJson, speakerId: string): string {
   return debate.characters?.[speakerId] ?? speakerId.charAt(0).toUpperCase() + speakerId.slice(1);
@@ -154,8 +155,15 @@ export function qualityLabel(quality: PlayerOption['quality']): string {
   return getLabel('qualityIneffective');
 }
 
+/**
+ * A whole statement as prose, with any inline emphasis stripped (see `spokenMarkup.ts`).
+ *
+ * This is the plain-text side of a spoken line: the debate log, the recap modals and the
+ * option previews all read it, and none of them render markup. The wizard reveal takes the
+ * authored text instead, through `revealChunks`.
+ */
 export function statementText(sentences: Sentence[]): string {
-  return sentences.map((s) => s.text).join(' ');
+  return sentences.map((s) => plainSpokenText(s.text)).join(' ');
 }
 
 /** A chunk shorter than this is folded into the one before it — see `splitIntoSentences`. */

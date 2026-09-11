@@ -14,18 +14,29 @@ weighted idle/alert playback engine were ported close to verbatim.
 
 ## 1. The cast, today
 
-Every Level 1 character is a real species. Some wear a different animal's art because
-no matching sprite exists yet; Rue, Tobias and Dot are exact matches:
+Since the Level 1 rewrite, **every character is the animal their sprite draws**. The old
+"played by" mismatches are gone: the writing was moved onto the art rather than the other
+way round, because Level 1 teaches Ad Hominem and needs a cast a farm already has opinions
+about.
 
-| Character | Real species | Placeholder art (`AnimalSpriteId`) | Role                      |
-| --------- | ------------ | ---------------------------------- | ------------------------- |
-| Rue       | raccoon      | `raccoon` (exact match)            | player                    |
-| Hetty     | hen          | `white-sheep-1`                    | farm NPC                  |
-| Cass      | rooster      | `fox`                              | farm NPC                  |
-| Bram      | drake        | `brown-wolf`                       | farm NPC                  |
-| Duchess   | goose        | `donkey-grey`                      | farm NPC, Trial opponent  |
-| Tobias    | owl          | `owl` (exact match)                | farm NPC, Trial moderator |
-| Dot       | dog          | `dog` (exact match; no emotions)   | farm greeter              |
+| Character | Species | Art (`AnimalSpriteId`)           | Role                      |
+| --------- | ------- | -------------------------------- | ------------------------- |
+| Rue       | raccoon | `raccoon`                        | player                    |
+| Hetty     | sheep   | `white-sheep-1`                  | farm NPC                  |
+| Cass      | fox     | `fox`                            | farm NPC, coach           |
+| Bram      | wolf    | `brown-wolf`                     | farm NPC                  |
+| Tobias    | donkey  | `donkey-grey`                    | farm NPC, Trial opponent  |
+| Duchess   | owl     | `owl`                            | farm NPC, Trial moderator |
+| Dot       | dog     | `dog`                            | farm greeter              |
+
+The three outsiders (raccoon, fox, wolf) are the ones the level's fallacies point at; the
+in-group is the sheep and the donkey. See `level_01_the_pond_motion.md`.
+
+Portrait coverage is uneven and falls back silently. `donkey-grey` has only `talking`,
+`sneaky` and `angry` cropped — which happens to be everything a boss antagonist derives,
+since a statement carrying a fallacy reads as `sneaky`. `dog` has talking, doubtful, angry
+and thinking (sneaky was not cropped — the body clip's head dip saturates the aligner).
+Dot still never debates; the clips are for her farm-talk portraits.
 
 The mapping lives in one place: the optional `animal` field on
 [`CHARACTERS`](../src/data/characters.ts). A character with no `animal` entry (every

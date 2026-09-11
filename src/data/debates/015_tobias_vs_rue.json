@@ -1,0 +1,778 @@
+{
+  "id": "level1-boss-pond-motion",
+  "introduction": "The Public Farm sits on Sunday, and Duchess the owl has the motion in front of her: the Old Pond reserved to the Meadow-Born, and every animal who arrived to water at the road trough. Tobias speaks for it, and forty-one animals have already said yes. You are Rue. Six weeks here, no crowd at all, and the only animal in the meadow who has had his arm in that drain.",
+  "introductionSummary": "The floor votes on shutting the arrivals out of the Old Pond. Tobias has forty-one names; you have the one thing nobody else went and looked at.",
+  "playerSide": "opposition",
+  "characters": {
+    "tobias": "Tobias",
+    "rue": "Rue",
+    "duchess": "Duchess"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Answering the animal instead of the argument. Tobias never raises his voice — his arrive as sympathy, which is what makes them hard to name out loud."
+    },
+    {
+      "id": "appeal-to-popularity",
+      "explanation": "Treating a crowd as a reason. Forty-one animals agreeing is not forty-one animals checking, and he is careful never to say what any of them looked at."
+    },
+    {
+      "id": "false-dilemma",
+      "explanation": "Offering two roads as though they were the only two. The third one — straighten the grate — is sitting in plain sight all evening."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity", "false-dilemma"],
+  "mechanics": {
+    "showInsightPoints": false
+  },
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "opening_constructive",
+      "speakerId": "tobias",
+      "impact": -15,
+      "statement": {
+        "id": "stmt-r1-tobias",
+        "speakerId": "tobias",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Duchess. Neighbours. It is a small motion and I would not have brought it at all if the water were not going bad.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "Forty-one of the Meadow-Born have already put their names to it. Forty-one animals are not a mistake. Forty-one animals are a farm making up its mind.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The count is offered as the argument. Nothing is said about what a single one of the forty-one went and looked at."
+              }
+            ]
+          },
+          {
+            "id": "s-r1-3",
+            "text": "And nobody blames the newcomers. Nobody at all. It is only that an animal who takes his supper out of a bin — Roo, I mean no unkindness by it — has through no fault of his own a rather different notion of clean.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "The question is what is fouling the pond. This answers it by describing where Rue eats, dressed as sympathy so that it is harder to object to."
+              }
+            ]
+          }
+        ],
+        "summary": "He opens gently: the count has already decided, and the one animal disagreeing is disqualified by his supper rather than his evidence."
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "opening_constructive",
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "You answered a remark about you with a remark about them. The floor now has two sets of animals and still no account of the water.",
+          "summary": "You go after the forty-one as a class, and the floor becomes a quarrel about kinds of animal.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-a-1",
+              "text": "Forty-one of them, and not one has done a day's work on this farm. They stand in that water for an hour every morning and then complain about the state of it.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "It answers the motion by describing the animals behind it. Whether they are idle has nothing to do with what is coming through the outflow."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "True, and everybody will be sympathetic, and nothing moves. You have accepted that the pond is theirs to allocate and asked for a kinder allocation.",
+          "summary": "You argue that the road trough is unreasonable, which quietly accepts that the pond is theirs to hand out.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-b-1",
+              "text": "The road trough is half a mile off and it is dry by noon. It is not a reasonable place to send anybody in this weather.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "Puts the actual question on the floor — something is fouling the pond, and whatever it is has a cause somebody can go and look at — before anybody is sent anywhere.",
+          "summary": "You reframe it as a question about cause: something is fouling the water, and causes can be gone and looked at.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-c-1",
+              "text": "The pond is the only clean water this farm has, so the question in front of us is what is fouling it. Something is. It has a cause. The cause can be looked at this evening, before anybody is sent half a mile down a road.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r3-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "You asked whether they are clever enough to have an opinion. Even if the answer is no, it is a question about them and not about the drain.",
+          "summary": "You ask whether the forty-one could even tell a drain from a ditch, which is a question about them.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-a-1",
+              "text": "How many of your forty-one could tell a drain from a ditch if you walked them to one?",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "It goes at the capability of the animals agreeing rather than at the grounds for their agreement."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "He will answer it honestly and it will cost him nothing. You have agreed that a count is the right instrument, and only quibbled with the arithmetic.",
+          "summary": "You query whether forty-one is really a majority, which keeps counting as the way to settle it.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-b-1",
+              "text": "Is forty-one actually a majority of this farm, or only a majority of the animals you asked?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "The one question a headcount cannot survive. It does not deny that they agreed; it asks what any of them agreed on the strength of.",
+          "summary": "You ask how many of the forty-one have actually been to the outflow, which the count cannot answer.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-c-1",
+              "text": "Of the forty-one who agreed — how many of them have walked down to the outflow and looked at the grate?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r3-opt-a",
+          "impact": -6,
+          "statement": {
+            "id": "resp-r3-a",
+            "speakerId": "tobias",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-a-1",
+                "text": "None of them, I dare say, and none of them has ever needed to. Rufus, you have turned this into a contest about which of us is the better animal, and you lost that one before I stood up.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "He accepts the insult cheerfully and points out that Rue has chosen the one contest he cannot win."
+          }
+        },
+        {
+          "forOptionId": "r3-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-b",
+            "speakerId": "tobias",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-b-1",
+                "text": "It is a majority of those who came, which on this farm has always been what a majority is. You are very welcome to bring more.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "He answers plainly, redefines the majority as whoever turned up, and invites Rue to find more animals."
+          }
+        },
+        {
+          "forOptionId": "r3-opt-c",
+          "impact": 12,
+          "statement": {
+            "id": "resp-r3-c",
+            "speakerId": "tobias",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r3-c-1",
+                "text": "I do not know. I have not asked them. I have been at that water every morning of my life, and I had taken that to be the same thing as having looked at it.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "He cannot say, and hears himself admit that a lifetime beside the water is not the same as having examined it."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "crossfire",
+      "opponentPromptImpact": -8,
+      "opponentPrompt": {
+        "id": "stmt-r4-tobias",
+        "speakerId": "tobias",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r4-p1",
+            "text": "Then may I put one to you, Roo.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-p2",
+            "text": "Forty-one animals who have lived beside that water all their lives say it went bad when the arrivals came, and one animal who has been here six weeks and takes his supper out of a bin says that it did not.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "One half of it is a headcount standing in for a finding. The forty-one are described by how many they are, not by anything they observed."
+              },
+              {
+                "id": "ad-hominem",
+                "explanation": "The other half is Rue's supper and his six weeks, offered as the reason his account weighs less. Both halves ride in one gracious sentence."
+              }
+            ]
+          },
+          {
+            "id": "s-r4-p3",
+            "text": "Which of those is this farm to believe?",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "He folds both of his moves into a single courteous question and asks the floor to choose between a crowd and a bin."
+      },
+      "options": [
+        {
+          "id": "r4-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "You took his question and answered it with a remark about how he has spent his life. That is his own trick, handed back, and the floor will notice which of you does it more gracefully.",
+          "summary": "You answer by describing how comfortable eleven years has made him, which is the same trick returned.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-a-1",
+              "text": "It should believe whichever of us has not spent eleven years too comfortable at that water to ever once look into it.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "It settles the question by describing Tobias's habits rather than by saying anything about the pond."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "A vote does not find out what is in a drain. You have handed the question straight back to the crowd he brought with him.",
+          "summary": "You suggest the floor should simply vote on it, which returns the question to his crowd.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-b-1",
+              "text": "Neither, I should think. The farm should put it to a vote and see where it lands.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "You took his sentence apart into the two things it was doing, showed that neither is about the water, and named the question that is.",
+          "summary": "You separate the two things his question was doing and offer to answer the one about the water.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-c-1",
+              "text": "You have asked two questions at once. One is how many animals agree with you, and the other is what I eat. Neither of them is what happened to the water. Ask me the third one — what is in the outflow — and I will answer it standing here.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-5",
+      "roundNumber": 5,
+      "type": "rebuttal",
+      "speakerId": "tobias",
+      "impact": -15,
+      "statement": {
+        "id": "stmt-r5-tobias",
+        "speakerId": "tobias",
+        "type": "rebuttal",
+        "sentences": [
+          {
+            "id": "s-r5-1",
+            "text": "Then I shall say the hard thing kindly, because somebody has to say it and I would rather it were me than the yard.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-2",
+            "text": "This farm is being asked to set aside forty-one lifetimes on the word of an animal who came here six weeks ago in the back of a mud cart and takes his supper out of a bin. I do not say it to wound him. I say it because it is the whole of what he is.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "Every word of it is a description of Rue, offered in place of a reason to disbelieve him. The kindness of the delivery is what makes it work."
+              }
+            ]
+          },
+          {
+            "id": "s-r5-3",
+            "text": "So there are two roads and only two. Either that water belongs to the animals who were born to it, or it belongs to whoever wandered in most recently with a theory. There is no third arrangement.",
+            "logicalFallacies": [
+              {
+                "id": "false-dilemma",
+                "explanation": "Two roads are offered as the only two. The third — straighten the grate and see whether the pond clears — has been standing in the room all evening."
+              }
+            ]
+          }
+        ],
+        "summary": "The set piece: Rue reduced to a mud cart and a bin, then the whole question narrowed to two roads with the obvious one left out."
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-6",
+      "roundNumber": 6,
+      "type": "rebuttal",
+      "options": [
+        {
+          "id": "r6-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "He was gracious and you were not, which is the exchange he would choose every time. And it is still an answer about an animal rather than about a pond.",
+          "summary": "You answer his kindness with a remark about eleven years of cart and habit.",
+          "sentences": [
+            {
+              "id": "s-r6-opt-a-1",
+              "text": "You say all that because you have pulled the same cart down the same lane for eleven years and it has left you nothing to think about but who belongs here.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "It explains away his case by his life rather than answering it. However true it may be, it settles nothing about the water."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "Correcting the detail concedes the frame. The floor is now checking his facts about your arrival instead of yours about the drain — and Cass told you never to defend yourself.",
+          "summary": "You correct the mud cart, which puts your arrival on the floor in place of the pond.",
+          "sentences": [
+            {
+              "id": "s-r6-opt-b-1",
+              "text": "I did not arrive in a mud cart. I walked, and it took four days, and I would rather the record said so.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-c",
+          "quality": "effective",
+          "impact": 25,
+          "reason": "The phrase, paid off in front of the moderator, with the other side's own animal as the witness. He described what you are; you answered with what happened, and you can prove you did not invent it.",
+          "summary": "You answer what you are with what happened, and produce one of his own forty-one as the witness.",
+          "unlockCondition": {
+            "npcRoundId": "round-5",
+            "sentenceId": "s-r5-2",
+            "fallacyId": "ad-hominem"
+          },
+          "unlockConditions": [
+            {
+              "kind": "dialog_flag",
+              "flagId": "bram-grate-conceded"
+            }
+          ],
+          "sentences": [
+            {
+              "id": "s-r6-opt-c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r6-opt-c-1",
+              "text": "You have told this floor what I am. I will tell it what happened. The outflow grate is bent, and the water backs up behind it, and the mud settles in the pond instead of leaving with the stream. Bram told me so himself at the fence line before I had asked him anything, and Bram is one of your forty-one. That is not a theory I wandered in with. That is your own witness.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-7",
+      "roundNumber": 7,
+      "type": "crossfire",
+      "opponentPromptImpact": -8,
+      "opponentPrompt": {
+        "id": "stmt-r7-tobias",
+        "speakerId": "tobias",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r7-p1",
+            "text": "Then let me ask it plainly, Ruin. Rue. Forgive me.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r7-p2",
+            "text": "Are forty-one animals wrong and one raccoon right?",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "It makes the size of the disagreement into the answer. Forty-one against one is a shape, not a finding."
+              }
+            ]
+          },
+          {
+            "id": "s-r7-p3",
+            "text": "Because that is what you are asking this floor to sit here and believe.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "The closer: he reduces the whole evening to a shape — forty-one on one side, one raccoon on the other — and asks the floor to read it."
+      },
+      "options": [
+        {
+          "id": "r7-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "You said yes and then explained why that lot in particular. The floor heard the second half, and half of the floor is in that lot.",
+          "summary": "You say yes and add that this crowd especially tends to be wrong, which insults the room.",
+          "sentences": [
+            {
+              "id": "s-r7-opt-a-1",
+              "text": "Yes. Forty-one animals can be wrong, and that particular forty-one usually are, because not one of them has had an idea that did not arrive in a group.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "It answers the question by describing the animals rather than by saying what any of them failed to check."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "A retreat. He asked whether the crowd could be wrong, and you declined to say — which the floor will read as no.",
+          "summary": "You back away from the question rather than answer it, and the floor takes that as an answer.",
+          "sentences": [
+            {
+              "id": "s-r7-opt-b-1",
+              "text": "I am not saying anybody is wrong. I am only asking a question about the drain.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r7-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "Refuses the shape without insulting a single animal in it. Agreeing and checking are two different activities, and only one of them tells you what is in a pond.",
+          "summary": "You separate agreeing from checking, and point out that nobody has said what they checked.",
+          "sentences": [
+            {
+              "id": "s-r7-opt-c-1",
+              "text": "Nobody here is wrong about what they saw. But forty-one animals agreeing is not forty-one animals checking, and not one of them has stood up this evening and told us what they checked.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "player",
+      "id": "round-8",
+      "roundNumber": 8,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r8-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "You asked about his heart. Neither of you can answer that, and asking it tells the floor you have run out of things to ask about the pond.",
+          "summary": "You ask whether he would have brought the motion at all if the animal at the drain had been born here.",
+          "sentences": [
+            {
+              "id": "s-r8-opt-a-1",
+              "text": "Would you have brought this motion at all if the animal down at that drain had happened to be born in your meadow?",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "It puts his motive on the floor in place of his case. Even a damning answer would say nothing about the water."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r8-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "He will concede it in a heartbeat, because conceding it costs him nothing. A bent thing is not yet a cause, and he knows it.",
+          "summary": "You ask him to admit the grate is bent, which he can concede without giving up anything at all.",
+          "sentences": [
+            {
+              "id": "s-r8-opt-b-1",
+              "text": "Will you at least admit to this floor that the grate is bent?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r8-opt-c",
+          "quality": "effective",
+          "impact": 18,
+          "reason": "The exit question. He cannot say yes without conceding that the mud has a cause other than you, and he cannot say no without telling the floor the motion was never about the water.",
+          "summary": "You ask whether the motion lapses if the grate is fixed and the pond clears, which he cannot answer either way.",
+          "sentences": [
+            {
+              "id": "s-r8-opt-c-1",
+              "text": "If the grate is straightened and the pond runs clear by the frost — does this motion lapse?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r8-opt-a",
+          "impact": -6,
+          "statement": {
+            "id": "resp-r8-a",
+            "speakerId": "tobias",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r8-a-1",
+                "text": "That is a question about my heart, Roo, and I cannot answer it and neither can you. Ask me about the pond and I will do my best with it.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "He declines it gracefully, names exactly what was wrong with it, and invites a question about the water instead."
+          }
+        },
+        {
+          "forOptionId": "r8-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r8-b",
+            "speakerId": "tobias",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r8-b-1",
+                "text": "It is bent. It has been bent for years, and the pond only went brown this spring. You will want rather more than a bent thing.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "He concedes it instantly and points out that a thing bent for years does not explain a change this spring."
+          }
+        },
+        {
+          "forOptionId": "r8-opt-c",
+          "impact": 12,
+          "statement": {
+            "id": "resp-r8-c",
+            "speakerId": "tobias",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r8-c-1",
+                "text": "If the pond runs clear, then the pond runs clear, and a motion about muddy water would have nothing left to sit on. I will not say a word more than that.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "He gives the smallest possible yes and stops, because the next sentence would concede the cause outright."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-9",
+      "roundNumber": 9,
+      "type": "closing_constructive",
+      "speakerId": "tobias",
+      "impact": -12,
+      "statement": {
+        "id": "stmt-r9-tobias",
+        "speakerId": "tobias",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r9-1",
+            "text": "Neighbours. I have been at that water eleven years and I have never once asked this farm for anything before tonight.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r9-2",
+            "text": "Forty-one of you have already said yes, and I would very much rather that were the end of it than have to stand here and say the rest.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "He closes on the count and asks the floor to let the count finish the argument for him."
+              }
+            ]
+          },
+          {
+            "id": "s-r9-3",
+            "text": "The rest is only that we are being asked to take our water on the say-so of an animal who eats out of a bin. I am sorry to put it so plainly, and it is still true.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "The last thing the floor hears before it decides is what Rue eats, offered as though it were a fact about the pond."
+              }
+            ]
+          }
+        ],
+        "summary": "He closes on the count, apologises in advance, and leaves the floor holding a fact about Rue's supper instead of one about the water."
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-10",
+      "roundNumber": 10,
+      "type": "closing_constructive",
+      "options": [
+        {
+          "id": "r10-opt-a",
+          "quality": "logical_fallacy",
+          "impact": -12,
+          "reason": "The last thing this floor will remember is two animals arguing about suppers. The pond is exactly as brown as it was when you stood up.",
+          "summary": "You close by turning his supper against him, and the floor goes home having heard a quarrel about food.",
+          "sentences": [
+            {
+              "id": "s-r10-opt-a-1",
+              "text": "And you take yours from a trough nobody has scrubbed since your grandmother pulled that cart. Let us all be extremely careful about suppers.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "It answers a remark about Rue's supper with a remark about Tobias's. Two animals, no pond."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "You defended yourself, which is the one thing Cass told you never to do. Nobody accused you of fouling anything — they simply arranged the evening so that you would want to say this.",
+          "summary": "You close by defending your own character, which is the trap the whole motion was built to spring.",
+          "sentences": [
+            {
+              "id": "s-r10-opt-b-1",
+              "text": "I would like the record to show that I have never fouled anything on this farm, not once, not in six weeks.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r10-opt-c",
+          "quality": "effective",
+          "impact": 25,
+          "reason": "You conceded the insult, turned it into the reason you are worth listening to, and then made your own case falsifiable in front of the whole farm — which is the exact opposite of both of the things he did all evening.",
+          "summary": "You agree about the bins, make that the reason you know, and offer to lose if the pond does not clear.",
+          "sentences": [
+            {
+              "id": "s-r10-opt-c-1",
+              "text": "He is right that I eat out of the bins. Tuesdays are the good day. That is also how I know what is in your water — I have had my arm in that drain up to the shoulder, and not one of the forty-one has. So straighten the grate. If the pond has not run clear by the frost, put the motion again and I will haul the fence posts myself.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r10-opt-a",
+          "impact": -6,
+          "statement": {
+            "id": "resp-r10-a",
+            "speakerId": "tobias",
+            "type": "closing_constructive",
+            "sentences": [
+              {
+                "id": "s-resp-r10-a-1",
+                "text": "So we finish as two animals arguing about suppers, and the water is exactly as brown as it was when we started. Well fought, Roo.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "He notes the evening has ended where he wanted it, with the water untouched, and gets the name wrong once more."
+          }
+        },
+        {
+          "forOptionId": "r10-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r10-b",
+            "speakerId": "tobias",
+            "type": "closing_constructive",
+            "sentences": [
+              {
+                "id": "s-resp-r10-b-1",
+                "text": "Nobody said that you had, Rufus. That is rather the trouble with it. Nobody ever had to.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "He points out, almost gently, that no accusation was ever made — which is precisely why the defence cost so much."
+          }
+        },
+        {
+          "forOptionId": "r10-opt-c",
+          "impact": 12,
+          "statement": {
+            "id": "resp-r10-c",
+            "speakerId": "tobias",
+            "type": "closing_constructive",
+            "sentences": [
+              {
+                "id": "s-resp-r10-c-1",
+                "text": "Rue. Your name is Rue. I have had it wrong all evening and I am no longer certain that was an accident. Straighten the grate, then, and I will hold the lamp for you.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "He uses the right name for the first time all evening, works out why he had not been, and offers to hold the lamp."
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import { useTutorialStore } from '../../store/tutorialStore';
+import { useCodexUiStore } from '../../store/codexUiStore';
 import { resolveStageSpotlightToViewport } from './spotlightRect';
 import { useStageRect } from './useStageRect';
 import TrialTextButton from '../trial/components/TrialTextButton';
@@ -11,6 +12,7 @@ import shared from '../trial/trialShared.module.scss';
 import getLabel from '../../data/labels';
 import { scheduleArtificialInteractions } from './artificialInteractions';
 import { resolveTutorialTargetElement } from './tutorialTarget';
+import { tutorialStepNeedsCodexClosed, tutorialStepNeedsCodexOpen } from './tutorialCodexNeeds';
 import highlightStyles from './tutorialHighlight.module.scss';
 import styles from './TutorialOverlay.module.scss';
 import { TutorialModalRichBody } from './tutorialRichMessage';
@@ -47,6 +49,7 @@ const TutorialOverlay: React.FC = () => {
   const finishTutorial = useTutorialStore((s) => s.finishTutorial);
 
   const { stageRect } = useStageRect();
+  const codexIsOpen = useCodexUiStore((s) => s.isOpen);
 
   const [, setRenderTick] = useState(0);
   useEffect(() => {
@@ -110,6 +113,21 @@ const TutorialOverlay: React.FC = () => {
     return scheduleArtificialInteractions(interactions);
   }, [isOpen, step, stepIndex]);
 
+  // Field Notes mounts a commit later than this overlay. Open / close it in layout
+  // so the following highlight effect can find the tab (or the farm button).
+  useLayoutEffect(() => {
+    if (!isOpen || !step?.targetComponent) return;
+    const target = step.targetComponent;
+    const codex = useCodexUiStore.getState();
+    if (tutorialStepNeedsCodexClosed(target)) {
+      if (codex.isOpen) codex.closeCodex();
+      return;
+    }
+    if (tutorialStepNeedsCodexOpen(target) && !codex.isOpen) {
+      codex.openCodex('next');
+    }
+  }, [isOpen, step]);
+
   useEffect(() => {
     if (!isOpen || !step?.targetComponent) return;
     const targetEl = resolveTutorialTargetElement(step.targetComponent);
@@ -119,7 +137,7 @@ const TutorialOverlay: React.FC = () => {
     return () => {
       targetEl.classList.remove(className);
     };
-  }, [isOpen, step]);
+  }, [isOpen, step, codexIsOpen]);
 
   if (!isOpen || !step) {
     return null;

@@ -1,7 +1,7 @@
 {
   "id": "level1-hetty-barrage",
-  "introduction": "Hetty has been thinking about you all morning, and she is going to say it to your face. She does not think she is being unkind. She thinks she is being interesting.",
-  "introductionSummary": "Hetty talks to Rue the whole way round the trough — the cart, the straw, the six weeks — and never once about the water.",
+  "introduction": "Hetty has been thinking about you all morning and she means to say it to your face, because saying it behind your back would be gossip and Hetty is not a gossip. She does not think she is being unkind. She thinks she is being a friend.",
+  "introductionSummary": "Hetty works her way round the trough and round you — the bins, the fur, the six weeks — and never once reaches the water.",
   "playerSide": "opposition",
   "characters": {
     "hetty": "Hetty",
@@ -10,15 +10,17 @@
   "logicalFallacies": [
     {
       "id": "ad-hominem",
-      "explanation": "Attacking the animal instead of the argument. How Rue arrived, how he looks, and how long he has been here tell us nothing about anything that needs deciding."
+      "explanation": "Answering the animal instead of the argument. What Rue eats, how he looks and how long he has been here settle nothing that actually needs deciding."
     }
   ],
   "availableLogicalFallacies": ["ad-hominem"],
   "setsDialogFlags": ["hetty-ad-hominem-witnessed"],
   "mechanics": {
+    "showInsightPoints": false,
     "showModeratorOpinion": false,
     "showRoundRecap": false,
     "showIntroSummary": false,
+    "revealChoiceAssessment": true,
     "encounterKind": "gossip"
   },
   "rounds": [
@@ -37,26 +39,26 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Rue. I have been thinking about you all morning.",
+            "text": "Rue! There you are. I have been thinking about you all morning, and I am going to say it to your face, because I am not a gossip.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
-            "text": "You arrived in a mud cart, you know. Straw still in your ears. You don't take advice from an animal who turns up like that.",
+            "text": "You eat out of the bins, dear. I have seen you do it. One cannot take advice about clean water from an animal who takes his supper out of a bin.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
-                "explanation": "How Rue arrived is not a reason to dismiss what he says. Hetty has swapped the cart for an argument."
+                "explanation": "Rue's supper is a fact about Rue. It rules out his advice without going anywhere near whether the advice is right."
               }
             ]
           },
           {
             "id": "s-r1-3",
-            "text": "I said as much to anyone who would listen this morning. I thought you should hear it from me.",
+            "text": "And I say it with love. I said it to four animals before breakfast, so you can see how much I have been thinking of you.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Hetty treats the mud cart you arrived in as a reason not to listen to you."
+        "summary": "She opens by disqualifying his opinion on the strength of where he gets his supper, and offers it as a kindness."
       }
     },
     {
@@ -74,26 +76,26 @@
         "sentences": [
           {
             "id": "s-r2-1",
-            "text": "And you still look as if you slept in it. Straw in the fur, mud on the paws.",
+            "text": "And look at you. Straw in the fur. Mud all the way up the paws. You always look as though you have just climbed out of something.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-2",
-            "text": "An animal who cannot keep himself tidy is hardly the animal you'd ask about anything that matters.",
+            "text": "An animal who cannot keep himself tidy is hardly the animal you would ask about anything that matters, is he. Is he. No.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
-                "explanation": "Straw in the fur is not evidence. Hetty is judging the speaker's appearance in place of whatever is actually at issue."
+                "explanation": "Tidiness is a fact about Rue's fur. It is used here to close a question about the pond, which it cannot touch."
               }
             ]
           },
           {
             "id": "s-r2-3",
-            "text": "I don't mean it unkindly. I like you. You seem perfectly nice.",
+            "text": "There. You agree with me. I did think you would, you are a very reasonable sort.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Hetty reads straw in the fur as a reason not to ask you about anything that matters, and means no harm by it."
+        "summary": "She measures his judgement by his fur, asks herself whether that follows, answers no, and thanks him for agreeing."
       }
     },
     {
@@ -111,26 +113,180 @@
         "sentences": [
           {
             "id": "s-r3-1",
-            "text": "And only six weeks! Six weeks.",
+            "text": "And six weeks. Six weeks, Rue. I have had colds that lasted longer.",
             "logicalFallacies": []
           },
           {
             "id": "s-r3-2",
-            "text": "You cannot know a place in six weeks. The Flock has been here generations; that is whose opinion counts.",
+            "text": "You cannot know a place in six weeks. Tobias was foaled in that meadow, and that is whose opinion the water wants.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
-                "explanation": "How long Rue has lived here is not a fact about the thing under discussion. Tenure is being offered as a substitute for a reason."
+                "explanation": "How long Rue has been here is a fact about Rue. It hands the question to Tobias on the strength of where he was born, not on anything he has shown."
               }
             ]
           },
           {
             "id": "s-r3-3",
-            "text": "Anyway. I thought you should hear it from me rather than from the yard.",
+            "text": "Anyway. I wanted you to hear it from me rather than from the yard. That is the sort of friend I am.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Hetty treats six weeks on the farm as a reason the Flock's opinion is the one that counts."
+        "summary": "Six weeks is turned into a disqualification, and the question is handed to Tobias on the strength of where he was born."
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "crossfire",
+      "opponentPromptImpact": 0,
+      "opponentPrompt": {
+        "id": "stmt-r4-hetty",
+        "speakerId": "hetty",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r4-p1",
+            "text": "Rue. I have a question for you, and I am going to wait for the answer, because I have been doing all the talking and that is not fair of me.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-p2",
+            "text": "Do you think you are the animal to have an opinion about this water? Honestly.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-p3",
+            "text": "Well? I asked you. I am waiting. It is much harder than it looks.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "She puts a question to him about whether he counts, and then has to stand there while he answers it."
+      },
+      "options": [
+        {
+          "id": "r4-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "emotion": "talking",
+          "reason": "You answered a question about you by talking about her. Kind, and not what she asked, and she will hear whatever she likes in it.",
+          "summary": "You turn it back on her: she has been answering her own questions all morning.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-a-1",
+              "text": "I think you have been answering that one yourself all morning.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "emotion": "talking",
+          "reason": "You said yes to a question that was built to disqualify you. She will take it as agreement and move on.",
+          "summary": "You grant the frame: perhaps you are not the animal, after six weeks.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-b-1",
+              "text": "Perhaps not. Six weeks is not a long time.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r4-opt-c",
+          "quality": "effective",
+          "impact": 0,
+          "emotion": "talking",
+          "reason": "You answered the question she asked without accepting that it was about you. The water does not care who is speaking.",
+          "summary": "You answer about the water, not about yourself: the pond does not check how long anyone has been here.",
+          "sentences": [
+            {
+              "id": "s-r4-opt-c-1",
+              "text": "I think the water does not care how long I have been here.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r4-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r4-a",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r4-a-1",
+                "text": "There. You agree with me. I have been very clear, and you have noticed, which is all I was asking. Thank you, dear.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She thanks him for agreeing that she has been clear, which is not what he said."
+          }
+        },
+        {
+          "forOptionId": "r4-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r4-b",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r4-b-1",
+                "text": "Six weeks, you said it yourself. No time at all. There. You agree with me. I did think you would, you are a very reasonable sort.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She takes his caution as a confession and thanks him for coming round."
+          }
+        },
+        {
+          "forOptionId": "r4-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r4-c",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r4-c-1",
+                "text": "The water does not care. Yes. That is exactly what I have been saying — it wants closing, and we are agreed. Thank you, dear, I knew you would see it my way.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She hears a verdict on the pond in a sentence that was about how long he has lived here."
+          }
+        }
+      ]
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "gossip-what-this-is",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This is **[accent]not a debate[/accent]** — no sides, no moderator, no score.\n\nTwo animals are talking. Your only job is to **[accent]catch the bad reasoning[/accent]**.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "large",
+              "position": "topLeft"
+            }
+          }
+        ]
       }
     }
   ]

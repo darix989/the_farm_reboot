@@ -1,0 +1,304 @@
+{
+  "id": "level1-bram-teaches-dialog",
+  "introduction": "You asked the wolf at the fence for help, and Bram is already apologising for giving it. He will show you how a conversation works on this farm, one piece at a time, before anyone else gets hold of you.",
+  "playerSide": "opposition",
+  "characters": {
+    "bram": "Bram",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [],
+  "availableLogicalFallacies": [],
+  "setsDialogFlags": ["bram-taught-rounds"],
+  "mechanics": {
+    "analysisEnabled": false,
+    "showInsightPoints": false,
+    "showModeratorOpinion": true,
+    "showRoundRecap": false,
+    "showIntroSummary": false,
+    "revealChoiceAssessment": true,
+    "encounterKind": "lesson",
+    "showRoundType": false
+  },
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "opening_constructive",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r1-bram",
+        "speakerId": "bram",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "I am sorry. This is going to sound like a lecture, and I am the last animal who should be giving one.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "A conversation here goes in rounds. One animal says a thing. The other answers. That pair is a round. That is the whole of it, I promise.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-3",
+            "text": "Not a speech. Not a trial. Just — I go, then you go. I thought somebody ought to say so before they start throwing names at you.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "opening_constructive",
+      "preventOptionsShuffle": true,
+      "opponentPromptImpact": 0,
+      "opponentPrompt": {
+        "id": "stmt-r2-bram",
+        "speakerId": "bram",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r2-p1",
+            "text": "Your turn. Three ways of saying it. There is no wrong one here — I mean that, I am not testing you.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-p2",
+            "text": "Pick whichever feels like a thing you would actually say. I will answer it, and that will be a round.",
+            "logicalFallacies": []
+          }
+        ]
+      },
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "You changed the subject. Kind, and not an answer — so the round never quite happened.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-a-1",
+              "text": "The fence looks fine from here. You worry too much.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "effective",
+          "impact": 8,
+          "reason": "You said what a round is, in your own words. That is the whole of the lesson.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-b-1",
+              "text": "So I wait until you have finished, and then I say something back, and that pair is a round.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "effective",
+          "impact": 8,
+          "reason": "You named the two halves. Short, and it covers it.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-c-1",
+              "text": "You go, then I go.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r2-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-a",
+            "speakerId": "bram",
+            "type": "opening_constructive",
+            "sentences": [
+              {
+                "id": "s-resp-r2-a-1",
+                "text": "That is kind of you. It is also not an answer, which — I am not scolding, I am only noticing — means we have not quite had a round yet. Never mind. You will get it.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r2-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-b",
+            "speakerId": "bram",
+            "type": "opening_constructive",
+            "sentences": [
+              {
+                "id": "s-resp-r2-b-1",
+                "text": "Yes. That is exactly it. I am sorry I made it sound more complicated than that.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r2-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-c",
+            "speakerId": "bram",
+            "type": "opening_constructive",
+            "sentences": [
+              {
+                "id": "s-resp-r2-c-1",
+                "text": "Yes. You go, then I go. I wish I had put it that way. I do tend to use more words than the thing needs.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "closing_constructive",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r3-bram",
+        "speakerId": "bram",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r3-1",
+            "text": "That was a round. That is the whole of it.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r3-2",
+            "text": "Everything else they will throw at you is just more of those, stacked up. I am sorry if that was obvious. I thought somebody ought to say it out loud.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "closing_constructive",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r4-bram",
+        "speakerId": "bram",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r4-1",
+            "text": "I will still be here. Checking the fence. You do not have to come back.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-2",
+            "text": "I am sorry I kept you. Go on. I will pretend I am checking the fence.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "dialog-what-a-round-is",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "A conversation here goes in **[accent]rounds[/accent]**. One animal says a thing. The other answers. That pair is a round.\n\n**[muted]That is the whole of it.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "dialog-now-you-speak",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-2"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Now **[accent]you[/accent]** speak. Three ways of saying it. There is no wrong one here.\n\nPick A, B or C, then Continue.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topRight"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "dialog-the-face",
+      "trigger": {
+        "event": "interactive:confirm",
+        "where": {
+          "roundId": "round-2"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "What you just said leans the **[accent]moderator[/accent]**. The **[accent]emoji[/accent]** is how you see it — a smile, a frown, or still waiting.\n\n**[muted]This is not a test. Later, it will matter.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_recap_moderator_score"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "This **[accent]arrow[/accent]** opens **[accent]Lesson Notes[/accent]**. That panel holds the whole conversation back, round by round.\n\n**[muted]You can open it whenever you like. You do not have to open it now.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "debate_log_panel_toggle"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

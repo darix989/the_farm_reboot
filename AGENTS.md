@@ -57,9 +57,11 @@ src/
                         #   ScenarioEntry.requires is the overworld gate
     farmMap.ts          # Overworld zones + NPCs; `gateTalk` / `talkStages` on FarmNpc
     farmTalk.ts         # Sequential talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `dot2`)
+    farmTutorials.ts    # Overworld overlay tutorials + FarmTutorialId
     characters.ts       # Cast roster: name, tint, and (if any) animated `animal` sprite
     debateCast.ts        # Who's on the character stage for a scenario + their stage order
     dialogFlags.ts      # Named conversations the Codex and gates can refer to
+    levelGoals.ts       # Field Notes Next tab: main spine + optional goals
     fallacyCatalog.ts   # Parsed logicalFallacies.json + id lookup
     debates/            # One JSON file per encounter
     logicalFallacies.json
@@ -90,10 +92,11 @@ src/
       useGame.ts
       useTrialRoundWorkflow.ts # Reducer hook driving the debate state machine
       useScenarioTutorials.ts  # Opens scenario tutorials off the debate bus
+      useFarmTutorials.ts      # Opens farm overlay tutorials off GameCondition triggers
       useScrollFade.ts
       useSpriteFrame.ts        # Steps a spritesheet frame index for clips played in the DOM
       useGameConditions.ts     # Subscribed ConditionContext for gates and option unlocks
-    codex/                    # Field Notes overlay (known / spotted / dialogs)
+    codex/                    # Field Notes overlay (next / known / spotted / dialogs)
     trial/
       TrialLayout.tsx           # 2×2 grid: full-width game hole across the top, with the
                                 #   Debate Log (or its collapsed recap chip) over its right
@@ -117,7 +120,7 @@ src/
     farmStore.ts        # Overworld ↔ React handoff
     trialStageStore.ts  # Debate ↔ Phaser handoff: active speaker for the Trial cast
     debateLogStore.ts   # Is the Trial's Debate Log expanded, or collapsed to its recap chip
-    progressStore.ts    # Completed encounters + whether Level 1 has started (persisted)
+    progressStore.ts    # Completed encounters + farm tutorials + whether Level 1 has started (persisted)
     codexStore.ts       # Known fallacies, spotted fallacies, dialog flags (persisted)
     codexUiStore.ts     # Field Notes overlay open/section (not persisted)
   utils/
@@ -206,7 +209,7 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
   because the tutorial layer has to expand it *synchronously* before an overlay renders; see
   that file and `src/react/trial/utils/debateLogTutorialNeeds.ts`.
 - A **Round Analysis Modal** (`src/react/trial/roundAnalysisModal/RoundAnalysisModal.tsx`) lets the player inspect any statement in the log: tag logical fallacies sentence by sentence, or review why their own line was effective or flawed. Three attempts per target by default; a correct solve pays 1 Insight, once per target. A correct tag is also written to `codexStore` (`recordSpottedFallacy`), which marks the fallacy known.
-- **Field Notes (the Codex)** is a global React overlay (`src/react/codex/`), not a Phaser scene — routing to a Codex scene would tear down the overworld. It has three sections: fallacies you know, fallacies you have spotted, and important conversations (`dialogFlags`). Opened from the main menu and from `FarmUI` (hidden during a talk). `pointer-events: auto` on its root.
+- **Field Notes (the Codex)** is a global React overlay (`src/react/codex/`), not a Phaser scene — routing to a Codex scene would tear down the overworld. It has four sections: who to talk to next (`levelGoals`), fallacies you know, fallacies you have spotted, and important conversations (`dialogFlags`). Opened from the main menu and from `FarmUI` (hidden during a talk). `pointer-events: auto` on its root.
 - **Farm talks reuse the debate chrome.** `TrialLayout`, `WizardPanel`, `TrialActionRow` and `TrialChoiceButton` are shared between the debate and the overworld talk. A farm talk runs *on the Farm scene* (no `scene.start`, so `gameStore.currentScene` stays `'Farm'` and `ReactApp` needs no new case); the camera is framed into `TRIAL_STAGE_HOLE` and the log slot is omitted.
 - Authoring reference — schema, rounds, options, unlock conditions, `mechanics` flags: [`docs/encounters.md`](docs/encounters.md).
 - **⚠️ Pointer-events gotcha:** `.react-ui-overlay` is `pointer-events: none`, which inherits to every descendant. Any new interactive element **must** set `pointer-events: auto` on its root, or clicks fall through to the Phaser canvas. This is the most common bug in the codebase — see [`docs/architecture.md`](docs/architecture.md) for why the layout works this way.

@@ -106,7 +106,7 @@ export class Trial extends Scene {
     if (!debate) return;
 
     // Read the scenario KEY (`activeDebateId`), never `debate.id` — the two are documented
-    // to differ (e.g. 'level1-boss-pond-motion' vs '015_duchess_vs_rue') and `DEBATES` is
+    // to differ (e.g. 'level1-boss-pond-motion' vs '015_tobias_vs_rue') and `DEBATES` is
     // keyed by the former.
     const ids = stageOrder(debateParticipantIds(debate));
     const n = ids.length;
@@ -127,7 +127,7 @@ export class Trial extends Scene {
         .setFlipX(x < centreX === animalArtFacesLeft(visual.animal));
 
       const animator = attachAnimalAnimator(sprite, setup, {
-        // `trial` selects idleTrial/alertTrial — Rue sits up, Duchess stops grazing. Which
+        // `trial` selects idleTrial/alertTrial — Rue sits up, Tobias stops grazing. Which
         // characters want that is cast data, not a property of the stage.
         staging: visual.usesTrialIdle ? 'trial' : 'farm',
         desyncDelayMs: [0, 200], // near-zero: a reaction must land on the beat of dialogue

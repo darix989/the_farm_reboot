@@ -39,7 +39,13 @@ export interface TrialActionRowProps {
    * `null`/omitted = not rendered at all (`mechanics.analysisEnabled: false`).
    * Pass a spec with `disabled: true` to show it greyed.
    */
-  analyze?: (TrialActionSpec & { guessState?: 'correct' | 'partial' | 'wrong' | null }) | null;
+  analyze?:
+    | (TrialActionSpec & {
+        guessState?: 'correct' | 'partial' | 'wrong' | null;
+        /** One-shot glow when a shut option click is pointing at Analyze. */
+        attentionPulse?: boolean;
+      })
+    | null;
   back: TrialActionSpec;
   submit: TrialActionSpec & { icon: 'reveal' | 'continue' | 'confirm' | 'leave' };
   /** `data-tutorial-interactive-action` on the submit button. */
@@ -123,6 +129,7 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
             [styles.correct]: analyze.guessState === 'correct',
             [styles.partial]: analyze.guessState === 'partial',
             [styles.wrong]: analyze.guessState === 'wrong',
+            [styles.trialFooterAnalyzePulse]: analyze.attentionPulse,
           })}
           disabled={analyze.disabled}
           aria-label={analyze.label}

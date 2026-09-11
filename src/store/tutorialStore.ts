@@ -7,7 +7,7 @@ import type {
 } from '../types/debateEntities';
 import type { TutorialModalSpec } from '../types/tutorialModalLayout';
 import { debateEventBus } from '../react/trial/utils/debateEventBus';
-import { tutorialTargetEquals } from '../react/tutorial/tutorialTarget';
+import { tutorialTargetEquals, isCodexTutorialTarget } from '../react/tutorial/tutorialTarget';
 
 /** One tutorial step after open. */
 export interface TutorialStepResolved {
@@ -171,8 +171,12 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
     if (!step.targetComponent) return false;
     // A missing `interactionMode` falls back to 'modal_only' (see `openTutorial`
     // and the field's JSDoc on `DebateTutorialStep`), so anything that is not
-    // explicitly `'target_only'` blocks the in-app action.
+    // explicitly `'target_only'` or `'highlight'` blocks the in-app action.
     const mode = step.interactionMode ?? 'modal_only';
+    if (mode === 'highlight') {
+      if (tutorialTargetEquals(step.targetComponent, target)) return true;
+      return isCodexTutorialTarget(step.targetComponent) && isCodexTutorialTarget(target);
+    }
     if (mode !== 'target_only') return false;
     return tutorialTargetEquals(step.targetComponent, target);
   },

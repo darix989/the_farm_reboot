@@ -168,7 +168,7 @@ coexist: the menu's direct-launch buttons return to the menu, the farm returns t
 The tutorial's `onFinish: 'exit'` reads the same field instead of hard-coding `'MainMenu'`.
 
 > Mark completion with the store's **`activeDebateId`**, not `debate.id`. They are different
-> values — `015_duchess_vs_rue` vs `level1-boss-pond-motion` — and only the former is a
+> values — `015_tobias_vs_rue` vs `level1-boss-pond-motion` — and only the former is a
 > `DebateScenarioKey`.
 
 **Why debates `scene.start` and not `sleep`/`pause`:** the Phaser canvas is full-stage at
@@ -192,9 +192,14 @@ camera), not the old Phaser-template blue.
 
 `progressStore` is the repo's first use of zustand's `persist` middleware. It exists because
 an animal can own more than one encounter, so it has to know which one to offer next — Cass
-owns three, Hetty and Bram two each, Tobias the boss. Duchess and Dot have no encounters;
-their farm talk advances on `talkStages` (Duchess until the boss is done; Dot through the
-intro, then Hetty, then the debate). It is load-bearing, not a nicety.
+owns three, Hetty two, Bram five, Duchess the boss. Tobias and Dot have no encounters;
+their farm talk advances on `talkStages` (Tobias until the boss is done; Dot through the
+welcome, then Cass, then Hetty, then the debate). Dot's first stage sets `completesFlag:
+'dot-welcomed'` when the last beat's reveal settles, which is what unlocks Bram. It is
+load-bearing, not a nicety — which is why `FarmTalkActionsPanel` mounts Talk / Lessons /
+Leave only once that last beat has settled. Leave was previously offered on its own while
+the line was still revealing, so ending the conversation one sentence early threw the whole
+talk away and left the next animal locked with nothing to explain why.
 
 `farmDialogueState.ts` derives the conversation from progress: an animal offers the first
 scenario the player has not finished, and the slot key is the animal's id plus how far
@@ -207,6 +212,15 @@ The first time the farm overlay mounts, `FarmUI` opens Dot's conversation and wr
 `level1Started` to `progressStore`. Returning from a debate, from the menu, or a reload
 does not force it again.
 
+### Farm overlay tutorials
+
+After Bram's first lesson, `useFarmTutorials` opens the same `TutorialOverlay` used in
+debates, triggered by `GameCondition`s in [`farmTutorials.ts`](../src/data/farmTutorials.ts)
+rather than the debate bus. Completing an entry writes `tutorial_completed` into
+`progressStore` so it does not replay. Field Notes (`codex_open`, tabs, content) are
+spotlight targets; `interactionMode: 'highlight'` keeps those controls usable. Rue is
+frozen for the same reason a talk freezes him.
+
 ### Encounter gates
 
 `ScenarioEntry.requires` (on the entry in `levels.ts`) is the overworld gate. The chain is:
@@ -217,14 +231,24 @@ requires → farmDialogueState.scenarioRequires → useUnmetConditionsHint → d
 
 A gated encounter is still *offered*, by default. The animal talks; only Talk is disabled, and
 the conversation is where the reason is given. Set `gateTalk: true` on the NPC to close the
-conversation itself until the next encounter's `requires` are met (Hetty: she will not speak
-until you can name Ad Hominem). `Farm.ts` `tryInteract` and the overworld prompt both consult
-`farmNpcTalkLocked`. The main menu is ungated.
+conversation itself until the next encounter's `requires` are met (Hetty until Ad Hominem is
+known; Bram until Dot has welcomed you; Cass until Bram has taught crossfire). `Farm.ts`
+`tryInteract` and the overworld prompt both consult `farmNpcTalkLocked`. The main menu is
+ungated.
+
+The Level 1 unlock chain is Dot → Bram → Bram → Cass → Hetty → Duchess. Lesson 2 (`031`)
+unlocks round-type labels and is required for Cass — she will not speak until
+`bram-taught-crossfire` is set.
+
+Bram's farm talk offers a **Lessons** menu once he has taught at least one lesson. Last beat,
+once it has been read in full: Talk / Lessons / Leave (collapsing to Lessons / Leave when he
+is finished). Picking a lesson
+replays it; Back returns to the talk menu. Cap is three lettered buttons (Z / X / C).
 
 Leaving a finished encounter goes through `applyEncounterRewards`, which marks it complete
-and grants `teachesFallacies` / `setsDialogFlags` in one write. Mark completion with the
+and grants `teachesFallacies` / `setsDialogFlags` / `unlocksFeatures` in one write. Mark completion with the
 store's **`activeDebateId`**, not `debate.id` — they are different values
-(`015_duchess_vs_rue` vs `level1-boss-pond-motion`) and only the former is a
+(`015_tobias_vs_rue` vs `level1-boss-pond-motion`) and only the former is a
 `DebateScenarioKey`.
 
 The `merge` handler drops any saved key not in `DEBATES`, so a stale `localStorage` value

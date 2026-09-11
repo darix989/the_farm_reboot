@@ -1,10 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import SpokenRichText from './SpokenRichText';
+import { plainSpokenText } from '../utils/spokenMarkup';
 
 /** ~36 characters a second: fast enough not to be a wait, slow enough to read along with. */
 export const TYPEWRITER_CHAR_MS = 28;
 
 interface TypewriterTextProps {
-  /** The full chunk to fill in. Changing it restarts from the first character. */
+  /**
+   * The full chunk to fill in, inline emphasis and all. Changing it restarts from the first
+   * character. Tags cost the reveal nothing: the cadence counts the plain text
+   * (`plainSpokenText`), which is what the player actually watches land.
+   */
   text: string;
   /** Bump to finish the current chunk immediately (the player pressed Continue mid-type). */
   skipToken: number;
@@ -32,6 +38,7 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({
   charMs = TYPEWRITER_CHAR_MS,
 }) => {
   const [chars, setChars] = useState(0);
+  const plain = useMemo(() => plainSpokenText(text), [text]);
 
   // Latest callback without re-arming the timer when the parent re-creates it.
   const onCompleteRef = useRef(onComplete);
@@ -52,20 +59,20 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({
     setChars(0);
   } else if (lastSkipRef.current !== skipToken) {
     lastSkipRef.current = skipToken;
-    setChars(text.length);
+    setChars(plain.length);
   }
 
-  const typing = chars < text.length;
+  const typing = chars < plain.length;
 
   useEffect(() => {
     if (!typing) return;
     const id = window.setInterval(() => {
       // Functional updater so `chars` stays out of the deps — otherwise the interval is torn
       // down and rebuilt on every character, which drifts the cadence.
-      setChars((current) => Math.min(current + 1, text.length));
+      setChars((current) => Math.min(current + 1, plain.length));
     }, charMs);
     return () => window.clearInterval(id);
-  }, [typing, text, charMs]);
+  }, [typing, plain, charMs]);
 
   useEffect(() => {
     if (typing) return;
@@ -76,7 +83,11 @@ const TypewriterText: React.FC<TypewriterTextProps> = ({
 
   // Announcing a string that grows a character at a time makes screen readers re-read the
   // paragraph continuously; `WizardPanel` owns the live region and announces whole chunks.
-  return <span aria-hidden="true">{text.slice(0, chars)}</span>;
+  return (
+    <span aria-hidden="true">
+      <SpokenRichText text={text} maxChars={chars} />
+    </span>
+  );
 };
 
 export default TypewriterText;

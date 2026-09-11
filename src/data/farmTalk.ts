@@ -13,10 +13,12 @@ export interface FarmTalkBeat {
   speakerId: string;
   textLabel: Labels;
   /**
-   * Register for the speaker's dialogue portrait. Optional, and unauthored throughout: every
-   * beat below predates the face register, and `talking` — what `FarmDialogue` falls back to —
-   * is the honest reading of an ordinary line. Set it where a beat is pointedly something
-   * else, the way `Statement.emotion` overrides the debate's derivation.
+   * Register for the speaker's dialogue portrait. Optional: `talking` — what `FarmDialogue`
+   * falls back to — is the honest reading of an ordinary line, so this is set only where a
+   * beat is pointedly something else, the way `Statement.emotion` overrides the debate's
+   * derivation. Hetty and Tobias get `sneaky` on the beat where the friendliness is doing
+   * work; Cass gets `doubtful` sizing Rue up; Bram gets `thinking`, which is his whole
+   * character.
    */
   emotion?: AnimalEmotion;
 }
@@ -27,7 +29,7 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
   hetty1: [
     { speakerId: 'hetty', textLabel: 'farmDialogHetty1a' },
     { speakerId: RUE, textLabel: 'farmDialogHetty1b' },
-    { speakerId: 'hetty', textLabel: 'farmDialogHetty1c' },
+    { speakerId: 'hetty', textLabel: 'farmDialogHetty1c', emotion: 'sneaky' },
   ],
   hetty2: [
     { speakerId: 'hetty', textLabel: 'farmDialogHetty2a' },
@@ -41,31 +43,43 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
   cass1: [
     { speakerId: 'cass', textLabel: 'farmDialogCass1a' },
     { speakerId: RUE, textLabel: 'farmDialogCass1b' },
-    { speakerId: 'cass', textLabel: 'farmDialogCass1c' },
+    { speakerId: 'cass', textLabel: 'farmDialogCass1c', emotion: 'doubtful' },
   ],
   cass2: [
     { speakerId: 'cass', textLabel: 'farmDialogCass2a' },
     { speakerId: RUE, textLabel: 'farmDialogCass2b' },
     { speakerId: 'cass', textLabel: 'farmDialogCass2c' },
   ],
-  cass3: [
-    { speakerId: 'cass', textLabel: 'farmDialogCass3a' },
-    { speakerId: RUE, textLabel: 'farmDialogCass3b' },
-    { speakerId: 'cass', textLabel: 'farmDialogCass3c' },
-  ],
   cassDone: [
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneA' },
     { speakerId: 'cass', textLabel: 'farmDialogCassDoneB' },
   ],
+  // Rue asks first — Dot sent him — and only then does Bram say what he does all day and
+  // offer the lesson. He is the one animal on this farm who volunteers nothing unprompted.
   bram1: [
-    { speakerId: 'bram', textLabel: 'farmDialogBram1a' },
-    { speakerId: RUE, textLabel: 'farmDialogBram1b' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram1c' },
+    { speakerId: RUE, textLabel: 'farmDialogBram1a' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram1b', emotion: 'doubtful' },
+    { speakerId: RUE, textLabel: 'farmDialogBram1c' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram1d' },
+    { speakerId: RUE, textLabel: 'farmDialogBram1e' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram1f', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogBram1g' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram1h' },
   ],
   bram2: [
     { speakerId: 'bram', textLabel: 'farmDialogBram2a' },
     { speakerId: RUE, textLabel: 'farmDialogBram2b' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram2c' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram2c', emotion: 'thinking' },
+  ],
+  bram3: [
+    { speakerId: 'bram', textLabel: 'farmDialogBram3a' },
+    { speakerId: RUE, textLabel: 'farmDialogBram3b' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram3c', emotion: 'thinking' },
+  ],
+  bram4: [
+    { speakerId: 'bram', textLabel: 'farmDialogBram4a' },
+    { speakerId: RUE, textLabel: 'farmDialogBram4b' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram4c', emotion: 'doubtful' },
   ],
   bramDone: [
     { speakerId: 'bram', textLabel: 'farmDialogBramDoneA' },
@@ -74,24 +88,43 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
   duchess1: [
     { speakerId: 'duchess', textLabel: 'farmDialogDuchess1a' },
     { speakerId: RUE, textLabel: 'farmDialogDuchess1b' },
-    { speakerId: 'duchess', textLabel: 'farmDialogDuchess1c' },
+    { speakerId: 'duchess', textLabel: 'farmDialogDuchess1c', emotion: 'doubtful' },
+    { speakerId: RUE, textLabel: 'farmDialogDuchess1d' },
+    { speakerId: 'duchess', textLabel: 'farmDialogDuchess1e' },
   ],
-  duchessDone: [{ speakerId: 'duchess', textLabel: 'farmDialogDuchessDone' }],
+  duchessDone: [
+    { speakerId: 'duchess', textLabel: 'farmDialogDuchessDoneA' },
+    { speakerId: 'duchess', textLabel: 'farmDialogDuchessDoneB' },
+  ],
   tobias1: [
     { speakerId: 'tobias', textLabel: 'farmDialogTobias1a' },
     { speakerId: RUE, textLabel: 'farmDialogTobias1b' },
-    { speakerId: 'tobias', textLabel: 'farmDialogTobias1c' },
+    { speakerId: 'tobias', textLabel: 'farmDialogTobias1c', emotion: 'sneaky' },
   ],
   tobiasDone: [
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneA' },
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneB' },
   ],
+  // The level opener, and the only conversation that starts on its own. It takes its time:
+  // Dot asks after Rue before she gets to the motion, and Rue volunteers for the floor
+  // himself — the goals she hands over afterwards are the rules that come with having done so.
   dot1: [
     { speakerId: 'dot', textLabel: 'farmDialogDot1a' },
     { speakerId: RUE, textLabel: 'farmDialogDot1b' },
     { speakerId: 'dot', textLabel: 'farmDialogDot1c' },
     { speakerId: RUE, textLabel: 'farmDialogDot1d' },
-    { speakerId: 'dot', textLabel: 'farmDialogDot1e' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1e', emotion: 'doubtful' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1f' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1g' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1h' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1i' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1j' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1k', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1l' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1m' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1n' },
+    { speakerId: RUE, textLabel: 'farmDialogDot1o' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot1p' },
   ],
   dot2: [
     { speakerId: 'dot', textLabel: 'farmDialogDot2a' },
@@ -102,6 +135,26 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'dot', textLabel: 'farmDialogDot3a' },
     { speakerId: RUE, textLabel: 'farmDialogDot3b' },
     { speakerId: 'dot', textLabel: 'farmDialogDot3c' },
+  ],
+  dot4: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot4a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot4b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot4c' },
+  ],
+  dot5: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot5a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot5b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot5c' },
+  ],
+  dot6: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot6a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot6b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot6c', emotion: 'thinking' },
+  ],
+  dot7: [
+    { speakerId: 'dot', textLabel: 'farmDialogDot7a' },
+    { speakerId: RUE, textLabel: 'farmDialogDot7b' },
+    { speakerId: 'dot', textLabel: 'farmDialogDot7c' },
   ],
   dotDone: [
     { speakerId: 'dot', textLabel: 'farmDialogDotDoneA' },

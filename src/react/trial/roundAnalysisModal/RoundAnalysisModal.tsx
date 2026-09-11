@@ -20,6 +20,7 @@ import { getLogicalFallacyIconSrc } from '../utils/logicalFallacyIcons';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TrialTextButton from '../components/TrialTextButton';
 import { statementTypeLabel } from '../utils/trialHelpers';
+import { plainSpokenText } from '../utils/spokenMarkup';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { resolvedOptionSentences } from '../utils/optionUnlock';
 import type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
@@ -88,6 +89,10 @@ interface RoundAnalysisModalProps {
   onSpendInsightPoint: () => void;
   /** Attempts allowed for this scenario; used before the first attempt creates a session. */
   maxAnalysisAttempts?: number;
+  /** Insight counter, Help button, and the Insights pill. Default `true`. */
+  showInsightPoints?: boolean;
+  /** Round-type subtitle under the modal title. Default `true`. */
+  showRoundType?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -381,6 +386,7 @@ function NpcRoundAnalysis({
   insightRevealed,
   onHelpRequest,
   maxAnalysisAttempts,
+  showInsightPoints = true,
 }: {
   statement: Statement;
   pickerFallacies: LogicalFallacy[];
@@ -397,6 +403,7 @@ function NpcRoundAnalysis({
   onHelpRequest: () => void;
   /** Scenario attempt budget; used until the first attempt creates a session. */
   maxAnalysisAttempts?: number;
+  showInsightPoints?: boolean;
 }) {
   const [selectedSentenceId, setSelectedSentenceId] = useState<string | null>(null);
   const [bySentence, setBySentence] = useState<Record<string, string[]>>({});
@@ -627,11 +634,13 @@ function NpcRoundAnalysis({
                           },
                         })}
                       </p>
-                      <p className={styles.trialSentenceMetaPill}>
-                        {getLabel('insightPointsRecapCompact', {
-                          replacements: { count: insightPoints },
-                        })}
-                      </p>
+                      {showInsightPoints && (
+                        <p className={styles.trialSentenceMetaPill}>
+                          {getLabel('insightPointsRecapCompact', {
+                            replacements: { count: insightPoints },
+                          })}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ) : (
@@ -661,11 +670,13 @@ function NpcRoundAnalysis({
                           },
                         })}
                       </p>
-                      <p className={styles.trialSentenceMetaPill}>
-                        {getLabel('insightPointsRecapCompact', {
-                          replacements: { count: insightPoints },
-                        })}
-                      </p>
+                      {showInsightPoints && (
+                        <p className={styles.trialSentenceMetaPill}>
+                          {getLabel('insightPointsRecapCompact', {
+                            replacements: { count: insightPoints },
+                          })}
+                        </p>
+                      )}
                     </div>
                   </div>
                 )}
@@ -696,7 +707,7 @@ function NpcRoundAnalysis({
                       }}
                       data-tutorial-analysis-sentence-id={s.id}
                     >
-                      <p className={styles.trialSentenceText}>{s.text}</p>
+                      <p className={styles.trialSentenceText}>{plainSpokenText(s.text)}</p>
                       {canGuess && playerPickIds.length > 0 && (
                         <div className={styles.trialPlayerPickRow}>
                           {playerPickIds.map((fid, pillIdx) => {
@@ -771,12 +782,10 @@ function NpcRoundAnalysis({
                           })}
                         </div>
                       )}
-                      {insightRevealed && s.logicalFallacies.length > 0 && (
+                      {showInsightPoints && insightRevealed && s.logicalFallacies.length > 0 && (
                         <span
                           className={styles.trialSentenceHelpMark}
-                          aria-label={getLabel('helpConfirmTitle', {
-                            replacements: { cost: HELP_INSIGHT_COST },
-                          })}
+                          aria-label={getLabel('helpRevealedSentenceAria')}
                         >
                           <img
                             src={genericFallacyIcon}
@@ -851,21 +860,23 @@ function NpcRoundAnalysis({
           <div className={styles.trialRightFooter}>
             {canGuess && (
               <div className={styles.trialGuessActionsRow}>
-                <TrialTextButton
-                  variant="dashed"
-                  widthMode="flexGrow"
-                  onClick={handleHelp}
-                  disabled={insightPoints < HELP_INSIGHT_COST || insightRevealed}
-                  data-tutorial-analysis-action="help"
-                  aria-label={getLabel('helpButtonAria', {
-                    replacements: { count: insightPoints, cost: HELP_INSIGHT_COST.toString() },
-                  })}
-                >
-                  <img src={inspectIcon} alt="" className={styles.trialActionButtonIcon} />
-                  {getLabel('helpButton', {
-                    replacements: { count: insightPoints, cost: HELP_INSIGHT_COST.toString() },
-                  })}
-                </TrialTextButton>
+                {showInsightPoints && (
+                  <TrialTextButton
+                    variant="dashed"
+                    widthMode="flexGrow"
+                    onClick={handleHelp}
+                    disabled={insightPoints < HELP_INSIGHT_COST || insightRevealed}
+                    data-tutorial-analysis-action="help"
+                    aria-label={getLabel('helpButtonAria', {
+                      replacements: { count: insightPoints, cost: HELP_INSIGHT_COST.toString() },
+                    })}
+                  >
+                    <img src={inspectIcon} alt="" className={styles.trialActionButtonIcon} />
+                    {getLabel('helpButton', {
+                      replacements: { count: insightPoints, cost: HELP_INSIGHT_COST.toString() },
+                    })}
+                  </TrialTextButton>
+                )}
                 <TrialTextButton
                   variant="dashed"
                   widthMode="flexGrow"
@@ -1057,6 +1068,8 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
   insightRevealed,
   onSpendInsightPoint,
   maxAnalysisAttempts,
+  showInsightPoints = true,
+  showRoundType = true,
 }) => {
   const [showNoFallaciesConfirm, setShowNoFallaciesConfirm] = useState(false);
   const [showHelpConfirm, setShowHelpConfirm] = useState(false);
@@ -1209,7 +1222,9 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                   },
                 })}
               </p>
-              <p className={styles.trialModalSubtitle}>{statementTypeLabel(statType)}</p>
+              {showRoundType && (
+                <p className={styles.trialModalSubtitle}>{statementTypeLabel(statType)}</p>
+              )}
             </div>
           </div>
           <button
@@ -1250,6 +1265,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
                   insightRevealed={insightRevealed}
                   onHelpRequest={() => setShowHelpConfirm(true)}
                   maxAnalysisAttempts={maxAnalysisAttempts}
+                  showInsightPoints={showInsightPoints}
                 />
                 {playerRevealAssessment ? (
                   <PlayerAssessmentSection option={target.chosenOption} />
@@ -1271,6 +1287,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
               insightRevealed={insightRevealed}
               onHelpRequest={() => setShowHelpConfirm(true)}
               maxAnalysisAttempts={maxAnalysisAttempts}
+              showInsightPoints={showInsightPoints}
             />
           )}
         </ScrollFadeContainer>
@@ -1282,7 +1299,7 @@ const RoundAnalysisModal: React.FC<RoundAnalysisModalProps> = ({
           />
         )}
 
-        {showHelpConfirm && (
+        {showHelpConfirm && showInsightPoints && (
           <HelpConfirmDialog
             onConfirm={handleHelpConfirm}
             onCancel={() => setShowHelpConfirm(false)}

@@ -708,6 +708,576 @@
       "generatedAt": "2026-09-08T03:17:25.950Z"
     }
   },
+  "dog": {
+    "angry": {
+      "file": "dog-angry.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0.0172,
+        "y": 0,
+        "width": 0.9655,
+        "height": 1
+      },
+      "sourceClip": "dog-angry.png",
+      "sourceEmotion": "angry",
+      "headCrop": {
+        "x": -0.03,
+        "y": -0.05,
+        "w": 0.52,
+        "h": 0.7
+      },
+      "headRect": {
+        "left": 117,
+        "top": 142,
+        "width": 140,
+        "height": 145
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": -2,
+            "dy": 3
+          },
+          {
+            "dx": -3,
+            "dy": 6
+          },
+          {
+            "dx": -6,
+            "dy": 16
+          },
+          {
+            "dx": -7,
+            "dy": 19
+          },
+          {
+            "dx": -9,
+            "dy": 25
+          },
+          {
+            "dx": -10,
+            "dy": 32
+          },
+          {
+            "dx": -10,
+            "dy": 32
+          },
+          {
+            "dx": -11,
+            "dy": 36
+          },
+          {
+            "dx": -13,
+            "dy": 33
+          },
+          {
+            "dx": -13,
+            "dy": 33
+          },
+          {
+            "dx": -13,
+            "dy": 33
+          },
+          {
+            "dx": -13,
+            "dy": 32
+          },
+          {
+            "dx": -13,
+            "dy": 31
+          },
+          {
+            "dx": -11,
+            "dy": 25
+          },
+          {
+            "dx": -9,
+            "dy": 22
+          },
+          {
+            "dx": -9,
+            "dy": 17
+          },
+          {
+            "dx": -5,
+            "dy": 11
+          },
+          {
+            "dx": -3,
+            "dy": 6
+          },
+          {
+            "dx": -2,
+            "dy": 5
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 36,
+        "maxJump": 10,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 1.34,
+        "heightSwing": 5.2,
+        "driftX": 3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-09T01:56:57.109Z"
+    },
+    "doubtful": {
+      "file": "dog-doubtful.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0.0172,
+        "y": 0,
+        "width": 0.9655,
+        "height": 1
+      },
+      "sourceClip": "dog-doubtful.png",
+      "sourceEmotion": "doubtful",
+      "headCrop": {
+        "x": -0.03,
+        "y": -0.05,
+        "w": 0.52,
+        "h": 0.7
+      },
+      "headRect": {
+        "left": 117,
+        "top": 142,
+        "width": 140,
+        "height": 145
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -7,
+            "dy": 9
+          },
+          {
+            "dx": -12,
+            "dy": 8
+          },
+          {
+            "dx": -1,
+            "dy": 8
+          },
+          {
+            "dx": -5,
+            "dy": 10
+          },
+          {
+            "dx": -11,
+            "dy": 15
+          },
+          {
+            "dx": -12,
+            "dy": 17
+          },
+          {
+            "dx": -12,
+            "dy": 17
+          },
+          {
+            "dx": -13,
+            "dy": 16
+          },
+          {
+            "dx": -14,
+            "dy": 16
+          },
+          {
+            "dx": -13,
+            "dy": 18
+          },
+          {
+            "dx": -13,
+            "dy": 18
+          },
+          {
+            "dx": -13,
+            "dy": 18
+          },
+          {
+            "dx": -13,
+            "dy": 18
+          },
+          {
+            "dx": -13,
+            "dy": 18
+          },
+          {
+            "dx": -2,
+            "dy": 7
+          },
+          {
+            "dx": -3,
+            "dy": 5
+          },
+          {
+            "dx": -2,
+            "dy": 3
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 18,
+        "maxJump": 11,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.51,
+        "heightSwing": 9.3,
+        "driftX": 6.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-09T01:56:59.330Z"
+    },
+    "talking": {
+      "file": "dog-talking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0.0172,
+        "y": 0,
+        "width": 0.9655,
+        "height": 1
+      },
+      "sourceClip": "dog-talking.png",
+      "sourceEmotion": "talking",
+      "headCrop": {
+        "x": -0.03,
+        "y": -0.05,
+        "w": 0.52,
+        "h": 0.7
+      },
+      "headRect": {
+        "left": 117,
+        "top": 142,
+        "width": 140,
+        "height": 145
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": -2
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 2
+          },
+          {
+            "dx": -2,
+            "dy": 2
+          },
+          {
+            "dx": -3,
+            "dy": 6
+          },
+          {
+            "dx": -4,
+            "dy": 8
+          },
+          {
+            "dx": -5,
+            "dy": 10
+          },
+          {
+            "dx": -5,
+            "dy": 11
+          },
+          {
+            "dx": -5,
+            "dy": 11
+          },
+          {
+            "dx": -5,
+            "dy": 13
+          },
+          {
+            "dx": -8,
+            "dy": 10
+          },
+          {
+            "dx": -7,
+            "dy": 12
+          },
+          {
+            "dx": -8,
+            "dy": 11
+          },
+          {
+            "dx": -8,
+            "dy": 9
+          },
+          {
+            "dx": -7,
+            "dy": 9
+          },
+          {
+            "dx": -3,
+            "dy": 8
+          },
+          {
+            "dx": -2,
+            "dy": 7
+          },
+          {
+            "dx": -1,
+            "dy": 3
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 13,
+        "maxJump": 4,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.47,
+        "heightSwing": 5.7,
+        "driftX": 3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-09T01:57:03.852Z"
+    },
+    "thinking": {
+      "file": "dog-thinking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0.0172,
+        "y": 0,
+        "width": 0.9655,
+        "height": 1
+      },
+      "sourceClip": "dog-thinking.png",
+      "sourceEmotion": "thinking",
+      "headCrop": {
+        "x": -0.03,
+        "y": -0.05,
+        "w": 0.52,
+        "h": 0.7
+      },
+      "headRect": {
+        "left": 117,
+        "top": 142,
+        "width": 140,
+        "height": 145
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 3
+          },
+          {
+            "dx": -1,
+            "dy": 8
+          },
+          {
+            "dx": -3,
+            "dy": 15
+          },
+          {
+            "dx": -8,
+            "dy": 19
+          },
+          {
+            "dx": -8,
+            "dy": 25
+          },
+          {
+            "dx": 3,
+            "dy": 16
+          },
+          {
+            "dx": 1,
+            "dy": 17
+          },
+          {
+            "dx": 2,
+            "dy": 19
+          },
+          {
+            "dx": 2,
+            "dy": 19
+          },
+          {
+            "dx": 1,
+            "dy": 19
+          },
+          {
+            "dx": 1,
+            "dy": 17
+          },
+          {
+            "dx": 1,
+            "dy": 16
+          },
+          {
+            "dx": -1,
+            "dy": 19
+          },
+          {
+            "dx": -2,
+            "dy": 17
+          },
+          {
+            "dx": -2,
+            "dy": 13
+          },
+          {
+            "dx": -2,
+            "dy": 11
+          },
+          {
+            "dx": -1,
+            "dy": 8
+          },
+          {
+            "dx": -1,
+            "dy": 5
+          },
+          {
+            "dx": 0,
+            "dy": 3
+          },
+          {
+            "dx": 0,
+            "dy": 2
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 25,
+        "maxJump": 11,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 1.68,
+        "heightSwing": 8.9,
+        "driftX": 5.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-09T01:57:06.079Z"
+    }
+  },
   "donkey-grey": {
     "angry": {
       "file": "donkey-grey-angry.png",

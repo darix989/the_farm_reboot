@@ -202,9 +202,12 @@ $tutorial-modal-glow: var(--ui-color-tutorial-guidance-glow);
   }
 }
 
-/* Body copy: `trialWizardGuidanceText` supplies uiTypography `--ui-font-body` sizing; portal needs `.dialog` font-scale mixin. */
+/* Portal is outside `.react-root`; `.dialog` supplies `--ui-font-*` and `.trialModalFontScope`
+   supplies `--ui-trial-panel-font-scale`. Size matches wizard / debate-log body copy. */
 .messageBody {
   overflow-wrap: anywhere;
+  font-size: calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.5;
 }
 
 .messageParagraph {
@@ -240,8 +243,7 @@ $tutorial-modal-glow: var(--ui-color-tutorial-guidance-glow);
 }
 
 /* Shown in place of the primary button when a spotlighted step auto-concludes on the next event.
-   Portal is outside `.react-root`; match `trialWizardGuidanceText` so size tracks `--ui-font-subtitle`
-   and `--ui-trial-panel-font-scale` (larger on narrow viewports). */
+   Same token path as `.messageBody` (subtitle instead of body; larger on compact viewports). */
 .spotlightHint {
   flex-shrink: 0;
   margin: 0;

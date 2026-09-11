@@ -33,6 +33,12 @@
   color: var(--ui-color-text-body);
 }
 
+/* Tutorial spotlight hook: border paints on the emoji without changing the chip's flex. */
+.recapOpinionHook {
+  display: inline-flex;
+  align-items: center;
+}
+
 .recapOpinion {
   font-size: calc(var(--ui-font-moderator-opinion) * var(--ui-trial-panel-font-scale, 1));
   line-height: 1.375;

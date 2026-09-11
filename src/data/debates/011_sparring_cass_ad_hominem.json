@@ -1,7 +1,7 @@
 {
   "id": "level1-sparring-cass",
-  "introduction": "Cass ran the Public Farm floor for nine seasons before his voice went. Now he runs a post in the yard and shouts at whoever stands at it. Today that is you. No magnifying glass, no moderator, no score. One question: which line actually answers him?",
-  "introductionSummary": "Cass drills you at the yard post. No tools, no score — only whether your line actually answers the attack.",
+  "introduction": "Cass keeps a post in the yard and shouts at whoever is standing at it. Today that is you. No magnifying glass, no moderator, no score — one question, twice over: which of these three lines actually answers her?",
+  "introductionSummary": "A practice bout at Cass's post. She throws the lines Tobias will throw on Sunday, and you find the one that answers them.",
   "playerSide": "opposition",
   "characters": {
     "cass": "Cass",
@@ -10,7 +10,7 @@
   "logicalFallacies": [
     {
       "id": "ad-hominem",
-      "explanation": "Attacking the animal instead of the argument. Answering an Ad Hominem with another one concedes that the debate is about who you are."
+      "explanation": "Answering the animal instead of the argument. Six weeks, a bin, a tail: all facts about somebody, none of them facts about the pond."
     }
   ],
   "availableLogicalFallacies": ["ad-hominem"],
@@ -36,12 +36,12 @@
         "sentences": [
           {
             "id": "s-r1-p1",
-            "text": "Let's start easy. I'll be the Flock. Ahem.",
+            "text": "Easy one first. I am the yard, and the yard has had a think about you.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-p2",
-            "text": "'You've been on this farm six weeks, Rue. You haven't earned an opinion about the water.'",
+            "text": "You have been here six weeks, Rue. Six weeks does not buy you an opinion about our water.",
             "logicalFallacies": []
           },
           {
@@ -50,23 +50,23 @@
             "logicalFallacies": []
           }
         ],
-        "summary": "Cass plays the Flock and rules that six weeks on the farm means you have no standing on the water."
+        "summary": "Cass plays the yard and tells him six weeks is not long enough to have earned a view about the water."
       },
       "options": [
         {
           "id": "r1-opt-a",
           "quality": "logical_fallacy",
           "impact": -10,
-          "reason": "You answered an Ad Hominem with an Ad Hominem. Now there are two attacks on the floor and still nothing about the water.",
-          "summary": "You insult Cass back, and let the exchange become a contest about who the two of you are.",
+          "reason": "You answered an Ad Hominem with an Ad Hominem. There are now two attacks on the floor and still nothing at all about the water.",
+          "summary": "You hit back at her retirement, and the exchange becomes a contest about which of you counts less.",
           "sentences": [
             {
               "id": "s-r1-opt-a-1",
-              "text": "And you've been here so long you've forgotten how to fly, you moulting old windbag.",
+              "text": "And you are not even on the floor anymore, so I am not sure either of us is winning.",
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "Cass's age and his feathers have nothing to do with the pond. Trading insults concedes that the debate is about who you both are."
+                  "explanation": "It answers a remark about Rue with a remark about Cass. Both are about animals; neither is about the pond."
                 }
               ]
             }
@@ -76,12 +76,12 @@
           "id": "r1-opt-b",
           "quality": "ineffective",
           "impact": 0,
-          "reason": "True, and beside the point. Correcting the detail concedes that time served is what matters.",
-          "summary": "You correct the date and let the argument settle on the calendar.",
+          "reason": "True, and beside the point. Correcting the number concedes that the number was the question.",
+          "summary": "You correct the arithmetic, which quietly agrees that time served is what the argument is about.",
           "sentences": [
             {
               "id": "s-r1-opt-b-1",
-              "text": "Six weeks and two days, actually.",
+              "text": "Six weeks and two days, actually. I have been counting.",
               "logicalFallacies": []
             }
           ]
@@ -90,12 +90,12 @@
           "id": "r1-opt-c",
           "quality": "effective",
           "impact": 15,
-          "reason": "Names the swap — the attack was about you, the question is about the water — and moves the floor to something anyone can check.",
-          "summary": "You set your arrival aside and put the drain in front of him instead.",
+          "reason": "Names the swap — the line was about you, the question is about the water — and then moves the floor onto something anybody present can go and check.",
+          "summary": "You refuse the trade and put the drain in front of her instead, where anyone can go and look.",
           "sentences": [
             {
               "id": "s-r1-opt-c-1",
-              "text": "How long I've been here doesn't change what's in the pond. Come and look at the drain, and tell me I'm wrong.",
+              "text": "How long I have been here does not change what is in the pond. Come to the outflow with me and tell me I am wrong about the grate.",
               "logicalFallacies": []
             }
           ]
@@ -104,7 +104,7 @@
       "opponentResponses": [
         {
           "forOptionId": "r1-opt-a",
-          "impact": -5,
+          "impact": 0,
           "statement": {
             "id": "resp-r1-a",
             "speakerId": "cass",
@@ -112,11 +112,11 @@
             "sentences": [
               {
                 "id": "s-resp-r1-a-1",
-                "text": "Ha! Good sting, terrible answer. You've just agreed this is a contest about who we are. You'll lose that one — they're prettier than you.",
+                "text": "Good sting. Terrible answer. You have just agreed the whole thing is a contest about who we are, and you will lose that one — they are prettier than you and there are more of them.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Cass enjoys the sting, then warns you have accepted a fight about character — the one you lose."
+            "summary": "She enjoys the sting and points out he has agreed to fight on the one ground where he is outnumbered."
           }
         },
         {
@@ -129,11 +129,11 @@
             "sentences": [
               {
                 "id": "s-resp-r1-b-1",
-                "text": "Six weeks and two days! Marvellous. Now they'll argue about the calendar and never about the drain.",
+                "text": "Two days. Marvellous. Now the whole yard is arguing about the calendar and not one animal is looking at the drain.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Cass mocks the correction: now the yard argues dates and never reaches the drain."
+            "summary": "She lets the correction stand and notes that the argument is now about dates rather than about the drain."
           }
         },
         {
@@ -146,11 +146,11 @@
             "sentences": [
               {
                 "id": "s-resp-r1-c-1",
-                "text": "That's it. You didn't defend yourself — you made me look at the drain. Never defend yourself, Rue. Redirect.",
+                "text": "That is it. You did not defend yourself, you made me look at the drain. Never defend yourself, Rue. Redirect.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Cass approves — you redirected instead of defending yourself."
+            "summary": "She approves: he did not defend himself, he moved her attention to the thing that can be checked."
           }
         }
       ]
@@ -168,37 +168,37 @@
         "sentences": [
           {
             "id": "s-r2-p1",
-            "text": "Harder. This one's Duchess's favourite, so listen.",
+            "text": "Harder. This one is Tobias's favourite, so listen to how soft it is.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-p2",
-            "text": "'Nobody's blaming you, dear. It's simply that paws and clean water don't mix. It isn't personal.'",
+            "text": "Nobody blames you, dear. It is simply that an animal who eats out of a bin cannot be expected to mind what is in the water. It is not personal.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-p3",
-            "text": "She has just insulted every animal on this farm who isn't a bird and made it sound like weather. Answer.",
+            "text": "He has just told the whole farm your evidence does not count, and he has made it sound like weather. Answer him.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Cass plays Duchess: a gentle line that blames your paws as though it were weather rather than an insult."
+        "summary": "She hands him Tobias's gentlest line — the bin, offered as sympathy — and points out what it quietly does."
       },
       "options": [
         {
           "id": "r2-opt-a",
           "quality": "logical_fallacy",
           "impact": -10,
-          "reason": "A group attack answered with a group attack. The drain has left the room.",
-          "summary": "You answer the slur with one of your own, about what geese do in ponds.",
+          "reason": "A remark about a group, answered with a remark about a group. The drain has left the room and nobody noticed it go.",
+          "summary": "You answer a slur about bins with a slur about donkeys, and the pond drops out of the conversation.",
           "sentences": [
             {
               "id": "s-r2-opt-a-1",
-              "text": "Geese are filthy. Everyone knows what a goose does in a pond.",
+              "text": "Says the donkey. You lot stand in that water for an hour every morning and I have seen what happens next.",
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "This answers a claim about paws by describing what geese are like. Neither side is talking about the pond any more."
+                  "explanation": "It swaps one group of animals for another. Neither sentence is a claim about what is actually fouling the pond."
                 }
               ]
             }
@@ -208,12 +208,12 @@
           "id": "r2-opt-b",
           "quality": "ineffective",
           "impact": 0,
-          "reason": "It was rude. But now the debate is about her manners, not about whether your paws are the cause.",
-          "summary": "You call the remark rude and ask for an apology.",
+          "reason": "It was rude, and you are owed the apology. But now the debate is about his manners rather than about whether your bin has anything to do with the water.",
+          "summary": "You ask for an apology, which puts his manners on the floor in place of the pond.",
           "sentences": [
             {
               "id": "s-r2-opt-b-1",
-              "text": "That's a very rude thing to say, and I'd like an apology.",
+              "text": "That is a rude thing to say to somebody's face and I would like an apology for it.",
               "logicalFallacies": []
             }
           ]
@@ -222,12 +222,12 @@
           "id": "r2-opt-c",
           "quality": "effective",
           "impact": 15,
-          "reason": "Spots a soft Ad Hominem inside a polite sentence and converts it into a question that can actually be settled.",
-          "summary": "You name it as a claim about what you are, and trade pawprints for the bent grate.",
+          "reason": "Finds the soft Ad Hominem inside a polite sentence and turns it into a question that can actually be settled by going and looking.",
+          "summary": "You unwrap the polite version — it is still about what you are — and ask for pawprints, offering the grate in return.",
           "sentences": [
             {
               "id": "s-r2-opt-c-1",
-              "text": "It sounds gentle, but it's still a claim about what I am instead of what happened. If my paws foul the pond, show me the pawprints. I'll show you the bent grate.",
+              "text": "It sounds kind, but it is still a claim about what I am rather than about what happened. If my bin is fouling the pond, show me the trail. I will show you the bent grate.",
               "logicalFallacies": []
             }
           ]
@@ -236,7 +236,7 @@
       "opponentResponses": [
         {
           "forOptionId": "r2-opt-a",
-          "impact": -5,
+          "impact": 0,
           "statement": {
             "id": "resp-r2-a",
             "speakerId": "cass",
@@ -244,11 +244,11 @@
             "sentences": [
               {
                 "id": "s-resp-r2-a-1",
-                "text": "Now it's geese against the rest of us and nobody's fixing anything. She'd let you win that one, and you'd still lose the vote.",
+                "text": "Now it is donkeys against raccoons and nothing is getting fixed. He would let you win that one, and you would still lose the vote.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Cass: geese against the rest of us fixes nothing, and the vote is lost anyway."
+            "summary": "She points out that a fight between kinds is one Tobias would happily concede and still win."
           }
         },
         {
@@ -261,11 +261,11 @@
             "sentences": [
               {
                 "id": "s-resp-r2-b-1",
-                "text": "You'll get your apology. She's marvellous at apologies. You'll also get the trough by the road.",
+                "text": "You will get your apology. He is magnificent at apologies. You will also get the trough by the road.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Cass: Duchess apologises beautifully, and you still get the trough by the road."
+            "summary": "She promises the apology will be beautiful and will change nothing about where he drinks."
           }
         },
         {
@@ -278,11 +278,11 @@
             "sentences": [
               {
                 "id": "s-resp-r2-c-1",
-                "text": "Good. She dresses it up, so you undress it. 'What I am' against 'what happened.' Say that in front of Tobias and he'll write it down.",
+                "text": "Good. He dresses it up, so you undress it. What I am, against what happened. Say that in front of Duchess and she will write it down, and she writes down very little.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "Cass approves — 'what I am' against 'what happened' is a line Tobias will write down."
+            "summary": "She approves and says the phrase is worth using in front of the moderator, who records almost nothing."
           }
         }
       ]
@@ -322,7 +322,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "**[accent]Three lines[/accent]** — only one really answers him.\n\nPick one and press **[accent]Continue[/accent]**. Cass will say what he thinks.",
+            "message": "**[accent]Three lines[/accent]** — only one really answers her.\n\nPick one and press **[accent]Continue[/accent]**. Cass will say what she thinks.",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "panel",

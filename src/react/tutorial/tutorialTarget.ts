@@ -11,6 +11,10 @@ export function tutorialTargetEquals(a: TutorialTargetRef, b: TutorialTargetRef)
       return a.panel === (b as TutorialTargetRef & { kind: 'panel' }).panel;
     case 'debate_log_moderator_score':
       return true;
+    case 'debate_log_recap_moderator_score':
+      return true;
+    case 'debate_log_panel_toggle':
+      return true;
     case 'modal_round_recap_score':
       return true;
     case 'round_recap_action':
@@ -33,6 +37,16 @@ export function tutorialTargetEquals(a: TutorialTargetRef, b: TutorialTargetRef)
       return a.action === (b as TutorialTargetRef & { kind: 'analysis_action' }).action;
     case 'analysis_resources':
       return true;
+    case 'codex_open':
+      return true;
+    case 'codex_tab':
+      return a.section === (b as TutorialTargetRef & { kind: 'codex_tab' }).section;
+    case 'codex_tabs':
+      return true;
+    case 'codex_content':
+      return true;
+    case 'codex_close':
+      return true;
     default: {
       const _never: never = a;
       return _never;
@@ -46,6 +60,10 @@ export function tutorialTargetSelector(target: TutorialTargetRef): string {
       return `[data-tutorial-panel="${esc(target.panel)}"]`;
     case 'debate_log_moderator_score':
       return '[data-tutorial-debate-log-moderator-score]';
+    case 'debate_log_recap_moderator_score':
+      return '[data-tutorial-debate-log-recap-moderator-score]';
+    case 'debate_log_panel_toggle':
+      return '[data-debate-log-toggle-panel]';
     case 'modal_round_recap_score':
       return '[data-tutorial-recap-section="main"]';
     case 'round_recap_action':
@@ -68,6 +86,16 @@ export function tutorialTargetSelector(target: TutorialTargetRef): string {
       return `[data-tutorial-analysis-action="${esc(target.action)}"]`;
     case 'analysis_resources':
       return '[data-tutorial-analysis-resources]';
+    case 'codex_open':
+      return '[data-tutorial-codex-open]';
+    case 'codex_tab':
+      return `[data-tutorial-codex-tab="${esc(target.section)}"]`;
+    case 'codex_tabs':
+      return '[data-tutorial-codex-tabs]';
+    case 'codex_content':
+      return '[data-tutorial-codex-content]';
+    case 'codex_close':
+      return '[data-tutorial-codex-close]';
     default: {
       const _never: never = target;
       return _never;
@@ -78,4 +106,18 @@ export function tutorialTargetSelector(target: TutorialTargetRef): string {
 export function resolveTutorialTargetElement(target: TutorialTargetRef): HTMLElement | null {
   if (typeof document === 'undefined') return null;
   return document.querySelector<HTMLElement>(tutorialTargetSelector(target));
+}
+
+/** Field Notes controls — used by `highlight` mode so sibling tabs stay live. */
+export function isCodexTutorialTarget(target: TutorialTargetRef): boolean {
+  switch (target.kind) {
+    case 'codex_open':
+    case 'codex_tab':
+    case 'codex_tabs':
+    case 'codex_content':
+    case 'codex_close':
+      return true;
+    default:
+      return false;
+  }
 }

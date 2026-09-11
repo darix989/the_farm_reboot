@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import type { LogicalFallacyId } from '../types/debateEntities';
 import { isCatalogedFallacyId } from '../data/fallacyCatalog';
 import { isDialogFlagId, type DialogFlagId } from '../data/dialogFlags';
+import { isGameFeatureId, type GameFeatureId } from '../data/gameFeatures';
 import { DEBATES, type DebateScenarioKey } from '../data/levels';
 
 /**
@@ -35,6 +36,13 @@ interface CodexStore {
   knownFallacies: LogicalFallacyId[];
   spottedFallacies: SpottedFallacy[];
   dialogFlags: DialogFlagId[];
+  unlockedFeatures: GameFeatureId[];
+  /**
+   * Field Notes cards the player has clicked through. `null` means this save has not been
+   * seeded yet — the first hydrated compute copies every currently live notice into the list
+   * so an existing journal does not light up as all-new.
+   */
+  seenNoticeIds: string[] | null;
 
   learnFallacy: (id: LogicalFallacyId) => void;
   /**
@@ -46,11 +54,20 @@ interface CodexStore {
    */
   recordSpottedFallacy: (entry: SpottedFallacy) => void;
   setDialogFlag: (id: DialogFlagId) => void;
+  unlockFeature: (id: GameFeatureId) => void;
 
   knowsFallacy: (id: LogicalFallacyId) => boolean;
   /** Scoped to one encounter when `scenarioKey` is given, anywhere in the game otherwise. */
   hasSpottedFallacy: (id: LogicalFallacyId, scenarioKey?: DebateScenarioKey) => boolean;
   hasDialogFlag: (id: DialogFlagId) => boolean;
+  hasFeature: (id: GameFeatureId) => boolean;
+
+  /**
+   * First-run seed. No-ops once `seenNoticeIds` is an array so a later live-set change
+   * cannot wipe unread state.
+   */
+  hydrateNotices: (liveIds: readonly string[]) => void;
+  markNoticesSeen: (ids: readonly string[]) => void;
 
   resetCodex: () => void;
 }
@@ -70,6 +87,8 @@ export const useCodexStore = create<CodexStore>()(
       knownFallacies: [],
       spottedFallacies: [],
       dialogFlags: [],
+      unlockedFeatures: [],
+      seenNoticeIds: null,
 
       learnFallacy: (id) =>
         set((s) =>
@@ -95,6 +114,13 @@ export const useCodexStore = create<CodexStore>()(
           s.dialogFlags.includes(id) ? s : { ...s, dialogFlags: [...s.dialogFlags, id] },
         ),
 
+      unlockFeature: (id) =>
+        set((s) =>
+          s.unlockedFeatures.includes(id)
+            ? s
+            : { ...s, unlockedFeatures: [...s.unlockedFeatures, id] },
+        ),
+
       knowsFallacy: (id) => get().knownFallacies.includes(id),
 
       hasSpottedFallacy: (id, scenarioKey) =>
@@ -104,11 +130,63 @@ export const useCodexStore = create<CodexStore>()(
 
       hasDialogFlag: (id) => get().dialogFlags.includes(id),
 
-      resetCodex: () => set({ knownFallacies: [], spottedFallacies: [], dialogFlags: [] }),
+      hasFeature: (id) => get().unlockedFeatures.includes(id),
+
+      hydrateNotices: (liveIds) =>
+        set((s) => (s.seenNoticeIds === null ? { ...s, seenNoticeIds: [...liveIds] } : s)),
+
+      markNoticesSeen: (ids) =>
+        set((s) => {
+          // Not seeded yet — acknowledging a card now would persist a partial list and skip
+          // the hydrate that treats the rest of the journal as already seen.
+          if (s.seenNoticeIds === null) return s;
+          let changed = false;
+          const next = [...s.seenNoticeIds];
+          for (const id of ids) {
+            if (next.includes(id)) continue;
+            next.push(id);
+            changed = true;
+          }
+          return changed ? { ...s, seenNoticeIds: next } : s;
+        }),
+
+      resetCodex: () =>
+        set({
+          knownFallacies: [],
+          spottedFallacies: [],
+          dialogFlags: [],
+          unlockedFeatures: [],
+          seenNoticeIds: null,
+        }),
     }),
     {
       name: 'the-farm-codex',
-      version: 1,
+      version: 4,
+      /**
+       * v3 goes with `progressStore` v5→v6, the trim of Level 1 to eight rungs. Progress alone
+       * is not enough to reset: `unlockedFeatures` lives here, so an old save would keep
+       * `insight_points` and show an Insight counter in a level that no longer teaches it.
+       *
+       * v4 adds Field Notes unread tracking. `seenNoticeIds: null` forces a one-shot seed from
+       * whatever is currently live, so an existing save does not light up as all-new.
+       */
+      migrate: (persisted, fromVersion) => {
+        const saved = (persisted ?? {}) as Record<string, unknown>;
+        let next = saved;
+        if (fromVersion < 3) {
+          next = {
+            ...next,
+            knownFallacies: [],
+            spottedFallacies: [],
+            dialogFlags: [],
+            unlockedFeatures: [],
+          };
+        }
+        if (fromVersion < 4) {
+          next = { ...next, seenNoticeIds: null };
+        }
+        return next;
+      },
       /**
        * Same contract as `progressStore`: a save naming a fallacy, encounter or flag that no
        * longer exists must not break the farm, so anything unrecognised is dropped rather than
@@ -138,7 +216,26 @@ export const useCodexStore = create<CodexStore>()(
           .filter(isDialogFlagId)
           .filter((id, i, all) => all.indexOf(id) === i);
 
-        return { ...current, knownFallacies, spottedFallacies, dialogFlags };
+        const unlockedFeatures = (
+          Array.isArray(saved?.unlockedFeatures) ? saved.unlockedFeatures : []
+        )
+          .filter(isGameFeatureId)
+          .filter((id, i, all) => all.indexOf(id) === i);
+
+        const seenNoticeIds = Array.isArray(saved?.seenNoticeIds)
+          ? saved.seenNoticeIds.filter(
+              (id, i, all): id is string => typeof id === 'string' && all.indexOf(id) === i,
+            )
+          : null;
+
+        return {
+          ...current,
+          knownFallacies,
+          spottedFallacies,
+          dialogFlags,
+          unlockedFeatures,
+          seenNoticeIds,
+        };
       },
     },
   ),

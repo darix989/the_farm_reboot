@@ -1,19 +1,19 @@
 # Level 1 — The Pond Motion
 
 The authoring source of truth for Level 1: the story, the cast, the ladder of scenarios,
-and the dialog for every rung. Scenario JSON under `src/data/debates/020_*`, `021_*`,
-and `010_*` … `015_*` is transcribed from this document — when the two disagree, this
-document is wrong and should be corrected to match what shipped.
+and the intent of every rung. Scenario JSON under `src/data/debates/010_*` … `015_*`,
+`020_*` … `022_*` and `030_*` … `031_*` is transcribed from this document — when the two
+disagree, this document is wrong and should be corrected to match what shipped.
 
 Level 1 teaches the two simplest fallacies in the curriculum, both from Level 1 of
 [logical_fallacies_intro.md](./logical_fallacies_intro.md): **Ad Hominem** (#1) and
-**Appeal to Popularity** (#2). Both are social fallacies, so the fiction is a social
-one — a popular in-group voting to keep an outsider away from the water.
+**Appeal to Popularity** (#2). Both are social fallacies, so the fiction is a social one —
+a settled majority voting an outsider away from the water.
 
-The ladder follows `pitch/002_gradual_mechanics_onboarding.md`: each rung teaches one
-verb, and the full Public Farm debate is the boss. Rungs ship as ordinary
-`DebateScenarioJson` values; the smaller modes are expressed with the `mechanics` flags
-documented in [`src/types/debateEntities.ts`](../src/types/debateEntities.ts).
+The ladder follows `pitch/002_gradual_mechanics_onboarding.md`: each rung teaches one verb,
+and the full Public Farm debate is the boss. Rungs ship as ordinary `DebateScenarioJson`
+values; the smaller modes are expressed with the `mechanics` flags documented in
+[`src/types/debateEntities.ts`](../src/types/debateEntities.ts).
 
 ---
 
@@ -21,271 +21,444 @@ documented in [`src/types/debateEntities.ts`](../src/types/debateEntities.ts).
 
 ### Premise
 
-Green Meadows Farm's only clean water is the **Old Pond**. It has been going muddy. **Duchess**, the farm's prize goose and head of the Flock, puts a motion to the Public Farm:
+Green Meadows Farm's only clean water is the **Old Pond**, and it has been going brown.
+**Tobias**, a donkey who has pulled the same cart down the same lane for eleven years, puts
+a motion to the Public Farm:
 
-> *The Old Pond shall be reserved for the Flock. Every animal not of the Flock shall water at the road trough.*
+> *That the Old Pond be reserved to the Meadow-Born; that every animal who arrived shall
+> water at the road trough.*
 
-Her case is that the newcomers foul the water. Her *method* is the level's two fallacies, and she is very good at both:
+His case is that the arrivals foul the water. His *method* is the level's two fallacies,
+and he is extremely good at both:
 
-- **Appeal to Popularity** — "Forty-one of the Flock have already agreed. Forty-one animals are not a mistake."
-- **Ad Hominem** — never crude, always gentle: "No one blames the newcomers, dear. They simply weren't raised near water."
+- **Appeal to Popularity** — "Forty-one of the Meadow-Born have already put their names to
+  it. Forty-one animals are not a mistake."
+- **Ad Hominem** — never crude, always sympathetic: "Nobody blames the newcomers. It is only
+  that an animal who takes his supper out of a bin has a rather different notion of clean."
 
-The player is **Rue**, a young raccoon who arrived six weeks ago and does the hauling and the odd repair. He is exactly the animal both fallacies are built to dispose of: no crowd behind him, and an easy target for "you're a raccoon." His paws are also why he is the one animal who can reach into a drain and straighten a grate, which is what the level is quietly about.
+The player is **Rue**, a raccoon who arrived six weeks ago and does the hauling and the odd
+repair. He is exactly the animal both fallacies are built to dispose of: no crowd behind
+him, and a supper anybody can make a face about.
 
-The motion draws its line at the Flock rather than at any particular species, which is what lets the same two fallacies point at Rue: he is outside the group, and being outside the group is treated as the answer.
+**The level's thesis is that Rue's disqualification is his qualification.** He eats out of
+the bins, and he is unembarrassed about it, and that is precisely why he is the only animal
+in the meadow who has had his arm in the outflow drain up to the shoulder. The line they
+use to throw his evidence away is the reason he has any.
 
-The actual cause of the mud is a **bent grate on the pond's outflow drain** — a fact the player picks up as gossip, hears confirmed by the opposition without them noticing, and finally puts on the record in front of the moderator. The level's teaching phrase, given to the player by the coach in rung 1.1 and paid off in the boss debate, is: **"what I am" versus "what happened."**
+The dividing line is *born here* against *arrived*, not species — which is what lets the
+same two fallacies point at Rue, at **Cass** (a fox, so obviously not to be trusted) and at
+**Bram** (a wolf, so obviously to be watched). Being outside the group is treated as the
+answer.
+
+The actual cause of the mud is a **bent grate on the pond's outflow drain** — a fact the
+player picks up as gossip, hears conceded by the other side without their noticing, puts on
+the record with a witness, and finally cashes in on the floor. The teaching phrase, handed
+over by Cass in rung 1.3 and paid off in the boss debate, is: **"what I am" versus "what
+happened."**
 
 ### Cast
 
-| Name | Species | Role | Voice |
-|---|---|---|---|
-| **Rue** | Raccoon | Player. Six weeks on the farm, does the hauling and the odd repair. | Plain, literal, hasn't learned the farm's social rules — which is why he keeps asking the question nobody wants asked. |
-| **Duchess** | Goose | Boss antagonist. Head of the Flock. | Warm, gracious, never raises her voice. Sincere — she genuinely believes the pond is the Flock's. Lethal. |
-| **Tobias** | Owl | Moderator of the Public Farm. Talking to him starts the boss debate. | Old, tired, scrupulously fair. He *is* the moderator gauge. |
-| **Cass** | Rooster | Coach. Ran the Public Farm floor for nine seasons before his voice went. | Cranky, impatient, fond of Rue in a way he'd deny. Runs both the sparring post and the Lab. |
-| **Hetty** | Hen | The gossip at the trough. Will not speak until you can name Ad Hominem. | Not malicious — she says it to your face and has never once checked. |
-| **Bram** | Drake | Duchess's second; the skirmish opponent. | Parrots the Flock line, but he's honest, and honesty is what trips him up. |
-| **Dot** | Dog | Yard greeter. No encounter. | Direct, a little breathless. Points you at Cass, then Hetty, then Tobias. |
+Every character is the animal their sprite draws — see
+[characters-and-animations.md](./characters-and-animations.md).
+
+| Name | Species | Role | Voice | Running gag |
+|---|---|---|---|---|
+| **Rue** | Raccoon | Player. Six weeks in; hauling and repairs. | Plain, literal, entirely unembarrassed about the bins. | Volunteers an incriminating detail nobody asked for. It keeps turning out to matter. |
+| **Cass** | Fox (she) | Coach. Retired from the Public Farm floor; named every trick they threw at her. | Cranky, dry, fond of Rue in a way she would deny. Runs the sparring post and the Lab. | Pre-empts the fox line herself, and is quietly furious that it still works. |
+| **Hetty** | Sheep | The trough. Will not speak until you can name Ad Hominem. | Warm, relentless, entirely without malice or self-awareness. | Asks a question, answers it herself, thanks you for agreeing. |
+| **Bram** | Wolf | The fence line. Teaches how a conversation works, then how to answer on your feet. | Anxious, over-polite, apologises mid-sentence. | "I'm not saying it because I'm a wolf." |
+| **Tobias** | Donkey | Boss antagonist. Speaks for the Meadow-Born. | Warm, gracious, never raises his voice. Sincere, and lethal. | Never gets Rue's name right — Roo, Rufus, Ruin. |
+| **Duchess** | Owl | Moderator of the Public Farm. Talking to her starts the boss debate. | Old, tired, scrupulously fair. She *is* the moderator gauge. | Declines to hold an opinion about anything, including the weather. |
+| **Dot** | Dog | Yard greeter. No encounter. | Direct, breathless, kind. | Starts three sentences, finishes one. |
 
 Antagonists are sincere, not villainous — the house style established in `pitch/001`.
+**Cass is the reason Bram works**: two animals with the same problem, one who named it and
+beat it and one who bought his way out by agreeing louder than anybody in the crowd.
 
 ### How you arrive
 
-**Dot** is standing in the yard, just off spawn. The first time the farm loads, her
-conversation opens on its own. She welcomes you, names Duchess's motion and Sunday in
-front of Tobias, and sends you to Cass first, then Hetty, then the owl. She has no
-encounter. Her farm talk advances as you do those three things.
+**Dot** stands in the yard just off spawn, and her conversation opens on its own the first
+time the farm loads. It is deliberately unhurried — the level's only cold open, so it does
+not read as one. She asks after Rue first (six weeks, the hauling, the bins) and notices he
+is being talked about three steps away; that is what turns the conversation to the week the
+farm is having. Then the motion: Tobias wants the Old Pond drained, filled and forgotten,
+heard Sunday in front of Duchess, and **not one animal will speak against it**. Rue
+volunteers himself for the floor — the player is not assigned the fight, they take it — and
+only then does Dot mention that there are rules nobody has written down, which is where the
+goals come from: **Bram** first, at the fence, then Cass at the west post, then Hetty at the
+trough, then the barn. Closing her talk early does not count: the `dot-welcomed` flag is set
+only when the last beat's reveal settles. She has no encounter; her farm talk advances as you
+do those things. She pointedly refuses to warn you about the fox.
 
 ### The ladder
 
 Each rung adds exactly one thing. Quickest gameplay first, boss last. The spine is a
-three-beat Ad Hominem ladder: Cass teaches the name, Hetty uses it, Duchess requires both.
+mechanics-then-fallacy ladder: Bram teaches how a round works, then crossfire, Cass names
+Ad Hominem, Hetty uses it, Cass names Appeal to Popularity, Hetty uses that too, Bram
+teaches the locked line and then argues the motion properly, and Tobias requires all of it.
 
 | # | Scenario | Mode | Teaches | Fallacies on the picker | New for the player |
 |---|---|---|---|---|---|
-| 1.1 | `020_cass_teaches_ad_hominem` | Sparring | **The name** of Ad Hominem | ad-hominem | Analysis via the footer magnifying glass. Fallacy known on leave. |
-| 1.2 | `021_hetty_ad_hominem_barrage` | Gossip | **Spotting it in the wild**, repeatedly | ad-hominem | Gated on knowing Ad Hominem. Sets the Duchess flag. |
-| 1.3 | `010_gossip_trough_hetty` | Gossip | A **clean** sentence; the bent grate | ad-hominem | Not every sentence is a trap. |
-| 1.4 | `011_sparring_cass_ad_hominem` | Sparring | **Speaking**, alone | — (analysis off) | The 3-option picker. Coach's verdict instead of a score. |
-| 1.5 | `012_gossip_trough_bram` | Gossip | Spotting a **second** fallacy; telling the two apart | ad-hominem, appeal-to-popularity | Two icons on the picker. A "Clean" sentence to reject. |
-| 1.6 | `013_lab_cass_dirty_feathers` | Lab | **Inoculation** — commit the fallacy, then catch it | ad-hominem, appeal-to-popularity | Inverted goal; two fallacies fused in one sentence. |
-| 1.7 | `014_skirmish_bram_fenceline` | Skirmish | Speaking **and** spotting together | ad-hominem, appeal-to-popularity | Insight, the moderator gauge, an unlock-gated option. Sets the grate flag. |
-| 1.8 | `015_duchess_vs_rue` | Boss debate | Everything, over 10 beats | + false-dilemma (distractor) | Full Public Farm. Gated on knowing Ad Hominem **and** finishing Hetty. |
+| 1.1 Bram | One at a Time | Lesson | **How a round works** / how you speak | — | A conversation is one animal, then the other. Three options, no wrong one. Brief look at the moderator emoji. Field Notes **Next** is taught on the farm after Leave. |
+| 1.2 Bram | Answer Me Now | Lesson | **Crossfire** — both halves | — | Somebody asks, you answer on your feet. Round-type labels unlock. |
+| 1.3 Cass | The Name of the Trick | Sparring | **The name** of Ad Hominem | ad-hominem | Analysis via the footer magnifying glass. Fallacy known on leave. |
+| 1.4 Hetty | All About You | Gossip | **Spotting it in the wild**, three times | ad-hominem | Gated on knowing Ad Hominem. Sets the flag the rest of the level hangs off. Then she has to wait while he answers. |
+| 1.5 Cass | How Many, Not How | Sparring | **The name** of Appeal to Popularity | ad-hominem, appeal-to-popularity | Two icons on the picker, and a round carrying **two** fallacies at once. |
+| 1.6 Hetty | What Hetty Saw | Gossip | A **clean** round; the bent grate | ad-hominem, appeal-to-popularity | Not every sentence is a trap — and the player extracts the grate with a question. |
+| 1.7 Bram | The Line You Have to Earn | Lesson | **The locked line** — spotting and speaking meet | ad-hominem | An option that cannot be said until the fallacy in the previous round is tagged. |
+| 1.8 Bram | The Bent Grate | Skirmish | Speaking **and** spotting together | ad-hominem, appeal-to-popularity | Full chrome and the moderator gauge, plus the unlock-gated option for real. Sets the grate flag. |
+| 1.9 Tobias | The Pond Motion | Boss debate | Everything, over 10 beats | + false-dilemma (distractor) | Full Public Farm. Gated on both fallacies **and** Bram's concession. |
 
-Rung 1.8 follows the 10-beat order in [plan_002.md](./to_process/plan_002.md) exactly; Rue is the **opposition** (Duchess proposes).
+**File numbers are creation order, not ladder order.** `020`–`023` were written after
+`010`–`015`; `030`–`032` after those. `LEVEL_1_SCENARIOS` in [`src/data/levels.ts`](../src/data/levels.ts) is the
+only thing that decides sequence, and it also drives the main menu.
 
-Overworld gates: Hetty will not speak at all until Ad Hominem is known (`gateTalk` plus
-`fallacy_known` on 1.2). Tobias offers the boss debate; it requires knowing Ad Hominem
-**and** the `hetty-ad-hominem-witnessed` flag, but he still talks when locked. Cass's 1.1
-is the only playable door at a fresh start. **Dot**, in the yard off spawn, is the intro:
-Cass first, then Hetty, then the owl. The main menu lists every rung ungated.
+Rung 1.9 follows the 10-beat order in [plan_002.md](./to_process/plan_002.md) exactly; Rue
+is the **opposition** (Tobias proposes).
+
+**Insight Points stay deferred out of Level 1.** Nothing here unlocks `insight_points`, so
+the Insight counter and the Help button never appear. Round-type labels come back with
+Bram's second fence lesson (`unlocksFeatures: ['round_types']`). Four encounters remain
+**parked**, not deleted — `011_sparring_cass_ad_hominem`, `012_gossip_trough_bram`,
+`022_bram_teaches_insight` and `013_lab_cass_dirty_tricks` live in `LEGACY_SCENARIOS`, off
+the farm and out of the goal spine, still playable from the main menu. Their write-ups are
+kept at the end of Part 2.
+
+Overworld gates: the spine walks Bram → Bram → Cass → Hetty → Cass → Hetty → Bram → Bram → Duchess.
+Bram will not speak until Dot's welcome has been played to the end (`gateTalk` plus
+`dot-welcomed`); Cass will not until Bram has taught crossfire; Hetty will not until Ad Hominem
+is known. Duchess still talks when locked. Each animal offers its encounters strictly in
+list order and never skips ahead (`farmDialogueState.ts`), which is what guarantees Bram's
+locked-line lesson lands before the skirmish that needs it. The main menu lists every rung
+ungated.
+
+⚠️ **`gateTalk` has one carve-out** (`src/utils/farmTalkGate.ts`): an animal who has already
+taught a lesson is never silenced. Bram's 1.7 sits behind a fallacy *Cass* teaches, so
+without it he would go quiet for the whole middle of the level and take his lesson-replay
+menu with him. He greets you instead, with Talk disabled and the reason on the button.
+
+Field Notes' **Next** tab is that same spine, one main goal per rung (`src/data/levelGoals.ts`,
+aligned with Dot's seven `talkStages`). Level 1 has no optional goals, so the Optional
+section never renders.
 
 ---
 
-## Part 2 — Dialog for the new mechanics
+## Part 2 — The rungs
 
-This is the authoring source of truth; it gets committed as `docs/level_01_the_pond_motion.md` and transcribed into the scenario JSONs. Option ordering below is authoring order — the engine shuffles per playthrough unless `preventOptionsShuffle` is set.
+### 1.1 — "One at a Time" (Bram teaches dialog)
 
-### 1.1 — Coach Teaching: "The Name of the Trick"
+*Flags: analysis off, insight hidden, moderator visible, recap off, intro summary off,
+`revealChoiceAssessment: true`, `encounterKind: 'lesson'`, `showRoundType: false`. Rewards:
+`setsDialogFlags: ['bram-taught-rounds']`. Gated on `dot-welcomed`.*
 
-*Flags: analysis on (the spotting beat needs it), insight hidden, moderator hidden, recap off, intro summary off, `revealChoiceAssessment: true`, `encounterKind: 'sparring'`. Rewards: `teachesFallacies: ['ad-hominem']`, `setsDialogFlags: ['cass-named-ad-hominem']`.*
+Rue comes to the fence and asks for help — Dot sent him — and Bram is startled that anyone
+would walk down to the wolf. He says what he does all day (walks the fence, both ways, and
+overhears every conversation on this farm from the far side of a hedge) before he offers the
+lesson, and he is still apologising for giving it. A conversation here goes in
+**rounds**: one animal says a thing, the other answers, and that pair is a round. Four
+beats. He explains (1), you speak (2, three options, no wrong one, `preventOptionsShuffle`;
+A is impact 0, B and C are a light +8 so the face can move), he closes (3): *"That was a
+round. That is the whole of it."*, then a goodbye (4): he will still be at the fence if they
+can stand another minute of him, and he apologises for having kept them. No fallacy appears
+in this file at all.
 
-**Introduction:** "Cass ran the Public Farm floor for nine seasons, and every season someone answered him by talking about his voice or his comb instead of his point. He has a name for that trick. He also has a way of teaching it, and you will not like the way."
+Three tutorials, all `medium` — the copy in each is two short paragraphs, and a larger box
+frames whitespace: what a round is (`introduction:start`, wizard); now you speak
+(`round:start` / `round-2`, interactive); then after confirm, the moderator emoji **on the
+collapsed recap chip** (`debate_log_recap_moderator_score`) and the expand arrow
+(`debate_log_panel_toggle`). Field Notes **Next** is not in this file: it fires on the farm
+after Leave (`farmTutorials.ts`, `field-notes-intro`), once `bram-taught-rounds` is set, and
+points at the opening button then the Codex tabs. The log stays collapsed here, unlike 1.9.
+Completing the lesson flips Next from this Bram to the next: he is still at the fence, and
+he has one more thing.
 
-**Round 1 — Cass** *(crossfire, all clean)*
-1. "Nine seasons I ran the Public Farm floor. Nine." — *clean*
-2. "Every season, someone answered me by talking about my voice, or my comb, or how I look when I moult." — *clean*
-3. "Never about the motion. Never once about what I had actually said." — *clean*
+### 1.2 — "Answer Me Now" (Bram teaches crossfire)
 
-**Round 2 — Cass** *(crossfire, all clean)*
-1. "There is a name for that trick." — *clean*
-2. "A common misuse of speaking — so common the animals doing it rarely notice they are doing it." — *clean*
-3. "I learned it the long way, by being the thing they pointed at." — *clean*
+*Same lesson flags as 1.1, except `showRoundType: true` and the moderator is hidden again.
+Rewards: `setsDialogFlags: ['bram-taught-crossfire']`, `unlocksFeatures: ['round_types']`.
+Gated on `bram-taught-rounds`. Required for Cass.*
 
-**Round 3 — Cass's prompt** *(crossfire)*
-> "I can give you the name and sit down. Or I can show you, which is how anyone actually learns it. Well?"
+Some rounds are not speeches. Somebody asks and you answer on your feet. They call that
+**crossfire**. Four beats: he names it (1), he asks and you answer (2, NPC-raises), you ask
+and he has to answer (3, player-raises), he closes (4). This is where the word first appears
+on the round label, and where every later `— crossfire` in the level is unlocked.
 
-| | Line | Cass's reaction | Assessment |
-|---|---|---|---|
-| **A** *fallacy, −10* | "You only know about it because you're a cranky old rooster nobody listens to." | "That's it. You just did it to me. Now watch me do it to you." | "You answered an offer to teach with an attack on the teacher. That is the trick." |
-| **B** *ineffective, 0* | "Just tell me the name." | "A word without the thing is a word. Watch first." | "A name without the thing is a word. You will forget it by Sunday." |
-| **C** *effective, +15* | "Show me." | "Good. Watch." | "You asked to see it. That is the only way the name will stick." |
+One tutorial on `round:start` / `round-2`, pointing at the round label.
 
-All three options lead to round 4. The spotting tutorial triggers on `{ event: 'round:start', where: { roundId: 'round-4' } }`, not on the option.
+Bram's farm talk offers a lettered **Lessons** menu for any lesson he has already taught.
+After this rung he has three — the Z / X / C cap.
 
-**Round 4 — Cass** *(crossfire, `requiresAnalysis: true`) — he pretends to be Duchess*
-1. "Right. I'll be Duchess." — *clean*
-2. "Nobody's blaming you, dear. It's simply that a raccoon who arrived in a mud cart, straw still in his ears, can hardly be expected to know about water." — **ad-hominem**
-3. "The Flock waters at the pond every morning, as they always have." — *clean*
+### 1.3 — "The Name of the Trick" (Cass)
 
-**Round 5 — Cass** *(crossfire, all clean — the debrief)*
-1. "That is the whole trick." — *clean*
-2. "She talked about what you are — a raccoon, a mud cart, six weeks — and never about what happened to the water." — *clean*
-3. "The phrase to keep is this: what I am, against what happened. If a line is about you instead of the pond, you have heard it. The name is Ad Hominem." — *clean*
+*Flags: analysis on, insight hidden, moderator hidden, recap off, intro summary off,
+`revealChoiceAssessment: true`, `encounterKind: 'sparring'`. Rewards:
+`teachesFallacies: ['ad-hominem']`, `setsDialogFlags: ['cass-named-ad-hominem']`.*
 
-### 1.2 — Gossip at the Trough: "All About You"
+Cass used to stand on the floor. They came at her tail before she had finished her first
+sentence; it took her a season to name that one, and some of the others took longer. She
+named those too, then left the floor by choice and keeps the west post.
 
-*Flags: analysis on, insight visible (default), moderator hidden, recap off, intro summary off, `encounterKind: 'gossip'`. Three NPC rounds, all `requiresAnalysis: true`. `setsDialogFlags: ['hetty-ad-hominem-witnessed']`. No `teachesFallacies` — the player already knows it by the time they can play this. Gated on `fallacy_known` / Ad Hominem.*
+Seven rounds. She sets up her own history (1–2), makes Rue commit the fallacy (3), debriefs
+what he just did (4), does it back to him in Tobias's voice (5, `requiresAnalysis`), names it
+(6) and sends him off her post (7). Rounds 1, 2, 4, 5, 6 and 7 are `gossip` — monologues at
+the post, nobody asking anything. Round 3 is the genuine `crossfire`. Round types are live
+from 1.2, so the labels have to be honest. Round 2 states the deal plainly — the name comes at the
+end, once he has felt it, because a name you are handed is gone by Sunday — rather than
+teasing a name it will not say. Round 6 also points at Field Notes after Leave: **Fallacies
+you know** is the name she just gave; **Fallacies you have spotted** is the line they tagged.
+She does not repeat **Next** — Bram already sent them there.
 
-**Introduction:** "Hetty has been thinking about you all morning, and she is going to say it to your face. She does not think she is being unkind. She thinks she is being interesting."
+The lines the lesson turns on carry inline
+[emphasis](./encounters.md#emphasis-inside-a-spoken-line): the season she named the trick in the
+introduction, *"You did not argue with me. You priced me."* and *"That is the trick."* in
+round 4, the bins remark inside Tobias's line in round 5, and **Ad Hominem**, **Field Notes**
+and the two list names in round 6.
 
-She never once mentions the water. That is the point. She says it *to you*, not about you to someone else.
+**Round 3 is the load-bearing beat: all three options are personal attacks.** Cass asks for the
+first thing in his head — *about her, pointedly not about the pond* — and every available
+answer is an Ad Hominem, `quality: 'logical_fallacy'`, `impact: 0`. There is no way to be
+polite, and that is the design:
 
-**Round 1 — Hetty** *(gossip)*
-1. "Rue. I have been thinking about you all morning." — *clean*
-2. "You arrived in a mud cart, you know. Straw still in your ears. You don't take advice from an animal who turns up like that." — **ad-hominem**
-3. "I said as much to anyone who would listen this morning. I thought you should hear it from me." — *clean*
+| | Angle | Line |
+|---|---|---|
+| **A** | species | "You are a fox. Foxes say whatever suits them…" |
+| **B** | record | "You are not even on the floor anymore…" |
+| **C** | motive | "You only care about any of this because you are bitter." |
 
-**Round 2 — Hetty** *(gossip)*
-1. "And you still look as if you slept in it. Straw in the fur, mud on the paws." — *clean*
-2. "An animal who cannot keep himself tidy is hardly the animal you'd ask about anything that matters." — **ad-hominem**
-3. "I don't mean it unkindly. I like you. You seem perfectly nice." — *clean*
+Nothing is punished — the moderator is hidden and every impact is zero — so the player
+commits the fallacy without being scored for obeying an instruction. Each option has its own
+reply from Cass, and round 4 collects all three: *"You did not argue with me. You priced me.
+My tail, my record, my mood — three ways of saying she does not count, and not one of them
+says why."*
 
-**Round 3 — Hetty** *(gossip)*
-1. "And only six weeks! Six weeks." — *clean*
-2. "You cannot know a place in six weeks. The Flock has been here generations; that is whose opinion counts." — **ad-hominem**
-3. "Anyway. I thought you should hear it from me rather than from the yard." — *clean*
+> **The teaching here is carried by dialogue, on purpose.** 1.1 sets both
+> `revealChoiceAssessment: true` and `showRoundRecap: false`, and the recap modal is the only
+> surface that renders an option's `reason` — so in this rung the assessments never appear.
+> That is why round 4 exists as its own beat rather than being folded into round 5. The
+> `reason` strings are still authored and still correct (species / record / motive are three
+> different ways of pricing an animal); they would surface immediately if the recap were
+> switched on, which it is not, because five NPC rounds would each get a "Round complete."
+> modal for nothing.
 
-> She meant no harm by any of it, which is exactly what makes it work. Finishing this encounter — however badly — is the second key on Tobias's door. Spotting is not required. The overworld will not even open her conversation until Ad Hominem is known.
+Four tutorials: what this is (`introduction:start`), **there is no right answer here**
+(`round:start` / `round-3`), how to spot it (`round:start` / `round-5`, two steps), and
+the log-card route (`round:start` / `round-6`, pointing at round 5's glass so the
+**Sparring Log** expands). Do **not** add a step targeting an option in round 3 — the
+point is that any of the three works — and do not add a step targeting Continue in round
+5, because the analysis modal is covering it by then.
 
-### 1.3 — Gossip at the Trough: "What Hetty Heard"
+### 1.4 — "All About You" (Hetty)
 
-*Flags: analysis on, insight visible, moderator hidden, recap off, intro summary off. Both rounds `requiresAnalysis: true`.*
+*Three NPC gossip rounds, all `requiresAnalysis`, then a fourth that is crossfire. `setsDialogFlags: ['hetty-ad-hominem-witnessed']`.
+No `teachesFallacies` — the player already knows it by the time they can play this. Gated on
+`fallacy_known` / Ad Hominem. `revealChoiceAssessment: true`. One tutorial on `introduction:start`: this is not a debate —
+moved here from 1.6, because this is the first gossip.*
 
-**Introduction:** "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is — yours. She will say it to your face and mean no harm by it."
+She never once mentions the water. That is the point, and she says it *to you*, not about
+you to somebody else. Three angles, one per round: the bins, the state of his fur, the six
+weeks. Every one bookended with warmth — "I say it with love", "I am not a gossip", "that
+is the sort of friend I am".
 
-**Round 1 — Hetty** *(gossip)*
-1. "Morning! You've been on about the pond drain again." — *clean*
-2. "I wouldn't put much stock in it, mind. You arrived in a mud cart with straw in your ears; you're hardly the sort who'd know about water." — **ad-hominem**
-3. "Anyway, the pond's been going brown since before the frost." — *clean*
+Round 2 carries her gag in full: *"An animal who cannot keep himself tidy is hardly the
+animal you would ask about anything that matters, is he. Is he. No."* — then, "There. You
+agree with me." Round 4 is the format that will not let her do that. She puts a question to
+Rue (`opponentPrompt`), has to stand there while he answers, and her three replies thank him
+for agreeing with something he did not say.
 
-**Round 2 — Hetty** *(gossip — entirely clean; teaches the "Clean" button)*
-1. "The grate at the outflow is bent, you know. I saw it myself, chasing a beetle." — *clean*
-2. "Water backs up behind it, so the mud goes into the pond instead of out of it." — *clean*
-3. "Someone ought to tell the Flock. They don't much listen to hens." — *clean*
+> Finishing this — however badly — is the second key on Duchess's door. Spotting is not
+> required. The overworld will not open her conversation at all until Ad Hominem is known.
 
-> Round 2 plants the **bent grate**, the evidence Rue carries all the way to round 10 of the boss. A round with no fallacy in it is deliberate: it teaches that not every sentence is a trap.
+### 1.5 — "How Many, Not How" (Cass names Appeal to Popularity)
 
-### 1.4 — Coach Sparring: "The Sparring Post"
+*`sparring`; same flags as 1.3. `teachesFallacies: ['appeal-to-popularity']`,
+`setsDialogFlags: ['cass-named-appeal-to-popularity']`. Gated on
+`hetty-ad-hominem-witnessed`. Five rounds.*
 
-*Flags: analysis **off**, insight hidden, moderator hidden, intro summary off, `revealChoiceAssessment: true`. Two player rounds, each an `opponentPrompt` + 3 options + 3 `opponentResponses`.*
+Rue comes back to the west post already stung, and Cass opens on a number instead of an
+argument: **forty-one**. The shape is deliberately the same as 1.3, because the second
+naming should feel like the first — she makes him commit the trick before she will name it.
 
-**Introduction:** "Cass ran the Public Farm floor for nine seasons before his voice went. Now he runs a post in the yard and shouts at whoever stands at it. Today that's you. No magnifying glass, no moderator, no score. One question: which line actually answers him?"
+Round 2 is the all-options round: every one of the three argues the motion from the size of
+the crowd, so there is no right answer and the lesson is in noticing that. It is the genuine
+`crossfire`; rounds 1, 3, 4 and 5 are `gossip`. Round 3 says what
+he just did. Round 4 is the `requiresAnalysis` beat, and it is the level's real difficulty
+step: playing Tobias, she runs **both** tricks back to back in one friendly breath — the
+tally, then the jab about the drain — and the picker has two icons on it for the first time.
+Round 5 hands over the phrase: *how many, against how do you know*, and sends him to Hetty.
 
-**Round 1 — Cass's prompt** *(crossfire)*
-> "Let's start easy. I'll be the Flock. *Ahem.* — 'You've been on this farm six weeks, Rue. You haven't earned an opinion about the water.' Well? Answer me."
+One tutorial, on `round:start` / `round-4`: **two** sentences are doing something this time,
+tag both. The "no score" / "no right answer" / "open the glass" beats already landed in 1.3.
 
-| | Line | Cass's reaction | Assessment |
-|---|---|---|---|
-| **A** *fallacy, −10* | "And you've been here so long you've forgotten how to fly, you moulting old windbag." | "Ha! Good sting, terrible answer. You've just agreed this is a contest about who we are. You'll lose that one — they're prettier than you." | "You answered an Ad Hominem with an Ad Hominem. Now there are two attacks on the floor and still nothing about the water." |
-| **B** *ineffective, 0* | "Six weeks and two days, actually." | "Six weeks and two days! Marvellous. Now they'll argue about the calendar and never about the drain." | "True and beside the point. Correcting the detail concedes that time-served is what matters." |
-| **C** *effective, +15* | "How long I've been here doesn't change what's in the pond. Come and look at the drain, and tell me I'm wrong." | "*That's* it. You didn't defend yourself — you made me look at the drain. Never defend yourself, Rue. Redirect." | "Names the swap — the attack was about you, the question is about the water — and moves the floor to something anyone can check." |
+> The forty-one used to be Bram's line, in the gossip rung that is now parked. Cass takes it
+> over so the boss's `s-r5-*` callback is still earned.
 
-**Round 2 — Cass's prompt** *(crossfire)*
-> "Harder. This one's Duchess's favourite, so listen. — 'Nobody's blaming you, dear. It's simply that paws and clean water don't mix. It isn't personal.' She has just insulted every animal on this farm who isn't a bird and made it sound like weather. Answer."
+### 1.6 — "What Hetty Saw" (Hetty)
 
-| | Line | Cass's reaction | Assessment |
-|---|---|---|---|
-| **A** *fallacy, −10* | "Geese are filthy. Everyone knows what a goose does in a pond." | "Now it's geese against the rest of us and nobody's fixing anything. She'd *let* you win that one, and you'd still lose the vote." | "A group attack answered with a group attack. The drain has left the room." |
-| **B** *ineffective, 0* | "That's a very rude thing to say, and I'd like an apology." | "You'll get your apology. She's marvellous at apologies. You'll also get the trough by the road." | "It *was* rude. But now the debate is about her manners, not about whether your paws are the cause." |
-| **C** *effective, +15* | "It sounds gentle, but it's still a claim about *what I am* instead of *what happened*. If my paws foul the pond, show me the pawprints. I'll show you the bent grate." | "Good. She dresses it up, so you undress it. 'What I am' against 'what happened.' Say that in front of Tobias and he'll write it down." | "Spots a soft Ad Hominem inside a polite sentence and converts it into a question that can actually be settled." |
+*`setsDialogFlags: ['hetty-grate-heard']`, which is what opens Bram's last two
+rungs — this is the rung that hands over the fact the level turns on, so finishing it has to
+be on the record. `revealChoiceAssessment: true`.*
 
-### 1.5 — Gossip at the Trough II: "Everyone Says"
+Round 1 dismisses whatever Rue found in the drain on the grounds that only an odd animal
+would have been in one — the first time the level attacks the *evidence-gathering* rather
+than the animal's origins — and then closes it all down with a headcount (`s-r1-4`,
+appeal-to-popularity), which is the practice for what Cass has just named. Round 2 is
+**crossfire, player-asks**: Rue puts a question about the outflow to Hetty, and all three
+options land the bent grate in her reply. The effective question gets it in one sentence;
+the others bury it in three. Round 3 is **entirely clean** — she moves on to Tobias and the
+joke about sheep — so the **Clean** button lesson survives.
 
-*Same flags as 1.2. Picker now shows two fallacies.*
+> All three of Rue's questions must surface the grate. The encounter sets `hetty-grate-heard`
+> on completion whatever the player picks, and later rungs gate on that flag — so a weak
+> question that failed to bring it out would set a flag for a fact the player never heard.
+> A round with no fallacy in it is still deliberate: it teaches that not every sentence is a
+> trap, and it is the only way to teach the **Clean** button.
 
-**Introduction:** "Bram the Drake has come to the trough to be fair to you. He thinks that is what he is doing."
+One tutorial on `round:start` / `round-1`: Continue is locked until you judge, including
+**Clean**. The gossip framing and the log-card route have already been taught.
 
-**Round 1 — Bram** *(gossip)*
-1. "You'll want to hear this before Sunday: the whole Flock has already agreed the pond should be ours." — **appeal-to-popularity**
-2. "Forty-one of us. You can't have forty-one animals be wrong about water." — **appeal-to-popularity**
-3. "Duchess puts the motion to Tobias at the Public Farm." — *clean*
+### 1.7 — "The Line You Have to Earn" (Bram teaches the locked line)
 
-**Round 2 — Bram** *(gossip)*
-1. "And frankly, the only one making a fuss is the raccoon, and nobody knew his name a month ago." — **ad-hominem**
-2. "Everyone I've asked says the newcomers are the problem." — **appeal-to-popularity**
-3. "The grate at the outflow's bent, but that's been bent for ages." — *clean*
+*`lesson`; `analysisEnabled: true` — the one lesson that needs the magnifying glass —
+`maxAnalysisAttempts: 5`, everything else hidden, `revealChoiceAssessment: true`.
+`setsDialogFlags: ['bram-taught-unlocks']`. Gated on `fallacy_known: ad-hominem`. Four rounds.*
 
-> Bram concedes the key fact without noticing it matters. The player now has the drain confirmed by the *other side*.
+The mechanic this rung exists for is the only one where spotting and speaking touch: an
+option with an `unlockCondition`, greyed out until the player tags a specific fallacy on a
+specific sentence. Until now the player met it cold in the skirmish, with a popup for
+explanation. Bram teaches it instead, the only way he can — by doing something unkind on
+purpose so that there is something to catch.
 
-### 1.6 — The Cranky Rooster Lab: "Dirty Feathers"
+Round 1 sets it up and apologises in advance. Round 2 is `requiresAnalysis`: Bram plays
+somebody at the trough who would rather the pond were not discussed, and puts an Ad Hominem
+about drains in the middle of it (`s-r2-3`), then breaks character to say it was meant to be
+horrible. Round 3's option C carries
+`unlockCondition: { round-2, s-r2-3, ad-hominem }` — it reads `locked` until the tag lands,
+and it is the only one of the three that names the move and hands the question back. Round 4
+gives the habit to keep: look at what they said before you look at what you want to say.
 
-*Flags: `targetQuality: 'logical_fallacy'`, moderator hidden, intro summary off, `revealChoiceAssessment: true`, analysis on (needed for round 3), `preventOptionsShuffle: true` on the two lab rounds.*
+Three tutorial steps, and the last one is the point: an unlocked option needs **two** clicks —
+one to reveal, one to say — which nothing else in the game explains. It fires on
+`interactive:statement_unlocked`, so it only appears once the player has actually opened it.
 
-**Introduction (carries the ethical guardrail — pitch idea 5's caution):** "Cass wants you to do something you are not going to do again. 'You can't catch a thief without picking a pocket,' he says. In here, the dirty answer is the winning answer. In front of Tobias it will cost you the farm — and Cass will remind you. Loudly."
+> `maxAnalysisAttempts` is raised from 3 to 5 here. Burning every attempt would leave the
+> payoff option shut for good, which is a dead end in the rung that teaches unlocking.
 
-**Round 1 — Cass's prompt:** "Right. Make me not want to listen to Bram. Don't argue with him. I want you to make the *yard* dislike him. Go."
+### 1.8 — "The Bent Grate" (skirmish)
 
-| | Line | Cass's reaction | Assessment |
-|---|---|---|---|
-| **A** *fallacy, **+15** — the goal* | "Bram spent all winter in the warm shed while the rest of us hauled feed. Why take water advice from a duck who's never been thirsty?" | "Filthy. Effective. Feel that little warm feeling? That's the feeling you'll get on Sunday when Duchess does it to you. Remember it." | "That's Ad Hominem, and it worked — you moved the yard without touching his argument. Notice how good it felt." |
-| **B** *ineffective, 0* | "Bram's argument about the pond isn't very well structured." | "Nobody's listening. You've bored them. Boring is its own kind of losing, but it isn't the lesson." | "Fair — but no yard has ever changed its mind because an argument was poorly structured." |
-| **C** *effective, **0** — never punished* | "Bram says the newcomers foul the pond, but the outflow grate is bent. That's where the mud comes from." | "Good line. Wrong classroom. Put it in your pocket and give me the dirty one." | "Clean, honest and evidence-led. Correct — and not what this exercise is for. Save it for Sunday." |
+*Full chrome except Insight: analysis on, `showInsightPoints: false`, moderator gauge on,
+recap on. 3 rounds. `setsDialogFlags: ['bram-grate-conceded']`.*
 
-> **C scores 0, never negative.** The Lab must never make honesty cost something.
+Bram's rehearsed courtesy at the fence line the evening before. Round 1 (`impact: -10`,
+`requiresAnalysis`) is the headcount and the six weeks. Round 2 is a `rebuttal` — no prompt,
+and the effective option is a proposal, not a question. Option **C is locked**
+behind `unlockCondition: { round-1, s-r1-3, ad-hominem }` — the mechanic 1.7 exists to
+teach, now under full chrome and with nothing prompting you — and offers him a walk to the outflow with Rue's whole case staked on what
+they find. He concedes on the spot, tries to keep the other half of his case, and gives up
+halfway through the sentence.
 
-**Round 2 — Cass's prompt:** "Now the other one. I want the yard to believe the pond should be fenced, and I don't want a single reason. Not one. Just make it feel settled."
+### 1.9 — "The Pond Motion" (boss)
 
-| | Line | Cass's reaction | Assessment |
-|---|---|---|---|
-| **A** *fallacy, **+15** — the goal* | "Every farm down the lane fenced their pond two summers ago. We're the only ones still arguing about it." | "Look at them nodding. Not one of them asked what the other farms actually did. That's the whole trick — it's a place to stand, not a thing to think." | "Appeal to Popularity. You gave them a crowd instead of a reason, and a crowd is easier to stand in than a reason is to check." |
-| **B** *fallacy, **+8** — right instinct, wrong trick* | "Only the newcomers are against the fence, and newcomers are famously stubborn." | "Wrong dirt. Right instinct. Do that on Sunday and Tobias will name it before I do." | "Also dirty — but that's Ad Hominem. You attacked the objectors instead of inventing a crowd." |
-| **C** *ineffective, 0* | "I think a fence would be sensible, personally." | "'Personally.' Nobody has ever won anything with 'personally.'" | "An opinion with no crowd and no reason behind it. Nobody moves." |
+*Full defaults except `showInsightPoints: false`. `playerSide: 'opposition'`,
+`availableLogicalFallacies: ['ad-hominem', 'appeal-to-popularity', 'false-dilemma']` — one
+Level-2 distractor, per the "few other fallacy types" rule in
+[logical_fallacies_distribution.md](./logical_fallacies_distribution.md). Talking to
+**Duchess** starts this; Tobias at the barn will only ever point you at her.*
 
-**Round 3 — Cass** *(NPC, `requiresAnalysis: true`, `impact: 0`) — the twist:*
-1. "Right, that's enough of that. Wash your beak." — *clean*
-2. "Now — the whole yard knows a raccoon can't be trusted near water, so I don't see why we're still talking." — **ad-hominem + appeal-to-popularity** *(both, one sentence)*
-3. "Tag it. Both of them. If you can't name what I just did to you, you'll never see it coming." — *clean*
-
-### 1.7 — Fence-line Skirmish: "The Bent Grate"
-
-*Full chrome: analysis on, insight visible (`startingInsightPoints: 1`), moderator gauge on, recap on. 3 rounds.*
-
-**Introduction:** "Bram has caught you at the fence line the evening before the Public Farm. He calls it a courtesy."
-
-**Round 1 — Bram** *(NPC, opening_constructive, `impact: -10`)*
-1. "Rue — a courtesy, before Sunday. The Flock is putting the motion regardless." — *clean*
-2. "Forty-one birds have already said yes, and forty-one is not a mistake." — **appeal-to-popularity**
-3. "You'd be arguing against the whole pond, and you've been on this farm six weeks." — **ad-hominem**
-
-**Round 2 — Rue** *(player, crossfire, with `opponentResponses`)*
-
-| | Line | Bram's response | Impact |
-|---|---|---|---|
-| **A** *fallacy* | "Everyone on the hauling crew thinks the grate is the problem — that's three of us, and we're the ones who carry the water." | "Three haulers against forty-one birds. Thank you, Rue. You've just made my argument for me." | −10 / −5 |
-| **B** *ineffective* | "Is forty-one a majority, though? How many animals are on this farm altogether?" | "More than forty-one, I expect. But they didn't turn up, did they." | 0 / 0 |
-| **C** *effective, **locked*** | "You said forty-one agreed, and that I've only been here six weeks. Neither of those is about the water. So let's do the one that is: come to the outflow with me now, and if the grate isn't bent, I'll drop it before Sunday." | "…It's bent. It's been bent since before the frost. That doesn't mean the newcomers aren't *also* — look. Take it up with Duchess on Sunday." | +20 / −5 |
-
-- **C** carries `unlockCondition: { npcRoundId: "round-1", sentenceId: "s-r1-3", fallacyId: "ad-hominem" }` — the first time speaking and spotting touch.
-- **C** assessment: "Names both moves — the crowd and the newcomer jab — as things that aren't about the water, then offers a check anyone can run. Bram concedes the grate on the record."
-
-**Round 3 — Bram** *(NPC, closing_constructive, `impact: -5`)*
-1. "Sunday, then. Tobias has the motion. Duchess speaks first." — *clean*
-2. "And Rue — she's much better at this than I am." — *clean*
-
-### 1.8 — The Public Farm: "The Pond Motion" (boss)
-
-*Full defaults. `playerSide: 'opposition'`, `startingInsightPoints: 2`, `availableLogicalFallacies: ['ad-hominem', 'appeal-to-popularity', 'false-dilemma']` — one already-taught Level-2 distractor, per the "few other fallacy types" rule in [logical_fallacies_distribution.md](./logical_fallacies_distribution.md). Talking to **Tobias** starts this; Duchess at the barn will point you at him.*
-
-**Motion:** *The Old Pond shall be reserved for the Flock; every animal not of the Flock shall water at the road trough.*
-
-Beat sheet for the 10 rounds of [plan_002.md](./to_process/plan_002.md). The full 3-option prose for every player round is authored in `src/data/debates/015_duchess_vs_rue.json`, following the A/B/C pattern above; the table below is the structure and the intent of each beat.
+Duchess is in `characters` and on stage and **speaks not one line** — she is the moderator,
+which in this engine means the centre stage slot and the score emoji. Round types are
+unlocked, so beats 3, 4, 7 and 8 read `— crossfire` in the wizard, on the log cards and in
+the recap heading. Beats 3 and 8 (Rue asks) use the player-asks wizard copy.
 
 | # | Beat | Content |
 |---|---|---|
-| 1 | NPC — Duchess, opening | Sets the motion. **appeal-to-popularity** ("forty-one of the Flock have already agreed"); soft **ad-hominem** ("no one blames the newcomers — they simply weren't raised near water"). |
-| 2 | Player — opening | **A** bandwagon back ("every animal outside the Flock…"); **B** the road trough is too far; **C** *effective* — the pond is the farm's only clean water, the fouling has a cause, and the cause can be checked. |
-| 3 | Player — crossfire, Rue asks | **C** *effective:* "Of the forty-one, how many have been to the outflow?" Duchess's response has to concede she has not. |
-| 4 | Player — crossfire, Duchess asks | `opponentPrompt` fuses both fallacies into one gracious question. **C** separates them and answers only the part about the water. |
-| 5 | NPC — Duchess, rebuttal | Her **ad-hominem** set piece: the mud cart, the straw in his ears, the six weeks. This is the round the player must analyze. |
-| 6 | Player — rebuttal | **C** is gated on tagging the ad-hominem in round 5 *and* on `bram-grate-conceded`. Unlocked line pays off *"what I am versus what happened"* and quotes Bram from the fence. The player can only quote him if they actually went. |
-| 7 | Player — crossfire, Duchess asks | The bandwagon closer: "Are forty-one animals wrong and one raccoon right?" **C** answers that agreeing is not checking. |
-| 8 | Player — crossfire, Rue asks | The exit question: "If the grate is fixed and the pond clears, does the motion lapse?" — Duchess cannot say yes without conceding cause. |
-| 9 | NPC — Duchess, closing | Pure **appeal-to-popularity** with one last gentle **ad-hominem**. |
-| 10 | Player — closing | **C** *effective:* "Forty-one animals agreeing is not forty-one animals checking. Bram checked — he told me the grate was bent before I asked him. Fix the grate. If the pond hasn't cleared by the frost, put the motion again and I'll haul the fence posts myself." |
+| 1 | NPC — Tobias, opening | The count (**appeal-to-popularity**) and the bin, offered as sympathy (**ad-hominem**). First wrong name. |
+| 2 | Player — opening | **C** *effective:* the pond is the farm's only clean water, the fouling has a cause, the cause can be looked at this evening. |
+| 3 | Player — crossfire, Rue asks | **C:** "Of the forty-one — how many have walked down to the outflow?" He has to say he does not know. |
+| 4 | Player — crossfire, Tobias asks | `opponentPrompt` fuses **both** fallacies into one gracious sentence. **C** takes it apart and answers only the part about the water. |
+| 5 | NPC — Tobias, rebuttal | The set piece: the mud cart and the bin (**ad-hominem**), then two roads and only two (**false-dilemma**). The round the player must analyse. |
+| 6 | Player — rebuttal | **C** is gated on tagging the ad-hominem in round 5 *and* on `bram-grate-conceded`. Pays off *"what I am versus what happened"* and quotes Bram — possible only if the player actually went to the fence. |
+| 7 | Player — crossfire, Tobias asks | The bandwagon closer. **C:** agreeing is not checking, and nobody has said what they checked. |
+| 8 | Player — crossfire, Rue asks | The exit question: if the grate is fixed and the pond clears, does the motion lapse? He cannot say yes without conceding cause. |
+| 9 | NPC — Tobias, closing | Pure **appeal-to-popularity** with one last gentle **ad-hominem**, so the last thing the floor holds is a fact about Rue's supper. |
+| 10 | Player — closing | **C:** "He is right that I eat out of the bins. Tuesdays are the good day. That is also how I know what is in your water — I have had my arm in that drain up to the shoulder, and not one of the forty-one has. So straighten the grate. If the pond has not run clear by the frost, put the motion again and I will haul the fence posts myself." |
 
-Round 10's C concedes falsifiability, which is the exact opposite of both fallacies — the level's thesis in one line.
+Round 10 carries `opponentResponses`, which is unusual for a closing beat and is there for
+one reason: Tobias gets the last word, and against **C** he uses Rue's name correctly for
+the first time all evening, works out why he had not been, and offers to hold the lamp.
+
+Round 10's C concedes falsifiability, which is the exact opposite of both fallacies — the
+level's thesis in one line, and the answer to the insult rather than a defence against it.
+
+---
+
+## Parked — cut from the Level 1 ladder
+
+These four were rungs until Level 1 was trimmed. The JSON, the prose and the
+tutorials are all still in the tree and still playable from **Other scenarios** on the main
+menu; they are simply off the farm, out of `LEVEL_1_SCENARIOS` and out of the goal spine.
+Their write-ups are kept because the next level will want the shapes.
+
+### "Answer Me" (Cass)
+
+*Analysis **off**, `revealChoiceAssessment: true`. Two player rounds, each an
+`opponentPrompt` + 3 options + 3 `opponentResponses`.*
+
+Two prompts: the plain one (six weeks does not buy you an opinion) and Tobias's favourite
+soft one (the bin, offered as sympathy). A/B/C is fallacy / ineffective / effective
+throughout, and Cass's verdict replaces the score. Her single most useful line lands here:
+*"You did not defend yourself, you made me look at the drain. Never defend yourself, Rue.
+Redirect."*
+
+### "Forty-One" (Bram)
+
+*Picker now shows two fallacies.*
+
+Bram comes to be fair to you and would rather nobody saw him do it. Round 1 is the
+headcount, twice. Round 2 is an Ad Hominem he apologises for mid-sentence, an Appeal to
+Popularity he reaches for instead, and then — as an afterthought, filed under "different
+thing" — the bent grate.
+
+> The player now has the drain confirmed by the *other side*, from an animal who does not
+> think he has said anything.
+
+### "Looking Twice" (Bram teaches Insight)
+
+*`startingInsightPoints: 2`, insight visible, moderator hidden, `encounterKind: 'gossip'`.
+`unlocksFeatures: ['insight_points']`. Two NPC rounds, both `requiresAnalysis`.*
+
+Bram's survival habit is that he never answers anything the first time he hears it. He
+demonstrates the shape he guards against — three true things and then a fourth riding out on
+the nodding — first with a bin (Ad Hominem, round 1, four sentences) and then with a
+headcount (Appeal to Popularity, round 2).
+
+**Insight is optional in Level 1, and the fiction says so out loud.** Round 2 closes with
+*"You will not need any of this on Sunday. You will have had time to think. I need it
+because I get one look at a room before it has decided about me."* No rung requires a spend;
+this one seeds exactly `HELP_INSIGHT_COST` so a single spend is affordable and the lesson
+costs the whole loan.
+
+Three tutorial steps, all on target kinds that already exist: `analysis_resources` (the
+counter), then `analysis_action: 'help'`, then `analysis_action: 'help_confirm'`. The
+counter step targets `debate_log_moderator_score`, which forces the Debate Log to expand
+before the tutorial opens — see `tutorialNeedsDebateLog`.
+
+### "Dirty Paws" (the Lab)
+
+*`targetQuality: 'logical_fallacy'`, `revealChoiceAssessment: true`, analysis on (needed
+for round 3), `preventOptionsShuffle: true` on the two lab rounds.*
+
+"You cannot catch a thief without picking a pocket," says Cass, who is aware of how that
+sounds coming from a fox. In here the dirty answer is the marked answer.
+
+- **Round 1** — make the yard dislike Bram without touching his argument. A is Ad Hominem
+  (**+15**, the goal), B is a structural critique (0, boring), **C is the true, clean,
+  evidence-led answer and scores 0 — never negative.** The Lab must never make honesty cost
+  something.
+- **Round 2** — make a fence feel settled with no reason at all. A is Appeal to Popularity
+  (**+15**), B is Ad Hominem (**+8** — right instinct, wrong dirt), C is "personally" (0).
+- **Round 3** — the twist. Cass fuses **both** fallacies into one sentence aimed at Rue and
+  makes him tag both: *"the whole yard already knows a raccoon cannot be trusted near
+  water."*
 
 ---
 
@@ -293,22 +466,24 @@ Round 10's C concedes falsifiability, which is the exact opposite of both fallac
 
 | Rung | File | Key mechanics |
 |---|---|---|
-| 1.1 | `src/data/debates/020_cass_teaches_ad_hominem.json` | `encounterKind: 'sparring'`; `teachesFallacies` + `setsDialogFlags`; round 4 `requiresAnalysis` |
-| 1.2 | `src/data/debates/021_hetty_ad_hominem_barrage.json` | `encounterKind: 'gossip'`; `requires` on `fallacy_known`; `setsDialogFlags` |
-| 1.3 | `src/data/debates/010_gossip_trough_hetty.json` | `encounterKind: 'gossip'`; `requiresAnalysis` on both rounds; no moderator, no recap, no intro summary |
-| 1.4 | `src/data/debates/011_sparring_cass_ad_hominem.json` | `encounterKind: 'sparring'`; `analysisEnabled: false`, `revealChoiceAssessment: true` |
-| 1.5 | `src/data/debates/012_gossip_trough_bram.json` | as 1.2, with two fallacies on the picker |
-| 1.6 | `src/data/debates/013_lab_cass_dirty_feathers.json` | `encounterKind: 'lab'`; `targetQuality: 'logical_fallacy'`, `preventOptionsShuffle` on the two lab rounds |
-| 1.7 | `src/data/debates/014_skirmish_bram_fenceline.json` | full chrome; `unlockCondition` on option C of round 2; `setsDialogFlags: ['bram-grate-conceded']` |
-| 1.8 | `src/data/debates/015_duchess_vs_rue.json` | full defaults; `requires` on knowing Ad Hominem **and** Hetty's flag; option C of round 6 ANDs in-debate `unlockCondition` with Bram's flag |
+| 1.1 | `030_bram_teaches_dialog.json` | `lesson`; moderator visible; light +8 on the restatements; `showRoundType: false`; no fallacies; `preventOptionsShuffle`; `setsDialogFlags` |
+| 1.2 | `031_bram_teaches_crossfire.json` | `lesson`; `showRoundType: true`; `unlocksFeatures: ['round_types']`; both halves of crossfire; `setsDialogFlags` |
+| 1.3 | `020_cass_teaches_ad_hominem.json` | `sparring`; `teachesFallacies` + `setsDialogFlags`; round 3 all-fallacy options; round 5 `requiresAnalysis` |
+| 1.4 | `021_hetty_ad_hominem_barrage.json` | `gossip`; `requires` on `fallacy_known`; `setsDialogFlags`; round 4 crossfire, Hetty asks |
+| 1.5 | `023_cass_teaches_appeal_to_popularity.json` | `sparring`; `teachesFallacies` + `setsDialogFlags`; round 2 all-fallacy options; round 4 `requiresAnalysis` with **two** fallacies in one statement |
+| 1.6 | `010_gossip_trough_hetty.json` | `gossip`; round 1 two fallacies; round 2 crossfire, Rue asks, grate in every reply; round 3 entirely clean; `setsDialogFlags` |
+| 1.7 | `032_bram_teaches_unlocks.json` | `lesson` with `analysisEnabled: true` and `maxAnalysisAttempts: 5`; `unlockCondition` on option C of round 3; `setsDialogFlags` |
+| 1.8 | `014_skirmish_bram_fenceline.json` | full chrome except Insight hidden; `unlockCondition` on option C of round 2; `setsDialogFlags` |
+| 1.9 | `015_tobias_vs_rue.json` | full defaults except Insight hidden; `requires` on both fallacies **and** Bram's flag; round 6 C ANDs an in-debate spot with that same flag |
 
-The ladder order lives in `LEVEL_1_SCENARIOS` in [`src/data/levels.ts`](../src/data/levels.ts),
-which also drives the main menu. Overworld gates live on `requires`; the menu is ungated.
+Parked, and no longer rungs: `011_sparring_cass_ad_hominem.json`,
+`012_gossip_trough_bram.json`, `022_bram_teaches_insight.json`,
+`013_lab_cass_dirty_tricks.json`.
 
 ## Encounter framing
 
-Only rungs 1.7 and 1.8 are debates. The other six set `mechanics.encounterKind`, which
-swaps the UI copy so the game stops calling a water-trough conversation a debate:
+Only rungs 1.8 and 1.9 are debates. The others set `mechanics.encounterKind`, which swaps
+the UI copy so the game stops calling a fence-line conversation a debate:
 
 | kind | log panel | closing line | Proposition / Opposition badges |
 |---|---|---|---|
@@ -316,6 +491,7 @@ swaps the UI copy so the game stops calling a water-trough conversation a debate
 | `gossip` | Trough Talk | "There is nothing more to overhear." | hidden |
 | `sparring` | Sparring Log | "That is the session done." | hidden |
 | `lab` | Lab Notes | "That is the exercise done." | hidden |
+| `lesson` | Lesson Notes | "That is the lesson done." | hidden |
 
 It also swaps the opening guidance in the wizard, and the introduction card's stripe reads
 "Setting" instead of "Moderator" where there is no moderator. `encounterKind` is
@@ -325,41 +501,48 @@ one beat of one, using the same chrome.
 ## Tutorials
 
 Only the **first** encounter of each mechanic type carries one, and each is deliberately
-tiny — 1–3 steps:
+tiny:
 
-| Rung | Steps | Teaches |
+| Rung | Entries / steps | Teaches |
 |---|---|---|
-| 1.1 teaching | 3 (1 + 2) | No score; open the footer magnifying glass; tag the sentence about *you*. This is the analysis-UI onboarding. |
-| 1.3 gossip | 3 | This is not a debate; open a Debate Log card, then its magnifying glass; Continue is locked until you judge (including **Clean**). A second path into the same modal. |
-| 1.4 sparring | 2 | Practice bout, nothing at stake; three lines, only one answers him. |
-| 1.6 lab | 2 | The dirty answer is the winning answer — and why, plus "never in front of Tobias". |
-| 1.7 skirmish | 2 | The moderator emoji and the Insight counter; one line is locked until you spot the fallacy. |
+| 1.1 lesson | 3 / 4 | What a round is; now you speak, three ways, no wrong one; the moderator emoji. Field Notes **Next** is a farm overlay after Leave. |
+| 1.2 lesson | 1 / 1 | They call this **crossfire**. The round label says so. |
+| 1.3 teaching | 4 / 5 | No score; there is no right answer in round 3; open the magnifying glass; tag the sentence about *you*; every Sparring Log card carries the same glass. Closing dialogue points at the two fallacy tabs. |
+| 1.4 gossip | 1 / 1 | This is not a debate. |
+| 1.5 teaching | 1 / 1 | **Two** sentences are doing something this time, tag both. |
+| 1.6 gossip | 1 / 1 | Continue is locked until you judge, including **Clean**. |
+| 1.7 lesson | 3 / 3 | Some answers are locked; catch him and the line opens; the third line only exists because you caught him; **one click opens it, a second says it**. |
+| 1.8 skirmish | 1 / 1 | The moderator is live again; the emoji is how she leans. |
 
-1.2, 1.5 and 1.8 carry none: they repeat a mechanic the player has already met. The lab's two
-steps are the one place the tutorial is load-bearing rather than convenience — a mode that
-rewards committing a fallacy needs its framing stated outright.
-
-1.1's spotting tutorial is two steps on purpose: step 1 is `target_only` on the footer
-Analyze button, so clicking it both opens the modal and advances the tutorial, and step 2's
-`submit_guess` target exists when it renders. Do not add a third step targeting Continue —
-by then the analysis modal is covering it. `requiresAnalysis` plus TrialUI's own hint copy
-already explain that Continue is locked.
+1.9 carries none: it repeats mechanics the player has already met. 1.8 used to carry a
+second step explaining the locked option; 1.7 now teaches that properly, so the reminder
+was removed rather than said twice.
 
 Messages use the tutorial rich-text grammar, which supports only `**bold**` and the six
 colour tags (`accent`, `danger`, `warning`, `success`, `info`, `muted`). A lone `*` renders
-literally — there is no italic.
+literally — there is no italic. The same is true of spoken dialogue: the wizard renders
+plain text, so an asterisk in a scenario line shows up as an asterisk.
 
 ## Notes for future levels
 
-- **Tobias** is an owl. He had been a tortoise in earlier drafts, unnamed except as "a tired old
-  Tortoise" in `pitch/001_barnaby_pip_privacy.md`.
-- The **bent outflow grate** is the level's discoverable fact. It is planted as gossip
-  (1.3 round 2), conceded by the opposition without their noticing (1.5 round 2), put on
-  the record with a witness (1.7), and cashed in twice in the boss debate (rounds 6 and 10).
-  It is also the natural first target if the "Investigation Day" mode in `pitch/002` is built.
-  Round 6's payoff line is gated on Bram's `bram-grate-conceded` flag as well as on tagging
-  the Ad Hominem in round 5, so the player can only quote him if they actually went to the fence.
-- The teaching phrase **"what I am" versus "what happened"** is handed to the player by
-  Cass in 1.1 and paid off in boss round 6. Later levels should introduce their own.
-- Rue's closing line concedes falsifiability on purpose. That is the level's thesis, and
-  it is the opposite of both fallacies it teaches.
+- The **bent outflow grate** is the level's discoverable fact. Extracted from Hetty in 1.6
+  round 2 (every question lands it), put on the record with a witness (1.8), and cashed in
+  twice in the boss debate (rounds 6 and 10). It is also the natural first target if the
+  "Investigation Day" mode in `pitch/002` is built. It used to be conceded a third time in
+  the parked gossip rung; the trimmed ladder gets it from Hetty and then from Bram under
+  pressure, which is enough.
+- The teaching phrase **"what I am" versus "what happened"** is handed to the player by Cass
+  in 1.3, and **"how many, against how do you know"** in 1.5. Both are paid off in boss round
+  6. Later levels should introduce their own.
+- **The insult is the evidence.** Rue's answer to "you eat out of the bins" is never a
+  denial; it is "yes, and that is why I know." Any later level that teaches a fallacy aimed
+  at *who someone is* should look for the same move, because it is the only one that beats
+  an Ad Hominem without becoming one.
+- **Insight is not in Level 1 at all any more.** Nothing unlocks `insight_points`, so the
+  counter, the pill and the Help button stay hidden the whole way through, including in the
+  boss. The lesson that taught it is parked, not deleted. Whichever level picks it back up
+  inherits the promise it was written with: nothing should ever *require* a spend.
+- **Round-type labels unlock in 1.2.** From Bram's crossfire lesson on, every round's
+  `type` is player-facing. NPC monologues at the post are `gossip`; a proposal with no
+  question is a `rebuttal`; only the rounds that actually ask and answer are labelled
+  `— crossfire`. The boss's beats 3, 4, 7 and 8 finally announce themselves.

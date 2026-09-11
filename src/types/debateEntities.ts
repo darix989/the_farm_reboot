@@ -13,6 +13,7 @@ import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 // zustand into every module that only wants the content schema.
 import type { GameCondition } from '../utils/gameConditions';
 import type { DialogFlagId } from '../data/dialogFlags';
+import type { GameFeatureId } from '../data/gameFeatures';
 
 /** Always exactly two sides in a debate. */
 export type Side = 'proposition' | 'opposition';
@@ -339,8 +340,11 @@ export interface TutorialArtificialInteraction {
   action: TutorialArtificialInteractionAction;
 }
 
-export type TutorialInteractionMode = 'modal_only' | 'target_only';
+export type TutorialInteractionMode = 'modal_only' | 'target_only' | 'highlight';
 export type TutorialStepOnFinish = 'exit';
+
+/** Field Notes sections. Mirrors `CodexSection` in `codexUiStore` so this file stays store-free. */
+export type TutorialCodexSection = 'next' | 'known' | 'spotted' | 'dialogs';
 
 /**
  * Typed reference to a UI element that can be highlighted (and optionally be
@@ -350,6 +354,10 @@ export type TutorialTargetRef =
   | { kind: 'panel'; panel: 'debate_log' | 'wizard' | 'interactive' }
   /** Moderator opinion emoji (+ insight strip) in the debate log panel header. */
   | { kind: 'debate_log_moderator_score' }
+  /** Moderator opinion emoji on the *collapsed* log's recap chip. */
+  | { kind: 'debate_log_recap_moderator_score' }
+  /** The ◀ / ▶ button that collapses or expands the log panel as a whole. */
+  | { kind: 'debate_log_panel_toggle' }
   | { kind: 'modal_round_recap_score' }
   | { kind: 'round_recap_action'; action: 'continue' }
   | { kind: 'intro_summary_action'; action: 'begin_round_1' | 'close' }
@@ -370,7 +378,17 @@ export type TutorialTargetRef =
         | 'close';
     }
   /** Attempts remaining + Insight Points recap row in the analysis modal body. */
-  | { kind: 'analysis_resources' };
+  | { kind: 'analysis_resources' }
+  /** Overworld / menu button that opens Field Notes. */
+  | { kind: 'codex_open' }
+  /** One Field Notes tab (`next` / `known` / `spotted` / `dialogs`). */
+  | { kind: 'codex_tab'; section: TutorialCodexSection }
+  /** The Field Notes tablist as a whole. */
+  | { kind: 'codex_tabs' }
+  /** The Field Notes body (current section's content). */
+  | { kind: 'codex_content' }
+  /** Field Notes Close control. */
+  | { kind: 'codex_close' };
 
 /** One panel in the intro tutorial. */
 export interface DebateTutorialStep {
@@ -404,6 +422,8 @@ export interface DebateTutorialStep {
    *   interactable (`scenario 2.1`).
    * - Present + `interactionMode: 'target_only'`: target is the only allowed
    *   in-app interaction (`scenario 2.2`).
+   * - Present + `interactionMode: 'highlight'`: visual spotlight only; overlay
+   *   Continue / Got it still work, and sibling Field Notes controls stay live.
    */
   targetComponent?: TutorialTargetRef;
   /** Behavior used when `targetComponent` is present. Defaults to `modal_only`. */
@@ -460,7 +480,7 @@ export interface DebateScenarioTutorialEntry {
  *
  * `'debate'` covers the full Public Farm and the one-beat skirmishes that use its chrome.
  */
-export type EncounterKind = 'debate' | 'gossip' | 'sparring' | 'lab';
+export type EncounterKind = 'debate' | 'gossip' | 'sparring' | 'lab' | 'lesson';
 
 /**
  * Feature flags that let a scenario ship as a *smaller mode* than a full Public Farm
@@ -500,6 +520,12 @@ export interface DebateScenarioMechanics {
   maxAnalysisAttempts?: number;
   /** Selects the encounter's UI copy. Presentation only. Default `'debate'`. */
   encounterKind?: EncounterKind;
+  /**
+   * The round-type half of the wizard label (`— crossfire`), the type line on debate-log
+   * cards, and the analysis-modal subtitle. Default `true`. Hidden globally until the
+   * `round_types` feature is unlocked, even when this flag is on.
+   */
+  showRoundType?: boolean;
 }
 
 /**
@@ -541,6 +567,13 @@ export interface DebateScenarioJson {
    * carries player-facing copy for the Codex and for the locked-encounter hint.
    */
   setsDialogFlags?: readonly DialogFlagId[];
+  /**
+   * Features unlocked once this encounter is finished. Same leave-timing as
+   * `teachesFallacies`: a walked-out lesson unlocks nothing. The teaching encounter can
+   * still *show* the feature during play — `applyFeatureUnlocks` treats these ids as
+   * visible for this scenario, and the store write persists them on leave.
+   */
+  unlocksFeatures?: readonly GameFeatureId[];
   rounds: RoundEntry[];
   /**
    * Overlay tutorials wired to specific debate events via the typed event bus.

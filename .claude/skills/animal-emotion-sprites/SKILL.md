@@ -20,9 +20,9 @@ settings). **Never run a generating command without the user having asked for th
 generation, and confirm the scope first if they gave a budget or an ambiguous "do the rest".**
 `--dry-run` is free and needs no key — start there, always.
 
-State the projected cost before generating: `clips × 4 credits`. The five imported animals
-that still have no emotion art (`cow`, `cow-female-001`, `dog`, `mouse`, `pig`) are 25 clips,
-~100 credits. Do not generate them until asked.
+State the projected cost before generating: `clips × 4 credits`. The four imported animals
+that still have no emotion art (`cow`, `cow-female-001`, `mouse`, `pig`) are 20 clips,
+~80 credits. Do not generate them until asked.
 
 ## The pipeline in one screen
 
@@ -217,11 +217,13 @@ Full contract in [references/ludo-api.md](references/ludo-api.md). The four that
 - **The REST default flips from synchronous to async on 2026-09-10.** The client already sends
   `async: true` and long-polls, so it is unaffected. Do not "simplify" that away.
 
-**The original six are generated** (`donkey-grey`, `owl`, `raccoon`, `fox`, `white-sheep-1`,
-`brown-wolf` — 30 clips). Five more atlases are imported (`cow`, `cow-female-001`, `dog`,
-`mouse`, `pig`) and listed in the emotion manifest, but they have no generated clips yet —
-do not generate them until asked. Reach for this skill to regenerate a clip that reads
-wrong, add an emotion to the vocabulary, or give art to a newly added animal.
+**Seven animals are generated** (`donkey-grey`, `owl`, `raccoon`, `fox`, `white-sheep-1`,
+`brown-wolf`, `dog`). Four more atlases are imported (`cow`, `cow-female-001`, `mouse`,
+`pig`) and listed in the emotion manifest, but they have no generated clips yet — do not
+generate them until asked. `dog` has all five body clips and four portraits (`talking`,
+`doubtful`, `angry`, `thinking`); sneaky was not cropped, because the head dip saturates
+the aligner. Reach for this skill to regenerate a clip that reads wrong, add an emotion
+to the vocabulary, or give art to a newly added animal.
 
 ## `scripts/ludo/promoted-clips.json` is the source of truth
 

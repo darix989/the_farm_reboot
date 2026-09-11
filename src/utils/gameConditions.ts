@@ -1,7 +1,7 @@
 /**
  * One requirement, evaluated against everything the player has done anywhere in the game.
  *
- * Two features are built on this and they share the vocabulary deliberately:
+ * Several features are built on this and they share the vocabulary deliberately:
  *
  * - **Encounter gates** (`ScenarioEntry.requires`) — by default an animal will talk to you,
  *   but the button that starts their encounter stays disabled until the conditions are met.
@@ -10,6 +10,8 @@
  *   only appears because of something that happened in a *different* conversation. The older
  *   `PlayerOption.unlockCondition` still handles the in-debate case (spot a fallacy here, unlock
  *   a reply here) and is unchanged; this is the same idea with the whole game in scope.
+ * - **Farm overlay tutorials** (`src/data/farmTutorials.ts`) — `triggerWhen` uses the same
+ *   conditions; finishing one writes `tutorial_completed`.
  *
  * Lives in `utils/` rather than `react/` because the Phaser layer evaluates it too. Evaluation
  * is pure over a {@link ConditionContext} snapshot so React can subscribe to the underlying
@@ -19,6 +21,8 @@ import type { LogicalFallacyId } from '../types/debateEntities';
 import type { DebateScenarioKey } from '../data/levels';
 import { logicalFallacyLabel } from '../data/fallacyCatalog';
 import { dialogFlagById, type DialogFlagId } from '../data/dialogFlags';
+import { gameFeatureById, type GameFeatureId } from '../data/gameFeatures';
+import { farmTutorialById, type FarmTutorialId } from '../data/farmTutorials';
 import { useCodexStore, type SpottedFallacy } from '../store/codexStore';
 import { useProgressStore } from '../store/progressStore';
 import getLabel from '../data/labels';
@@ -34,14 +38,20 @@ export type GameCondition =
   /** The player has finished this encounter, however well or badly it went. */
   | { kind: 'encounter_completed'; scenarioKey: DebateScenarioKey }
   /** A named thing has happened to the player. See `src/data/dialogFlags.ts`. */
-  | { kind: 'dialog_flag'; flagId: DialogFlagId };
+  | { kind: 'dialog_flag'; flagId: DialogFlagId }
+  /** A named mechanic has been taught. See `src/data/gameFeatures.ts`. */
+  | { kind: 'feature_unlocked'; featureId: GameFeatureId }
+  /** A farm overlay tutorial has been finished. See `src/data/farmTutorials.ts`. */
+  | { kind: 'tutorial_completed'; tutorialId: FarmTutorialId };
 
 /** Everything {@link isConditionMet} is allowed to look at. */
 export interface ConditionContext {
   knownFallacies: readonly LogicalFallacyId[];
   spottedFallacies: readonly SpottedFallacy[];
   dialogFlags: readonly DialogFlagId[];
+  unlockedFeatures: readonly GameFeatureId[];
   completedScenarios: readonly DebateScenarioKey[];
+  completedTutorials: readonly FarmTutorialId[];
 }
 
 /**
@@ -52,11 +62,14 @@ export interface ConditionContext {
  */
 export function conditionContextSnapshot(): ConditionContext {
   const codex = useCodexStore.getState();
+  const progress = useProgressStore.getState();
   return {
     knownFallacies: codex.knownFallacies,
     spottedFallacies: codex.spottedFallacies,
     dialogFlags: codex.dialogFlags,
-    completedScenarios: useProgressStore.getState().completedScenarios,
+    unlockedFeatures: codex.unlockedFeatures,
+    completedScenarios: progress.completedScenarios,
+    completedTutorials: progress.completedTutorials,
   };
 }
 
@@ -74,6 +87,10 @@ export function isConditionMet(condition: GameCondition, ctx: ConditionContext):
       return ctx.completedScenarios.includes(condition.scenarioKey);
     case 'dialog_flag':
       return ctx.dialogFlags.includes(condition.flagId);
+    case 'feature_unlocked':
+      return ctx.unlockedFeatures.includes(condition.featureId);
+    case 'tutorial_completed':
+      return ctx.completedTutorials.includes(condition.tutorialId);
   }
 }
 
@@ -118,6 +135,15 @@ export function conditionHint(condition: GameCondition): string {
     case 'dialog_flag': {
       const flag = dialogFlagById(condition.flagId);
       return flag ? getLabel(flag.titleLabel) : getLabel('conditionHintEncounterCompleted');
+    }
+    case 'feature_unlocked': {
+      const feature = gameFeatureById(condition.featureId);
+      return feature ? getLabel(feature.titleLabel) : getLabel('conditionHintEncounterCompleted');
+    }
+    case 'tutorial_completed': {
+      return farmTutorialById(condition.tutorialId)
+        ? getLabel('conditionHintTutorialCompleted')
+        : getLabel('conditionHintEncounterCompleted');
     }
   }
 }

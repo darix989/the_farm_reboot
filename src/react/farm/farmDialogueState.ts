@@ -3,6 +3,8 @@ import { scenarioRequirements, type DebateScenarioKey } from '../../data/levels'
 import { characterById } from '../../data/characters';
 import { farmTalkBeats, farmTalkSlotKey, type FarmTalkBeat } from '../../data/farmTalk';
 import { farmNpcById } from '../../data/farmMap';
+import { completedLessonsFor, type TutorialLesson } from '../../data/tutorialLessons';
+import type { DialogFlagId } from '../../data/dialogFlags';
 import { useProgressStore } from '../../store/progressStore';
 import {
   conditionContextSnapshot,
@@ -38,6 +40,13 @@ export interface FarmDialogueState {
    * would be stale.
    */
   scenarioRequires: readonly GameCondition[];
+  /**
+   * Set when the last beat of this farm talk finishes revealing. Only greeters with
+   * `talkStages[].completesFlag` use this — Dot is the one that needs it.
+   */
+  completesFlag?: DialogFlagId;
+  /** Lessons this animal has already taught, for the replay menu. Empty for everyone but Bram. */
+  lessons: readonly TutorialLesson[];
 }
 
 export function farmDialogueFor(npcId: string): FarmDialogueState | null {
@@ -47,6 +56,7 @@ export function farmDialogueFor(npcId: string): FarmDialogueState | null {
 
   let next: DebateScenarioKey | null = null;
   let suffix: string;
+  let completesFlag: DialogFlagId | undefined;
 
   if (npc.scenarios.length > 0) {
     next = useProgressStore.getState().nextScenarioFor(npc.scenarios);
@@ -56,6 +66,7 @@ export function farmDialogueFor(npcId: string): FarmDialogueState | null {
     const ctx = conditionContextSnapshot();
     const stage = npc.talkStages.find((entry) => !isConditionMet(entry.until, ctx));
     suffix = stage?.suffix ?? 'Done';
+    completesFlag = stage?.completesFlag;
   } else {
     suffix = 'Done';
   }
@@ -67,6 +78,8 @@ export function farmDialogueFor(npcId: string): FarmDialogueState | null {
     beats: farmTalkBeats(npc.id, suffix),
     scenario: next,
     scenarioRequires: next ? scenarioRequirements(next) : [],
+    completesFlag,
+    lessons: completedLessonsFor(npc.id, useProgressStore.getState().completedScenarios),
   };
 }
 

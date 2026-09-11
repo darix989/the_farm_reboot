@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { reportBootProgress } from '../bootProgress';
+import { addCoverBackground } from '../coverBackground';
 
 export class Preloader extends Scene {
   constructor() {
@@ -7,10 +8,9 @@ export class Preloader extends Scene {
   }
 
   init() {
-    //  We loaded this image in our Boot Scene, so we can display it here.
-    //  Centred on the 1920x1080 stage (see `STAGE_DESIGN_WIDTH/HEIGHT`), not the
-    //  template's original 1024x768.
-    this.add.image(960, 540, 'background');
+    //  Loaded in Boot. Cover-scaled so a 16:9 painting fills the stage; the React
+    //  loading overlay sits on top of it.
+    addCoverBackground(this, 'background');
 
     //  The progress bar itself is React's (`GameLoadingScreen`), drawn over this backdrop.
     //  It is the same overlay that gates the menu until the game is genuinely ready, so

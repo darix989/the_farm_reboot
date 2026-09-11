@@ -1,0 +1,320 @@
+{
+  "id": "level1-bram-teaches-unlocks",
+  "introduction": "Bram is at the fence again, and he has one more piece, and he is sorry about it in advance. This one he cannot explain at you. He has to do something unkind first, and he would rather you knew that going in.",
+  "playerSide": "opposition",
+  "characters": {
+    "bram": "Bram",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [
+    {
+      "id": "ad-hominem",
+      "explanation": "Answering the animal instead of the argument. What Rue is, or what Rue does with his evenings, settles nothing about the water."
+    }
+  ],
+  "availableLogicalFallacies": ["ad-hominem"],
+  "setsDialogFlags": ["bram-taught-unlocks"],
+  "mechanics": {
+    "analysisEnabled": true,
+    "maxAnalysisAttempts": 5,
+    "showInsightPoints": false,
+    "showModeratorOpinion": false,
+    "showRoundRecap": false,
+    "showIntroSummary": false,
+    "revealChoiceAssessment": true,
+    "encounterKind": "lesson",
+    "showRoundType": false
+  },
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "opening_constructive",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r1-bram",
+        "speakerId": "bram",
+        "type": "opening_constructive",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Sorry. One more piece and then I will let you get on. You have the name for the trick now — Cass will have seen to that.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "Here is the part nobody says out loud. Some of what you could answer with is already yours. And some of it you cannot reach at all until you have caught the other animal at something.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-3",
+            "text": "It sounds unfair. It is not, quite — you cannot name a thing you have not noticed. I thought I would show you rather than explain it badly. On myself, if that is all right.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "rebuttal",
+      "speakerId": "bram",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r2-bram",
+        "speakerId": "bram",
+        "type": "rebuttal",
+        "sentences": [
+          {
+            "id": "s-r2-1",
+            "text": "Right. I am not me for a moment. I am somebody at the trough who would very much rather you stopped asking about the pond.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-2",
+            "text": "The water has been that colour on and off for years, and nobody minded before the frost.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-3",
+            "text": "And it is [accent]a raccoon telling us the pond is dirty[/accent] — an animal who goes down the outflow with his whole arm in it. I would not take a view on clean water from you.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "The question is what fouled the water. This answers it by describing Rue, which tells you nothing about the pond."
+              }
+            ]
+          },
+          {
+            "id": "s-r2-4",
+            "text": "Sorry. That was horrible. It is meant to be. Go on — find it before I lose my nerve.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "rebuttal",
+      "preventOptionsShuffle": true,
+      "options": [
+        {
+          "id": "r3-opt-a",
+          "quality": "logical_fallacy",
+          "impact": 0,
+          "reason": "You did it straight back at him. Satisfying, and now there are two animals in this conversation talking about each other and none about the pond.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-a-1",
+              "text": "You are a wolf. Of course you want everybody looking down the drain at me and not at you.",
+              "logicalFallacies": [
+                {
+                  "id": "ad-hominem",
+                  "explanation": "Being a wolf is a fact about Bram. It disposes of him without touching a word he said."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "A fair correction to the wrong sentence. You answered the one about the frost and let the one about you stand.",
+          "sentences": [
+            {
+              "id": "s-r3-opt-b-1",
+              "text": "It has not been brown for years. It went brown after the frost, and that is a different thing.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r3-opt-c",
+          "quality": "effective",
+          "impact": 0,
+          "reason": "You named the move and handed the question back. That is the whole shape of it: say what they did, then ask for the argument again.",
+          "unlockCondition": {
+            "npcRoundId": "round-2",
+            "sentenceId": "s-r2-3",
+            "fallacyId": "ad-hominem"
+          },
+          "sentences": [
+            {
+              "id": "s-r3-opt-c-locked",
+              "text": "locked",
+              "logicalFallacies": []
+            }
+          ],
+          "unlockedSentences": [
+            {
+              "id": "s-r3-opt-c-1",
+              "text": "You did not say the water is clean. You said I am dirty. Only one of those is about the pond — say that one again and I will answer it.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r3-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-a",
+            "speakerId": "bram",
+            "type": "rebuttal",
+            "sentences": [
+              {
+                "id": "s-resp-r3-a-1",
+                "text": "Ah. Now we are both at it. It is easier than it looks, is it not — and neither of us has been near the water for two rounds.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-b",
+            "speakerId": "bram",
+            "type": "rebuttal",
+            "sentences": [
+              {
+                "id": "s-resp-r3-b-1",
+                "text": "That is true, and it is the wrong sentence. I said something about you, and you let me keep it. They will let me keep it too.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        },
+        {
+          "forOptionId": "r3-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r3-c",
+            "speakerId": "bram",
+            "type": "rebuttal",
+            "sentences": [
+              {
+                "id": "s-resp-r3-c-1",
+                "text": "Yes. That one. You said what I had done and then you asked for the argument back, and I have nowhere to stand. That is the line that was shut.",
+                "logicalFallacies": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "closing_constructive",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r4-bram",
+        "speakerId": "bram",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r4-1",
+            "text": "That is it. The line was there the whole time. You could not say it until you had noticed what I did, because it is a sentence about what I did.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-2",
+            "text": "You will meet a grey one again. When you do — [accent]look at what they just said before you look at what you want to say[/accent]. The answer is usually hiding in their line, not yours.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-3",
+            "text": "Sorry. That was a long one. I will pretend I am checking the fence.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "unlocks-what-this-is",
+      "trigger": {
+        "event": "introduction:start"
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Some answers are **[warning]locked[/warning]** until you have earned them.\n\n**[muted]Bram is about to show you how. Catch him at it and the line opens.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "unlocks-the-locked-line",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-3"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "That third line was **[warning]locked[/warning]**.\n\n**[muted]Lines like it open only when you catch what the other animal did. Spotting and speaking are the same game.[/muted]**",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r3-opt-c"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "unlocks-click-again",
+      "trigger": {
+        "event": "interactive:statement_unlocked",
+        "where": {
+          "roundId": "round-3"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "One click **[accent]opens[/accent]** it. Click it again to **[success]say[/success]** it.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "interactive_option",
+              "optionId": "r3-opt-c"
+            },
+            "modal": {
+              "size": "small",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

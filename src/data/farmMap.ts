@@ -13,6 +13,7 @@
 import type { DebateScenarioKey } from './levels';
 import type { Labels } from './labels';
 import type { GameCondition } from '../utils/gameConditions';
+import type { DialogFlagId } from './dialogFlags';
 
 export const FARM_WORLD_WIDTH = 2400;
 export const FARM_WORLD_HEIGHT = 1600;
@@ -72,7 +73,7 @@ export interface FarmNpc {
    * non-empty. Each stage is used while its `until` condition is unmet; after the last
    * one is met, the `Done` beats play.
    */
-  talkStages?: readonly { suffix: string; until: GameCondition }[];
+  talkStages?: readonly { suffix: string; until: GameCondition; completesFlag?: DialogFlagId }[];
 }
 
 /**
@@ -88,7 +89,7 @@ export const FARM_ZONES: readonly FarmZone[] = [
   { id: 'path-west', kind: 'path', x: 520, y: 780, width: 560, height: 120 },
   { id: 'path-south', kind: 'path', x: 1180, y: 1180, width: 620, height: 120 },
 
-  // The Big Barn (north-west) — Duchess and Tobias.
+  // The Big Barn (north-west) — Tobias, and Duchess who has the floor.
   {
     id: 'barn-body',
     kind: 'barn',
@@ -131,10 +132,21 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     x: 1240,
     y: 760,
     scenarios: [],
+    // One stage per stop on the spine, so the greeter and Field Notes always name the same
+    // animal. Stage 1 spans both fence lessons; each stage ends on the condition the *next*
+    // stop is waiting for.
     talkStages: [
-      { suffix: '1', until: { kind: 'fallacy_known', fallacyId: 'ad-hominem' } },
-      { suffix: '2', until: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' } },
-      { suffix: '3', until: { kind: 'encounter_completed', scenarioKey: '015_duchess_vs_rue' } },
+      {
+        suffix: '1',
+        completesFlag: 'dot-welcomed',
+        until: { kind: 'dialog_flag', flagId: 'bram-taught-crossfire' },
+      },
+      { suffix: '2', until: { kind: 'fallacy_known', fallacyId: 'ad-hominem' } },
+      { suffix: '3', until: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' } },
+      { suffix: '4', until: { kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' } },
+      { suffix: '5', until: { kind: 'dialog_flag', flagId: 'hetty-grate-heard' } },
+      { suffix: '6', until: { kind: 'dialog_flag', flagId: 'bram-grate-conceded' } },
+      { suffix: '7', until: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' } },
     ],
   },
   {
@@ -149,32 +161,41 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     id: 'cass',
     x: 520,
     y: 860,
-    scenarios: [
-      '020_cass_teaches_ad_hominem',
-      '011_sparring_cass_ad_hominem',
-      '013_lab_cass_dirty_feathers',
-    ],
+    // Names Ad Hominem, then Appeal to Popularity once Hetty has used the first on him.
+    scenarios: ['020_cass_teaches_ad_hominem', '023_cass_teaches_appeal_to_popularity'],
+    gateTalk: true,
   },
   {
     id: 'bram',
     x: 1360,
     y: 1250,
-    scenarios: ['012_gossip_trough_bram', '014_skirmish_bram_fenceline'],
+    // How a round works, then crossfire, then how to open a locked line, then the
+    // skirmish that needs it. He offers them strictly in order, so the lesson always
+    // lands before the encounter that uses it — see `farmDialogueState.ts`.
+    scenarios: [
+      '030_bram_teaches_dialog',
+      '031_bram_teaches_crossfire',
+      '032_bram_teaches_unlocks',
+      '014_skirmish_bram_fenceline',
+    ],
+    gateTalk: true,
   },
   {
-    id: 'duchess',
+    id: 'tobias',
     x: 700,
     y: 620,
     scenarios: [],
     talkStages: [
-      { suffix: '1', until: { kind: 'encounter_completed', scenarioKey: '015_duchess_vs_rue' } },
+      { suffix: '1', until: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' } },
     ],
   },
   {
-    id: 'tobias',
+    // The moderator holds the motion, so she is the animal you go to when you are ready
+    // for the floor. Tobias will only ever point you at her.
+    id: 'duchess',
     x: 880,
     y: 640,
-    scenarios: ['015_duchess_vs_rue'],
+    scenarios: ['015_tobias_vs_rue'],
   },
 ];
 

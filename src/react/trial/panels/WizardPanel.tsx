@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import styles from './TrialPanels.module.scss';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TypewriterText from '../components/TypewriterText';
+import SpokenRichText from '../components/SpokenRichText';
+import { plainSpokenText } from '../utils/spokenMarkup';
 import SpottedFallacyIcons from '../components/SpottedFallacyIcons';
 import { WIZARD_SCROLL_KEY } from '../../tutorial/artificialInteractions';
 import shared from '../trialShared.module.scss';
@@ -167,7 +169,7 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
                       {reveal.spoken.map((text, index) => (
                         // Append-only list: a sentence never moves off the index it landed on.
                         <p key={index} className={styles.trialWizardSentence}>
-                          {text}
+                          <SpokenRichText text={text} />
                         </p>
                       ))}
                       {reveal.typing !== null && (
@@ -184,7 +186,9 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
                       )}
                     </>
                   ) : (
-                    <p className={styles.trialWizardSentence}>{detail.body}</p>
+                    <p className={styles.trialWizardSentence}>
+                      <SpokenRichText text={detail.body} />
+                    </p>
                   )}
                 </div>
                 {(!reveal || reveal.settled) &&
@@ -199,7 +203,7 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
               </div>
             </div>
           )}
-          {revealTyping && reveal && (
+          {reveal && reveal.typing !== null && (
             // Keyed on the position so the region remounts per sentence and is announced once,
             // in full, rather than growing a character at a time.
             <p
@@ -208,7 +212,7 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
               aria-atomic="true"
               className={styles.trialWizardRevealAnnouncer}
             >
-              {reveal.typing}
+              {plainSpokenText(reveal.typing)}
             </p>
           )}
         </ScrollFadeContainer>

@@ -1,0 +1,337 @@
+{
+  "id": "level1-cass-teaches-appeal-to-popularity",
+  "introduction": "You come back to the west post with a name in your pocket and a sheep's worth of it ringing in your ears. Cass does not ask how it went. She says one number at you — [accent]forty-one[/accent] — and waits to see whether you flinch.",
+  "introductionSummary": "Rue returns to the sparring post already stung once. Cass opens on a number rather than an argument, and waits.",
+  "playerSide": "opposition",
+  "characters": {
+    "cass": "Cass",
+    "rue": "Rue"
+  },
+  "logicalFallacies": [
+    {
+      "id": "appeal-to-popularity",
+      "explanation": "Counting the animals who agree instead of the reasons they have. How many is not the same question as how do you know."
+    },
+    {
+      "id": "ad-hominem",
+      "explanation": "Answering the animal instead of the argument. What Rue is settles nothing about the water."
+    }
+  ],
+  "availableLogicalFallacies": ["appeal-to-popularity", "ad-hominem"],
+  "teachesFallacies": ["appeal-to-popularity"],
+  "setsDialogFlags": ["cass-named-appeal-to-popularity"],
+  "mechanics": {
+    "showInsightPoints": false,
+    "showModeratorOpinion": false,
+    "showRoundRecap": false,
+    "showIntroSummary": false,
+    "revealChoiceAssessment": true,
+    "encounterKind": "sparring"
+  },
+  "rounds": [
+    {
+      "kind": "npc",
+      "id": "round-1",
+      "roundNumber": 1,
+      "type": "gossip",
+      "speakerId": "cass",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r1-cass",
+        "speakerId": "cass",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r1-1",
+            "text": "Sit. Different trick today, and you will like this one less, because it sounds like a reason.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-2",
+            "text": "Forty-one. That is the number you will hear all week. Forty-one of the Meadow-Born have already put their names to the motion.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-3",
+            "text": "Nobody will tell you what any of the forty-one looked at. They will only tell you that there were forty-one of them.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Cass opens on the number the meadow keeps repeating, and on the fact that nobody says what any of them actually checked."
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-2",
+      "roundNumber": 2,
+      "type": "crossfire",
+      "opponentPromptImpact": 0,
+      "opponentPrompt": {
+        "id": "stmt-r2-cass",
+        "speakerId": "cass",
+        "type": "crossfire",
+        "sentences": [
+          {
+            "id": "s-r2-p1",
+            "text": "Tell me why the motion is going to pass. Not whether it should. Why it will.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r2-p2",
+            "text": "Use the number. I want to hear it in your mouth before somebody else puts it there.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "She makes him argue that the motion will pass, and insists he reach for the number to do it."
+      },
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "logical_fallacy",
+          "impact": 0,
+          "reason": "You settled the question by counting. Forty-one animals agreeing is a fact about the meadow, not about the water.",
+          "summary": "You argue from the tally: most of the meadow has said yes, so the thing is already decided.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-a-1",
+              "text": "Forty-one have already said yes. That is most of the meadow. It will pass because it has as good as passed.",
+              "logicalFallacies": [
+                {
+                  "id": "appeal-to-popularity",
+                  "explanation": "The size of the agreement is offered as the reason. It answers how many, not how they know."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "logical_fallacy",
+          "impact": 0,
+          "reason": "You leaned on the size of the crowd and called it evidence. A meadow can be wrong all together; it has been before.",
+          "summary": "You lean on the trough: that many animals cannot all be mistaken at once.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-b-1",
+              "text": "Everybody at the trough says the pond wants closing. You cannot have that many animals wrong at once.",
+              "logicalFallacies": [
+                {
+                  "id": "appeal-to-popularity",
+                  "explanation": "Numbers stand in for checking. That many animals can be wrong at once, and regularly are."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "logical_fallacy",
+          "impact": 0,
+          "reason": "You put it on the mood of the room. The room is a count of animals, dressed up as a judgement.",
+          "summary": "You put it on the room: Duchess will follow the mood, and the mood has already settled.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-c-1",
+              "text": "Duchess reads the room, and the room has decided. That is how these things go here.",
+              "logicalFallacies": [
+                {
+                  "id": "appeal-to-popularity",
+                  "explanation": "The room deciding is the crowd again. It is a headcount wearing the clothes of a verdict."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r2-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-a",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-a-1",
+                "text": "Forty-one animals agreeing is forty-one animals agreeing. Say what any one of them went and looked at.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She asks him to name one thing any of the forty-one actually went and looked at."
+          }
+        },
+        {
+          "forOptionId": "r2-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-b",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-b-1",
+                "text": "Cannot have that many wrong at once. The whole meadow was wrong about the frost, and it took the frost to tell them.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She answers with the frost, which the entire meadow got wrong together."
+          }
+        },
+        {
+          "forOptionId": "r2-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-c",
+            "speakerId": "cass",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-c-1",
+                "text": "The room decided before anybody had been down to the outflow. You have just told me so yourself.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She points out he has just admitted the room made up its mind before anyone went to look."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-3",
+      "roundNumber": 3,
+      "type": "gossip",
+      "speakerId": "cass",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r3-cass",
+        "speakerId": "cass",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r3-1",
+            "text": "Whichever of those you reached for — you counted. You did not check.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r3-2",
+            "text": "A number of animals who agree tells you what the meadow believes. It does not tell you one thing about what happened to the water.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r3-3",
+            "text": "That is the trick. [accent]How many, instead of how do you know.[/accent]",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "Every answer counted heads rather than checking anything, which is the move she wanted him to feel."
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-4",
+      "roundNumber": 4,
+      "type": "gossip",
+      "speakerId": "cass",
+      "impact": 0,
+      "requiresAnalysis": true,
+      "statement": {
+        "id": "stmt-r4-cass",
+        "speakerId": "cass",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r4-1",
+            "text": "Right. I am Tobias again. Sunday, the floor, you at the rail with your ears going.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r4-2",
+            "text": "[accent]Forty-one of the Meadow-Born have put their names to this already.[/accent] I do not believe forty-one animals can be wrong about their own water.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The forty-one are offered instead of a reason. Nothing here says what is in the pond."
+              }
+            ]
+          },
+          {
+            "id": "s-r4-3",
+            "text": "And the objection, as I understand it, comes from an animal who has been on this farm six weeks and keeps his supper in a drain.",
+            "logicalFallacies": [
+              {
+                "id": "ad-hominem",
+                "explanation": "Six weeks and a drain are facts about Rue. They answer who is speaking, not what fouled the water."
+              }
+            ]
+          }
+        ],
+        "summary": "Playing Tobias, she runs the tally and the jab at Rue back to back in a single friendly breath."
+      }
+    },
+    {
+      "kind": "npc",
+      "id": "round-5",
+      "roundNumber": 5,
+      "type": "gossip",
+      "speakerId": "cass",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r5-cass",
+        "speakerId": "cass",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r5-1",
+            "text": "Two of them, in one breath. One about the crowd, one about you. He will do exactly that on Sunday and it will sound like manners.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-2",
+            "text": "The one about you, you have met. The other has a name as well. [accent]Appeal to Popularity.[/accent]",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-3",
+            "text": "Keep the phrase: [accent]how many, against how do you know[/accent]. When a line counts heads instead of giving reasons, you have heard it.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-4",
+            "text": "Now go to the trough. Hetty has the rest of it, and she will do half your work for you without ever noticing she did.",
+            "logicalFallacies": []
+          }
+        ],
+        "summary": "She names Appeal to Popularity, hands over the phrase to hold, and sends him to the trough for the rest."
+      }
+    }
+  ],
+  "tutorials": [
+    {
+      "id": "teach-atp-spot-both",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-4"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "**[warning]Two[/warning]** sentences are doing something this time — one counts the crowd, one is about you.\n\nTag them both, then submit.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "interactive_action",
+              "action": "analyze"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

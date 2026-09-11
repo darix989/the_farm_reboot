@@ -1,7 +1,7 @@
 {
   "id": "level1-gossip-hetty",
-  "introduction": "Hetty the Hen has news. She almost always has news. The trough is low again, and she has a theory about whose fault that is — yours. She will say it to your face and mean no harm by it.",
-  "introductionSummary": "Hetty has a theory about the pond, and she is going to tell it to you.",
+  "introduction": "Hetty has more news. Hetty always has more news. This lot is about the pond, and somewhere in the middle of it she is going to hand you the most useful thing anybody on this farm has said to you — without noticing, and without stopping.",
+  "introductionSummary": "Hetty has a theory about the pond, and buried in it is something she has seen with her own eyes and thinks is not worth mentioning.",
   "playerSide": "opposition",
   "characters": {
     "hetty": "Hetty",
@@ -10,15 +10,21 @@
   "logicalFallacies": [
     {
       "id": "ad-hominem",
-      "explanation": "Attacking the animal instead of the argument. Whether Rue arrived in a mud cart has nothing to do with whether the pond is muddy."
+      "explanation": "Answering the animal instead of the argument. That Rue goes into drains is a fact about Rue, not a reason to disbelieve what he found in one."
+    },
+    {
+      "id": "appeal-to-popularity",
+      "explanation": "Counting the animals who agree instead of the reasons they have. Forty-one names tell you what the meadow believes, not what is in the water."
     }
   ],
-  "availableLogicalFallacies": ["ad-hominem"],
-  "startingInsightPoints": 0,
+  "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
+  "setsDialogFlags": ["hetty-grate-heard"],
   "mechanics": {
+    "showInsightPoints": false,
     "showModeratorOpinion": false,
     "showRoundRecap": false,
     "showIntroSummary": false,
+    "revealChoiceAssessment": true,
     "encounterKind": "gossip"
   },
   "rounds": [
@@ -37,86 +43,192 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Morning! You've been on about the pond drain again.",
+            "text": "Morning! You have been down at the outflow again. Somebody saw you with your whole arm in the drain, up to the shoulder.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
-            "text": "I wouldn't put much stock in it, mind. You arrived in a mud cart with straw in your ears; you're hardly the sort who'd know about water.",
+            "text": "I would not put much stock in whatever you found down there, mind. An animal who goes into drains for pleasure has a very odd notion of what counts as evidence.",
             "logicalFallacies": [
               {
                 "id": "ad-hominem",
-                "explanation": "The claim is about the pond. Hetty answers it by describing how Rue turned up and what he looks like, which tells us nothing about the water."
+                "explanation": "Where Rue puts his arm is a fact about Rue. It is being used to throw away what he found, which is a separate thing entirely."
               }
             ]
           },
           {
             "id": "s-r1-3",
-            "text": "Anyway, the pond's been going brown since before the frost.",
+            "text": "And the pond has been going brown since before the frost, in any case. Long before you turned up, whatever anyone says.",
             "logicalFallacies": []
+          },
+          {
+            "id": "s-r1-4",
+            "text": "And it is settled at the trough in any case. Forty-one of the Meadow-Born have said the pond wants closing, and forty-one animals do not all imagine a thing.",
+            "logicalFallacies": [
+              {
+                "id": "appeal-to-popularity",
+                "explanation": "The forty-one are offered in place of a reason. How many animals agree is a different question from what fouled the water."
+              }
+            ]
           }
         ],
-        "summary": "Hetty dismisses your drain complaint by how you arrived, not by the argument."
+        "summary": "She throws out what he found on the grounds that only an odd animal goes into drains, then settles the pond with a headcount."
       }
     },
     {
-      "kind": "npc",
+      "kind": "player",
       "id": "round-2",
       "roundNumber": 2,
+      "type": "crossfire",
+      "options": [
+        {
+          "id": "r2-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "You asked about the trough's opinion, so she starts there and the grate has to wait its turn.",
+          "summary": "You ask whether anyone has been to the outflow, or whether the trough has simply decided.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-a-1",
+              "text": "Has anyone actually been down to the outflow, or has the trough just decided?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-b",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "You asked what she saw. She will tell you about the moth first, and the grate second.",
+          "summary": "You ask what she saw last time she was down that way.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-b-1",
+              "text": "What did you see, when you were last down that way?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r2-opt-c",
+          "quality": "effective",
+          "impact": 0,
+          "reason": "You asked about the outflow itself. She has to answer that, and the grate comes out in one breath.",
+          "summary": "You ask what is actually on the outflow.",
+          "sentences": [
+            {
+              "id": "s-r2-opt-c-1",
+              "text": "The outflow. What is actually on it?",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ],
+      "opponentResponses": [
+        {
+          "forOptionId": "r2-opt-a",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-a",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-a-1",
+                "text": "The trough has decided, dear, forty-one of them, and I would not go poking about down there myself except I did, going after a moth.",
+                "logicalFallacies": []
+              },
+              {
+                "id": "s-resp-r2-a-2",
+                "text": "The grate is bent, you know. The water backs up behind it, so the mud settles in the pond instead of going out with the stream.",
+                "logicalFallacies": []
+              },
+              {
+                "id": "s-resp-r2-a-3",
+                "text": "Not that it matters. The trough has decided.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She defends the trough first, then mentions the bent grate as an aside, then returns to the count."
+          }
+        },
+        {
+          "forOptionId": "r2-opt-b",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-b",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-b-1",
+                "text": "A moth. A brown one. I do not chase moths as a rule, I am not that sort of sheep, but this one went straight into the drain.",
+                "logicalFallacies": []
+              },
+              {
+                "id": "s-resp-r2-b-2",
+                "text": "The grate at the outflow is bent. I saw it myself. The water backs up, the mud stays.",
+                "logicalFallacies": []
+              },
+              {
+                "id": "s-resp-r2-b-3",
+                "text": "Anyway the moth got away, which is typical.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "She tells the moth story at length and buries the bent grate in the middle of it."
+          }
+        },
+        {
+          "forOptionId": "r2-opt-c",
+          "impact": 0,
+          "statement": {
+            "id": "resp-r2-c",
+            "speakerId": "hetty",
+            "type": "crossfire",
+            "sentences": [
+              {
+                "id": "s-resp-r2-c-1",
+                "text": "The grate is bent. I saw it myself, going after a moth — the water backs up behind it, so the mud settles in the pond instead of going out with the stream.",
+                "logicalFallacies": []
+              }
+            ],
+            "summary": "Asked about the outflow, she gives up the bent grate in a single sentence."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-3",
+      "roundNumber": 3,
       "type": "gossip",
       "speakerId": "hetty",
       "impact": 0,
       "requiresAnalysis": true,
       "statement": {
-        "id": "stmt-r2-hetty",
+        "id": "stmt-r3-hetty",
         "speakerId": "hetty",
         "type": "gossip",
         "sentences": [
           {
-            "id": "s-r2-1",
-            "text": "The grate at the outflow is bent, you know. I saw it myself, chasing a beetle.",
+            "id": "s-r3-1",
+            "text": "Anyway. Somebody ought to tell Tobias. He will not hear it from me.",
             "logicalFallacies": []
           },
           {
-            "id": "s-r2-2",
-            "text": "Water backs up behind it, so the mud goes into the pond instead of out of it.",
-            "logicalFallacies": []
-          },
-          {
-            "id": "s-r2-3",
-            "text": "Someone ought to tell the Flock. They don't much listen to hens.",
+            "id": "s-r3-2",
+            "text": "He says sheep agree with everything, which is very unfair, and I said so, and everyone agreed with me.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Hetty has seen the real cause — a bent outflow grate — and assumes no one will listen to a hen."
+        "summary": "She moves on, will not take the grate to Tobias, and lands on a joke about sheep that she does not notice."
       }
     }
   ],
   "tutorials": [
     {
-      "id": "gossip-what-this-is",
-      "trigger": {
-        "event": "introduction:start"
-      },
-      "tutorial": {
-        "steps": [
-          {
-            "message": "This is **[accent]not a debate[/accent]** — no sides, no moderator, no score.\n\nTwo animals are talking. Your only job is to **[accent]catch the bad reasoning[/accent]**.",
-            "interactionMode": "modal_only",
-            "targetComponent": {
-              "kind": "panel",
-              "panel": "wizard"
-            },
-            "modal": {
-              "size": "large",
-              "position": "topLeft"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "gossip-how-to-spot",
+      "id": "gossip-continue-locked",
       "trigger": {
         "event": "round:start",
         "where": {
@@ -125,30 +237,6 @@
       },
       "tutorial": {
         "steps": [
-          {
-            "message": "Round cards stay **[accent]minimized[/accent]**. Press **[accent]▶ Expand[/accent]** to open this one and read what Hetty said.",
-            "interactionMode": "target_only",
-            "targetComponent": {
-              "kind": "debate_log_round_toggle",
-              "roundId": "round-1"
-            },
-            "modal": {
-              "size": "medium",
-              "position": "topLeft"
-            }
-          },
-          {
-            "message": "Now open the **[accent]magnifying glass[/accent]** to read what was said, sentence by sentence.",
-            "interactionMode": "modal_only",
-            "targetComponent": {
-              "kind": "debate_log_round_analyze",
-              "roundId": "round-1"
-            },
-            "modal": {
-              "size": "medium",
-              "position": "topLeft"
-            }
-          },
           {
             "message": "**[warning]Continue is locked[/warning]** until you judge it.\n\nTag a fallacy — or press **[accent]Clean[/accent]**. Not every sentence is a trap.",
             "interactionMode": "modal_only",

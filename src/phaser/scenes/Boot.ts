@@ -16,7 +16,7 @@ export class Boot extends Scene {
     //  whole background fetch.
     reportBootProgress(this, 'Boot');
 
-    this.load.image('background', 'assets/bg.png');
+    this.load.image('background', 'assets/bg.jpg');
   }
 
   create() {

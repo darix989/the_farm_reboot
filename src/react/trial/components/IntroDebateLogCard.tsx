@@ -9,6 +9,7 @@ import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
 import { encounterLabels } from '../utils/scenarioMechanics';
+import { plainSpokenText } from '../utils/spokenMarkup';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -110,7 +111,9 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
         <div className={styles.debateLogRoundBodyInner} aria-hidden={!effectiveExpanded}>
           <div id={bodyId} className={styles.debateLogRoundBody}>
             <div className={styles.debateLogStatementBlock}>
-              <p style={{ marginTop: 0, color: uiColor.textMuted }}>{introductionText}</p>
+              <p style={{ marginTop: 0, color: uiColor.textMuted }}>
+                {plainSpokenText(introductionText)}
+              </p>
             </div>
           </div>
         </div>

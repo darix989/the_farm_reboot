@@ -89,8 +89,8 @@
     "      `align` saturating its search window means the crop is being clipped rather than",
     "      followed; a large `jump` between consecutive frames means the matcher lost its lock.",
     "",
-    "The five gallery-only animals (cow, cow-female-001, dog, mouse, pig) have no `headCrop` and",
-    "no body clips, so a full-cast run skips them without needing a flag."
+    "The four gallery-only animals (cow, cow-female-001, mouse, pig) have no `headCrop` and",
+    "no body clips, so a full-cast run skips them without needing a flag. `dog` has both."
   ],
   "animals": {
     "donkey-grey": {
@@ -320,6 +320,12 @@
       "view": "Side view, facing left",
       "$comment": "Same carriers as the fox — pointed EARS and a hanging TAIL — plus a dark saddle across the back that bristles. Its prior is SITTING (the atlas ships sit / sit_idle / stand) and BARKING (alert is bark). Every prompt holds it standing on all fours and never sitting, and angry should snarl in place rather than become a barking lunge.",
       "reference": "__alsation_idle-0.png",
+      "headCrop": {
+        "x": -0.03,
+        "y": -0.05,
+        "w": 0.52,
+        "h": 0.7
+      },
       "overrides": {
         "talking": {
           "prompt": "{view}. The tan alsatian dog stands in place on all fours and talks: its muzzle opens and closes with each phrase, its head bobs gently in time, its pointed ears stay upright and flick once, and the tip of its tail sways slowly. All four feet stay planted exactly where they are in the reference image and never move; it stays standing on all fours the whole time and never sits, never lies down. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."

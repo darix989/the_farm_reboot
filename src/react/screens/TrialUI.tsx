@@ -56,7 +56,7 @@ import {
   resolvedOptionSentences,
 } from '../trial/utils/optionUnlock';
 import { useConditionContext } from '../hooks/useGameConditions';
-import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
+import { encounterLabels, useResolvedMechanics } from '../trial/utils/scenarioMechanics';
 import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
 import CharacterStage from '../farm/CharacterStage';
@@ -88,7 +88,7 @@ function guessStorageRoundNumberForTarget(target: AnalysisTarget): number {
 const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // Mode flags for this scenario. A scenario with no `mechanics` block resolves to
   // full-debate defaults, so every existing debate is unaffected.
-  const mechanics = useMemo(() => resolveMechanics(debate), [debate]);
+  const mechanics = useResolvedMechanics(debate);
   const [fallacyGuesses, setFallacyGuesses] = useState<Map<number, FallacyGuessSession>>(new Map());
   const [revealedLockedOptionIds, setRevealedLockedOptionIds] = useState<Set<string>>(
     () => new Set(),
@@ -108,7 +108,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
   const introStartEmittedRef = useRef(false);
   const conditions = useConditionContext();
-  const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds, conditions);
+  const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds, conditions, {
+    showRoundType: mechanics.showRoundType,
+  });
 
   // Opens scenario-defined tutorial overlays in response to bus events,
   // including the onboarding overlay wired to `introduction:start`.
@@ -680,7 +682,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         onSubmit = () => {
           const { activeDebateId, returnSceneKey } = useGameStore.getState();
           // Mark by the scenario *key*, not `debate.id` — those differ
-          // (`015_duchess_vs_rue` vs `level1-boss-pond-motion`) and only the key
+          // (`015_tobias_vs_rue` vs `level1-boss-pond-motion`) and only the key
           // is a `DebateScenarioKey`.
           //
           // Leaving is also where an encounter pays out what it taught: reaching the round
@@ -1103,6 +1105,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           insightRevealed={insightRevealedForCurrentTarget}
           onSpendInsightPoint={handleSpendInsightPoint}
           maxAnalysisAttempts={mechanics.maxAnalysisAttempts}
+          showInsightPoints={mechanics.showInsightPoints}
+          showRoundType={mechanics.showRoundType}
         />
       )}
       {introSummaryOpen && mechanics.showIntroSummary && wf.gamePhase === 'debate_intro' && (
