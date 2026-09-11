@@ -113,7 +113,7 @@
           "sentences": [
             {
               "id": "s-r2-opt-b-1",
-              "text": "Everybody at the trough says the pond wants closing. You cannot have that many animals wrong at once.",
+              "text": "Everybody at the trough says the pond wants closing to the arrivals. You cannot have that many animals wrong at once.",
               "logicalFallacies": [
                 {
                   "id": "appeal-to-popularity",

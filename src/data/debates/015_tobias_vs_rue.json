@@ -1,7 +1,7 @@
 {
   "id": "level1-boss-pond-motion",
-  "introduction": "The Public Farm sits on Sunday, and Duchess has the motion in front of her. The Old Pond kept for the Meadow-Born. Everyone who arrived here sent to the road trough instead. Tobias speaks for it, and forty-one animals have already said yes. You are Rue. Six weeks here. Nobody standing behind you. And the only animal in this meadow who has had his arm down that drain.",
-  "introductionSummary": "The floor decides whether the arrivals lose the pond. Tobias has forty-one names; you have the one thing nobody else went and looked at.",
+  "introduction": "The Public Farm sits on Sunday, and Duchess has the motion in front of her: that the Old Pond be kept for the Meadow-Born alone, and that every animal who arrived here after them \u2014 you among them \u2014 water half a mile down the lane at the road trough. Tobias speaks for it. His case is that the arrivals are what turned the pond brown, and forty-one animals have already put their names to it. You are Rue. Six weeks here. Nobody standing behind you. And the only animal in this meadow who has had his arm down the outflow drain.",
+  "introductionSummary": "The floor decides whether the arrivals lose the pond and water at the road trough instead. Tobias has forty-one names; you have what nobody else looked at.",
   "playerSide": "opposition",
   "characters": {
     "tobias": "Tobias",
@@ -37,7 +37,7 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "Duchess. Friends. I did not want to bring this. But the water has gone bad, and somebody had to stand up.",
+            "text": "Duchess. Friends. I did not want to bring this. But our water has gone bad, and somebody had to stand up. The motion is a plain one: the Old Pond kept for the Meadow-Born, and those who came to us later watering at the road trough.",
             "logicalFallacies": []
           },
           {

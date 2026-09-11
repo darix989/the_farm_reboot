@@ -81,8 +81,10 @@ beat it and one who bought his way out by agreeing louder than anybody in the cr
 time the farm loads. It is deliberately unhurried — the level's only cold open, so it does
 not read as one. She asks after Rue first (six weeks, the hauling, the bins) and notices he
 is being talked about three steps away; that is what turns the conversation to the week the
-farm is having. Then the motion: Tobias wants the Old Pond drained, filled and forgotten,
-heard Sunday in front of Duchess, and **not one animal will speak against it**. Rue
+farm is having. Then the motion, stated in full so the player knows exactly what is at stake
+before anybody argues about it: Tobias wants the Old Pond kept for the Meadow-Born and every
+animal who arrived after them sent to the road trough, half a mile down the lane. It is heard
+Sunday in front of Duchess, and **not one animal will speak against it**. Rue
 volunteers himself for the floor — the player is not assigned the fight, they take it — and
 only then does Dot mention that there are rules nobody has written down, which is where the
 goals come from: **Bram** first, at the fence, then Cass at the west post, then Hetty at the

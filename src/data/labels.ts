@@ -416,7 +416,7 @@ const LABELS = {
   farmDialogTobiasDoneB:
     'I will say this once and not again: I have pulled a cart past that drain for eleven years and never once looked into it. Good morning, Rue.',
   farmDialogDot1:
-    'You are the new raccoon. Rue, is it? Tobias has put a motion on the pond — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, at the fence. Then Cass at the west post.',
+    'You are the new raccoon. Rue, is it? Tobias has put a motion to keep the Old Pond for the Meadow-Born and send the rest of you to the road trough — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, at the fence. Then Cass at the west post.',
   farmDialogDot1a:
     'You are the new raccoon! Rue, is it? Or Roo — somebody said Roo. I am Dot. I mind the yard.',
   farmDialogDot1b: 'Rue. Six weeks now. I do the hauling, the repairs and the bins.',
@@ -427,14 +427,14 @@ const LABELS = {
     'That is not about you, that is the week we are having. I would blame the weather. It is not the weather.',
   farmDialogDot1f: 'What is wrong with the week?',
   farmDialogDot1g:
-    'There is a debate coming. Tobias has put a motion on the Old Pond — that it is finished, and ought to be drained and filled in and forgotten. It is heard Sunday, on the floor of the Public Farm, in front of Duchess.',
-  farmDialogDot1h: 'That is a large thing to lose.',
+    'There is a debate coming. Tobias has put a motion on the Old Pond — that the water be kept for the Meadow-Born, the ones born on this meadow, and that every animal who arrived here after them go and drink at the road trough instead. It is heard Sunday, on the floor of the Public Farm, in front of Duchess.',
+  farmDialogDot1h: 'That is me, then. And the road trough is half a mile down the lane.',
   farmDialogDot1i:
-    'It is. And he says it so warmly that everybody has agreed with him before they work out what they have agreed to.',
-  farmDialogDot1j: 'So who is speaking for the pond?',
+    'It is. He says the arrivals are what turned the water brown, and he says it so warmly that everybody has agreed with him before they work out what they have agreed to.',
+  farmDialogDot1j: 'And who speaks for the rest of us? The ones he wants sent down the lane.',
   farmDialogDot1k:
-    'Nobody. Not one animal. They nod at the trough and say the opposite at home, and out here only the nodding is counted.',
-  farmDialogDot1l: 'Then I will speak for it.',
+    'Nobody. Not one animal. Plenty of them grumble about it at home, and then agree with him to his face. Only the agreeing out loud gets counted.',
+  farmDialogDot1l: 'Then I will speak for us.',
   farmDialogDot1m: 'You — you have been here six — right. Yes. Somebody had to be somebody.',
   farmDialogDot1n:
     'But there are rules, and nobody has written them down. Partly because not one animal here knows what writing is. Mostly because rules nobody wrote are the easiest kind to break. You will want to know how this farm argues before you go and stand in front of it.',
