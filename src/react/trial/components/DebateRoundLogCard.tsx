@@ -126,6 +126,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
       wf.gamePhase === 'debate_complete' ||
       (isThisPlayerRound &&
         (wf.gamePhase === 'player_choosing' ||
+          wf.gamePhase === 'player_speaking' ||
           wf.gamePhase === 'player_confirming' ||
           wf.gamePhase === 'npc_responding' ||
           wf.gamePhase === 'round_recap')));
@@ -135,7 +136,10 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
     chosenOption &&
     (roundIndex < wf.currentRoundIndex ||
       wf.gamePhase === 'debate_complete' ||
-      (isThisPlayerRound && (wf.gamePhase === 'npc_responding' || wf.gamePhase === 'round_recap')));
+      (isThisPlayerRound &&
+        (wf.gamePhase === 'player_speaking' ||
+          wf.gamePhase === 'npc_responding' ||
+          wf.gamePhase === 'round_recap')));
 
   const responseForCompleted =
     round.kind === 'player' && completedForRound && round.opponentResponses

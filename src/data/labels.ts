@@ -180,6 +180,7 @@ const LABELS = {
   workflowPlayerChoosingStatement: 'Pick A, B or C to read it in the Dialog.',
   workflowStatementSelected: 'Click Continue to submit, or Back to change it.',
   workflowStatementOpened: 'Opened. Click it again to say it, or pick another line.',
+  workflowPlayerSpeaking: 'You have spoken. Click Continue.',
   workflowPlayerConfirming:
     'Review your choice below. Go back to change it, or confirm to lock it in.',
   workflowNpcResponding: '{opponentName} responds to your statement. Read it, then continue.',

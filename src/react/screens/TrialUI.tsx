@@ -191,6 +191,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     if (
       wf.gamePhase === 'npc_speaking' ||
       wf.gamePhase === 'player_choosing' ||
+      wf.gamePhase === 'player_speaking' ||
       wf.gamePhase === 'player_confirming' ||
       wf.gamePhase === 'npc_responding' ||
       wf.gamePhase === 'round_recap'
@@ -509,8 +510,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
    * The line the wizard is pacing out one sentence at a time, or `null` when there is nothing
    * to reveal.
    *
-   * Incoming speech only. The player's own selected statement, the round recap and the closing
-   * verdict are text they chose or have already read, so pacing them out again is pure delay.
+   * Incoming speech, plus the player's confirmed option during `player_speaking`. The round
+   * recap and the closing verdict are text they have already read, so pacing those is delay.
    *
    * Switching on `gamePhase` first is load-bearing: `activeOpponentResponse` is also non-null
    * during `round_recap`, where the recap modal owns the screen and Continue belongs to it.
@@ -549,10 +550,17 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       }
       case 'player_choosing': {
         const prompt = wf.currentPlayerRound?.opponentPrompt;
-        // Only the opponent's question is paced; once an option is picked the wizard shows the
-        // player's own line back to them.
+        // Only the opponent's question is paced. A pick dumps the option as a static preview
+        // (the A/B/C buttons are letters); `player_speaking` typewrites it after Continue.
         if (!prompt || wf.selectedOption) return null;
         return build('prompt', prompt.id, prompt.sentences);
+      }
+      case 'player_speaking': {
+        const opt = wf.selectedOption;
+        if (!opt) return null;
+        const showResolved =
+          !isOptionGated(opt) || isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
+        return build('player', opt.id, resolvedOptionSentences(opt, showResolved));
       }
       case 'npc_responding': {
         const response = wf.activeOpponentResponse;
@@ -570,6 +578,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     wf.activeOpponentResponse,
     debate.id,
     debate.introduction,
+    fallacyGuesses,
+    conditions,
   ]);
 
   const reveal = useWizardReveal(revealSource, {
@@ -646,6 +656,13 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         submitLabel = getLabel('continue');
         submitDisabled = !wf.selectedOption;
         onSubmit = () => {
+          wf.dispatch({ type: 'confirm_option' });
+        };
+        break;
+      case 'player_speaking':
+        submitLabel = getLabel('continue');
+        submitDisabled = false;
+        onSubmit = () => {
           const option = wf.selectedOption;
           const round = wf.currentPlayerRound;
           if (option && round) {
@@ -655,7 +672,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
               optionId: option.id,
             });
           }
-          wf.dispatch({ type: 'confirm_option' });
+          wf.dispatch({ type: 'continue' });
         };
         break;
       case 'player_confirming':
@@ -837,6 +854,26 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             : undefined,
         };
       }
+      case 'player_speaking': {
+        const opt = wf.selectedOption;
+        if (!opt) return null;
+        const showResolved =
+          !isOptionGated(opt) || isPlayerOptionUnlocked(opt, fallacyGuesses, conditions);
+        const resolvedSentences = resolvedOptionSentences(opt, showResolved);
+        return {
+          title: getLabel('wizardDetailSpeaks', {
+            replacements: {
+              name: getSpeakerName(debate, PLAYER_CHARACTER_ID),
+            },
+          }),
+          body: statementText(resolvedSentences),
+          sentenceCount: resolvedSentences.length,
+          speaker: { characterId: PLAYER_CHARACTER_ID, emotion: emotionForOption(opt) },
+          spottedFallacies: mechanics.analysisEnabled
+            ? getSpottedFallacies(opt.id, resolvedSentences)
+            : undefined,
+        };
+      }
       case 'player_confirming': {
         const opt = wf.selectedOption;
         if (!opt) return null;
@@ -935,6 +972,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     wf.totalScore,
     debate,
     fallacyGuesses,
+    conditions,
     mechanics.analysisEnabled,
     getSpottedFallacies,
   ]);

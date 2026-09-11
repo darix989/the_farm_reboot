@@ -37,6 +37,7 @@ export function activeSpeakerIdForWorkflow(
         return currentPlayerRound.opponentPrompt.speakerId;
       }
       return PLAYER_CHARACTER_ID;
+    case 'player_speaking':
     case 'player_confirming':
       return PLAYER_CHARACTER_ID;
     case 'npc_responding':
@@ -80,6 +81,7 @@ export function activeEmotionForWorkflow(
       }
       // The player holds the floor but has not committed to a line yet.
       return 'thinking';
+    case 'player_speaking':
     case 'player_confirming':
       return emotionForOption(selectedOption);
     case 'npc_responding': {
