@@ -488,6 +488,7 @@ const LABELS = {
   codexOpen: 'Field Notes',
   codexOpenHasNew: 'Field Notes, new notes to check',
   codexClose: 'Close',
+  codexMarkAllRead: 'Mark all as read',
   codexSectionNext: 'Next',
   codexSectionKnown: 'Fallacies you know',
   codexSectionSpotted: 'Fallacies you have spotted',

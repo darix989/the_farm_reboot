@@ -63,7 +63,15 @@
   margin: 0.35rem 0 0;
 }
 
-.codexCloseBtn {
+.codexHeaderActions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.codexCloseBtn,
+.codexMarkReadBtn {
   flex-shrink: 0;
   border: 1px solid var(--ui-color-border-soft);
   border-radius: 0.5rem;
@@ -76,6 +84,16 @@
   &:hover {
     color: var(--ui-color-text-title);
     border-color: var(--ui-color-border-ring);
+  }
+}
+
+.codexMarkReadBtn {
+  color: var(--ui-color-accent);
+  border-color: var(--ui-color-accent);
+
+  &:hover {
+    color: var(--ui-color-info-text);
+    border-color: var(--ui-color-info);
   }
 }
 

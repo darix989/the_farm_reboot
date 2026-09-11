@@ -20,6 +20,7 @@ import {
 import { useCodexNotices } from './useCodexNotices';
 import {
   canRunTutorialTargetAction,
+  canRunTutorialUntargetedAction,
   notifyTutorialTargetAction,
 } from '../tutorial/tutorialInteractionGuard';
 import { tutorialStepNeedsCodexOpen } from '../tutorial/tutorialCodexNeeds';
@@ -260,7 +261,7 @@ const CodexOverlay: React.FC = () => {
   const section = useCodexUiStore((s) => s.section);
   const setSection = useCodexUiStore((s) => s.setSection);
   const closeCodex = useCodexUiStore((s) => s.closeCodex);
-  const { notices, unreadIdSet, markNoticesSeen } = useCodexNotices();
+  const { notices, unreadIds, unreadIdSet, hasUnread, markNoticesSeen } = useCodexNotices();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -286,25 +287,39 @@ const CodexOverlay: React.FC = () => {
             <h2 className={styles.codexTitle}>{getLabel('codexTitle')}</h2>
             <p className={styles.codexSubtitle}>{getLabel('codexSubtitle')}</p>
           </div>
-          <button
-            className={styles.codexCloseBtn}
-            type="button"
-            data-tutorial-codex-close
-            onClick={() => {
-              if (!canRunTutorialTargetAction(CODEX_CLOSE_TARGET)) return;
-              if (!canDismissCodex()) return;
-              closeCodex();
-              notifyTutorialTargetAction(CODEX_CLOSE_TARGET);
-            }}
-          >
-            {getLabel('codexClose')}
-          </button>
+          <div className={styles.codexHeaderActions}>
+            {hasUnread && (
+              <button
+                className={styles.codexMarkReadBtn}
+                type="button"
+                onClick={() => {
+                  if (!canRunTutorialUntargetedAction()) return;
+                  markNoticesSeen(unreadIds);
+                }}
+              >
+                {getLabel('codexMarkAllRead')}
+              </button>
+            )}
+            <button
+              className={styles.codexCloseBtn}
+              type="button"
+              data-tutorial-codex-close
+              onClick={() => {
+                if (!canRunTutorialTargetAction(CODEX_CLOSE_TARGET)) return;
+                if (!canDismissCodex()) return;
+                closeCodex();
+                notifyTutorialTargetAction(CODEX_CLOSE_TARGET);
+              }}
+            >
+              {getLabel('codexClose')}
+            </button>
+          </div>
         </div>
 
         <div className={styles.codexTabs} role="tablist" data-tutorial-codex-tabs>
           {SECTIONS.map((tab) => {
             const tabTarget: TutorialTargetRef = { kind: 'codex_tab', section: tab.id };
-            const hasUnread = sectionHasUnread(tab.id, notices, unreadIdSet);
+            const tabHasUnread = sectionHasUnread(tab.id, notices, unreadIdSet);
             const tabLabel = getLabel(tab.label);
             return (
               <button
@@ -313,7 +328,7 @@ const CodexOverlay: React.FC = () => {
                 role="tab"
                 aria-selected={section === tab.id}
                 aria-label={
-                  hasUnread
+                  tabHasUnread
                     ? getLabel('codexTabHasNew', { replacements: { section: tabLabel } })
                     : undefined
                 }
@@ -321,7 +336,7 @@ const CodexOverlay: React.FC = () => {
                 className={cn(
                   styles.codexTab,
                   section === tab.id && styles.codexTabActive,
-                  hasUnread && styles.codexTabUnread,
+                  tabHasUnread && styles.codexTabUnread,
                 )}
                 onClick={() => {
                   if (!canRunTutorialTargetAction(tabTarget)) return;
