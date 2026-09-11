@@ -68,8 +68,8 @@ export interface ScenarioEntry {
  * file numbers are creation order, not ladder order. See
  * `docs/level_01_the_pond_motion.md` for the story and the authored dialog.
  *
- * Nine rungs. Insight Points stay deferred; round-type labels come back with Bram's
- * second fence lesson. Four encounters remain parked in {@link LEGACY_SCENARIOS} —
+ * Eight rungs. Insight Points stay deferred; round-type labels come back with Bram's
+ * first fence lesson. Five encounters remain parked in {@link LEGACY_SCENARIOS} —
  * still authored, still playable from the menu, off the farm.
  *
  * Overworld gates live on `requires`. The main menu still lists every rung ungated, which
@@ -81,12 +81,6 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     titleLabel: 'level1BramDialog',
     scenario: bramDialogJson as unknown as DebateScenarioJson,
     requires: [{ kind: 'dialog_flag', flagId: 'dot-welcomed' }],
-  },
-  {
-    key: '031_bram_teaches_crossfire',
-    titleLabel: 'level1BramCrossfire',
-    scenario: bramCrossfireJson as unknown as DebateScenarioJson,
-    requires: [{ kind: 'dialog_flag', flagId: 'bram-taught-rounds' }],
   },
   {
     key: '020_cass_teaches_ad_hominem',
@@ -143,9 +137,14 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
 
 /**
  * Scenarios that are not rungs of the Level 1 ladder but stay playable from the menu:
- * the pre-ladder encounters, and the four cut when Level 1 was trimmed to nine rungs.
+ * the pre-ladder encounters, and the ones cut when Level 1 was trimmed.
  */
 export const LEGACY_SCENARIOS: readonly ScenarioEntry[] = [
+  {
+    key: '031_bram_teaches_crossfire',
+    titleLabel: 'level1BramCrossfire',
+    scenario: bramCrossfireJson as unknown as DebateScenarioJson,
+  },
   {
     key: '011_sparring_cass_ad_hominem',
     titleLabel: 'level1SparringCass',

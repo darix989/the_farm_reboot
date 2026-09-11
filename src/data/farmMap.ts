@@ -127,8 +127,8 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     y: 760,
     scenarios: [],
     // One stage per stop on the spine, so the greeter and Field Notes always name the same
-    // animal. Stage 1 spans both fence lessons; each stage ends on the condition the *next*
-    // stop is waiting for.
+    // animal. Stage 1 is Bram's opening lesson (rounds and crossfire); each stage ends on
+    // the condition the *next* stop is waiting for.
     talkStages: [
       {
         suffix: '1',
@@ -160,12 +160,11 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     id: 'bram',
     x: 1360,
     y: 1250,
-    // How a round works, then crossfire, then how to open a locked line, then the
-    // skirmish that needs it. He offers them strictly in order, so the lesson always
-    // lands before the encounter that uses it — see `farmDialogueState.ts`.
+    // How a conversation works (rounds and crossfire), then how to open a locked line,
+    // then the skirmish that needs it. He offers them strictly in order, so the lesson
+    // always lands before the encounter that uses it — see `farmDialogueState.ts`.
     scenarios: [
       '030_bram_teaches_dialog',
-      '031_bram_teaches_crossfire',
       '032_bram_teaches_unlocks',
       '014_skirmish_bram_fenceline',
     ],

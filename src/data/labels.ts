@@ -17,15 +17,15 @@ const LABELS = {
   // --- Level 1: The Pond Motion ---
   level1Heading: 'Level 1 — The Pond Motion',
   legacyScenariosHeading: 'Other scenarios',
-  level1BramDialog: '1.1 · Down at the Fence: One at a Time',
-  level1BramCrossfire: '1.2 · Down at the Fence: Answer Me Now',
-  level1CassTeaches: '1.3 · The Sparring Post: The Name of the Trick',
-  level1HettyBarrage: '1.4 · Gossip at the Trough: All About You',
-  level1CassPopularity: '1.5 · The Sparring Post: How Many, Not How',
-  level1GossipHetty: '1.6 · Gossip at the Trough: What Hetty Saw',
-  level1BramUnlocks: '1.7 · Down at the Fence: The Line You Have to Earn',
-  level1SkirmishBram: '1.8 · Fence-line Skirmish: The Bent Grate',
-  level1BossTobias: '1.9 · The Public Farm: The Pond Motion',
+  level1BramDialog: '1.1 · Down at the Fence: How a Conversation Works',
+  level1BramCrossfire: 'Down at the Fence: Answer Me Now',
+  level1CassTeaches: '1.2 · The Sparring Post: The Name of the Trick',
+  level1HettyBarrage: '1.3 · Gossip at the Trough: All About You',
+  level1CassPopularity: '1.4 · The Sparring Post: How Many, Not How',
+  level1GossipHetty: '1.5 · Gossip at the Trough: What Hetty Saw',
+  level1BramUnlocks: '1.6 · Down at the Fence: The Line You Have to Earn',
+  level1SkirmishBram: '1.7 · Fence-line Skirmish: The Bent Grate',
+  level1BossTobias: '1.8 · The Public Farm: The Pond Motion',
   // Parked out of the Level 1 ladder, still playable from "Other scenarios".
   level1SparringCass: 'The Sparring Post: Answer Me',
   level1GossipBram: 'Down at the Fence: Forty-One',
@@ -301,12 +301,9 @@ const LABELS = {
   farmTalkLessonsPrompt: 'Which one? {list}.',
   farmTalkLessonItem: '{letter} — {title}',
   farmTalkLessonItemJoin: '. ',
-  tutorialLessonRounds: 'how a round works',
+  tutorialLessonRounds: 'how a conversation works',
   tutorialLessonRoundsPreview:
-    'How a round works. One animal says a thing, the other answers, and that pair is a round. I can walk you through it one piece at a time.',
-  tutorialLessonCrossfire: 'answering on your feet',
-  tutorialLessonCrossfirePreview:
-    'Crossfire. Somebody asks and you answer on your feet. Both halves: they ask, you answer. Or you ask, and they have to. I can walk you through it. You do not have to.',
+    'How a conversation works. One animal says a thing, the other answers — and some rounds, somebody asks and you answer on your feet. I can walk you through both.',
   tutorialLessonUnlocks: 'opening a locked line',
   tutorialLessonUnlocksPreview:
     'The locked line. Some of what you could answer with is already yours, and some of it you cannot reach until you have caught the other animal at something. Bram does the trick on himself so that you can.',
@@ -358,37 +355,24 @@ const LABELS = {
   farmDialogCassMeetB: 'I am looking for the fox.',
   farmDialogCassMeetC: 'Come back when you have something to ask. I am not here to be looked at.',
   farmDialogBram1:
-    'Dot sent you, then. Sunday, against Tobias. I could show you how a conversation works here, if you like — you do not have to say yes.',
+    'Dot sent you, then. Sunday, against Tobias. I will show you how a conversation works here.',
   farmDialogBram1a:
     'Bram? Dot sent me. There is a motion on the pond on Sunday, and I have put my name down to speak against it.',
   farmDialogBram1b: 'You — against Tobias. On the floor. And you came down here. To the wolf.',
   farmDialogBram1c: 'You were the first name she gave me. I need help.',
   farmDialogBram1d:
-    'That was kind of her. I am not certain it was wise. Nobody sends anybody to the wolf — and I do not say that to be pitied, it is simply the traffic.',
-  farmDialogBram1e: 'What is it you do down here?',
-  farmDialogBram1f:
-    'I walk the fence. Both ways, every day. And from the far side of a hedge you hear every conversation on this farm and nobody remembers you are standing there. That is not a job. It has been an education.',
-  farmDialogBram1g: 'Then you know how the floor goes.',
-  farmDialogBram1h:
-    'I know how it goes wrong, which is the useful half. I could show you how a conversation works here, one piece at a time, before anybody else gets hold of you. You do not have to say yes. I would not blame you.',
+    'I walk the fence. Both ways. From the far side of a hedge you hear every conversation on this farm. I will show you how one works, before anyone else gets hold of you.',
   farmDialogBram2:
-    'One more thing, if you have a moment. Some rounds are not speeches. You do not have to. I would not blame you.',
-  farmDialogBram2a:
-    'I am still here. One more thing, if you have a moment. You do not have to. I would not blame you.',
+    'There is another piece. I have to be unpleasant to you first, on purpose, so you can catch me at it.',
+  farmDialogBram2a: 'There is another piece.',
   farmDialogBram2b: 'Go on.',
   farmDialogBram2c:
-    'Some rounds are not speeches. Somebody asks and you answer on your feet. I would rather not demonstrate it. That is not the same as not having to. I am sorry.',
+    'This one I cannot simply tell you. I have to be unpleasant first, on purpose, so you can catch me at it. I have been dreading it since breakfast.',
   farmDialogBram3:
-    'There is another piece, if you have a moment. I have to be unpleasant to you first, and I am sorry about that.',
-  farmDialogBram3a: 'There is another piece, if you have a moment. You do not have to.',
-  farmDialogBram3b: 'Go on.',
-  farmDialogBram3c:
-    'This one I cannot simply tell you. I have to be unpleasant to you first, on purpose, so that you can catch me at it. I am sorry in advance. I have been dreading it since breakfast.',
-  farmDialogBram4:
     'No more lessons. I am one of the forty-one, and I would rather you had the argument from me than from Tobias on Sunday.',
-  farmDialogBram4a: 'No more lessons. I think we are past those.',
-  farmDialogBram4b: 'What is this, then?',
-  farmDialogBram4c:
+  farmDialogBram3a: 'No more lessons. I think we are past those.',
+  farmDialogBram3b: 'What is this, then?',
+  farmDialogBram3c:
     'I am one of the forty-one, Rue. I put my name to the motion. I would rather you had that argument from me, here, where it costs you nothing — than from Tobias on Sunday, where it costs you everything.',
   farmDialogBramDone:
     'I have said a great deal more than I should have. The grate is bent. You did not hear it from me.',
@@ -397,8 +381,7 @@ const LABELS = {
     'The grate is bent. You did not hear that from me. You may say on Sunday that you heard it from me.',
   farmDialogBramMeetA: 'I walk the fence. Both ways, every day. You do not have to stop.',
   farmDialogBramMeetB: 'Dot mentioned you.',
-  farmDialogBramMeetC:
-    'Then she is ahead of me. I would not know what to show you yet. I am sorry.',
+  farmDialogBramMeetC: 'Then she is ahead of me. I would not know what to show you yet.',
   farmDialogDuchess1:
     'The motion is with me and it is heard on Sunday. When you are ready to stand on the floor, say so, and I will call it.',
   farmDialogDuchess1a: 'The motion is with me. It is heard on Sunday.',
@@ -454,7 +437,7 @@ const LABELS = {
     'Bram. The wolf, down at the fence. He will pretend he is checking it. Let him. He is the one who will show you how a conversation works here, before Cass gets her teeth into you. Then Cass at the west post, then Hetty at the trough, then the barn when you want the floor.',
   farmDialogDot2:
     'Bram has done his piece. Cass is at the west post, and she will talk to you now.',
-  farmDialogDot2a: 'Bram has done his piece. You know how a round works, then.',
+  farmDialogDot2a: 'Bram has done his piece. You know how a conversation works, then.',
   farmDialogDot2b: 'And now?',
   farmDialogDot2c:
     'Cass. The fox, at the west post. She has something you need before Hetty will so much as look at you. Do not let anyone tell you about the fox first — let her do it.',
@@ -493,14 +476,9 @@ const LABELS = {
 
   // Post-Trial follow-ups (`followUp:{scenarioKey}` in farmTalk.ts). Same animal, short, and
   // they name the next stop so Field Notes Next can move after the last beat settles.
-  farmDialogFollowUpBramRoundsA:
-    'That is how a round works. I have one more thing, when you are ready. You do not have to. I would not blame you.',
-  farmDialogFollowUpBramRoundsB: 'I am still here.',
+  farmDialogFollowUpBramRoundsA: 'That is both halves. I think you have it.',
+  farmDialogFollowUpBramRoundsB: 'Where now?',
   farmDialogFollowUpBramRoundsC:
-    'Talk to me again. Some rounds are not speeches. I would rather not demonstrate it. That is not the same as not having to. I am sorry.',
-  farmDialogFollowUpBramCrossfireA: 'That is the other half. I think you have it.',
-  farmDialogFollowUpBramCrossfireB: 'Where now?',
-  farmDialogFollowUpBramCrossfireC:
     'The fox. West post. I am not saying that because I am a wolf. I am saying it because she will give you a name you do not have yet.',
   farmDialogFollowUpCassAdHominemA: 'You have the name. Do not lose it on the walk to the trough.',
   farmDialogFollowUpCassAdHominemB: 'Hetty.',
@@ -568,9 +546,6 @@ const LABELS = {
   levelGoalBramTitle: 'Bram, down at the fence',
   levelGoalBramBody:
     'The wolf. He will pretend he is checking the fence. Let him. He is the one who will show you how a conversation works here.',
-  levelGoalBramCrossfireTitle: 'Bram, still at the fence',
-  levelGoalBramCrossfireBody:
-    'He has one more thing, and he will apologise for it. Some rounds are not speeches: somebody asks, and you answer on your feet.',
   levelGoalCassTitle: 'Cass, at the west post',
   levelGoalCassBody:
     'The fox. She has something you need before Hetty will so much as look at you. Do not let anyone tell you about the fox first — let her do it.',
@@ -607,12 +582,9 @@ const LABELS = {
   dialogFlagDotWelcomedTitle: 'get your bearings from Dot in the yard',
   dialogFlagDotWelcomedBody:
     'Dot met you in the yard, named Sunday in front of Duchess, and sent you to Bram at the fence before anyone else got hold of you.',
-  dialogFlagBramTaughtRoundsTitle: 'learn how a round works from Bram at the fence',
-  dialogFlagBramTaughtRoundsBody:
-    'Bram walked you through a conversation one piece at a time: one animal says a thing, the other answers, and that pair is a round. He apologised for the lecture the whole way through.',
-  dialogFlagBramTaughtCrossfireTitle: 'learn what crossfire is from Bram at the fence',
+  dialogFlagBramTaughtCrossfireTitle: 'learn how a conversation works from Bram at the fence',
   dialogFlagBramTaughtCrossfireBody:
-    'Bram showed you that some rounds are not speeches: somebody asks and you answer on your feet. They call that crossfire, and he made you do both halves.',
+    'Bram walked you through a conversation one piece at a time: one animal says a thing, the other answers, and that pair is a round. Then he showed you that some rounds are not speeches — somebody asks and you answer on your feet. They call that crossfire.',
   dialogFlagCassNamedAdHominemTitle: 'let Cass name the trick for you',
   dialogFlagCassNamedAdHominemBody:
     'Cass named Ad Hominem after a season on the floor — answering the animal instead of the argument — and beat it. She does not stand there anymore. She made you use it on her first, so that you would recognise the shape of it from the inside.',

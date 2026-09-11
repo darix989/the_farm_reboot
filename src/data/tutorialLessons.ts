@@ -26,12 +26,6 @@ export const TUTORIAL_LESSONS: readonly TutorialLesson[] = [
     teacherId: 'bram',
   },
   {
-    key: '031_bram_teaches_crossfire',
-    titleLabel: 'tutorialLessonCrossfire',
-    previewLabel: 'tutorialLessonCrossfirePreview',
-    teacherId: 'bram',
-  },
-  {
     key: '032_bram_teaches_unlocks',
     titleLabel: 'tutorialLessonUnlocks',
     previewLabel: 'tutorialLessonUnlocksPreview',

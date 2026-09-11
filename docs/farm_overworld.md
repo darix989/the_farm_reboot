@@ -236,8 +236,8 @@ and walking back after a Trial replays that animal's last follow-up (with Lesson
 have any). The Talk button never starts a conversation that assumes something the player has
 not been told yet. The main menu is ungated.
 
-The Level 1 unlock chain is Dot → Bram → Bram → Cass → Hetty → Duchess. Lesson 2 (`031`)
-unlocks round-type labels and is required for Cass — her Ad Hominem lesson waits on
+The Level 1 unlock chain is Dot → Bram → Cass → Hetty → Duchess. Bram's first lesson
+(`030`) unlocks round-type labels and is required for Cass — her Ad Hominem lesson waits on
 `bram-taught-crossfire`.
 
 Bram's farm talk offers a **Lessons** menu once he has taught at least one lesson. Last beat,

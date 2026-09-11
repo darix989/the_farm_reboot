@@ -22,7 +22,6 @@ export type PendingFollowUp = EncounterFollowUp & { scenarioKey: DebateScenarioK
 
 export const ENCOUNTER_FOLLOW_UPS: Partial<Record<DebateScenarioKey, EncounterFollowUp>> = {
   '030_bram_teaches_dialog': { kind: 'farm_talk', npcId: 'bram' },
-  '031_bram_teaches_crossfire': { kind: 'farm_talk', npcId: 'bram' },
   '020_cass_teaches_ad_hominem': { kind: 'farm_talk', npcId: 'cass' },
   '021_hetty_ad_hominem_barrage': { kind: 'farm_talk', npcId: 'hetty' },
   '023_cass_teaches_appeal_to_popularity': { kind: 'farm_talk', npcId: 'cass' },

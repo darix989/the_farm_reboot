@@ -6,7 +6,7 @@ import { isFarmTutorialId, type FarmTutorialId } from '../data/farmTutorials';
 /**
  * Which encounters the player has finished, and whether they have opened Level 1.
  *
- * Needed even for a single sitting: Cass and Bram each own two encounters, so an
+ * Needed even for a single sitting: Cass owns two encounters and Bram owns three, so an
  * animal has to know which one to offer next. `level1Started` is what stops Dot's
  * greeting from firing every time the farm loads. Persisted to `localStorage` so
  * both survive a reload.
@@ -63,7 +63,7 @@ export const useProgressStore = create<ProgressStore>()(
     }),
     {
       name: 'the-farm-progress',
-      version: 7,
+      version: 8,
       /**
        * Saved data outlives the code that wrote it. A stale entry naming a scenario
        * that no longer exists must not break the farm, so anything unrecognised is
@@ -88,9 +88,12 @@ export const useProgressStore = create<ProgressStore>()(
        *
        * v7 adds `completedTutorials` for farm overlay tutorials. Existing v6 saves keep their
        * encounters; the new field starts empty so the Field Notes intro can still fire.
+       *
+       * v8 folds Bram's crossfire lesson into his first fence lesson. A save that finished
+       * `030` but not `031` would otherwise skip the merged teaching and leave Cass locked.
        */
       migrate: (persisted, fromVersion) => {
-        const saved = (persisted ?? {}) as Record<string, unknown>;
+        const saved = { ...((persisted ?? {}) as Record<string, unknown>) };
         if (fromVersion < 6) {
           return {
             ...saved,
@@ -100,7 +103,17 @@ export const useProgressStore = create<ProgressStore>()(
           };
         }
         if (fromVersion < 7) {
-          return { ...saved, completedTutorials: [] };
+          saved.completedTutorials = [];
+        }
+        if (fromVersion < 8) {
+          const scenarios = Array.isArray(saved.completedScenarios)
+            ? [...(saved.completedScenarios as string[])]
+            : [];
+          const finishedDialog = scenarios.includes('030_bram_teaches_dialog');
+          const finishedCrossfire = scenarios.includes('031_bram_teaches_crossfire');
+          if (finishedDialog && !finishedCrossfire) {
+            saved.completedScenarios = scenarios.filter((key) => key !== '030_bram_teaches_dialog');
+          }
         }
         return saved;
       },

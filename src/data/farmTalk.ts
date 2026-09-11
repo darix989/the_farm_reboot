@@ -74,11 +74,7 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: RUE, textLabel: 'farmDialogBram1a' },
     { speakerId: 'bram', textLabel: 'farmDialogBram1b', emotion: 'doubtful' },
     { speakerId: RUE, textLabel: 'farmDialogBram1c' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram1d' },
-    { speakerId: RUE, textLabel: 'farmDialogBram1e' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram1f', emotion: 'thinking' },
-    { speakerId: RUE, textLabel: 'farmDialogBram1g' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram1h' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram1d', emotion: 'thinking' },
   ],
   bram2: [
     { speakerId: 'bram', textLabel: 'farmDialogBram2a' },
@@ -88,12 +84,7 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
   bram3: [
     { speakerId: 'bram', textLabel: 'farmDialogBram3a' },
     { speakerId: RUE, textLabel: 'farmDialogBram3b' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram3c', emotion: 'thinking' },
-  ],
-  bram4: [
-    { speakerId: 'bram', textLabel: 'farmDialogBram4a' },
-    { speakerId: RUE, textLabel: 'farmDialogBram4b' },
-    { speakerId: 'bram', textLabel: 'farmDialogBram4c', emotion: 'doubtful' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram3c', emotion: 'doubtful' },
   ],
   bramDone: [
     { speakerId: 'bram', textLabel: 'farmDialogBramDoneA' },
@@ -185,16 +176,11 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'dot', textLabel: 'farmDialogDotDoneB' },
   ],
   // Post-Trial pointers. Leave-only; they must not reuse the next offer slot or the player
-  // would start Cass's popularity talk after Bram's crossfire, when Next is Cass for Ad Hominem.
+  // would start Cass's Ad Hominem talk after Bram's lesson, when Next is already Cass.
   'followUp:030_bram_teaches_dialog': [
     { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramRoundsA', emotion: 'thinking' },
     { speakerId: RUE, textLabel: 'farmDialogFollowUpBramRoundsB' },
     { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramRoundsC' },
-  ],
-  'followUp:031_bram_teaches_crossfire': [
-    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramCrossfireA', emotion: 'thinking' },
-    { speakerId: RUE, textLabel: 'farmDialogFollowUpBramCrossfireB' },
-    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramCrossfireC' },
   ],
   'followUp:020_cass_teaches_ad_hominem': [
     { speakerId: 'cass', textLabel: 'farmDialogFollowUpCassAdHominemA' },

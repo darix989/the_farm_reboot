@@ -120,7 +120,7 @@ export function farmDialogueFor(npcId: string): FarmDialogueState | null {
 /**
  * Leave-only pointer after a Trial. Must not reuse {@link farmDialogueFor}: that would
  * open the *next* offer slot, which is the wrong animal's pre-talk whenever the spine
- * moves on (Bram 1.2 → Cass). Walking up later while the next rung is still locked
+ * moves on (Bram 1.1 → Cass). Walking up later while the next rung is still locked
  * replays this same slot, with Lessons if they have any.
  */
 export function farmFollowUpDialogue(

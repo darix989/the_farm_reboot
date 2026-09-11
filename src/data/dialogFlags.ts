@@ -16,14 +16,13 @@ import type { Labels } from './labels';
 
 export type DialogFlagId =
   | 'dot-welcomed'
-  | 'bram-taught-rounds'
+  | 'bram-taught-crossfire'
   | 'cass-named-ad-hominem'
   | 'hetty-ad-hominem-witnessed'
   | 'cass-named-appeal-to-popularity'
   | 'hetty-grate-heard'
   | 'bram-taught-unlocks'
-  | 'bram-grate-conceded'
-  | 'bram-taught-crossfire';
+  | 'bram-grate-conceded';
 
 export interface DialogFlagEntry {
   /** One-line heading, also used as the requirement text on a locked encounter. */
@@ -37,9 +36,9 @@ export const DIALOG_FLAGS: Readonly<Record<DialogFlagId, DialogFlagEntry>> = {
     titleLabel: 'dialogFlagDotWelcomedTitle',
     bodyLabel: 'dialogFlagDotWelcomedBody',
   },
-  'bram-taught-rounds': {
-    titleLabel: 'dialogFlagBramTaughtRoundsTitle',
-    bodyLabel: 'dialogFlagBramTaughtRoundsBody',
+  'bram-taught-crossfire': {
+    titleLabel: 'dialogFlagBramTaughtCrossfireTitle',
+    bodyLabel: 'dialogFlagBramTaughtCrossfireBody',
   },
   'cass-named-ad-hominem': {
     titleLabel: 'dialogFlagCassNamedAdHominemTitle',
@@ -64,10 +63,6 @@ export const DIALOG_FLAGS: Readonly<Record<DialogFlagId, DialogFlagEntry>> = {
   'bram-grate-conceded': {
     titleLabel: 'dialogFlagBramGrateTitle',
     bodyLabel: 'dialogFlagBramGrateBody',
-  },
-  'bram-taught-crossfire': {
-    titleLabel: 'dialogFlagBramTaughtCrossfireTitle',
-    bodyLabel: 'dialogFlagBramTaughtCrossfireBody',
   },
 };
 
