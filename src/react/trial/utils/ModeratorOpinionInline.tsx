@@ -1,4 +1,3 @@
-import React from 'react';
 import cn from 'classnames';
 import inspectIcon from '../../../static/icons/inspect.svg';
 import getLabel from '../../../data/labels';
