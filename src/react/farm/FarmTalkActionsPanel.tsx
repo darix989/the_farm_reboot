@@ -104,7 +104,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
 
   // Talk / Lessons / Leave are mounted only once the last beat has been read in full. Leave
   // used to be shown on its own while it was still revealing, which let the player end the
-  // conversation a sentence early — and `completesFlag` is set on the last reveal settling, so
+  // conversation a sentence early — and `completesFlags` is set on the last reveal settling, so
   // the talk did not count and whoever it unlocks stayed locked.
   const actionsReady = isLastBeat && revealSettled;
   const talkDisabled = !scenario || !!lockedHint;

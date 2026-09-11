@@ -10,7 +10,11 @@ import { useCodexUiStore } from '../../store/codexUiStore';
 import { useProgressStore } from '../../store/progressStore';
 import { useTutorialStore } from '../../store/tutorialStore';
 import { GameManager } from '../../utils/gameManager';
-import { farmDialogueFor, farmNpcRequirements } from '../farm/farmDialogueState';
+import {
+  farmDialogueFor,
+  farmFollowUpDialogue,
+  farmNpcRequirements,
+} from '../farm/farmDialogueState';
 import {
   useConditionContext,
   useConditionsMet,
@@ -43,8 +47,8 @@ const CODEX_OPEN_TARGET: TutorialTargetRef = { kind: 'codex_open' };
 const FarmUI: React.FC = () => {
   const nearbyNpcId = useFarmStore((s) => s.nearbyNpcId);
   const talkingToNpcId = useFarmStore((s) => s.talkingToNpcId);
+  const pendingFollowUp = useFarmStore((s) => s.pendingFollowUp);
   const openDialogue = useFarmStore((s) => s.openDialogue);
-  const closeDialogue = useFarmStore((s) => s.closeDialogue);
   const openCodex = useCodexUiStore((s) => s.openCodex);
   const tutorialOpen = useTutorialStore((s) => s.isOpen);
   const { hasUnread, unreadIds, firstUnreadSection } = useCodexNotices();
@@ -53,10 +57,13 @@ const FarmUI: React.FC = () => {
   const [codexBursting, setCodexBursting] = useState(false);
 
   const completedScenarios = useProgressStore((s) => s.completedScenarios);
-  const dialogue = useMemo(
-    () => (talkingToNpcId ? farmDialogueFor(talkingToNpcId) : null),
-    [talkingToNpcId, completedScenarios],
-  );
+  const dialogue = useMemo(() => {
+    if (!talkingToNpcId) return null;
+    if (pendingFollowUp?.kind === 'farm_talk' && pendingFollowUp.npcId === talkingToNpcId) {
+      return farmFollowUpDialogue(pendingFollowUp.npcId, pendingFollowUp.scenarioKey);
+    }
+    return farmDialogueFor(talkingToNpcId);
+  }, [talkingToNpcId, completedScenarios, pendingFollowUp]);
 
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;
   // Recomputed whenever the nearby animal changes; the requirements themselves are static
@@ -95,6 +102,18 @@ const FarmUI: React.FC = () => {
     openDialogue(FARM_INTRO_NPC_ID);
     progress.markLevel1Started();
   }, [openDialogue]);
+
+  // Same timing as Dot's intro: Farm `create` has already reset talking, and the loading
+  // overlay has unmounted. Opening here (not in Phaser) keeps the talk on top of the farm.
+  useEffect(() => {
+    if (!pendingFollowUp || talkingToNpcId) return;
+    if (pendingFollowUp.kind !== 'farm_talk') return;
+    openDialogue(pendingFollowUp.npcId);
+  }, [pendingFollowUp, talkingToNpcId, openDialogue]);
+
+  const closeFarmDialogue = useCallback(() => {
+    useFarmStore.getState().closeTalkAndFollowUp();
+  }, []);
 
   const startEncounter = useCallback((scenario: DebateScenarioKey) => {
     // Re-checked here rather than trusted from the button's disabled state: this is the one
@@ -147,7 +166,7 @@ const FarmUI: React.FC = () => {
         </button>
       )}
 
-      {nearbyNpc && !dialogue && !tutorialOpen && (
+      {nearbyNpc && !dialogue && !tutorialOpen && !pendingFollowUp && (
         <button
           type="button"
           className={styles.talkPrompt}
@@ -176,7 +195,7 @@ const FarmUI: React.FC = () => {
           key={dialogue.slotKey}
           dialogue={dialogue}
           onStart={startEncounter}
-          onClose={closeDialogue}
+          onClose={closeFarmDialogue}
         />
       )}
     </div>

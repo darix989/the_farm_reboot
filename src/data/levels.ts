@@ -98,7 +98,7 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     key: '021_hetty_ad_hominem_barrage',
     titleLabel: 'level1HettyBarrage',
     scenario: hettyBarrageJson as unknown as DebateScenarioJson,
-    requires: [{ kind: 'fallacy_known', fallacyId: 'ad-hominem' }],
+    requires: [{ kind: 'dialog_flag', flagId: 'cass-named-ad-hominem' }],
   },
   {
     key: '023_cass_teaches_appeal_to_popularity',
@@ -110,7 +110,7 @@ export const LEVEL_1_SCENARIOS: readonly ScenarioEntry[] = [
     key: '010_gossip_trough_hetty',
     titleLabel: 'level1GossipHetty',
     scenario: gossipHettyJson as unknown as DebateScenarioJson,
-    requires: [{ kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' }],
+    requires: [{ kind: 'dialog_flag', flagId: 'cass-named-appeal-to-popularity' }],
   },
   {
     // Unlocks as soon as Ad Hominem has a name — Bram offers it the moment you next walk

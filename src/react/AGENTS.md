@@ -146,6 +146,7 @@ player_choosing
     ▼
 debate_complete
     │  Leave → mark complete, return to `gameStore.returnSceneKey`
+    │          (farm follow-up may hold dialog flags until the pointer is heard)
     ▼
 [MainMenu or Farm]
 ```
@@ -577,7 +578,7 @@ The onboarding overlay that used to live on a dedicated `introTutorial` field is
 
 ## Farm tutorials (`src/data/farmTutorials.ts`)
 
-The same `TutorialOverlay` can run on the farm. Entries live in `farmTutorials.ts`, not on a scenario: each has an `id`, a `triggerWhen: GameCondition[]`, and a `DebateTutorialJson`. `useFarmTutorials` (called from `FarmUI`) opens the first unmet entry whose conditions are satisfied, skips while a talk is open, and writes `progressStore.completedTutorials` on Got it so a reload does not replay it.
+The same `TutorialOverlay` can run on the farm. Entries live in `farmTutorials.ts`, not on a scenario: each has an `id`, a `triggerWhen: GameCondition[]`, and a `DebateTutorialJson`. `useFarmTutorials` (called from `FarmUI`) opens the first unmet entry whose conditions are satisfied, skips while a talk is open or a Trial follow-up is pending, and writes `progressStore.completedTutorials` on Got it so a reload does not replay it.
 
 Field Notes targets (`codex_open`, `codex_tab`, `codex_tabs`, `codex_content`, `codex_close`) are stamped as `data-tutorial-*` on `FarmUI` and `CodexOverlay`. A step that points at the opening button keeps the Codex **closed**; a step that points at tabs or content opens it on `next` before the highlight lookup (same reason the Debate Log is expanded before a log target). `interactionMode: 'highlight'` spotlights a control without freezing sibling Field Notes tabs — overlay Continue still works.
 

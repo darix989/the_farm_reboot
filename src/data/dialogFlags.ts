@@ -6,8 +6,10 @@
  * carries its own copy, so an unlock requirement and a journal entry are the same record.
  *
  * A flag is set when an encounter that declares it in `setsDialogFlags` is finished — see
- * `src/utils/encounterRewards.ts` — or when a farm-talk stage with `completesFlag` is
- * played through to the last beat. Ids are a closed union so a typo in scenario JSON is a
+ * `src/utils/encounterRewards.ts`. If that encounter has a farm follow-up, the flags wait until
+ * the pointer talk's last beat settles, so Field Notes Next does not move before the player
+ * has been told where to go. A farm-talk stage with `completesFlag` still sets its flag when
+ * the last beat is played through. Ids are a closed union so a typo in scenario JSON is a
  * compile error, and so a stale flag in `localStorage` can be dropped on load.
  */
 import type { Labels } from './labels';

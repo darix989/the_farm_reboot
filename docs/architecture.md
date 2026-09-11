@@ -193,9 +193,11 @@ it with `isConditionMet` / `areConditionsMet`; React subscribers go through
 authored copy for the locked-button hint and for the Codex.
 
 Finishing an encounter goes through `applyEncounterRewards` (`src/utils/encounterRewards.ts`):
-it marks the scenario complete *and* grants `teachesFallacies` / `setsDialogFlags` /
-`unlocksFeatures` in one write, so a two-part gate can never be half-written. Rewards land on leaving a finished
-encounter, not on reaching the round that explains the fallacy. Spotting a fallacy in the
+it marks the scenario complete *and* grants `teachesFallacies` / `unlocksFeatures` on Leave.
+`setsDialogFlags` wait when the player returns to the farm and the encounter has a follow-up
+in `src/data/encounterFollowUps.ts` — a Leave-only talk (or a farm tutorial) that points at
+the next stop. Field Notes Next keys off those flags, so it does not move until the pointer is
+heard. Main-menu Leave and replays still write flags in the same Leave. Spotting a fallacy in the
 analysis modal also marks it known (`recordSpottedFallacy`) — spotting one in the wild is
 strictly more than being told it exists.
 
@@ -232,11 +234,11 @@ src/
   types/debateEntities.ts    the whole content schema — scenarios, rounds, options,
                              mechanics flags, tutorial triggers
   data/                      labels, the scenario registry, the farm map, the JSON,
-                             dialogFlags, levelGoals, gameFeatures, fallacyCatalog
+                             dialogFlags, levelGoals, encounterFollowUps, gameFeatures, fallacyCatalog
   store/                     the eight zustand stores
   utils/gameManager.ts       imperative Phaser access (switchScene, getScene, …)
   utils/gameConditions.ts    GameCondition union; shared by gates and option unlocks
-  utils/encounterRewards.ts  complete + teach + set flags + unlock features in one write
+  utils/encounterRewards.ts  complete + teach + unlock; flags may wait for a follow-up
   phaser/
     main.ts                  game config: scale, physics, scene list
     EventBus.ts              the 5-event Phaser→React bus

@@ -75,7 +75,7 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     titleLabel: 'levelGoalCassTitle',
     bodyLabel: 'levelGoalCassBody',
     availableWhen: [{ kind: 'dialog_flag', flagId: 'bram-taught-crossfire' }],
-    completeWhen: { kind: 'fallacy_known', fallacyId: 'ad-hominem' },
+    completeWhen: { kind: 'dialog_flag', flagId: 'cass-named-ad-hominem' },
   },
   {
     id: 'talk-hetty',
@@ -83,7 +83,7 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     npcId: 'hetty',
     titleLabel: 'levelGoalHettyTitle',
     bodyLabel: 'levelGoalHettyBody',
-    availableWhen: [{ kind: 'fallacy_known', fallacyId: 'ad-hominem' }],
+    availableWhen: [{ kind: 'dialog_flag', flagId: 'cass-named-ad-hominem' }],
     completeWhen: { kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' },
   },
   {
@@ -93,7 +93,7 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     titleLabel: 'levelGoalCassPopularityTitle',
     bodyLabel: 'levelGoalCassPopularityBody',
     availableWhen: [{ kind: 'dialog_flag', flagId: 'hetty-ad-hominem-witnessed' }],
-    completeWhen: { kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' },
+    completeWhen: { kind: 'dialog_flag', flagId: 'cass-named-appeal-to-popularity' },
   },
   {
     id: 'talk-hetty-grate',
@@ -101,7 +101,7 @@ export const LEVEL_1_GOALS: readonly LevelGoal[] = [
     npcId: 'hetty',
     titleLabel: 'levelGoalHettyGrateTitle',
     bodyLabel: 'levelGoalHettyGrateBody',
-    availableWhen: [{ kind: 'fallacy_known', fallacyId: 'appeal-to-popularity' }],
+    availableWhen: [{ kind: 'dialog_flag', flagId: 'cass-named-appeal-to-popularity' }],
     completeWhen: { kind: 'dialog_flag', flagId: 'hetty-grate-heard' },
   },
   {

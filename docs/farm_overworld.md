@@ -55,7 +55,8 @@ src/react/farm/
   farmDialogueState.ts          which conversation an animal offers right now
   CharacterStage.tsx            placeholder busts — Trial hole only, mounted by TrialUI
   FarmUI.module.scss
-src/data/farmTalk.ts            beat lists keyed by npc + offer slot
+src/data/farmTalk.ts            beat lists keyed by npc + offer slot, or `followUp:{key}`
+src/data/encounterFollowUps.ts  post-Trial pointer (farm talk or tutorial)
 src/phaser/animals/              placeholder animal spritesheets — see
                                   docs/characters-and-animations.md
 ```
@@ -212,14 +213,21 @@ The first time the farm overlay mounts, `FarmUI` opens Dot's conversation and wr
 `level1Started` to `progressStore`. Returning from a debate, from the menu, or a reload
 does not force it again.
 
+Leaving a finished Trial back to the farm queues a **follow-up** (`pendingFollowUp` on
+`farmStore`, which `resetFarmUi` does not clear). `FarmUI` auto-opens a Leave-only talk on
+the animal they just left — not that animal's next offer slot, which would be the wrong
+pre-talk whenever the spine moves on. Dialog flags wait until the last beat settles, so
+Field Notes Next updates after the pointer, not on Leave. Main-menu Leave and replays skip
+the follow-up and write flags immediately.
+
 ### Farm overlay tutorials
 
-After Bram's first lesson, `useFarmTutorials` opens the same `TutorialOverlay` used in
-debates, triggered by `GameCondition`s in [`farmTutorials.ts`](../src/data/farmTutorials.ts)
-rather than the debate bus. Completing an entry writes `tutorial_completed` into
-`progressStore` so it does not replay. Field Notes (`codex_open`, tabs, content) are
-spotlight targets; `interactionMode: 'highlight'` keeps those controls usable. Rue is
-frozen for the same reason a talk freezes him.
+After Bram's first lesson, the follow-up pointer talks first; then `useFarmTutorials` opens
+the same `TutorialOverlay` used in debates, triggered by `GameCondition`s in
+[`farmTutorials.ts`](../src/data/farmTutorials.ts) rather than the debate bus. Completing an
+entry writes `tutorial_completed` into `progressStore` so it does not replay. Field Notes
+(`codex_open`, tabs, content) are spotlight targets; `interactionMode: 'highlight'` keeps
+those controls usable. Rue is frozen for the same reason a talk freezes him.
 
 ### Encounter gates
 
@@ -231,8 +239,8 @@ requires → farmDialogueState.scenarioRequires → useUnmetConditionsHint → d
 
 A gated encounter is still *offered*, by default. The animal talks; only Talk is disabled, and
 the conversation is where the reason is given. Set `gateTalk: true` on the NPC to close the
-conversation itself until the next encounter's `requires` are met (Hetty until Ad Hominem is
-known; Bram until Dot has welcomed you; Cass until Bram has taught crossfire). `Farm.ts`
+conversation itself until the next encounter's `requires` are met (Hetty until Cass has
+named Ad Hominem and pointed you at the trough; Bram until Dot has welcomed you; Cass until Bram has taught crossfire). `Farm.ts`
 `tryInteract` and the overworld prompt both consult `farmNpcTalkLocked`. The main menu is
 ungated.
 
@@ -246,7 +254,8 @@ is finished). Picking a lesson
 replays it; Back returns to the talk menu. Cap is three lettered buttons (Z / X / C).
 
 Leaving a finished encounter goes through `applyEncounterRewards`, which marks it complete
-and grants `teachesFallacies` / `setsDialogFlags` / `unlocksFeatures` in one write. Mark completion with the
+and grants `teachesFallacies` / `unlocksFeatures` on Leave. `setsDialogFlags` wait for the
+farm follow-up when there is one. Mark completion with the
 store's **`activeDebateId`**, not `debate.id` — they are different values
 (`015_tobias_vs_rue` vs `level1-boss-pond-motion`) and only the former is a
 `DebateScenarioKey`.

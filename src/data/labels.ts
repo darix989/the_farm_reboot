@@ -476,6 +476,48 @@ const LABELS = {
   farmDialogDotDoneB:
     'The rest is the floor, and the floor is not mine. Good luck. Mind the drain.',
 
+  // Post-Trial follow-ups (`followUp:{scenarioKey}` in farmTalk.ts). Same animal, short, and
+  // they name the next stop so Field Notes Next can move after the last beat settles.
+  farmDialogFollowUpBramRoundsA:
+    'That is how a round works. I have one more thing, when you are ready. You do not have to. I would not blame you.',
+  farmDialogFollowUpBramRoundsB: 'I am still here.',
+  farmDialogFollowUpBramRoundsC:
+    'Talk to me again. Some rounds are not speeches. I would rather not demonstrate it. That is not the same as not having to. I am sorry.',
+  farmDialogFollowUpBramCrossfireA: 'That is the other half. I think you have it.',
+  farmDialogFollowUpBramCrossfireB: 'Where now?',
+  farmDialogFollowUpBramCrossfireC:
+    'The fox. West post. I am not saying that because I am a wolf. I am saying it because she will give you a name you do not have yet.',
+  farmDialogFollowUpCassAdHominemA: 'You have the name. Do not lose it on the walk to the trough.',
+  farmDialogFollowUpCassAdHominemB: 'Hetty.',
+  farmDialogFollowUpCassAdHominemC:
+    'She will use it on you and she will think she is being kind. Try not to hold it against her. I do.',
+  farmDialogFollowUpHettyBarrageA:
+    'There. I have said it. You were very good about standing still.',
+  farmDialogFollowUpHettyBarrageB: 'I should go.',
+  farmDialogFollowUpHettyBarrageC:
+    'The fox again, I should think. She always has another name for what people say. I do not know why anyone talks to her.',
+  farmDialogFollowUpCassPopularityA: 'How many, not how. You have both names now.',
+  farmDialogFollowUpCassPopularityB: 'Hetty again?',
+  farmDialogFollowUpCassPopularityC:
+    'The trough. She has more news, and this time it is not only about you. Buried in it is something somebody actually saw.',
+  farmDialogFollowUpHettyGrateA:
+    'A grate. Bent. I saw it with my own eyes, which is more than most animals can say.',
+  farmDialogFollowUpHettyGrateB: 'I should tell someone who argues.',
+  farmDialogFollowUpHettyGrateC:
+    'The wolf, down at the fence. He hears everything. I did not say that. I said I saw a grate.',
+  farmDialogFollowUpBramUnlocksA: 'That is the locked line. I am sorry I had to be unpleasant.',
+  farmDialogFollowUpBramUnlocksB: 'Is that all of the lessons?',
+  farmDialogFollowUpBramUnlocksC:
+    'That is all of the lessons. Talk to me again when you want the real one. I am one of the forty-one. I would rather you had it from me.',
+  farmDialogFollowUpBramSkirmishA:
+    'The grate is bent. You did not hear it from me, except that you may say on Sunday that you did.',
+  farmDialogFollowUpBramSkirmishB: 'Sunday.',
+  farmDialogFollowUpBramSkirmishC: 'Duchess has the motion. The barn. Whenever you want the floor.',
+  farmDialogFollowUpDuchessBossA: 'The floor is finished, for now.',
+  farmDialogFollowUpDuchessBossB: 'Whose side did I take?',
+  farmDialogFollowUpDuchessBossC:
+    'I moderate. I do not take sides, and I did not take one. The rest of the farm is still here if you want it.',
+
   // --- Encounter gates (src/utils/gameConditions.ts) ---
   // Requirement phrases say what to do rather than what is missing, so a list of them reads
   // as directions instead of as a list of failures.

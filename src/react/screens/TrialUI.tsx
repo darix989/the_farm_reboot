@@ -67,7 +67,9 @@ import { useCodexStore } from '../../store/codexStore';
 import { useTrialStageStore } from '../../store/trialStageStore';
 import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import { GameManager } from '../../utils/gameManager';
-import { applyEncounterRewards } from '../../utils/encounterRewards';
+import { applyEncounterRewards, shouldQueueFollowUp } from '../../utils/encounterRewards';
+import { encounterFollowUpFor } from '../../data/encounterFollowUps';
+import { useFarmStore } from '../../store/farmStore';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
@@ -686,8 +688,18 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           // is a `DebateScenarioKey`.
           //
           // Leaving is also where an encounter pays out what it taught: reaching the round
-          // that explains a fallacy is not the same as sitting through the encounter.
-          applyEncounterRewards(activeDebateId, debate);
+          // that explains a fallacy is not the same as sitting through the encounter. Dialog
+          // flags wait for a farm follow-up so Field Notes Next does not jump before the
+          // pointer talk.
+          const deferFlags = shouldQueueFollowUp(activeDebateId, debate, returnSceneKey);
+          applyEncounterRewards(activeDebateId, debate, { deferDialogFlags: deferFlags });
+          const followUp = deferFlags ? encounterFollowUpFor(activeDebateId) : undefined;
+          if (followUp) {
+            useFarmStore.getState().setPendingFollowUp({
+              scenarioKey: activeDebateId,
+              ...followUp,
+            });
+          }
           GameManager.switchScene(returnSceneKey);
         };
         break;

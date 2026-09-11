@@ -334,8 +334,8 @@ export class Farm extends Scene {
 
   /** Space / E / Enter opens the nearest animal's conversation, unless `gateTalk` has it closed. */
   private tryInteract(): void {
-    const { nearbyNpcId, talkingToNpcId, openDialogue } = useFarmStore.getState();
-    if (talkingToNpcId || !nearbyNpcId) return;
+    const { nearbyNpcId, talkingToNpcId, pendingFollowUp, openDialogue } = useFarmStore.getState();
+    if (talkingToNpcId || pendingFollowUp || !nearbyNpcId) return;
     if (useTutorialStore.getState().isOpen) return;
     if (farmNpcTalkLocked(nearbyNpcId)) return;
     openDialogue(nearbyNpcId);

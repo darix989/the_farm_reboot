@@ -1,5 +1,6 @@
 /**
- * Sequential farm-talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `cassDone`).
+ * Sequential farm-talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `cassDone`)
+ * or `followUp:{scenarioKey}` for the pointer talk after a Trial.
  *
  * The suffix is the animal's next unfinished scenario index (`1`, `2`, …), a
  * `talkStages` suffix (`dot1`, `dot2`), or `Done` when the list is empty. A missing row falls back to the single
@@ -7,6 +8,7 @@
  */
 import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 import { PLAYER_CHARACTER_ID } from './characters';
+import type { DebateScenarioKey } from './levels';
 import type { Labels } from './labels';
 
 export interface FarmTalkBeat {
@@ -160,6 +162,53 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'dot', textLabel: 'farmDialogDotDoneA' },
     { speakerId: 'dot', textLabel: 'farmDialogDotDoneB' },
   ],
+  // Post-Trial pointers. Leave-only; they must not reuse the next offer slot or the player
+  // would start Cass's popularity talk after Bram's crossfire, when Next is Cass for Ad Hominem.
+  'followUp:030_bram_teaches_dialog': [
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramRoundsA', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpBramRoundsB' },
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramRoundsC' },
+  ],
+  'followUp:031_bram_teaches_crossfire': [
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramCrossfireA', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpBramCrossfireB' },
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramCrossfireC' },
+  ],
+  'followUp:020_cass_teaches_ad_hominem': [
+    { speakerId: 'cass', textLabel: 'farmDialogFollowUpCassAdHominemA' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpCassAdHominemB' },
+    { speakerId: 'cass', textLabel: 'farmDialogFollowUpCassAdHominemC', emotion: 'doubtful' },
+  ],
+  'followUp:021_hetty_ad_hominem_barrage': [
+    { speakerId: 'hetty', textLabel: 'farmDialogFollowUpHettyBarrageA' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpHettyBarrageB' },
+    { speakerId: 'hetty', textLabel: 'farmDialogFollowUpHettyBarrageC' },
+  ],
+  'followUp:023_cass_teaches_appeal_to_popularity': [
+    { speakerId: 'cass', textLabel: 'farmDialogFollowUpCassPopularityA' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpCassPopularityB' },
+    { speakerId: 'cass', textLabel: 'farmDialogFollowUpCassPopularityC' },
+  ],
+  'followUp:010_gossip_trough_hetty': [
+    { speakerId: 'hetty', textLabel: 'farmDialogFollowUpHettyGrateA' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpHettyGrateB' },
+    { speakerId: 'hetty', textLabel: 'farmDialogFollowUpHettyGrateC' },
+  ],
+  'followUp:032_bram_teaches_unlocks': [
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramUnlocksA', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpBramUnlocksB' },
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramUnlocksC' },
+  ],
+  'followUp:014_skirmish_bram_fenceline': [
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramSkirmishA', emotion: 'doubtful' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpBramSkirmishB' },
+    { speakerId: 'bram', textLabel: 'farmDialogFollowUpBramSkirmishC' },
+  ],
+  'followUp:015_tobias_vs_rue': [
+    { speakerId: 'duchess', textLabel: 'farmDialogFollowUpDuchessBossA' },
+    { speakerId: RUE, textLabel: 'farmDialogFollowUpDuchessBossB' },
+    { speakerId: 'duchess', textLabel: 'farmDialogFollowUpDuchessBossC', emotion: 'doubtful' },
+  ],
 };
 
 function capitalize(id: string): string {
@@ -170,9 +219,20 @@ export function farmTalkSlotKey(npcId: string, suffix: string): string {
   return `${npcId}${suffix}`;
 }
 
+export function farmFollowUpSlotKey(scenarioKey: DebateScenarioKey): string {
+  return `followUp:${scenarioKey}`;
+}
+
 export function farmTalkBeats(npcId: string, suffix: string): FarmTalkBeat[] {
   const authored = FARM_TALK[farmTalkSlotKey(npcId, suffix)];
   if (authored && authored.length > 0) return [...authored];
   const fallback = `farmDialog${capitalize(npcId)}${suffix}` as Labels;
+  return [{ speakerId: npcId, textLabel: fallback }];
+}
+
+export function farmFollowUpBeats(scenarioKey: DebateScenarioKey, npcId: string): FarmTalkBeat[] {
+  const authored = FARM_TALK[farmFollowUpSlotKey(scenarioKey)];
+  if (authored && authored.length > 0) return [...authored];
+  const fallback = `farmDialog${capitalize(npcId)}Done` as Labels;
   return [{ speakerId: npcId, textLabel: fallback }];
 }

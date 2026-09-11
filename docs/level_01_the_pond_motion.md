@@ -99,10 +99,10 @@ teaches the locked line and then argues the motion properly, and Tobias requires
 
 | # | Scenario | Mode | Teaches | Fallacies on the picker | New for the player |
 |---|---|---|---|---|---|
-| 1.1 Bram | One at a Time | Lesson | **How a round works** / how you speak | — | A conversation is one animal, then the other. Three options, no wrong one. Brief look at the moderator emoji. Field Notes **Next** is taught on the farm after Leave. |
+| 1.1 Bram | One at a Time | Lesson | **How a round works** / how you speak | — | A conversation is one animal, then the other. Three options, no wrong one. Brief look at the moderator emoji. After Leave, Bram's follow-up points at the next fence lesson; Field Notes **Next** is taught on the farm after that. |
 | 1.2 Bram | Answer Me Now | Lesson | **Crossfire** — both halves | — | Somebody asks, you answer on your feet. Round-type labels unlock. |
 | 1.3 Cass | The Name of the Trick | Sparring | **The name** of Ad Hominem | ad-hominem | Analysis via the footer magnifying glass. Fallacy known on leave. |
-| 1.4 Hetty | All About You | Gossip | **Spotting it in the wild**, three times | ad-hominem | Gated on knowing Ad Hominem. Sets the flag the rest of the level hangs off. Then she has to wait while he answers. |
+| 1.4 Hetty | All About You | Gossip | **Spotting it in the wild**, three times | ad-hominem | Gated on Cass's Ad Hominem pointer. Sets the flag the rest of the level hangs off. Then she has to wait while he answers. |
 | 1.5 Cass | How Many, Not How | Sparring | **The name** of Appeal to Popularity | ad-hominem, appeal-to-popularity | Two icons on the picker, and a round carrying **two** fallacies at once. |
 | 1.6 Hetty | What Hetty Saw | Gossip | A **clean** round; the bent grate | ad-hominem, appeal-to-popularity | Not every sentence is a trap — and the player extracts the grate with a question. |
 | 1.7 Bram | The Line You Have to Earn | Lesson | **The locked line** — spotting and speaking meet | ad-hominem | An option that cannot be said until the fallacy in the previous round is tagged. |
@@ -166,11 +166,11 @@ Three tutorials, all `medium` — the copy in each is two short paragraphs, and 
 frames whitespace: what a round is (`introduction:start`, wizard); now you speak
 (`round:start` / `round-2`, interactive); then after confirm, the moderator emoji **on the
 collapsed recap chip** (`debate_log_recap_moderator_score`) and the expand arrow
-(`debate_log_panel_toggle`). Field Notes **Next** is not in this file: it fires on the farm
-after Leave (`farmTutorials.ts`, `field-notes-intro`), once `bram-taught-rounds` is set, and
-points at the opening button then the Codex tabs. The log stays collapsed here, unlike 1.9.
-Completing the lesson flips Next from this Bram to the next: he is still at the fence, and
-he has one more thing.
+(`debate_log_panel_toggle`). Field Notes **Next** is not in this file: Leave returns to the
+farm, Bram's follow-up pointer talks ("I have one more thing"), `bram-taught-rounds` lands
+when that last beat settles, Next flips to the still-at-the-fence crossfire goal, and
+then `field-notes-intro` (`farmTutorials.ts`) points at the opening button and the Codex
+tabs. The log stays collapsed here, unlike 1.9.
 
 ### 1.2 — "Answer Me Now" (Bram teaches crossfire)
 

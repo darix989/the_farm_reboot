@@ -68,13 +68,14 @@ const FarmDialogue: React.FC<FarmDialogueProps> = ({ dialogue, onStart, onClose 
   }, [index, lastIndex, completeReveal]);
 
   // A real dialog happened till the end: the last beat's reveal has settled. Closing
-  // early (walk away mid-conversation) must not set the flag — Bram stays locked.
+  // early (walk away mid-conversation) must not set the flags — Bram stays locked.
   useEffect(() => {
     if (!isLast || !revealSettled) return;
-    const flag = dialogue.completesFlag;
-    if (!flag) return;
-    useCodexStore.getState().setDialogFlag(flag);
-  }, [isLast, revealSettled, dialogue.completesFlag]);
+    const flags = dialogue.completesFlags;
+    if (!flags?.length) return;
+    const codex = useCodexStore.getState();
+    flags.forEach((flag) => codex.setDialogFlag(flag));
+  }, [isLast, revealSettled, dialogue.completesFlags]);
 
   // Subscribed rather than snapshotted, so an encounter that unlocks while this conversation is
   // on screen un-greys its own Talk button. That is not hypothetical: the tutorial in Cass's
