@@ -114,6 +114,11 @@ const FarmUI: React.FC = () => {
 
   return (
     <div className={styles.farmUi}>
+      {/* Sits under the HUD buttons so Field Notes stays clickable on a
+          `target_only` step, but swallows every other pointer so Phaser never
+          sees it. The overlay itself is `pointer-events: none`. */}
+      {tutorialOpen && <div className={styles.tutorialInputGate} aria-hidden="true" />}
+
       {!dialogue && <p className={styles.moveHint}>{getLabel(MOVE_HINT_LABEL)}</p>}
 
       {/* Hidden during a conversation: the talk screen fills the stage, and the Codex opening
@@ -142,11 +147,11 @@ const FarmUI: React.FC = () => {
         </button>
       )}
 
-      {nearbyNpc && !dialogue && (
+      {nearbyNpc && !dialogue && !tutorialOpen && (
         <button
           type="button"
           className={styles.talkPrompt}
-          disabled={nearbyTalkLocked || tutorialOpen}
+          disabled={nearbyTalkLocked}
           onClick={() => {
             if (nearbyTalkLocked) return;
             if (!canRunTutorialUntargetedAction()) return;

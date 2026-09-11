@@ -12,6 +12,18 @@
   pointer-events: none;
 }
 
+/* Full-stage catch while a farm tutorial is open. `.farmUi` is `pointer-events:
+   none` (and so is the React overlay), so without this taps fall through to the
+   Phaser canvas and summon the stick. HUD buttons sit at a higher z-index so
+   Field Notes remains the one allowed in-app target. */
+.tutorialInputGate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: auto;
+  touch-action: none;
+}
+
 .moveHint {
   position: absolute;
   top: 1rem;
@@ -27,6 +39,7 @@
 
 .talkPrompt {
   position: absolute;
+  z-index: 1;
   bottom: 12%;
   left: 50%;
   transform: translateX(-50%);
@@ -69,6 +82,7 @@
    Chrome matches the Trial recap chip: 2px ring, overlay-card fill, subtitle type. */
 .codexButton {
   position: absolute;
+  z-index: 1;
   top: 1rem;
   right: 1rem;
   box-sizing: border-box;
