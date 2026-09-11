@@ -304,6 +304,7 @@ const CodexOverlay: React.FC = () => {
               className={styles.codexCloseBtn}
               type="button"
               data-tutorial-codex-close
+              aria-label={getLabel('codexClose')}
               onClick={() => {
                 if (!canRunTutorialTargetAction(CODEX_CLOSE_TARGET)) return;
                 if (!canDismissCodex()) return;
@@ -311,7 +312,7 @@ const CodexOverlay: React.FC = () => {
                 notifyTutorialTargetAction(CODEX_CLOSE_TARGET);
               }}
             >
-              {getLabel('codexClose')}
+              ✕
             </button>
           </div>
         </div>
