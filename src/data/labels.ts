@@ -427,7 +427,7 @@ const LABELS = {
     'That is not about you, that is the week we are having. I would blame the weather. It is not the weather.',
   farmDialogDot1f: 'What is wrong with the week?',
   farmDialogDot1g:
-    'There is a debate coming. Tobias has put a motion on the Old Pond — that the water be kept for the Meadow-Born, the ones born on this meadow, and that every animal who arrived here after them go and drink at the road trough instead. It is heard Sunday, on the floor of the Public Farm, in front of Duchess.',
+    'There is a **debate** coming. Tobias has put a motion on the Old Pond — that the water be kept for the Meadow-Born, the ones born on this meadow, and that **every animal who arrived here after them go and drink at the road trough instead**. It is heard Sunday, on the floor of the Public Farm, in front of Duchess.',
   farmDialogDot1h: 'That is me, then. And the road trough is half a mile down the lane.',
   farmDialogDot1i:
     'It is. He says the arrivals are what turned the water brown, and he says it so warmly that everybody has agreed with him before they work out what they have agreed to.',
