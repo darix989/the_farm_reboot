@@ -6,3 +6,12 @@
     0 0 clamp(0.4rem, 0.8vw, 0.88rem) var(--ui-color-tutorial-guidance-glow) !important;
   border-radius: 0.4rem;
 }
+
+/* Moderator status face: a border would grow the 1.6em square past the log header.
+   Draw the ring inside the already-capped box instead. */
+.tutorialTargetHighlight[data-tutorial-debate-log-moderator-score],
+.tutorialTargetHighlight[data-tutorial-debate-log-recap-moderator-score] {
+  border: none !important;
+  outline: clamp(0.3rem, 0.52vw, 0.63rem) solid var(--ui-color-tutorial-guidance);
+  outline-offset: calc(-1 * clamp(0.3rem, 0.52vw, 0.63rem));
+}

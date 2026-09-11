@@ -1,9 +1,18 @@
 .box {
   position: relative;
-  display: inline-block;
+  display: block;
   flex: none;
   overflow: hidden;
-  vertical-align: middle;
+  box-sizing: border-box;
+
+  // The staged `.frame` is the full sheet cell, often larger than this box. Paint
+  // containment plus overflow keep it from leaking into the tutorial highlight.
+  contain: paint;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 1;
 
   // Same trap as `FaceClip`: `.react-ui-overlay` inherits `pointer-events: none` to every
   // descendant, and a decorative portrait must not opt back in or it swallows clicks meant

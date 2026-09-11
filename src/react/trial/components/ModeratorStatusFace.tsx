@@ -5,7 +5,8 @@ import { preloadFaceSheet, resolvedFaceSheet } from '../../../phaser/animals/ani
 import FaceStill from '../../characters/FaceStill';
 import { moderatorOpinionFace } from '../utils/trialHelpers';
 
-/** Box side. `em` so it tracks whatever type it sits in, as the emoji it replaces did. */
+/** Box side. `em` so it tracks whatever type it sits in, as the emoji it replaces did.
+ *  Keep in lockstep with `.moderatorStatusFaceTutorialHook` in `trialShared.module.scss`. */
 const STATUS_FACE_SIZE = '1.6em';
 
 interface ModeratorStatusFaceProps {

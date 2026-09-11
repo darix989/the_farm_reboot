@@ -130,6 +130,34 @@
   vertical-align: middle;
 }
 
+/*
+ * Square around `ModeratorStatusFace` for tutorial highlight. Keep the 1.6em in lockstep
+ * with `STATUS_FACE_SIZE` in `ModeratorStatusFace.tsx`.
+ *
+ * Explicit height + `aspect-ratio` (width auto) so `box-sizing: border-box` can eat the
+ * tutorial ring instead of growing past the log header. `max-height: 100%` needs a
+ * stretched parent — `.trialAreaTitleEnd` / `.trialDebateLogTitleScore` provide that.
+ */
+.moderatorStatusFaceTutorialHook {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  height: min(1.6em, 100%);
+  width: auto;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  line-height: 0;
+  border-radius: 0.4rem;
+  align-self: center;
+
+  > * {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
 .moderatorOpinionInsights {
   display: inline-flex;
   align-items: center;

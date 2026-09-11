@@ -10,6 +10,8 @@ export function ModeratorOpinionInline({
   insightPoints,
   className,
   showOpinion = true,
+  opinionClassName,
+  opinionTutorialData,
 }: {
   score: number;
   /** When set (e.g. debate log header), shows inspect icon and balance to the left of the moderator's face. */
@@ -17,6 +19,12 @@ export function ModeratorOpinionInline({
   className?: string;
   /** `false` hides the moderator's face (scenarios with no moderator). Defaults to `true`. */
   showOpinion?: boolean;
+  /** Class on the face wrapper only (tutorial square), not the Insight strip. */
+  opinionClassName?: string;
+  /** `data-tutorial-…` hook on that wrapper. */
+  opinionTutorialData?:
+    | 'data-tutorial-debate-log-moderator-score'
+    | 'data-tutorial-debate-log-recap-moderator-score';
 }) {
   // Nothing left to render once both halves are suppressed — a speaking-only rung has
   // neither an Insight economy nor a moderator.
@@ -45,7 +53,17 @@ export function ModeratorOpinionInline({
           )}
         </>
       )}
-      {showOpinion && <ModeratorStatusFace score={score} />}
+      {showOpinion &&
+        (opinionClassName || opinionTutorialData ? (
+          <span
+            className={opinionClassName}
+            {...(opinionTutorialData ? { [opinionTutorialData]: true } : undefined)}
+          >
+            <ModeratorStatusFace score={score} />
+          </span>
+        ) : (
+          <ModeratorStatusFace score={score} />
+        ))}
     </span>
   );
 }

@@ -5,6 +5,7 @@ import DebateLogToggleButton from './DebateLogToggleButton';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import type { ResolvedMechanics } from '../utils/scenarioMechanics';
 import styles from './DebateLogRecapChip.module.scss';
+import shared from '../trialShared.module.scss';
 import getLabel from '../../../data/labels';
 
 export interface DebateLogRecapChipProps {
@@ -56,15 +57,15 @@ const DebateLogRecapChip: React.FC<DebateLogRecapChipProps> = ({
           })}
         </span>
       )}
-      <span className={styles.recapOpinionHook} data-tutorial-debate-log-recap-moderator-score>
-        <ModeratorOpinionInline
-          className={styles.recapOpinion}
-          score={totalScore}
-          // Same gating as the log header, from the same flags — the two must never disagree.
-          insightPoints={mechanics.showInsightPoints ? insightPoints : undefined}
-          showOpinion={mechanics.showModeratorOpinion}
-        />
-      </span>
+      <ModeratorOpinionInline
+        className={styles.recapOpinion}
+        score={totalScore}
+        // Same gating as the log header, from the same flags — the two must never disagree.
+        insightPoints={mechanics.showInsightPoints ? insightPoints : undefined}
+        showOpinion={mechanics.showModeratorOpinion}
+        opinionClassName={shared.moderatorStatusFaceTutorialHook}
+        opinionTutorialData="data-tutorial-debate-log-recap-moderator-score"
+      />
       <DebateLogToggleButton debate={debate} roundNumber={roundNumber} />
     </div>
   );

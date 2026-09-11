@@ -10,6 +10,7 @@ import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { activeRoundNumber } from '../utils/trialHelpers';
 import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
 import styles from './TrialPanels.module.scss';
+import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
 
@@ -142,16 +143,13 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
             className={styles.trialDebateLogTitleScore}
             style={{ margin: 0, color: uiColor.textBody }}
           >
-            <span
-              className={styles.debateLogModeratorScoreTutorialHook}
-              data-tutorial-debate-log-moderator-score
-            >
-              <ModeratorOpinionInline
-                score={wf.totalScore}
-                insightPoints={mechanics.showInsightPoints ? insightPoints : undefined}
-                showOpinion={mechanics.showModeratorOpinion}
-              />
-            </span>
+            <ModeratorOpinionInline
+              score={wf.totalScore}
+              insightPoints={mechanics.showInsightPoints ? insightPoints : undefined}
+              showOpinion={mechanics.showModeratorOpinion}
+              opinionClassName={shared.moderatorStatusFaceTutorialHook}
+              opinionTutorialData="data-tutorial-debate-log-moderator-score"
+            />
           </p>
           <DebateLogToggleButton
             debate={debate}
