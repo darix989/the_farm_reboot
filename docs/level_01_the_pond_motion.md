@@ -342,7 +342,8 @@ recap on. 3 rounds. `setsDialogFlags: ['bram-grate-conceded']`.*
 **Cass wears the score stills and is not on stage.** `moderatorId: 'cass'` — fox portraits
 `sneaky` 17 / `doubtful` 9 / `angry` 3 — so the fence stays a two-cast: Rue vs Bram, Bram
 the opponent. Duchess in 1.8 is the other pattern (in `characters`, centre slot). Bram's
-rehearsed courtesy at the fence line the evening before. Round 1 (`impact: -10`,
+lead-in (and Dot, and Field Notes) name Cass sitting it as practice, before the
+owl has the floor. Round 1 (`impact: -10`,
 `requiresAnalysis`) is the headcount and the six weeks. Round 2 is a `rebuttal` — no prompt,
 and the effective option is a proposal, not a question. Option **C is locked**
 behind `unlockCondition: { round-1, s-r1-3, ad-hominem }` — the mechanic 1.6 exists to
@@ -543,7 +544,7 @@ tiny:
 | 1.4 teaching | 1 / 1 | **Two** sentences are doing something this time, tag both. |
 | 1.5 gossip | 1 / 1 | Continue is locked until you judge, including **Clean**. |
 | 1.6 lesson | 3 / 3 | Some answers are locked; catch him and the line opens; the third line only exists because you caught him; **one click opens it, a second says it**. |
-| 1.7 skirmish | 1 / 1 | The moderator is live again; **Cass** is how she leans. |
+| 1.7 skirmish | 1 / 1 | Cass is sitting this one as practice, before Duchess; her face is how she leans. |
 
 1.8 carries none: it repeats mechanics the player has already met. 1.7 used to carry a
 second step explaining the locked option; 1.6 now teaches that properly, so the reminder

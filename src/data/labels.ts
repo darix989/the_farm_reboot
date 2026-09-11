@@ -384,11 +384,13 @@ const LABELS = {
   farmDialogBram2c:
     'This one I cannot simply tell you. I have to be unpleasant first, on purpose, so **[accent]you can catch me at it[/accent]**. I have been dreading it since breakfast.',
   farmDialogBram3:
-    'No more lessons. I am one of the forty-one, and I would rather you had the argument from me than from Tobias on Sunday.',
+    'No more lessons. I am one of the forty-one, and I would rather you had the argument from me than from Tobias on Sunday. Cass will sit it — practice, before Duchess.',
   farmDialogBram3a: 'No more lessons. I think we are past those.',
   farmDialogBram3b: 'What is this, then?',
   farmDialogBram3c:
     '**[accent]I am one of the forty-one[/accent]**, Rue. I put my name to the motion. I would rather you had that argument from me, here, where it costs you nothing — than from Tobias on Sunday, where it costs you everything.',
+  farmDialogBram3d:
+    'The fox said she would sit it. **[accent]Practice[/accent]**, she called it, before Duchess has the floor. I did not ask her to.',
   farmDialogBramDone:
     'I have said a great deal more than I should have. The grate is bent. You did not hear it from me.',
   farmDialogBramDoneA: 'I have said a great deal more than I should have.',
@@ -474,11 +476,11 @@ const LABELS = {
   farmDialogDot5c:
     'She was not finished. She never is. And the one true thing she has to give you is somewhere near the end of it, so you will have to sit through the rest of it to get there.',
   farmDialogDot6:
-    'Bram, at the fence. He has one more piece for you, and then he will argue the motion at you properly.',
+    'Bram, at the fence. He has one more piece for you, and then he will argue the motion at you properly — Cass is coming down to sit that one.',
   farmDialogDot6a: 'Bram, at the fence. Twice, I should think.',
   farmDialogDot6b: 'Twice?',
   farmDialogDot6c:
-    'He has one more piece to show you, and then he will argue the motion at you for real. He put his name to it, you know. He will hate every minute of it and he will do it anyway, which is the most wolf thing about him.',
+    'He has one more piece to show you, and then he will argue the motion at you for real. **[accent]Cass is coming down to sit that one[/accent]**, she says — practice, before the owl has the floor. He put his name to it, you know. He will hate every minute of it and he will do it anyway, which is the most wolf thing about him.',
   farmDialogDot7: 'Duchess has the motion at the barn. That is the floor, whenever you want it.',
   farmDialogDot7a: 'Duchess has the motion at the barn. That is the floor, whenever you want it.',
   farmDialogDot7b: 'And that is everyone?',
@@ -516,7 +518,7 @@ const LABELS = {
   farmDialogFollowUpBramUnlocksA: 'That is the locked line. I am sorry I had to be unpleasant.',
   farmDialogFollowUpBramUnlocksB: 'Is that all of the lessons?',
   farmDialogFollowUpBramUnlocksC:
-    'That is all of the lessons. Talk to me again when you want the real one. I am one of the forty-one. I would rather you had it from me.',
+    'That is all of the lessons. Talk to me again when you want the real one. I am one of the forty-one. I would rather you had it from me. The fox said she would sit it — **[accent]practice[/accent]**, before the owl.',
   farmDialogFollowUpBramSkirmishA:
     'The grate is bent. You did not hear it from me, except that you may say on Sunday that you did.',
   farmDialogFollowUpBramSkirmishB: 'Sunday.',
@@ -578,7 +580,7 @@ const LABELS = {
     'Some of what you could say back is locked until you catch the other animal at something. He will do something unkind on purpose so that you can.',
   levelGoalBramSkirmishTitle: 'Bram, for a real one',
   levelGoalBramSkirmishBody:
-    'No more lessons. He is one of Tobias’s forty-one, and he will argue the motion at you properly — bring what you have.',
+    'No more lessons. He is one of Tobias’s forty-one, and he will argue the motion at you properly — bring what you have. Cass is sitting it as practice, so you see a moderator before Duchess has the floor.',
   levelGoalDuchessTitle: 'Duchess, at the barn',
   levelGoalDuchessBody: 'She has the motion. That is the floor, whenever you want it.',
   codexKnownProgress: '{known} of {total} known',
