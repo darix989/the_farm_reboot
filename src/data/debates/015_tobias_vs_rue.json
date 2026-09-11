@@ -20,6 +20,7 @@
   ],
   "availableLogicalFallacies": ["ad-hominem", "appeal-to-popularity"],
   "mechanics": {
+    "maxAnalysisAttempts": 5,
     "showInsightPoints": false
   },
   "rounds": [
