@@ -151,6 +151,7 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
               opinionClassName={shared.moderatorStatusFaceTutorialHook}
               opinionTutorialData="data-tutorial-debate-log-moderator-score"
               characterId={debateModeratorId(debate)}
+              deferGlowUntilRecapClose={mechanics.showRoundRecap}
             />
           </p>
           <DebateLogToggleButton

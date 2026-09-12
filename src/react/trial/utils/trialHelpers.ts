@@ -253,9 +253,10 @@ export function moderatorOpinionEmoji(score: number): string {
 
 export type ModeratorOpinionFace = { emotion: AnimalEmotion; frame: number };
 
-type ScoreBand = 'approval' | 'neutral' | 'disapproval';
+export type ScoreBand = 'approval' | 'neutral' | 'disapproval';
 
-function scoreBand(score: number): ScoreBand {
+/** Three-state mood for the moderator status face. Same thresholds as `scoreColor`. */
+export function scoreBand(score: number): ScoreBand {
   if (score > 0) return 'approval';
   if (score < 0) return 'disapproval';
   return 'neutral';

@@ -13,6 +13,7 @@ export function ModeratorOpinionInline({
   opinionClassName,
   opinionTutorialData,
   characterId,
+  deferGlowUntilRecapClose = false,
 }: {
   score: number;
   /** When set (e.g. debate log header), shows inspect icon and balance to the left of the moderator's face. */
@@ -28,6 +29,11 @@ export function ModeratorOpinionInline({
     | 'data-tutorial-debate-log-recap-moderator-score';
   /** Whose stills to hold. Omit for Duchess. Pass `debateModeratorId(debate)` in a Trial. */
   characterId?: string;
+  /**
+   * Live chip / log header only. When the scenario shows a round recap, hold the mood-glow
+   * until that modal unmounts so it is not playing behind the overlay.
+   */
+  deferGlowUntilRecapClose?: boolean;
 }) {
   // Nothing left to render once both halves are suppressed — a speaking-only rung has
   // neither an Insight economy nor a moderator.
@@ -62,10 +68,18 @@ export function ModeratorOpinionInline({
             className={opinionClassName}
             {...(opinionTutorialData ? { [opinionTutorialData]: true } : undefined)}
           >
-            <ModeratorStatusFace score={score} characterId={characterId} />
+            <ModeratorStatusFace
+              score={score}
+              characterId={characterId}
+              deferGlowUntilRecapClose={deferGlowUntilRecapClose}
+            />
           </span>
         ) : (
-          <ModeratorStatusFace score={score} characterId={characterId} />
+          <ModeratorStatusFace
+            score={score}
+            characterId={characterId}
+            deferGlowUntilRecapClose={deferGlowUntilRecapClose}
+          />
         ))}
     </span>
   );

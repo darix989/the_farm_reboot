@@ -67,6 +67,7 @@ const DebateLogRecapChip: React.FC<DebateLogRecapChipProps> = ({
         opinionClassName={shared.moderatorStatusFaceTutorialHook}
         opinionTutorialData="data-tutorial-debate-log-recap-moderator-score"
         characterId={debateModeratorId(debate)}
+        deferGlowUntilRecapClose={mechanics.showRoundRecap}
       />
       <DebateLogToggleButton debate={debate} roundNumber={roundNumber} />
     </div>
