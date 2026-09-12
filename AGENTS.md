@@ -25,7 +25,7 @@
 | Global UI state | Zustand (`src/store/gameStore.ts`) |
 | Styling | SCSS — `src/react/index.scss` (global) + `*.module.scss` (per feature); shared **design tokens** for fonts (`uiTypography.scss` / `uiFont.ts`) and colors (`uiColors.scss` / `uiColor.ts`). Tailwind has been removed. |
 | Lint | ESLint 9 + TypeScript ESLint (`eslint.config.mjs`) |
-| Tests | Vitest (`*.test.ts` next to the module) |
+| Tests | Vitest (`*.test.ts` next to the module); Playwright smokes in `e2e/` |
 
 ## How to run and build
 
@@ -34,7 +34,24 @@
 - `npm run build` — production build to `dist/`.
 - `npm run dev-nolog` / `npm run build-nolog` — same without Phaser template telemetry.
 - `npm test` — Vitest unit tests (`*.test.ts` colocated with the module).
-- `npm run check` — typecheck, lint, format, tests, and a production build. CI runs this.
+- `npm run test:e2e` — Playwright Chromium smokes (`e2e/`); starts `dev-nolog` on **8080** unless that server is already up. Not part of `npm run check`.
+- `npm run check` — typecheck, lint, format, Vitest, and a production build. CI runs this as the `check` job; Playwright is a separate `e2e` job.
+
+## Browser verification (Playwright)
+
+The owned browser engine is **Playwright** (`e2e/`, `@playwright/test`). Config lives in [`playwright.config.ts`](playwright.config.ts): Chromium, **1920×1080**, `prefers-reduced-motion: reduce`, `webServer` = `npm run dev-nolog` on **8080**. Smokes wait for **menu copy**, never for `<canvas>` — `isGameReady` is "a playable scene has reported in", not "the canvas exists."
+
+When verifying a UI change in a coding session:
+
+- Start `npm run dev-nolog` (or reuse Playwright's webServer). Drive `http://localhost:8080`.
+- Prefer the **Playwright CLI** (`npx playwright test`, or `npx playwright open http://localhost:8080`) so locators and traces match the suite.
+- Drive **React** (menus, Field Notes, farm talks, Trial panels, tutorials) via role / accessible name from `getLabel`, or existing `data-tutorial-*` hooks. Do not chase hashed CSS-module class names.
+- Drive **Farm movement** with WASD / arrows, not canvas clicks and not the virtual joystick.
+- Screenshot the game hole when the change is Phaser art or layout. An a11y snapshot is enough for overlay copy and buttons — the Phaser canvas is opaque to the accessibility tree.
+- Click only controls that set `pointer-events: auto`. The overlay root is `pointer-events: none`; clicks on empty overlay fall through to the canvas.
+- **agent-browser** is an optional local shortcut for a quick click-through. Do not add it to `package.json` or CI. If a check should survive a PR, write it as a Playwright spec in `e2e/` instead.
+
+Keep e2e thin: boot to menu, menu into a Trial, enter the farm. Debate rules, unlocks, and grading stay in Vitest. Do not record a full playthrough.
 
 ## Source layout (authoritative)
 
@@ -43,6 +60,7 @@ All application code lives under **`src/`**. Cursor rule **`.cursor/rules/projec
 - **React UI** → `src/react/` (components, hooks, CSS).
 - **Phaser-only** (no React components) → `src/phaser/` (`main.ts`, `PhaserGame.tsx` bridge, scenes, `EventBus.ts`).
 - **Shared** → `src/store/`, `src/utils/`, `src/data/` (UI copy), top-level `src/App.tsx`, `src/main.tsx`.
+- **Browser smokes** → `e2e/` (Playwright; not application code).
 
 See also the root **README.md** for commands, structure, and the React–Phaser bridge.
 
@@ -251,4 +269,5 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
 - **Looking at any animal's animations** → main menu → **Animation Gallery** (`AnimalGallery` scene + `AnimalGalleryUI`). Holds one clip on a loop, lists atlas and generated clips together, flags emotions with no art yet, and toggles between a crossfade and a raw cut when switching. `docs/characters-and-animations.md` §9.6.
 - New **animal emotion clip** (`talking`, `doubtful`, `angry`, `thinking`, `sneaky`) → **read `.claude/skills/animal-emotion-sprites/SKILL.md`**, the operating manual for this (Claude Code loads it as a skill; every other tool can simply open the file). In short: art is generated, not hand-drawn — `npm run sprites:emotions` drives the Ludo.ai API from `scripts/ludo/emotion-manifest.json` into a gitignored review dir, and `--promote` ships the clips you keep. Needs `LUDO_API_KEY` in `.env.local`, and **costs credits per clip**, so never generate without being asked. Design rationale (and the scale/origin trap that makes an un-normalized clip render at the wrong size) is in `docs/characters-and-animations.md` §9.
 - New **fixed UI string** (menus, modals, ARIA, Phaser labels) → add an entry in `src/data/labels.ts` and use `getLabel('yourKey', { replacements: { … } })` when the template has placeholders.
-- New **pure rules helper** (gates, unlocks, scoring, analysis grading, workflow reducer) → colocate a `*.test.ts` next to it. `npm test` runs Vitest; `npm run check` is what CI runs.
+- New **pure rules helper** (gates, unlocks, scoring, analysis grading, workflow reducer) → colocate a `*.test.ts` next to it. `npm test` runs Vitest; `npm run check` is what the CI `check` job runs.
+- New **browser smoke** (boot, overlay routing, a click path that unit tests cannot see) → add a spec under `e2e/`. `npm run test:e2e` / the CI `e2e` job. Do not fold Playwright into `npm run check`.

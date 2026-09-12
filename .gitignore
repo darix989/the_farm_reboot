@@ -10,6 +10,12 @@ lerna-debug.log*
 # Vitest reporter output (Cursor / local)
 .vitest/
 
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
 node_modules
 dist
 dist-ssr

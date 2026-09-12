@@ -270,12 +270,15 @@ npm run lint:styles    # stylelint
 npm run lint:scenarios # debate JSON authoring lint
 npm run typecheck      # tsc --noEmit
 npm run test           # vitest
-npm run check          # all of the above, then a production build
+npm run test:e2e       # playwright smokes (Chromium, starts dev-nolog)
+npm run check          # all of the above except e2e, then a production build
 ```
 
-**Vitest** covers the debate rules layer: `GameCondition` gates, option unlocks, analysis grading, scenario mechanics, and the round workflow reducer (`reduceWorkflow`). Tests sit next to the module they cover (`*.test.ts`). GitHub Actions runs `npm run check` on pull requests and on `main`. Vitest aliases `phaser` to [`vitest.phaser-stub.ts`](../vitest.phaser-stub.ts) so importing `EventBus` does not boot a canvas; the Vite game configs are unchanged.
+**Vitest** covers the debate rules layer: `GameCondition` gates, option unlocks, analysis grading, scenario mechanics, and the round workflow reducer (`reduceWorkflow`). Tests sit next to the module they cover (`*.test.ts`). GitHub Actions runs `npm run check` on pull requests and on `main` as the `check` job. Vitest aliases `phaser` to [`vitest.phaser-stub.ts`](../vitest.phaser-stub.ts) so importing `EventBus` does not boot a canvas; the Vite game configs are unchanged.
 
-Phaser scenes, canvas collision, and `pointer-events` fall-through still need the running game. The loop for those is `npm run dev-nolog`, then drive the 16:9 stage (click, send keys, screenshot). Two of the worst bugs found so far (a collider offset from its visual, and a scene switch that did not stop the old scene) produced no type error, no lint warning and no unit-test failure; only running the game surfaced them.
+**Playwright** (`e2e/`, Chromium, 1920×1080, reduced motion) covers a few overlay smokes against the real Vite server: boot to the main menu, open a Level 1 Trial from the menu, enter the farm into Dot's intro talk. It is a separate CI `e2e` job, not part of `npm run check`. Locators use `getLabel` copy and `data-tutorial-*` hooks. Do not e2e the reducer or walk the canvas.
+
+Phaser scenes, canvas collision, and `pointer-events` fall-through still need the running game beyond those smokes. The loop for those is `npm run dev-nolog`, then drive the 16:9 stage (click React controls, send WASD on the farm, screenshot). Two of the worst bugs found so far (a collider offset from its visual, and a scene switch that did not stop the old scene) produced no type error, no lint warning and no unit-test failure; only running the game surfaced them.
 
 Useful while debugging the overworld: set `arcade: { debug: true }` in `main.ts` to draw
 every physics body outline.

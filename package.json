@@ -31,6 +31,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "check": "npm run typecheck && npm run lint && npm run lint:styles && npm run lint:scenarios && npm run format:check && npm run test && npm run build-nolog",
     "lint:styles": "stylelint \"src/**/*.{css,scss}\"",
     "lint:styles:fix": "stylelint \"src/**/*.{css,scss}\" --fix",
@@ -63,6 +65,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@playwright/test": "^1.63.0",
     "@types/classnames": "^2.3.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
