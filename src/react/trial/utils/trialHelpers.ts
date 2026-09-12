@@ -22,15 +22,19 @@ export function getSpeakerName(debate: DebateScenarioJson, speakerId: string): s
   return debate.characters?.[speakerId] ?? speakerId.charAt(0).toUpperCase() + speakerId.slice(1);
 }
 
-/** Current speaker for CharacterStage highlighting. Intro/complete/recap leave everyone equal. */
+/** Current speaker for CharacterStage highlighting. Intro/complete/recap leave everyone equal;
+ *  `moderator_speaking` names the moderator. */
 export function activeSpeakerIdForWorkflow(
   gamePhase: GamePhase,
   currentNpcRound: NpcRoundEntry | null,
   currentPlayerRound: PlayerRoundEntry | null,
   selectedOption: PlayerOption | null,
   activeOpponentResponse: OpponentResponse | null,
+  moderator: { speakerId: string | null; emotion: AnimalEmotion | null } | null = null,
 ): string | null {
   switch (gamePhase) {
+    case 'moderator_speaking':
+      return moderator?.speakerId ?? null;
     case 'npc_speaking':
       return currentNpcRound?.speakerId ?? null;
     case 'player_choosing':
@@ -71,8 +75,11 @@ export function activeEmotionForWorkflow(
   currentPlayerRound: PlayerRoundEntry | null,
   selectedOption: PlayerOption | null,
   activeOpponentResponse: OpponentResponse | null,
+  moderator: { speakerId: string | null; emotion: AnimalEmotion | null } | null = null,
 ): AnimalEmotion | null {
   switch (gamePhase) {
+    case 'moderator_speaking':
+      return moderator?.emotion ?? null;
     case 'npc_speaking':
       if (!currentNpcRound) return null;
       return emotionFromStatement(currentNpcRound.statement);

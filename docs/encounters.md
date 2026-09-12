@@ -31,11 +31,12 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 | Field | Meaning |
 |---|---|
 | `id` | Internal id — **not** the `DebateScenarioKey`. `015_tobias_vs_rue` is the key, `level1-boss-pond-motion` is the id. Progress is tracked by key. |
-| `introduction` | Sets the scene. Its presence is what creates the `debate_intro` phase. May carry inline [emphasis](#emphasis-inside-a-spoken-line). |
+| `introduction` | Sets the scene. Its presence is what creates the `debate_intro` phase (no speaker, cone off). May carry inline [emphasis](#emphasis-inside-a-spoken-line). |
 | `introductionSummary` | Two-line paraphrase shown in the pre-round-1 briefing modal. **Required** whenever there is an `introduction` — see [Recap summaries](#recap-summaries). |
 | `playerSide` | `proposition` or `opposition`. |
-| `characters` | `speakerId` → display name. Keys here are the staged cast. |
-| `moderatorId` | Whose face the score stills wear when that animal is **not** on stage (1.7 names Cass so Bram stays the opponent). Omit to use a staged moderator, or Duchess. |
+| `characters` | `speakerId` → display name. Keys here are the staged cast. A `moderatorOpening` also puts the resolved moderator on stage if they are missing. |
+| `moderatorId` | Whose face the score stills wear, and who speaks `moderatorOpening`. 1.7 names Cass so she sits the fence as practice. Omit to use a staged moderator, or Duchess. |
+| `moderatorOpening` | The moderator's spoken opening of the floor, after the introduction and before round 1. Presence of this field is what creates `moderator_speaking` (cone on the moderator). Not a numbered round: no score, no analysis, no recap. Gossip / sparring / lab / lesson omit it. |
 | `logicalFallacies` | The fallacies this scenario uses, each with an `explanation` shown after a guess. **Write real prose** — several older scenarios still say `"TBD"`, and the player sees it. |
 | `availableLogicalFallacies` | Which icons appear on the picker. **This is the difficulty dial** — one icon is a tutorial, thirteen is a wall. |
 | `startingInsightPoints` | Insight to start with. Defaults to 0. |
@@ -48,9 +49,23 @@ To hang it on an animal in the overworld, add the key to that NPC's `scenarios` 
 
 ---
 
+## Opening the floor
+
+Formal debates (`encounterKind: 'debate'`, including the default when `mechanics` is omitted)
+author a `moderatorOpening` so the moderator stands on stage and speaks after the
+introduction. The cone tracks them for that beat, then moves to whoever opens round 1.
+
+```
+debate_intro (no speaker) → [optional briefing] → moderator_speaking → round 1
+```
+
+The briefing button reads **Open the floor** when a `moderatorOpening` follows, **Begin Round 1**
+otherwise. Gossip and the other smaller modes skip the field and stay two-cast.
+
 ## Rounds
 
-`rounds` is a flat sequence. Each entry is an NPC turn or a player turn.
+`rounds` is a flat sequence. Each entry is an NPC turn or a player turn. The moderator's
+opening is **not** a round — it lives on `moderatorOpening`.
 
 **NPC round** — the opponent speaks, the player reads and continues. `impact` is a signed
 delta in player perspective: negative when the NPC lands a point. Set `requiresAnalysis: true`

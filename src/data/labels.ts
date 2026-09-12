@@ -109,8 +109,10 @@ const LABELS = {
   // --- Debate log cards ---
   introduction: 'Introduction',
   moderator: 'Moderator',
-  /** Intro-card stripe label for encounters with no moderator (gossip, sparring, lab). */
+  /** Intro-card stripe label — the introduction has no speaker. */
   setting: 'Setting',
+  /** Debate-log type line for the moderator's opening of the floor. */
+  theFloor: 'The floor',
   minimize: 'Minimize',
   expand: 'Expand',
   /** Whole-log collapse / expand. `{logTitle}` is the resolved `encounterLabels().logTitle`. */
@@ -184,6 +186,8 @@ const LABELS = {
   workflowSparringIntro: 'A practice bout. Read the line, then pick the answer that addresses it.',
   workflowLabIntro: 'A training exercise — the dirty answer is the one being asked for.',
   workflowLessonIntro: 'Read what he has to show you, then try it yourself.',
+  workflowModeratorSpeaking:
+    'The moderator is opening the floor. Click Continue when you have heard them.',
   workflowRoundWithType: 'Round {roundNumber} — {typeDisplay}',
   workflowRoundPlain: 'Round {roundNumber}',
   workflowNpcSpeaking: "Read {opponentName}'s statement, then click Continue.",
@@ -215,6 +219,8 @@ const LABELS = {
   youWillArgueAsThe: 'You will argue as the',
   debateSideNoun: 'side.',
   beginRound1: 'Begin Round 1',
+  /** Intro-summary submit when a `moderatorOpening` follows, instead of jumping to round 1. */
+  openTheFloor: 'Open the floor',
 
   // --- Round recap modal ---
   roundRecap: 'Round recap',

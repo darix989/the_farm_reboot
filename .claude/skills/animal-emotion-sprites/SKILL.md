@@ -234,7 +234,7 @@ The debate's moderator status is **one still frame** of an existing portrait she
 asset, no export step. `moderatorOpinionFace()` in `src/react/trial/utils/trialHelpers.ts` maps a
 score to a frame index and `FaceStill` holds that frame in an `em`-sized box. Duchess (the
 default) uses three frames of the owl's **`approving`** clip, which opens its eyes from nearly
-shut to fully round: frame 20 (open) / 6 (half) / 4 (nearly shut). Cass wears the 1.7 fence-skirmish stills (`moderatorId`, not on stage) with three fox
+shut to fully round: frame 20 (open) / 6 (half) / 4 (nearly shut). Cass wears the 1.7 fence-skirmish stills (`moderatorId`) with three fox
 portraits instead: `sneaky` 17 / `doubtful` 9 / `angry` 3.
 
 **The frame indices are part of the art.** If you regenerate a source clip, open the new frames

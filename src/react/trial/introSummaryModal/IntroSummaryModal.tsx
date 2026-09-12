@@ -3,6 +3,7 @@ import type { DebateScenarioJson } from '../../../types/debateEntities';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TrialTextButton from '../components/TrialTextButton';
 import { sideDisplayLabel } from '../utils/trialHelpers';
+import { scenarioHasModeratorOpening } from '../../../data/debateCast';
 import {
   canRunTutorialTargetAction,
   notifyTutorialTargetAction,
@@ -128,7 +129,7 @@ const IntroSummaryModal: React.FC<IntroSummaryModalProps> = ({ debate, onClose }
             onClick={handleBeginRound}
             data-tutorial-intro-summary-action="begin_round_1"
           >
-            {getLabel('beginRound1')}
+            {getLabel(scenarioHasModeratorOpening(debate) ? 'openTheFloor' : 'beginRound1')}
           </TrialTextButton>
         </div>
       </div>

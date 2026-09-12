@@ -66,6 +66,28 @@ for (const name of readdirSync(DEBATES_DIR)
     checkSummary(name, 'introductionSummary', scenario.introductionSummary, scenario.introduction);
   }
 
+  if (scenario.moderatorOpening) {
+    const sentences = scenario.moderatorOpening.sentences ?? [];
+    const texts = sentences
+      .map((s) => (typeof s?.text === 'string' ? s.text.trim() : ''))
+      .filter(Boolean);
+    if (texts.length === 0) {
+      fail(name, 'moderatorOpening', 'needs at least one non-empty sentence');
+    }
+    const staged = Object.keys(scenario.characters ?? {});
+    const moderatorId =
+      scenario.moderatorId ||
+      staged.find((id) => id === 'duchess' || id === 'cass') ||
+      'duchess';
+    if (!staged.includes(moderatorId)) {
+      fail(
+        name,
+        'moderatorOpening',
+        `characters must name the moderator (${moderatorId})`,
+      );
+    }
+  }
+
   if (mechanics.showRoundRecap === false) continue;
 
   for (const round of scenario.rounds ?? []) {

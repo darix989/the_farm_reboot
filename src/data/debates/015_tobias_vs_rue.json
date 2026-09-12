@@ -8,6 +8,26 @@
     "rue": "Rue",
     "duchess": "Duchess"
   },
+  "moderatorOpening": {
+    "id": "moderator-opening",
+    "sentences": [
+      {
+        "id": "s-mod-1",
+        "text": "The motion before the floor is that the Old Pond be kept for the Meadow-Born, and that those who came later water at the road trough.",
+        "logicalFallacies": []
+      },
+      {
+        "id": "s-mod-2",
+        "text": "Tobias speaks for it. Rue speaks against it. I hold no opinion on the water.",
+        "logicalFallacies": []
+      },
+      {
+        "id": "s-mod-3",
+        "text": "Tobias. The floor is yours.",
+        "logicalFallacies": []
+      }
+    ]
+  },
   "logicalFallacies": [
     {
       "id": "ad-hominem",

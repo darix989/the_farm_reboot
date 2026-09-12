@@ -49,7 +49,12 @@ import {
   revealChunks,
   statementText,
 } from '../trial/utils/trialHelpers';
-import { debateModeratorId, debateParticipantIds, stageOrder } from '../../data/debateCast';
+import {
+  debateModeratorId,
+  debateParticipantIds,
+  scenarioHasModeratorOpening,
+  stageOrder,
+} from '../../data/debateCast';
 import {
   isOptionGated,
   isPlayerOptionUnlocked,
@@ -109,6 +114,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   );
   const [introSummaryOpen, setIntroSummaryOpen] = useState(false);
   const introStartEmittedRef = useRef(false);
+  const moderatorStartEmittedRef = useRef(false);
   const conditions = useConditionContext();
   const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds, conditions, {
     showRoundType: mechanics.showRoundType,
@@ -125,6 +131,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   useEffect(() => {
     setIntroSummaryOpen(false);
     introStartEmittedRef.current = false;
+    moderatorStartEmittedRef.current = false;
     setInsightPoints(getStartingInsightPoints(debate));
     setAwardedInsightTargetIds(new Set());
     setInsightRevealedTargetIds(new Set());
@@ -164,6 +171,23 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     if (!introSummaryOpen || wf.gamePhase !== 'debate_intro') return;
     debateEventBus.emit('introduction:summary', { debateId: debate.id });
   }, [introSummaryOpen, wf.gamePhase, debate.id]);
+
+  // Emit `moderator:start` once per scenario when we enter `moderator_speaking`.
+  useEffect(() => {
+    if (wf.gamePhase !== 'moderator_speaking') return;
+    if (moderatorStartEmittedRef.current) return;
+
+    let cancelled = false;
+    Promise.resolve().then(() => {
+      if (cancelled || moderatorStartEmittedRef.current) return;
+      moderatorStartEmittedRef.current = true;
+      debateEventBus.emit('moderator:start', { debateId: debate.id });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [wf.gamePhase, debate.id]);
 
   useEffect(() => {
     setRevealedLockedOptionIds(new Set());
@@ -543,6 +567,11 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         // The only reveal source authored as prose rather than as `Sentence[]`.
         return build('intro', null, intro);
       }
+      case 'moderator_speaking': {
+        const opening = debate.moderatorOpening;
+        if (!opening) return null;
+        return build('moderator', opening.id, opening.sentences);
+      }
       case 'npc_speaking': {
         const npc = wf.currentNpcRound;
         if (!npc) return null;
@@ -578,6 +607,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     wf.activeOpponentResponse,
     debate.id,
     debate.introduction,
+    debate.moderatorOpening,
     fallacyGuesses,
     conditions,
   ]);
@@ -630,8 +660,8 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
                 fromPhase: 'debate_intro',
                 roundNumber: null,
               });
-              // Scenarios with `showIntroSummary: false` go straight into round 1;
-              // a two-line trough chat does not need a "Before the debate" briefing.
+              // Scenarios with `showIntroSummary: false` skip the briefing
+              // and go to the moderator's opening, or straight into round 1.
               if (mechanics.showIntroSummary) {
                 setIntroSummaryOpen(true);
               } else {
@@ -640,6 +670,19 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             };
         break;
       }
+      case 'moderator_speaking':
+        submitLabel = getLabel('continue');
+        submitDisabled = isTutorialOpen;
+        onSubmit = isTutorialOpen
+          ? undefined
+          : () => {
+              debateEventBus.emit('interactive:continue', {
+                fromPhase: 'moderator_speaking',
+                roundNumber: null,
+              });
+              wf.dispatch({ type: 'continue' });
+            };
+        break;
       case 'npc_speaking':
       case 'npc_responding':
         submitLabel = getLabel('continue');
@@ -804,6 +847,24 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           body: intro,
           // The same chunking the reveal uses, so "(n/n)" matches what was actually shown.
           sentenceCount: revealChunks(intro).length,
+        };
+      }
+      case 'moderator_speaking': {
+        const opening = debate.moderatorOpening;
+        if (!opening) return null;
+        const speakerId = debateModeratorId(debate);
+        return {
+          title: getLabel('wizardDetailSpeaks', {
+            replacements: {
+              name: getSpeakerName(debate, speakerId),
+            },
+          }),
+          body: statementText(opening.sentences),
+          sentenceCount: opening.sentences.length,
+          speaker: {
+            characterId: speakerId,
+            emotion: opening.emotion ?? 'talking',
+          },
         };
       }
       case 'npc_speaking': {
@@ -1017,6 +1078,16 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // out in (player first, moderator centred in a 3+ cast) — the nameplates below must use
   // the same order or they end up over the wrong sprite.
   const participantIds = useMemo(() => stageOrder(debateParticipantIds(debate)), [debate]);
+  const moderatorStage = useMemo(
+    () =>
+      scenarioHasModeratorOpening(debate)
+        ? {
+            speakerId: debateModeratorId(debate),
+            emotion: debate.moderatorOpening?.emotion ?? ('talking' as const),
+          }
+        : null,
+    [debate],
+  );
   const activeSpeakerId = useMemo(
     () =>
       activeSpeakerIdForWorkflow(
@@ -1025,6 +1096,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         wf.currentPlayerRound,
         wf.selectedOption,
         wf.activeOpponentResponse,
+        moderatorStage,
       ),
     [
       wf.gamePhase,
@@ -1032,6 +1104,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       wf.currentPlayerRound,
       wf.selectedOption,
       wf.activeOpponentResponse,
+      moderatorStage,
     ],
   );
 
@@ -1045,6 +1118,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
         wf.currentPlayerRound,
         wf.selectedOption,
         wf.activeOpponentResponse,
+        moderatorStage,
       ),
     [
       wf.gamePhase,
@@ -1052,6 +1126,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       wf.currentPlayerRound,
       wf.selectedOption,
       wf.activeOpponentResponse,
+      moderatorStage,
     ],
   );
 

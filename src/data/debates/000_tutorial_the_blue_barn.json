@@ -6,7 +6,28 @@
   "playerSide": "opposition",
   "characters": {
     "barnaby": "Barnaby",
-    "pip": "Pip"
+    "pip": "Pip",
+    "duchess": "Duchess"
+  },
+  "moderatorOpening": {
+    "id": "moderator-opening",
+    "sentences": [
+      {
+        "id": "s-mod-1",
+        "text": "The floor has a motion: that the barn be painted bright blue, because blue is the happiest colour.",
+        "logicalFallacies": []
+      },
+      {
+        "id": "s-mod-2",
+        "text": "Barnaby speaks for it. Pip speaks against it.",
+        "logicalFallacies": []
+      },
+      {
+        "id": "s-mod-3",
+        "text": "Barnaby. You may open.",
+        "logicalFallacies": []
+      }
+    ]
   },
   "logicalFallacies": [
     {

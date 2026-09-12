@@ -5,9 +5,25 @@
   "playerSide": "opposition",
   "characters": {
     "bram": "Bram",
-    "rue": "Rue"
+    "rue": "Rue",
+    "cass": "Cass"
   },
   "moderatorId": "cass",
+  "moderatorOpening": {
+    "id": "moderator-opening",
+    "sentences": [
+      {
+        "id": "s-mod-1",
+        "text": "I am sitting this, not Duchess. Practice, she said, before Sunday.",
+        "logicalFallacies": []
+      },
+      {
+        "id": "s-mod-2",
+        "text": "Bram asked for a courtesy. He has it. Bram — when you are ready.",
+        "logicalFallacies": []
+      }
+    ]
+  },
   "logicalFallacies": [
     {
       "id": "ad-hominem",
@@ -222,7 +238,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "A **[accent]real debate[/accent]**, just a very short one. **[accent]Cass[/accent]** is sitting this one as practice, before Duchess.\n\nHer **[accent]face[/accent]** is how she leans.",
+            "message": "A **[accent]real debate[/accent]**, just a very short one. **[accent]Cass[/accent]** is sitting this one as practice, before Duchess.\n\nShe opens the floor; her **[accent]face[/accent]** is how she leans.",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "debate_log_moderator_score"

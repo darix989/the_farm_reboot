@@ -5,7 +5,28 @@
   "playerSide": "opposition",
   "characters": {
     "monty": "Mayor Monty",
-    "penny": "Penny"
+    "penny": "Penny",
+    "duchess": "Duchess"
+  },
+  "moderatorOpening": {
+    "id": "moderator-opening",
+    "sentences": [
+      {
+        "id": "s-mod-1",
+        "text": "The north orchard has more apples than the cellar will take. The floor will hear what is to be done with them.",
+        "logicalFallacies": []
+      },
+      {
+        "id": "s-mod-2",
+        "text": "Mayor Monty speaks for eating the surplus today. Penny speaks against that being the only road.",
+        "logicalFallacies": []
+      },
+      {
+        "id": "s-mod-3",
+        "text": "Mayor Monty. The floor is yours.",
+        "logicalFallacies": []
+      }
+    ]
   },
   "logicalFallacies": [
     {
@@ -736,7 +757,7 @@
             }
           },
           {
-            "message": "**First**, read the moderator's introduction in the **[accent]Debate Log Panel[/accent]**, then **[success]Continue[/success]**.",
+            "message": "**First**, read the introduction in the **[accent]Debate Log Panel[/accent]**, then **[success]Continue[/success]**.",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "panel",
@@ -760,7 +781,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Before Round 1, read the summary and **[accent]your side[/accent]**. Once you are ready, click **[accent]Begin Round 1[/accent]**.",
+            "message": "Before the floor opens, read the summary and **[accent]your side[/accent]**. Once you are ready, click **[accent]Open the floor[/accent]**.",
             "modal": {
               "x": 0.62,
               "y": 0.02,
