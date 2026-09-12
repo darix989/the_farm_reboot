@@ -268,7 +268,7 @@ const LABELS = {
   guessPartialFullBody:
     'You found at least one fallacy correctly, but some fallacies were still missed.',
   guessExtrasOnlyBody:
-    'You found every fallacy in the right sentences, but some extra tags were not fallacies. Drop those and try again.',
+    'You found every fallacy in the right sentences, but some extra tags were not fallacies.',
   guessExtrasOnlyRevealBody:
     'You found every fallacy in the right sentences, but extra tags were not fallacies.',
   missedPrefix: 'Missed:',

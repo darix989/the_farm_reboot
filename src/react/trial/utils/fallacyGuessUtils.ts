@@ -182,6 +182,10 @@ export function pinnedMultisetFromAttempts(
 
 export function isGuessTerminal(record: GuessRecord): boolean {
   if (record.kind === 'no_fallacies') return record.correct;
+  // TODO(analysis-extras): extras-only (`isExtrasOnlyPartial`) still fails this check —
+  // it consumes an attempt and awards no Insight even though every truth pair was found.
+  // Copy no longer asks the player to drop extras; decide whether a clean exact match
+  // should remain required for a solve, or extras-only should count as success.
   return record.outcome === 'perfect';
 }
 
