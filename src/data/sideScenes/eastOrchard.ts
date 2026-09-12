@@ -1,13 +1,24 @@
 /**
- * Off the east end of `greenMeadowsRoad`: citrus trees, bushes, a windmill, and Duchess
- * and Tobias, spaced well clear of each other so the 400px talk radius always picks one
- * of them unambiguously. Built strictly from asset ids `greenMeadowsRoad` already uses,
- * so visiting it is always a warm hop (see `docs/farm_side_scenes.md`).
+ * Off the east end of `greenMeadowsRoad`: citrus trees, bushes, a windmill, a muddy pond
+ * sitting back in the middle distance, and Duchess and Tobias, spaced well clear of each
+ * other so the 400px talk radius always picks one of them unambiguously.
+ *
+ * Unlike its siblings, this scene is no longer built strictly from asset ids
+ * `greenMeadowsRoad` already uses: the pond (`water/pond-muddy`) and its reeds
+ * (`flowers/leaf-1-a`) are new, so the first hop into `eastOrchard` from any other scene
+ * fetches those and shows the loading overlay briefly rather than being a warm hop (see
+ * `docs/farm_side_scenes.md`). Worth it — the pond is the visual anchor for a future
+ * scene that puts the player right at the water's edge.
  */
 import type { SideSceneDescriptor } from '../../types/sideScene';
 import { STANDARD_FARM_LAYERS } from './greenMeadowsRoad';
 
 const GROUND_SEAM_Y = 796;
+
+// Middle distance: sits on the near-grass band (601.6-795.6 with this scene's
+// firstTop/scale), well above GROUND_SEAM_Y, so the tree line plants in front of it.
+const POND_Y = 748;
+const POND_X = 1560;
 
 export const EAST_ORCHARD: SideSceneDescriptor = {
   id: 'eastOrchard',
@@ -22,9 +33,29 @@ export const EAST_ORCHARD: SideSceneDescriptor = {
     { asset: 'citrus/lemon-tree-lemons', x: 1000, y: GROUND_SEAM_Y, band: 'ground', flipX: true },
     { asset: 'citrus/orange-tree-oranges', x: 1900, y: GROUND_SEAM_Y, band: 'ground', flipX: true },
     { asset: 'citrus/lemon-tree-lemons', x: 2500, y: GROUND_SEAM_Y, band: 'ground' },
-    { asset: 'bushes/bush-2-mid-green', x: 1450, y: GROUND_SEAM_Y, band: 'ground' },
+    // Shifted left of its original 1450 (which sat 300+px into the pond's own front,
+    // not just grazing its end) to clear the water; grazes the lemon tree's canopy
+    // instead, which reads as ground-level foliage clumping rather than a floating prop.
+    { asset: 'bushes/bush-2-mid-green', x: 1120, y: GROUND_SEAM_Y, band: 'ground' },
     { asset: 'bushes/bush-1-dark-green', x: 2250, y: GROUND_SEAM_Y, band: 'ground' },
     { asset: 'props/windmill', x: 2750, y: GROUND_SEAM_Y, band: 'ground' },
+
+    // The pond, framed so it doesn't float on flat green: far-bank bushes behind it
+    // (smaller `y`, so they sort behind on `y` alone), near-bank reeds in front.
+    { asset: 'bushes/bush-2-mid-green', x: 1470, y: 664, band: 'ground', scale: 0.22 },
+    {
+      asset: 'bushes/bush-1-dark-green',
+      x: 1660,
+      y: 666,
+      band: 'ground',
+      scale: 0.18,
+      flipX: true,
+    },
+    { asset: 'water/pond-muddy', x: POND_X, y: POND_Y, band: 'ground', scale: 0.42 },
+    { asset: 'flowers/leaf-1-a', x: 1400, y: 760, band: 'ground', scale: 0.18 },
+    { asset: 'flowers/leaf-1-a', x: 1480, y: 768, band: 'ground', scale: 0.16, flipX: true },
+    { asset: 'flowers/leaf-1-a', x: 1620, y: 762, band: 'ground', scale: 0.2 },
+    { asset: 'flowers/leaf-1-a', x: 1700, y: 770, band: 'ground', scale: 0.17, flipX: true },
   ],
 
   fences: [],

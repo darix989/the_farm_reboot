@@ -104,7 +104,8 @@ export type FarmKitAssetId =
   | 'trees/tree-two-dark-green'
   | 'trees/tree-two-light-green'
   | 'trees/tree-two-mid-green'
-  | 'trees/tree-two-spring';
+  | 'trees/tree-two-spring'
+  | 'water/pond-muddy';
 
 export interface FarmKitAssetMeta {
   /** Path relative to `public/assets/farm-kit/`. */
@@ -810,5 +811,12 @@ export const FARM_KIT_ASSETS: Record<FarmKitAssetId, FarmKitAssetMeta> = {
     height: 697,
     fileWidth: 474,
     fileHeight: 697,
+  },
+  'water/pond-muddy': {
+    file: 'water/pond-muddy.png',
+    width: 1400,
+    height: 260,
+    fileWidth: 1400,
+    fileHeight: 260,
   },
 };

@@ -16,9 +16,12 @@
  * no POT constraint, so it is left at native size.
  *
  * Run with `npm run assets:farm-kit`. Safe to re-run: an asset already at POT size is
- * left untouched.
+ * left untouched — and, because padding is baked into the file in place, its true
+ * pre-pad content size is recovered from this same script's previous output (see
+ * `readPreviousAssets`) rather than re-derived from the now-padded file, which would
+ * just record the padded canvas as if it were the content.
  */
-import { readdirSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative, extname } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import sharp from 'sharp';
@@ -90,10 +93,29 @@ function toAssetId(relPath) {
   return relPath.slice(0, -'.png'.length).replaceAll('\\', '/');
 }
 
+/**
+ * Recovers `{ id: { width, height, fileWidth, fileHeight } }` from this script's own
+ * previous output, by regexing the plain object-literal shape it writes below — the
+ * generated file isn't valid ESM a `.mjs` script can `import()` directly, and this
+ * structure is deterministic enough that a full parser would be overkill.
+ */
+function readPreviousAssets() {
+  if (!existsSync(OUT_FILE)) return new Map();
+  const src = readFileSync(OUT_FILE, 'utf8');
+  const entryRe =
+    /'([^']+)':\s*{\s*file:\s*'[^']+',\s*width:\s*(\d+),\s*height:\s*(\d+),\s*fileWidth:\s*(\d+),\s*fileHeight:\s*(\d+),\s*}/g;
+  const previous = new Map();
+  for (const [, id, width, height, fileWidth, fileHeight] of src.matchAll(entryRe)) {
+    previous.set(id, { width: Number(width), height: Number(height), fileWidth: Number(fileWidth), fileHeight: Number(fileHeight) });
+  }
+  return previous;
+}
+
 async function main() {
   const files = listPngs(ASSETS_DIR)
     .map((f) => relative(ASSETS_DIR, f).replaceAll('\\', '/'))
     .sort();
+  const previousAssets = readPreviousAssets();
 
   const entries = [];
   for (const file of files) {
@@ -105,10 +127,22 @@ async function main() {
     if (TILING_BANDS.has(file)) {
       const potWidth = nextPow2(width);
       const potHeight = nextPow2(height);
-      if (width !== potWidth || height !== potHeight) {
+      const alreadyPadded = width === potWidth && height === potHeight;
+      if (!alreadyPadded) {
         await padToPowerOfTwo(full, potWidth, potHeight);
+        entries.push({ file, width, height, fileWidth: potWidth, fileHeight: potHeight });
+        continue;
       }
-      entries.push({ file, width, height, fileWidth: potWidth, fileHeight: potHeight });
+
+      const prev = previousAssets.get(toAssetId(file));
+      if (prev && prev.fileWidth === potWidth && prev.fileHeight === potHeight) {
+        entries.push({ file, width: prev.width, height: prev.height, fileWidth: potWidth, fileHeight: potHeight });
+      } else {
+        console.warn(
+          `warning: ${file} is already POT-padded with no prior manifest entry to recover its true content size from — recording the padded size as content size.`,
+        );
+        entries.push({ file, width, height, fileWidth: potWidth, fileHeight: potHeight });
+      }
     } else {
       entries.push({ file, width, height, fileWidth: width, fileHeight: height });
     }

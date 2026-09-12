@@ -291,11 +291,15 @@ a 220px-radius portal standing right there. Scoring by radius fraction instead l
 tight, close-in portal win exactly where a player standing at it would expect it to. See
 `sideSceneInteractions.test.ts` for the regression, spelled out with the real numbers.
 
-**The texture budget.** The three newer scenes (`hettysBarn`, `gateLane`, `eastOrchard`)
-are authored strictly from farm-kit asset ids `greenMeadowsRoad` already uses, so every hop
-between the four registered scenes is a warm hop — no new texture ever has to be fetched
-mid-playthrough. `src/data/sideScenes/sideScenes.test.ts` pins the combined decoded-texture
-footprint of every asset id any registered scene references; a new scene that reaches for
-an asset none of its siblings load will grow that total and can fail the budget test,
-which is the point — it is a deliberate prompt to consider whether the new cost is
-warranted, not a hard ceiling on ever adding art.
+**The texture budget.** `hettysBarn` and `gateLane` are authored strictly from farm-kit
+asset ids `greenMeadowsRoad` already uses, so every hop between them and the road is a warm
+hop — no new texture ever has to be fetched mid-playthrough. `eastOrchard` breaks that: its
+pond (`water/pond-muddy`) and reeds (`flowers/leaf-1-a`) are new asset ids none of its
+siblings load, so the first hop into it from any other scene fetches them and shows the
+loading overlay briefly — a deliberate one-time cost for the pond's payoff as the visual
+anchor of a future water's-edge scene, not an oversight. `src/data/sideScenes/
+sideScenes.test.ts` pins the combined decoded-texture footprint of every asset id any
+registered scene references; a new scene (or new prop) that reaches for an asset none of
+its siblings load will grow that total and can fail the budget test, which is the point —
+it is a deliberate prompt to consider whether the new cost is warranted, not a hard ceiling
+on ever adding art.
