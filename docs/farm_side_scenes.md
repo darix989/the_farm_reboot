@@ -77,6 +77,21 @@ fix — and its re-snap math used the band's native content width rather than th
 power-of-two width the file is actually padded to, so the road's texture visibly jumped
 a few pixels out of phase each time the snap point was crossed. Don't reintroduce it.
 
+## The fence run isn't tiled at its own width
+
+`sideSceneFence.ts` places `fence/repeating-piece.png` at a pitch of
+`FENCE_PIECE_TILE_WIDTH_NATIVE_PX` (753 native px), not the file's own 795px width.
+Column-by-column opaque-pixel coverage on the source art shows why: it's one post
+followed by 5 picket boards at a ~118px rhythm, and the last picket ends around x=753 —
+the remaining ~42px to the file's edge is bare horizontal rail with no picket
+silhouette over it, there so the rail has somewhere to run into the *next* piece's
+post. Placing pieces at the full 795px width leaves that stub exposed as a real,
+visible hole (grass showing clean through) every ~795 native px, not a rounding
+artifact — pitching at the picket rhythm's own repeat distance instead lands the next
+post exactly where the stub was heading, covering it. If the fence art is ever
+re-exported, remeasure this the same way (per-column opaque pixel count; look for where
+it drops to a flat low baseline and stays there) rather than assuming the file width.
+
 ## The depth model
 
 `Farm.ts`'s `setDepth(y)` doesn't transfer: the walkable band's `y` only spans ~837-999,

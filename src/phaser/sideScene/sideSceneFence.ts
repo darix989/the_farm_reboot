@@ -2,12 +2,19 @@
  * Turns a `SideFenceRun` into discrete piece placements, plus the gate placements for
  * any gap it names.
  *
- * `fence/repeating-piece.png` is **not** a tiling band (its left edge is a full post,
- * its right edge is a bare horizontal rail with no post or border capping it — see the
- * plan's asset analysis) so the run places whole images at a pitch close to, but
- * slightly less than, the piece's own on-screen width, rather than a `tileSprite`.
- * Pure — no Phaser value import — so it is unit-testable under the Vitest `phaser`
- * stub and reusable by the eventual scene-authoring tooling.
+ * `fence/repeating-piece.png` is **not** a tiling band, and its 795px width is *not*
+ * the right placement pitch either. Measured column-by-column opaque coverage (see
+ * `docs/farm_side_scenes.md`): the art is one post (x 0-165ish) followed by 5 picket
+ * boards at a ~118px rhythm, the last of which ends around x=753 — the remaining
+ * ~42px to the image's own edge is bare horizontal rail with no picket silhouette over
+ * it, present so the rail has somewhere to run into the *next* piece's post. Placing
+ * pieces at the full 795px width therefore leaves that 42px stub exposed as a
+ * post-less gap with grass visible clean through it every ~795px — not a rounding
+ * artifact, a real hole. Pitching pieces at the picket rhythm's own repeat distance
+ * (post-width-equivalent + 5 picket-widths) instead lands the next post exactly where
+ * the stub was heading, covering it, with no gap and no seam art required. Pure — no
+ * Phaser value import — so it is unit-testable under the Vitest `phaser` stub and
+ * reusable by the eventual scene-authoring tooling.
  */
 import type { FarmKitAssetId } from './farmKit.generated';
 import { FARM_KIT_ASSETS } from './farmKit.generated';
@@ -16,17 +23,12 @@ import type { SideFenceRun } from '../../types/sideScene';
 const FENCE_PIECE: FarmKitAssetId = 'fence/repeating-piece';
 
 /**
- * A small deliberate overlap (in native, pre-scale pixels) between consecutive
- * pieces. The next piece's post has to land exactly on top of the previous piece's
- * bare rail-end for the run to read as continuous, and that seam has no border art of
- * its own to hide a miss — so a sub-pixel rounding difference (`render.roundPixels`
- * plus a non-integer piece width) between where one piece's texture actually ends and
- * where the next one's position is floored to shows up as a sliver of daylight through
- * the fence. Placing pieces slightly closer than their own width makes them overlap by
- * more than any such rounding error ever could, which costs nothing to look at since
- * the overlapping content (a post) is opaque either way.
+ * The piece's true repeat distance in native (pre-scale) pixels — where the next
+ * piece's post has to start for the picket rhythm to continue with no gap and no
+ * overlap into the previous piece's last picket. Measured from the source art (see the
+ * module comment above), not derived from the 795px file width.
  */
-export const FENCE_PIECE_OVERLAP_NATIVE_PX = 4;
+export const FENCE_PIECE_TILE_WIDTH_NATIVE_PX = 753;
 
 export interface FencePiecePlacement {
   kind: 'piece';
@@ -59,7 +61,7 @@ const GATE_ASSET: Record<
 export function buildFenceRun(run: SideFenceRun): FencePlacement[] {
   const scale = run.scale ?? 1;
   const pieceWidth = FARM_KIT_ASSETS[FENCE_PIECE].width * scale;
-  const pitch = (FARM_KIT_ASSETS[FENCE_PIECE].width - FENCE_PIECE_OVERLAP_NATIVE_PX) * scale;
+  const pitch = FENCE_PIECE_TILE_WIDTH_NATIVE_PX * scale;
   const placements: FencePlacement[] = [];
 
   for (let x = run.fromX; x < run.toX; x += pitch) {
