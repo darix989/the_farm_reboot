@@ -15,7 +15,7 @@ import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
  * build time. A store has a current value it can read synchronously in `create()`.
  */
 interface TrialStageStore {
-  /** Speaker id from `activeSpeakerIdForWorkflow`, or null (intro / recap / complete). */
+  /** Speaker id from `activeSpeakerIdForWorkflow`, or null (intro / recap / complete). Moderator opening names the moderator. */
   activeSpeakerId: string | null;
   /**
    * How that speaker is delivering the line, from `activeEmotionForWorkflow`. Null when

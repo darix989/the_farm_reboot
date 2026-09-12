@@ -19,6 +19,7 @@ import { debateEventBus, type RoundLifecyclePayload } from '../trial/utils/debat
 import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import { plainSpokenText } from '../trial/utils/spokenMarkup';
 import { statementTypeLabel } from '../trial/utils/trialHelpers';
+import { scenarioHasModeratorOpening } from '../../data/debateCast';
 import getLabel from '../../data/labels';
 
 // ---------------------------------------------------------------------------
@@ -26,7 +27,8 @@ import getLabel from '../../data/labels';
 // ---------------------------------------------------------------------------
 
 export type GamePhase =
-  | 'debate_intro' // read scenario introduction; Continue opens summary then starts round 1
+  | 'debate_intro' // read scenario introduction; Continue opens summary then the floor
+  | 'moderator_speaking' // moderator opens the floor; Continue starts round 1
   | 'npc_speaking' // player reads NPC statement, clicks Continue
   | 'player_choosing' // player sees 3 options
   | 'player_speaking' // wizard paces the confirmed option; Continue then advances
@@ -120,13 +122,18 @@ function scenarioHasIntroduction(scenario: DebateScenarioJson): boolean {
   return Boolean(scenario.introduction?.trim());
 }
 
-function createInitialState(scenario: DebateScenarioJson): WorkflowState {
+/** First playable phase after the (optional) introduction. */
+function phaseAfterIntro(scenario: DebateScenarioJson): GamePhase {
+  if (scenarioHasModeratorOpening(scenario)) return 'moderator_speaking';
   const firstRound = scenario.rounds[0];
+  if (!firstRound) return 'debate_complete';
+  return initialPhaseForRound(firstRound);
+}
+
+function createInitialState(scenario: DebateScenarioJson): WorkflowState {
   const gamePhase: GamePhase = scenarioHasIntroduction(scenario)
     ? 'debate_intro'
-    : firstRound
-      ? initialPhaseForRound(firstRound)
-      : 'debate_complete';
+    : phaseAfterIntro(scenario);
   return {
     gamePhase,
     currentRoundIndex: 0,
@@ -230,6 +237,17 @@ function reduceWorkflow(
 
   // --- Debate intro: UI shows summary modal then dispatches Continue (no undo snapshot) ---
   if (state.gamePhase === 'debate_intro') {
+    if (action.type !== 'continue') return state;
+    return {
+      ...state,
+      gamePhase: phaseAfterIntro(scenario),
+      currentRoundIndex: 0,
+      selectedOptionId: null,
+    };
+  }
+
+  // --- Moderator opens the floor: Continue starts round 1 (no score, no recap) ---
+  if (state.gamePhase === 'moderator_speaking') {
     if (action.type !== 'continue') return state;
     const firstRound = scenario.rounds[0];
     if (!firstRound) {
@@ -485,8 +503,8 @@ export function useTrialRoundWorkflow(
       };
     };
 
-    // While the intro screen is up, no round is active yet — wait.
-    if (state.gamePhase === 'debate_intro') return;
+    // While the intro or the moderator's opening is up, no round is active yet — wait.
+    if (state.gamePhase === 'debate_intro' || state.gamePhase === 'moderator_speaking') return;
 
     const prevIndex = lastStartedRoundIndexRef.current;
 
@@ -562,10 +580,16 @@ export function useTrialRoundWorkflow(
    * do about it. The wizard shows this while it is still revealing a statement, so the
    * instruction does not give away a line the player has not finished reading.
    *
-   * `null` outside the rounds (intro, complete), where there is no round to label.
+   * `null` outside the rounds (intro, moderator opening, complete), where there is no round to label.
    */
   const wizardRoundLabel = useMemo((): string | null => {
-    if (state.gamePhase === 'debate_intro' || state.gamePhase === 'debate_complete') return null;
+    if (
+      state.gamePhase === 'debate_intro' ||
+      state.gamePhase === 'moderator_speaking' ||
+      state.gamePhase === 'debate_complete'
+    ) {
+      return null;
+    }
     if (!currentRound) return null;
     if (options?.showRoundType === false) {
       return getLabel('workflowRoundPlain', {
@@ -585,6 +609,9 @@ export function useTrialRoundWorkflow(
     if (state.gamePhase === 'debate_complete') return getLabel(copy.finished);
     if (state.gamePhase === 'debate_intro') {
       return getLabel(copy.intro);
+    }
+    if (state.gamePhase === 'moderator_speaking') {
+      return getLabel('workflowModeratorSpeaking');
     }
     if (!currentRound) return '';
 

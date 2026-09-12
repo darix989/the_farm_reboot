@@ -78,7 +78,8 @@ Implementation split:
 | Field | Type | Meaning |
 |-------|------|---------|
 | `id` | `string` | Unique scenario identifier. |
-| `introduction` | `string?` | Optional text shown at the top of the Feedback panel throughout the debate. |
+| `introduction` | `string?` | Optional text shown at the top of the Feedback panel throughout the debate. Presence creates `debate_intro` (no speaker). |
+| `moderatorOpening` | `{ id, sentences, emotion? }?` | Moderator's spoken opening of the floor after intro. Presence creates `moderator_speaking` and stages the moderator. |
 | `playerSide` | `"proposition" \| "opposition"` | Which side the player argues. |
 | `characters` | `Record<string, string>?` | Maps a `speakerId` to a display name; falls back to capitalising the id. |
 | `logicalFallacies` | `LogicalFallacyScenario[]` | The fallacies this scenario uses, each with an `explanation` shown after a guess. |
@@ -125,9 +126,12 @@ Optional fields on a player round:
 `useTrialRoundWorkflow` (in `hooks/useTrialRoundWorkflow.ts`) maintains a `GamePhase` enum and an undo-capable history stack. The phases and their transitions are:
 
 ```
-debate_intro   (only when `scenario.introduction` is non-empty)
-    │  Continue → intro summary modal → Begin Round 1
+debate_intro   (only when `scenario.introduction` is non-empty; no speaker)
+    │  Continue → intro summary modal → Open the floor / Begin Round 1
     │  (mechanics.showIntroSummary: false skips the modal)
+    ▼
+moderator_speaking  (only when `scenario.moderatorOpening` is authored)
+    │  Continue — cone on the moderator; no score, no analysis
     ▼
 npc_speaking
     │  Continue  — held disabled while the round has `requiresAnalysis`
@@ -244,6 +248,7 @@ Content depends on `gamePhase`:
 
 | Phase | Rendered content |
 |-------|-----------------|
+| `moderator_speaking` | Empty — the moderator's line lives in the wizard / debate log. |
 | `npc_speaking` | The NPC's full statement text (`StatementBlock`). |
 | `player_choosing` | Three choice buttons labelled A / B / C — mounted but invisible and disabled (`hideOptions`) while the wizard is still revealing the opponent's question. |
 | `player_speaking` | No choice grid — the wizard is pacing the confirmed option. |
@@ -252,7 +257,7 @@ Content depends on `gamePhase`:
 | `round_recap` | Same response view as `npc_responding` when a crossfire reply exists; otherwise a short note to use the recap modal. The footer **Continue** is disabled — the player advances only from the `RoundRecapModal`. |
 | `debate_complete` | A "debate finished" message with the final score. |
 
-The panel footer is three icon-only squared buttons: **Analyze | Back | Continue**. Analyze always targets the opponent's *current* line (the NPC statement, the opponent's crossfire question, or its response — never the player's own choice), keyed off `gamePhase`; it stays disabled while that line is still being revealed, and with nothing current to analyze (`debate_intro`, `player_speaking`, `player_confirming`, `round_recap`, `debate_complete`) it renders disabled rather than reflowing the row, and it is not rendered at all when `mechanics.analysisEnabled` is `false`. It carries the same green/amber/red guess-state tint as the debate log's `AnalyzeButton` lenses. **Back** is enabled only in `player_confirming` (or while an option can be unselected in `player_choosing`). The context-sensitive submit button's icon follows its three states — continue / confirm / leave — via `TrialUI`'s `interactiveFooter.submitIcon`.
+The panel footer is three icon-only squared buttons: **Analyze | Back | Continue**. Analyze always targets the opponent's *current* line (the NPC statement, the opponent's crossfire question, or its response — never the player's own choice), keyed off `gamePhase`; it stays disabled while that line is still being revealed, and with nothing current to analyze (`debate_intro`, `moderator_speaking`, `player_speaking`, `player_confirming`, `round_recap`, `debate_complete`) it renders disabled rather than reflowing the row, and it is not rendered at all when `mechanics.analysisEnabled` is `false`. It carries the same green/amber/red guess-state tint as the debate log's `AnalyzeButton` lenses. **Back** is enabled only in `player_confirming` (or while an option can be unselected in `player_choosing`). The context-sensitive submit button's icon follows its three states — continue / confirm / leave — via `TrialUI`'s `interactiveFooter.submitIcon`.
 
 Keyboard shortcuts press those same buttons (no-op when the matching control is disabled, hidden, or tutorial-blocked): **A** Analyze, **S** Back, **Enter / Space / D** Continue (Confirm / Leave), **Z / X / C** options A / B / C. Analysis and intro-summary overlays suspend the footer/option map so they do not steal keys; recap and intro-summary Continue / Begin bind Enter / Space / D themselves. Farm talk keeps **E** as an extra Continue alias, and last-beat **Talk / Leave** take the A / B slots (**Z / X**). An open tutorial takes **Enter / Space / D** for Got it / Continue unless the step is `target_only` (those keys then press the highlighted control instead).
 
@@ -301,7 +306,8 @@ own content, so its box never grew and nothing watching it could tell the text h
   when a tutorial closed. The `(all)` readout is now only for content shown whole with no
   reveal attached (the round recap, the closing verdict).
 
-**What is revealed** — `scenario.introduction` during `debate_intro`, the NPC statement during
+**What is revealed** — `scenario.introduction` during `debate_intro`, `moderatorOpening.sentences`
+during `moderator_speaking`, the NPC statement during
 `npc_speaking`, `opponentPrompt` during `player_choosing` while no option is selected, the
 confirmed option during `player_speaking`, and the matched `OpponentResponse` during
 `npc_responding`. A pick during `player_choosing` dumps the option as a static preview (the
@@ -352,7 +358,7 @@ screen reader restarts the paragraph on every character.
 
 A full-screen overlay opened by clicking the magnifying glass button on any history entry. Closed by clicking the backdrop or the ✕ button.
 
-`analysis:open` / `analysis:close` carry **`analysisRoundNumber`** (the `RoundEntry.roundNumber` of the row under inspection) and **`activeRoundNumber`** (workflow round from `TrialUI`, same phase gate as `fallacyGuessBucketRoundNumber`, or `null` during `debate_intro` / `debate_complete`). Tutorials that should run only while the player is still “in” round N should filter on `activeRoundNumber`, not `analysisRoundNumber`, so opening analysis on an older log line during a later round does not match.
+`analysis:open` / `analysis:close` carry **`analysisRoundNumber`** (the `RoundEntry.roundNumber` of the row under inspection) and **`activeRoundNumber`** (workflow round from `TrialUI`, same phase gate as `fallacyGuessBucketRoundNumber`, or `null` during `debate_intro` / `moderator_speaking` / `debate_complete`). Tutorials that should run only while the player is still “in” round N should filter on `activeRoundNumber`, not `analysisRoundNumber`, so opening analysis on an older log line during a later round does not match.
 
 ### NPC round view
 
@@ -398,8 +404,9 @@ A compile-time assertion (`_AssertKeysMatch`) keeps `EventTrigger` and `DebateEv
 | Event | Payload | Emitted from |
 |-------|---------|--------------|
 | `introduction:start` | `IntroductionStartPayload` | `TrialUI` — fires once per scenario when the `debate_intro` phase begins. Drives the onboarding tutorial overlay via `scenario.tutorials`. |
+| `moderator:start` | `ModeratorStartPayload` | `TrialUI` — fires once per scenario when the `moderator_speaking` phase begins. |
 | `round:start` / `round:end` | `RoundLifecyclePayload` | `useTrialRoundWorkflow` — on `currentRoundIndex` / `gamePhase` transitions, including the step into `debate_complete`. |
-| `interactive:continue` | `InteractiveContinuePayload` | `TrialUI` — the Continue footer in `debate_intro`, `npc_speaking`, `npc_responding`. |
+| `interactive:continue` | `InteractiveContinuePayload` | `TrialUI` — the Continue footer in `debate_intro`, `moderator_speaking`, `npc_speaking`, `npc_responding`. |
 | `interactive:confirm` | `InteractiveConfirmPayload` | `TrialUI` — Continue after the chosen line has been spoken (`player_speaking`), so a tutorial on this event cannot `reveal.complete()` the typewriter. The dead `player_confirming` footer still emits it too. |
 | `interactive:statement_selected` | `InteractiveStatementSelectedPayload` | `InteractivePanel` — option click (selection only, not unselect). |
 | `interactive:back` | `InteractiveBackPayload` | `InteractivePanel` — Back button. |

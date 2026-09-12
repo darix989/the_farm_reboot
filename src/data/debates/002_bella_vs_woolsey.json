@@ -5,7 +5,28 @@
   "playerSide": "proposition",
   "characters": {
     "bella": "Bella",
-    "woolsey": "Woolsey"
+    "woolsey": "Woolsey",
+    "duchess": "Duchess"
+  },
+  "moderatorOpening": {
+    "id": "moderator-opening",
+    "sentences": [
+      {
+        "id": "s-mod-1",
+        "text": "The floor has a proposal: a fifteen-minute Quiet Time after lunch.",
+        "logicalFallacies": []
+      },
+      {
+        "id": "s-mod-2",
+        "text": "Bella speaks for it. Woolsey speaks against it.",
+        "logicalFallacies": []
+      },
+      {
+        "id": "s-mod-3",
+        "text": "Bella. The floor is yours.",
+        "logicalFallacies": []
+      }
+    ]
   },
   "logicalFallacies": [
     {

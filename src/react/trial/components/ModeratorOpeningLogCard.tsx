@@ -1,5 +1,6 @@
 import React, { useId } from 'react';
 import cn from 'classnames';
+import type { DebateScenarioJson } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import {
   canRunTutorialTargetAction,
@@ -8,57 +9,67 @@ import {
 import styles from '../panels/TrialPanels.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
-import { plainSpokenText } from '../utils/spokenMarkup';
+import { debateModeratorId } from '../../../data/debateCast';
+import { getSpeakerName, statementText } from '../utils/trialHelpers';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
-export const INTRO_DEBATE_LOG_CARD_ID = '__intro';
+export const MODERATOR_OPENING_LOG_CARD_ID = '__moderator_opening';
 
-type IntroStatus = 'active' | 'completed';
+type OpeningStatus = 'active' | 'upcoming' | 'completed';
 
-function introStatus(wf: Wf): IntroStatus {
-  return wf.gamePhase === 'debate_intro' ? 'active' : 'completed';
+function openingStatus(wf: Wf): OpeningStatus {
+  if (wf.gamePhase === 'moderator_speaking') return 'active';
+  if (wf.gamePhase === 'debate_intro') return 'upcoming';
+  return 'completed';
 }
 
-interface IntroDebateLogCardProps {
+interface ModeratorOpeningLogCardProps {
   wf: Wf;
-  introductionText: string;
+  debate: DebateScenarioJson;
   expandOverride: boolean | undefined;
   onExpandToggle: () => void;
 }
 
 /**
- * Debate log row for the scenario introduction — same shell as {@link DebateRoundLogCard}
- * (round number 00, Moderator / Introduction labels, status + expand only).
+ * Debate log row for the moderator's opening of the floor — same shell as the intro card
+ * (no analysis, no score). Active only during `moderator_speaking`.
  */
-const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
+const ModeratorOpeningLogCard: React.FC<ModeratorOpeningLogCardProps> = ({
   wf,
-  introductionText,
+  debate,
   expandOverride,
   onExpandToggle,
 }) => {
   const bodyId = useId();
-  const status = introStatus(wf);
-  // Like every round card, the intro row starts shrunk and stays that way until the player
-  // opens it — the full text is already in the wizard panel during `debate_intro`.
+  const status = openingStatus(wf);
   const effectiveExpanded = expandOverride ?? false;
+  const opening = debate.moderatorOpening;
+  const speakerId = debateModeratorId(debate);
+  const speakerName = getSpeakerName(debate, speakerId);
+  const body = opening ? statementText(opening.sentences) : '';
 
-  const statusLabel = status === 'active' ? getLabel('statusActive') : getLabel('statusCompleted');
+  const statusLabel =
+    status === 'active'
+      ? getLabel('statusActive')
+      : status === 'upcoming'
+        ? getLabel('statusUpcoming')
+        : getLabel('statusCompleted');
 
   return (
-    <div className={styles.debateLogRound} data-debate-log-intro>
+    <div className={styles.debateLogRound} data-debate-log-moderator-opening>
       <div className={styles.debateLogRoundHeader}>
         <div className={styles.debateLogRoundLead}>
-          <div className={styles.debateLogRoundNumber} aria-label={getLabel('introduction')}>
-            00
+          <div className={styles.debateLogRoundNumber} aria-label={getLabel('theFloor')}>
+            —
           </div>
           <div className={styles.debateLogRoundStack}>
             <div
               className={`${styles.debateLogRoundSideLine} ${styles.debateLogRoundSideLineModerator}`}
             >
-              {getLabel('setting')}
+              {speakerName}
             </div>
-            <div className={styles.debateLogRoundTypeLine}>{getLabel('introduction')}</div>
+            <div className={styles.debateLogRoundTypeLine}>{getLabel('theFloor')}</div>
           </div>
         </div>
 
@@ -66,6 +77,7 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
           <span
             className={cn(
               status === 'active' && styles.debateLogStatusActive,
+              status === 'upcoming' && styles.debateLogStatusUpcoming,
               status === 'completed' && styles.debateLogStatusCompleted,
             )}
           >
@@ -78,16 +90,12 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
             className={styles.debateLogExpandBtn}
             aria-expanded={effectiveExpanded}
             aria-controls={bodyId}
-            data-tutorial-debate-log-toggle-round-id={INTRO_DEBATE_LOG_CARD_ID}
+            data-tutorial-debate-log-toggle-round-id={MODERATOR_OPENING_LOG_CARD_ID}
             onClick={() => {
-              // Reuse the existing `debate_log_round_toggle` target kind with the
-              // intro card's synthetic id so the tutorial guard treats this button
-              // the same way as a per-round toggle: a missing `interactionMode`
-              // (or `'modal_only'`) blocks the click; only a `'target_only'` step
-              // pointing at this same id is allowed through.
+              if (status === 'upcoming') return;
               const target = {
                 kind: 'debate_log_round_toggle',
-                roundId: INTRO_DEBATE_LOG_CARD_ID,
+                roundId: MODERATOR_OPENING_LOG_CARD_ID,
               } as const;
               if (!canRunTutorialTargetAction(target)) return;
               onExpandToggle();
@@ -109,9 +117,7 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
         <div className={styles.debateLogRoundBodyInner} aria-hidden={!effectiveExpanded}>
           <div id={bodyId} className={styles.debateLogRoundBody}>
             <div className={styles.debateLogStatementBlock}>
-              <p style={{ marginTop: 0, color: uiColor.textMuted }}>
-                {plainSpokenText(introductionText)}
-              </p>
+              <p style={{ marginTop: 0, color: uiColor.textMuted }}>{body}</p>
             </div>
           </div>
         </div>
@@ -120,4 +126,4 @@ const IntroDebateLogCard: React.FC<IntroDebateLogCardProps> = ({
   );
 };
 
-export default IntroDebateLogCard;
+export default ModeratorOpeningLogCard;

@@ -52,6 +52,12 @@ export interface IntroductionSummaryPayload {
   debateId: string;
 }
 
+/** Fired once when the `moderator_speaking` phase begins for a scenario. */
+export interface ModeratorStartPayload {
+  /** Id of the scenario whose moderator is opening the floor. */
+  debateId: string;
+}
+
 export interface RoundLifecyclePayload {
   roundNumber: number;
   roundId: string;
@@ -71,7 +77,7 @@ export type InteractiveStatementUnlockedPayload = InteractiveStatementSelectedPa
 export interface InteractiveContinuePayload {
   /** Phase the Continue was pressed from (intro, NPC speaking, NPC responding, etc.). */
   fromPhase: GamePhase;
-  /** Round in play when Continue was pressed, or null for `debate_intro`. */
+  /** Round in play when Continue was pressed, or null for `debate_intro` / `moderator_speaking`. */
   roundNumber: number | null;
 }
 
@@ -107,7 +113,7 @@ export interface DebateLogRoundPayload {
 
 /** Whole-panel collapse / expand, as opposed to one round card opening its body. */
 export interface DebateLogPanelPayload {
-  /** Active workflow round, or `null` outside a round (`debate_intro`, `debate_complete`). */
+  /** Active workflow round, or `null` outside a round (`debate_intro`, `moderator_speaking`, `debate_complete`). */
   roundNumber: number | null;
 }
 
@@ -119,7 +125,7 @@ export interface AnalysisOpenClosePayload {
   analysisRoundNumber: number;
   /**
    * Workflow round when the modal opens (`TrialUI` / `useTrialRoundWorkflow`), or `null`
-   * when there is no in-play round (e.g. `debate_intro`, `debate_complete`).
+   * when there is no in-play round (e.g. `debate_intro`, `moderator_speaking`, `debate_complete`).
    */
   activeRoundNumber: number | null;
 }
@@ -193,6 +199,7 @@ export interface TutorialLifecyclePayload {
 export interface DebateEventPayloads {
   'introduction:start': IntroductionStartPayload;
   'introduction:summary': IntroductionSummaryPayload;
+  'moderator:start': ModeratorStartPayload;
   'round:start': RoundLifecyclePayload;
   'round:end': RoundLifecyclePayload;
   'interactive:statement_selected': InteractiveStatementSelectedPayload;

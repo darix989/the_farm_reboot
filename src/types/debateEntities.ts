@@ -243,6 +243,20 @@ export interface PlayerRoundEntry {
 
 export type RoundEntry = NpcRoundEntry | PlayerRoundEntry;
 
+/**
+ * The moderator's spoken opening of the floor. Lives on the scenario, not in `rounds`:
+ * it is not scored, analysed, or numbered. Speaker is always `debateModeratorId`.
+ */
+export interface ModeratorOpening {
+  id: string;
+  sentences: Sentence[];
+  /**
+   * Overrides the emotion the staged sprite plays. Omit for `talking` — a fair opening
+   * of the floor has nothing to derive a sneak or a doubt from.
+   */
+  emotion?: AnimalEmotion;
+}
+
 // ---------------------------------------------------------------------------
 // Logical Fallacies JSON authoring shape
 // ---------------------------------------------------------------------------
@@ -254,6 +268,7 @@ export interface LogicalFallaciesListJson {
 export type EventTrigger =
   | 'introduction:start'
   | 'introduction:summary'
+  | 'moderator:start'
   | 'round:start'
   | 'round:end'
   | 'interactive:statement_selected'
@@ -547,12 +562,19 @@ export interface DebateScenarioJson {
   /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
   characters?: Record<string, string>;
   /**
-   * Whose face the moderator status stills wear, when that animal is not also on stage.
-   * 1.7 names Cass so the fence skirmish stays Rue-vs-Bram while the score stills use her
-   * fox portraits. Omit to use a staged moderator (`characters` ∩ `MODERATOR_IDS`) or
+   * Whose face the moderator status stills wear, and who speaks `moderatorOpening`.
+   * 1.7 names Cass so she sits the fence as practice (and now stands in the centre slot
+   * to open it). Omit to use a staged moderator (`characters` ∩ `MODERATOR_IDS`) or
    * Duchess. See `debateModeratorId`.
    */
   moderatorId?: string;
+  /**
+   * The moderator's opening of the floor, spoken after `debate_intro` and before round 1.
+   * Presence of this field (with at least one non-empty sentence) is what creates the
+   * `moderator_speaking` phase and puts the resolved moderator on stage. Not a numbered
+   * round: no score, no analysis, no recap.
+   */
+  moderatorOpening?: ModeratorOpening;
   logicalFallacies: LogicalFallacyScenario[];
   availableLogicalFallacies: LogicalFallacyId[];
   /** Initial Insight Points balance the player starts the debate with. Defaults to 0. */
@@ -589,8 +611,9 @@ export interface DebateScenarioJson {
    * Overlay tutorials wired to specific debate events via the typed event bus.
    * See `DebateScenarioTutorialEntry`. The onboarding overlay that used to live
    * on `introTutorial` is now just a regular entry here, triggered by the
-   * `introduction:start` when the `debate_intro` phase begins, and
-   * `introduction:summary` when the pre-round introduction summary modal opens.
+   * `introduction:start` when the `debate_intro` phase begins,
+   * `introduction:summary` when the pre-round introduction summary modal opens, and
+   * `moderator:start` when the moderator opens the floor.
    */
   tutorials?: readonly DebateScenarioTutorialEntry[];
 }

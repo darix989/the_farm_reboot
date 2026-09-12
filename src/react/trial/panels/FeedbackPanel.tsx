@@ -6,10 +6,13 @@ import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import DebateRoundLogCard from '../components/DebateRoundLogCard';
 import DebateLogToggleButton from '../components/DebateLogToggleButton';
 import IntroDebateLogCard, { INTRO_DEBATE_LOG_CARD_ID } from '../components/IntroDebateLogCard';
+import ModeratorOpeningLogCard, {
+  MODERATOR_OPENING_LOG_CARD_ID,
+} from '../components/ModeratorOpeningLogCard';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import { activeRoundNumber } from '../utils/trialHelpers';
 import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
-import { debateModeratorId } from '../../../data/debateCast';
+import { debateModeratorId, scenarioHasModeratorOpening } from '../../../data/debateCast';
 import styles from './TrialPanels.module.scss';
 import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
@@ -33,9 +36,10 @@ interface FeedbackPanelProps {
 const DEBATE_LOG_BODY_TRANSITION_MS = 480;
 
 /**
- * Leaving `debate_intro` does not change `currentRoundIndex` (still 0), but round 1 gains its
- * body and an intro card the player opened may still be animating; scrolling immediately
- * measures wrong heights — wait longer than a normal round-only transition.
+ * Leaving `debate_intro` or `moderator_speaking` does not change `currentRoundIndex`
+ * (still 0), but the next card gains its body and a card the player opened may still be
+ * animating; scrolling immediately measures wrong heights — wait longer than a normal
+ * round-only transition.
  */
 const DEBATE_LOG_LEAVE_INTRO_SCROLL_MS = 720;
 
@@ -71,9 +75,13 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
     const indexChanged = prevIndex !== null && prevIndex !== currIndex;
     /** `currentRoundIndex` often stays 0 when intro ends; still need a delay for layout. */
     const leavingIntro = prevPhase === 'debate_intro' && wf.gamePhase !== 'debate_intro';
+    const leavingModerator =
+      prevPhase === 'moderator_speaking' && wf.gamePhase !== 'moderator_speaking';
     let delayMs = 0;
     if (indexChanged) delayMs = DEBATE_LOG_BODY_TRANSITION_MS;
-    if (leavingIntro) delayMs = Math.max(delayMs, DEBATE_LOG_LEAVE_INTRO_SCROLL_MS);
+    if (leavingIntro || leavingModerator) {
+      delayMs = Math.max(delayMs, DEBATE_LOG_LEAVE_INTRO_SCROLL_MS);
+    }
 
     const scrollToIntro = () => {
       const introEl = container.querySelector<HTMLElement>('[data-debate-log-intro]');
@@ -89,9 +97,27 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
       container.scrollBy({ top: scrollDelta, behavior: 'smooth' });
     };
 
+    const scrollToModeratorOpening = () => {
+      const el = container.querySelector<HTMLElement>('[data-debate-log-moderator-opening]');
+      if (!el) {
+        scrollToIntro();
+        return;
+      }
+      const padding = 12;
+      const cRect = container.getBoundingClientRect();
+      const chRect = el.getBoundingClientRect();
+      const scrollDelta = chRect.top - cRect.top - padding;
+      if (Math.abs(scrollDelta) < 4) return;
+      container.scrollBy({ top: scrollDelta, behavior: 'smooth' });
+    };
+
     const scrollToTarget = () => {
       if (wf.gamePhase === 'debate_intro' && wf.scenario.introduction?.trim()) {
         scrollToIntro();
+        return;
+      }
+      if (wf.gamePhase === 'moderator_speaking') {
+        scrollToModeratorOpening();
         return;
       }
       if (n === 0) return;
@@ -183,6 +209,19 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
               }}
             />
           )}
+          {scenarioHasModeratorOpening(wf.scenario) && (
+            <ModeratorOpeningLogCard
+              wf={wf}
+              debate={debate}
+              expandOverride={expandOverrideByRoundId[MODERATOR_OPENING_LOG_CARD_ID]}
+              onExpandToggle={() => {
+                setExpandOverrideByRoundId((prev) => {
+                  const current = prev[MODERATOR_OPENING_LOG_CARD_ID] ?? false;
+                  return { ...prev, [MODERATOR_OPENING_LOG_CARD_ID]: !current };
+                });
+              }}
+            />
+          )}
           {wf.scenario.rounds.map((round, roundIndex) => {
             const expandOverride = expandOverrideByRoundId[round.id];
 
@@ -195,7 +234,9 @@ const FeedbackPanel: React.FC<FeedbackPanelProps> = ({
                 wf={wf}
                 expandOverride={expandOverride}
                 onExpandToggle={() => {
-                  if (wf.gamePhase === 'debate_intro') return;
+                  if (wf.gamePhase === 'debate_intro' || wf.gamePhase === 'moderator_speaking') {
+                    return;
+                  }
                   const isUpcoming =
                     wf.gamePhase !== 'debate_complete' && roundIndex > wf.currentRoundIndex;
                   if (isUpcoming) return;

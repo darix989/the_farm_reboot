@@ -108,7 +108,7 @@ requires all of it.
 | 1.4 Cass | How Many, Not How | Sparring | **The name** of Appeal to Popularity | ad-hominem, appeal-to-popularity | Two icons on the picker, and a round carrying **two** fallacies at once. |
 | 1.5 Hetty | What Hetty Saw | Gossip | A **clean** round; the bent grate | ad-hominem, appeal-to-popularity | Not every sentence is a trap — and the player extracts the grate with a question. |
 | 1.6 Bram | The Line You Have to Earn | Lesson | **The locked line** — spotting and speaking meet | ad-hominem | An option that cannot be said until the fallacy in the previous round is tagged. |
-| 1.7 Bram | The Bent Grate | Skirmish | Speaking **and** spotting together | ad-hominem, appeal-to-popularity | Full chrome and the moderator gauge, plus the unlock-gated option for real. **Cass** wears the score stills (`moderatorId`); she is not on stage — the cast stays Rue vs Bram. Sets the grate flag. |
+| 1.7 Bram | The Bent Grate | Skirmish | Speaking **and** spotting together | ad-hominem, appeal-to-popularity | Full chrome and the moderator gauge, plus the unlock-gated option for real. **Cass** sits the centre slot and opens the floor (`moderatorId` + `moderatorOpening`). Sets the grate flag. |
 | 1.8 Tobias | The Pond Motion | Boss debate | Everything, over 10 beats | ad-hominem, appeal-to-popularity | Full Public Farm. Gated on both fallacies **and** Bram's concession. Four NPC beats (1, 5, 7, 9) carry two fallacies across two sentences, and beat 4 fuses both into a single sentence — which is where the difficulty lives now. |
 
 **File numbers are creation order, not ladder order.** `020`–`023` were written after
@@ -339,9 +339,10 @@ one to reveal, one to say — which nothing else in the game explains. It fires 
 *Full chrome except Insight: analysis on, `showInsightPoints: false`, moderator gauge on,
 recap on. 3 rounds. `setsDialogFlags: ['bram-grate-conceded']`.*
 
-**Cass wears the score stills and is not on stage.** `moderatorId: 'cass'` — fox portraits
-`sneaky` 17 / `doubtful` 9 / `angry` 3 — so the fence stays a two-cast: Rue vs Bram, Bram
-the opponent. Duchess in 1.8 is the other pattern (in `characters`, centre slot). Bram's
+**Cass sits the centre slot and opens the floor.** `moderatorId: 'cass'` — fox portraits
+`sneaky` 17 / `doubtful` 9 / `angry` 3 — so the fence is a three-cast: Rue | Cass | Bram,
+Cass speaking first after the introduction. Duchess in 1.8 is the same pattern (in
+`characters`, centre slot, `moderatorOpening`). Bram's
 lead-in (and Dot, and Field Notes) name Cass sitting it as practice, before the
 owl has the floor. Round 1 (`impact: -10`,
 `requiresAnalysis`) is the headcount and the six weeks. Round 2 is a `rebuttal` — no prompt,
@@ -366,8 +367,9 @@ three-way guess on a two-way lesson. The difficulty it used to supply now comes 
 **doubling up what the player does know**: rounds 1, 5, 7 and 9 each carry two fallacies, and round 4 puts both in one sentence, so the
 boss asks the 1.4 question — *which of these two is it, and is it both?* — three times.
 
-Duchess is in `characters` and on stage and **speaks not one line** — she is the moderator,
-which in this engine means the centre stage slot and the score emoji. Round types are
+Duchess is in `characters` and on stage. After the introduction she opens the floor
+(`moderatorOpening`) — names the motion, names the two sides, and invites Tobias — then
+sits the centre slot as the score. Round types are
 unlocked, so beats 3, 4, 7 and 8 read `— crossfire` in the wizard, on the log cards and in
 the recap heading. Beats 3 and 8 (Rue asks) use the player-asks wizard copy.
 
@@ -544,7 +546,7 @@ tiny:
 | 1.4 teaching | 1 / 1 | **Two** sentences are doing something this time, tag both. |
 | 1.5 gossip | 1 / 1 | Continue is locked until you judge, including **Clean**. |
 | 1.6 lesson | 3 / 3 | Some answers are locked; catch him and the line opens; the third line only exists because you caught him; **one click opens it, a second says it**. |
-| 1.7 skirmish | 1 / 1 | Cass is sitting this one as practice, before Duchess; her face is how she leans. |
+| 1.7 skirmish | 1 / 1 | Cass is sitting this one as practice, before Duchess; she opens the floor; her face is how she leans. |
 
 1.8 carries none: it repeats mechanics the player has already met. 1.7 used to carry a
 second step explaining the locked option; 1.6 now teaches that properly, so the reminder

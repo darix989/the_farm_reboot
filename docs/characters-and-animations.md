@@ -323,9 +323,10 @@ clears `customPivot` on the whole texture so those anchors are ignored.
 **Trial speaker depths.** Idle and non-speakers sit at depth 1, the active speaker at
 10. Formal debates (`encounterKind === 'debate'`, including the default when `mechanics`
 is omitted) insert a stage dimmer at 5 and a spotlight cone at 9, from the top of the
-hole down onto the speaker. Lessons, gossip, sparring and lab skip that pair and keep
-the milder alpha dim. Do not put a new Trial stage object in that band without reading
-`Trial.ts`.
+hole down onto the speaker. The cone is off during `debate_intro` (no speaker) and aims
+at the moderator during `moderator_speaking`. Lessons, gossip, sparring and lab skip that
+pair and keep the milder alpha dim. Do not put a new Trial stage object in that band
+without reading `Trial.ts`.
 
 ---
 
@@ -465,6 +466,7 @@ data already carries the intent:
 | `crossfire` statement                              | `doubtful` |
 | Player round, nothing picked yet                   | `thinking` |
 | Player confirming a `logical_fallacy` option       | `sneaky`   |
+| `moderator_speaking` (unless authored)             | `talking`  |
 | Anything else                                      | `talking`  |
 
 An authored `Statement.emotion` / `PlayerOption.emotion` overrides all of it. Reach for one
@@ -807,13 +809,14 @@ nothing once the pixels change.
 
 ### 11.2 Duchess lends her face to debates she is not in
 
-Most debates show a moderator's opinion with no moderator on stage: the score is the room's
-judgement, not a character's, and Bram's first lesson has no owl in it. The indicator still
-needs a face, so it uses `debateModeratorId()` from
-[`debateCast.ts`](../src/data/debateCast.ts) — an authored `moderatorId` if present (Cass in
-1.7, so the fence stays Rue vs Bram), else a staged moderator in the cast (Duchess in 1.8),
-else `DEFAULT_MODERATOR_ID`. `stageOrder()` only centres someone who is actually in the
-cast, so a face-only moderator cannot steal the opponent slot.
+Most *smaller-mode* encounters show a moderator's opinion with no moderator on stage: the
+score is the room's judgement, not a character's, and Bram's first lesson has no owl in
+it. The indicator still needs a face, so it uses `debateModeratorId()` from
+[`debateCast.ts`](../src/data/debateCast.ts) — an authored `moderatorId` if present (Cass
+in 1.7), else a staged moderator in the cast (Duchess in 1.8), else
+`DEFAULT_MODERATOR_ID`. Formal debates that author `moderatorOpening` also put that animal
+on stage so the cone can point at them while they open the floor. `stageOrder()` only
+centres someone who is actually in the cast.
 
 ### 11.3 `FaceStill`, and why the register needed a third renderer
 

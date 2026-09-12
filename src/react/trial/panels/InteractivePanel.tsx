@@ -346,6 +346,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
           back={{
             disabled:
               wf.gamePhase === 'debate_intro' ||
+              wf.gamePhase === 'moderator_speaking' ||
               (wf.gamePhase === 'player_choosing' ? !wf.canUnselect : !wf.canUndo),
             label: getLabel('back'),
             onClick: () => {
