@@ -32,11 +32,16 @@ npm run dev-nolog      # http://localhost:8080
 | `npm run build` / `build-nolog` | Production build into `dist/` |
 | `npm run lint` / `lint:fix` | ESLint over `src` |
 | `npm run lint:styles` | Stylelint over SCSS |
+| `npm run lint:scenarios` | Authoring lint for debate JSON |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run test` / `test:watch` | Vitest unit tests |
+| `npm run check` | Typecheck, lint, format, tests, and a production build |
 | `npm run format` / `format:check` | Prettier |
 | `npm run sprites:emotions` | Generate/promote the cast's emotion animation art. **Spends Ludo.ai credits** — `-- --dry-run` is free. Note the `--` |
 
-There is **no test runner.** Changes are verified by running the app and driving it — see
-[docs/architecture.md](docs/architecture.md#build-and-verification).
+Unit tests live next to the module they cover (`*.test.ts`) and run on the debate rules layer — gates, option unlocks, analysis grading, the round workflow reducer. Phaser scenes and canvas behaviour still need the running game: `npm run dev-nolog`, then drive the 16:9 stage. See [docs/architecture.md](docs/architecture.md#build-and-verification).
+
+CI runs `npm run check` on every pull request and push to `main`.
 
 > `npm run dev` and `npm run build` send an anonymous ping to Phaser Studio recording the
 > template name, dev-or-prod, and the Phaser version. The `-nolog` variants skip it; deleting
