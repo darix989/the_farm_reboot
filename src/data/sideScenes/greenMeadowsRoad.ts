@@ -31,10 +31,6 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
   layers: STANDARD_FARM_LAYERS,
 
   props: [
-    // A distant silhouette tucked behind the midground hills — proves the depth model
-    // can place something *behind* a backdrop band, not just in front of it.
-    { asset: 'trees/tree-two-dark-green', x: 2600, y: 500, band: 'backdrop', scale: 0.7 },
-
     // Barn / silo cluster.
     { asset: 'props/silo', x: 980, y: GROUND_SEAM_Y, band: 'ground' },
     { asset: 'props/red-barn', x: 1260, y: GROUND_SEAM_Y, band: 'ground' },
@@ -73,15 +69,16 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
     { asset: 'props/windmill', x: 7000, y: GROUND_SEAM_Y, band: 'ground' },
 
     // Flowers scattered on the front-grass occluder band. Same over-sized-native-art
-    // issue as the crops above, scaled down further since a flower reads as tiny next
-    // to a fence post, not merely small next to a barn.
-    { asset: 'flowers/flower-1-yellow', x: 620, y: 1040, band: 'front', scale: 0.18 },
-    { asset: 'flowers/flower-1-red', x: 1550, y: 1055, band: 'front', scale: 0.18 },
-    { asset: 'flowers/flower-1-blue', x: 2450, y: 1035, band: 'front', scale: 0.18 },
-    { asset: 'flowers/flower-side-1-orange', x: 3700, y: 1050, band: 'front', scale: 0.18 },
-    { asset: 'flowers/flower-1-white', x: 4900, y: 1040, band: 'front', scale: 0.18 },
-    { asset: 'flowers/flower-side-1-purple', x: 5950, y: 1055, band: 'front', scale: 0.18 },
-    { asset: 'flowers/flower-1-pink', x: 7100, y: 1035, band: 'front', scale: 0.18 },
+    // issue as the crops above, but tuned by eye rather than by a fixed ratio — a
+    // flower is small next to a fence post, not the barn/crop proportion this scale
+    // works out to.
+    { asset: 'flowers/flower-1-yellow', x: 620, y: 1040, band: 'front', scale: 0.36 },
+    { asset: 'flowers/flower-1-red', x: 1550, y: 1055, band: 'front', scale: 0.36 },
+    { asset: 'flowers/flower-1-blue', x: 2450, y: 1035, band: 'front', scale: 0.36 },
+    { asset: 'flowers/flower-side-1-orange', x: 3700, y: 1050, band: 'front', scale: 0.36 },
+    { asset: 'flowers/flower-1-white', x: 4900, y: 1040, band: 'front', scale: 0.36 },
+    { asset: 'flowers/flower-side-1-purple', x: 5950, y: 1055, band: 'front', scale: 0.36 },
+    { asset: 'flowers/flower-1-pink', x: 7100, y: 1035, band: 'front', scale: 0.36 },
   ],
 
   fences: [
