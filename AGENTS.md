@@ -201,9 +201,9 @@ return an unsubscribe function — use it as your effect cleanup.
 
 ## Phaser scenes (registration order)
 
-Defined in `src/phaser/main.ts`: **Boot** → **Preloader** → **MainMenu** → **Farm** → **Game** → **Trial** → **GameOver**. Design resolution **1920×1080**, `Scale.FIT`, centered. Arcade physics is enabled with zero gravity (the overworld uses it; the debate scenes simply never create bodies).
+Defined in `src/phaser/main.ts`: **Boot** → **Preloader** → **MainMenu** → **Farm** → **FarmSide** → **Game** → **Trial** → **AnimalGallery** → **GameOver**. Design resolution **1920×1080**, `Scale.FIT`, centered. Arcade physics is enabled with zero gravity (the overworld uses it; the debate scenes simply never create bodies).
 
-`Game` and `GameOver` are unused template stubs. The live scenes are **MainMenu**, **Farm** and **Trial**. Adding a scene means adding a matching `case` in `ReactApp.tsx`, or it falls through to `BoilerPlateUI` and paints over your scene — see [`docs/architecture.md`](docs/architecture.md).
+`Game` and `GameOver` are unused template stubs. The live scenes are **MainMenu**, **Farm**, **FarmSide**, **Trial** and **AnimalGallery**. **FarmSide** is the lateral (side-scrolling) farm world's iteration-1 scene-assembly kit — see [`docs/farm_side_scenes.md`](docs/farm_side_scenes.md) — with no gameplay yet; **Farm** stays the live top-down overworld. Adding a scene means adding a matching `case` in `ReactApp.tsx`, or it falls through to `BoilerPlateUI` and paints over your scene — see [`docs/architecture.md`](docs/architecture.md).
 
 ## Assets and HTML
 

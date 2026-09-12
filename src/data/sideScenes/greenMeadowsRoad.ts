@@ -1,0 +1,90 @@
+/**
+ * The first lateral scene: a ~4-screen-wide farm road with a barn/silo cluster, a
+ * windmill, a tree line, crop beds, a picket-fence run with one gate, and flowers on
+ * the front grass. Proves the traversal contract (walk on the road only, one entrance
+ * plus a multi-exit shape) via `west`/`east`/`barn-gate` portals.
+ *
+ * `STANDARD_FARM_LAYERS` is exported so scene #2 does not have to retype the six-band
+ * stack — every number here comes from the kit's measured asset-analysis pass (see
+ * `docs/farm_side_scenes.md`), not from eyeballing a reference image.
+ */
+import type { SideSceneDescriptor, SideSceneLayer } from '../../types/sideScene';
+
+export const STANDARD_FARM_LAYERS: readonly SideSceneLayer[] = [
+  { asset: 'bg/far-hills', nativeHeight: 102, opaqueFromRow: 31, parallax: 0.15 },
+  { asset: 'bg/midground-fields-large', nativeHeight: 204, opaqueFromRow: 48, parallax: 0.35 },
+  { asset: 'bg/near-grass', nativeHeight: 227, opaqueFromRow: 22, parallax: 0.65 },
+  { asset: 'bg/road', nativeHeight: 238, opaqueFromRow: 0, parallax: 1 },
+  { asset: 'bg/front-grass', nativeHeight: 126, opaqueFromRow: 31, parallax: 1 },
+];
+
+/** The near-grass / road seam — where a fence or a ground prop plants its feet. */
+const GROUND_SEAM_Y = 796;
+const GATE_X = 3800;
+
+export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
+  id: 'greenMeadowsRoad',
+  width: 7680,
+  scale: 0.8543,
+  firstTop: 400,
+  road: { top: 837, bottom: 999 },
+  layers: STANDARD_FARM_LAYERS,
+
+  props: [
+    // A distant silhouette tucked behind the midground hills — proves the depth model
+    // can place something *behind* a backdrop band, not just in front of it.
+    { asset: 'trees/tree-two-dark-green', x: 2600, y: 500, band: 'backdrop', scale: 0.7 },
+
+    // Barn / silo cluster.
+    { asset: 'props/silo', x: 980, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'props/red-barn', x: 1260, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'props/chicken-coop-wooden', x: 1620, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'props/haypile', x: 1780, y: GROUND_SEAM_Y, band: 'ground', scale: 0.9 },
+    { asset: 'props/track-to-barn', x: 1400, y: GROUND_SEAM_Y, band: 'ground' },
+
+    // Tree line.
+    { asset: 'trees/tree-one-mid-green', x: 250, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'trees/tree-three-mid-green', x: 700, y: GROUND_SEAM_Y, band: 'ground', flipX: true },
+    { asset: 'trees/tree-four-spring', x: 2050, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'trees/tree-five-light-green', x: 4400, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'trees/tree-two-mid-green', x: 5600, y: GROUND_SEAM_Y, band: 'ground', flipX: true },
+    { asset: 'trees/tree-one-dark-green', x: 7350, y: GROUND_SEAM_Y, band: 'ground' },
+
+    // Crop beds and scarecrow, clear of the gate.
+    { asset: 'plants/sunflowers-group', x: 2900, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'plants/sweetcorn-group', x: 3200, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'props/scarecrow', x: 3450, y: GROUND_SEAM_Y, band: 'ground', scale: 0.85 },
+    { asset: 'plants/sweetcorn-group', x: 4550, y: GROUND_SEAM_Y, band: 'ground', flipX: true },
+    { asset: 'bushes/bush-2-mid-green', x: 5000, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'bushes/bush-1-dark-green', x: 5300, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'citrus/orange-tree-oranges', x: 6100, y: GROUND_SEAM_Y, band: 'ground' },
+    { asset: 'citrus/lemon-tree-lemons', x: 6400, y: GROUND_SEAM_Y, band: 'ground', flipX: true },
+
+    // Windmill, near the far exit.
+    { asset: 'props/windmill', x: 7000, y: GROUND_SEAM_Y, band: 'ground' },
+
+    // Flowers scattered on the front-grass occluder band.
+    { asset: 'flowers/flower-1-yellow', x: 620, y: 1040, band: 'front', scale: 0.8 },
+    { asset: 'flowers/flower-1-red', x: 1550, y: 1055, band: 'front', scale: 0.8 },
+    { asset: 'flowers/flower-1-blue', x: 2450, y: 1035, band: 'front', scale: 0.8 },
+    { asset: 'flowers/flower-side-1-orange', x: 3700, y: 1050, band: 'front', scale: 0.8 },
+    { asset: 'flowers/flower-1-white', x: 4900, y: 1040, band: 'front', scale: 0.8 },
+    { asset: 'flowers/flower-side-1-purple', x: 5950, y: 1055, band: 'front', scale: 0.8 },
+    { asset: 'flowers/flower-1-pink', x: 7100, y: 1035, band: 'front', scale: 0.8 },
+  ],
+
+  fences: [
+    {
+      y: GROUND_SEAM_Y,
+      fromX: 150,
+      toX: 7530,
+      gaps: [{ x: GATE_X, gate: 'complete' }],
+    },
+  ],
+
+  portals: [
+    { id: 'west', side: 'left' },
+    { id: 'east', side: 'right' },
+    { id: 'barn-gate', side: 'back', x: GATE_X },
+  ],
+};

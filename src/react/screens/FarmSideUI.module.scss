@@ -1,0 +1,32 @@
+/* =========================================================================
+   FarmSide UI (iteration 1 — scene assembly kit preview, no gameplay yet)
+
+   Everything here sits inside `.react-ui-overlay`, which is `pointer-events:
+   none` so clicks fall through to the Phaser canvas. Each interactive element
+   must therefore re-enable pointer events for itself.
+   ========================================================================= */
+
+.farmSideUi {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.backButton {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  pointer-events: auto;
+  padding: 0.6rem 1.2rem;
+  font-size: var(--ui-font-body);
+  color: var(--ui-color-text-primary);
+  background: var(--ui-color-overlay-backdrop);
+  border: 1px solid var(--ui-color-border-emphasis);
+  border-radius: 0.4rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ui-color-accent);
+    border-color: var(--ui-color-accent);
+  }
+}

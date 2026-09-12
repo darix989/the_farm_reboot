@@ -28,6 +28,7 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "lint:scenarios": "node scripts/lint-scenarios.mjs",
+    "assets:farm-kit": "node scripts/build-farm-kit-manifest.mjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",

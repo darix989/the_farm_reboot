@@ -28,6 +28,8 @@ const MainMenuUI: React.FC = () => {
 
   const enterFarm = () => GameManager.switchScene('Farm');
 
+  const enterFarmSidePreview = () => GameManager.switchScene('FarmSide');
+
   const openAnimationGallery = () => GameManager.switchScene('AnimalGallery');
 
   // Not a scene switch — the Codex is a global overlay, so it opens on top of the menu.
@@ -87,6 +89,9 @@ const MainMenuUI: React.FC = () => {
             </button>
             <button className={styles.menuButton} type="button" onClick={openAnimationGallery}>
               {getLabel('animationGallery')}
+            </button>
+            <button className={styles.menuButton} type="button" onClick={enterFarmSidePreview}>
+              {getLabel('enterFarmSidePreview')}
             </button>
           </div>
           <button

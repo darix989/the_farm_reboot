@@ -645,6 +645,10 @@ const LABELS = {
   gameOver: 'Game Over',
   gamePlaceholderBody: 'Make something fun!\nand share it with us:\nsupport@phaser.io',
   trialScenePlaceholder: 'Trial Scene\n\nThis is where the trial gameplay\nwould be implemented.',
+
+  // --- Lateral farm scene (iteration 1 preview — scene assembly kit, no gameplay yet) ---
+  enterFarmSidePreview: 'Farm Road (preview)',
+  farmSideBackToMenu: 'Back to Main Menu',
 } as const;
 
 export type Labels = keyof typeof LABELS;

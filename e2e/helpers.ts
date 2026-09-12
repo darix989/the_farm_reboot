@@ -6,6 +6,8 @@ export const ENTER_THE_FARM = getLabel('enterTheFarm');
 export const FIELD_NOTES = getLabel('codexOpen');
 export const LEVEL_1_FIRST = getLabel('level1BramDialog');
 export const CONTINUE = getLabel('continue');
+export const ENTER_FARM_SIDE_PREVIEW = getLabel('enterFarmSidePreview');
+export const FARM_SIDE_BACK_TO_MENU = getLabel('farmSideBackToMenu');
 
 /**
  * Wipe persisted zustand keys before any app script runs, so smokes always
