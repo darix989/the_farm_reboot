@@ -41,21 +41,22 @@ export const EAST_ORCHARD: SideSceneDescriptor = {
     { asset: 'props/windmill', x: 2750, y: GROUND_SEAM_Y, band: 'ground' },
 
     // The pond, framed so it doesn't float on flat green: far-bank bushes behind it
-    // (smaller `y`, so they sort behind on `y` alone), near-bank reeds in front.
-    { asset: 'bushes/bush-2-mid-green', x: 1470, y: 664, band: 'ground', scale: 0.22 },
+    // (smaller `y`, so they sort behind on `y` alone), near-bank reeds in front. Spread
+    // wider than the pond's own 0.42-scale first pass to match its bigger footprint.
+    { asset: 'bushes/bush-2-mid-green', x: 1450, y: 664, band: 'ground', scale: 0.27 },
     {
       asset: 'bushes/bush-1-dark-green',
-      x: 1660,
+      x: 1684,
       y: 666,
       band: 'ground',
-      scale: 0.18,
+      scale: 0.22,
       flipX: true,
     },
-    { asset: 'water/pond-muddy', x: POND_X, y: POND_Y, band: 'ground', scale: 0.42 },
-    { asset: 'flowers/leaf-1-a', x: 1400, y: 760, band: 'ground', scale: 0.18 },
-    { asset: 'flowers/leaf-1-a', x: 1480, y: 768, band: 'ground', scale: 0.16, flipX: true },
-    { asset: 'flowers/leaf-1-a', x: 1620, y: 762, band: 'ground', scale: 0.2 },
-    { asset: 'flowers/leaf-1-a', x: 1700, y: 770, band: 'ground', scale: 0.17, flipX: true },
+    { asset: 'water/pond-muddy', x: POND_X, y: POND_Y, band: 'ground', scale: 0.52 },
+    { asset: 'flowers/leaf-1-a', x: 1362, y: 760, band: 'ground', scale: 0.22 },
+    { asset: 'flowers/leaf-1-a', x: 1461, y: 768, band: 'ground', scale: 0.2, flipX: true },
+    { asset: 'flowers/leaf-1-a', x: 1634, y: 762, band: 'ground', scale: 0.25 },
+    { asset: 'flowers/leaf-1-a', x: 1734, y: 770, band: 'ground', scale: 0.21, flipX: true },
   ],
 
   fences: [],
