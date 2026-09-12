@@ -6,7 +6,7 @@ import {
   waitForMainMenu,
 } from './helpers';
 
-test.describe('lateral farm scene (iteration 1 preview)', () => {
+test.describe('lateral farm scene (preview)', () => {
   test('boots the scene and shows the back button', async ({ page }) => {
     await page.goto('/');
     await waitForMainMenu(page);
@@ -15,7 +15,7 @@ test.describe('lateral farm scene (iteration 1 preview)', () => {
     await attachScreenshot(page, 'farm-side-scene');
   });
 
-  test('walking right moves the debug walker without leaving the main menu behind', async ({
+  test('walking right scrolls the road without leaving the main menu behind', async ({
     page,
   }) => {
     await page.goto('/');

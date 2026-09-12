@@ -70,6 +70,28 @@ export interface SideFenceRun {
   gaps: readonly SideFenceGap[];
 }
 
+/**
+ * A character standing in the scene. Art, display name and dialogue portrait all resolve
+ * from `characterId` through `src/data/characters.ts`, the same way `FARM_NPCS` does in the
+ * top-down overworld — a side scene names who is there, never what they look like.
+ */
+export interface SideSceneNpcSpec {
+  /** Character id (`'hetty'`), not a sprite id. */
+  characterId: string;
+  /** World x they stand at. */
+  x: number;
+  /** World y of their feet. Defaults to the middle of the road band. */
+  y?: number;
+  /** Which way they look before anyone walks up to them. Defaults to `'left'`. */
+  facing?: 'left' | 'right';
+  /**
+   * `FARM_TALK` suffix for their walk-up chat, so the slot key is
+   * `{characterId}{talkSuffix}` (`hettySide`). Side-scene talks are fixed beats: they do
+   * not walk the encounter ladder `farmDialogueFor` resolves for the top-down farm.
+   */
+  talkSuffix: string;
+}
+
 export type SidePortalSide = 'left' | 'right' | 'back' | 'front';
 
 export interface SidePortalSpec {
@@ -100,5 +122,7 @@ export interface SideSceneDescriptor {
   layers: readonly SideSceneLayer[];
   props: readonly SidePropSpec[];
   fences: readonly SideFenceRun[];
+  /** Who is standing on this road. The player is not one of these — see `FarmSide.ts`. */
+  npcs: readonly SideSceneNpcSpec[];
   portals: readonly SidePortalSpec[];
 }

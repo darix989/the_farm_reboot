@@ -77,8 +77,10 @@ src/
     levels.ts           # Scenario registry: DebateScenarioKey, DEBATES, menu order
                         #   ScenarioEntry.requires is the overworld gate
     farmMap.ts          # Overworld zones + NPCs; `talkStages` on FarmNpc
-    farmTalk.ts         # Sequential talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `dot2`)
-                        #   and `followUp:{scenarioKey}` for post-Trial pointers
+    farmTalk.ts         # Sequential talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `dot2`,
+                        #   `hettySide` for a lateral scene) and `followUp:{scenarioKey}`
+                        #   for post-Trial pointers
+    sideScenes/         # Lateral farm scenes: layer stack, props, fences, npcs, portals
     farmTutorials.ts    # Overworld overlay tutorials + FarmTutorialId
     encounterFollowUps.ts # After Trial Leave: farm talk or tutorial, then dialog flags / Next
     characters.ts       # Cast roster: name, tint, and (if any) animated `animal` sprite
@@ -94,6 +96,7 @@ src/
     EventBus.ts         # Phaser→React bus (5 events)
     scenes/             # Boot, Preloader, MainMenu, Farm, Game, Trial, GameOver
     farm/               # Overworld helpers: textures, palette, input, joystick
+    sideScene/          # Lateral world: layer stack, props, fences, actors, talk camera
     animals/            # Placeholder animal spritesheets: descriptors, animation
                         #   builder, AnimalAnimator, per-scene packs — see
                         #   docs/characters-and-animations.md
@@ -140,7 +143,8 @@ src/
   store/
     gameStore.ts        # Phaser refs, currentScene, activeDebateId, returnSceneKey
     tutorialStore.ts    # Open tutorial overlay + its interaction gate
-    farmStore.ts        # Overworld ↔ React handoff (nearby / talking / pendingFollowUp)
+    farmStore.ts        # Overworld ↔ React handoff (nearby / talking / pendingFollowUp);
+                        #   both `Farm` and `FarmSide` talk through it
     trialStageStore.ts  # Debate ↔ Phaser handoff: active speaker for the Trial cast
     debateLogStore.ts   # Is the Trial's Debate Log expanded, or collapsed to its recap chip
     progressStore.ts    # Completed encounters + farm tutorials + whether Level 1 has started (persisted)
@@ -203,7 +207,7 @@ return an unsubscribe function — use it as your effect cleanup.
 
 Defined in `src/phaser/main.ts`: **Boot** → **Preloader** → **MainMenu** → **Farm** → **FarmSide** → **Game** → **Trial** → **AnimalGallery** → **GameOver**. Design resolution **1920×1080**, `Scale.FIT`, centered. Arcade physics is enabled with zero gravity (the overworld uses it; the debate scenes simply never create bodies).
 
-`Game` and `GameOver` are unused template stubs. The live scenes are **MainMenu**, **Farm**, **FarmSide**, **Trial** and **AnimalGallery**. **FarmSide** is the lateral (side-scrolling) farm world's iteration-1 scene-assembly kit — see [`docs/farm_side_scenes.md`](docs/farm_side_scenes.md) — with no gameplay yet; **Farm** stays the live top-down overworld. Adding a scene means adding a matching `case` in `ReactApp.tsx`, or it falls through to `BoilerPlateUI` and paints over your scene — see [`docs/architecture.md`](docs/architecture.md).
+`Game` and `GameOver` are unused template stubs. The live scenes are **MainMenu**, **Farm**, **FarmSide**, **Trial** and **AnimalGallery**. **FarmSide** is the lateral (side-scrolling) farm world — the scene-assembly kit plus the cast walking it and walk-up talks, no Trial routing yet; see [`docs/farm_side_scenes.md`](docs/farm_side_scenes.md). **Farm** stays the live top-down overworld. Adding a scene means adding a matching `case` in `ReactApp.tsx`, or it falls through to `BoilerPlateUI` and paints over your scene — see [`docs/architecture.md`](docs/architecture.md).
 
 ## Assets and HTML
 
@@ -258,6 +262,7 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
 
 - New **shared UI colour or font step** → extend `uiColors.scss` / `uiColor.ts` or `uiTypography.scss` / `uiFont.ts`, then use `var(--ui-*)` or the TS mirrors in components.
 - New **overlay or menu** → `src/react/`, wire via `ReactApp.tsx` if scene-specific.
+- New **lateral farm scene, or an animal standing in one** → author it under `src/data/sideScenes/` (`npcs` names characters, not sprites) and read [`docs/farm_side_scenes.md`](docs/farm_side_scenes.md); it owns the layer stack, the cast's scale and the talk camera.
 - New **scene or game logic** → `src/phaser/scenes/` (and register in `main.ts`). For overworld work — new locations, animals, or anything touching the `Farm` scene — read `docs/farm_overworld.md` first; it documents the Phaser/React split and two collision/scene-switch gotchas that do not surface as type or lint errors.
 - **Cross-layer signals** → `EventBus` + optional `gameStore` actions.
 - Keep **`PHASER_PARENT_ID`** in sync between the Phaser parent div and `ReactRoot` layout logic.

@@ -646,9 +646,17 @@ const LABELS = {
   gamePlaceholderBody: 'Make something fun!\nand share it with us:\nsupport@phaser.io',
   trialScenePlaceholder: 'Trial Scene\n\nThis is where the trial gameplay\nwould be implemented.',
 
-  // --- Lateral farm scene (iteration 1 preview — scene assembly kit, no gameplay yet) ---
+  // --- Lateral farm scene (preview — scene assembly kit plus a walk-up talk) ---
   enterFarmSidePreview: 'Farm Road (preview)',
   farmSideBackToMenu: 'Back to Main Menu',
+  farmSideMoveHint: 'Arrows / WASD to walk the road',
+  // Hetty on the farm road, a few paces west of the barn gate. Her own register: she
+  // announces what she is not doing while doing it.
+  farmDialogHettySideA:
+    'Rue! On this road, at this hour. Nobody comes down here at this hour except me, and I am standing still.',
+  farmDialogHettySideB: 'I was only walking to the gate.',
+  farmDialogHettySideC:
+    'The gate. Well. I shall tell absolutely nobody, which is the same as telling everybody, only friendlier.',
 } as const;
 
 export type Labels = keyof typeof LABELS;

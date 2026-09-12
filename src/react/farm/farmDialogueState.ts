@@ -118,6 +118,29 @@ export function farmDialogueFor(npcId: string): FarmDialogueState | null {
 }
 
 /**
+ * A walk-up chat in the lateral farm world: fixed beats from one authored `FARM_TALK` slot
+ * (`{npcId}{suffix}`, e.g. `hettySide`), no encounter and no lessons behind them.
+ *
+ * Deliberately not {@link farmDialogueFor}: that resolves an animal's *ladder* — which
+ * encounter they offer next, which gate is still shut, which follow-up is owed — and
+ * `FarmSide` has no Trial routing yet, so asking it would hand the player a conversation
+ * that offers a debate the scene cannot start.
+ */
+export function sideSceneDialogue(npcId: string, suffix: string): FarmDialogueState | null {
+  const visual = characterById(npcId);
+  if (!visual) return null;
+  return {
+    npcId,
+    nameLabel: visual.nameLabel,
+    slotKey: farmTalkSlotKey(npcId, suffix),
+    beats: farmTalkBeats(npcId, suffix),
+    scenario: null,
+    scenarioRequires: [],
+    lessons: [],
+  };
+}
+
+/**
  * Leave-only pointer after a Trial. Must not reuse {@link farmDialogueFor}: that would
  * open the *next* offer slot, which is the wrong animal's pre-talk whenever the spine
  * moves on (Bram 1.1 → Cass). Walking up later while the next rung is still locked

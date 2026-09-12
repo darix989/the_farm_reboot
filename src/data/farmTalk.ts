@@ -49,6 +49,13 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: RUE, textLabel: 'farmDialogHettyMeetB' },
     { speakerId: 'hetty', textLabel: 'farmDialogHettyMeetC' },
   ],
+  // The lateral farm world's walk-up chat (`SideSceneNpcSpec.talkSuffix`): fixed beats, no
+  // encounter behind them — `FarmSide` does not route to the Trial yet.
+  hettySide: [
+    { speakerId: 'hetty', textLabel: 'farmDialogHettySideA' },
+    { speakerId: RUE, textLabel: 'farmDialogHettySideB' },
+    { speakerId: 'hetty', textLabel: 'farmDialogHettySideC', emotion: 'sneaky' },
+  ],
   cass1: [
     { speakerId: 'cass', textLabel: 'farmDialogCass1a' },
     { speakerId: RUE, textLabel: 'farmDialogCass1b' },

@@ -2,11 +2,15 @@
 
 How the `FarmSide` scene assembly kit works, and how to author scene #2 through #10.
 
-This is iteration 1: one scene (`greenMeadowsRoad`), no gameplay, no characters, no
-Trial routing. The one thing it proves is the traversal contract — a scene carries a
-character from one entrance to one or more exits, walking on the road only — via the
-debug walker (`DEBUG_SIDE_SCENE` in `FarmSide.ts`). `Farm.ts`, the top-down overworld,
-is untouched and stays the live scene until characters land here.
+One scene so far (`greenMeadowsRoad`) with the real cast on it: Rue walks the road, the
+scene's authored NPCs stand on it, and walking up to one opens the overworld's own talk
+chrome. No Trial routing and no scene-to-scene portals yet. `Farm.ts`, the top-down
+overworld, is untouched and stays the live scene.
+
+Iteration 1's debug walker is gone — the traversal contract it proved (a scene carries a
+character from one entrance to one or more exits, walking on the road only) is carried by
+the cast now. `DEBUG_SIDE_SCENE` in `FarmSide.ts` still draws the road band and the portal
+markers over it.
 
 ---
 
@@ -105,17 +109,78 @@ which is what makes the front-grass "grass passes in front of feet" trick work �
 also why a fence (anchored at the near-grass/road seam, above the walkable band) sorts
 behind the walker without a special case.
 
+## The cast: who stands on the road
+
+`SideSceneDescriptor.npcs` names characters, never sprites — `{ characterId, x, y?,
+facing?, talkSuffix }`, resolved through `src/data/characters.ts` exactly the way
+`FARM_NPCS` is in the top-down farm. `animalPacks.ts` reads the same list to work out which
+atlases `FarmSide` has to fetch (`farmSideAnimalIds`), so adding an animal to a scene is one
+edit, not two. Rue is not in the list: the player is spawned by the scene, at the west
+portal.
+
+`sideSceneActors.ts` owns everything about standing on a road — scale, depth, facing, and
+Rue's movement — including the two numbers that decide how big an animal reads here:
+
+- **`SIDE_SCALE`**, one flat multiplier on `ANIMAL_STAGING.farmScale`. That staging was fit
+  against the top-down farm's 56px placeholder NPCs; this world is drawn from the kit at a
+  scale where a picket fence is ~190 stage px tall. Keeping the cast's *relative* sizes and
+  applying one factor is the same approach `animalStaging.ts` itself documents.
+- **`NPC_CLEARANCE_X` / `_Y`**, the only solid thing in the scene. Without it the player
+  walks through whoever they came to talk to, and the talk camera then frames two animals
+  standing inside each other. The y figure is loose, so walking up or down the road still
+  slips past someone.
+
+## The talk camera
+
+A walk-up talk runs *on this scene* (no `scene.start`), the same way a farm talk runs on
+`Farm`: the scene writes `nearbyNpcId` to `farmStore`, `FarmSideUI` opens the shared
+`FarmDialogue`, and the scene reads `talkingToNpcId` back to freeze Rue and move the camera.
+The beats are a fixed `FARM_TALK` slot (`{characterId}{talkSuffix}`, e.g. `hettySide`) via
+`sideSceneDialogue` — deliberately not `farmDialogueFor`, which resolves an encounter ladder
+this scene cannot start yet.
+
+The camera move itself is `sideSceneCamera.ts`. Two things about it are worth knowing before
+changing it:
+
+**It aims, it does not clip.** A frame says "put this world point *here* on the stage, at
+this zoom", and a talk aims the midpoint between the two animals at the middle of
+`TRIAL_STAGE_HOLE` — the band the Dialog and Actions panels leave clear. `Farm` gets the same
+result by clipping its camera viewport to that rect, which it can do because it cuts
+instantly. Clipping cannot be animated: shrinking the viewport moves Phaser's camera origin,
+so the picture slides as the rect closes, and on the way back out the panels unmount before
+the rect has grown again, leaving a band of empty canvas under a live scene.
+
+**Aiming down means looking past the bottom of the layer stack**, which is built to fill the
+stage and no further. `sideSceneLayers` answers that with a flat **ground fill** under the
+front grass, in the colour that art's bottom rows already are. It also overlaps the band by
+a few px: a `TileSprite`'s bottom edge samples across the texture's wrap, which lets a
+one-pixel line of sky through — invisible at zoom 1, a hairline across the stage once a talk
+pushes in.
+
+The move is one linear tween (`TALK_CAMERA_MS`, 1.5s) read through *two* curves — the aim
+leads, the zoom follows. On one clock the pair would spend most of the move hidden behind
+the Dialog panel and then pop into frame at the end, because free roam leaves them near the
+bottom of the stage. `prefers-reduced-motion` cuts straight to the framing instead.
+
+Because the camera can now zoom and tilt, the backdrop bands are `scrollFactor(0, 1)`, not
+`scrollFactor(0)` — their `y` is a world coordinate and has to move with the camera. At
+`scrollY === 0`, which is everything but a talk, that is identical to pinning them.
+
 ## Authoring a new scene
 
 1. Add a file under `src/data/sideScenes/`, following `greenMeadowsRoad.ts`: pick
    `scale`/`firstTop`, reuse `STANDARD_FARM_LAYERS` (or a variant), author `road`,
-   `props`, `fences`, `portals`.
+   `props`, `fences`, `npcs`, `portals`.
 2. Register it in `src/data/sideScenes/index.ts`'s `SideSceneId` union and `SIDE_SCENES`
-   registry.
-3. `validateSideSceneDescriptor` (`sideSceneAssets.ts`) catches the two authoring
+   registry. `FARM_SIDE_SCENE_ID` there is the one `FarmSide` boots into — and the one
+   `animalPacks.ts` fetches art for.
+3. Author each NPC's beats in `src/data/farmTalk.ts` under `{characterId}{talkSuffix}`, and
+   their lines in `src/data/labels.ts`. A slot with no beats falls back to a single
+   `farmDialog<Npc><Suffix>` label, so a new animal is never silent.
+4. `validateSideSceneDescriptor` (`sideSceneAssets.ts`) catches the two authoring
    mistakes that are easy to make by hand: a fence gap outside its own run, and a
    `back`/`front` portal `x` outside the scene width.
-4. New art: drop PNGs into `public/assets/farm-kit/` and run `npm run assets:farm-kit`.
+5. New art: drop PNGs into `public/assets/farm-kit/` and run `npm run assets:farm-kit`.
 
 `SidePortalSpec.to` is authored now but unused until iteration 2 wires up scene-to-scene
 routing.

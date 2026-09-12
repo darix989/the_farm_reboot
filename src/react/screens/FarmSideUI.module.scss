@@ -30,3 +30,52 @@
     border-color: var(--ui-color-accent);
   }
 }
+
+/* Both hints sit over the sky band, well clear of the road: the lateral world draws its
+   characters near the bottom of the stage, where an overworld-style bottom hint would land
+   right on top of them. */
+.moveHint {
+  position: absolute;
+  top: 1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background: var(--ui-color-overlay-backdrop);
+  color: var(--ui-color-text-muted-2);
+  font-size: var(--ui-font-body);
+}
+
+.talkPrompt {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.2rem;
+  border: 2px solid var(--ui-color-accent);
+  border-radius: 999px;
+  background: var(--ui-color-overlay-backdrop);
+  color: var(--ui-color-text-emphasis);
+  font-size: var(--ui-font-subtitle);
+  font-weight: bold;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 0 18px var(--ui-color-accent-glow);
+
+  &:hover {
+    color: var(--ui-color-accent);
+  }
+}
+
+.talkPromptKey {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--ui-color-border-fade);
+  border-radius: 4px;
+  color: var(--ui-color-text-muted-2);
+  font-size: var(--ui-font-caption);
+  font-weight: normal;
+}

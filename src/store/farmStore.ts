@@ -2,13 +2,18 @@ import { create } from 'zustand';
 import type { PendingFollowUp } from '../data/encounterFollowUps';
 
 /**
- * Handoff between the Farm Phaser scene (simulation) and the React overlay (UI).
+ * Handoff between a farm Phaser scene (simulation) and the React overlay (UI) — both the
+ * top-down `Farm` and the lateral `FarmSide` talk through it, since it is the same
+ * conversation on two cameras.
  *
  * The scene writes `nearbyNpcId` as the player walks; React reads it to show the
  * talk prompt. React writes `talkingToNpcId` when the player opens a conversation;
- * the scene reads it to freeze movement and reframe the camera into the game hole.
+ * the scene reads it to freeze movement and frame the pair into the game hole.
  * Mirrors how `gameStore` already bridges the two layers, kept separate so overworld
  * state does not leak into app state.
+ *
+ * `pendingFollowUp` is `Farm`'s alone: only an encounter can queue one, and only the
+ * top-down farm routes to the Trial.
  */
 interface FarmStore {
   /** Animal within interaction range, or null. Written only when it changes. */

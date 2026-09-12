@@ -4,14 +4,16 @@
  *
  * Farm and Trial both load atlases *and* emotion sheets: the overworld does not play
  * emotions, but every farm NPC can be a Trial opponent, and prefetching here is what
- * makes Farm → Trial a cache hit. The gallery loads the whole descriptor list on open.
- * MainMenu loads none.
+ * makes Farm → Trial a cache hit. FarmSide takes atlases only — it plays no emotions and
+ * routes to no Trial, and its talk portraits are React DOM, which fetches its own art. The
+ * gallery loads the whole descriptor list on open. MainMenu loads none.
  *
  * Textures stay in Phaser's game-wide cache once fetched, so a second visit queues
  * nothing and `queueAnimalAssets` returns false.
  */
 import type { Scene } from 'phaser';
 import { FARM_NPCS } from '../../data/farmMap';
+import { FARM_SIDE_SCENE_ID, SIDE_SCENES } from '../../data/sideScenes';
 import { PLAYER_CHARACTER_ID, resolveCharacter, type AnimalSpriteId } from '../../data/characters';
 import { DEBATES, type DebateScenarioKey } from '../../data/levels';
 import { debateParticipantIds } from '../../data/debateCast';
@@ -55,6 +57,18 @@ export function farmAnimalIds(): AnimalSpriteId[] {
   ]);
 }
 
+/**
+ * The lateral farm world: Rue plus whoever the side scene stands on its road. No emotion
+ * sheets — the side scene plays atlas clips only, and its talk portraits are React DOM
+ * (`AnimalFace`), which fetches its own art.
+ */
+export function farmSideAnimalIds(): AnimalSpriteId[] {
+  return uniqueIds([
+    resolveCharacter(PLAYER_CHARACTER_ID).animal,
+    ...SIDE_SCENES[FARM_SIDE_SCENE_ID].npcs.map((npc) => resolveCharacter(npc.characterId).animal),
+  ]);
+}
+
 /** The staged cast of one debate. Legacy speakers with no `animal` contribute nothing. */
 export function trialAnimalIds(debateId: DebateScenarioKey): AnimalSpriteId[] {
   const debate = DEBATES[debateId];
@@ -75,6 +89,8 @@ export function animalPackForScene(
   switch (sceneKey) {
     case 'Farm':
       return { ids: farmAnimalIds(), emotions: true };
+    case 'FarmSide':
+      return { ids: farmSideAnimalIds(), emotions: false };
     case 'Trial':
       return { ids: trialAnimalIds(debateId), emotions: true };
     case 'AnimalGallery':
