@@ -21,6 +21,11 @@ export const STANDARD_FARM_LAYERS: readonly SideSceneLayer[] = [
 /** The near-grass / road seam — where a fence or a ground prop plants its feet. */
 const GROUND_SEAM_Y = 796;
 const GATE_X = 3800;
+/**
+ * Front-grass flowers. Native art is oversized like the crops above; 0.72 is double the
+ * first-pass 0.36 that made a bloom sit next to a fence post.
+ */
+const FLOWER_SCALE = 0.72;
 
 export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
   id: 'greenMeadowsRoad',
@@ -70,15 +75,78 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
 
     // Flowers scattered on the front-grass occluder band. Same over-sized-native-art
     // issue as the crops above, but tuned by eye rather than by a fixed ratio — a
-    // flower is small next to a fence post, not the barn/crop proportion this scale
-    // works out to.
-    { asset: 'flowers/flower-1-yellow', x: 620, y: 1040, band: 'front', scale: 0.36 },
-    { asset: 'flowers/flower-1-red', x: 1550, y: 1055, band: 'front', scale: 0.36 },
-    { asset: 'flowers/flower-1-blue', x: 2450, y: 1035, band: 'front', scale: 0.36 },
-    { asset: 'flowers/flower-side-1-orange', x: 3700, y: 1050, band: 'front', scale: 0.36 },
-    { asset: 'flowers/flower-1-white', x: 4900, y: 1040, band: 'front', scale: 0.36 },
-    { asset: 'flowers/flower-side-1-purple', x: 5950, y: 1055, band: 'front', scale: 0.36 },
-    { asset: 'flowers/flower-1-pink', x: 7100, y: 1035, band: 'front', scale: 0.36 },
+    // bloom should read as a foreground plant, not the barn/crop proportion this
+    // scene scale works out to.
+    { asset: 'flowers/flower-side-1-white', x: 380, y: 1052, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-1-yellow', x: 620, y: 1040, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-1-pink', x: 780, y: 1058, band: 'front', scale: FLOWER_SCALE },
+    {
+      asset: 'flowers/flower-side-1-yellow',
+      x: 1100,
+      y: 1038,
+      band: 'front',
+      scale: FLOWER_SCALE,
+      flipX: true,
+    },
+    { asset: 'flowers/flower-1-orange', x: 1280, y: 1050, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-1-red', x: 1550, y: 1055, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-side-1-red', x: 1720, y: 1042, band: 'front', scale: FLOWER_SCALE },
+    {
+      asset: 'flowers/flower-1-white',
+      x: 1980,
+      y: 1036,
+      band: 'front',
+      scale: FLOWER_SCALE,
+      flipX: true,
+    },
+    { asset: 'flowers/flower-side-1-blue', x: 2220, y: 1050, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-1-blue', x: 2450, y: 1035, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-1-pink', x: 2680, y: 1054, band: 'front', scale: FLOWER_SCALE },
+    {
+      asset: 'flowers/flower-side-1-white',
+      x: 2980,
+      y: 1044,
+      band: 'front',
+      scale: FLOWER_SCALE,
+      flipX: true,
+    },
+    { asset: 'flowers/flower-1-yellow', x: 3280, y: 1058, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-side-1-orange', x: 3700, y: 1050, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-1-red', x: 3920, y: 1038, band: 'front', scale: FLOWER_SCALE },
+    {
+      asset: 'flowers/flower-1-orange',
+      x: 4180,
+      y: 1056,
+      band: 'front',
+      scale: FLOWER_SCALE,
+      flipX: true,
+    },
+    { asset: 'flowers/flower-side-1-yellow', x: 4480, y: 1042, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-1-blue', x: 4720, y: 1034, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-1-white', x: 4900, y: 1040, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-side-1-red', x: 5160, y: 1052, band: 'front', scale: FLOWER_SCALE },
+    {
+      asset: 'flowers/flower-1-pink',
+      x: 5420,
+      y: 1036,
+      band: 'front',
+      scale: FLOWER_SCALE,
+      flipX: true,
+    },
+    { asset: 'flowers/flower-1-orange', x: 5680, y: 1050, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-side-1-purple', x: 5950, y: 1055, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-1-red', x: 6220, y: 1040, band: 'front', scale: FLOWER_SCALE },
+    {
+      asset: 'flowers/flower-side-1-blue',
+      x: 6480,
+      y: 1048,
+      band: 'front',
+      scale: FLOWER_SCALE,
+      flipX: true,
+    },
+    { asset: 'flowers/flower-1-yellow', x: 6780, y: 1038, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-1-pink', x: 7100, y: 1035, band: 'front', scale: FLOWER_SCALE },
+    { asset: 'flowers/flower-side-1-white', x: 7380, y: 1054, band: 'front', scale: FLOWER_SCALE },
   ],
 
   fences: [
