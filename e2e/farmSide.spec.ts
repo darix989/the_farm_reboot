@@ -1,28 +1,32 @@
 import {
   attachScreenshot,
-  ENTER_FARM_SIDE_PREVIEW,
+  ENTER_THE_FARM,
   FARM_SIDE_BACK_TO_MENU,
   FARM_SIDE_PORTAL_BACK_TO_ROAD,
+  FARM_SIDE_PORTAL_BARN,
   FARM_SIDE_PORTAL_GATE,
   TALK_TO_BRAM,
-  TALK_TO_HETTY,
+  TALK_TO_CASS,
+  seedLevel1Started,
   test,
   waitForMainMenu,
 } from './helpers';
 
-test.describe('lateral farm scene (preview)', () => {
+test.describe('lateral farm scene', () => {
   test('boots the scene and shows the back button', async ({ page }) => {
+    await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
-    await page.getByRole('button', { name: ENTER_FARM_SIDE_PREVIEW }).click();
+    await page.getByRole('button', { name: ENTER_THE_FARM }).click();
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
     await attachScreenshot(page, 'farm-side-scene');
   });
 
   test('walking right scrolls the road without leaving the main menu behind', async ({ page }) => {
+    await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
-    await page.getByRole('button', { name: ENTER_FARM_SIDE_PREVIEW }).click();
+    await page.getByRole('button', { name: ENTER_THE_FARM }).click();
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
 
     for (let i = 0; i < 20; i += 1) {
@@ -43,14 +47,16 @@ test.describe('lateral farm scene (preview)', () => {
     // contending for the GPU. Comfortably above Playwright's own factory default of 30s.
     test.setTimeout(150_000);
 
+    await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
-    await page.getByRole('button', { name: ENTER_FARM_SIDE_PREVIEW }).click();
+    await page.getByRole('button', { name: ENTER_THE_FARM }).click();
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
 
-    // Walk right until the gate's own portal prompt wins focus over Hetty (the
-    // Hetty-vs-gate regression `sideSceneInteractions.test.ts` covers at the unit level).
+    // Walk right: barn door first (Dot is nearby but the portal wins on radius fraction),
+    // then the picket gate (Cass stands where Hetty used to, same focus contest).
     await page.keyboard.down('ArrowRight');
+    await page.getByRole('button', { name: FARM_SIDE_PORTAL_BARN }).waitFor({ timeout: 45_000 });
     await page.getByRole('button', { name: FARM_SIDE_PORTAL_GATE }).waitFor({ timeout: 45_000 });
     await page.keyboard.up('ArrowRight');
 
@@ -81,10 +87,10 @@ test.describe('lateral farm scene (preview)', () => {
     await page.keyboard.press('Space');
     await page.waitForTimeout(300);
 
-    // Hetty stands close enough to the main road's gate that she's the only candidate
+    // Cass stands close enough to the main road's gate that she's the only candidate
     // once the just-arrived portal disarms itself — confirms the main road is back,
     // not merely some `FarmSide` instance.
-    await page.getByRole('button', { name: TALK_TO_HETTY }).waitFor({ timeout: 15_000 });
+    await page.getByRole('button', { name: TALK_TO_CASS }).waitFor({ timeout: 15_000 });
     await attachScreenshot(page, 'farm-side-back-on-road');
 
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).click();

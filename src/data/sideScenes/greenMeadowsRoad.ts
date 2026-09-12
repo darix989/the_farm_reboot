@@ -173,12 +173,12 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
     },
   ],
 
-  // Hetty waits a little west of the barn gate, far enough off it that the gate art still
+  // Cass waits a little west of the picket gate, far enough off it that the gate art still
   // reads as a gate and the walk-up talk does not frame her against a post. Dot stands on
-  // the road itself, left of the barn door and clear of the silo.
+  // the road itself, left of the barn door and clear of the silo. Hetty lives in the barn.
   npcs: [
-    { characterId: 'hetty', x: GATE_X - 340, y: 952, facing: 'left', talkSuffix: 'Side' },
-    { characterId: 'dot', x: 1080, y: 952, facing: 'right', talkSuffix: 'Side' },
+    { characterId: 'cass', x: GATE_X - 340, y: 952, facing: 'left' },
+    { characterId: 'dot', x: 1080, y: 952, facing: 'right' },
   ],
 
   portals: [

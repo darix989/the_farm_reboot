@@ -3,10 +3,11 @@
 How the `FarmSide` scene assembly kit works, and how to author scene #5 and beyond.
 
 Four scenes so far — `greenMeadowsRoad` (the main road), `hettysBarn`, `gateLane` and
-`eastOrchard` — with the real cast on them: Rue walks each road, the scene's authored
-NPCs stand on it, walking up to one opens the overworld's own talk chrome, and walking
-up to a portal fades to black and lands you on the neighbouring scene. No Trial routing
-yet. `Farm.ts`, the top-down overworld, is untouched and stays the live scene.
+`eastOrchard` — with the real Level 1 cast on them: Rue walks each road, the scene's
+authored NPCs stand on it, walking up to one opens the overworld talk chrome and can
+start a Trial, and walking up to a portal fades to black and lands you on the neighbouring
+scene. **Enter the Farm** boots `FarmSide`. `Farm.ts`, the top-down overworld, remains as
+a secondary menu path.
 
 Iteration 1's debug walker is gone — the traversal contract it proved (a scene carries a
 character from one entrance to one or more exits, walking on the road only) is carried by
@@ -113,11 +114,14 @@ behind the walker without a special case.
 ## The cast: who stands on the road
 
 `SideSceneDescriptor.npcs` names characters, never sprites — `{ characterId, x, y?,
-facing?, talkSuffix }`, resolved through `src/data/characters.ts` exactly the way
+facing? }`, resolved through `src/data/characters.ts` exactly the way
 `FARM_NPCS` is in the top-down farm. `animalPacks.ts` reads the same list to work out which
 atlases `FarmSide` has to fetch (`sideSceneAnimalIds(descriptor)`), so adding an animal to
 a scene is one edit, not two. Rue is not in the list: the player is spawned by the scene, at
 whichever portal `resolveEntrySpawn` resolves (see "Travelling between scenes" below).
+
+Level 1's homes: Dot and Cass on `greenMeadowsRoad` (Cass west of the picket gate), Hetty
+only in `hettysBarn`, Bram in `gateLane`, Duchess and Tobias in `eastOrchard`.
 
 `sideSceneActors.ts` owns everything about standing on a road — scale, depth, facing, and
 Rue's movement — including **`SIDE_SCALE`**, one flat multiplier on
@@ -134,10 +138,9 @@ Nothing on the road is solid: not the props, not the animals. It is a lane, not 
 
 A walk-up talk runs *on this scene* (no `scene.start`), the same way a farm talk runs on
 `Farm`: the scene writes `nearbyNpcId` to `farmStore`, `FarmSideUI` opens the shared
-`FarmDialogue`, and the scene reads `talkingToNpcId` back to freeze Rue and move the camera.
-The beats are a fixed `FARM_TALK` slot (`{characterId}{talkSuffix}`, e.g. `hettySide`) via
-`sideSceneDialogue` — deliberately not `farmDialogueFor`, which resolves an encounter ladder
-this scene cannot start yet.
+`FarmDialogue` through `farmDialogueFor` — the same encounter ladder, follow-ups and
+Field Notes spine as the top-down farm. Talk can start a Trial; Leave returns to
+`FarmSide` and restores Rue's last pose on that road (`gameStore.sideSceneResume`).
 
 The camera move itself is `sideSceneCamera.ts`. Two things about it are worth knowing before
 changing it:
@@ -182,13 +185,13 @@ Because the camera can now zoom and tilt, the backdrop bands are `scrollFactor(0
    — the store field `FarmSide.init()` actually reads a scene's descriptor from (see
    "Travelling between scenes" below) — and it is also the one `animalPacks.ts` and
    `sceneAssets.ts` fall back to for a scene that hasn't set the store field explicitly
-   (a fresh boot, or the menu's preview button, which sets it before switching scenes).
-3. Author each NPC's beats in `src/data/farmTalk.ts` under `{characterId}{talkSuffix}`, and
-   their lines in `src/data/labels.ts`. A slot with no beats falls back to a single
-   `farmDialog<Npc><Suffix>` label, so a new animal is never silent. A portal's own prompt
-   label (`SidePortalLink.label`) is a plain `Labels` key too — author one per *direction of
-   travel*, since a symmetric pair of portals reads differently depending which side of it
-   you're standing on ("Enter the barn" one way, "Back to the road" the other).
+   (a fresh boot, or Reset Progress).
+3. Place the character in `npcs`. Their talks, encounters and follow-ups come from the
+   same `farmTalk.ts` / `farmMap.ts` ladder the top-down farm uses — do not author a
+   separate `*Side` slot. A portal's own prompt label (`SidePortalLink.label`) is a plain
+   `Labels` key too — author one per *direction of travel*, since a symmetric pair of
+   portals reads differently depending which side of it you're standing on ("Enter the barn"
+   one way, "Back to the road" the other).
 4. `validateSideSceneDescriptor(descriptor, SIDE_SCENES)` (`sideSceneAssets.ts`) catches
    every authoring mistake that's easy to make by hand: a fence gap outside its own run; a
    `back`/`front` portal `x` outside the scene width; a duplicate portal id within one
@@ -233,11 +236,11 @@ activeSideSceneId` (initial value `DEFAULT_SIDE_SCENE_ID`) is read by `FarmSide.
 `this.descriptor = SIDE_SCENES[useGameStore.getState().activeSideSceneId]` — and by
 `animalPacks.ts` / `sceneAssets.ts`, which need to know which descriptor's cast and kit
 assets to fetch with no Phaser scene in hand yet (the loading-overlay gate runs *before*
-the destination scene exists). Every caller that starts or restarts `FarmSide` sets this
-field first: `MainMenuUI`'s preview button calls `setActiveSideScene(DEFAULT_SIDE_SCENE_ID)`
-before `switchScene('FarmSide')` (otherwise the preview would drop the player wherever
-they last left the lateral world), and `beginSideSceneTravel` calls it before restarting
-onto the target. `scene.scene.start('FarmSide', { sceneId, entryPortalId })` also carries
+the destination scene exists). Enter the Farm starts `FarmSide` without forcing
+`DEFAULT_SIDE_SCENE_ID`, so a later visit resumes the last pocket (`sideSceneResume`).
+`beginSideSceneTravel` sets `activeSideSceneId` before restarting onto the target.
+Reset Progress clears the resume pose and returns the store field to the default road.
+`scene.scene.start('FarmSide', { sceneId, entryPortalId })` also carries
 `sceneId` in the start data, but `init()` doesn't read it back out — the store is the one
 source of truth, and every caller keeps it in sync before starting the scene.
 
@@ -275,7 +278,7 @@ temporal and covers *any* interact (an NPC included), not just the entry portal.
 **Portal focus vs. NPC focus.** `sideSceneInteractions.ts`'s `resolveFocus` scores every
 candidate as `distance / itsOwnRadius`, not raw distance — ties go to the NPC. A flat
 "nearest NPC always wins" rule makes some portals unenterable outright: on
-`greenMeadowsRoad`, Hetty's 400px talk radius reaches every point within 400px of the gate
+`greenMeadowsRoad`, Cass's 400px talk radius reaches every point within 400px of the gate
 portal 340px away, so at the gate itself a raw-distance contest would always pick her over
 a 220px-radius portal standing right there. Scoring by radius fraction instead lets the
 tight, close-in portal win exactly where a player standing at it would expect it to. See

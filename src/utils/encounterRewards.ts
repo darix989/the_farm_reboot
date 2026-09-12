@@ -58,7 +58,7 @@ export function shouldQueueFollowUp(
   scenario: DebateScenarioJson,
   returnSceneKey: string,
 ): boolean {
-  if (returnSceneKey !== 'Farm') return false;
+  if (returnSceneKey !== 'Farm' && returnSceneKey !== 'FarmSide') return false;
   if (!encounterFollowUpFor(scenarioKey)) return false;
   const alreadyDone = useProgressStore.getState().completedScenarios.includes(scenarioKey);
   const flags = scenario.setsDialogFlags ?? [];

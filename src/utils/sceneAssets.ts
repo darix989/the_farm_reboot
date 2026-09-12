@@ -28,7 +28,7 @@ export function sideSceneNeedsLoad(
   textures: Scene['textures'],
   descriptor: SideSceneDescriptor,
 ): boolean {
-  if (animalAssetsMissing(textures, sideSceneAnimalIds(descriptor), { emotions: false })) {
+  if (animalAssetsMissing(textures, sideSceneAnimalIds(descriptor), { emotions: true })) {
     return true;
   }
   return sideSceneAssetsMissing(textures, descriptor);

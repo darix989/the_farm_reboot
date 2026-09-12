@@ -4,8 +4,8 @@
  * authors. Built strictly from asset ids `greenMeadowsRoad` already uses, so visiting it
  * is always a warm hop (see `docs/farm_side_scenes.md`).
  *
- * Hetty gets a placeholder here on top of her spot on the main road (same `hettySide`
- * talk slot) — see the note in `greenMeadowsRoad.ts`.
+ * Hetty lives here — Level 1's gossip stand, reached through the barn door on the main
+ * road. Cass took her old spot west of the picket gate.
  */
 import type { SideSceneDescriptor } from '../../types/sideScene';
 import { STANDARD_FARM_LAYERS } from './greenMeadowsRoad';
@@ -42,9 +42,7 @@ export const HETTYS_BARN: SideSceneDescriptor = {
 
   fences: [],
 
-  // Same character, same slot as her spot on the main road — a placeholder, per the plan's
-  // own note: delete her from `greenMeadowsRoad.npcs` instead if she should live here only.
-  npcs: [{ characterId: 'hetty', x: 2150, y: 952, facing: 'left', talkSuffix: 'Side' }],
+  npcs: [{ characterId: 'hetty', x: 2150, y: 952, facing: 'left' }],
 
   portals: [
     {

@@ -12,8 +12,8 @@ export type { SideSceneId } from '../../types/sideScene';
 
 /**
  * The scene `FarmSide` boots into absent a stored `activeSideSceneId` (a fresh boot, or
- * a menu re-entry — see `MainMenuUI.tsx`). Named here rather than inside the scene so
- * `animalPacks.ts` can work out which characters to fetch without importing a Phaser scene.
+ * Reset Progress). Named here rather than inside the scene so `animalPacks.ts` can work
+ * out which characters to fetch without importing a Phaser scene.
  */
 export const DEFAULT_SIDE_SCENE_ID: SideSceneId = 'greenMeadowsRoad';
 

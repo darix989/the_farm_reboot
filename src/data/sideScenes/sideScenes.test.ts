@@ -47,4 +47,19 @@ describe('SIDE_SCENES', () => {
 
     expect(totalBytes).toBeLessThanOrEqual(BUDGET_BYTES);
   });
+
+  it('places each Level 1 character once: Hetty in the barn, Cass on the road by the gate', () => {
+    const byId: Record<string, string[]> = {};
+    Object.values(SIDE_SCENES).forEach((descriptor) => {
+      descriptor.npcs.forEach((npc) => {
+        (byId[npc.characterId] ??= []).push(descriptor.id);
+      });
+    });
+    expect(byId.hetty).toEqual(['hettysBarn']);
+    expect(byId.cass).toEqual(['greenMeadowsRoad']);
+    expect(byId.dot).toEqual(['greenMeadowsRoad']);
+    expect(byId.bram).toEqual(['gateLane']);
+    expect(byId.duchess).toEqual(['eastOrchard']);
+    expect(byId.tobias).toEqual(['eastOrchard']);
+  });
 });

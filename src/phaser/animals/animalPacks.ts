@@ -4,9 +4,8 @@
  *
  * Farm and Trial both load atlases *and* emotion sheets: the overworld does not play
  * emotions, but every farm NPC can be a Trial opponent, and prefetching here is what
- * makes Farm → Trial a cache hit. FarmSide takes atlases only — it plays no emotions and
- * routes to no Trial, and its talk portraits are React DOM, which fetches its own art. The
- * gallery loads the whole descriptor list on open. MainMenu loads none.
+ * makes Farm → Trial and FarmSide → Trial a cache hit. The gallery loads the whole
+ * descriptor list on open. MainMenu loads none.
  *
  * Textures stay in Phaser's game-wide cache once fetched, so a second visit queues
  * nothing and `queueAnimalAssets` returns false.
@@ -59,9 +58,7 @@ export function farmAnimalIds(): AnimalSpriteId[] {
 }
 
 /**
- * A lateral farm world: Rue plus whoever `descriptor` stands on its road. No emotion
- * sheets — a side scene plays atlas clips only, and its talk portraits are React DOM
- * (`AnimalFace`), which fetches its own art.
+ * A lateral farm world: Rue plus whoever `descriptor` stands on its road.
  */
 export function sideSceneAnimalIds(descriptor: SideSceneDescriptor): AnimalSpriteId[] {
   return uniqueIds([
@@ -92,7 +89,7 @@ export function animalPackForScene(
     case 'Farm':
       return { ids: farmAnimalIds(), emotions: true };
     case 'FarmSide':
-      return { ids: sideSceneAnimalIds(SIDE_SCENES[activeSideSceneId]), emotions: false };
+      return { ids: sideSceneAnimalIds(SIDE_SCENES[activeSideSceneId]), emotions: true };
     case 'Trial':
       return { ids: trialAnimalIds(debateId), emotions: true };
     case 'AnimalGallery':

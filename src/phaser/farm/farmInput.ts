@@ -8,6 +8,8 @@ export interface FarmKeys {
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   wasd: Record<'up' | 'down' | 'left' | 'right', Phaser.Input.Keyboard.Key>;
   interact: Phaser.Input.Keyboard.Key[];
+  /** Left and right Shift — Phaser maps both physical keys onto `SHIFT`. */
+  run: Phaser.Input.Keyboard.Key[];
 }
 
 export function createFarmKeys(scene: Phaser.Scene): FarmKeys | null {
@@ -24,6 +26,7 @@ export function createFarmKeys(scene: Phaser.Scene): FarmKeys | null {
     },
     // Space and E both talk; Enter too, since it is the obvious key to try.
     interact: [kb.addKey(K.SPACE), kb.addKey(K.E), kb.addKey(K.ENTER)],
+    run: [kb.addKey(K.SHIFT)],
   };
 }
 
@@ -53,4 +56,9 @@ export function movementVector(
   // Keyboard gives (±1, ±1) on a diagonal — length 1.41 — so clamp. The joystick
   // is already <= 1 and must keep its analogue magnitude, hence `limit` not `normalize`.
   return out.limit(1);
+}
+
+/** True while Shift is held. FarmSide uses this to raise walk speed without a run clip. */
+export function isRunHeld(keys: FarmKeys | null): boolean {
+  return !!keys?.run.some((key) => key.isDown);
 }

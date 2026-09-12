@@ -12,8 +12,8 @@ import type { PendingFollowUp } from '../data/encounterFollowUps';
  * Mirrors how `gameStore` already bridges the two layers, kept separate so overworld
  * state does not leak into app state.
  *
- * `pendingFollowUp` is `Farm`'s alone: only an encounter can queue one, and only the
- * top-down farm routes to the Trial.
+ * `pendingFollowUp` is queued on Trial Leave when returning to either overworld
+ * (`Farm` or `FarmSide`) and consumed once that overlay is up.
  */
 interface FarmStore {
   /** Animal within interaction range, or null. Written only when it changes. */

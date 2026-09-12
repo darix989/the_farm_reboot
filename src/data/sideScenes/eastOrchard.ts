@@ -32,8 +32,8 @@ export const EAST_ORCHARD: SideSceneDescriptor = {
   // 1200px apart — comfortably clear of the 400px talk radius either one offers, so
   // `resolveFocus` never has to break a tie between them.
   npcs: [
-    { characterId: 'duchess', x: 900, y: 952, facing: 'right', talkSuffix: 'Side' },
-    { characterId: 'tobias', x: 2100, y: 952, facing: 'left', talkSuffix: 'Side' },
+    { characterId: 'duchess', x: 900, y: 952, facing: 'right' },
+    { characterId: 'tobias', x: 2100, y: 952, facing: 'left' },
   ],
 
   portals: [

@@ -1,5 +1,5 @@
 /* =========================================================================
-   FarmSide UI (iteration 1 — scene assembly kit preview, no gameplay yet)
+   FarmSide UI
 
    Everything here sits inside `.react-ui-overlay`, which is `pointer-events:
    none` so clicks fall through to the Phaser canvas. Each interactive element
@@ -12,8 +12,17 @@
   pointer-events: none;
 }
 
+.tutorialInputGate {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: auto;
+  touch-action: none;
+}
+
 .backButton {
   position: absolute;
+  z-index: 1;
   top: 1rem;
   left: 1rem;
   pointer-events: auto;
@@ -47,8 +56,87 @@
   font-size: var(--ui-font-body);
 }
 
+.codexButton {
+  position: absolute;
+  z-index: 1;
+  top: 1rem;
+  right: 1rem;
+  box-sizing: border-box;
+  padding: 0.55rem 1.15rem;
+  border: 2px solid var(--ui-color-border-ring);
+  border-radius: 0.5rem;
+  background: var(--ui-color-overlay-card);
+  color: var(--ui-color-text-body);
+  font-size: var(--ui-font-subtitle);
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: inset 0 1px 0 var(--ui-color-border-inset);
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--ui-color-info-text);
+    border-color: var(--ui-color-info-border-active);
+  }
+}
+
+.codexButtonHasCue {
+  color: var(--ui-color-accent);
+  border-color: var(--ui-color-accent);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -0.2rem;
+    right: -0.2rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--ui-color-accent);
+    box-shadow: 0 0 8px var(--ui-color-accent-glow);
+  }
+}
+
+.codexButtonBurst {
+  animation: farm-codex-button-burst 1.1s ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codexButtonBurst {
+    animation: farm-codex-button-burst-static 1.1s ease-in-out;
+  }
+}
+
+@keyframes farm-codex-button-burst {
+  0%,
+  100% {
+    box-shadow: inset 0 1px 0 var(--ui-color-border-inset);
+  }
+
+  40% {
+    border-color: var(--ui-color-accent);
+    box-shadow:
+      inset 0 1px 0 var(--ui-color-border-inset),
+      0 0 0 3px var(--ui-color-accent-glow),
+      0 0 16px -2px var(--ui-color-accent);
+  }
+}
+
+@keyframes farm-codex-button-burst-static {
+  0%,
+  100% {
+    border-color: var(--ui-color-accent);
+  }
+
+  40% {
+    border-color: var(--ui-color-info);
+  }
+}
+
 .talkPrompt {
   position: absolute;
+  z-index: 1;
   top: 18%;
   left: 50%;
   transform: translateX(-50%);
@@ -85,6 +173,7 @@
    both stores are mid-update. */
 .portalPrompt {
   position: absolute;
+  z-index: 1;
   top: 26%;
   left: 50%;
   transform: translateX(-50%);

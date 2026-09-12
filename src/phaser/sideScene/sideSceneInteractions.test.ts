@@ -26,23 +26,23 @@ describe('resolveFocus', () => {
   });
 
   /**
-   * The regression `greenMeadowsRoad` is actually shaped around: Hetty stands at
+   * The regression `greenMeadowsRoad` is actually shaped around: Cass stands at
    * `GATE_X - 340 = 3460` with a 400px talk radius, which reaches every point within
    * 400px of the gate at `GATE_X = 3800` (the gap between them is only 340px). A flat
    * "nearest NPC wins" rule would make the gate unenterable — standing right on top of
-   * it, still 330px from Hetty (within her radius), the gate would lose to her on raw
-   * distance alone. Scoring by radius fraction instead: at x=3790, Hetty is 330px away
+   * it, still 330px from Cass (within her radius), the gate would lose to her on raw
+   * distance alone. Scoring by radius fraction instead: at x=3790, Cass is 330px away
    * (score 0.825) and the gate is 10px away with its own 220px radius (score 0.045) — the
    * gate wins by a wide margin.
    */
-  it('lets a tight-radius portal beat a wide-radius NPC standing right on top of it (Hetty vs. the gate)', () => {
+  it('lets a tight-radius portal beat a wide-radius NPC standing right on top of it (Cass vs. the gate)', () => {
     const GATE_X = 3800;
-    const HETTY_X = GATE_X - 340;
+    const CASS_X = GATE_X - 340;
     const player = { x: 3790, y: 952 };
 
     const focus = resolveFocus(
       player,
-      [{ id: 'hetty', x: HETTY_X, y: 952 }],
+      [{ id: 'cass', x: CASS_X, y: 952 }],
       [{ id: 'gate', x: GATE_X, y: 918 }],
       RADII,
     );
@@ -53,7 +53,7 @@ describe('resolveFocus', () => {
   it('portals with no `to` are simply never passed in, so they are never candidates', () => {
     // The caller is responsible for filtering — resolveFocus takes whatever list it's
     // handed. Passing none in for portals proves an empty list never wins over an NPC.
-    const focus = resolveFocus({ x: 3790, y: 952 }, [{ id: 'hetty', x: 3460, y: 952 }], [], RADII);
-    expect(focus).toEqual({ kind: 'npc', id: 'hetty' });
+    const focus = resolveFocus({ x: 3790, y: 952 }, [{ id: 'cass', x: 3460, y: 952 }], [], RADII);
+    expect(focus).toEqual({ kind: 'npc', id: 'cass' });
   });
 });

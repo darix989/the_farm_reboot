@@ -1,24 +1,33 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import cn from 'classnames';
 import { GameManager } from '../../utils/gameManager';
 import type { FarmSide } from '../../phaser/scenes/FarmSide';
 import getLabel from '../../data/labels';
 import { resolveCharacter } from '../../data/characters';
+import { FARM_INTRO_NPC_ID } from '../../data/farmMap';
 import { SIDE_SCENES } from '../../data/sideScenes';
 import { useGameStore } from '../../store/gameStore';
 import { useFarmStore } from '../../store/farmStore';
-import { sideSceneDialogue } from '../farm/farmDialogueState';
+import { useCodexUiStore } from '../../store/codexUiStore';
+import { useTutorialStore } from '../../store/tutorialStore';
 import FarmDialogue from '../farm/FarmDialogue';
+import { useFarmOverworldTalk } from '../hooks/useFarmOverworldTalk';
+import { useCodexNotices } from '../codex/useCodexNotices';
+import {
+  canRunTutorialTargetAction,
+  canRunTutorialUntargetedAction,
+  notifyTutorialTargetAction,
+} from '../tutorial/tutorialInteractionGuard';
+import type { TutorialTargetRef } from '../../types/debateEntities';
 import styles from './FarmSideUI.module.scss';
 
 /**
- * Overlay for the `FarmSide` scene: the way back to the menu, the walk-up talk prompt, the
- * portal travel prompt, and the talk itself.
+ * Overlay for the `FarmSide` scene: the way back to the menu, Field Notes, the walk-up
+ * talk prompt, the portal travel prompt, and the talk itself.
  *
  * Same handoff as the top-down overworld — the scene writes `nearbyNpcId` / reads
  * `talkingToNpcId` through `farmStore`, and the conversation is the shared `FarmDialogue`
- * chrome — so a side-scene talk looks and reads exactly like a farm talk. The beats come
- * from the scene descriptor's own `talkSuffix` rather than the encounter ladder; see
- * `sideSceneDialogue`.
+ * chrome walking the encounter ladder via `useFarmOverworldTalk`.
  *
  * `descriptor` is read from `gameStore.activeSideSceneId`, not a fixed constant — this
  * component never unmounts across a warm scene-to-scene hop (`FarmSide` restarts in
@@ -32,36 +41,54 @@ import styles from './FarmSideUI.module.scss';
  * `.react-ui-overlay` is `pointer-events: none`, so every control here re-enables them for
  * itself (see `docs/architecture.md`).
  */
+const CODEX_OPEN_TARGET: TutorialTargetRef = { kind: 'codex_open' };
+
 const FarmSideUI: React.FC = () => {
   const activeSideSceneId = useGameStore((s) => s.activeSideSceneId);
-  const nearbyNpcId = useFarmStore((s) => s.nearbyNpcId);
   const nearbyPortalId = useFarmStore((s) => s.nearbyPortalId);
-  const talkingToNpcId = useFarmStore((s) => s.talkingToNpcId);
   const isTraveling = useFarmStore((s) => s.isTraveling);
-  const openDialogue = useFarmStore((s) => s.openDialogue);
+  const openCodex = useCodexUiStore((s) => s.openCodex);
+  const tutorialOpen = useTutorialStore((s) => s.isOpen);
+  const { hasUnread, unreadIds, firstUnreadSection } = useCodexNotices();
+  const animatedNoticeIds = useCodexUiStore((s) => s.animatedNoticeIds);
+  const markNoticesAnimated = useCodexUiStore((s) => s.markNoticesAnimated);
+  const [codexBursting, setCodexBursting] = useState(false);
 
   const descriptor = useMemo(() => SIDE_SCENES[activeSideSceneId], [activeSideSceneId]);
+  const introNpcPresent = descriptor.npcs.some((npc) => npc.characterId === FARM_INTRO_NPC_ID);
 
-  const dialogue = useMemo(() => {
-    if (!talkingToNpcId) return null;
-    const spec = descriptor.npcs.find((npc) => npc.characterId === talkingToNpcId);
-    return spec ? sideSceneDialogue(spec.characterId, spec.talkSuffix) : null;
-  }, [descriptor, talkingToNpcId]);
+  const {
+    nearbyNpcId,
+    pendingFollowUp,
+    dialogue,
+    openDialogue,
+    closeFarmDialogue,
+    startEncounter,
+  } = useFarmOverworldTalk({ returnSceneKey: 'FarmSide', introNpcPresent });
 
   const nearbyPortal = useMemo(() => {
     if (!nearbyPortalId) return null;
     return descriptor.portals.find((portal) => portal.id === nearbyPortalId) ?? null;
   }, [descriptor, nearbyPortalId]);
 
-  const closeDialogue = useCallback(() => useFarmStore.getState().closeDialogue(), []);
-  /** A side-scene talk has no encounter behind it, so the Talk button that would call
-   *  this is never mounted — `FarmDialogue` still wants the prop. */
-  const startEncounter = useCallback(() => {}, []);
+  const hudCodexVisible = !dialogue;
+  useEffect(() => {
+    if (!hudCodexVisible) {
+      setCodexBursting(false);
+      return;
+    }
+    const pending = unreadIds.filter((id) => !animatedNoticeIds.includes(id));
+    if (pending.length === 0) return;
+    markNoticesAnimated(pending);
+    setCodexBursting(true);
+  }, [hudCodexVisible, unreadIds, animatedNoticeIds, markNoticesAnimated]);
 
   if (isTraveling) return <div className={styles.farmSideUi} />;
 
   return (
     <div className={styles.farmSideUi}>
+      {tutorialOpen && <div className={styles.tutorialInputGate} aria-hidden="true" />}
+
       {!dialogue && (
         <>
           <button
@@ -73,14 +100,39 @@ const FarmSideUI: React.FC = () => {
           </button>
 
           <p className={styles.moveHint}>{getLabel('farmSideMoveHint')}</p>
+
+          <button
+            className={cn(
+              styles.codexButton,
+              hasUnread && styles.codexButtonHasCue,
+              codexBursting && styles.codexButtonBurst,
+            )}
+            type="button"
+            data-tutorial-codex-open
+            aria-label={hasUnread ? getLabel('codexOpenHasNew') : undefined}
+            onAnimationEnd={(event) => {
+              if (event.target !== event.currentTarget) return;
+              setCodexBursting(false);
+            }}
+            onClick={() => {
+              if (!canRunTutorialTargetAction(CODEX_OPEN_TARGET)) return;
+              openCodex(firstUnreadSection ?? undefined);
+              notifyTutorialTargetAction(CODEX_OPEN_TARGET);
+            }}
+          >
+            {getLabel('codexOpen')}
+          </button>
         </>
       )}
 
-      {nearbyNpcId && !dialogue && (
+      {nearbyNpcId && !dialogue && !tutorialOpen && !pendingFollowUp && (
         <button
           type="button"
           className={styles.talkPrompt}
-          onClick={() => openDialogue(nearbyNpcId)}
+          onClick={() => {
+            if (!canRunTutorialUntargetedAction()) return;
+            openDialogue(nearbyNpcId);
+          }}
         >
           {getLabel('farmTalkPrompt', {
             replacements: { name: resolveCharacter(nearbyNpcId).displayName },
@@ -89,11 +141,12 @@ const FarmSideUI: React.FC = () => {
         </button>
       )}
 
-      {nearbyPortal?.to && !dialogue && (
+      {nearbyPortal?.to && !dialogue && !tutorialOpen && !pendingFollowUp && (
         <button
           type="button"
           className={styles.portalPrompt}
           onClick={() => {
+            if (!canRunTutorialUntargetedAction()) return;
             const scene = GameManager.getCurrentScene();
             if (scene?.scene.key === 'FarmSide') {
               (scene as FarmSide).travelThroughPortal(nearbyPortal.id);
@@ -110,7 +163,7 @@ const FarmSideUI: React.FC = () => {
           key={dialogue.slotKey}
           dialogue={dialogue}
           onStart={startEncounter}
-          onClose={closeDialogue}
+          onClose={closeFarmDialogue}
         />
       )}
     </div>

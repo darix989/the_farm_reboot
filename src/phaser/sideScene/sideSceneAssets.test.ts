@@ -24,7 +24,7 @@ const BASE_DESCRIPTOR: SideSceneDescriptor = {
       gaps: [{ x: 500, gate: 'open' }],
     },
   ],
-  npcs: [{ characterId: 'hetty', x: 700, talkSuffix: 'Side' }],
+  npcs: [{ characterId: 'hetty', x: 700 }],
   portals: [
     { id: 'west', side: 'left' },
     {

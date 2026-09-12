@@ -41,7 +41,7 @@ export const GATE_LANE: SideSceneDescriptor = {
 
   // Bram keeps his distance from the gate itself, the way Hetty keeps hers from the barn
   // door on the main road.
-  npcs: [{ characterId: 'bram', x: 1600, y: 952, facing: 'left', talkSuffix: 'Side' }],
+  npcs: [{ characterId: 'bram', x: 1600, y: 952, facing: 'left' }],
 
   portals: [
     {

@@ -13,7 +13,6 @@ import getLabel, { type Labels } from '../../data/labels';
 
 const MainMenuUI: React.FC = () => {
   const setActiveDebate = useGameStore((s) => s.setActiveDebate);
-  const setActiveSideScene = useGameStore((s) => s.setActiveSideScene);
   const setReturnSceneKey = useGameStore((s) => s.setReturnSceneKey);
   const showFarmTalkSkip = useDevSettingsStore((s) => s.showFarmTalkSkip);
   const toggleFarmTalkSkip = useDevSettingsStore((s) => s.toggleFarmTalkSkip);
@@ -28,14 +27,9 @@ const MainMenuUI: React.FC = () => {
     GameManager.switchScene('Trial');
   };
 
-  const enterFarm = () => GameManager.switchScene('Farm');
+  const enterFarm = () => GameManager.switchScene('FarmSide');
 
-  const enterFarmSidePreview = () => {
-    // Before the switch, or the preview drops the player wherever they last left the
-    // lateral world instead of always opening back onto the main road.
-    setActiveSideScene(DEFAULT_SIDE_SCENE_ID);
-    GameManager.switchScene('FarmSide');
-  };
+  const enterTopDownFarm = () => GameManager.switchScene('Farm');
 
   const openAnimationGallery = () => GameManager.switchScene('AnimalGallery');
 
@@ -50,6 +44,8 @@ const MainMenuUI: React.FC = () => {
     useCodexStore.getState().resetCodex();
     useCodexUiStore.getState().resetAnimatedNotices();
     useCodexUiStore.getState().closeCodex();
+    useGameStore.getState().setActiveSideScene(DEFAULT_SIDE_SCENE_ID);
+    useGameStore.getState().setSideSceneResume(null);
     setConfirmingReset(false);
   };
 
@@ -97,8 +93,8 @@ const MainMenuUI: React.FC = () => {
             <button className={styles.menuButton} type="button" onClick={openAnimationGallery}>
               {getLabel('animationGallery')}
             </button>
-            <button className={styles.menuButton} type="button" onClick={enterFarmSidePreview}>
-              {getLabel('enterFarmSidePreview')}
+            <button className={styles.menuButton} type="button" onClick={enterTopDownFarm}>
+              {getLabel('enterTopDownFarm')}
             </button>
           </div>
           <button

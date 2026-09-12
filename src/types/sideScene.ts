@@ -90,12 +90,6 @@ export interface SideSceneNpcSpec {
   y?: number;
   /** Which way they look before anyone walks up to them. Defaults to `'left'`. */
   facing?: 'left' | 'right';
-  /**
-   * `FARM_TALK` suffix for their walk-up chat, so the slot key is
-   * `{characterId}{talkSuffix}` (`hettySide`). Side-scene talks are fixed beats: they do
-   * not walk the encounter ladder `farmDialogueFor` resolves for the top-down farm.
-   */
-  talkSuffix: string;
 }
 
 export type SidePortalSide = 'left' | 'right' | 'back' | 'front';

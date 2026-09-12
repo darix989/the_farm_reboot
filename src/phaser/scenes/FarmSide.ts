@@ -7,7 +7,7 @@ import { queueSideSceneAssets } from '../sideScene/sideSceneAssets';
 import { buildSideSceneLayers, type SideSceneLayers } from '../sideScene/sideSceneLayers';
 import { placeFences, placeProps } from '../sideScene/sideSceneProps';
 import { drawDebugOverlay } from '../sideScene/sideSceneDebug';
-import { resolveEntrySpawn, resolvePortal } from '../sideScene/sideSceneRoad';
+import { clampToRoad, resolveEntrySpawn, resolvePortal } from '../sideScene/sideSceneRoad';
 import {
   PORTAL_INTERACT_RADIUS,
   resolveFocus,
@@ -26,16 +26,15 @@ import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/an
 import { reportSceneLoadProgress } from '../bootProgress';
 import { useFarmStore } from '../../store/farmStore';
 import { useGameStore } from '../../store/gameStore';
+import { useTutorialStore } from '../../store/tutorialStore';
 import { prefersReducedMotion } from '../../utils/reducedMotion';
 
 /**
- * Iteration 3 of the lateral farm world: `greenMeadowsRoad` plus three neighbouring
- * scenes (`hettysBarn`, `gateLane`, `eastOrchard`), all reachable through walk-up portals
- * with a fade-through-black transition. One scene class, restarted onto whichever
- * `SIDE_SCENES` descriptor `activeSideSceneId` names — see `docs/farm_side_scenes.md`'s
- * "Travelling between scenes" section for why every piece of instance state has to live
- * in `init()` rather than a field initializer (Phaser does not reconstruct a scene on
- * restart).
+ * The lateral farm world: one scene class restarted onto whichever `SIDE_SCENES`
+ * descriptor `activeSideSceneId` names. Level 1 lives here — talks walk the same
+ * encounter ladder as the top-down farm, Trial Leave restores Rue's last pose, and
+ * neighbouring scenes are reached through walk-up portals with a fade-through-black
+ * transition. See `docs/farm_side_scenes.md`.
  */
 const DEBUG_SIDE_SCENE = false;
 
@@ -105,6 +104,7 @@ export class FarmSide extends Scene {
   private talkFrame: SideSceneCameraFrame | null = null;
   private talkTween: Phaser.Tweens.Tween | null = null;
   private unsubscribeFarmUi: (() => void) | null = null;
+  private unsubscribeTutorial: (() => void) | null = null;
 
   /** Portal id the player just arrived through, or undefined for a menu/default spawn. */
   private entryPortalId?: string;
@@ -132,7 +132,7 @@ export class FarmSide extends Scene {
   init(data?: { sceneId?: SideSceneId; entryPortalId?: string }): void {
     // `data.sceneId` is not read here on purpose: `activeSideSceneId` is the single
     // source of truth for which descriptor a `create()` loads (see `gameStore.ts`), and
-    // every caller — `MainMenuUI`'s preview button, `beginSideSceneTravel` — sets it
+    // every caller — `MainMenuUI`'s Enter the Farm, `beginSideSceneTravel` — sets it
     // before starting/restarting this scene. `sceneId` is carried in the start data
     // anyway, for whoever inspects `scene.settings.data` expecting it to drive the scene.
     this.descriptor = SIDE_SCENES[useGameStore.getState().activeSideSceneId];
@@ -181,7 +181,7 @@ export class FarmSide extends Scene {
     this.npcs = this.descriptor.npcs.map((spec) => new SideSceneNpc(this, this.descriptor, spec));
 
     this.keys = createFarmKeys(this);
-    const spawn = resolveEntrySpawn(this.descriptor, this.entryPortalId);
+    const spawn = this.resolveSpawn();
     this.player = new SideScenePlayer(this, this.descriptor, spawn, this.keys);
 
     this.interactArmedAt = this.time.now + INTERACT_ARM_DELAY_MS;
@@ -197,6 +197,13 @@ export class FarmSide extends Scene {
       }
     });
 
+    this.unsubscribeTutorial = useTutorialStore.subscribe((state, prevState) => {
+      if (state.isOpen !== prevState.isOpen) {
+        this.applyTutorialInputLock(state.isOpen);
+      }
+    });
+    this.applyTutorialInputLock(useTutorialStore.getState().isOpen);
+
     // No `startFollow` and no camera bounds: the scene drives the camera itself in
     // `update()` so every parallax calculation reads the same locally-computed `scrollX` in
     // the same tick, rather than the one-frame-stale value Phaser's own camera render pass
@@ -211,7 +218,8 @@ export class FarmSide extends Scene {
 
   update(_time: number, delta: number): void {
     const talking = useFarmStore.getState().talkingToNpcId;
-    this.player?.update(delta, !(talking || this.travelling));
+    const tutorialOpen = useTutorialStore.getState().isOpen;
+    this.player?.update(delta, !(talking || this.travelling || tutorialOpen));
     this.updateFocus(talking);
     this.updateCamera();
     this.sceneLayers?.update(this.scrollX);
@@ -257,9 +265,11 @@ export class FarmSide extends Scene {
    *  right after a restart — see `INTERACT_ARM_DELAY_MS`. */
   private tryInteract(): void {
     if (this.travelling || this.time.now < this.interactArmedAt) return;
+    if (useTutorialStore.getState().isOpen) return;
 
-    const { nearbyNpcId, nearbyPortalId, talkingToNpcId, openDialogue } = useFarmStore.getState();
-    if (talkingToNpcId) return;
+    const { nearbyNpcId, nearbyPortalId, talkingToNpcId, pendingFollowUp, openDialogue } =
+      useFarmStore.getState();
+    if (talkingToNpcId || pendingFollowUp) return;
 
     if (nearbyNpcId) {
       openDialogue(nearbyNpcId);
@@ -397,6 +407,33 @@ export class FarmSide extends Scene {
     };
   }
 
+  /**
+   * Portal hops spawn at the arrival door. Trial Leave and a later Enter the Farm restore
+   * the last pose on this scene instead, so a Hetty encounter does not drop Rue at the
+   * west end of the main road.
+   */
+  private resolveSpawn() {
+    if (this.entryPortalId) return resolveEntrySpawn(this.descriptor, this.entryPortalId);
+    const resume = useGameStore.getState().sideSceneResume;
+    if (resume && resume.sceneId === this.descriptor.id) {
+      return {
+        x: Phaser.Math.Clamp(resume.x, 0, this.descriptor.width),
+        y: clampToRoad(resume.y, this.descriptor.road),
+        facing: resume.facing,
+      };
+    }
+    return resolveEntrySpawn(this.descriptor);
+  }
+
+  /**
+   * While a farm overlay tutorial is up, Phaser must not walk, talk, or travel. The React
+   * overlay's root is `pointer-events: none`, so those events would otherwise fall through
+   * to the canvas.
+   */
+  private applyTutorialInputLock(tutorialOpen: boolean): void {
+    this.input.enabled = !tutorialOpen;
+  }
+
   private updateCamera(): void {
     const roam = this.roamFrame();
     const blend = this.talkCamera.blend;
@@ -415,10 +452,20 @@ export class FarmSide extends Scene {
   private teardown(): void {
     this.unsubscribeFarmUi?.();
     this.unsubscribeFarmUi = null;
+    this.unsubscribeTutorial?.();
+    this.unsubscribeTutorial = null;
     this.talkTween?.remove();
     this.talkTween = null;
     this.talkFrame = null;
     this.talkCamera.blend = 0;
+    if (this.player) {
+      useGameStore.getState().setSideSceneResume({
+        sceneId: this.descriptor.id,
+        x: this.player.x,
+        y: this.player.y,
+        facing: this.player.facing,
+      });
+    }
     this.player?.destroy();
     this.player = null;
     this.npcs.forEach((npc) => npc.destroy());

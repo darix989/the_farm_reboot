@@ -14,7 +14,7 @@
  * small, and the fence is the only prop in the scene at a human-readable scale.
  */
 import type { Scene } from 'phaser';
-import { movementVector, type FarmKeys } from '../farm/farmInput';
+import { isRunHeld, movementVector, type FarmKeys } from '../farm/farmInput';
 import { clampToRoad, roadDepthScale, type EntrySpawn } from './sideSceneRoad';
 import { resolveBandDepth } from './sideSceneProps';
 import { PLAYER_CHARACTER_ID, resolveCharacter, type AnimalSpriteId } from '../../data/characters';
@@ -27,6 +27,8 @@ import type { SideSceneDescriptor, SideSceneNpcSpec } from '../../types/sideScen
 const SIDE_SCALE = 1.6;
 
 const PLAYER_SPEED = 260;
+/** Shift-held ground speed. Walk clip rate stays on `dir.length()` — no run animation yet. */
+const RUN_SPEED_MULTIPLIER = 1.75;
 
 const PLACEHOLDER_TEXTURE_KEY = 'farm-side-placeholder-actor';
 const PLACEHOLDER_SIZE = 48;
@@ -55,6 +57,8 @@ export class SideSceneActor {
   readonly sprite: Phaser.GameObjects.Sprite;
   private readonly animal: AnimalSpriteId | null;
   private readonly animator: AnimalAnimator | null = null;
+  /** +1 looking right, -1 looking left. Tracked even when the art has no facing. */
+  private lookDir: 1 | -1 = -1;
 
   constructor(
     scene: Scene,
@@ -92,6 +96,10 @@ export class SideSceneActor {
     return this.sprite.y;
   }
 
+  get facing(): 'left' | 'right' {
+    return this.lookDir > 0 ? 'right' : 'left';
+  }
+
   /**
    * The box this animal actually *draws* into, in world px — what the talk camera fits two
    * of into the game hole.
@@ -123,6 +131,7 @@ export class SideSceneActor {
   }
 
   protected faceDirection(dirX: number): void {
+    this.lookDir = dirX > 0 ? 1 : -1;
     if (!this.animal) return;
     const facesLeft = animalArtFacesLeft(this.animal);
     this.sprite.setFlipX(facesLeft ? dirX > 0 : dirX < 0);
@@ -191,10 +200,11 @@ export class SideScenePlayer extends SideSceneActor {
   update(deltaMs: number, canMove: boolean): void {
     const dir = canMove ? movementVector(this.keys, null, this.moveVector) : this.moveVector.set(0);
     const dt = deltaMs / 1000;
+    const groundSpeed = PLAYER_SPEED * (isRunHeld(this.keys) ? RUN_SPEED_MULTIPLIER : 1);
 
-    const nextY = clampToRoad(this.sprite.y + dir.y * PLAYER_SPEED * dt, this.descriptor.road);
+    const nextY = clampToRoad(this.sprite.y + dir.y * groundSpeed * dt, this.descriptor.road);
     const nextX = Phaser.Math.Clamp(
-      this.sprite.x + dir.x * PLAYER_SPEED * dt,
+      this.sprite.x + dir.x * groundSpeed * dt,
       0,
       this.descriptor.width,
     );
