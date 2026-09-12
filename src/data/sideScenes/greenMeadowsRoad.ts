@@ -85,7 +85,14 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
     {
       y: GROUND_SEAM_Y,
       fromX: 150,
-      toX: 7530,
+      // Deliberately well past the scene's own 7680 world width (the camera can never
+      // scroll far enough to reveal anything past it): every piece's own right edge is
+      // a dangling bare-rail stub with no post to cap it (see `sideSceneFence.ts`), so
+      // the run's *true* last piece always looks unfinished. Running the tiling past
+      // the edge of the world pushes that unfinished stub somewhere the player can
+      // never scroll to, rather than trying to end the run on a "clean" piece that
+      // doesn't actually exist in the art.
+      toX: 8200,
       // The fence art is native-sized to loom over the road at the scene's own scale
       // (per-plan it was expected to reach up into the near-grass band, but in
       // practice that reads as oversized and occludes the backdrop) — scaled down so

@@ -57,16 +57,34 @@ const GATE_ASSET: Record<
   complete: 'fence/gate-complete',
 };
 
-/** Placements for one fence run: whole pieces along `[fromX, toX)`, skipping every gap. */
+/**
+ * Placements for one fence run: whole pieces tiled straight across `[fromX, toX)`,
+ * plus a gate image over every gap that names one.
+ *
+ * A gated gap does **not** carve a hole out of the piece tiling: `gate-complete` etc.
+ * are wider than a piece and fully opaque, and are always the last thing added to the
+ * scene for this run (`placeFences`), so at equal depth they render on top of — and
+ * fully cover — whatever fence tiles straight through underneath. Trying to compute
+ * which pieces would visually collide with a gate and skip exactly those was the
+ * previous approach, and it was a bug farm of its own: the piece grid and the gate's
+ * own centred width rarely lined up, leaving a real gap on one side of the gate and an
+ * oversized hole on the other. Only a **bare hole** (`gate: 'none'` or omitted — no
+ * gate asset to cover the seam) still needs pieces skipped around it.
+ */
 export function buildFenceRun(run: SideFenceRun): FencePlacement[] {
   const scale = run.scale ?? 1;
   const pieceWidth = FARM_KIT_ASSETS[FENCE_PIECE].width * scale;
   const pitch = FENCE_PIECE_TILE_WIDTH_NATIVE_PX * scale;
   const placements: FencePlacement[] = [];
 
+  const holes = run.gaps.filter((gap) => !gap.gate || gap.gate === 'none');
+
   for (let x = run.fromX; x < run.toX; x += pitch) {
-    const gap = run.gaps.find((g) => x < g.x + (g.width ?? pieceWidth) && x + pieceWidth > g.x);
-    if (gap) continue;
+    const inHole = holes.some((hole) => {
+      const width = hole.width ?? pieceWidth;
+      return x < hole.x + width / 2 && x + pieceWidth > hole.x - width / 2;
+    });
+    if (inHole) continue;
     placements.push({ kind: 'piece', asset: FENCE_PIECE, x, y: run.y, scale });
   }
 

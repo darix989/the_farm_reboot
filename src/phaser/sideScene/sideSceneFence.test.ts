@@ -7,7 +7,7 @@ describe('buildFenceRun', () => {
   const pieceWidth = FARM_KIT_ASSETS['fence/repeating-piece'].width;
   const pitch = FENCE_PIECE_TILE_WIDTH_NATIVE_PX;
 
-  it('places a gate at each gap x and leaves no piece overlapping a gap', () => {
+  it('places a gate at each gap x, and tiles pieces straight through underneath it', () => {
     const run: SideFenceRun = {
       y: 796,
       fromX: 0,
@@ -25,13 +25,12 @@ describe('buildFenceRun', () => {
     expect(gates).toHaveLength(2);
     expect(gates.map((g) => g.x)).toEqual([pieceWidth * 3, pieceWidth * 7]);
 
-    run.gaps.forEach((gap) => {
-      const gapWidth = gap.width ?? pieceWidth;
-      pieces.forEach((piece) => {
-        const overlaps = piece.x < gap.x + gapWidth && piece.x + pieceWidth > gap.x;
-        expect(overlaps).toBe(false);
-      });
-    });
+    // A gated gap does not carve a hole out of the tiling — the gate is wider than a
+    // piece, fully opaque, and always added last (see `placeFences`), so it draws over
+    // whatever piece would otherwise sit underneath it. The full, uninterrupted piece
+    // count for this span is what proves nothing was skipped around either gate.
+    const expectedPieceCount = Math.ceil((run.toX - run.fromX) / pitch);
+    expect(pieces).toHaveLength(expectedPieceCount);
   });
 
   it('a run with no gaps tiles pieces at the measured picket-rhythm pitch', () => {
@@ -60,7 +59,13 @@ describe('buildFenceRun', () => {
       gaps: [{ x: pieceWidth, gate: 'none' }],
     };
     const placements = buildFenceRun(run);
+    const pieces = placements.filter((p) => p.kind === 'piece');
     expect(placements.filter((p) => p.kind === 'gate')).toHaveLength(0);
-    expect(placements.filter((p) => p.kind === 'piece')).toHaveLength(2);
+    expect(pieces.length).toBeGreaterThan(0);
+    pieces.forEach((piece) => {
+      const overlapsHole =
+        piece.x < pieceWidth + pieceWidth / 2 && piece.x + pieceWidth > pieceWidth / 2;
+      expect(overlapsHole).toBe(false);
+    });
   });
 });

@@ -54,6 +54,9 @@ export interface SidePropSpec {
 
 export interface SideFenceGap {
   x: number;
+  /** Only meaningful when `gate` is omitted or `'none'` — a gated gap's width is
+   *  whatever the fence tiles naturally leave uncovered once the gate image is drawn
+   *  on top of them; see `buildFenceRun`. */
   width?: number;
   gate?: 'open' | 'closed' | 'complete' | 'none';
 }
