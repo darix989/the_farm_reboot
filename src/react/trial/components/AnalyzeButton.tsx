@@ -1,12 +1,13 @@
 import React from 'react';
 import cn from 'classnames';
+import type { AnalysisGuessState } from '../utils/fallacyGuessTypes';
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
 import getLabel from '../../../data/labels';
 import styles from '../panels/TrialPanels.module.scss';
 
 interface AnalyzeButtonProps {
   onClick: () => void;
-  guessState?: 'correct' | 'partial' | 'wrong' | null;
+  guessState?: AnalysisGuessState | null;
   title?: string;
   /**
    * Optional debate-log round id the button belongs to. Emitted as
@@ -26,6 +27,7 @@ const AnalyzeButton: React.FC<AnalyzeButtonProps> = ({
     type="button"
     className={cn(styles.trialAnalyzeBtn, {
       [styles.correct]: guessState === 'correct',
+      [styles.extras]: guessState === 'extras',
       [styles.partial]: guessState === 'partial',
       [styles.wrong]: guessState === 'wrong',
     })}

@@ -3,6 +3,7 @@ import cn from 'classnames';
 import type { DebateScenarioJson, LogicalFallacy, Sentence } from '../../../types/debateEntities';
 import type { useTrialRoundWorkflow } from '../../hooks/useTrialRoundWorkflow';
 import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
+import type { AnalysisGuessState } from '../utils/fallacyGuessTypes';
 import AnalyzeButton from './AnalyzeButton';
 import SpottedFallacyIcons from './SpottedFallacyIcons';
 import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
@@ -41,7 +42,7 @@ interface DebateRoundLogCardProps {
   /** When set, overrides default expand (active = expanded, else minimized). */
   expandOverride: boolean | undefined;
   onExpandToggle: () => void;
-  getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
+  getNpcGuessState: (npcRoundId: string) => AnalysisGuessState | null;
   /** Fallacies correctly spotted so far in one statement, for its icon badge. */
   getSpottedFallacies: (statementId: string, sentences: Sentence[]) => LogicalFallacy[];
   /** Opens `FallacyInfoModal` describing one fallacy — passed to each spotted-fallacy icon. */

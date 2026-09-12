@@ -5,7 +5,7 @@ import {
   analysisTargetStatementId,
   type AnalysisTarget,
 } from '../roundAnalysisModal/RoundAnalysisModal';
-import type { FallacyGuessSession } from '../utils/fallacyGuessTypes';
+import type { AnalysisGuessState, FallacyGuessSession } from '../utils/fallacyGuessTypes';
 import type { ResolvedMechanics } from '../utils/scenarioMechanics';
 import TrialActionRow from '../components/TrialActionRow';
 import TrialChoiceButton from '../components/TrialChoiceButton';
@@ -70,7 +70,7 @@ interface InteractivePanelProps {
    */
   hideOptions?: boolean;
   onOpenAnalysis: (target: AnalysisTarget) => void;
-  getNpcGuessState: (npcRoundId: string) => 'correct' | 'partial' | 'wrong' | null;
+  getNpcGuessState: (npcRoundId: string) => AnalysisGuessState | null;
   /** Mode flags — gates whether the footer analyze button renders at all. */
   mechanics: ResolvedMechanics;
   /** The current round's line to analyze, or `null` when there is none (renders disabled). */

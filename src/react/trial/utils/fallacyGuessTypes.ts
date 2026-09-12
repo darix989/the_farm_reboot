@@ -26,3 +26,6 @@ export type FallacyGuessSession = {
   maxAttempts: number;
   attempts: GuessRecord[];
 };
+
+/** Analyze-button / log badge. Rank: correct > extras > partial > wrong. */
+export type AnalysisGuessState = 'correct' | 'extras' | 'partial' | 'wrong';

@@ -6,6 +6,7 @@
    interactive footer's analyze button (`.trialFooterAnalyzeBtn`) — file-local per the
    module's own colour convention, since both live only in this file. */
 $trial-guess-tint-correct: invert(1) sepia(1) saturate(3) hue-rotate(90deg);
+$trial-guess-tint-extras: invert(1) sepia(1) saturate(3) hue-rotate(155deg);
 $trial-guess-tint-partial: invert(1) sepia(1) saturate(2.5) hue-rotate(15deg);
 $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
 
@@ -119,6 +120,11 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   &.correct .trialFooterIcon {
     opacity: 1;
     filter: $trial-guess-tint-correct;
+  }
+
+  &.extras .trialFooterIcon {
+    opacity: 1;
+    filter: $trial-guess-tint-extras;
   }
 
   &.partial .trialFooterIcon {
@@ -755,6 +761,21 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
     &:hover {
       border-color: var(--ui-color-success-border-strong);
       background: var(--ui-color-success-bg-strong);
+    }
+  }
+
+  &.extras {
+    border-color: var(--ui-color-info-border-active);
+    background: var(--ui-color-info-bg);
+
+    img {
+      opacity: 1;
+      filter: $trial-guess-tint-extras;
+    }
+
+    &:hover {
+      border-color: var(--ui-color-info-border-strong);
+      background: var(--ui-color-info-bg-strong);
     }
   }
 

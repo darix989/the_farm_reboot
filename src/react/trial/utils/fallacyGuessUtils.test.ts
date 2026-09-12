@@ -2,12 +2,14 @@ import { describe, expect, it } from 'vitest';
 import type { LogicalFallacy, Sentence } from '../../../types/debateEntities';
 import type { GuessRecord } from './fallacyGuessTypes';
 import {
+  computeExtraPairs,
   computeMissedPairs,
   correctIntersectionMultiset,
   guessMultisetFromPicks,
   guessStateForRecord,
   guessStateFromAttempts,
   hasCorrectPairOverlap,
+  isExtrasOnlyPartial,
   isGuessTerminal,
   isSessionTerminal,
   pairKey,
@@ -79,6 +81,18 @@ describe('multisets', () => {
     const missed = computeMissedPairs(statements, truth, guess, fallacyById);
     expect(missed).toEqual([{ sentenceId: 's2', fallacy: strawMan }]);
   });
+
+  it('lists extra tags that are not in the truth', () => {
+    const truth = truthMultisetFromSentences(statements);
+    const guess = guessMultisetFromPicks([
+      { sentenceId: 's1', fallacyId: 'ad-hominem' },
+      { sentenceId: 's2', fallacyId: 'straw-man' },
+      { sentenceId: 's3', fallacyId: 'ad-hominem' },
+    ]);
+    expect(computeExtraPairs(truth, guess, fallacyById)).toEqual([
+      { sentenceId: 's3', fallacy: adHominem },
+    ]);
+  });
 });
 
 describe('session terminal state', () => {
@@ -96,6 +110,17 @@ describe('session terminal state', () => {
     outcome: 'partial',
     missedPairs: [{ sentenceId: 's2', fallacy: strawMan }],
   };
+  const extrasOnly: GuessRecord = {
+    kind: 'multi',
+    npcRoundId: 'npc-1',
+    picks: [
+      { sentenceId: 's1', fallacyId: 'ad-hominem' },
+      { sentenceId: 's2', fallacyId: 'straw-man' },
+      { sentenceId: 's3', fallacyId: 'ad-hominem' },
+    ],
+    outcome: 'partial',
+    missedPairs: [],
+  };
   const none: GuessRecord = {
     kind: 'multi',
     npcRoundId: 'npc-1',
@@ -110,6 +135,10 @@ describe('session terminal state', () => {
   it('ends a session on a perfect multi guess or a correct no-fallacies call', () => {
     expect(isGuessTerminal(perfect)).toBe(true);
     expect(isGuessTerminal(partial)).toBe(false);
+    expect(isGuessTerminal(extrasOnly)).toBe(false);
+    expect(isExtrasOnlyPartial(extrasOnly)).toBe(true);
+    expect(isExtrasOnlyPartial(partial)).toBe(false);
+    expect(isExtrasOnlyPartial(perfect)).toBe(false);
     expect(
       isGuessTerminal({
         kind: 'no_fallacies',
@@ -140,8 +169,13 @@ describe('session terminal state', () => {
   it('promotes the best badge across attempts', () => {
     expect(guessStateForRecord(perfect)).toBe('correct');
     expect(guessStateForRecord(partial)).toBe('partial');
+    expect(guessStateForRecord(extrasOnly)).toBe('extras');
     expect(guessStateFromAttempts([])).toBeNull();
     expect(guessStateFromAttempts([none, partial])).toBe('partial');
+    expect(guessStateFromAttempts([none, extrasOnly])).toBe('extras');
+    expect(guessStateFromAttempts([partial, extrasOnly])).toBe('extras');
+    expect(guessStateFromAttempts([extrasOnly, partial, none])).toBe('extras');
+    expect(guessStateFromAttempts([none, extrasOnly, perfect])).toBe('correct');
     expect(guessStateFromAttempts([none, perfect])).toBe('correct');
   });
 });

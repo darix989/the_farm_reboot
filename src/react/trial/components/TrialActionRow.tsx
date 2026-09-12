@@ -12,6 +12,7 @@ import {
   isContinueCode,
   shouldIgnoreActionShortcut,
 } from '../utils/trialActionShortcuts';
+import type { AnalysisGuessState } from '../utils/fallacyGuessTypes';
 import styles from '../panels/TrialPanels.module.scss';
 
 import magnifyingIcon from '../../../static/icons/magnifying.svg';
@@ -42,7 +43,7 @@ export interface TrialActionRowProps {
    */
   analyze?:
     | (TrialActionSpec & {
-        guessState?: 'correct' | 'partial' | 'wrong' | null;
+        guessState?: AnalysisGuessState | null;
         /** One-shot glow when a shut option click is pointing at Analyze. */
         attentionPulse?: boolean;
       })
@@ -135,6 +136,7 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
           widthMode="square"
           className={cn(styles.trialFooterAnalyzeBtn, {
             [styles.correct]: analyze.guessState === 'correct',
+            [styles.extras]: analyze.guessState === 'extras',
             [styles.partial]: analyze.guessState === 'partial',
             [styles.wrong]: analyze.guessState === 'wrong',
             [styles.trialFooterAnalyzePulse]: analyze.attentionPulse,
