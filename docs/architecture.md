@@ -267,26 +267,21 @@ npm run dev-nolog      # dev server, no telemetry ping
 npm run build-nolog    # production build
 npm run lint           # eslint
 npm run lint:styles    # stylelint
-npx tsc --noEmit       # typecheck
+npm run lint:scenarios # debate JSON authoring lint
+npm run typecheck      # tsc --noEmit
+npm run test           # vitest
+npm run check          # all of the above, then a production build
 ```
 
-**There is no test runner.** Changes are verified by driving the real app — the loop is
-`npm run dev-nolog`, then a Playwright script that clicks and sends keys into the canvas and
-screenshots the stage. Two of the worst bugs found so far (a collider offset from its
-visual, and a scene switch that did not stop the old scene) produced no type error, no lint
-warning and no console message; only running the game surfaced them.
+**Vitest** covers the debate rules layer: `GameCondition` gates, option unlocks, analysis grading, scenario mechanics, and the round workflow reducer (`reduceWorkflow`). Tests sit next to the module they cover (`*.test.ts`). GitHub Actions runs `npm run check` on pull requests and on `main`. Vitest aliases `phaser` to [`vitest.phaser-stub.ts`](../vitest.phaser-stub.ts) so importing `EventBus` does not boot a canvas; the Vite game configs are unchanged.
+
+Phaser scenes, canvas collision, and `pointer-events` fall-through still need the running game. The loop for those is `npm run dev-nolog`, then drive the 16:9 stage (click, send keys, screenshot). Two of the worst bugs found so far (a collider offset from its visual, and a scene switch that did not stop the old scene) produced no type error, no lint warning and no unit-test failure; only running the game surfaced them.
 
 Useful while debugging the overworld: set `arcade: { debug: true }` in `main.ts` to draw
 every physics body outline.
 
 ### Known pre-existing breakage
 
-- **`npx tsc --noEmit` reports 3 errors on a clean tree** (re-measured Sept 2026): two
-  unused-`React`-imports and `navigator.userAgentData`. Separately, and no longer surfaced
-  by the compiler, `GameManager.whenReady` / `whenSceneReady` pass a zustand v3/v4
-  `(selector, listener)` pair to a v5 `subscribe` — the callbacks are silently dropped at
-  runtime, so **do not use those two functions**.
-- **8 files fail `npm run format:check`** — template leftovers never formatted. `lint-staged`
-  formats files as you touch them, so this shrinks over time.
+- `GameManager.whenReady` / `whenSceneReady` pass a zustand v3/v4 `(selector, listener)` pair to a v5 `subscribe` — the callbacks are silently dropped at runtime, so **do not use those two functions**.
 - `Preloader` and `MainMenu` position things at 512/384 — leftovers from the template's
   1024×768 design, never updated to 1920×1080.

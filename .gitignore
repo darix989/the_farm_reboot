@@ -7,6 +7,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Vitest reporter output (Cursor / local)
+.vitest/
+
 node_modules
 dist
 dist-ssr

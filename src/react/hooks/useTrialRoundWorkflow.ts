@@ -48,7 +48,7 @@ export interface CompletedRound {
 // Internal state
 // ---------------------------------------------------------------------------
 
-interface WorkflowSnapshot {
+export interface WorkflowSnapshot {
   gamePhase: GamePhase;
   currentRoundIndex: number;
   selectedOptionId: string | null;
@@ -56,7 +56,7 @@ interface WorkflowSnapshot {
   totalScore: number;
 }
 
-interface WorkflowState extends WorkflowSnapshot {
+export interface WorkflowState extends WorkflowSnapshot {
   past: WorkflowSnapshot[];
 }
 
@@ -64,7 +64,7 @@ interface WorkflowState extends WorkflowSnapshot {
 // Actions
 // ---------------------------------------------------------------------------
 
-type Action =
+export type WorkflowAction =
   | { type: 'continue' }
   | { type: 'select_option'; optionId: string }
   | { type: 'unselect_option' }
@@ -130,7 +130,7 @@ function phaseAfterIntro(scenario: DebateScenarioJson): GamePhase {
   return initialPhaseForRound(firstRound);
 }
 
-function createInitialState(scenario: DebateScenarioJson): WorkflowState {
+export function createInitialState(scenario: DebateScenarioJson): WorkflowState {
   const gamePhase: GamePhase = scenarioHasIntroduction(scenario)
     ? 'debate_intro'
     : phaseAfterIntro(scenario);
@@ -219,9 +219,9 @@ function advanceAfterPlayerSpeech(
   return toRecapOrAdvance(state, scenario, state.completedRounds, state.totalScore);
 }
 
-function reduceWorkflow(
+export function reduceWorkflow(
   state: WorkflowState,
-  action: Action,
+  action: WorkflowAction,
   scenario: DebateScenarioJson,
   fallacyGuesses: Map<number, GuessSessionForUnlock>,
   revealedLockedOptionIds: Set<string>,
@@ -466,7 +466,7 @@ export function useTrialRoundWorkflow(
 
   const [state, setState] = useState<WorkflowState>(() => createInitialState(scenario));
 
-  const dispatch = useCallback((action: Action) => {
+  const dispatch = useCallback((action: WorkflowAction) => {
     setState((prev) =>
       reduceWorkflow(
         prev,

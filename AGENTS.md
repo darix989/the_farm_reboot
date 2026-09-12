@@ -4,7 +4,7 @@
 
 > **Read [`docs/architecture.md`](docs/architecture.md) first** if you need to understand
 > *how the app works* — the Phaser/React sibling layout, scene-key routing, the eight stores
-> and two event buses, content flow, and how to verify a change with no test runner. That
+> and two event buses, content flow, and how to verify a change. That
 > document owns the conceptual model; this one owns the file map. Where they overlap, this
 > file defers to it.
 
@@ -24,7 +24,8 @@
 | Language | TypeScript 5.7 (strict, `noUnusedLocals` / `noUnusedParameters`) |
 | Global UI state | Zustand (`src/store/gameStore.ts`) |
 | Styling | SCSS — `src/react/index.scss` (global) + `*.module.scss` (per feature); shared **design tokens** for fonts (`uiTypography.scss` / `uiFont.ts`) and colors (`uiColors.scss` / `uiColor.ts`). Tailwind has been removed. |
-| Lint | ESLint 9 + TypeScript ESLint (`.eslintrc.cjs`) |
+| Lint | ESLint 9 + TypeScript ESLint (`eslint.config.mjs`) |
+| Tests | Vitest (`*.test.ts` next to the module) |
 
 ## How to run and build
 
@@ -32,6 +33,8 @@
 - `npm run dev` — Vite on port **8080**; prepends `node log.js dev` (see below).
 - `npm run build` — production build to `dist/`.
 - `npm run dev-nolog` / `npm run build-nolog` — same without Phaser template telemetry.
+- `npm test` — Vitest unit tests (`*.test.ts` colocated with the module).
+- `npm run check` — typecheck, lint, format, tests, and a production build. CI runs this.
 
 ## Source layout (authoritative)
 
@@ -92,7 +95,7 @@ src/
       BoilerPlateUI.tsx # Fallback for unmapped scenes
     hooks/
       useGame.ts
-      useTrialRoundWorkflow.ts # Reducer hook driving the debate state machine
+      useTrialRoundWorkflow.ts # Reducer hook driving the debate state machine (`reduceWorkflow` is exported for tests)
       useScenarioTutorials.ts  # Opens scenario tutorials off the debate bus
       useFarmTutorials.ts      # Opens farm overlay tutorials off GameCondition triggers
       useScrollFade.ts
@@ -248,3 +251,4 @@ is limited to drawing the animated cast behind the transparent game-hole panel �
 - **Looking at any animal's animations** → main menu → **Animation Gallery** (`AnimalGallery` scene + `AnimalGalleryUI`). Holds one clip on a loop, lists atlas and generated clips together, flags emotions with no art yet, and toggles between a crossfade and a raw cut when switching. `docs/characters-and-animations.md` §9.6.
 - New **animal emotion clip** (`talking`, `doubtful`, `angry`, `thinking`, `sneaky`) → **read `.claude/skills/animal-emotion-sprites/SKILL.md`**, the operating manual for this (Claude Code loads it as a skill; every other tool can simply open the file). In short: art is generated, not hand-drawn — `npm run sprites:emotions` drives the Ludo.ai API from `scripts/ludo/emotion-manifest.json` into a gitignored review dir, and `--promote` ships the clips you keep. Needs `LUDO_API_KEY` in `.env.local`, and **costs credits per clip**, so never generate without being asked. Design rationale (and the scale/origin trap that makes an un-normalized clip render at the wrong size) is in `docs/characters-and-animations.md` §9.
 - New **fixed UI string** (menus, modals, ARIA, Phaser labels) → add an entry in `src/data/labels.ts` and use `getLabel('yourKey', { replacements: { … } })` when the template has placeholders.
+- New **pure rules helper** (gates, unlocks, scoring, analysis grading, workflow reducer) → colocate a `*.test.ts` next to it. `npm test` runs Vitest; `npm run check` is what CI runs.
