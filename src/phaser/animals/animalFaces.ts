@@ -228,6 +228,51 @@ export function faceFramePosition(sheet: FaceSheet, frame: number): string {
 }
 
 /**
+ * The same staging as `faceBoxTransform`, expressed in percentages of the box instead of px.
+ *
+ * Why a second form exists: `faceBoxTransform` needs the box size as a *number*, which pins
+ * whatever uses it to a fixed pixel size. That is right for the dialogue portrait and the log
+ * portrait, which are chrome at a chosen size — but the moderator status face replaces a text
+ * emoji that sized itself in `em`, and the game's root `rem` ranges over 5-28px
+ * (`STAGE_REM_MIN_PX`/`STAGE_REM_MAX_PX`). A 40px icon would be a third of the panel's height
+ * on a small stage and a postage stamp on a large one.
+ *
+ * It is **derived from `faceBoxTransform`, not a reimplementation of it**: the transform is
+ * linear in `size`, so evaluating it at `size = 100` yields percentages directly. The whole
+ * register frames portraits one way, which is the rule the review page depends on.
+ *
+ * Apply to a child of a square box: `position: absolute` at `left`/`top`, sized
+ * `width`/`height`, with `background-size: cols*100% rows*100%`.
+ */
+export function faceBoxPercent(
+  sheet: FaceSheet,
+  fill: number = FACE_BOX_FILL,
+): { width: number; height: number; left: number; top: number } {
+  const { z, x, y } = faceBoxTransform(sheet, 100, fill);
+  return { width: sheet.frameWidth * z, height: sheet.frameHeight * z, left: x, top: y };
+}
+
+/**
+ * `background-size` and `background-position` for one frame, in percentages.
+ *
+ * The percentage form of `background-position` is not the pixel form scaled down: `100%` means
+ * "align the image's right edge with the box's right edge", so the step between columns is
+ * `1 / (cols - 1)`, not `1 / cols`. Getting this wrong shows the *next* frame's sliver rather
+ * than failing outright, which is why it is computed here and not inline at the call site.
+ */
+export function faceFramePercent(
+  sheet: FaceSheet,
+  frame: number,
+): { size: string; position: string } {
+  const rows = Math.ceil(sheet.frameCount / sheet.cols);
+  const col = frame % sheet.cols;
+  const row = Math.floor(frame / sheet.cols);
+  const xPct = sheet.cols > 1 ? (col / (sheet.cols - 1)) * 100 : 0;
+  const yPct = rows > 1 ? (row / (rows - 1)) * 100 : 0;
+  return { size: `${sheet.cols * 100}% ${rows * 100}%`, position: `${xPct}% ${yPct}%` };
+}
+
+/**
  * Warms the HTTP cache for an animal's portraits.
  *
  * A dialogue box opens in one frame; a 200KB sheet does not decode in one frame, so without
@@ -237,7 +282,20 @@ export function faceFramePosition(sheet: FaceSheet, frame: number): string {
 export function preloadFaceSheets(animalId: AnimalSpriteId | null): void {
   if (!animalId || typeof Image === 'undefined') return;
   for (const emotion of generatedFaceEmotions(animalId)) {
-    const sheet = faceSheet(animalId, emotion);
-    if (sheet) new Image().src = faceSheetUrl(sheet.file);
+    preloadFaceSheet(faceSheet(animalId, emotion));
   }
+}
+
+/**
+ * Warms one sheet.
+ *
+ * For a caller that knows it will only ever show a few — the moderator status face holds three
+ * frames (one owl clip, or three fox portraits), and is mounted in every debate that shows a
+ * score, most of which Duchess is not in. Warming her whole portrait set there would fetch
+ * ~2.5MB of sheets to draw 440KB of one. `ModeratorStatusFace` warms only the sheets its
+ * character's table names.
+ */
+export function preloadFaceSheet(sheet: FaceSheet | null): void {
+  if (!sheet || typeof Image === 'undefined') return;
+  new Image().src = faceSheetUrl(sheet.file);
 }

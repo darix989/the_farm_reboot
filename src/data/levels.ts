@@ -1,4 +1,5 @@
 import type { DebateScenarioJson } from '../types/debateEntities';
+import type { GameFeatureId } from './gameFeatures';
 import type { Labels } from './labels';
 // Type-only, and deliberately so: `gameConditions` imports this module back for
 // `DebateScenarioKey`, and a value import would make that a real cycle at runtime.
@@ -188,6 +189,34 @@ export const LEGACY_SCENARIOS: readonly ScenarioEntry[] = [
 ];
 
 const ALL_SCENARIOS = [...LEVEL_1_SCENARIOS, ...LEGACY_SCENARIOS];
+
+/**
+ * Features earlier Level 1 rungs would already have granted by the time this encounter
+ * is reachable on the farm. The main menu skips those gates, so a menu launch of the
+ * boss would otherwise hide `— crossfire` until Bram has been finished in this browser.
+ *
+ * A key on the ladder gets everything before it; a legacy / unknown key gets the whole
+ * ladder — the menu is the test harness, so late encounters show end-of-ladder chrome.
+ */
+export function featuresUnlockedBefore(key: DebateScenarioKey): readonly GameFeatureId[] {
+  const collected: GameFeatureId[] = [];
+  const seen = new Set<GameFeatureId>();
+  const take = (entry: ScenarioEntry) => {
+    for (const id of entry.scenario.unlocksFeatures ?? []) {
+      if (seen.has(id)) continue;
+      seen.add(id);
+      collected.push(id);
+    }
+  };
+
+  for (const entry of LEVEL_1_SCENARIOS) {
+    if (entry.key === key) return collected;
+    take(entry);
+  }
+
+  for (const entry of LEVEL_1_SCENARIOS) take(entry);
+  return collected;
+}
 
 /** Single lookup used by `ReactApp` to resolve `activeDebateId` to its scenario. */
 export const DEBATES: Record<DebateScenarioKey, DebateScenarioJson> = Object.fromEntries(

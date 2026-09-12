@@ -1,5 +1,5 @@
-import { PLAYER_CHARACTER_ID } from '../../../data/characters';
-import getLabel from '../../../data/labels';
+import { PLAYER_CHARACTER_ID, type AnimalSpriteId } from '../../../data/characters';
+import getLabel, { type Labels } from '../../../data/labels';
 import type { GamePhase } from '../../hooks/useTrialRoundWorkflow';
 import {
   PLAYER_OPTION_IMPACT_ABS_MAX,
@@ -12,6 +12,7 @@ import {
   type Sentence,
   type Side,
   type Statement,
+  type StatementType,
 } from '../../../types/debateEntities';
 import { uiColor } from '../../uiColor';
 import type { AnimalEmotion } from '../../../phaser/animals/animalEmotions';
@@ -250,6 +251,85 @@ export function moderatorOpinionEmoji(score: number): string {
   return '😐';
 }
 
+export type ModeratorOpinionFace = { emotion: AnimalEmotion; frame: number };
+
+export type ScoreBand = 'approval' | 'neutral' | 'disapproval';
+
+/** Three-state mood for the moderator status face. Same thresholds as `scoreColor`. */
+export function scoreBand(score: number): ScoreBand {
+  if (score > 0) return 'approval';
+  if (score < 0) return 'disapproval';
+  return 'neutral';
+}
+
+/**
+ * Duchess: three frames of one clip. `approving` opens the owl's eyes from nearly shut to
+ * fully round over its 25 frames, so these are the same head in the same pose at three eye
+ * apertures — how much bright yellow is left is the whole signal at ~1.6em.
+ *
+ * Mixing sheets was the first arrangement and moved head pose along with the eyes. One clip,
+ * one axis. If `approving` is regenerated, open the new frames and re-pick all three.
+ */
+const OWL_STATUS_FACES: Record<ScoreBand, ModeratorOpinionFace> = {
+  approval: { emotion: 'approving', frame: 20 },
+  neutral: { emotion: 'approving', frame: 6 },
+  disapproval: { emotion: 'approving', frame: 4 },
+};
+
+/**
+ * Cass: three portraits, because the fox has no single clip that opens along one axis the
+ * way the owl's eyes do. Approval is the sly grin (`sneaky` 17), neutral the half-lid
+ * (`doubtful` 9), disapproval the snarl (`angry` 3). Frame indices are part of the art.
+ */
+const FOX_STATUS_FACES: Record<ScoreBand, ModeratorOpinionFace> = {
+  approval: { emotion: 'sneaky', frame: 17 },
+  neutral: { emotion: 'doubtful', frame: 9 },
+  disapproval: { emotion: 'angry', frame: 3 },
+};
+
+const MODERATOR_STATUS_FACES: Partial<
+  Record<AnimalSpriteId, Record<ScoreBand, ModeratorOpinionFace>>
+> = {
+  owl: OWL_STATUS_FACES,
+  fox: FOX_STATUS_FACES,
+};
+
+function statusFacesFor(
+  animalId: AnimalSpriteId | null | undefined,
+): Record<ScoreBand, ModeratorOpinionFace> {
+  return (animalId && MODERATOR_STATUS_FACES[animalId]) ?? OWL_STATUS_FACES;
+}
+
+/**
+ * The moderator's face for a score: which portrait sheet, and which frame of it to hold.
+ *
+ * Three states off a character's portraits rather than three emoji, because the emoji were
+ * the one place in the trial chrome where the art stopped — a yellow smiley next to a stage
+ * of hand-drawn animals. `ModeratorStatusFace` renders these; `moderatorOpinionEmoji` stays
+ * for the plain strings (a wizard body is text, and cannot hold a portrait).
+ *
+ * Duchess (the default) uses three frames of `approving`. Cass uses three different fox
+ * portraits. Unknown animals fall back to the owl table.
+ *
+ * **The frame indices are part of the art, not arbitrary.** If a source clip is regenerated,
+ * open the new frames and re-pick: a diffusion clip's frames are in no fixed order across
+ * generations, so an index means nothing once the pixels change.
+ */
+export function moderatorOpinionFace(
+  score: number,
+  animalId: AnimalSpriteId | null = 'owl',
+): ModeratorOpinionFace {
+  return statusFacesFor(animalId)[scoreBand(score)];
+}
+
+/** Every still a given animal can hold — used to warm the sheets before a score change. */
+export function moderatorOpinionFacesForAnimal(
+  animalId: AnimalSpriteId | null | undefined,
+): readonly ModeratorOpinionFace[] {
+  const table = statusFacesFor(animalId);
+  return [table.disapproval, table.neutral, table.approval];
+}
+
 /** Plain text for wizard strings and similar (emoji is first for quick scanning). */
 export function moderatorOpinionPlainText(score: number): string {
   return `${moderatorOpinionEmoji(score)} ${MODERATOR_OPINION_LABEL}`;
@@ -267,7 +347,17 @@ export function debateTotalScoreBounds(debate: DebateScenarioJson): { min: numbe
   return { min: -cap, max: cap };
 }
 
+const STATEMENT_TYPE_LABELS: Record<StatementType, Labels> = {
+  opening_constructive: 'statementTypeOpeningConstructive',
+  rebuttal: 'statementTypeRebuttal',
+  crossfire: 'statementTypeCrossfire',
+  closing_constructive: 'statementTypeClosingConstructive',
+  gossip: 'statementTypeGossip',
+};
+
 export function statementTypeLabel(type: string): string {
+  const key = STATEMENT_TYPE_LABELS[type as StatementType];
+  if (key) return getLabel(key);
   return type.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 

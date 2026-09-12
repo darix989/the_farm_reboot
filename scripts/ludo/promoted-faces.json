@@ -2365,6 +2365,7 @@
         "height": 0.7452
       },
       "sourceClip": "owl-angry.png",
+      "sourceEmotion": "angry",
       "headCrop": {
         "x": -0.03,
         "y": -0.03,
@@ -2492,6 +2493,148 @@
       },
       "generatedAt": "2026-09-08T03:39:03.489Z"
     },
+    "approving": {
+      "file": "owl-approving.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.1274,
+        "width": 1,
+        "height": 0.7452
+      },
+      "sourceClip": "owl-approving.png",
+      "sourceEmotion": "approving",
+      "headCrop": {
+        "x": -0.03,
+        "y": -0.03,
+        "w": 1.06,
+        "h": 0.58
+      },
+      "headRect": {
+        "left": 152,
+        "top": 108,
+        "width": 208,
+        "height": 155
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 2
+          },
+          {
+            "dx": 2,
+            "dy": 1
+          },
+          {
+            "dx": 3,
+            "dy": 0
+          },
+          {
+            "dx": 8,
+            "dy": -2
+          },
+          {
+            "dx": 10,
+            "dy": -4
+          },
+          {
+            "dx": 10,
+            "dy": -8
+          },
+          {
+            "dx": 11,
+            "dy": -8
+          },
+          {
+            "dx": 11,
+            "dy": -9
+          },
+          {
+            "dx": 11,
+            "dy": -9
+          },
+          {
+            "dx": 12,
+            "dy": -9
+          },
+          {
+            "dx": 12,
+            "dy": -8
+          },
+          {
+            "dx": 12,
+            "dy": -8
+          },
+          {
+            "dx": 11,
+            "dy": -8
+          },
+          {
+            "dx": 10,
+            "dy": -6
+          },
+          {
+            "dx": 8,
+            "dy": -2
+          },
+          {
+            "dx": 6,
+            "dy": -2
+          },
+          {
+            "dx": 2,
+            "dy": -2
+          },
+          {
+            "dx": 2,
+            "dy": -2
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          }
+        ],
+        "maxOffset": 12,
+        "maxJump": 5,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 1.31,
+        "heightSwing": 5.1,
+        "driftX": 2,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-11T21:51:13.168Z"
+    },
     "doubtful": {
       "file": "owl-doubtful.png",
       "frameWidth": 256,
@@ -2506,6 +2649,7 @@
         "height": 0.7452
       },
       "sourceClip": "owl-doubtful.png",
+      "sourceEmotion": "doubtful",
       "headCrop": {
         "x": -0.03,
         "y": -0.03,
@@ -2647,6 +2791,7 @@
         "height": 0.7452
       },
       "sourceClip": "owl-sneaky.png",
+      "sourceEmotion": "sneaky",
       "headCrop": {
         "x": -0.03,
         "y": -0.03,
@@ -2788,6 +2933,7 @@
         "height": 0.7452
       },
       "sourceClip": "owl-talking.png",
+      "sourceEmotion": "talking",
       "headCrop": {
         "x": -0.03,
         "y": -0.03,
@@ -2929,6 +3075,7 @@
         "height": 0.7452
       },
       "sourceClip": "owl-thinking.png",
+      "sourceEmotion": "thinking",
       "headCrop": {
         "x": -0.03,
         "y": -0.03,

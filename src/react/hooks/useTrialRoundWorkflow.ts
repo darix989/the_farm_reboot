@@ -18,6 +18,7 @@ import type { ConditionContext } from '../../utils/gameConditions';
 import { debateEventBus, type RoundLifecyclePayload } from '../trial/utils/debateEventBus';
 import { encounterLabels, resolveMechanics } from '../trial/utils/scenarioMechanics';
 import { plainSpokenText } from '../trial/utils/spokenMarkup';
+import { statementTypeLabel } from '../trial/utils/trialHelpers';
 import getLabel from '../../data/labels';
 
 // ---------------------------------------------------------------------------
@@ -574,7 +575,7 @@ export function useTrialRoundWorkflow(
     return getLabel('workflowRoundWithType', {
       replacements: {
         roundNumber: currentRound.roundNumber,
-        typeDisplay: currentRound.type.replace(/_/g, ' '),
+        typeDisplay: statementTypeLabel(currentRound.type),
       },
     });
   }, [state.gamePhase, currentRound, options?.showRoundType]);

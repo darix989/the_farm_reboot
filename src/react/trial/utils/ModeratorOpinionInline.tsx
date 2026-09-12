@@ -1,8 +1,8 @@
-import React from 'react';
 import cn from 'classnames';
 import inspectIcon from '../../../static/icons/inspect.svg';
 import getLabel from '../../../data/labels';
-import { MODERATOR_OPINION_LABEL, moderatorOpinionEmoji } from './trialHelpers';
+import { MODERATOR_OPINION_LABEL } from './trialHelpers';
+import ModeratorStatusFace from '../components/ModeratorStatusFace';
 import shared from '../trialShared.module.scss';
 
 export function ModeratorOpinionInline({
@@ -10,19 +10,35 @@ export function ModeratorOpinionInline({
   insightPoints,
   className,
   showOpinion = true,
+  opinionClassName,
+  opinionTutorialData,
+  characterId,
+  deferGlowUntilRecapClose = false,
 }: {
   score: number;
-  /** When set (e.g. debate log header), shows inspect icon and balance to the left of the opinion emoji. */
+  /** When set (e.g. debate log header), shows inspect icon and balance to the left of the moderator's face. */
   insightPoints?: number;
   className?: string;
-  /** `false` hides the opinion emoji (scenarios with no moderator). Defaults to `true`. */
+  /** `false` hides the moderator's face (scenarios with no moderator). Defaults to `true`. */
   showOpinion?: boolean;
+  /** Class on the face wrapper only (tutorial square), not the Insight strip. */
+  opinionClassName?: string;
+  /** `data-tutorial-…` hook on that wrapper. */
+  opinionTutorialData?:
+    | 'data-tutorial-debate-log-moderator-score'
+    | 'data-tutorial-debate-log-recap-moderator-score';
+  /** Whose stills to hold. Omit for Duchess. Pass `debateModeratorId(debate)` in a Trial. */
+  characterId?: string;
+  /**
+   * Live chip / log header only. When the scenario shows a round recap, hold the mood-glow
+   * until that modal unmounts so it is not playing behind the overlay.
+   */
+  deferGlowUntilRecapClose?: boolean;
 }) {
   // Nothing left to render once both halves are suppressed — a speaking-only rung has
   // neither an Insight economy nor a moderator.
   if (!showOpinion && insightPoints === undefined) return null;
 
-  const emoji = moderatorOpinionEmoji(score);
   const scoreBit = `${score > 0 ? '+' : ''}${score}`;
   const opinionAria = showOpinion ? `${MODERATOR_OPINION_LABEL}: ${scoreBit}` : '';
   const insightAria =
@@ -46,7 +62,25 @@ export function ModeratorOpinionInline({
           )}
         </>
       )}
-      {showOpinion && <span aria-hidden="true">{emoji}</span>}
+      {showOpinion &&
+        (opinionClassName || opinionTutorialData ? (
+          <span
+            className={opinionClassName}
+            {...(opinionTutorialData ? { [opinionTutorialData]: true } : undefined)}
+          >
+            <ModeratorStatusFace
+              score={score}
+              characterId={characterId}
+              deferGlowUntilRecapClose={deferGlowUntilRecapClose}
+            />
+          </span>
+        ) : (
+          <ModeratorStatusFace
+            score={score}
+            characterId={characterId}
+            deferGlowUntilRecapClose={deferGlowUntilRecapClose}
+          />
+        ))}
     </span>
   );
 }

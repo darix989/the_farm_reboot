@@ -302,6 +302,21 @@ export const FACE_SHEETS: Partial<
         warnings: [],
       },
     },
+    approving: {
+      file: 'owl-approving.png',
+      frameWidth: 256,
+      frameHeight: 256,
+      frameCount: 25,
+      frameRate: 13,
+      cols: 5,
+      fit: { x: 0, y: 0.1274, width: 1, height: 0.7452 },
+      quality: {
+        loopPop: 1.31,
+        heightSwing: 5.1,
+        driftX: 2,
+        warnings: [],
+      },
+    },
     doubtful: {
       file: 'owl-doubtful.png',
       frameWidth: 256,

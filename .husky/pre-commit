@@ -1,1 +1,9 @@
+# Formats and lints just the staged files.
 npx lint-staged
+
+# Whole-project checks. Neither can run per-file: tsc needs the whole program to
+# resolve types, and the scenario linter reads every file in src/data/debates.
+# Without these a duplicated import or a typo'd dialog flag reaches main silently —
+# `npm run build` is vite-only and never type-checks.
+npm run typecheck
+npm run lint:scenarios

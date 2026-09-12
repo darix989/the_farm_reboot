@@ -1,12 +1,13 @@
 {
   "id": "level1-skirmish-bram",
-  "introduction": "Bram has caught you at the fence line the evening before the Public Farm. He calls it a courtesy. He has clearly rehearsed it, and he is going to get all the way to the end of it before he notices what he has said.",
-  "introductionSummary": "The evening before the floor, Bram delivers a rehearsed courtesy at the fence and does not survive being asked one question.",
+  "introduction": "Bram has caught you at the fence line the evening before the Public Farm. He calls it a courtesy. Cass has come down from the west post to sit it \u2014 practice, she says, before Duchess has the floor. He has clearly rehearsed, and he is going to get all the way to the end of it before he notices what he has said.",
+  "introductionSummary": "The evening before the floor, Bram delivers a rehearsed courtesy at the fence. Cass sits it as practice. He does not survive being asked one question.",
   "playerSide": "opposition",
   "characters": {
     "bram": "Bram",
     "rue": "Rue"
   },
+  "moderatorId": "cass",
   "logicalFallacies": [
     {
       "id": "ad-hominem",
@@ -221,7 +222,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "A **[accent]real debate[/accent]**, just a very short one. The **[accent]moderator[/accent]** is live again.\n\nThe **[accent]emoji[/accent]** is how she leans.",
+            "message": "A **[accent]real debate[/accent]**, just a very short one. **[accent]Cass[/accent]** is sitting this one as practice, before Duchess.\n\nHer **[accent]face[/accent]** is how she leans.",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "debate_log_moderator_score"

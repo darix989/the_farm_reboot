@@ -2,7 +2,7 @@
 
 The authoring source of truth for Level 1: the story, the cast, the ladder of scenarios,
 and the intent of every rung. Scenario JSON under `src/data/debates/010_*` … `015_*`,
-`020_*` … `022_*` and `030_*` … `031_*` is transcribed from this document — when the two
+`020_*` … `023_*` and `030_*` … `032_*` is transcribed from this document — when the two
 disagree, this document is wrong and should be corrected to match what shipped.
 
 Level 1 teaches the two simplest fallacies in the curriculum, both from Level 1 of
@@ -81,8 +81,10 @@ beat it and one who bought his way out by agreeing louder than anybody in the cr
 time the farm loads. It is deliberately unhurried — the level's only cold open, so it does
 not read as one. She asks after Rue first (six weeks, the hauling, the bins) and notices he
 is being talked about three steps away; that is what turns the conversation to the week the
-farm is having. Then the motion: Tobias wants the Old Pond drained, filled and forgotten,
-heard Sunday in front of Duchess, and **not one animal will speak against it**. Rue
+farm is having. Then the motion, stated in full so the player knows exactly what is at stake
+before anybody argues about it: Tobias wants the Old Pond kept for the Meadow-Born and every
+animal who arrived after them sent to the road trough, half a mile down the lane. It is heard
+Sunday in front of Duchess, and **not one animal will speak against it**. Rue
 volunteers himself for the floor — the player is not assigned the fight, they take it — and
 only then does Dot mention that there are rules nobody has written down, which is where the
 goals come from: **Bram** first, at the fence, then Cass at the west post, then Hetty at the
@@ -106,8 +108,8 @@ requires all of it.
 | 1.4 Cass | How Many, Not How | Sparring | **The name** of Appeal to Popularity | ad-hominem, appeal-to-popularity | Two icons on the picker, and a round carrying **two** fallacies at once. |
 | 1.5 Hetty | What Hetty Saw | Gossip | A **clean** round; the bent grate | ad-hominem, appeal-to-popularity | Not every sentence is a trap — and the player extracts the grate with a question. |
 | 1.6 Bram | The Line You Have to Earn | Lesson | **The locked line** — spotting and speaking meet | ad-hominem | An option that cannot be said until the fallacy in the previous round is tagged. |
-| 1.7 Bram | The Bent Grate | Skirmish | Speaking **and** spotting together | ad-hominem, appeal-to-popularity | Full chrome and the moderator gauge, plus the unlock-gated option for real. Sets the grate flag. |
-| 1.8 Tobias | The Pond Motion | Boss debate | Everything, over 10 beats | + false-dilemma (distractor) | Full Public Farm. Gated on both fallacies **and** Bram's concession. |
+| 1.7 Bram | The Bent Grate | Skirmish | Speaking **and** spotting together | ad-hominem, appeal-to-popularity | Full chrome and the moderator gauge, plus the unlock-gated option for real. **Cass** wears the score stills (`moderatorId`); she is not on stage — the cast stays Rue vs Bram. Sets the grate flag. |
+| 1.8 Tobias | The Pond Motion | Boss debate | Everything, over 10 beats | ad-hominem, appeal-to-popularity | Full Public Farm. Gated on both fallacies **and** Bram's concession. Four NPC beats (1, 5, 7, 9) carry two fallacies across two sentences, and beat 4 fuses both into a single sentence — which is where the difficulty lives now. |
 
 **File numbers are creation order, not ladder order.** `020`–`023` were written after
 `010`–`015`; `030`–`032` after those. `LEVEL_1_SCENARIOS` in [`src/data/levels.ts`](../src/data/levels.ts) is the
@@ -240,7 +242,7 @@ point is that any of the three works — and do not add a step targeting Continu
 
 *Three NPC gossip rounds, all `requiresAnalysis`, then a fourth that is crossfire. `setsDialogFlags: ['hetty-ad-hominem-witnessed']`.
 No `teachesFallacies` — the player already knows it by the time they can play this. Gated on
-`fallacy_known` / Ad Hominem. `revealChoiceAssessment: true`. One tutorial on `introduction:start`: this is not a debate —
+`dialog_flag: cass-named-ad-hominem`. `revealChoiceAssessment: true`. One tutorial on `introduction:start`: this is not a debate —
 moved here from 1.5, because this is the first gossip.*
 
 She never once mentions the water. That is the point, and she says it *to you*, not about
@@ -337,7 +339,11 @@ one to reveal, one to say — which nothing else in the game explains. It fires 
 *Full chrome except Insight: analysis on, `showInsightPoints: false`, moderator gauge on,
 recap on. 3 rounds. `setsDialogFlags: ['bram-grate-conceded']`.*
 
-Bram's rehearsed courtesy at the fence line the evening before. Round 1 (`impact: -10`,
+**Cass wears the score stills and is not on stage.** `moderatorId: 'cass'` — fox portraits
+`sneaky` 17 / `doubtful` 9 / `angry` 3 — so the fence stays a two-cast: Rue vs Bram, Bram
+the opponent. Duchess in 1.8 is the other pattern (in `characters`, centre slot). Bram's
+lead-in (and Dot, and Field Notes) name Cass sitting it as practice, before the
+owl has the floor. Round 1 (`impact: -10`,
 `requiresAnalysis`) is the headcount and the six weeks. Round 2 is a `rebuttal` — no prompt,
 and the effective option is a proposal, not a question. Option **C is locked**
 behind `unlockCondition: { round-1, s-r1-3, ad-hominem }` — the mechanic 1.6 exists to
@@ -348,10 +354,17 @@ halfway through the sentence.
 ### 1.8 — "The Pond Motion" (boss)
 
 *Full defaults except `showInsightPoints: false`. `playerSide: 'opposition'`,
-`availableLogicalFallacies: ['ad-hominem', 'appeal-to-popularity', 'false-dilemma']` — one
-Level-2 distractor, per the "few other fallacy types" rule in
-[logical_fallacies_distribution.md](./logical_fallacies_distribution.md). Talking to
-**Duchess** starts this; Tobias at the barn will only ever point you at her.*
+`availableLogicalFallacies: ['ad-hominem', 'appeal-to-popularity']` — only what the level
+taught, and nothing else. Talking to **Duchess** starts this; Tobias at the barn will only
+ever point you at her.*
+
+**The boss carries no distractor fallacy.** It used to list Level-2 `false-dilemma` on the
+picker on the strength of the "few other fallacy types" rule in
+[logical_fallacies_distribution.md](./logical_fallacies_distribution.md); an icon the player
+has never been taught is noise rather than difficulty, and it made the picker a
+three-way guess on a two-way lesson. The difficulty it used to supply now comes from
+**doubling up what the player does know**: rounds 1, 5, 7 and 9 each carry two fallacies, and round 4 puts both in one sentence, so the
+boss asks the 1.4 question — *which of these two is it, and is it both?* — three times.
 
 Duchess is in `characters` and on stage and **speaks not one line** — she is the moderator,
 which in this engine means the centre stage slot and the score emoji. Round types are
@@ -361,15 +374,15 @@ the recap heading. Beats 3 and 8 (Rue asks) use the player-asks wizard copy.
 | # | Beat | Content |
 |---|---|---|
 | 1 | NPC — Tobias, opening | The count (**appeal-to-popularity**) and the bin, offered as sympathy (**ad-hominem**). First wrong name. |
-| 2 | Player — opening | **C** *effective:* the pond is the farm's only clean water, the fouling has a cause, the cause can be looked at this evening. |
-| 3 | Player — crossfire, Rue asks | **C:** "Of the forty-one — how many have walked down to the outflow?" He has to say he does not know. |
+| 2 | Player — opening | **C** *effective:* the question is what is dirtying the water, not who drinks there; a thing like that has a cause, and a cause can be gone and looked at tonight. |
+| 3 | Player — crossfire, Rue asks | **C:** "Of your forty-one — how many have walked down to the outflow?" He has to say he does not know, and hears himself do it. |
 | 4 | Player — crossfire, Tobias asks | `opponentPrompt` fuses **both** fallacies into one gracious sentence. **C** takes it apart and answers only the part about the water. |
-| 5 | NPC — Tobias, rebuttal | The set piece: the mud cart and the bin (**ad-hominem**), then two roads and only two (**false-dilemma**). The round the player must analyse. |
+| 5 | NPC — Tobias, rebuttal | The set piece: the mud cart and the bin (**ad-hominem**), then the count handed back to the floor as though the farm had spoken for itself (**appeal-to-popularity**). Cass's 1.4 shape — both tricks in one breath — under full chrome. The round beat 6's payoff line depends on the player tagging — though no boss round sets `requiresAnalysis`, so nothing forces it. |
 | 6 | Player — rebuttal | **C** is gated on tagging the ad-hominem in round 5 *and* on `bram-grate-conceded`. Pays off *"what I am versus what happened"* and quotes Bram — possible only if the player actually went to the fence. |
-| 7 | Player — crossfire, Tobias asks | The bandwagon closer. **C:** agreeing is not checking, and nobody has said what they checked. |
+| 7 | Player — crossfire, Tobias asks | The bandwagon closer (**appeal-to-popularity**), and then the fox and the wolf who coached him, named and generously excused (**ad-hominem**). **C** owns the coaching, turns it into Cass's phrase, and produces **Hetty** — one of his own forty-one — and her moth. |
 | 8 | Player — crossfire, Rue asks | The exit question: if the grate is fixed and the pond clears, does the motion lapse? He cannot say yes without conceding cause. |
 | 9 | NPC — Tobias, closing | Pure **appeal-to-popularity** with one last gentle **ad-hominem**, so the last thing the floor holds is a fact about Rue's supper. |
-| 10 | Player — closing | **C:** "He is right that I eat out of the bins. Tuesdays are the good day. That is also how I know what is in your water — I have had my arm in that drain up to the shoulder, and not one of the forty-one has. So straighten the grate. If the pond has not run clear by the frost, put the motion again and I will haul the fence posts myself." |
+| 10 | Player — closing | **C:** "He is right. I eat out of the bins. Tuesdays are the good day. That is also how I know what is in your water… Only two of your forty-one have been near it — Hetty, going after a moth, and Bram, who told me at the fence. So straighten the grate. If the pond is not clear by the frost, bring the motion back and I will haul the fence posts myself." |
 
 Round 10 carries `opponentResponses`, which is unusual for a closing beat and is there for
 one reason: Tobias gets the last word, and against **C** he uses Rue's name correctly for
@@ -377,6 +390,32 @@ the first time all evening, works out why he had not been, and offers to hold th
 
 Round 10's C concedes falsifiability, which is the exact opposite of both fallacies — the
 level's thesis in one line, and the answer to the insult rather than a defence against it.
+
+**What the boss is built out of.** Every beat pays off a rung. Beat 1 runs Cass's two tricks
+in the order she named them; beat 4 is the 1.4 "two in one breath" put to Rue live instead of
+in rehearsal; beat 5 does it again under the gauge; beat 6 is Bram at the fence; beat 7 is
+Hetty and her moth; beat 10 gathers both witnesses. The organising idea underneath all of it:
+
+> **The forty-one is Rue's evidence, not Tobias's.**
+
+Both animals who have actually seen the bent grate — Bram, who conceded it in 1.7, and Hetty,
+who saw it in 1.5 going after a moth — are inside Tobias's own count. That is what lets Rue
+beat an Appeal to Popularity without calling a single animal in the room stupid, which every
+`logical_fallacy` option in the file does instead.
+
+**Register.** Short sentences, plain words, one clause where one clause will do — the boss is
+the most-read file in the level and it used to be the most ornate. Three jokes are pitched
+over the children's heads rather than at them, and none of them is decoration: Tobias
+collected his forty-one at the trough on a Friday night "when the trough is at its
+friendliest" (`s-r5-3` — the joke *is* the tell the player has to tag), he has nothing
+against a fox or a wolf "and neither has anybody else, out loud" (`s-r7-p3`), and after eleven
+years on the same hill his back can tell you all about it (`s-r9-1`).
+
+**The callbacks are flavour, not gates.** No option outside round 6 carries an
+`unlockConditions`, so the boss still reads correctly played cold from **Other scenarios**
+with no dialog flags set. Round 6's C keeps its existing pair — the in-debate tag on `s-r5-2`
+ANDed with `bram-grate-conceded` — and stays the one line in the level you can only say if
+you went and earned it.
 
 ---
 
@@ -505,7 +544,7 @@ tiny:
 | 1.4 teaching | 1 / 1 | **Two** sentences are doing something this time, tag both. |
 | 1.5 gossip | 1 / 1 | Continue is locked until you judge, including **Clean**. |
 | 1.6 lesson | 3 / 3 | Some answers are locked; catch him and the line opens; the third line only exists because you caught him; **one click opens it, a second says it**. |
-| 1.7 skirmish | 1 / 1 | The moderator is live again; the emoji is how she leans. |
+| 1.7 skirmish | 1 / 1 | Cass is sitting this one as practice, before Duchess; her face is how she leans. |
 
 1.8 carries none: it repeats mechanics the player has already met. 1.7 used to carry a
 second step explaining the locked option; 1.6 now teaches that properly, so the reminder
@@ -525,12 +564,22 @@ plain text, so an asterisk in a scenario line shows up as an asterisk.
   the parked gossip rung; the trimmed ladder gets it from Hetty and then from Bram under
   pressure, which is enough.
 - The teaching phrase **"what I am" versus "what happened"** is handed to the player by Cass
-  in 1.2, and **"how many, against how do you know"** in 1.4. Both are paid off in boss round
-  6. Later levels should introduce their own.
+  in 1.2, and **"how many, against how do you know"** in 1.4. The first is paid off in boss
+  round 6; the second never appears in the boss verbatim — its nearest echo is round 7's
+  *"agreeing is not checking"*. Later levels should introduce their own.
 - **The insult is the evidence.** Rue's answer to "you eat out of the bins" is never a
   denial; it is "yes, and that is why I know." Any later level that teaches a fallacy aimed
   at *who someone is* should look for the same move, because it is the only one that beats
   an Ad Hominem without becoming one.
+- **The crowd holds the witness.** The counterpart move, for Appeal to Popularity: put the
+  player's evidence *inside* the antagonist's own headcount. Bram and Hetty are both among
+  Tobias's forty-one, so beats 6, 7 and 10 turn the count into the thing that sinks it, and
+  Rue never has to tell a room full of animals that they are fools. Every option that does
+  insult the crowd is scored as the fallacy, which is the whole lesson in one column.
+- **A boss should not carry an untaught fallacy.** 1.8 shipped with a Level-2 distractor on
+  the picker and it made a two-way lesson into a three-way guess. Difficulty at the end of a
+  level comes from **doubling up** what was taught — two fallacies in one statement, as in
+  1.4 — not from an icon with no lesson behind it.
 - **Insight is not in Level 1 at all any more.** Nothing unlocks `insight_points`, so the
   counter, the pill and the Help button stay hidden the whole way through, including in the
   boss. The lesson that taught it is parked, not deleted. Whichever level picks it back up

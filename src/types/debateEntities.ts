@@ -352,11 +352,11 @@ export type TutorialCodexSection = 'next' | 'known' | 'spotted' | 'dialogs';
  */
 export type TutorialTargetRef =
   | { kind: 'panel'; panel: 'debate_log' | 'wizard' | 'interactive' }
-  /** Moderator opinion emoji (+ insight strip) in the debate log panel header. */
+  /** Moderator opinion face (+ insight strip) in the debate log panel header. */
   | { kind: 'debate_log_moderator_score' }
-  /** Moderator opinion emoji on the *collapsed* log's recap chip. */
+  /** Moderator opinion face on the *collapsed* log's recap chip. */
   | { kind: 'debate_log_recap_moderator_score' }
-  /** The ◀ / ▶ button that collapses or expands the log panel as a whole. */
+  /** The maximize / minimize button that collapses or expands the log panel as a whole. */
   | { kind: 'debate_log_panel_toggle' }
   | { kind: 'modal_round_recap_score' }
   | { kind: 'round_recap_action'; action: 'continue' }
@@ -497,7 +497,7 @@ export interface DebateScenarioMechanics {
   analysisEnabled?: boolean;
   /** Insight Points counter in the debate log header. Default `true`. */
   showInsightPoints?: boolean;
-  /** Moderator gauge, opinion emoji and per-round impact numbers. Default `true`. */
+  /** Moderator gauge, opinion face and per-round impact numbers. Default `true`. */
   showModeratorOpinion?: boolean;
   /** The per-round recap modal. When `false`, rounds advance straight through. Default `true`. */
   showRoundRecap?: boolean;
@@ -546,6 +546,13 @@ export interface DebateScenarioJson {
   playerSide: Side;
   /** Maps speakerId to a display name. Falls back to capitalizing the id when absent. */
   characters?: Record<string, string>;
+  /**
+   * Whose face the moderator status stills wear, when that animal is not also on stage.
+   * 1.7 names Cass so the fence skirmish stays Rue-vs-Bram while the score stills use her
+   * fox portraits. Omit to use a staged moderator (`characters` ∩ `MODERATOR_IDS`) or
+   * Duchess. See `debateModeratorId`.
+   */
+  moderatorId?: string;
   logicalFallacies: LogicalFallacyScenario[];
   availableLogicalFallacies: LogicalFallacyId[];
   /** Initial Insight Points balance the player starts the debate with. Defaults to 0. */

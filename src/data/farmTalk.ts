@@ -85,6 +85,7 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'bram', textLabel: 'farmDialogBram3a' },
     { speakerId: RUE, textLabel: 'farmDialogBram3b' },
     { speakerId: 'bram', textLabel: 'farmDialogBram3c', emotion: 'doubtful' },
+    { speakerId: 'bram', textLabel: 'farmDialogBram3d', emotion: 'thinking' },
   ],
   bramDone: [
     { speakerId: 'bram', textLabel: 'farmDialogBramDoneA' },

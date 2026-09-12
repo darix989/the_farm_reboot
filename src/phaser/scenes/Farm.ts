@@ -19,7 +19,6 @@ import { useTutorialStore } from '../../store/tutorialStore';
 import { PLAYER_CHARACTER_ID, resolveCharacter } from '../../data/characters';
 import getLabel from '../../data/labels';
 import { animalSetup } from '../animals/animalAnimations';
-import { animalSetup } from '../animals/animalAnimations';
 import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
 import { reportSceneLoadProgress } from '../bootProgress';

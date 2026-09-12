@@ -17,7 +17,6 @@ import {
 import { useConditionContext } from '../../hooks/useGameConditions';
 import {
   getSpeakerName,
-  moderatorOpinionEmoji,
   qualityColor,
   qualityLabel,
   recapText,
@@ -26,12 +25,14 @@ import {
 } from '../utils/trialHelpers';
 import type { ResolvedMechanics } from '../utils/scenarioMechanics';
 import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
+import ModeratorStatusFace from '../components/ModeratorStatusFace';
 import { useWindowKeyDown } from '../../hooks/useWindowKeyDown';
 import { isContinueCode, shouldIgnoreActionShortcut } from '../utils/trialActionShortcuts';
 import cn from 'classnames';
 import shared from '../trialShared.module.scss';
 import styles from './RoundRecapModal.module.scss';
 import getLabel from '../../../data/labels';
+import { debateModeratorId } from '../../../data/debateCast';
 
 type Wf = ReturnType<typeof useTrialRoundWorkflow>;
 
@@ -135,12 +136,16 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
     : null;
 
   const roundHeading = round
-    ? getLabel('roundHeadingWithStatementType', {
-        replacements: {
-          roundNumber: round.roundNumber,
-          statementType: statementTypeLabel(round.type),
-        },
-      })
+    ? mechanics.showRoundType
+      ? getLabel('roundHeadingWithStatementType', {
+          replacements: {
+            roundNumber: round.roundNumber,
+            statementType: statementTypeLabel(round.type),
+          },
+        })
+      : getLabel('workflowRoundPlain', {
+          replacements: { roundNumber: round.roundNumber },
+        })
     : getLabel('roundRecap');
 
   // NPC round body: speaker name + statement text shown in place of "Your statement".
@@ -287,18 +292,22 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
                   <div className={styles.recapScoreRow}>
                     <div className={styles.recapScoreColumn}>
                       <p className={styles.recapSectionLabel}>{getLabel('activeRoundImpact')}</p>
-                      <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
+                      <p className={cn(styles.recapBody, styles.recapScoreFace)}>
                         <span aria-label={activeRoundImpactAriaLabel}>
-                          <span aria-hidden="true">
-                            {moderatorOpinionEmoji(recap.lastCompleted.impact)}
-                          </span>
+                          <ModeratorStatusFace
+                            score={recap.lastCompleted.impact}
+                            characterId={debateModeratorId(debate)}
+                          />
                         </span>
                       </p>
                     </div>
                     <div className={styles.recapScoreColumn}>
                       <p className={styles.recapSectionLabel}>{getLabel('overallScore')}</p>
-                      <p className={cn(styles.recapBody, styles.recapScoreEmoji)}>
-                        <ModeratorOpinionInline score={wf.totalScore} />
+                      <p className={cn(styles.recapBody, styles.recapScoreFace)}>
+                        <ModeratorOpinionInline
+                          score={wf.totalScore}
+                          characterId={debateModeratorId(debate)}
+                        />
                       </p>
                     </div>
                   </div>

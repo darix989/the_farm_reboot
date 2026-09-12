@@ -62,6 +62,15 @@ const LABELS = {
   galleryFacePreviewShip: '112 px · as it ships',
   galleryFacePreviewRetina: '224 px · 2× display',
   galleryFaceNoPreview: 'No portrait cropped for this emotion yet.',
+  galleryStatusFacesHeading: "Moderator's opinion (still frames)",
+  galleryStatusFacesNote:
+    'Three frames of the approving portrait above, held still — the eyes open from nearly shut to fully round, and how much yellow is left is the whole signal. Shown at roughly the size they ship at.',
+  galleryStatusFacesNoteFox:
+    'Three frames of three portraits above, held still — a sly grin, a half-lid, a snarl. Shown at roughly the size they ship at.',
+  galleryStatusFaceDisapproval: 'disapproves',
+  galleryStatusFaceNeutral: 'undecided',
+  galleryStatusFaceApproval: 'approves',
+  galleryStatusFaceMeta: '{emotion} · frame {frame}',
   galleryQualityPass: 'OK',
   galleryQualityWarn: 'check',
   galleryQualityUnknown: '?',
@@ -124,6 +133,11 @@ const LABELS = {
   debaterQuestion: "{name}'s question",
   roundHeader: 'Round {roundNumber} — ',
   roundHeadingWithStatementType: 'Round {roundNumber} — {statementType}',
+  statementTypeOpeningConstructive: 'Opening Constructive',
+  statementTypeRebuttal: 'Rebuttal',
+  statementTypeCrossfire: 'Crossfire',
+  statementTypeClosingConstructive: 'Closing Constructive',
+  statementTypeGossip: 'Gossip',
   analyzeStatementGroupAria: 'Analyze statement',
   analyzeQuestionGroupAria: 'Analyze question',
   analyzeYourLineGroupAria: 'Analyze your line',
@@ -346,7 +360,7 @@ const LABELS = {
   farmDialogCass2a: 'Back already. And somebody has been counting at you.',
   farmDialogCass2b: 'Forty-one of them, she said.',
   farmDialogCass2c:
-    'Forty-one. She said the number and you felt it land, and not one of the forty-one has been down to the water. There is a name for that as well. Stand at the post.',
+    'Forty-one. She said the number and you felt it land, and **[accent]not one of them will tell you what any of the forty-one went and looked at[/accent]**. There is a name for that as well. Stand at the post.',
   farmDialogCassDone:
     'Nothing more from me. Save it for Sunday, and whatever he says, do not let him make it about you.',
   farmDialogCassDoneA: 'Nothing more from me. Save it for Sunday.',
@@ -356,7 +370,7 @@ const LABELS = {
   farmDialogCassMeetB: 'I am looking for the fox.',
   farmDialogCassMeetC: 'Come back when you have something to ask. I am not here to be looked at.',
   farmDialogBram1:
-    'Dot sent you, then. Sunday, against Tobias. I will show you how a conversation works here.',
+    'Dot sent you, then. Sunday, against Tobias. I will show you **[accent]how a conversation works[/accent]** here.',
   farmDialogBram1a:
     'Bram? Dot sent me. There is a motion on the pond on Sunday, and I have put my name down to speak against it.',
   farmDialogBram1b: 'You — against Tobias. On the floor. And you came down here. To the wolf.',
@@ -368,18 +382,20 @@ const LABELS = {
   farmDialogBram2a: 'There is another piece.',
   farmDialogBram2b: 'Go on.',
   farmDialogBram2c:
-    'This one I cannot simply tell you. I have to be unpleasant first, on purpose, so you can catch me at it. I have been dreading it since breakfast.',
+    'This one I cannot simply tell you. I have to be unpleasant first, on purpose, so **[accent]you can catch me at it[/accent]**. I have been dreading it since breakfast.',
   farmDialogBram3:
-    'No more lessons. I am one of the forty-one, and I would rather you had the argument from me than from Tobias on Sunday.',
+    'No more lessons. I am one of the forty-one, and I would rather you had the argument from me than from Tobias on Sunday. Cass will sit it — practice, before Duchess.',
   farmDialogBram3a: 'No more lessons. I think we are past those.',
   farmDialogBram3b: 'What is this, then?',
   farmDialogBram3c:
-    'I am one of the forty-one, Rue. I put my name to the motion. I would rather you had that argument from me, here, where it costs you nothing — than from Tobias on Sunday, where it costs you everything.',
+    '**[accent]I am one of the forty-one[/accent]**, Rue. I put my name to the motion. I would rather you had that argument from me, here, where it costs you nothing — than from Tobias on Sunday, where it costs you everything.',
+  farmDialogBram3d:
+    'The fox said she would sit it. **[accent]Practice[/accent]**, she called it, before Duchess has the floor. I did not ask her to.',
   farmDialogBramDone:
     'I have said a great deal more than I should have. The grate is bent. You did not hear it from me.',
   farmDialogBramDoneA: 'I have said a great deal more than I should have.',
   farmDialogBramDoneB:
-    'The grate is bent. You did not hear that from me. You may say on Sunday that you heard it from me.',
+    '**[accent]The grate is bent.[/accent]** You did not hear that from me. You may say on Sunday that you heard it from me.',
   farmDialogBramMeetA: 'I walk the fence. Both ways, every day. You do not have to stop.',
   farmDialogBramMeetB: 'Dot mentioned you.',
   farmDialogBramMeetC: 'Then she is ahead of me. I would not know what to show you yet.',
@@ -395,7 +411,7 @@ const LABELS = {
     'The floor is finished for now. I moderate. I do not take sides, and I did not take one.',
   farmDialogDuchessDoneA: 'The floor is finished, for now.',
   farmDialogDuchessDoneB:
-    'I moderate. I do not take sides, and I did not take one. It is going to be a fine week, I imagine. I would not know.',
+    'I moderate. **[accent]I do not take sides[/accent]**, and I did not take one. It is going to be a fine week, I imagine. I would not know.',
   farmDialogDuchessMeetA: 'The motion is with me. It is heard on Sunday.',
   farmDialogDuchessMeetB: 'Can I speak?',
   farmDialogDuchessMeetC:
@@ -409,9 +425,9 @@ const LABELS = {
   farmDialogTobiasDone: 'The pond is settled, then. For this year.',
   farmDialogTobiasDoneA: 'The pond is settled, then. For this year.',
   farmDialogTobiasDoneB:
-    'I will say this once and not again: I have pulled a cart past that drain for eleven years and never once looked into it. Good morning, Rue.',
+    'I will say this once and not again: I have pulled a cart past that drain for eleven years and **[accent]never once looked into it[/accent]**. Good morning, Rue.',
   farmDialogDot1:
-    'You are the new raccoon. Rue, is it? Tobias has put a motion on the pond — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, at the fence. Then Cass at the west post.',
+    'You are the new raccoon. Rue, is it? Tobias has put a motion to keep the Old Pond for the Meadow-Born and send the rest of you to the road trough — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, at the fence. Then Cass at the west post.',
   farmDialogDot1a:
     'You are the new raccoon! Rue, is it? Or Roo — somebody said Roo. I am Dot. I mind the yard.',
   farmDialogDot1b: 'Rue. Six weeks now. I do the hauling, the repairs and the bins.',
@@ -422,17 +438,17 @@ const LABELS = {
     'That is not about you, that is the week we are having. I would blame the weather. It is not the weather.',
   farmDialogDot1f: 'What is wrong with the week?',
   farmDialogDot1g:
-    'There is a debate coming. Tobias has put a motion on the Old Pond — that it is finished, and ought to be drained and filled in and forgotten. It is heard Sunday, on the floor of the Public Farm, in front of Duchess.',
-  farmDialogDot1h: 'That is a large thing to lose.',
+    'There is a **[accent]debate[/accent]** coming. Tobias has put a motion on the Old Pond — that the water be kept for the Meadow-Born, the ones born on this meadow, and that **[accent]every animal who arrived here after them go and drink at the road trough instead[/accent]**. It is heard Sunday, on the floor of the Public Farm, in front of Duchess.',
+  farmDialogDot1h: 'That is me, then. And the road trough is half a mile down the lane.',
   farmDialogDot1i:
-    'It is. And he says it so warmly that everybody has agreed with him before they work out what they have agreed to.',
-  farmDialogDot1j: 'So who is speaking for the pond?',
+    'It is. He says the arrivals are what turned the water brown, and he says it so warmly that everybody has agreed with him before they work out what they have agreed to.',
+  farmDialogDot1j: 'And who speaks for the rest of us? The ones he wants sent down the lane.',
   farmDialogDot1k:
-    'Nobody. Not one animal. They nod at the trough and say the opposite at home, and out here only the nodding is counted.',
-  farmDialogDot1l: 'Then I will speak for it.',
+    'Nobody. Not one animal. Plenty of them grumble about it at home, and then agree with him to his face. **[accent]Only the agreeing out loud gets counted.[/accent]**',
+  farmDialogDot1l: 'Then I will speak for us.',
   farmDialogDot1m: 'You — you have been here six — right. Yes. Somebody had to be somebody.',
   farmDialogDot1n:
-    'But there are rules, and nobody has written them down. Partly because not one animal here knows what writing is. Mostly because rules nobody wrote are the easiest kind to break. You will want to know how this farm argues before you go and stand in front of it.',
+    'But there are rules, and nobody has written them down. Partly because not one animal here knows what writing is. Mostly because rules nobody wrote are the easiest kind to break. You will want to know **[accent]how this farm argues[/accent]** before you go and stand in front of it.',
   farmDialogDot1o: 'Where do I start?',
   farmDialogDot1p:
     'Bram. The wolf, down at the fence. He will pretend he is checking it. Let him. He is the one who will show you how a conversation works here, before Cass gets her teeth into you. Then Cass at the west post, then Hetty at the trough, then the barn when you want the floor.',
@@ -460,11 +476,11 @@ const LABELS = {
   farmDialogDot5c:
     'She was not finished. She never is. And the one true thing she has to give you is somewhere near the end of it, so you will have to sit through the rest of it to get there.',
   farmDialogDot6:
-    'Bram, at the fence. He has one more piece for you, and then he will argue the motion at you properly.',
+    'Bram, at the fence. He has one more piece for you, and then he will argue the motion at you properly — Cass is coming down to sit that one.',
   farmDialogDot6a: 'Bram, at the fence. Twice, I should think.',
   farmDialogDot6b: 'Twice?',
   farmDialogDot6c:
-    'He has one more piece to show you, and then he will argue the motion at you for real. He put his name to it, you know. He will hate every minute of it and he will do it anyway, which is the most wolf thing about him.',
+    'He has one more piece to show you, and then he will argue the motion at you for real. **[accent]Cass is coming down to sit that one[/accent]**, she says — practice, before the owl has the floor. He put his name to it, you know. He will hate every minute of it and he will do it anyway, which is the most wolf thing about him.',
   farmDialogDot7: 'Duchess has the motion at the barn. That is the floor, whenever you want it.',
   farmDialogDot7a: 'Duchess has the motion at the barn. That is the floor, whenever you want it.',
   farmDialogDot7b: 'And that is everyone?',
@@ -473,14 +489,14 @@ const LABELS = {
   farmDialogDotDone: 'I have pointed you at everyone I can. The rest is the floor.',
   farmDialogDotDoneA: 'I have pointed you at everyone I can point you at.',
   farmDialogDotDoneB:
-    'The rest is the floor, and the floor is not mine. Good luck. Mind the drain.',
+    'The rest is the floor, and the floor is not mine. Good luck. **[accent]Mind the drain.[/accent]**',
 
   // Post-Trial follow-ups (`followUp:{scenarioKey}` in farmTalk.ts). Same animal, short, and
   // they name the next stop so Field Notes Next can move after the last beat settles.
   farmDialogFollowUpBramRoundsA: 'That is both halves. I think you have it.',
   farmDialogFollowUpBramRoundsB: 'Where now?',
   farmDialogFollowUpBramRoundsC:
-    'The fox. West post. I am not saying that because I am a wolf. I am saying it because she will give you a name you do not have yet.',
+    'The fox. West post. I am not saying that because I am a wolf. I am saying it because she will give you **[accent]a name you do not have yet[/accent]**.',
   farmDialogFollowUpCassAdHominemA: 'You have the name. Do not lose it on the walk to the trough.',
   farmDialogFollowUpCassAdHominemB: 'Hetty.',
   farmDialogFollowUpCassAdHominemC:
@@ -493,16 +509,16 @@ const LABELS = {
   farmDialogFollowUpCassPopularityA: 'How many, not how. You have both names now.',
   farmDialogFollowUpCassPopularityB: 'Hetty again?',
   farmDialogFollowUpCassPopularityC:
-    'The trough. She has more news, and this time it is not only about you. Buried in it is something somebody actually saw.',
+    'The trough. She has more news, and this time it is not only about you. Buried in it is **[accent]something somebody actually saw[/accent]**.',
   farmDialogFollowUpHettyGrateA:
-    'A grate. Bent. I saw it with my own eyes, which is more than most animals can say.',
+    'A grate. Bent. **[accent]I saw it with my own eyes[/accent]**, which is more than most animals can say.',
   farmDialogFollowUpHettyGrateB: 'I should tell someone who argues.',
   farmDialogFollowUpHettyGrateC:
     'The wolf, down at the fence. He hears everything. I did not say that. I said I saw a grate.',
   farmDialogFollowUpBramUnlocksA: 'That is the locked line. I am sorry I had to be unpleasant.',
   farmDialogFollowUpBramUnlocksB: 'Is that all of the lessons?',
   farmDialogFollowUpBramUnlocksC:
-    'That is all of the lessons. Talk to me again when you want the real one. I am one of the forty-one. I would rather you had it from me.',
+    'That is all of the lessons. Talk to me again when you want the real one. I am one of the forty-one. I would rather you had it from me. The fox said she would sit it — **[accent]practice[/accent]**, before the owl.',
   farmDialogFollowUpBramSkirmishA:
     'The grate is bent. You did not hear it from me, except that you may say on Sunday that you did.',
   farmDialogFollowUpBramSkirmishB: 'Sunday.',
@@ -564,7 +580,7 @@ const LABELS = {
     'Some of what you could say back is locked until you catch the other animal at something. He will do something unkind on purpose so that you can.',
   levelGoalBramSkirmishTitle: 'Bram, for a real one',
   levelGoalBramSkirmishBody:
-    'No more lessons. He is one of Tobias’s forty-one, and he will argue the motion at you properly — bring what you have.',
+    'No more lessons. He is one of Tobias’s forty-one, and he will argue the motion at you properly — bring what you have. Cass is sitting it as practice, so you see a moderator before Duchess has the floor.',
   levelGoalDuchessTitle: 'Duchess, at the barn',
   levelGoalDuchessBody: 'She has the motion. That is the floor, whenever you want it.',
   codexKnownProgress: '{known} of {total} known',
@@ -603,7 +619,7 @@ const LABELS = {
     'Bram was unpleasant to you on purpose so that you could catch him at it, and the answer that had been greyed out all along opened up. Spotting and speaking are the same game; that is where they meet.',
   dialogFlagBramGrateTitle: 'get Bram to talk about the grate',
   dialogFlagBramGrateBody:
-    'At the fence line, before you had asked him anything: the outflow grate has been bent since before the frost. Bram is one of Tobias’s own forty-one, which makes him the best witness on this farm and the one it costs him most to be.',
+    'You put it to him straight at the fence line and he gave it up on the spot: the outflow grate has been bent since before the frost, and he has known the whole time. Bram is one of Tobias’s own forty-one, which makes him the best witness on this farm and the one it costs him most to be.',
 
   // Feature unlocks — titles read as directions, same contract as dialog flags.
   featureInsightPointsTitle: 'learn what Insight is from Bram at the fence',

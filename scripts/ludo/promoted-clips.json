@@ -405,6 +405,24 @@
       },
       "generatedAt": "2026-09-05T04:23:16.943Z"
     },
+    "approving": {
+      "file": "owl-approving.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.1556,
+      "originX": 0.5107,
+      "originY": 0.75,
+      "prompt": "Front view, facing the viewer. A close shot of the owl, won over by what it is hearing. Its body, wings and feet stay exactly as they are in the reference image and do not move at all — the wings remain tucked down at its sides in the same shape as the reference in every frame. ONLY THE HEAD MOVES, and it moves as one solid piece: the whole head cocks slowly over to one side in a warm interested tilt, its two ear tufts pricking forward with it, then rights itself again. Its two big eyes stay wide open and bright yellow in every frame, the same round shape and the same size as the reference, each pupil one small solid black circle — the yellow always fills the eye. The brow feathers stay lifted and smooth, never pressing down over the eyes. The beak stays closed and tips up a little. Nothing else in the picture changes. The movement is ONE slow continuous tilt from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.14,
+        "heightSwing": 6.3,
+        "driftX": 5.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-11T21:49:22.976Z"
+    },
     "doubtful": {
       "file": "owl-doubtful.png",
       "frameWidth": 512,

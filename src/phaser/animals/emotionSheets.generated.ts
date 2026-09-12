@@ -389,6 +389,22 @@ export const EMOTION_SHEETS: Partial<
         warnings: [],
       },
     },
+    approving: {
+      file: 'owl-approving.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 2.1556,
+      originX: 0.5107,
+      originY: 0.75,
+      quality: {
+        loopPop: 0.14,
+        heightSwing: 6.3,
+        driftX: 5.5,
+        warnings: [],
+      },
+    },
     doubtful: {
       file: 'owl-doubtful.png',
       frameWidth: 512,

@@ -49,7 +49,7 @@ import {
   revealChunks,
   statementText,
 } from '../trial/utils/trialHelpers';
-import { debateParticipantIds, stageOrder } from '../../data/debateCast';
+import { debateModeratorId, debateParticipantIds, stageOrder } from '../../data/debateCast';
 import {
   isOptionGated,
   isPlayerOptionUnlocked,
@@ -958,7 +958,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_complete':
         return {
           title: getLabel(encounterLabels(debate).finished),
-          body: moderatorOpinionPlainText(wf.totalScore),
+          body: mechanics.showModeratorOpinion ? moderatorOpinionPlainText(wf.totalScore) : '',
         };
       default:
         return null;
@@ -974,6 +974,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
     fallacyGuesses,
     conditions,
     mechanics.analysisEnabled,
+    mechanics.showModeratorOpinion,
     getSpottedFallacies,
   ]);
 
@@ -1157,6 +1158,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
           maxAnalysisAttempts={mechanics.maxAnalysisAttempts}
           showInsightPoints={mechanics.showInsightPoints}
           showRoundType={mechanics.showRoundType}
+          moderatorCharacterId={debateModeratorId(debate)}
         />
       )}
       {introSummaryOpen && mechanics.showIntroSummary && wf.gamePhase === 'debate_intro' && (

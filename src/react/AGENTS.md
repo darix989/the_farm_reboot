@@ -218,10 +218,10 @@ Three things worth knowing before you touch it:
   cost — per-round expand overrides reset — is harmless, since cards default to shrunk.
 - **The chip and the panel are mutually exclusive in the DOM.** Collapsing unmounts the
   panel and mounts the chip, so a bare `querySelector` can target either state on purpose.
-  The moderator emoji on the chip is `debate_log_recap_moderator_score`; the same strip in
+  The moderator face on the chip is `debate_log_recap_moderator_score`; the same strip in
   the expanded header is `debate_log_moderator_score`. Only the header kind is in
   `tutorialNeedsDebateLog` — adding the chip kinds there would auto-expand the panel and
-  unmount the controls they point at. The whole-panel ◀ / ▶ is `debate_log_panel_toggle`
+  unmount the controls they point at. The whole-panel maximize / minimize is `debate_log_panel_toggle`
   (`data-debate-log-toggle-panel`, already on `DebateLogToggleButton`).
 
 ### Feedback panel (`trial/panels/FeedbackPanel.tsx`)

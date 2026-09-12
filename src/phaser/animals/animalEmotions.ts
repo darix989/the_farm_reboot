@@ -37,6 +37,12 @@ export const ANIMAL_EMOTIONS = [
   /** Sneaky, "sus": low and conspiratorial, glancing sideways mid-line. */
   'sneaky',
   /**
+   * Approving: won over, weight settling, a slow satisfied nod.
+   *
+   * Authored for the moderator status indicator rather than the stage — see the note below.
+   */
+  'approving',
+  /**
    * `talking` again, but with the body and head **locked still** so only the face moves.
    *
    * A portrait source, not a stage posture — see the "still variants" note below. Playing it on
@@ -47,6 +53,28 @@ export const ANIMAL_EMOTIONS = [
 ] as const;
 
 /**
+ * ## `approving` exists for a still frame, not for the stage
+ *
+ * The debate's moderator status used to be three text emoji (😊 / 😐 / 😠) sitting next to a cast
+ * of hand-drawn animals — the one place in the trial UI where the art stopped. Duchess the owl
+ * *is* the moderator, so `approving` was generated to give her a pleased face: nothing in the
+ * vocabulary was one, and her existing clips only covered a glare and a level neutral.
+ *
+ * It is therefore the second entry here (after `talking_still`) that names something other than
+ * a stage posture, and for the opposite reason: `talking_still` takes motion *out* of a posture
+ * for the portrait crop, while `approving` is a posture nobody plays at 300px. Nothing in
+ * `activeEmotionForWorkflow` derives it — the status indicator picks its frames directly. Playing
+ * it on stage is not wrong (a convinced listener nodding is a real beat), just currently unused.
+ *
+ * It ended up carrying **all three** of Duchess's status states rather than one, which is
+ * the better design for her and was not the plan. Its 25 frames open the owl's eyes from
+ * nearly shut to fully round, so three frames of this one clip give three apertures of an
+ * otherwise identical head — the eyes are the only thing that changes, and "how much bright
+ * yellow is left" is a single monotonic quantity a player can read at ~1.6em. Cass's fox
+ * stills do the opposite on purpose: three portraits (`sneaky` / `doubtful` / `angry`),
+ * because no single fox clip opens along one axis that way. See `moderatorOpinionFace()` in
+ * `src/react/trial/utils/trialHelpers.ts`.
+ *
  * ## Still variants (`<emotion>_still`)
  *
  * These exist because the two registers want opposite things from the same clip, and until now

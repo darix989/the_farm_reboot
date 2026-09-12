@@ -5,7 +5,7 @@
  * derive its cast without importing from `src/react/` (see AGENTS.md's layering rules) —
  * this is a pure function over scenario content, not React-side logic.
  */
-import { PLAYER_CHARACTER_ID } from './characters';
+import { PLAYER_CHARACTER_ID, resolveCharacter, type AnimalSpriteId } from './characters';
 import type { DebateScenarioJson } from '../types/debateEntities';
 
 export function debateParticipantIds(debate: DebateScenarioJson): string[] {
@@ -26,9 +26,44 @@ export function debateParticipantIds(debate: DebateScenarioJson): string[] {
   return [...ids];
 }
 
+/**
+ * Who the farm's moderator is when nobody is staged as one.
+ *
+ * Most debates show a moderator's opinion without a moderator on stage — Bram's first
+ * lesson has no owl in it — because the score is the room's judgement, not a character's.
+ * The status indicator still needs a face to wear, and Duchess is the farm's moderator, so
+ * she lends hers unless the scenario names someone else (`moderatorId`) or stages a
+ * moderator. See `debateModeratorId`.
+ */
+export const DEFAULT_MODERATOR_ID = 'duchess';
+
 /** Puts a moderator, if present, in the centre slot of a 3+ cast; otherwise player-first,
  *  then scenario order. The schema has no explicit moderator flag, so this is a short list. */
-const MODERATOR_IDS = new Set(['duchess']);
+const MODERATOR_IDS = new Set([DEFAULT_MODERATOR_ID, 'cass']);
+
+/**
+ * Whose face the status stills wear for this debate.
+ *
+ * An authored `moderatorId` wins — that is how 1.7 gives Cass the stills without putting
+ * her on stage as a third body (the opponent slot stays Bram's). Otherwise a staged
+ * moderator in the cast (Duchess in 1.8), otherwise {@link DEFAULT_MODERATOR_ID}.
+ * `stageOrder()` still only centres someone who is actually in the cast.
+ */
+export function debateModeratorId(debate: DebateScenarioJson): string {
+  if (debate.moderatorId) return debate.moderatorId;
+  for (const id of debateParticipantIds(debate)) {
+    if (MODERATOR_IDS.has(id)) return id;
+  }
+  return DEFAULT_MODERATOR_ID;
+}
+
+/** Which character's stills the Animation Gallery should show for this skin, if any. */
+export function moderatorCharacterIdForAnimal(animalId: AnimalSpriteId): string | null {
+  for (const id of MODERATOR_IDS) {
+    if (resolveCharacter(id).animal === animalId) return id;
+  }
+  return null;
+}
 
 /**
  * Left-to-right stage order for a cast. Shared by the Phaser `Trial` scene (which lays
