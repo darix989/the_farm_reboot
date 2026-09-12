@@ -54,20 +54,28 @@ scene, not derived at runtime — keep it in agreement with the placed layer sta
 `greenMeadowsRoad` numbers, `{ top: 837, bottom: 999 }`, match `firstTop: 400,
 scale: 0.8543` exactly; if you change either, recompute the walkable band too).
 
-## Rendering: two recipes, not one
+## Rendering: one recipe for every band
 
-`sideSceneLayers.ts` builds the stack. Bands with `parallax < 1` are viewport-pinned
-(`scrollFactor(0)`, sized to their own band height, not the full viewport — a
-`TileSprite`'s fill canvas is real GPU memory) and their `tilePositionX` is driven from
-the scene's own `scrollX` each frame. The road and front-grass (`parallax === 1`) are the
-opposite: ordinary **world-space** tile sprites, `scrollFactor(1)`, re-snapped to a whole
-tile boundary once a frame instead of ever touching `tilePositionX`. That makes anything
-standing on the road pixel-locked to it with no one-frame lag — see the big comment at
-the top of `sideSceneLayers.ts` for the Phaser-internals reasons both recipes exist.
+`sideSceneLayers.ts` builds the stack. Every band — backdrop or road — is
+viewport-pinned (`scrollFactor(0)`, sized to its own band height, not the full
+viewport, since a `TileSprite`'s fill canvas is real GPU + CPU memory) with
+`tilePositionX` driven from the scene's own `scrollX` each frame:
+`tilePositionX = (scrollX * parallax) / scale`. A backdrop band's `parallax < 1` scrolls
+it slower than the camera; the road and front-grass (`parallax === 1`) scroll at exactly
+the camera's own rate, which is what "pixel-locked to world coordinates" means for a
+`scrollFactor(0)` object — there is nothing world-space about them.
 
-The scene drives its own camera (`FarmSide.updateCamera`) rather than `startFollow`, so
-every parallax calculation reads the same locally-computed `scrollX` in the same tick
-Phaser will render it — no `PRE_RENDER` hook, no one-frame stale read.
+This only works lag-free because `FarmSide` never reads `camera.scrollX` back out of
+the camera (that value is one frame stale — Phaser assigns it during its own render
+pass, *after* `update()` runs). Instead the scene computes `scrollX` itself once per
+frame (`FarmSide.updateCamera`) and both assigns it to `cam.scrollX` and passes the same
+local value to `sceneLayers.update()`, so every band's `tilePositionX` and the camera
+agree in the same tick. An earlier version gave `parallax === 1` bands a different,
+"world-space `TileSprite` re-snapped to a tile boundary every frame" recipe instead —
+the textbook fix for that one-frame lag, and unnecessary here since there's no lag to
+fix — and its re-snap math used the band's native content width rather than the
+power-of-two width the file is actually padded to, so the road's texture visibly jumped
+a few pixels out of phase each time the snap point was crossed. Don't reintroduce it.
 
 ## The depth model
 

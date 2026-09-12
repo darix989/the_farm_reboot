@@ -2,21 +2,27 @@
  * Builds the parallax band stack (sky + backdrop bands + road + front-grass occluder)
  * and updates it once per frame from the scene's own locally-computed `scrollX`.
  *
- * Two different recipes, not one, because `parallax === 1` (the road) has to be
- * pixel-locked to world coordinates for whatever stands on it, while every band behind
- * it can be a cheap viewport-pinned fill:
+ * Every band uses the same recipe: `scrollFactor(0)`, sized to the band's own screen
+ * height (not the full viewport — a `TileSprite`'s internal canvas is real GPU + CPU
+ * memory, and every band here is a few hundred px tall), with `tilePositionX` driven
+ * from the scene's own `scrollX` each frame — divided by `tileScaleX`, since
+ * `tilePositionX` is measured in unscaled source pixels but multiplied by `tileScaleX`
+ * at render time; skipping that division scrolls every band at the wrong rate.
  *
- * - **`parallax < 1`**: `scrollFactor(0)`, sized to the band's own screen height (not
- *   the full viewport — a `TileSprite`'s internal fill canvas is real GPU + CPU memory,
- *   and every band here is a few hundred px tall). `tilePositionX` is driven from the
- *   scene's own `scrollX`, divided by `tileScaleX` — `tilePositionX` is measured in
- *   unscaled source pixels but multiplied by `tileScaleX` at render time, so skipping
- *   the division scrolls every band at the wrong rate.
- * - **`parallax === 1`** (road, front-grass): an ordinary **world-space** `TileSprite`,
- *   `scrollFactor(1)`, `tilePositionX` never touched, re-snapped to a whole tile
- *   boundary once per frame instead: `x = floor((scrollX - P) / P) * P`. That makes it
- *   pixel-locked to world coordinates by construction, with no per-frame `scrollX` math
- *   tied to the camera at all, and no one-frame lag against the walker.
+ * `parallax` ranges from 0 (pinned, doesn't scroll at all) to 1 (the road: scrolls
+ * exactly as fast as the camera, i.e. pixel-locked to world coordinates). An earlier
+ * version gave `parallax === 1` bands a different, "world-space" recipe instead,
+ * re-snapping the sprite's own `x` to a tile boundary every frame — that is the
+ * textbook fix for the one-frame lag `camera.scrollX` has if you read it back out of
+ * the camera in `update()` (Phaser assigns it during its own render pass, *after*
+ * `update()` runs). This scene never reads it back: `FarmSide` computes `scrollX`
+ * itself once per frame and both assigns it to `cam.scrollX` and passes it here, so
+ * every band already reads the same same-tick value — there is no lag to work around.
+ * The re-snapping recipe was worse besides being unnecessary: its tile-boundary math
+ * used the band's *native* content width, not the power-of-two width the file was
+ * padded to (`build-farm-kit-manifest.mjs`), which is the period `TileSprite` actually
+ * repeats at — a mismatch that made the road's texture jump a few pixels out of phase
+ * exactly when the snap point was crossed.
  *
  * Front grass is the **last** entry in `descriptor.layers` by convention (see
  * `STANDARD_FARM_LAYERS`) and gets `BAND_DEPTH.front` instead of the road's depth —
@@ -24,7 +30,6 @@
  * front of the walker's feet" work.
  */
 import type { Scene } from 'phaser';
-import { FARM_KIT_ASSETS } from './farmKit.generated';
 import { sideSceneTextureKey } from './sideSceneAssets';
 import { stackLayers } from './sideSceneLayerStack';
 import { BAND_DEPTH } from './sideSceneProps';
@@ -60,42 +65,31 @@ export function buildSideSceneLayers(
     .setScrollFactor(0)
     .setDepth(SKY_DEPTH);
 
-  const backdrops: { sprite: Phaser.GameObjects.TileSprite; parallax: number }[] = [];
-  const worldBands: { sprite: Phaser.GameObjects.TileSprite; tileWidthPx: number }[] = [];
+  const bands: { sprite: Phaser.GameObjects.TileSprite; parallax: number }[] = [];
 
   placed.forEach((layer, index) => {
     const key = sideSceneTextureKey(layer.asset);
     const height = layer.bottom - layer.top;
-
-    if (layer.parallax >= 1) {
-      const isFrontGrass = index === placed.length - 1;
-      const tileWidthPx = FARM_KIT_ASSETS[layer.asset].width * descriptor.scale;
-      const width = VIEWPORT_WIDTH + 2 * tileWidthPx;
-      const sprite = scene.add
-        .tileSprite(0, layer.top, width, height, key)
-        .setOrigin(0, 0)
-        .setScrollFactor(1)
-        .setTileScale(descriptor.scale, descriptor.scale)
-        .setDepth(isFrontGrass ? BAND_DEPTH.front : ROAD_DEPTH);
-      worldBands.push({ sprite, tileWidthPx });
-      return;
-    }
+    const isFrontGrass = index === placed.length - 1;
+    const depth =
+      layer.parallax >= 1
+        ? isFrontGrass
+          ? BAND_DEPTH.front
+          : ROAD_DEPTH
+        : BAND_DEPTH.backdrop + index;
 
     const sprite = scene.add
       .tileSprite(0, layer.top, VIEWPORT_WIDTH, height, key)
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setTileScale(descriptor.scale, descriptor.scale)
-      .setDepth(BAND_DEPTH.backdrop + index);
-    backdrops.push({ sprite, parallax: layer.parallax });
+      .setDepth(depth);
+    bands.push({ sprite, parallax: layer.parallax });
   });
 
   const update = (scrollX: number) => {
-    backdrops.forEach(({ sprite, parallax }) => {
+    bands.forEach(({ sprite, parallax }) => {
       sprite.tilePositionX = (scrollX * parallax) / descriptor.scale;
-    });
-    worldBands.forEach(({ sprite, tileWidthPx }) => {
-      sprite.x = Math.floor((scrollX - tileWidthPx) / tileWidthPx) * tileWidthPx;
     });
   };
 

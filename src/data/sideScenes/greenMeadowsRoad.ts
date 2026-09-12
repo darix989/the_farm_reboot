@@ -50,11 +50,20 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
     { asset: 'trees/tree-two-mid-green', x: 5600, y: GROUND_SEAM_Y, band: 'ground', flipX: true },
     { asset: 'trees/tree-one-dark-green', x: 7350, y: GROUND_SEAM_Y, band: 'ground' },
 
-    // Crop beds and scarecrow, clear of the gate.
-    { asset: 'plants/sunflowers-group', x: 2900, y: GROUND_SEAM_Y, band: 'ground' },
-    { asset: 'plants/sweetcorn-group', x: 3200, y: GROUND_SEAM_Y, band: 'ground' },
-    { asset: 'props/scarecrow', x: 3450, y: GROUND_SEAM_Y, band: 'ground', scale: 0.85 },
-    { asset: 'plants/sweetcorn-group', x: 4550, y: GROUND_SEAM_Y, band: 'ground', flipX: true },
+    // Crop beds and scarecrow, clear of the gate. The kit exports these at a native
+    // resolution that reads as full-grown-tree size next to the barn/silo, so they get
+    // an explicit down-scale the structures don't need.
+    { asset: 'plants/sunflowers-group', x: 2900, y: GROUND_SEAM_Y, band: 'ground', scale: 0.4 },
+    { asset: 'plants/sweetcorn-group', x: 3200, y: GROUND_SEAM_Y, band: 'ground', scale: 0.4 },
+    { asset: 'props/scarecrow', x: 3450, y: GROUND_SEAM_Y, band: 'ground', scale: 0.4 },
+    {
+      asset: 'plants/sweetcorn-group',
+      x: 4550,
+      y: GROUND_SEAM_Y,
+      band: 'ground',
+      scale: 0.4,
+      flipX: true,
+    },
     { asset: 'bushes/bush-2-mid-green', x: 5000, y: GROUND_SEAM_Y, band: 'ground' },
     { asset: 'bushes/bush-1-dark-green', x: 5300, y: GROUND_SEAM_Y, band: 'ground' },
     { asset: 'citrus/orange-tree-oranges', x: 6100, y: GROUND_SEAM_Y, band: 'ground' },
@@ -63,14 +72,16 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
     // Windmill, near the far exit.
     { asset: 'props/windmill', x: 7000, y: GROUND_SEAM_Y, band: 'ground' },
 
-    // Flowers scattered on the front-grass occluder band.
-    { asset: 'flowers/flower-1-yellow', x: 620, y: 1040, band: 'front', scale: 0.8 },
-    { asset: 'flowers/flower-1-red', x: 1550, y: 1055, band: 'front', scale: 0.8 },
-    { asset: 'flowers/flower-1-blue', x: 2450, y: 1035, band: 'front', scale: 0.8 },
-    { asset: 'flowers/flower-side-1-orange', x: 3700, y: 1050, band: 'front', scale: 0.8 },
-    { asset: 'flowers/flower-1-white', x: 4900, y: 1040, band: 'front', scale: 0.8 },
-    { asset: 'flowers/flower-side-1-purple', x: 5950, y: 1055, band: 'front', scale: 0.8 },
-    { asset: 'flowers/flower-1-pink', x: 7100, y: 1035, band: 'front', scale: 0.8 },
+    // Flowers scattered on the front-grass occluder band. Same over-sized-native-art
+    // issue as the crops above, scaled down further since a flower reads as tiny next
+    // to a fence post, not merely small next to a barn.
+    { asset: 'flowers/flower-1-yellow', x: 620, y: 1040, band: 'front', scale: 0.18 },
+    { asset: 'flowers/flower-1-red', x: 1550, y: 1055, band: 'front', scale: 0.18 },
+    { asset: 'flowers/flower-1-blue', x: 2450, y: 1035, band: 'front', scale: 0.18 },
+    { asset: 'flowers/flower-side-1-orange', x: 3700, y: 1050, band: 'front', scale: 0.18 },
+    { asset: 'flowers/flower-1-white', x: 4900, y: 1040, band: 'front', scale: 0.18 },
+    { asset: 'flowers/flower-side-1-purple', x: 5950, y: 1055, band: 'front', scale: 0.18 },
+    { asset: 'flowers/flower-1-pink', x: 7100, y: 1035, band: 'front', scale: 0.18 },
   ],
 
   fences: [
@@ -78,6 +89,11 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
       y: GROUND_SEAM_Y,
       fromX: 150,
       toX: 7530,
+      // The fence art is native-sized to loom over the road at the scene's own scale
+      // (per-plan it was expected to reach up into the near-grass band, but in
+      // practice that reads as oversized and occludes the backdrop) — scaled down so
+      // it reads as a waist-high picket fence instead.
+      scale: 0.45,
       gaps: [{ x: GATE_X, gate: 'complete' }],
     },
   ],
