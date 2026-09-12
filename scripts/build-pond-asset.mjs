@@ -14,10 +14,11 @@
  *    for ripples receding into the distance, all masked to a water ellipse that sits
  *    inside a slightly larger dark-mud bank-rim ellipse.
  * 2. `bg/near-muddy-water.png` — the near-background tiling band on `oldPond`. Eight
- *    tiles wide (already power-of-two), cropped 11px off the bottom so the solid-fill
- *    height matches `bg/near-grass` (205 native px) and the road seam stays at y≈796
- *    with `firstTop: 400` / `scale: 0.8543`. Measured `opaqueFromRow` of the mixed
- *    strip is 40 (the trough tile's fully-opaque row).
+ *    tiles wide (already power-of-two), cropped 11px off the bottom to a 245px content
+ *    height that POT-pads back to 256. Measured `opaqueFromRow` of the mixed strip is
+ *    40 (the trough tile's fully-opaque row). How much of the band `oldPond` actually
+ *    draws is the scene's business, not this script's — it sets the pond's level by
+ *    splitting native px between this band and the fields above it (`oldPond.ts`).
  *
  * Run with `npm run assets:pond`. Safe to re-run: deterministic output, nothing to
  * clobber. After a first bake of the band, run `npm run assets:farm-kit` so the
@@ -90,8 +91,9 @@ const BAND_STRIP_ORDER = [
   'flat-top-one',
   'flat-top-two',
 ];
-/** 256 − 11 = 245: `nativeHeight - opaqueFromRow` (245 − 40) = 205, matching
- *  `bg/near-grass` (227 − 22) so the road still lands at y≈796. */
+/** 256 − 11 = 245, matching `bg/near-grass`'s solid-fill height (227 − 22 = 205) at the
+ *  same `opaqueFromRow` offset — the band's full extent, of which `oldPond` draws the
+ *  top part. */
 const BAND_CROP_BOTTOM = 11;
 const BAND_HEIGHT = TILE_SIZE - BAND_CROP_BOTTOM;
 

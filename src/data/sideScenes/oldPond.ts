@@ -3,10 +3,19 @@
  * camera does not pan — with muddy water filling the near-background band (replacing
  * `bg/near-grass`) so the player stands on the near shore looking across the water.
  *
- * The water band's `nativeHeight` / `opaqueFromRow` are chosen so the solid-fill height
- * matches `bg/near-grass` (205 native px): the road still lands at y≈796 with the same
- * `firstTop` / `scale` as every other pocket. `opaqueFromRow` 40 is measured off the
- * mixed trough-inclusive strip (`npm run assets:pond`).
+ * The waterline sits where the midground band ends, so the pond's level is set by how
+ * the 449 native px between the fields' top and the road seam are split between the two:
+ * `bg/midground-fields-large` (252) then `bg/near-muddy-water` (197). Only the sum is
+ * load-bearing — it keeps the road at y≈796 with the same `firstTop` / `scale` as every
+ * other pocket — so moving native px from the water to the fields drops the waterline
+ * without touching the ground plane. The current split puts it at y≈661, 41px below
+ * where an even 204/245 split (the band art's own content heights) would put it.
+ *
+ * Both bands are drawn past their measured content height / short of it rather than
+ * exactly at it: the fields' 204 content rows pad out to 256 in uniform grass, so 252
+ * still reads as field, and the water's rows past 40 are flat fill, so the 48 rows cut
+ * off its bottom are invisible. `opaqueFromRow` 40 is measured off the mixed
+ * trough-inclusive strip (`npm run assets:pond`) and stays the art's own property.
  *
  * Hetty lives here — Level 1's gossip stand, reached by walking up to the pond in the
  * orchard. The first hop in from `eastOrchard` fetches `bg/near-muddy-water`, which none
@@ -23,8 +32,8 @@ const ORCHARD_PORTAL_X = 360;
 
 export const POND_LAYERS: readonly SideSceneLayer[] = [
   { asset: 'bg/far-hills', nativeHeight: 102, opaqueFromRow: 31, parallax: 0.15 },
-  { asset: 'bg/midground-fields-large', nativeHeight: 204, opaqueFromRow: 48, parallax: 0.35 },
-  { asset: 'bg/near-muddy-water', nativeHeight: 245, opaqueFromRow: 40, parallax: 0.65 },
+  { asset: 'bg/midground-fields-large', nativeHeight: 252, opaqueFromRow: 48, parallax: 0.35 },
+  { asset: 'bg/near-muddy-water', nativeHeight: 197, opaqueFromRow: 40, parallax: 0.65 },
   { asset: 'bg/road', nativeHeight: 238, opaqueFromRow: 0, parallax: 1 },
   { asset: 'bg/front-grass', nativeHeight: 126, opaqueFromRow: 31, parallax: 1 },
 ];
