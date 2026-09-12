@@ -1,6 +1,7 @@
 import React, { useId, useState } from 'react';
 import { useGameStore, type DebateScenarioKey } from '../../store/gameStore';
 import { LEGACY_SCENARIOS, LEVEL_1_SCENARIOS, type ScenarioEntry } from '../../data/levels';
+import { DEFAULT_SIDE_SCENE_ID } from '../../data/sideScenes';
 import { GameManager } from '../../utils/gameManager';
 import { useCodexStore } from '../../store/codexStore';
 import { useCodexUiStore } from '../../store/codexUiStore';
@@ -12,6 +13,7 @@ import getLabel, { type Labels } from '../../data/labels';
 
 const MainMenuUI: React.FC = () => {
   const setActiveDebate = useGameStore((s) => s.setActiveDebate);
+  const setActiveSideScene = useGameStore((s) => s.setActiveSideScene);
   const setReturnSceneKey = useGameStore((s) => s.setReturnSceneKey);
   const showFarmTalkSkip = useDevSettingsStore((s) => s.showFarmTalkSkip);
   const toggleFarmTalkSkip = useDevSettingsStore((s) => s.toggleFarmTalkSkip);
@@ -28,7 +30,12 @@ const MainMenuUI: React.FC = () => {
 
   const enterFarm = () => GameManager.switchScene('Farm');
 
-  const enterFarmSidePreview = () => GameManager.switchScene('FarmSide');
+  const enterFarmSidePreview = () => {
+    // Before the switch, or the preview drops the player wherever they last left the
+    // lateral world instead of always opening back onto the main road.
+    setActiveSideScene(DEFAULT_SIDE_SCENE_ID);
+    GameManager.switchScene('FarmSide');
+  };
 
   const openAnimationGallery = () => GameManager.switchScene('AnimalGallery');
 

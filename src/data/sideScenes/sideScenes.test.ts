@@ -1,0 +1,50 @@
+/**
+ * The data test every new scene has to pass before it ships: every registered descriptor
+ * validates clean (no fence gap outside its run, no dangling or one-way portal), and the
+ * whole registry's combined farm-kit footprint stays inside budget.
+ */
+import { describe, expect, it } from 'vitest';
+import { SIDE_SCENES } from './index';
+import {
+  sideSceneAssetIds,
+  validateSideSceneDescriptor,
+} from '../../phaser/sideScene/sideSceneAssets';
+import { FARM_KIT_ASSETS } from '../../phaser/sideScene/farmKit.generated';
+
+describe('SIDE_SCENES', () => {
+  it('every registered scene validates clean', () => {
+    Object.values(SIDE_SCENES).forEach((descriptor) => {
+      expect(validateSideSceneDescriptor(descriptor, SIDE_SCENES)).toEqual([]);
+    });
+  });
+
+  /**
+   * Pinned so a new scene that reaches for a farm-kit asset none of its siblings use
+   * gets caught here rather than as a surprise loading-overlay flash in play: every hop
+   * between the four registered scenes is supposed to be a warm hop, on the strength of
+   * the three new scenes being authored strictly from ids `greenMeadowsRoad` already
+   * loads. The budget has headroom above the measured total for exactly the kind of
+   * small variation (a different flower, one more tree) authoring a scene involves —
+   * not for a whole new backdrop band or prop category.
+   */
+  it('stays within the decoded farm-kit texture budget across every registered scene', () => {
+    const BYTES_PER_PIXEL = 4;
+    // Measured total across all four registered scenes is ~40MB (they share
+    // `greenMeadowsRoad`'s own asset ids, so the union barely grows past its ~40MB-resident
+    // baseline) — 45MB leaves headroom for the odd extra flower or tree variant an author
+    // reaches for, without silently absorbing a whole new backdrop band or prop category.
+    const BUDGET_BYTES = 45 * 1024 * 1024;
+
+    const ids = new Set<string>();
+    Object.values(SIDE_SCENES).forEach((descriptor) => {
+      sideSceneAssetIds(descriptor).forEach((id) => ids.add(id));
+    });
+
+    const totalBytes = [...ids].reduce((sum, id) => {
+      const asset = FARM_KIT_ASSETS[id as keyof typeof FARM_KIT_ASSETS];
+      return sum + asset.fileWidth * asset.fileHeight * BYTES_PER_PIXEL;
+    }, 0);
+
+    expect(totalBytes).toBeLessThanOrEqual(BUDGET_BYTES);
+  });
+});

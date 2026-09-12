@@ -1,11 +1,12 @@
 # Lateral farm scenes — authoring guide
 
-How the `FarmSide` scene assembly kit works, and how to author scene #2 through #10.
+How the `FarmSide` scene assembly kit works, and how to author scene #5 and beyond.
 
-One scene so far (`greenMeadowsRoad`) with the real cast on it: Rue walks the road, the
-scene's authored NPCs stand on it, and walking up to one opens the overworld's own talk
-chrome. No Trial routing and no scene-to-scene portals yet. `Farm.ts`, the top-down
-overworld, is untouched and stays the live scene.
+Four scenes so far — `greenMeadowsRoad` (the main road), `hettysBarn`, `gateLane` and
+`eastOrchard` — with the real cast on them: Rue walks each road, the scene's authored
+NPCs stand on it, walking up to one opens the overworld's own talk chrome, and walking
+up to a portal fades to black and lands you on the neighbouring scene. No Trial routing
+yet. `Farm.ts`, the top-down overworld, is untouched and stays the live scene.
 
 Iteration 1's debug walker is gone — the traversal contract it proved (a scene carries a
 character from one entrance to one or more exits, walking on the road only) is carried by
@@ -114,9 +115,9 @@ behind the walker without a special case.
 `SideSceneDescriptor.npcs` names characters, never sprites — `{ characterId, x, y?,
 facing?, talkSuffix }`, resolved through `src/data/characters.ts` exactly the way
 `FARM_NPCS` is in the top-down farm. `animalPacks.ts` reads the same list to work out which
-atlases `FarmSide` has to fetch (`farmSideAnimalIds`), so adding an animal to a scene is one
-edit, not two. Rue is not in the list: the player is spawned by the scene, at the west
-portal.
+atlases `FarmSide` has to fetch (`sideSceneAnimalIds(descriptor)`), so adding an animal to
+a scene is one edit, not two. Rue is not in the list: the player is spawned by the scene, at
+whichever portal `resolveEntrySpawn` resolves (see "Travelling between scenes" below).
 
 `sideSceneActors.ts` owns everything about standing on a road — scale, depth, facing, and
 Rue's movement — including **`SIDE_SCALE`**, one flat multiplier on
@@ -171,19 +172,120 @@ Because the camera can now zoom and tilt, the backdrop bands are `scrollFactor(0
 
 ## Authoring a new scene
 
-1. Add a file under `src/data/sideScenes/`, following `greenMeadowsRoad.ts`: pick
-   `scale`/`firstTop`, reuse `STANDARD_FARM_LAYERS` (or a variant), author `road`,
-   `props`, `fences`, `npcs`, `portals`.
-2. Register it in `src/data/sideScenes/index.ts`'s `SideSceneId` union and `SIDE_SCENES`
-   registry. `FARM_SIDE_SCENE_ID` there is the one `FarmSide` boots into — and the one
-   `animalPacks.ts` fetches art for.
+1. Add a file under `src/data/sideScenes/`, following `greenMeadowsRoad.ts` (or one of
+   the smaller pocket scenes, `hettysBarn.ts`/`gateLane.ts`/`eastOrchard.ts`, for a scene
+   with only a return portal): pick `scale`/`firstTop`, reuse `STANDARD_FARM_LAYERS` (or a
+   variant), author `road`, `props`, `fences`, `npcs`, `portals`.
+2. Widen the `SideSceneId` union in `src/types/sideScene.ts` with the new scene's id, and
+   register the descriptor in `src/data/sideScenes/index.ts`'s `SIDE_SCENES` registry.
+   `DEFAULT_SIDE_SCENE_ID` there is only the *initial value* of `gameStore.activeSideSceneId`
+   — the store field `FarmSide.init()` actually reads a scene's descriptor from (see
+   "Travelling between scenes" below) — and it is also the one `animalPacks.ts` and
+   `sceneAssets.ts` fall back to for a scene that hasn't set the store field explicitly
+   (a fresh boot, or the menu's preview button, which sets it before switching scenes).
 3. Author each NPC's beats in `src/data/farmTalk.ts` under `{characterId}{talkSuffix}`, and
    their lines in `src/data/labels.ts`. A slot with no beats falls back to a single
-   `farmDialog<Npc><Suffix>` label, so a new animal is never silent.
-4. `validateSideSceneDescriptor` (`sideSceneAssets.ts`) catches the two authoring
-   mistakes that are easy to make by hand: a fence gap outside its own run, and a
-   `back`/`front` portal `x` outside the scene width.
+   `farmDialog<Npc><Suffix>` label, so a new animal is never silent. A portal's own prompt
+   label (`SidePortalLink.label`) is a plain `Labels` key too — author one per *direction of
+   travel*, since a symmetric pair of portals reads differently depending which side of it
+   you're standing on ("Enter the barn" one way, "Back to the road" the other).
+4. `validateSideSceneDescriptor(descriptor, SIDE_SCENES)` (`sideSceneAssets.ts`) catches
+   every authoring mistake that's easy to make by hand: a fence gap outside its own run; a
+   `back`/`front` portal `x` outside the scene width; a duplicate portal id within one
+   scene; a scene with no portals at all; and a portal's `to` link pointing at a scene or
+   portal id that doesn't exist, or at one that doesn't point straight back (a one-way
+   door is a soft lock — the player would have no way back). `src/data/sideScenes/
+   sideScenes.test.ts` runs this against every registered scene, so a bad link fails
+   `npm test` rather than surfacing as a stuck player in a manual playtest — that test is
+   the authoring feedback loop for this step; run it after adding a scene, not just at the
+   end.
 5. New art: drop PNGs into `public/assets/farm-kit/` and run `npm run assets:farm-kit`.
+   Reusing an asset id an existing scene already loads keeps every hop into the new scene
+   warm (see the texture budget below); reaching for a brand new one is fine, but costs a
+   cold load the first time any scene that references it is visited.
 
-`SidePortalSpec.to` is authored now but unused until iteration 2 wires up scene-to-scene
-routing.
+## Travelling between scenes
+
+`FarmSide` is **one scene class, restarted onto a different descriptor** — there is no
+`HettysBarn` scene class, no `GateLane` scene class. Every neighbouring scene is the same
+`FarmSide` instance, told which `SIDE_SCENES` entry to read this time.
+
+**Why one class.** The scene was already fully data-driven before this: the only thing
+that changes between levels is which `SideSceneDescriptor` it reads. Four classes would
+mean four copies of the same `create()`/`update()`/talk-camera/travel wiring, kept in sync
+by hand.
+
+**The one constraint that shapes the whole scene.** Phaser does **not** re-construct a
+scene on restart. `scene.scene.start('FarmSide', data)` looks the existing `FarmSide`
+instance up, then calls `sys.shutdown()` → `sys.start(data)` → `init(data)` → `preload()` →
+`create()` on that *same* instance. **Class field initializers run once, at game boot, and
+never again** — so a field like `private descriptor = SIDE_SCENES[...]` would stay pinned
+to whichever level the game first booted into, forever. Every piece of instance state that
+has to be right on every visit — `descriptor`, `sceneLayers`, `npcs`, the talk camera's
+`blend` and `talkFrame`, `travelling`, the portal-disarm state — is instead assigned in
+`init()`, the one lifecycle method Phaser re-runs on every restart. `teardown()` (on
+`Phaser.Scenes.Events.SHUTDOWN`) additionally nulls `talkFrame` and resets `talkCamera.blend`
+as a second line of defence, since a stale `talkFrame` would frame the *next* level's
+first talk push against a point in the *previous* level's world coordinates.
+
+**Which descriptor loads is a store field, not a scene constant.** `gameStore.
+activeSideSceneId` (initial value `DEFAULT_SIDE_SCENE_ID`) is read by `FarmSide.init()` —
+`this.descriptor = SIDE_SCENES[useGameStore.getState().activeSideSceneId]` — and by
+`animalPacks.ts` / `sceneAssets.ts`, which need to know which descriptor's cast and kit
+assets to fetch with no Phaser scene in hand yet (the loading-overlay gate runs *before*
+the destination scene exists). Every caller that starts or restarts `FarmSide` sets this
+field first: `MainMenuUI`'s preview button calls `setActiveSideScene(DEFAULT_SIDE_SCENE_ID)`
+before `switchScene('FarmSide')` (otherwise the preview would drop the player wherever
+they last left the lateral world), and `beginSideSceneTravel` calls it before restarting
+onto the target. `scene.scene.start('FarmSide', { sceneId, entryPortalId })` also carries
+`sceneId` in the start data, but `init()` doesn't read it back out — the store is the one
+source of truth, and every caller keeps it in sync before starting the scene.
+
+**The fade contract.** `create()` registers `cameras.main.fadeIn(...)` immediately after
+`resetFarmUi()`, before anything else is built — a camera fade does not survive a restart
+(`CameraManager.shutdown` destroys every camera and `start()` builds a fresh one), so
+without this the first frame of a new level would show whatever the last frame of the old
+one left behind, unfaded. `startTravel()` fades out, waits for
+`Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE`, and only then calls
+`beginSideSceneTravel` (`sideSceneTravel.ts`) — which validates the target scene/portal,
+decides whether a loading overlay is owed (`sideSceneNeedsLoad`, against the *explicit*
+target descriptor, never the store — see below), sets `activeSideSceneId`, and restarts.
+If the hop is refused (the scene already shut down, another load in flight, a malformed
+link), it fades back in rather than stranding the player on black. `prefersReducedMotion()`
+skips both fades — a cut, not a fade, on the way in and the way out. `FarmSideUI` renders
+nothing but its empty root while `farmStore.isTraveling` is set, since the camera fade
+only darkens the Phaser canvas — without that the back button and hints would sit at full
+brightness over a black screen for the whole transition, and would never even blink on a
+warm hop (no fade, no load, near-instant restart).
+
+**The arming rule.** A portal you just arrived through would otherwise immediately be back
+in interact range — an edge spawn sits `EDGE_SPAWN_INSET` (120px) inside a 220px portal
+radius, and a `back`/`front` spawn lands only a little downstage of the portal itself.
+`FarmSide` disarms the entry portal at spawn (`disarmedPortalId`, set from
+`init(data).entryPortalId`) and excludes it from `resolveFocus`'s portal candidates until
+the player has stepped farther from it than `PORTAL_INTERACT_RADIUS` — at which point it
+re-arms itself. Separately, `tryInteract()` ignores every key press for
+`INTERACT_ARM_DELAY_MS` (250ms) after `create()`: OS key auto-repeat can fire a fresh `down`
+transition on the new scene's brand-new `Key` objects if the player is still physically
+holding the interact key when the restart lands, which would otherwise bounce them straight
+back through the door they just walked through. The two guards cover different failure
+modes — the disarm is positional and can last well past the 250ms window; the arm delay is
+temporal and covers *any* interact (an NPC included), not just the entry portal.
+
+**Portal focus vs. NPC focus.** `sideSceneInteractions.ts`'s `resolveFocus` scores every
+candidate as `distance / itsOwnRadius`, not raw distance — ties go to the NPC. A flat
+"nearest NPC always wins" rule makes some portals unenterable outright: on
+`greenMeadowsRoad`, Hetty's 400px talk radius reaches every point within 400px of the gate
+portal 340px away, so at the gate itself a raw-distance contest would always pick her over
+a 220px-radius portal standing right there. Scoring by radius fraction instead lets the
+tight, close-in portal win exactly where a player standing at it would expect it to. See
+`sideSceneInteractions.test.ts` for the regression, spelled out with the real numbers.
+
+**The texture budget.** The three newer scenes (`hettysBarn`, `gateLane`, `eastOrchard`)
+are authored strictly from farm-kit asset ids `greenMeadowsRoad` already uses, so every hop
+between the four registered scenes is a warm hop — no new texture ever has to be fetched
+mid-playthrough. `src/data/sideScenes/sideScenes.test.ts` pins the combined decoded-texture
+footprint of every asset id any registered scene references; a new scene that reaches for
+an asset none of its siblings load will grow that total and can fail the budget test,
+which is the point — it is a deliberate prompt to consider whether the new cost is
+warranted, not a hard ceiling on ever adding art.

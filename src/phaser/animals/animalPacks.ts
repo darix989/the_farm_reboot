@@ -13,7 +13,8 @@
  */
 import type { Scene } from 'phaser';
 import { FARM_NPCS } from '../../data/farmMap';
-import { FARM_SIDE_SCENE_ID, SIDE_SCENES } from '../../data/sideScenes';
+import { SIDE_SCENES } from '../../data/sideScenes';
+import type { SideSceneDescriptor, SideSceneId } from '../../types/sideScene';
 import { PLAYER_CHARACTER_ID, resolveCharacter, type AnimalSpriteId } from '../../data/characters';
 import { DEBATES, type DebateScenarioKey } from '../../data/levels';
 import { debateParticipantIds } from '../../data/debateCast';
@@ -58,14 +59,14 @@ export function farmAnimalIds(): AnimalSpriteId[] {
 }
 
 /**
- * The lateral farm world: Rue plus whoever the side scene stands on its road. No emotion
- * sheets — the side scene plays atlas clips only, and its talk portraits are React DOM
+ * A lateral farm world: Rue plus whoever `descriptor` stands on its road. No emotion
+ * sheets — a side scene plays atlas clips only, and its talk portraits are React DOM
  * (`AnimalFace`), which fetches its own art.
  */
-export function farmSideAnimalIds(): AnimalSpriteId[] {
+export function sideSceneAnimalIds(descriptor: SideSceneDescriptor): AnimalSpriteId[] {
   return uniqueIds([
     resolveCharacter(PLAYER_CHARACTER_ID).animal,
-    ...SIDE_SCENES[FARM_SIDE_SCENE_ID].npcs.map((npc) => resolveCharacter(npc.characterId).animal),
+    ...descriptor.npcs.map((npc) => resolveCharacter(npc.characterId).animal),
   ]);
 }
 
@@ -85,12 +86,13 @@ export function galleryAnimalIds(): AnimalSpriteId[] {
 export function animalPackForScene(
   sceneKey: string,
   debateId: DebateScenarioKey,
+  activeSideSceneId: SideSceneId,
 ): AnimalPack | null {
   switch (sceneKey) {
     case 'Farm':
       return { ids: farmAnimalIds(), emotions: true };
     case 'FarmSide':
-      return { ids: farmSideAnimalIds(), emotions: false };
+      return { ids: sideSceneAnimalIds(SIDE_SCENES[activeSideSceneId]), emotions: false };
     case 'Trial':
       return { ids: trialAnimalIds(debateId), emotions: true };
     case 'AnimalGallery':
@@ -131,13 +133,15 @@ export function queueAnimalAssets(
 }
 
 export function queueAnimalPackForScene(scene: Scene): boolean {
-  const pack = animalPackForScene(scene.scene.key, useGameStore.getState().activeDebateId);
+  const store = useGameStore.getState();
+  const pack = animalPackForScene(scene.scene.key, store.activeDebateId, store.activeSideSceneId);
   if (!pack) return false;
   return queueAnimalAssets(scene, pack.ids, { emotions: pack.emotions });
 }
 
 export function ensureAnimalPackForScene(scene: Scene): void {
-  const pack = animalPackForScene(scene.scene.key, useGameStore.getState().activeDebateId);
+  const store = useGameStore.getState();
+  const pack = animalPackForScene(scene.scene.key, store.activeDebateId, store.activeSideSceneId);
   if (!pack) return;
   ensureAnimalAnimations(scene, pack.ids);
   if (pack.emotions) ensureAnimalEmotionAnimations(scene, pack.ids);

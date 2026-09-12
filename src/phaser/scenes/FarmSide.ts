@@ -1,12 +1,19 @@
 import { Scene } from 'phaser';
 import { EventBus } from '../EventBus';
 import { STAGE_DESIGN_HEIGHT, STAGE_DESIGN_WIDTH, TRIAL_STAGE_HOLE } from '../../utils/constants';
-import { FARM_SIDE_SCENE_ID, SIDE_SCENES } from '../../data/sideScenes';
+import { SIDE_SCENES } from '../../data/sideScenes';
+import type { SidePortalLink, SideSceneId } from '../../types/sideScene';
 import { queueSideSceneAssets } from '../sideScene/sideSceneAssets';
 import { buildSideSceneLayers, type SideSceneLayers } from '../sideScene/sideSceneLayers';
 import { placeFences, placeProps } from '../sideScene/sideSceneProps';
 import { drawDebugOverlay } from '../sideScene/sideSceneDebug';
-import { resolvePortal } from '../sideScene/sideSceneRoad';
+import { resolveEntrySpawn, resolvePortal } from '../sideScene/sideSceneRoad';
+import {
+  PORTAL_INTERACT_RADIUS,
+  resolveFocus,
+  type FocusPoint,
+} from '../sideScene/sideSceneInteractions';
+import { beginSideSceneTravel } from '../sideScene/sideSceneTravel';
 import { SideSceneActor, SideSceneNpc, SideScenePlayer } from '../sideScene/sideSceneActors';
 import {
   blendCameraFrames,
@@ -18,19 +25,36 @@ import { createFarmKeys, type FarmKeys } from '../farm/farmInput';
 import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { reportSceneLoadProgress } from '../bootProgress';
 import { useFarmStore } from '../../store/farmStore';
+import { useGameStore } from '../../store/gameStore';
 import { prefersReducedMotion } from '../../utils/reducedMotion';
 
 /**
- * Iteration 2 of the lateral farm world: the Megafarm kit assembly of iteration 1, now with
- * the real cast on it — Rue walks the road and the scene's authored NPCs stand on it — and
- * walk-up conversations reusing the overworld's own talk chrome (`farmStore` → `FarmSideUI`
- * → `FarmDialogue`). Still no Trial routing and no scene-to-scene portals; `Farm` stays the
- * live top-down overworld.
+ * Iteration 3 of the lateral farm world: `greenMeadowsRoad` plus three neighbouring
+ * scenes (`hettysBarn`, `gateLane`, `eastOrchard`), all reachable through walk-up portals
+ * with a fade-through-black transition. One scene class, restarted onto whichever
+ * `SIDE_SCENES` descriptor `activeSideSceneId` names — see `docs/farm_side_scenes.md`'s
+ * "Travelling between scenes" section for why every piece of instance state has to live
+ * in `init()` rather than a field initializer (Phaser does not reconstruct a scene on
+ * restart).
  */
 const DEBUG_SIDE_SCENE = false;
 
 /** How near Rue has to stand before an animal is offered for a talk, in world px. */
 const INTERACT_RADIUS = 400;
+
+/**
+ * How long after `create()` an interact key press is ignored. OS key auto-repeat fires a
+ * fresh `down` transition on the new scene's brand-new `Key` objects if the player is
+ * still holding the interact key when the restart lands — without this window that
+ * bounces them straight back through the door they just walked through.
+ */
+const INTERACT_ARM_DELAY_MS = 250;
+
+/** Fade duration either direction of a scene-to-scene hop. */
+const FADE_MS = 400;
+/** Fade-in duration on arrival — registered in `create()`, since a camera fade does not
+ *  survive a restart (`CameraManager.shutdown` destroys every camera `start` builds). */
+const FADE_IN_MS = 400;
 
 /**
  * The talk framing: how far in the camera pushes, and how long it takes to get there.
@@ -64,7 +88,11 @@ const AIM_EASE = Phaser.Math.Easing.Cubic.Out;
 const PUSH_EASE = Phaser.Math.Easing.Cubic.In;
 
 export class FarmSide extends Scene {
-  private descriptor = SIDE_SCENES[FARM_SIDE_SCENE_ID];
+  // Assigned in `init()`, not here: Phaser does not re-construct a scene on `restart` —
+  // it calls `sys.shutdown()` then `sys.start(data)` -> `init(data)` -> `preload()` ->
+  // `create()` on the *same* instance — so a field initializer would stay pinned to
+  // whichever level the scene first booted into, forever. See `docs/farm_side_scenes.md`.
+  private descriptor = SIDE_SCENES[useGameStore.getState().activeSideSceneId];
   private sceneLayers: SideSceneLayers | null = null;
   private groundBottom = STAGE_DESIGN_HEIGHT;
   private keys: FarmKeys | null = null;
@@ -78,8 +106,51 @@ export class FarmSide extends Scene {
   private talkTween: Phaser.Tweens.Tween | null = null;
   private unsubscribeFarmUi: (() => void) | null = null;
 
+  /** Portal id the player just arrived through, or undefined for a menu/default spawn. */
+  private entryPortalId?: string;
+  /**
+   * The entry portal, ignored by `updateFocus` until the player has stepped farther from
+   * it than `PORTAL_INTERACT_RADIUS`. An edge spawn sits `EDGE_SPAWN_INSET` (120px) inside
+   * a 220px portal radius, and a back/front spawn lands only a little downstage of it —
+   * either way the player would otherwise land already standing in the door they just
+   * walked through, and re-trigger it.
+   */
+  private disarmedPortalId: string | null = null;
+  /** A hop is in flight (fade out, restart, fade in). Freezes input and movement focus. */
+  private travelling = false;
+  /** `this.time.now` before which `tryInteract` ignores every key press. */
+  private interactArmedAt = 0;
+
   constructor() {
     super('FarmSide');
+  }
+
+  /**
+   * Runs on every `create()`, restart included — the one place instance state may be
+   * assigned, since class field initializers run once at game boot and never again.
+   */
+  init(data?: { sceneId?: SideSceneId; entryPortalId?: string }): void {
+    // `data.sceneId` is not read here on purpose: `activeSideSceneId` is the single
+    // source of truth for which descriptor a `create()` loads (see `gameStore.ts`), and
+    // every caller — `MainMenuUI`'s preview button, `beginSideSceneTravel` — sets it
+    // before starting/restarting this scene. `sceneId` is carried in the start data
+    // anyway, for whoever inspects `scene.settings.data` expecting it to drive the scene.
+    this.descriptor = SIDE_SCENES[useGameStore.getState().activeSideSceneId];
+    this.sceneLayers = null;
+    this.groundBottom = STAGE_DESIGN_HEIGHT;
+    this.keys = null;
+    this.player = null;
+    this.npcs = [];
+    this.scrollX = 0;
+    // The object is created once (it is a tween target); a stale blend left over from the
+    // previous level would mis-time this level's first talk push.
+    this.talkCamera.blend = 0;
+    // Survives a restart otherwise, in the *old* level's world coordinates.
+    this.talkFrame = null;
+    this.travelling = false;
+    this.entryPortalId = data?.entryPortalId;
+    this.disarmedPortalId = data?.entryPortalId ?? null;
+    this.interactArmedAt = 0;
   }
 
   preload() {
@@ -92,6 +163,14 @@ export class FarmSide extends Scene {
     ensureAnimalPackForScene(this);
     useFarmStore.getState().resetFarmUi();
 
+    // Registered before anything else is built, so the first pixel this level ever shows
+    // is black: a camera fade does not survive a restart (`CameraManager.shutdown`
+    // destroys every camera and `start` builds a fresh one), so this is mandatory, not
+    // optional, on every `create()`. Reduced motion skips it — a cut, not a fade.
+    if (!prefersReducedMotion()) {
+      this.cameras.main.fadeIn(FADE_IN_MS, 0, 0, 0);
+    }
+
     const { layers, groundBottom } = buildSideSceneLayers(this, this.descriptor);
     this.sceneLayers = layers;
     this.groundBottom = groundBottom;
@@ -102,9 +181,10 @@ export class FarmSide extends Scene {
     this.npcs = this.descriptor.npcs.map((spec) => new SideSceneNpc(this, this.descriptor, spec));
 
     this.keys = createFarmKeys(this);
-    const west = resolvePortal(this.descriptor.portals[0], this.descriptor);
-    this.player = new SideScenePlayer(this, this.descriptor, west.x + 120, this.keys);
+    const spawn = resolveEntrySpawn(this.descriptor, this.entryPortalId);
+    this.player = new SideScenePlayer(this, this.descriptor, spawn, this.keys);
 
+    this.interactArmedAt = this.time.now + INTERACT_ARM_DELAY_MS;
     this.keys?.interact.forEach((key) => key.on('down', () => this.tryInteract()));
 
     if (DEBUG_SIDE_SCENE) drawDebugOverlay(this, this.descriptor);
@@ -131,33 +211,100 @@ export class FarmSide extends Scene {
 
   update(_time: number, delta: number): void {
     const talking = useFarmStore.getState().talkingToNpcId;
-    this.player?.update(delta, !talking);
-    this.updateNearbyNpc(talking);
+    this.player?.update(delta, !(talking || this.travelling));
+    this.updateFocus(talking);
     this.updateCamera();
     this.sceneLayers?.update(this.scrollX);
   }
 
-  /** The store no-ops when the value is unchanged, so this is safe every frame. */
-  private updateNearbyNpc(talking: string | null): void {
-    if (talking || !this.player) return;
-    let closestId: string | null = null;
-    let closestDist = INTERACT_RADIUS;
+  /** The store no-ops when a value is unchanged, so this is safe every frame. Skipped
+   *  entirely while a talk is open or a hop is in flight — neither leaves the player free
+   *  to walk up to anything new. */
+  private updateFocus(talking: string | null): void {
+    const player = this.player;
+    if (talking || this.travelling || !player) return;
 
-    this.npcs.forEach((npc) => {
-      const d = Phaser.Math.Distance.Between(this.player!.x, this.player!.y, npc.x, npc.y);
-      if (d >= closestDist) return;
-      closestDist = d;
-      closestId = npc.characterId;
+    if (this.disarmedPortalId) {
+      const disarmed = this.descriptor.portals.find((p) => p.id === this.disarmedPortalId);
+      const { x, y } = disarmed
+        ? resolvePortal(disarmed, this.descriptor)
+        : { x: player.x, y: player.y };
+      if (!disarmed || Math.hypot(player.x - x, player.y - y) > PORTAL_INTERACT_RADIUS) {
+        this.disarmedPortalId = null;
+      }
+    }
+
+    const npcs: FocusPoint[] = this.npcs.map((npc) => ({
+      id: npc.characterId,
+      x: npc.x,
+      y: npc.y,
+    }));
+    const portals: FocusPoint[] = this.descriptor.portals
+      .filter((portal) => portal.to && portal.id !== this.disarmedPortalId)
+      .map((portal) => ({ id: portal.id, ...resolvePortal(portal, this.descriptor) }));
+
+    const focus = resolveFocus(player, npcs, portals, {
+      npc: INTERACT_RADIUS,
+      portal: PORTAL_INTERACT_RADIUS,
     });
 
-    useFarmStore.getState().setNearbyNpc(closestId);
+    useFarmStore.getState().setNearbyNpc(focus?.kind === 'npc' ? focus.id : null);
+    useFarmStore.getState().setNearbyPortal(focus?.kind === 'portal' ? focus.id : null);
   }
 
-  /** Space / E / Enter opens the nearest animal's conversation. */
+  /** Space / E / Enter opens the nearest animal's conversation, or starts travel through
+   *  the nearest portal. Guarded against a hop in flight and the OS auto-repeat window
+   *  right after a restart — see `INTERACT_ARM_DELAY_MS`. */
   private tryInteract(): void {
-    const { nearbyNpcId, talkingToNpcId, openDialogue } = useFarmStore.getState();
-    if (talkingToNpcId || !nearbyNpcId) return;
-    openDialogue(nearbyNpcId);
+    if (this.travelling || this.time.now < this.interactArmedAt) return;
+
+    const { nearbyNpcId, nearbyPortalId, talkingToNpcId, openDialogue } = useFarmStore.getState();
+    if (talkingToNpcId) return;
+
+    if (nearbyNpcId) {
+      openDialogue(nearbyNpcId);
+      return;
+    }
+
+    if (nearbyPortalId) this.travelThroughPortal(nearbyPortalId);
+  }
+
+  /**
+   * Starts travel through the named portal, if it exists and leads somewhere. Public so
+   * `FarmSideUI`'s portal-prompt button can trigger the same hop the interact key does —
+   * same contract `MainMenu`/`BoilerPlateUI` already use to reach into a live scene via
+   * `GameManager.getCurrentScene()`.
+   */
+  travelThroughPortal(portalId: string): void {
+    if (this.travelling) return;
+    const portal = this.descriptor.portals.find((candidate) => candidate.id === portalId);
+    if (portal?.to) this.startTravel(portal.to);
+  }
+
+  /**
+   * Fades to black, then hands off to `beginSideSceneTravel` — which restarts this same
+   * scene instance onto `link`'s target descriptor. `prefersReducedMotion` skips straight
+   * to the hand-off. If the hop is refused (the scene already shut down, another load in
+   * flight, or a malformed link), fades back in rather than stranding the player on black.
+   */
+  private startTravel(link: SidePortalLink): void {
+    this.travelling = true;
+    useFarmStore.getState().setTraveling(true);
+
+    const commit = () => {
+      if (beginSideSceneTravel(this, link)) return;
+      this.travelling = false;
+      useFarmStore.getState().setTraveling(false);
+      if (!prefersReducedMotion()) this.cameras.main.fadeIn(FADE_IN_MS, 0, 0, 0);
+    };
+
+    if (prefersReducedMotion()) {
+      commit();
+      return;
+    }
+
+    this.cameras.main.fadeOut(FADE_MS, 0, 0, 0);
+    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, commit);
   }
 
   /**
@@ -270,6 +417,8 @@ export class FarmSide extends Scene {
     this.unsubscribeFarmUi = null;
     this.talkTween?.remove();
     this.talkTween = null;
+    this.talkFrame = null;
+    this.talkCamera.blend = 0;
     this.player?.destroy();
     this.player = null;
     this.npcs.forEach((npc) => npc.destroy());

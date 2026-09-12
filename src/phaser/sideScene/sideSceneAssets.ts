@@ -7,7 +7,7 @@
  */
 import type { Scene } from 'phaser';
 import { FARM_KIT_ASSETS, type FarmKitAssetId } from './farmKit.generated';
-import type { SideSceneDescriptor } from '../../types/sideScene';
+import type { SideSceneDescriptor, SideSceneId } from '../../types/sideScene';
 
 export const FARM_KIT_ASSET_PATH = 'assets/farm-kit';
 
@@ -69,10 +69,19 @@ export interface DescriptorIssue {
 
 /**
  * Validity checks a descriptor should never fail: every fence gap sits inside its own
- * run, and every portal's x sits inside the scene. Cheap enough to run once at
- * `create()` time in dev, or from a test.
+ * run; every portal's x sits inside the scene; every portal id is unique within the
+ * scene; the scene has at least one portal; and every portal that names a `to` target
+ * points at a real scene and portal that link straight back — a one-way door is a soft
+ * lock. Cheap enough to run once at `create()` time in dev, or from a test.
+ *
+ * `scenes` is a required second argument rather than defaulting to `SIDE_SCENES`: doing
+ * that would add a value import from `data/` into the one module here that is testable
+ * precisely because it has none.
  */
-export function validateSideSceneDescriptor(descriptor: SideSceneDescriptor): DescriptorIssue[] {
+export function validateSideSceneDescriptor(
+  descriptor: SideSceneDescriptor,
+  scenes: Readonly<Record<SideSceneId, SideSceneDescriptor>>,
+): DescriptorIssue[] {
   const issues: DescriptorIssue[] = [];
 
   descriptor.fences.forEach((fence, fi) => {
@@ -85,11 +94,51 @@ export function validateSideSceneDescriptor(descriptor: SideSceneDescriptor): De
     });
   });
 
+  if (descriptor.portals.length === 0) {
+    issues.push({ message: `${descriptor.id} has no portals` });
+  }
+
+  const seenPortalIds = new Set<string>();
   descriptor.portals.forEach((portal, pi) => {
-    if (portal.side !== 'back' && portal.side !== 'front') return;
-    if (portal.x === undefined || portal.x < 0 || portal.x > descriptor.width) {
+    if (seenPortalIds.has(portal.id)) {
       issues.push({
-        message: `portals[${pi}] "${portal.id}" x=${portal.x} is outside [0, ${descriptor.width}]`,
+        message: `portals[${pi}] "${portal.id}" duplicates another portal id in ${descriptor.id}`,
+      });
+    }
+    seenPortalIds.add(portal.id);
+
+    if (portal.side === 'back' || portal.side === 'front') {
+      if (portal.x === undefined || portal.x < 0 || portal.x > descriptor.width) {
+        issues.push({
+          message: `portals[${pi}] "${portal.id}" x=${portal.x} is outside [0, ${descriptor.width}]`,
+        });
+      }
+    }
+
+    if (!portal.to) return;
+    const targetScene = scenes[portal.to.scene];
+    if (!targetScene) {
+      issues.push({
+        message: `portals[${pi}] "${portal.id}" targets unknown scene "${portal.to.scene}"`,
+      });
+      return;
+    }
+
+    const targetPortal = targetScene.portals.find(
+      (candidate) => candidate.id === portal.to?.portal,
+    );
+    if (!targetPortal) {
+      issues.push({
+        message: `portals[${pi}] "${portal.id}" targets "${portal.to.scene}:${portal.to.portal}", which does not exist`,
+      });
+      return;
+    }
+
+    const linksBack =
+      targetPortal.to?.scene === descriptor.id && targetPortal.to?.portal === portal.id;
+    if (!linksBack) {
+      issues.push({
+        message: `portals[${pi}] "${portal.id}" -> "${portal.to.scene}:${portal.to.portal}" is one-way — the target does not link back`,
       });
     }
   });

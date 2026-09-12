@@ -20,6 +20,15 @@ interface FarmStore {
   nearbyNpcId: string | null;
   /** Animal whose conversation is open, or null. */
   talkingToNpcId: string | null;
+  /** Portal within interaction range on `FarmSide`, or null. `FarmSideUI`'s only way to
+   *  show the portal prompt without a Phaser scene in hand. Written only when it changes,
+   *  same contract as `nearbyNpcId`. */
+  nearbyPortalId: string | null;
+  /** A `FarmSide` -> `FarmSide` hop is in flight (fade out, load if needed, fade in).
+   *  `FarmSideUI` renders nothing but its empty root while this is set — the camera fade
+   *  only darkens the Phaser canvas, so the React chrome would otherwise sit at full
+   *  brightness over a black screen for the whole transition. */
+  isTraveling: boolean;
   /**
    * Follow-up queued on Trial Leave, consumed once FarmUI is up. Survives
    * `resetFarmUi` because Farm `create` runs after the queue and would otherwise
@@ -28,6 +37,8 @@ interface FarmStore {
   pendingFollowUp: PendingFollowUp | null;
 
   setNearbyNpc: (id: string | null) => void;
+  setNearbyPortal: (id: string | null) => void;
+  setTraveling: (traveling: boolean) => void;
   openDialogue: (id: string) => void;
   closeDialogue: () => void;
   setPendingFollowUp: (pending: PendingFollowUp | null) => void;
@@ -37,19 +48,30 @@ interface FarmStore {
    * is still set).
    */
   closeTalkAndFollowUp: () => void;
-  /** Clears nearby / talking, so a fresh visit never opens a stale conversation. */
+  /** Clears nearby / talking / portal / traveling, so a fresh visit — or one interrupted
+   *  mid-hop — never opens a stale conversation or strands the UI hidden. */
   resetFarmUi: () => void;
 }
 
 export const useFarmStore = create<FarmStore>((set) => ({
   nearbyNpcId: null,
   talkingToNpcId: null,
+  nearbyPortalId: null,
+  isTraveling: false,
   pendingFollowUp: null,
 
   setNearbyNpc: (id) => set((s) => (s.nearbyNpcId === id ? s : { ...s, nearbyNpcId: id })),
+  setNearbyPortal: (id) => set((s) => (s.nearbyPortalId === id ? s : { ...s, nearbyPortalId: id })),
+  setTraveling: (traveling) => set({ isTraveling: traveling }),
   openDialogue: (id) => set({ talkingToNpcId: id }),
   closeDialogue: () => set({ talkingToNpcId: null }),
   setPendingFollowUp: (pending) => set({ pendingFollowUp: pending }),
   closeTalkAndFollowUp: () => set({ talkingToNpcId: null, pendingFollowUp: null }),
-  resetFarmUi: () => set({ nearbyNpcId: null, talkingToNpcId: null }),
+  resetFarmUi: () =>
+    set({
+      nearbyNpcId: null,
+      talkingToNpcId: null,
+      nearbyPortalId: null,
+      isTraveling: false,
+    }),
 }));

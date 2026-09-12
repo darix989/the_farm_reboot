@@ -73,7 +73,9 @@ export class GameManager {
       return;
     }
 
-    if (sceneAssetsMissing(sceneKey, game.textures, store.activeDebateId)) {
+    if (
+      sceneAssetsMissing(sceneKey, game.textures, store.activeDebateId, store.activeSideSceneId)
+    ) {
       store.beginSceneLoad();
     }
 

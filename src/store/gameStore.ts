@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { EventBus } from '../phaser/EventBus';
 import type { DebateScenarioKey } from '../data/levels';
+import { DEFAULT_SIDE_SCENE_ID } from '../data/sideScenes';
+import type { SideSceneId } from '../types/sideScene';
 
 // The key union and the scenario registry live together in `src/data/levels.ts`, so
 // adding a scenario is one edit rather than one per consumer.
@@ -39,6 +41,9 @@ interface GameState {
   currentScene: string;
   /** Which debate JSON to use when `Trial` is shown. */
   activeDebateId: DebateScenarioKey;
+  /** Which `SIDE_SCENES` descriptor `FarmSide` reads on its next `create()`. Consulted by
+   *  `animalPacks.ts` / `sceneAssets.ts`, which have no Phaser scene in hand to ask. */
+  activeSideSceneId: SideSceneId;
   /**
    * Scene to return to when an encounter ends. Set by whoever launched the Trial —
    * the main menu leaves it at `'MainMenu'`, the overworld sets `'Farm'` — so the
@@ -75,6 +80,7 @@ interface GameStore extends GameState {
   // Game state actions
   setCurrentScene: (scene: string) => void;
   setActiveDebate: (id: DebateScenarioKey) => void;
+  setActiveSideScene: (id: SideSceneId) => void;
   setReturnSceneKey: (sceneKey: string) => void;
   updatePlayerPosition: (x: number, y: number) => void;
   updateSpritePosition: (id: string, x: number, y: number) => void;
@@ -105,6 +111,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // `current-scene-ready`, so this stays honest until `MainMenu` reports in.
   currentScene: 'Boot',
   activeDebateId: '000_tutorial_the_blue_barn',
+  activeSideSceneId: DEFAULT_SIDE_SCENE_ID,
   returnSceneKey: 'MainMenu',
   isPaused: false,
   spritePositions: {},
@@ -142,6 +149,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Game state actions
   setCurrentScene: (scene) => set({ currentScene: scene }),
   setActiveDebate: (id) => set({ activeDebateId: id }),
+  setActiveSideScene: (id) => set({ activeSideSceneId: id }),
   setReturnSceneKey: (sceneKey) => set({ returnSceneKey: sceneKey }),
 
   updatePlayerPosition: (x, y) =>

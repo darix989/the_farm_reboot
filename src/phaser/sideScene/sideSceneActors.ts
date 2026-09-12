@@ -15,7 +15,7 @@
  */
 import type { Scene } from 'phaser';
 import { movementVector, type FarmKeys } from '../farm/farmInput';
-import { clampToRoad, roadDepthScale } from './sideSceneRoad';
+import { clampToRoad, roadDepthScale, type EntrySpawn } from './sideSceneRoad';
 import { resolveBandDepth } from './sideSceneProps';
 import { PLAYER_CHARACTER_ID, resolveCharacter, type AnimalSpriteId } from '../../data/characters';
 import { animalSetup } from '../animals/animalAnimations';
@@ -176,16 +176,11 @@ export class SideScenePlayer extends SideSceneActor {
   constructor(
     scene: Scene,
     descriptor: SideSceneDescriptor,
-    x: number,
+    spawn: EntrySpawn,
     private readonly keys: FarmKeys | null,
   ) {
-    super(
-      scene,
-      descriptor,
-      PLAYER_CHARACTER_ID,
-      x,
-      (descriptor.road.top + descriptor.road.bottom) / 2,
-    );
+    super(scene, descriptor, PLAYER_CHARACTER_ID, spawn.x, spawn.y);
+    this.faceDirection(spawn.facing === 'right' ? 1 : -1);
   }
 
   /**

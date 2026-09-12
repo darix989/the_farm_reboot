@@ -56,6 +56,26 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: RUE, textLabel: 'farmDialogHettySideB' },
     { speakerId: 'hetty', textLabel: 'farmDialogHettySideC', emotion: 'sneaky' },
   ],
+  dotSide: [
+    { speakerId: 'dot', textLabel: 'farmDialogDotSideA' },
+    { speakerId: RUE, textLabel: 'farmDialogDotSideB' },
+    { speakerId: 'dot', textLabel: 'farmDialogDotSideC' },
+  ],
+  bramSide: [
+    { speakerId: 'bram', textLabel: 'farmDialogBramSideA', emotion: 'thinking' },
+    { speakerId: RUE, textLabel: 'farmDialogBramSideB' },
+    { speakerId: 'bram', textLabel: 'farmDialogBramSideC', emotion: 'thinking' },
+  ],
+  duchessSide: [
+    { speakerId: 'duchess', textLabel: 'farmDialogDuchessSideA' },
+    { speakerId: RUE, textLabel: 'farmDialogDuchessSideB' },
+    { speakerId: 'duchess', textLabel: 'farmDialogDuchessSideC', emotion: 'doubtful' },
+  ],
+  tobiasSide: [
+    { speakerId: 'tobias', textLabel: 'farmDialogTobiasSideA', emotion: 'sneaky' },
+    { speakerId: RUE, textLabel: 'farmDialogTobiasSideB' },
+    { speakerId: 'tobias', textLabel: 'farmDialogTobiasSideC' },
+  ],
   cass1: [
     { speakerId: 'cass', textLabel: 'farmDialogCass1a' },
     { speakerId: RUE, textLabel: 'farmDialogCass1b' },

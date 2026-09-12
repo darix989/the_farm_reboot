@@ -657,6 +657,37 @@ const LABELS = {
   farmDialogHettySideB: 'I was only walking to the gate.',
   farmDialogHettySideC:
     'The gate. Well. I shall tell absolutely nobody, which is the same as telling everybody, only friendlier.',
+
+  // Portal prompts — the label belongs to the direction of travel, so a symmetric pair of
+  // portals reads differently depending which side of it you're standing on.
+  farmSidePortalBarn: 'Enter the barn',
+  farmSidePortalGate: 'Go through the gate',
+  farmSidePortalEastRoad: 'Head down the east road',
+  farmSidePortalBackToRoad: 'Back to the road',
+
+  // Dot, on the main road, left of the barn door. Straightforward and glad to see you —
+  // the counterweight to Hetty's routine.
+  farmDialogDotSideA:
+    "Rue! Barn's this way if you're headed in — Hetty's probably already talking your ear off out there.",
+  farmDialogDotSideB: "I'll go say hello.",
+  farmDialogDotSideC: 'Go on then. Mind the haypile, she moved it again.',
+
+  // Bram beyond the gate, the one animal here who says exactly as much as he means to.
+  farmDialogBramSideA: "You came out this far. Most don't.",
+  farmDialogBramSideB: "It's a nice walk.",
+  farmDialogBramSideC: "It is. That's not why I said it, but it is.",
+
+  // Duchess in the orchard, mid-survey of something only she can see.
+  farmDialogDuchessSideA:
+    "The citrus is doing better than the sunflowers this year. Nobody asked, but you're here now.",
+  farmDialogDuchessSideB: "I wasn't going to.",
+  farmDialogDuchessSideC: "Nobody ever is. That's precisely when I tell them.",
+
+  // Tobias, a little further into the orchard than Duchess, keeping his own counsel.
+  farmDialogTobiasSideA: "Don't mind Duchess, she's been counting oranges since sunup.",
+  farmDialogTobiasSideB: 'Have you?',
+  farmDialogTobiasSideC:
+    'Once. Lost count on purpose the second time — a donkey who finishes counting has nothing left to do.',
 } as const;
 
 export type Labels = keyof typeof LABELS;

@@ -8,9 +8,15 @@
  * import, so descriptor modules stay importable under the Vitest `phaser` stub.
  */
 import type { FarmKitAssetId } from '../phaser/sideScene/farmKit.generated';
-import type { SideSceneId } from '../data/sideScenes';
+import type { Labels } from '../data/labels';
 
-export type { SideSceneId };
+/**
+ * Defined here, not in `data/sideScenes/index.ts`: that module also holds `SIDE_SCENES`,
+ * a value import, and this type needs to flow into `SidePortalSpec.to` below without
+ * pulling that value (and the whole descriptor data set) in with it. `data/sideScenes/index.ts`
+ * re-exports this for existing consumers.
+ */
+export type SideSceneId = 'greenMeadowsRoad' | 'hettysBarn' | 'gateLane' | 'eastOrchard';
 
 /**
  * One band in the parallax stack, ordered far -> near in `SideSceneDescriptor.layers`.
@@ -94,13 +100,25 @@ export interface SideSceneNpcSpec {
 
 export type SidePortalSide = 'left' | 'right' | 'back' | 'front';
 
+/**
+ * Where a portal leads, and what to call the walk across it. The label belongs to the
+ * *direction of travel* — a symmetric pair of portals says "Enter the barn" one way and
+ * "Back to the road" the other, so the same scene pair reads differently depending which
+ * side of it you are standing on.
+ */
+export interface SidePortalLink {
+  scene: SideSceneId;
+  portal: string;
+  label: Labels;
+}
+
 export interface SidePortalSpec {
   id: string;
   side: SidePortalSide;
   /** Required for 'back' / 'front'; derived from scene width for 'left' / 'right'. */
   x?: number;
-  /** Authored now, unused until iteration 2. */
-  to?: { scene: SideSceneId; portal: string };
+  /** Omitted for a portal that leads nowhere yet (a menu spawn point). */
+  to?: SidePortalLink;
 }
 
 export interface SideSceneDescriptor {

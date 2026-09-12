@@ -79,3 +79,30 @@
   font-size: var(--ui-font-caption);
   font-weight: normal;
 }
+
+/* Same chrome as `.talkPrompt` — a portal and an NPC are never both in range at once (see
+   `resolveFocus`), but a different `top` keeps the two visually distinct on the rare frame
+   both stores are mid-update. */
+.portalPrompt {
+  position: absolute;
+  top: 26%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.2rem;
+  border: 2px solid var(--ui-color-accent);
+  border-radius: 999px;
+  background: var(--ui-color-overlay-backdrop);
+  color: var(--ui-color-text-emphasis);
+  font-size: var(--ui-font-subtitle);
+  font-weight: bold;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 0 18px var(--ui-color-accent-glow);
+
+  &:hover {
+    color: var(--ui-color-accent);
+  }
+}

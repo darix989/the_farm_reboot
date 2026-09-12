@@ -2,11 +2,14 @@
  * The first lateral scene: a ~4-screen-wide farm road with a barn/silo cluster, a
  * windmill, a tree line, crop beds, a picket-fence run with one gate, and flowers on
  * the front grass. Proves the traversal contract (walk on the road only, one entrance
- * plus a multi-exit shape) via `west`/`east`/`barn-gate` portals.
+ * plus a multi-exit shape) via `west` (menu spawn, no `to`) and three portals leading
+ * to the neighbouring scenes: `barn-door` -> `hettysBarn`, `gate` -> `gateLane`, `east`
+ * -> `eastOrchard`.
  *
- * `STANDARD_FARM_LAYERS` is exported so scene #2 does not have to retype the six-band
- * stack — every number here comes from the kit's measured asset-analysis pass (see
- * `docs/farm_side_scenes.md`), not from eyeballing a reference image.
+ * `STANDARD_FARM_LAYERS` is exported so every other scene reuses the six-band stack
+ * rather than retyping it — every number here comes from the kit's measured
+ * asset-analysis pass (see `docs/farm_side_scenes.md`), not from eyeballing a reference
+ * image.
  */
 import type { SideSceneDescriptor, SideSceneLayer } from '../../types/sideScene';
 
@@ -171,12 +174,31 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
   ],
 
   // Hetty waits a little west of the barn gate, far enough off it that the gate art still
-  // reads as a gate and the walk-up talk does not frame her against a post.
-  npcs: [{ characterId: 'hetty', x: GATE_X - 340, y: 952, facing: 'left', talkSuffix: 'Side' }],
+  // reads as a gate and the walk-up talk does not frame her against a post. Dot stands on
+  // the road itself, left of the barn door and clear of the silo.
+  npcs: [
+    { characterId: 'hetty', x: GATE_X - 340, y: 952, facing: 'left', talkSuffix: 'Side' },
+    { characterId: 'dot', x: 1080, y: 952, facing: 'right', talkSuffix: 'Side' },
+  ],
 
   portals: [
     { id: 'west', side: 'left' },
-    { id: 'east', side: 'right' },
-    { id: 'barn-gate', side: 'back', x: GATE_X },
+    {
+      id: 'barn-door',
+      side: 'back',
+      x: 1260,
+      to: { scene: 'hettysBarn', portal: 'road-door', label: 'farmSidePortalBarn' },
+    },
+    {
+      id: 'gate',
+      side: 'back',
+      x: GATE_X,
+      to: { scene: 'gateLane', portal: 'gate', label: 'farmSidePortalGate' },
+    },
+    {
+      id: 'east',
+      side: 'right',
+      to: { scene: 'eastOrchard', portal: 'west', label: 'farmSidePortalEastRoad' },
+    },
   ],
 };

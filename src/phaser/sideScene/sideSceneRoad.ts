@@ -52,3 +52,53 @@ export function resolvePortal(
       throw new Error(`Unknown portal side: ${portal.side as string}`);
   }
 }
+
+/** How far inside the world edge an edge spawn (`left`/`right`) lands — what the scene
+ *  hardcoded (`resolvePortal(portals[0]).x + 120`) before entry spawns became data-driven. */
+export const EDGE_SPAWN_INSET = 120;
+
+/** How far downstage of the road's own mid-line a `back`/`front` entry spawns — enough
+ *  that the player reads as standing a step clear of the door, not on top of it. */
+const PORTAL_SPAWN_DOWNSTAGE_PX = 40;
+
+export interface EntrySpawn {
+  x: number;
+  y: number;
+  facing: 'left' | 'right';
+}
+
+/**
+ * Where the player lands entering `descriptor` through `entryPortalId` — or the scene's
+ * first-authored portal when `entryPortalId` is absent or names no portal in this scene,
+ * the same fallback the scene's own hardcoded spawn used to be. An empty `portals` list
+ * centre-spawns rather than throwing: a scene still being authored should still preview.
+ */
+export function resolveEntrySpawn(
+  descriptor: SideSceneDescriptor,
+  entryPortalId?: string,
+): EntrySpawn {
+  if (descriptor.portals.length === 0) {
+    return {
+      x: descriptor.width / 2,
+      y: (descriptor.road.top + descriptor.road.bottom) / 2,
+      facing: 'right',
+    };
+  }
+
+  const portal =
+    descriptor.portals.find((candidate) => candidate.id === entryPortalId) ?? descriptor.portals[0];
+  const { x, y: midY } = resolvePortal(portal, descriptor);
+
+  switch (portal.side) {
+    case 'left':
+      return { x: EDGE_SPAWN_INSET, y: midY, facing: 'right' };
+    case 'right':
+      return { x: descriptor.width - EDGE_SPAWN_INSET, y: midY, facing: 'left' };
+    default: {
+      // Face whichever stretch of road is longer from here, the same instinct a
+      // "which way do I go" spawn should give the player.
+      const facing: 'left' | 'right' = x <= descriptor.width / 2 ? 'right' : 'left';
+      return { x, y: clampToRoad(midY + PORTAL_SPAWN_DOWNSTAGE_PX, descriptor.road), facing };
+    }
+  }
+}

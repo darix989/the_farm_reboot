@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { sideSceneAssetIds, validateSideSceneDescriptor } from './sideSceneAssets';
-import type { SideSceneDescriptor } from '../../types/sideScene';
+import type { SideSceneDescriptor, SideSceneId } from '../../types/sideScene';
 
 const BASE_DESCRIPTOR: SideSceneDescriptor = {
   id: 'greenMeadowsRoad',
@@ -27,9 +27,33 @@ const BASE_DESCRIPTOR: SideSceneDescriptor = {
   npcs: [{ characterId: 'hetty', x: 700, talkSuffix: 'Side' }],
   portals: [
     { id: 'west', side: 'left' },
-    { id: 'east', side: 'right' },
+    {
+      id: 'east',
+      side: 'right',
+      to: { scene: 'hettysBarn', portal: 'back', label: 'farmSidePortalBarn' },
+    },
     { id: 'barn-gate', side: 'back', x: 500 },
   ],
+};
+
+const OTHER_DESCRIPTOR: SideSceneDescriptor = {
+  ...BASE_DESCRIPTOR,
+  id: 'hettysBarn',
+  portals: [
+    {
+      id: 'back',
+      side: 'back',
+      x: 300,
+      to: { scene: 'greenMeadowsRoad', portal: 'east', label: 'farmSidePortalBackToRoad' },
+    },
+  ],
+};
+
+const REGISTRY: Readonly<Record<SideSceneId, SideSceneDescriptor>> = {
+  greenMeadowsRoad: BASE_DESCRIPTOR,
+  hettysBarn: OTHER_DESCRIPTOR,
+  gateLane: OTHER_DESCRIPTOR,
+  eastOrchard: OTHER_DESCRIPTOR,
 };
 
 describe('sideSceneAssetIds', () => {
@@ -45,8 +69,8 @@ describe('sideSceneAssetIds', () => {
 });
 
 describe('validateSideSceneDescriptor', () => {
-  it('passes a well-formed descriptor', () => {
-    expect(validateSideSceneDescriptor(BASE_DESCRIPTOR)).toEqual([]);
+  it('passes a well-formed, symmetrically-linked descriptor', () => {
+    expect(validateSideSceneDescriptor(BASE_DESCRIPTOR, REGISTRY)).toEqual([]);
   });
 
   it('flags a fence gap outside its own run', () => {
@@ -54,7 +78,7 @@ describe('validateSideSceneDescriptor', () => {
       ...BASE_DESCRIPTOR,
       fences: [{ y: 796, fromX: 0, toX: 100, gaps: [{ x: 500, gate: 'open' }] }],
     };
-    expect(validateSideSceneDescriptor(bad)).toHaveLength(1);
+    expect(validateSideSceneDescriptor(bad, REGISTRY)).toHaveLength(1);
   });
 
   it('flags a back portal x outside the scene width', () => {
@@ -62,6 +86,72 @@ describe('validateSideSceneDescriptor', () => {
       ...BASE_DESCRIPTOR,
       portals: [{ id: 'oops', side: 'back', x: 99999 }],
     };
-    expect(validateSideSceneDescriptor(bad)).toHaveLength(1);
+    expect(validateSideSceneDescriptor(bad, REGISTRY)).toHaveLength(1);
+  });
+
+  it('flags a scene with no portals at all', () => {
+    const bad: SideSceneDescriptor = { ...BASE_DESCRIPTOR, portals: [] };
+    expect(validateSideSceneDescriptor(bad, REGISTRY)).toHaveLength(1);
+  });
+
+  it('flags duplicate portal ids within one scene', () => {
+    const bad: SideSceneDescriptor = {
+      ...BASE_DESCRIPTOR,
+      portals: [
+        { id: 'west', side: 'left' },
+        { id: 'west', side: 'right' },
+      ],
+    };
+    expect(validateSideSceneDescriptor(bad, REGISTRY)).toHaveLength(1);
+  });
+
+  it('flags a portal targeting an unregistered scene', () => {
+    const bad: SideSceneDescriptor = {
+      ...BASE_DESCRIPTOR,
+      portals: [
+        {
+          id: 'west',
+          side: 'left',
+          to: { scene: 'nowhere' as SideSceneId, portal: 'x', label: 'farmSidePortalBarn' },
+        },
+      ],
+    };
+    expect(validateSideSceneDescriptor(bad, REGISTRY)).toHaveLength(1);
+  });
+
+  it('flags a portal targeting a portal id that does not exist on the target scene', () => {
+    const bad: SideSceneDescriptor = {
+      ...BASE_DESCRIPTOR,
+      portals: [
+        {
+          id: 'west',
+          side: 'left',
+          to: { scene: 'hettysBarn', portal: 'does-not-exist', label: 'farmSidePortalBarn' },
+        },
+      ],
+    };
+    expect(validateSideSceneDescriptor(bad, REGISTRY)).toHaveLength(1);
+  });
+
+  it('flags a one-way link — the target portal does not point back', () => {
+    const oneWayTarget: SideSceneDescriptor = {
+      ...OTHER_DESCRIPTOR,
+      portals: [{ id: 'back', side: 'back', x: 300 }],
+    };
+    const registry: Readonly<Record<SideSceneId, SideSceneDescriptor>> = {
+      ...REGISTRY,
+      hettysBarn: oneWayTarget,
+    };
+    const bad: SideSceneDescriptor = {
+      ...BASE_DESCRIPTOR,
+      portals: [
+        {
+          id: 'east',
+          side: 'right',
+          to: { scene: 'hettysBarn', portal: 'back', label: 'farmSidePortalBarn' },
+        },
+      ],
+    };
+    expect(validateSideSceneDescriptor(bad, registry)).toHaveLength(1);
   });
 });

@@ -207,7 +207,7 @@ return an unsubscribe function — use it as your effect cleanup.
 
 Defined in `src/phaser/main.ts`: **Boot** → **Preloader** → **MainMenu** → **Farm** → **FarmSide** → **Game** → **Trial** → **AnimalGallery** → **GameOver**. Design resolution **1920×1080**, `Scale.FIT`, centered. Arcade physics is enabled with zero gravity (the overworld uses it; the debate scenes simply never create bodies).
 
-`Game` and `GameOver` are unused template stubs. The live scenes are **MainMenu**, **Farm**, **FarmSide**, **Trial** and **AnimalGallery**. **FarmSide** is the lateral (side-scrolling) farm world — the scene-assembly kit plus the cast walking it and walk-up talks, no Trial routing yet; see [`docs/farm_side_scenes.md`](docs/farm_side_scenes.md). **Farm** stays the live top-down overworld. Adding a scene means adding a matching `case` in `ReactApp.tsx`, or it falls through to `BoilerPlateUI` and paints over your scene — see [`docs/architecture.md`](docs/architecture.md).
+`Game` and `GameOver` are unused template stubs. The live scenes are **MainMenu**, **Farm**, **FarmSide**, **Trial** and **AnimalGallery**. **FarmSide** is the lateral (side-scrolling) farm world — one scene class restarted onto whichever of four neighbouring `SIDE_SCENES` descriptors `activeSideSceneId` names, reachable from each other through walk-up portals with a fade-through-black transition; still no Trial routing. See [`docs/farm_side_scenes.md`](docs/farm_side_scenes.md). **Farm** stays the live top-down overworld. Adding a scene means adding a matching `case` in `ReactApp.tsx`, or it falls through to `BoilerPlateUI` and paints over your scene — see [`docs/architecture.md`](docs/architecture.md).
 
 ## Assets and HTML
 

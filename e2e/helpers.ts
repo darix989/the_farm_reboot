@@ -8,6 +8,10 @@ export const LEVEL_1_FIRST = getLabel('level1BramDialog');
 export const CONTINUE = getLabel('continue');
 export const ENTER_FARM_SIDE_PREVIEW = getLabel('enterFarmSidePreview');
 export const FARM_SIDE_BACK_TO_MENU = getLabel('farmSideBackToMenu');
+export const TALK_TO_HETTY = getLabel('farmTalkPrompt', { replacements: { name: 'Hetty' } });
+export const TALK_TO_BRAM = getLabel('farmTalkPrompt', { replacements: { name: 'Bram' } });
+export const FARM_SIDE_PORTAL_GATE = getLabel('farmSidePortalGate');
+export const FARM_SIDE_PORTAL_BACK_TO_ROAD = getLabel('farmSidePortalBackToRoad');
 
 /**
  * Wipe persisted zustand keys before any app script runs, so smokes always
