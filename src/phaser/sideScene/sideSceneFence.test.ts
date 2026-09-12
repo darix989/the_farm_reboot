@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { buildFenceRun } from './sideSceneFence';
+import { buildFenceRun, FENCE_PIECE_OVERLAP_NATIVE_PX } from './sideSceneFence';
 import { FARM_KIT_ASSETS } from './farmKit.generated';
 import type { SideFenceRun } from '../../types/sideScene';
 
 describe('buildFenceRun', () => {
   const pieceWidth = FARM_KIT_ASSETS['fence/repeating-piece'].width;
+  const pitch = pieceWidth - FENCE_PIECE_OVERLAP_NATIVE_PX;
 
   it('places a gate at each gap x and leaves no piece overlapping a gap', () => {
     const run: SideFenceRun = {
@@ -33,11 +34,21 @@ describe('buildFenceRun', () => {
     });
   });
 
-  it('a run with no gaps tiles pieces edge to edge across its whole span', () => {
-    const run: SideFenceRun = { y: 796, fromX: 0, toX: pieceWidth * 4, gaps: [] };
+  it('a run with no gaps tiles pieces at a pitch slightly under the piece width', () => {
+    const run: SideFenceRun = { y: 796, fromX: 0, toX: pitch * 4, gaps: [] };
     const placements = buildFenceRun(run);
     expect(placements).toHaveLength(4);
-    placements.forEach((p, i) => expect(p.x).toBeCloseTo(i * pieceWidth, 5));
+    placements.forEach((p, i) => expect(p.x).toBeCloseTo(i * pitch, 5));
+  });
+
+  it('consecutive pieces overlap by the deliberate seam margin, never gap', () => {
+    const run: SideFenceRun = { y: 796, fromX: 0, toX: pitch * 5, gaps: [] };
+    const placements = buildFenceRun(run).filter((p) => p.kind === 'piece');
+    for (let i = 1; i < placements.length; i += 1) {
+      const previousRightEdge = placements[i - 1].x + pieceWidth;
+      expect(placements[i].x).toBeLessThan(previousRightEdge);
+      expect(previousRightEdge - placements[i].x).toBeCloseTo(FENCE_PIECE_OVERLAP_NATIVE_PX, 5);
+    }
   });
 
   it('a gap of gate "none" leaves a hole with no gate placed', () => {
