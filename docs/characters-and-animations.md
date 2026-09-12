@@ -322,10 +322,10 @@ clears `customPivot` on the whole texture so those anchors are ignored.
 
 **Trial speaker depths.** Idle and non-speakers sit at depth 1, the active speaker at
 10. Formal debates (`encounterKind === 'debate'`, including the default when `mechanics`
-is omitted) insert a stage dimmer at 5 and a spotlight beam at 9, so the speaker stands
-above the darkened floor and the oval sits just behind them. Lessons, gossip, sparring
-and lab skip that pair and keep the milder alpha dim. Do not put a new Trial stage
-object in that band without reading `Trial.ts`.
+is omitted) insert a stage dimmer at 5 and a spotlight cone at 9, from the top of the
+hole down onto the speaker. Lessons, gossip, sparring and lab skip that pair and keep
+the milder alpha dim. Do not put a new Trial stage object in that band without reading
+`Trial.ts`.
 
 ---
 

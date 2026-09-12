@@ -15,7 +15,6 @@ import {
   TRIAL_SCALE_BY_CAST_SIZE,
   animalArtFacesLeft,
   applyAtlasFeetOrigin,
-  atlasTrimmedDisplayHeight,
   atlasTrimmedDisplayWidth,
 } from '../animals/animalStaging';
 import { ANIMAL_EMOTIONS, type AnimalEmotion } from '../animals/animalEmotions';
@@ -43,13 +42,15 @@ const SPOTLIGHT_DIMMER_DEPTH = 5;
 const SPOTLIGHT_BEAM_DEPTH = 9;
 const CAST_SPEAKER_DEPTH = 10;
 
-const SPOTLIGHT_TEXTURE_KEY = 'trial-speaker-spotlight';
-const SPOTLIGHT_TEXTURE_SIZE = 256;
+const SPOTLIGHT_TEXTURE_KEY = 'trial-speaker-spotlight-cone';
+const SPOTLIGHT_TEXTURE_WIDTH = 256;
+const SPOTLIGHT_TEXTURE_HEIGHT = 512;
 const SPOTLIGHT_DIMMER_ALPHA = 0.45;
 const SPOTLIGHT_TWEEN_MS = 280;
-/** Oval is a little larger than the trimmed body so a halo reads around the speaker. */
-const SPOTLIGHT_BEAM_WIDTH_SCALE = 1.7;
-const SPOTLIGHT_BEAM_HEIGHT_SCALE = 1.85;
+/** Bottom of the cone is wider than the trimmed body so the pool reads around the feet. */
+const SPOTLIGHT_BEAM_WIDTH_SCALE = 2.1;
+/** Extra pixels past the feet so the pool sits on the floor, not in the ankles. */
+const SPOTLIGHT_FLOOR_SPILL = 16;
 
 interface CastMember {
   sprite: Phaser.GameObjects.Sprite;
@@ -170,8 +171,9 @@ export class Trial extends Scene {
   }
 
   /**
-   * Dark overlay across the hole plus a soft oval behind the speaker. Depths are load-bearing:
-   * idle sprites (1) sit under the dimmer (5), the beam (9) sits just behind the speaker (10).
+   * Dark overlay across the hole plus a cone from the rig down onto the speaker. Depths are
+   * load-bearing: idle sprites (1) sit under the dimmer (5), the beam (9) sits just behind
+   * the speaker (10).
    */
   private buildSpeakerSpotlight(): void {
     ensureSpeakerSpotlightTexture(this);
@@ -192,6 +194,7 @@ export class Trial extends Scene {
 
     const beam = this.add
       .image(0, 0, SPOTLIGHT_TEXTURE_KEY)
+      .setOrigin(0.5, 0)
       .setDepth(SPOTLIGHT_BEAM_DEPTH)
       .setBlendMode(BlendModes.ADD)
       .setAlpha(0)
@@ -246,12 +249,10 @@ export class Trial extends Scene {
     }
 
     const { sprite } = lit;
-    const bodyWidth = atlasTrimmedDisplayWidth(sprite);
-    const bodyHeight = atlasTrimmedDisplayHeight(sprite);
     const x = sprite.x;
-    const y = sprite.y - bodyHeight * 0.5;
-    const width = bodyWidth * SPOTLIGHT_BEAM_WIDTH_SCALE;
-    const height = bodyHeight * SPOTLIGHT_BEAM_HEIGHT_SCALE;
+    const y = TRIAL_STAGE_HOLE.y;
+    const width = atlasTrimmedDisplayWidth(sprite) * SPOTLIGHT_BEAM_WIDTH_SCALE;
+    const height = sprite.y - TRIAL_STAGE_HOLE.y + SPOTLIGHT_FLOOR_SPILL;
 
     this.spotlightSpeakerId = speakerId;
     lights.beam.setVisible(true);
@@ -262,7 +263,7 @@ export class Trial extends Scene {
       return;
     }
 
-    // First light-up: park the oval on the speaker, then fade in. Sliding from (0, 0)
+    // First light-up: park the cone on the speaker, then fade in. Sliding from (0, 0)
     // would sweep the beam across the whole hole.
     if (previousId === null) {
       lights.beam.setPosition(x, y).setDisplaySize(width, height).setAlpha(0);
@@ -337,19 +338,39 @@ export class Trial extends Scene {
   }
 }
 
-/** Soft warm oval used as the speaker beam. Idempotent across Trial re-entries. */
+/** Soft warm cone from the rig down to the floor. Idempotent across Trial re-entries. */
 function ensureSpeakerSpotlightTexture(scene: Phaser.Scene): void {
   if (scene.textures.exists(SPOTLIGHT_TEXTURE_KEY)) return;
-  const size = SPOTLIGHT_TEXTURE_SIZE;
-  const canvas = scene.textures.createCanvas(SPOTLIGHT_TEXTURE_KEY, size, size);
+  const width = SPOTLIGHT_TEXTURE_WIDTH;
+  const height = SPOTLIGHT_TEXTURE_HEIGHT;
+  const canvas = scene.textures.createCanvas(SPOTLIGHT_TEXTURE_KEY, width, height);
   if (!canvas) return;
   const ctx = canvas.getContext();
-  const mid = size / 2;
-  const gradient = ctx.createRadialGradient(mid, mid, 0, mid, mid, mid);
-  gradient.addColorStop(0, 'rgba(255, 244, 210, 0.85)');
-  gradient.addColorStop(0.35, 'rgba(255, 230, 170, 0.4)');
-  gradient.addColorStop(1, 'rgba(255, 220, 150, 0)');
-  ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, size, size);
+  const image = ctx.createImageData(width, height);
+  const pixels = image.data;
+  const cx = (width - 1) / 2;
+  const topHalf = width * 0.05;
+  const bottomHalf = width * 0.5;
+
+  for (let row = 0; row < height; row++) {
+    const t = row / (height - 1);
+    const half = topHalf + (bottomHalf - topHalf) * t;
+    // Dimmer at the rig, brighter on the speaker / floor pool.
+    const shaft = 0.18 + 0.82 * t;
+    for (let col = 0; col < width; col++) {
+      const edge = Math.abs(col - cx) / half;
+      let alpha = 0;
+      if (edge < 1) {
+        const rim = edge < 0.45 ? 1 : 1 - (edge - 0.45) / 0.55;
+        alpha = shaft * rim * rim;
+      }
+      const i = (row * width + col) * 4;
+      pixels[i] = 255;
+      pixels[i + 1] = 244;
+      pixels[i + 2] = 210;
+      pixels[i + 3] = Math.round(alpha * 0.75 * 255);
+    }
+  }
+  ctx.putImageData(image, 0, 0);
   canvas.refresh();
 }
