@@ -81,9 +81,11 @@ const LABELS = {
   galleryQualityPass: 'OK',
   galleryQualityWarn: 'check',
   galleryQualityUnknown: '?',
+  galleryQualityPlaceholder: 'placeholder',
   galleryQualityAnimalPass: 'all emotions pass',
   galleryQualityAnimalWarn: 'emotions need review',
   galleryQualityAnimalUnknown: 'emotions unmeasured',
+  galleryQualityAnimalPlaceholder: 'emotions are a placeholder',
   galleryQualityMetrics: 'loop seam {loopPop}% · height swing {heightSwing}% · drift ±{driftX}px',
   // No height swing: a crop cannot zoom, so what it measures on a portrait is the jaw opening
   // — the motion the portrait exists to show. See `FACE_QUALITY_THRESHOLDS`.

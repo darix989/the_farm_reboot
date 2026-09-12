@@ -78,15 +78,15 @@ export const CHARACTERS: Readonly<Record<string, CharacterVisual>> = {
     kind: 'npc',
     animal: 'white-sheep-1',
   },
-  // TODO: switch `animal` to `'cow'` / `'cow-female-001'` once those have emotion clips.
-  // The atlas already ships; the Ludo generation has not been run. Until then Bella
-  // borrows Hetty's sheep so farm-talk portraits and emotions have something to play.
+  // No emotion clips generated yet — every emotion plays the cow's "eating" animation
+  // instead (see `emotionFallbacks.ts`), flagged as a placeholder in the Animation Gallery.
+  // Swap this fallback out once real clips are generated for `cow`.
   bella: {
     id: 'bella',
     nameLabel: 'farmNpcBella',
     tint: 0xe8d0a8,
     kind: 'npc',
-    animal: 'white-sheep-1',
+    animal: 'cow',
   },
   cass: { id: 'cass', nameLabel: 'farmNpcCass', tint: 0xd4623f, kind: 'npc', animal: 'fox' },
   bram: { id: 'bram', nameLabel: 'farmNpcBram', tint: 0x5c8f6b, kind: 'npc', animal: 'brown-wolf' },

@@ -150,9 +150,8 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     scenarios: ['021_hetty_ad_hominem_barrage', '010_gossip_trough_hetty'],
   },
   {
-    // Placeholder in the barn until a cow character lands. No encounters — just
-    // silly talk, and a Done line after Sunday. Offset west of Tobias so the two
-    // do not stack on the top-down map.
+    // The cow, in the barn. No encounters — just silly talk, and a Done line after
+    // Sunday. Offset west of Tobias so the two do not stack on the top-down map.
     id: 'bella',
     x: 480,
     y: 620,

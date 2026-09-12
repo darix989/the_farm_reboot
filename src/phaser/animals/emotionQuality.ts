@@ -17,10 +17,14 @@ import {
 } from './animalEmotions';
 import { animalSetup } from './animalAnimations';
 import { emotionSheet } from './animalEmotionAnimations';
+import { emotionFallback } from './emotionFallbacks';
 import { FACE_QUALITY_THRESHOLDS, type FaceSheet } from './animalFaces';
 import type { AnimalSpriteId } from '../../data/characters';
 
-export type ClipQualityStatus = 'pass' | 'warn' | 'unknown' | 'none';
+/** `placeholder` is a documented stand-in (`emotionFallback`), not a defect — kept out of the
+ *  `warn` bucket so reviewers can tell "known, temporary substitution" from "generated but
+ *  needs a second look" at a glance. */
+export type ClipQualityStatus = 'pass' | 'warn' | 'unknown' | 'none' | 'placeholder';
 
 function metricsOverThreshold(quality: EmotionQuality): boolean {
   return (
@@ -64,15 +68,20 @@ export function faceClipQualityStatus(sheet: FaceSheet | null): ClipQualityStatu
 
 /**
  * Animal-level rollup over the five emotions. Green only when every emotion is `pass`.
- * Warn beats unknown beats missing art.
+ * Warn beats placeholder beats unknown beats missing art — a real quality problem should
+ * never be masked by an animal that also happens to be running on fallback clips.
  */
 export function animalEmotionQualityStatus(animalId: AnimalSpriteId): ClipQualityStatus {
   const textureKey = animalSetup(animalId).textureKey;
-  const statuses = ANIMAL_EMOTIONS.map((emotion) =>
-    emotionClipQualityStatus(emotionSheet(textureKey, emotion)),
-  );
+  const fallback = emotionFallback(textureKey);
+  const statuses = ANIMAL_EMOTIONS.map((emotion) => {
+    const sheet = emotionSheet(textureKey, emotion);
+    if (!sheet && fallback) return 'placeholder';
+    return emotionClipQualityStatus(sheet);
+  });
   if (statuses.every((status) => status === 'pass')) return 'pass';
   if (statuses.some((status) => status === 'warn')) return 'warn';
+  if (statuses.some((status) => status === 'placeholder')) return 'placeholder';
   if (statuses.some((status) => status === 'unknown')) return 'unknown';
   return 'none';
 }

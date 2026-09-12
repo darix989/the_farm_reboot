@@ -4,9 +4,10 @@
  * authors. Built strictly from asset ids `greenMeadowsRoad` already uses, so visiting it
  * is always a warm hop (see `docs/farm_side_scenes.md`).
  *
- * Bella stands here for now — a sheep-sprite placeholder (TODO: cow) with silly
- * talk, occupying Hetty's old yard spot until a real cow character lands. Hetty
- * moved to `oldPond`.
+ * Bella stands here as the cow, occupying Hetty's old yard spot. Hetty moved to
+ * `oldPond`. Bella has no generated emotion clips yet, so every emotion falls back to her
+ * "eating" animation (see `emotionFallbacks.ts`), flagged as a placeholder in the Animation
+ * Gallery — swap it out once real clips are generated for `cow`.
  */
 import type { SideSceneDescriptor } from '../../types/sideScene';
 import { STANDARD_FARM_LAYERS } from './greenMeadowsRoad';
