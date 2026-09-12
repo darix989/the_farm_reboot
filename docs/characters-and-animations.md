@@ -270,11 +270,12 @@ before) or `{ farm?, trial? }`. The raccoon is `{ farm: 1.5 }` (~202×85 on the 
 `trial` stays at 1 because there Rue *sits up*, a taller and much narrower pose, and that
 is the pose the existing trial multiplier was already staging Tobias in.
 
-The sheep is the other split adjustment, `{ farm: 2.4, trial: 0.8 }`. Her export canvas is
+The sheep is the other split adjustment, `{ farm: 1.68, trial: 0.8 }`. Her export canvas is
 the smallest in the table above, so the source ratio nets her out mid-sized on paper and
 small on screen — on the lateral farm road she read as a lamb at Rue's feet rather than an
-animal he is talking to. `trial` keeps the 0.8 she always had: the podium is a fixed 540px
-hole a cast of three has to fit into, and that composition is already fit.
+animal he is talking to. The farm figure is 2.1× the 0.8 she used to be: tripling it
+overshot, reading bigger than the donkey. `trial` keeps that 0.8: the podium is a fixed
+540px hole a cast of three has to fit into, and that composition is already fit.
 
 Measured visible pixel bounds of each animal's idle rest frame (`spriteSourceSize` in the
 descriptor JSON — what actually renders, not the shared `sourceSize` export canvas, which
