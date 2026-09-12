@@ -122,8 +122,9 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneB' },
   ],
   // The level opener, and the only conversation that starts on its own. It takes its time:
-  // Dot asks after Rue before she gets to the motion, and Rue volunteers for the floor
-  // himself — the goals she hands over afterwards are the rules that come with having done so.
+  // Dot names herself as the farm's guardian (why she stands at the entrance), asks after
+  // Rue before she gets to the motion, and Rue volunteers for the floor himself — the goals
+  // she hands over afterwards are the rules that come with having done so.
   dot1: [
     { speakerId: 'dot', textLabel: 'farmDialogDot1a' },
     { speakerId: RUE, textLabel: 'farmDialogDot1b' },

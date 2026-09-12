@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   clampToRoad,
   EDGE_SPAWN_INSET,
+  resolveDefaultSpawn,
   resolveEntrySpawn,
   resolvePortal,
   roadDepthScale,
@@ -106,5 +107,19 @@ describe('resolveEntrySpawn', () => {
     const spawn = resolveEntrySpawn(empty);
     expect(spawn.x).toBe(empty.width / 2);
     expect(spawn.y).toBe((ROAD.top + ROAD.bottom) / 2);
+  });
+});
+
+describe('resolveDefaultSpawn', () => {
+  it('uses an authored playerSpawn, clamped onto the road', () => {
+    const spawn = resolveDefaultSpawn({
+      ...FULL_DESCRIPTOR,
+      playerSpawn: { x: 800, y: 10, facing: 'left' },
+    });
+    expect(spawn).toEqual({ x: 800, y: ROAD.top, facing: 'left' });
+  });
+
+  it('falls back to the first portal when no playerSpawn is authored', () => {
+    expect(resolveDefaultSpawn(FULL_DESCRIPTOR).x).toBe(EDGE_SPAWN_INSET);
   });
 });

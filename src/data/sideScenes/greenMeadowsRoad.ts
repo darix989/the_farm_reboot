@@ -2,7 +2,7 @@
  * The first lateral scene: a ~4-screen-wide farm road with a barn/silo cluster, a
  * windmill, a tree line, crop beds, a picket-fence run with one gate, and flowers on
  * the front grass. Proves the traversal contract (walk on the road only, one entrance
- * plus a multi-exit shape) via `west` (menu spawn, no `to`) and three portals leading
+ * plus a multi-exit shape) via `west` (the west edge, no `to`) and three portals leading
  * to the neighbouring scenes: `barn-door` -> `hettysBarn`, `gate` -> `gateLane`, `east`
  * -> `eastOrchard`.
  *
@@ -24,6 +24,15 @@ export const STANDARD_FARM_LAYERS: readonly SideSceneLayer[] = [
 /** The near-grass / road seam — where a fence or a ground prop plants its feet. */
 const GROUND_SEAM_Y = 796;
 const GATE_X = 3800;
+/**
+ * Dot on the approach, west of the silo (980) and well clear of the barn door (1260), so
+ * talking to her never also offers "Enter the barn". Rue spawns this many px west of her,
+ * facing in — close enough to read as a greeting, wide enough that the two sprites do not
+ * overlap at `SIDE_SCALE`.
+ */
+const DOT_X = 800;
+const DOT_Y = 952;
+const INTRO_SPAWN_GAP = 360;
 /**
  * Front-grass flowers. Native art is oversized like the crops above; 0.72 is double the
  * first-pass 0.36 that made a bloom sit next to a fence post.
@@ -175,11 +184,16 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
 
   // Cass waits a little west of the picket gate, far enough off it that the gate art still
   // reads as a gate and the walk-up talk does not frame her against a post. Dot stands on
-  // the road itself, left of the barn door and clear of the silo. Hetty lives in the barn.
+  // the approach west of the silo — guardian at the entrance, not in the barn doorway —
+  // facing the road Rue arrives down. Hetty lives in the barn.
   npcs: [
     { characterId: 'cass', x: GATE_X - 340, y: 952, facing: 'left' },
-    { characterId: 'dot', x: 1080, y: 952, facing: 'right' },
+    { characterId: 'dot', x: DOT_X, y: DOT_Y, facing: 'left' },
   ],
+
+  // First visit (and Reset Progress): beside Dot, looking at her. Portal hops and a saved
+  // pose still win over this.
+  playerSpawn: { x: DOT_X - INTRO_SPAWN_GAP, y: DOT_Y, facing: 'right' },
 
   portals: [
     { id: 'west', side: 'left' },

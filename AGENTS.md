@@ -79,7 +79,7 @@ src/
     farmMap.ts          # Overworld zones + NPCs; `talkStages` on FarmNpc
     farmTalk.ts         # Sequential talk beats, keyed by `{npcId}{suffix}` (`hetty1`, `dot2`)
                         #   and `followUp:{scenarioKey}` for post-Trial pointers
-    sideScenes/         # Lateral farm scenes: layer stack, props, fences, npcs, portals
+    sideScenes/         # Lateral farm scenes: layer stack, props, fences, npcs, playerSpawn, portals
     farmTutorials.ts    # Overworld overlay tutorials + FarmTutorialId
     encounterFollowUps.ts # After Trial Leave: farm talk or tutorial, then dialog flags / Next
     characters.ts       # Cast roster: name, tint, and (if any) animated `animal` sprite

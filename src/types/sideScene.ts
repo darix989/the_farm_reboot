@@ -136,5 +136,11 @@ export interface SideSceneDescriptor {
   fences: readonly SideFenceRun[];
   /** Who is standing on this road. The player is not one of these — see `FarmSide.ts`. */
   npcs: readonly SideSceneNpcSpec[];
+  /**
+   * Where Rue stands on a first visit (no resume pose, no entry portal). Omit to fall
+   * back to the first-authored portal, the same default `resolveEntrySpawn` already had.
+   * Level 1's main road uses this to put him beside Dot.
+   */
+  playerSpawn?: { x: number; y?: number; facing?: 'left' | 'right' };
   portals: readonly SidePortalSpec[];
 }

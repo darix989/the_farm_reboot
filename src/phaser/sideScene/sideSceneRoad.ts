@@ -73,6 +73,21 @@ export interface EntrySpawn {
  * the same fallback the scene's own hardcoded spawn used to be. An empty `portals` list
  * centre-spawns rather than throwing: a scene still being authored should still preview.
  */
+/**
+ * Where Rue stands when the scene is entered from the menu (no portal, no saved pose).
+ * An authored `playerSpawn` wins; otherwise the first portal, same as a hop with no id.
+ */
+export function resolveDefaultSpawn(descriptor: SideSceneDescriptor): EntrySpawn {
+  const spawn = descriptor.playerSpawn;
+  if (!spawn) return resolveEntrySpawn(descriptor);
+  const midY = (descriptor.road.top + descriptor.road.bottom) / 2;
+  return {
+    x: Math.max(0, Math.min(descriptor.width, spawn.x)),
+    y: clampToRoad(spawn.y ?? midY, descriptor.road),
+    facing: spawn.facing ?? 'right',
+  };
+}
+
 export function resolveEntrySpawn(
   descriptor: SideSceneDescriptor,
   entryPortalId?: string,

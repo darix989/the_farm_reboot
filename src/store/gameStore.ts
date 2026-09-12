@@ -55,7 +55,8 @@ interface GameState {
   /**
    * Last pose on a `FarmSide` road. `FarmSide.create()` restores it when there is no
    * `entryPortalId` (Trial Leave, Back to Menu then Enter the Farm). Portal hops spawn
-   * at the arrival door instead. Cleared by Reset Progress.
+   * at the arrival door instead. A first visit with neither uses the scene's
+   * `playerSpawn` (beside Dot on the main road). Cleared by Reset Progress.
    */
   sideSceneResume: SideSceneResume | null;
   /**

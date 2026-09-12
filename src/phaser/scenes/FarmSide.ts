@@ -7,7 +7,12 @@ import { queueSideSceneAssets } from '../sideScene/sideSceneAssets';
 import { buildSideSceneLayers, type SideSceneLayers } from '../sideScene/sideSceneLayers';
 import { placeFences, placeProps } from '../sideScene/sideSceneProps';
 import { drawDebugOverlay } from '../sideScene/sideSceneDebug';
-import { clampToRoad, resolveEntrySpawn, resolvePortal } from '../sideScene/sideSceneRoad';
+import {
+  clampToRoad,
+  resolveDefaultSpawn,
+  resolveEntrySpawn,
+  resolvePortal,
+} from '../sideScene/sideSceneRoad';
 import {
   PORTAL_INTERACT_RADIUS,
   resolveFocus,
@@ -410,7 +415,8 @@ export class FarmSide extends Scene {
   /**
    * Portal hops spawn at the arrival door. Trial Leave and a later Enter the Farm restore
    * the last pose on this scene instead, so a Hetty encounter does not drop Rue at the
-   * west end of the main road.
+   * west end of the main road. A first visit (no portal, no pose) uses the scene's
+   * authored `playerSpawn` — on the main road, beside Dot.
    */
   private resolveSpawn() {
     if (this.entryPortalId) return resolveEntrySpawn(this.descriptor, this.entryPortalId);
@@ -422,7 +428,7 @@ export class FarmSide extends Scene {
         facing: resume.facing,
       };
     }
-    return resolveEntrySpawn(this.descriptor);
+    return resolveDefaultSpawn(this.descriptor);
   }
 
   /**

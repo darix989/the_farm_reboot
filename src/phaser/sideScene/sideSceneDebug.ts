@@ -9,7 +9,7 @@
  * (`sideSceneActors.ts`) carries the traversal contract it was proving now.
  */
 import type { Scene } from 'phaser';
-import { resolveEntrySpawn, resolvePortal } from './sideSceneRoad';
+import { resolveDefaultSpawn, resolvePortal } from './sideSceneRoad';
 import { PORTAL_INTERACT_RADIUS } from './sideSceneInteractions';
 import { BAND_DEPTH } from './sideSceneProps';
 import type { SideSceneDescriptor } from '../../types/sideScene';
@@ -53,7 +53,7 @@ export function drawDebugOverlay(scene: Scene, descriptor: SideSceneDescriptor):
       .setDepth(overlayDepth);
   });
 
-  const spawn = resolveEntrySpawn(descriptor);
+  const spawn = resolveDefaultSpawn(descriptor);
   scene.add
     .graphics()
     .setScrollFactor(1)

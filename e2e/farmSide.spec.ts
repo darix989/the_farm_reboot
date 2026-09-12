@@ -53,8 +53,9 @@ test.describe('lateral farm scene', () => {
     await page.getByRole('button', { name: ENTER_THE_FARM }).click();
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
 
-    // Walk right: barn door first (Dot is nearby but the portal wins on radius fraction),
-    // then the picket gate (Cass stands where Hetty used to, same focus contest).
+    // Walk right: barn door first (Dot stands further west now, so she is not in the
+    // portal's radius contest), then the picket gate (Cass stands where Hetty used to,
+    // same focus contest).
     await page.keyboard.down('ArrowRight');
     await page.getByRole('button', { name: FARM_SIDE_PORTAL_BARN }).waitFor({ timeout: 45_000 });
     await page.getByRole('button', { name: FARM_SIDE_PORTAL_GATE }).waitFor({ timeout: 45_000 });

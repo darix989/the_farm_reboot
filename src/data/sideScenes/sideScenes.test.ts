@@ -10,6 +10,11 @@ import {
   validateSideSceneDescriptor,
 } from '../../phaser/sideScene/sideSceneAssets';
 import { FARM_KIT_ASSETS } from '../../phaser/sideScene/farmKit.generated';
+import { resolveDefaultSpawn } from '../../phaser/sideScene/sideSceneRoad';
+import { PORTAL_INTERACT_RADIUS } from '../../phaser/sideScene/sideSceneInteractions';
+
+/** Same 400px talk radius `FarmSide` uses — close enough to count as "beside". */
+const INTERACT_RADIUS_NPC = 400;
 
 describe('SIDE_SCENES', () => {
   it('every registered scene validates clean', () => {
@@ -61,5 +66,19 @@ describe('SIDE_SCENES', () => {
     expect(byId.bram).toEqual(['gateLane']);
     expect(byId.duchess).toEqual(['eastOrchard']);
     expect(byId.tobias).toEqual(['eastOrchard']);
+  });
+
+  it('stands Dot and the first-visit spawn west of the barn door, clear of its interact radius', () => {
+    const road = SIDE_SCENES.greenMeadowsRoad;
+    const dot = road.npcs.find((npc) => npc.characterId === 'dot');
+    const barn = road.portals.find((portal) => portal.id === 'barn-door');
+    expect(dot).toBeDefined();
+    expect(barn?.x).toBeDefined();
+    const spawn = resolveDefaultSpawn(road);
+    expect(barn!.x! - dot!.x).toBeGreaterThan(PORTAL_INTERACT_RADIUS);
+    expect(barn!.x! - spawn.x).toBeGreaterThan(PORTAL_INTERACT_RADIUS);
+    expect(Math.abs(spawn.x - dot!.x)).toBeLessThan(INTERACT_RADIUS_NPC);
+    expect(spawn.facing).toBe('right');
+    expect(dot!.facing).toBe('left');
   });
 });

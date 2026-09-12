@@ -27,7 +27,7 @@ about.
 | Bram      | wolf    | `brown-wolf`                     | farm NPC                  |
 | Tobias    | donkey  | `donkey-grey`                    | farm NPC, Trial opponent  |
 | Duchess   | owl     | `owl`                            | farm NPC, Trial moderator |
-| Dot       | dog     | `dog`                            | farm greeter              |
+| Dot       | dog     | `dog`                            | farm guardian / greeter   |
 
 The three outsiders (raccoon, fox, wolf) are the ones the level's fallacies point at; the
 in-group is the sheep and the donkey. See `level_01_the_pond_motion.md`.

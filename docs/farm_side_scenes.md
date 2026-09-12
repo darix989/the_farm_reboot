@@ -117,11 +117,16 @@ behind the walker without a special case.
 facing? }`, resolved through `src/data/characters.ts` exactly the way
 `FARM_NPCS` is in the top-down farm. `animalPacks.ts` reads the same list to work out which
 atlases `FarmSide` has to fetch (`sideSceneAnimalIds(descriptor)`), so adding an animal to
-a scene is one edit, not two. Rue is not in the list: the player is spawned by the scene, at
-whichever portal `resolveEntrySpawn` resolves (see "Travelling between scenes" below).
+a scene is one edit, not two. Rue is not in the list: the player is spawned by the scene.
+Portal hops use `resolveEntrySpawn`. A first visit (no portal, no saved pose) uses an
+authored `playerSpawn` when the scene has one — on `greenMeadowsRoad` that is beside Dot,
+facing her, so her auto-opening greeting frames the pair rather than a raccoon at the west
+edge and a dog by the barn. Scenes without `playerSpawn` still fall back to the first
+portal (see "Travelling between scenes" below).
 
-Level 1's homes: Dot and Cass on `greenMeadowsRoad` (Cass west of the picket gate), Hetty
-only in `hettysBarn`, Bram in `gateLane`, Duchess and Tobias in `eastOrchard`.
+Level 1's homes: Dot and Cass on `greenMeadowsRoad` (Dot on the west approach, guardian of
+the entrance; Cass west of the picket gate), Hetty only in `hettysBarn`, Bram in
+`gateLane`, Duchess and Tobias in `eastOrchard`.
 
 `sideSceneActors.ts` owns everything about standing on a road — scale, depth, facing, and
 Rue's movement — including **`SIDE_SCALE`**, one flat multiplier on
@@ -178,7 +183,7 @@ Because the camera can now zoom and tilt, the backdrop bands are `scrollFactor(0
 1. Add a file under `src/data/sideScenes/`, following `greenMeadowsRoad.ts` (or one of
    the smaller pocket scenes, `hettysBarn.ts`/`gateLane.ts`/`eastOrchard.ts`, for a scene
    with only a return portal): pick `scale`/`firstTop`, reuse `STANDARD_FARM_LAYERS` (or a
-   variant), author `road`, `props`, `fences`, `npcs`, `portals`.
+   variant), author `road`, `props`, `fences`, `npcs`, optional `playerSpawn`, `portals`.
 2. Widen the `SideSceneId` union in `src/types/sideScene.ts` with the new scene's id, and
    register the descriptor in `src/data/sideScenes/index.ts`'s `SIDE_SCENES` registry.
    `DEFAULT_SIDE_SCENE_ID` there is only the *initial value* of `gameStore.activeSideSceneId`
@@ -188,10 +193,12 @@ Because the camera can now zoom and tilt, the backdrop bands are `scrollFactor(0
    (a fresh boot, or Reset Progress).
 3. Place the character in `npcs`. Their talks, encounters and follow-ups come from the
    same `farmTalk.ts` / `farmMap.ts` ladder the top-down farm uses — do not author a
-   separate `*Side` slot. A portal's own prompt label (`SidePortalLink.label`) is a plain
-   `Labels` key too — author one per *direction of travel*, since a symmetric pair of
-   portals reads differently depending which side of it you're standing on ("Enter the barn"
-   one way, "Back to the road" the other).
+   separate `*Side` slot. A first-visit player pose belongs on `playerSpawn` (used when
+   there is no portal hop and no saved resume), not as a dummy portal. A portal's own
+   prompt label (`SidePortalLink.label`) is a plain `Labels` key too — author one per
+   *direction of travel*, since a symmetric pair of portals reads differently depending
+   which side of it you're standing on ("Enter the barn" one way, "Back to the road" the
+   other).
 4. `validateSideSceneDescriptor(descriptor, SIDE_SCENES)` (`sideSceneAssets.ts`) catches
    every authoring mistake that's easy to make by hand: a fence gap outside its own run; a
    `back`/`front` portal `x` outside the scene width; a duplicate portal id within one

@@ -440,9 +440,9 @@ const LABELS = {
   farmDialogTobiasDoneB:
     'I will say this once and not again: I have pulled a cart past that drain for eleven years and **[accent]never once looked into it[/accent]**. Good morning, Rue.',
   farmDialogDot1:
-    'You are the new raccoon. Rue, is it? Tobias has put a motion to keep the Old Pond for the Meadow-Born and send the rest of you to the road trough — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, through the gate. Then Cass on the road.',
+    'You are the new raccoon. Rue, is it? I am Dot, guardian of the farm — that is why I stand at the entrance. Tobias has put a motion to keep the Old Pond for the Meadow-Born and send the rest of you to the road trough — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, through the gate. Then Cass on the road.',
   farmDialogDot1a:
-    'You are the new raccoon! Rue, is it? Or Roo — somebody said Roo. I am Dot. I mind the road by the barn.',
+    'You are the new raccoon! Rue, is it? Or Roo — somebody said Roo. I am Dot. Guardian of the farm — that is why I stand at the entrance.',
   farmDialogDot1b: 'Rue. Six weeks now. I do the hauling, the repairs and the bins.',
   farmDialogDot1c:
     'The bins! Nobody volunteers for the bins. Are the others being decent to you, at least?',
