@@ -57,6 +57,18 @@ export function debateModeratorId(debate: DebateScenarioJson): string {
   return DEFAULT_MODERATOR_ID;
 }
 
+/**
+ * Whether the Trial stage should put a theatrical spotlight on the current speaker.
+ *
+ * Formal debates only — `encounterKind === 'debate'`, which is also the default when
+ * `mechanics` is omitted (same default as `resolveMechanics`). Lessons, gossip, sparring
+ * and lab keep the milder alpha dim. Lives here (not in `scenarioMechanics.ts`) so the
+ * Phaser `Trial` scene can call it without importing from `src/react/`.
+ */
+export function debateHasSpeakerSpotlight(debate: DebateScenarioJson): boolean {
+  return (debate.mechanics?.encounterKind ?? 'debate') === 'debate';
+}
+
 /** Which character's stills the Animation Gallery should show for this skin, if any. */
 export function moderatorCharacterIdForAnimal(animalId: AnimalSpriteId): string | null {
   for (const id of MODERATOR_IDS) {

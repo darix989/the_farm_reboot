@@ -1,10 +1,11 @@
 import { EventBus } from '../EventBus';
-import { Scene } from 'phaser';
+import { BlendModes, Scene } from 'phaser';
 import { TRIAL_STAGE_HOLE } from '../../utils/constants';
+import { prefersReducedMotion } from '../../utils/reducedMotion';
 import { useGameStore } from '../../store/gameStore';
 import { useTrialStageStore } from '../../store/trialStageStore';
 import { DEBATES } from '../../data/levels';
-import { debateParticipantIds, stageOrder } from '../../data/debateCast';
+import { debateHasSpeakerSpotlight, debateParticipantIds, stageOrder } from '../../data/debateCast';
 import { resolveCharacter } from '../../data/characters';
 import { animalSetup } from '../animals/animalAnimations';
 import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
@@ -14,6 +15,8 @@ import {
   TRIAL_SCALE_BY_CAST_SIZE,
   animalArtFacesLeft,
   applyAtlasFeetOrigin,
+  atlasTrimmedDisplayHeight,
+  atlasTrimmedDisplayWidth,
 } from '../animals/animalStaging';
 import { ANIMAL_EMOTIONS, type AnimalEmotion } from '../animals/animalEmotions';
 import { reportSceneLoadProgress } from '../bootProgress';
@@ -34,6 +37,20 @@ const DEBUG_STAGE_KEYS = false;
  *  even when nothing has art (legacy debates). */
 const STAGE_BACKGROUND = 0x3a3a3a;
 
+/** Idle / non-speakers sit under the dimmer; the active speaker stands above the beam. */
+const CAST_IDLE_DEPTH = 1;
+const SPOTLIGHT_DIMMER_DEPTH = 5;
+const SPOTLIGHT_BEAM_DEPTH = 9;
+const CAST_SPEAKER_DEPTH = 10;
+
+const SPOTLIGHT_TEXTURE_KEY = 'trial-speaker-spotlight';
+const SPOTLIGHT_TEXTURE_SIZE = 256;
+const SPOTLIGHT_DIMMER_ALPHA = 0.45;
+const SPOTLIGHT_TWEEN_MS = 280;
+/** Oval is a little larger than the trimmed body so a halo reads around the speaker. */
+const SPOTLIGHT_BEAM_WIDTH_SCALE = 1.7;
+const SPOTLIGHT_BEAM_HEIGHT_SCALE = 1.85;
+
 interface CastMember {
   sprite: Phaser.GameObjects.Sprite;
   animator: AnimalAnimator;
@@ -50,6 +67,12 @@ export class Trial extends Scene {
   private cast = new Map<string, CastMember>();
   private unsubscribeSpeaker: (() => void) | null = null;
   private stageKeysHandler: ((event: KeyboardEvent) => void) | null = null;
+  private speakerSpotlight: {
+    dimmer: Phaser.GameObjects.Rectangle;
+    beam: Phaser.GameObjects.Image;
+  } | null = null;
+  /** Last speaker the beam was aimed at; null while the dimmer is off (intro / recap). */
+  private spotlightSpeakerId: string | null = null;
 
   constructor() {
     super('Trial');
@@ -140,6 +163,41 @@ export class Trial extends Scene {
         this.add.circle(x, floorY, 6, 0xff00ff).setDepth(200);
       }
     });
+
+    if (debateHasSpeakerSpotlight(debate) && this.cast.size > 0) {
+      this.buildSpeakerSpotlight();
+    }
+  }
+
+  /**
+   * Dark overlay across the hole plus a soft oval behind the speaker. Depths are load-bearing:
+   * idle sprites (1) sit under the dimmer (5), the beam (9) sits just behind the speaker (10).
+   */
+  private buildSpeakerSpotlight(): void {
+    ensureSpeakerSpotlightTexture(this);
+    if (!this.textures.exists(SPOTLIGHT_TEXTURE_KEY)) return;
+
+    const dimmer = this.add
+      .rectangle(
+        TRIAL_STAGE_HOLE.x,
+        TRIAL_STAGE_HOLE.y,
+        TRIAL_STAGE_HOLE.width,
+        TRIAL_STAGE_HOLE.height,
+        0x000000,
+        1,
+      )
+      .setOrigin(0, 0)
+      .setDepth(SPOTLIGHT_DIMMER_DEPTH)
+      .setAlpha(0);
+
+    const beam = this.add
+      .image(0, 0, SPOTLIGHT_TEXTURE_KEY)
+      .setDepth(SPOTLIGHT_BEAM_DEPTH)
+      .setBlendMode(BlendModes.ADD)
+      .setAlpha(0)
+      .setVisible(false);
+
+    this.speakerSpotlight = { dimmer, beam };
   }
 
   private applyActiveSpeaker(speakerId: string | null, emotion: AnimalEmotion | null): void {
@@ -150,10 +208,84 @@ export class Trial extends Scene {
       if (isActive && emotion) animator.playEmotion(emotion);
       else if (isActive) animator.playAlert();
       else animator.playIdle();
-      sprite.setDepth(isActive ? 10 : 1);
+      sprite.setDepth(isActive ? CAST_SPEAKER_DEPTH : CAST_IDLE_DEPTH);
       // Matches `CharacterStage`'s `.dimmed` treatment: full opacity while nobody (yet) has
       // the floor, dimmed for everyone but the active speaker once someone does.
       sprite.setAlpha(isActive || speakerId === null ? 1 : 0.55);
+    });
+    this.applySpeakerSpotlight(speakerId);
+  }
+
+  private applySpeakerSpotlight(speakerId: string | null): void {
+    const lights = this.speakerSpotlight;
+    if (!lights) return;
+
+    const lit = speakerId ? this.cast.get(speakerId) : undefined;
+    this.tweens.killTweensOf([lights.dimmer, lights.beam]);
+
+    const duration = prefersReducedMotion() ? 0 : SPOTLIGHT_TWEEN_MS;
+    const previousId = this.spotlightSpeakerId;
+
+    if (!lit) {
+      this.spotlightSpeakerId = null;
+      if (duration === 0) {
+        lights.dimmer.setAlpha(0);
+        lights.beam.setAlpha(0).setVisible(false);
+        return;
+      }
+      this.tweens.add({ targets: lights.dimmer, alpha: 0, duration });
+      this.tweens.add({
+        targets: lights.beam,
+        alpha: 0,
+        duration,
+        onComplete: () => {
+          if (this.spotlightSpeakerId === null) lights.beam.setVisible(false);
+        },
+      });
+      return;
+    }
+
+    const { sprite } = lit;
+    const bodyWidth = atlasTrimmedDisplayWidth(sprite);
+    const bodyHeight = atlasTrimmedDisplayHeight(sprite);
+    const x = sprite.x;
+    const y = sprite.y - bodyHeight * 0.5;
+    const width = bodyWidth * SPOTLIGHT_BEAM_WIDTH_SCALE;
+    const height = bodyHeight * SPOTLIGHT_BEAM_HEIGHT_SCALE;
+
+    this.spotlightSpeakerId = speakerId;
+    lights.beam.setVisible(true);
+
+    if (duration === 0) {
+      lights.dimmer.setAlpha(SPOTLIGHT_DIMMER_ALPHA);
+      lights.beam.setPosition(x, y).setDisplaySize(width, height).setAlpha(1);
+      return;
+    }
+
+    // First light-up: park the oval on the speaker, then fade in. Sliding from (0, 0)
+    // would sweep the beam across the whole hole.
+    if (previousId === null) {
+      lights.beam.setPosition(x, y).setDisplaySize(width, height).setAlpha(0);
+      this.tweens.add({ targets: lights.dimmer, alpha: SPOTLIGHT_DIMMER_ALPHA, duration });
+      this.tweens.add({ targets: lights.beam, alpha: 1, duration });
+      return;
+    }
+
+    if (previousId === speakerId) {
+      lights.dimmer.setAlpha(SPOTLIGHT_DIMMER_ALPHA);
+      lights.beam.setPosition(x, y).setDisplaySize(width, height).setAlpha(1);
+      return;
+    }
+
+    this.tweens.add({ targets: lights.dimmer, alpha: SPOTLIGHT_DIMMER_ALPHA, duration });
+    this.tweens.add({
+      targets: lights.beam,
+      x,
+      y,
+      displayWidth: width,
+      displayHeight: height,
+      alpha: 1,
+      duration,
     });
   }
 
@@ -191,6 +323,11 @@ export class Trial extends Scene {
       window.removeEventListener('keydown', this.stageKeysHandler);
       this.stageKeysHandler = null;
     }
+    if (this.speakerSpotlight) {
+      this.tweens.killTweensOf([this.speakerSpotlight.dimmer, this.speakerSpotlight.beam]);
+      this.speakerSpotlight = null;
+    }
+    this.spotlightSpeakerId = null;
     this.cast.forEach(({ animator }) => animator.destroy());
     this.cast.clear();
   }
@@ -198,4 +335,21 @@ export class Trial extends Scene {
   gameOver() {
     this.scene.start('GameOver');
   }
+}
+
+/** Soft warm oval used as the speaker beam. Idempotent across Trial re-entries. */
+function ensureSpeakerSpotlightTexture(scene: Phaser.Scene): void {
+  if (scene.textures.exists(SPOTLIGHT_TEXTURE_KEY)) return;
+  const size = SPOTLIGHT_TEXTURE_SIZE;
+  const canvas = scene.textures.createCanvas(SPOTLIGHT_TEXTURE_KEY, size, size);
+  if (!canvas) return;
+  const ctx = canvas.getContext();
+  const mid = size / 2;
+  const gradient = ctx.createRadialGradient(mid, mid, 0, mid, mid, mid);
+  gradient.addColorStop(0, 'rgba(255, 244, 210, 0.85)');
+  gradient.addColorStop(0.35, 'rgba(255, 230, 170, 0.4)');
+  gradient.addColorStop(1, 'rgba(255, 220, 150, 0)');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, size, size);
+  canvas.refresh();
 }

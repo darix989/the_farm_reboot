@@ -320,6 +320,13 @@ the visual centre (`{x:0.5,y:0.5}` on idle). Phaser copies that onto the sprite 
 every `setFrame`, which undoes the feet origin the moment a clip plays. The helper
 clears `customPivot` on the whole texture so those anchors are ignored.
 
+**Trial speaker depths.** Idle and non-speakers sit at depth 1, the active speaker at
+10. Formal debates (`encounterKind === 'debate'`, including the default when `mechanics`
+is omitted) insert a stage dimmer at 5 and a spotlight beam at 9, so the speaker stands
+above the darkened floor and the oval sits just behind them. Lessons, gossip, sparring
+and lab skip that pair and keep the milder alpha dim. Do not put a new Trial stage
+object in that band without reading `Trial.ts`.
+
 ---
 
 ## 5. Two bugs the prototype had, fixed here
@@ -351,8 +358,10 @@ degradation for a mis-authored descriptor, not a bug, and the port keeps it.
 InteractivePanel's reveal animation also uses) before playing anything. With the
 preference on, every animal freezes on its rest frame instead of animating, and resumes
 if the preference is toggled off mid-session. The active-speaker cue in a Trial then
-relies entirely on static properties — depth and alpha, both already part of
-`Trial.applyActiveSpeaker` — never a tween.
+relies on static properties — depth and alpha, both already part of
+`Trial.applyActiveSpeaker`. Formal debates also tween a spotlight beam onto the speaker;
+that tween is skipped when the preference is on, so the lighting snaps the same way
+depth and alpha do.
 
 ---
 

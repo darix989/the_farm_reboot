@@ -156,3 +156,8 @@ export function applyAtlasFeetOrigin(sprite: Phaser.GameObjects.Sprite): Phaser.
 export function atlasTrimmedDisplayWidth(sprite: Phaser.GameObjects.Sprite): number {
   return sprite.frame.cutWidth * Math.abs(sprite.scaleX);
 }
+
+/** Visible (trimmed) height of the current frame, in display pixels. See {@link atlasTrimmedDisplayWidth}. */
+export function atlasTrimmedDisplayHeight(sprite: Phaser.GameObjects.Sprite): number {
+  return sprite.frame.cutHeight * Math.abs(sprite.scaleY);
+}
