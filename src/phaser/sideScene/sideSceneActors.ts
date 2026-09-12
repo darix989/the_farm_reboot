@@ -28,20 +28,6 @@ const SIDE_SCALE = 1.6;
 
 const PLAYER_SPEED = 260;
 
-/**
- * How close Rue may get to an animal standing on the road, in world px.
- *
- * There is no physics in this scene (and no need for any: the road is a lane, not a maze),
- * so this is the one solid thing in it. Without it the player walks *through* whoever they
- * came to talk to, and the talk camera then frames two animals standing inside each other.
- * The x figure is a conversational gap — wide enough that the cast's widest art (the
- * raccoon's crouch, nose to tail) still leaves daylight between the two of them once the
- * talk camera is in close; the y one is loose enough that walking up or down the road still
- * slips past them.
- */
-const NPC_CLEARANCE_X = 290;
-const NPC_CLEARANCE_Y = 50;
-
 const PLACEHOLDER_TEXTURE_KEY = 'farm-side-placeholder-actor';
 const PLACEHOLDER_SIZE = 48;
 
@@ -107,15 +93,27 @@ export class SideSceneActor {
   }
 
   /**
-   * Middle of the *drawn* animal, for the talk camera to aim between two of them.
-   * `displayHeight` is the untrimmed export canvas — the raccoon's crouch fills under half
-   * of its own — so this measures the frame's trim, the same way `applyAtlasFeetOrigin`
-   * finds the feet.
+   * The box this animal actually *draws* into, in world px — what the talk camera fits two
+   * of into the game hole.
+   *
+   * Not `sprite.getBounds()`: that measures the untrimmed export canvas, which on this cast
+   * is 25-100% bigger than the animal (the raccoon's crouch fills under half its own
+   * height), so a camera fit to it would frame a lot of empty air. `frame.x` / `frame.y` are
+   * the trim offsets *within* that canvas — the same numbers `applyAtlasFeetOrigin` uses to
+   * find the feet — and `cutWidth` / `cutHeight` the drawn size.
    */
-  get visualCenterY(): number {
+  get visualBounds(): { left: number; right: number; top: number; bottom: number } {
     const frame = this.sprite.frame;
-    const drawn = frame ? frame.cutHeight * Math.abs(this.sprite.scaleY) : 0;
-    return this.sprite.y - drawn / 2;
+    const scaleX = Math.abs(this.sprite.scaleX);
+    const scaleY = Math.abs(this.sprite.scaleY);
+    const width = frame.cutWidth * scaleX;
+    const height = frame.cutHeight * scaleY;
+    // Offset of the drawn region from the sprite's own position, before any flip.
+    const offsetX = (frame.x - this.sprite.originX * frame.realWidth) * scaleX;
+    // A flip mirrors the drawn region about the origin, so the offset flips with it.
+    const left = this.sprite.flipX ? this.sprite.x - offsetX - width : this.sprite.x + offsetX;
+    const top = this.sprite.y + (frame.y - this.sprite.originY * frame.realHeight) * scaleY;
+    return { left, right: left + width, top, bottom: top + height };
   }
 
   /** Turns to look at a world x. A no-op for a character whose art has no facing. */
@@ -190,7 +188,12 @@ export class SideScenePlayer extends SideSceneActor {
     );
   }
 
-  update(deltaMs: number, canMove: boolean, blockers: readonly SideSceneActor[] = []): void {
+  /**
+   * Nothing on this road is solid — not the props, and not the animals. The road is a lane,
+   * not a maze, and a clearance ring around each NPC was worse than what it prevented: it
+   * reads as an invisible wall a step before the animal you are walking up to.
+   */
+  update(deltaMs: number, canMove: boolean): void {
     const dir = canMove ? movementVector(this.keys, null, this.moveVector) : this.moveVector.set(0);
     const dt = deltaMs / 1000;
 
@@ -200,7 +203,7 @@ export class SideScenePlayer extends SideSceneActor {
       0,
       this.descriptor.width,
     );
-    this.sprite.setPosition(this.clearOf(blockers, nextX, nextY), nextY);
+    this.sprite.setPosition(nextX, nextY);
     if (dir.x !== 0) this.faceDirection(dir.x);
     this.applyDepthAndScale();
 
@@ -216,17 +219,5 @@ export class SideScenePlayer extends SideSceneActor {
     // `immediate`, or he marches on the spot for the rest of the stride after the key is up.
     this.walking = false;
     this.playIdle(true);
-  }
-
-  /** Pushes `x` back out to `NPC_CLEARANCE_X` of anyone standing at the same road depth. */
-  private clearOf(blockers: readonly SideSceneActor[], x: number, y: number): number {
-    return blockers.reduce((clearedX, npc) => {
-      if (Math.abs(y - npc.y) > NPC_CLEARANCE_Y) return clearedX;
-      const dx = clearedX - npc.x;
-      if (Math.abs(dx) >= NPC_CLEARANCE_X) return clearedX;
-      // Walked exactly onto them (only reachable by spawning there): step back the way
-      // the road runs, rather than picking a side from a zero.
-      return npc.x + (dx === 0 ? -NPC_CLEARANCE_X : Math.sign(dx) * NPC_CLEARANCE_X);
-    }, x);
   }
 }

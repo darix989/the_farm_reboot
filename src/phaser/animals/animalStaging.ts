@@ -65,7 +65,16 @@ const TRIAL_MULTIPLIER = 0.807; // donkey-grey -> ~300px tall in the 540px-tall 
  * Defaults to 1 (no adjustment) for every animal and surface not listed.
  */
 const MANUAL_ADJUST: Partial<Record<AnimalSpriteId, number | { farm?: number; trial?: number }>> = {
-  'white-sheep-1': 0.8, // read a little large next to the rest of the cast; shrunk 20%
+  /**
+   * The sheep's export canvas is by far the cast's smallest, so the source ratio nets her out
+   * mid-sized on paper and *small* on screen — next to Rue on a farm road she read as a lamb
+   * at his feet rather than an animal he is talking to. Tripled on the farm surfaces, which
+   * is what both worlds now stage her at.
+   *
+   * `trial` keeps the old 0.8: the podium is a fixed 540px hole a cast of three has to fit
+   * in, and that composition is already fit — this is a field-scale problem, not a staging one.
+   */
+  'white-sheep-1': { farm: 2.4, trial: 0.8 },
   /**
    * The two multipliers above were fit so *the player* lands at ~140px on the farm, back when
    * the player was the donkey. Rue is the raccoon now, and the raccoon is the cast's smallest

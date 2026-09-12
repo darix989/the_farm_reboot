@@ -7,7 +7,7 @@ import { buildSideSceneLayers, type SideSceneLayers } from '../sideScene/sideSce
 import { placeFences, placeProps } from '../sideScene/sideSceneProps';
 import { drawDebugOverlay } from '../sideScene/sideSceneDebug';
 import { resolvePortal } from '../sideScene/sideSceneRoad';
-import { SideSceneNpc, SideScenePlayer } from '../sideScene/sideSceneActors';
+import { SideSceneActor, SideSceneNpc, SideScenePlayer } from '../sideScene/sideSceneActors';
 import {
   blendCameraFrames,
   resolveSideSceneCamera,
@@ -35,14 +35,23 @@ const INTERACT_RADIUS = 400;
 /**
  * The talk framing: how far in the camera pushes, and how long it takes to get there.
  *
- * It aims the pair at the middle of `TRIAL_STAGE_HOLE` — the band the Dialog and Actions
- * panels leave clear — which is the same contract as `Farm.applyTalkViewport`. The top-down
- * farm can cut straight to it, since its camera is already overhead and a metre of travel
- * away; here the camera has to swing down the length of the stage and push in, so it is
- * eased over `TALK_CAMERA_MS`. A cut would read as a scene change.
+ * It aims the middle of the two animals at the middle of `TRIAL_STAGE_HOLE` — the band the
+ * Dialog and Actions panels leave clear — which is the same contract as
+ * `Farm.applyTalkViewport`. The top-down farm can cut straight to it, since its camera is
+ * already overhead and a metre of travel away; here the camera has to swing down the length
+ * of the stage and push in, so it is eased over `TALK_CAMERA_MS`. A cut would read as a
+ * scene change.
+ *
+ * The zoom is *fitted*, not fixed: the cast's drawn sizes differ by a factor of three or
+ * more (Hetty is a whole sheep, Rue a crouching raccoon), and two of them may be standing
+ * anywhere from nose to nose to the length of the interact radius apart. A constant that
+ * frames one pair crops the next. `TALK_FILL` is the fraction of the hole the pair is fitted
+ * into, leaving the rest as margin; `TALK_MAX_ZOOM` stops a fit pushing uncomfortably close
+ * on two small animals, and the fit never drops below free roam's own zoom of 1.
  */
-const TALK_ZOOM = 1.8;
 const TALK_CAMERA_MS = 1500;
+const TALK_FILL = 0.72;
+const TALK_MAX_ZOOM = 2.1;
 
 /**
  * Aim ahead of the push, so the pair is in frame for most of the move instead of popping
@@ -120,7 +129,7 @@ export class FarmSide extends Scene {
 
   update(_time: number, delta: number): void {
     const talking = useFarmStore.getState().talkingToNpcId;
-    this.player?.update(delta, !talking, this.npcs);
+    this.player?.update(delta, !talking);
     this.updateNearbyNpc(talking);
     this.updateCamera();
     this.sceneLayers?.update(this.scrollX);
@@ -162,12 +171,8 @@ export class FarmSide extends Scene {
     if (npc && this.player) {
       this.player.faceTowards(npc.x);
       npc.faceTowards(this.player.x);
-      this.talkFrame = {
-        focusX: (this.player.x + npc.x) / 2,
-        focusY: (this.player.visualCenterY + npc.visualCenterY) / 2,
-        zoom: TALK_ZOOM,
-        focusScreenY: TRIAL_STAGE_HOLE.y + TRIAL_STAGE_HOLE.height / 2,
-      };
+      // Read the boxes *after* turning them: a flip moves where the art sits.
+      this.talkFrame = this.frameAround(this.player, npc);
       this.blendTalkCamera(1);
       return;
     }
@@ -175,6 +180,31 @@ export class FarmSide extends Scene {
     this.blendTalkCamera(0, () => {
       this.talkFrame = null;
     });
+  }
+
+  /** Both animals in the middle of the game hole, as close in as they both still fit. */
+  private frameAround(...actors: readonly SideSceneActor[]): SideSceneCameraFrame {
+    const boxes = actors.map((actor) => actor.visualBounds);
+    const left = Math.min(...boxes.map((b) => b.left));
+    const right = Math.max(...boxes.map((b) => b.right));
+    const top = Math.min(...boxes.map((b) => b.top));
+    const bottom = Math.max(...boxes.map((b) => b.bottom));
+
+    const zoom = Phaser.Math.Clamp(
+      Math.min(
+        (STAGE_DESIGN_WIDTH * TALK_FILL) / Math.max(1, right - left),
+        (TRIAL_STAGE_HOLE.height * TALK_FILL) / Math.max(1, bottom - top),
+      ),
+      1,
+      TALK_MAX_ZOOM,
+    );
+
+    return {
+      focusX: (left + right) / 2,
+      focusY: (top + bottom) / 2,
+      zoom,
+      focusScreenY: TRIAL_STAGE_HOLE.y + TRIAL_STAGE_HOLE.height / 2,
+    };
   }
 
   private blendTalkCamera(to: number, onComplete?: () => void): void {

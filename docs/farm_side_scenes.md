@@ -119,16 +119,15 @@ edit, not two. Rue is not in the list: the player is spawned by the scene, at th
 portal.
 
 `sideSceneActors.ts` owns everything about standing on a road — scale, depth, facing, and
-Rue's movement — including the two numbers that decide how big an animal reads here:
+Rue's movement — including **`SIDE_SCALE`**, one flat multiplier on
+`ANIMAL_STAGING.farmScale` that decides how big the cast reads here. That staging was fit
+against the top-down farm's 56px placeholder NPCs; this world is drawn from the kit at a
+scale where a picket fence is ~190 stage px tall. Keeping the cast's *relative* sizes and
+applying one factor is the same approach `animalStaging.ts` itself documents — so an animal
+that reads wrong here reads wrong on the top-down farm too, and the fix belongs in that
+file's `MANUAL_ADJUST`, not in a side-scene special case.
 
-- **`SIDE_SCALE`**, one flat multiplier on `ANIMAL_STAGING.farmScale`. That staging was fit
-  against the top-down farm's 56px placeholder NPCs; this world is drawn from the kit at a
-  scale where a picket fence is ~190 stage px tall. Keeping the cast's *relative* sizes and
-  applying one factor is the same approach `animalStaging.ts` itself documents.
-- **`NPC_CLEARANCE_X` / `_Y`**, the only solid thing in the scene. Without it the player
-  walks through whoever they came to talk to, and the talk camera then frames two animals
-  standing inside each other. The y figure is loose, so walking up or down the road still
-  slips past someone.
+Nothing on the road is solid: not the props, not the animals. It is a lane, not a maze.
 
 ## The talk camera
 
@@ -143,8 +142,12 @@ The camera move itself is `sideSceneCamera.ts`. Two things about it are worth kn
 changing it:
 
 **It aims, it does not clip.** A frame says "put this world point *here* on the stage, at
-this zoom", and a talk aims the midpoint between the two animals at the middle of
-`TRIAL_STAGE_HOLE` — the band the Dialog and Actions panels leave clear. `Farm` gets the same
+this zoom", and a talk aims the middle of the two animals at the middle of
+`TRIAL_STAGE_HOLE` — the band the Dialog and Actions panels leave clear. The zoom is
+*fitted* to the pair's drawn boxes (`TALK_FILL`, capped by `TALK_MAX_ZOOM`) rather than
+fixed: the cast's drawn sizes differ by a factor of three or more, and two animals may be
+standing anywhere from nose to nose to the length of the interact radius apart, so a
+constant that frames one pair crops the next. `Farm` gets the same
 result by clipping its camera viewport to that rect, which it can do because it cuts
 instantly. Clipping cannot be animated: shrinking the viewport moves Phaser's camera origin,
 so the picture slides as the rect closes, and on the way back out the panels unmount before
