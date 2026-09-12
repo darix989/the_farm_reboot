@@ -1,3 +1,4 @@
+import type { Labels } from '../labels';
 import type { SideSceneDescriptor, SideSceneId } from '../../types/sideScene';
 import { GREEN_MEADOWS_ROAD } from './greenMeadowsRoad';
 import { HETTYS_BARN } from './hettysBarn';
@@ -26,3 +27,17 @@ export const SIDE_SCENES: Record<SideSceneId, SideSceneDescriptor> = {
   eastOrchard: EAST_ORCHARD,
   oldPond: OLD_POND,
 };
+
+/** Main-menu jump list. Keep in lockstep with `SIDE_SCENES` — `sideScenes.test.ts` checks. */
+export interface SideSceneMenuEntry {
+  id: SideSceneId;
+  titleLabel: Labels;
+}
+
+export const SIDE_SCENE_MENU: readonly SideSceneMenuEntry[] = [
+  { id: 'greenMeadowsRoad', titleLabel: 'sideSceneGreenMeadowsRoad' },
+  { id: 'hettysBarn', titleLabel: 'sideSceneHettysBarn' },
+  { id: 'gateLane', titleLabel: 'sideSceneGateLane' },
+  { id: 'eastOrchard', titleLabel: 'sideSceneEastOrchard' },
+  { id: 'oldPond', titleLabel: 'sideSceneOldPond' },
+];

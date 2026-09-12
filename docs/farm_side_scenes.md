@@ -188,8 +188,9 @@ Because the camera can now zoom and tilt, the backdrop bands are `scrollFactor(0
    `bg/near-muddy-water`), author `road`, `props`, `fences`, `npcs`, optional
    `playerSpawn`, `portals`.
 2. Widen the `SideSceneId` union in `src/types/sideScene.ts` with the new scene's id, and
-   register the descriptor in `src/data/sideScenes/index.ts`'s `SIDE_SCENES` registry.
-   `DEFAULT_SIDE_SCENE_ID` there is only the *initial value* of `gameStore.activeSideSceneId`
+   register the descriptor in `src/data/sideScenes/index.ts`'s `SIDE_SCENES` registry
+   (and a `SIDE_SCENE_MENU` entry plus its `labels.ts` title, so the main menu can jump
+   there). `DEFAULT_SIDE_SCENE_ID` there is only the *initial value* of `gameStore.activeSideSceneId`
    — the store field `FarmSide.init()` actually reads a scene's descriptor from (see
    "Travelling between scenes" below) — and it is also the one `animalPacks.ts` and
    `sceneAssets.ts` fall back to for a scene that hasn't set the store field explicitly
@@ -248,7 +249,9 @@ activeSideSceneId` (initial value `DEFAULT_SIDE_SCENE_ID`) is read by `FarmSide.
 assets to fetch with no Phaser scene in hand yet (the loading-overlay gate runs *before*
 the destination scene exists). Enter the Farm starts `FarmSide` without forcing
 `DEFAULT_SIDE_SCENE_ID`, so a later visit resumes the last pocket (`sideSceneResume`).
-`beginSideSceneTravel` sets `activeSideSceneId` before restarting onto the target.
+The main menu's per-scene buttons set `activeSideSceneId` and clear the resume pose so
+each jump lands on that scene's authored `playerSpawn`. `beginSideSceneTravel` sets
+`activeSideSceneId` before restarting onto the target.
 Reset Progress clears the resume pose and returns the store field to the default road.
 `scene.scene.start('FarmSide', { sceneId, entryPortalId })` also carries
 `sceneId` in the start data, but `init()` doesn't read it back out — the store is the one

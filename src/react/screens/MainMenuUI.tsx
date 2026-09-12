@@ -1,7 +1,8 @@
 import React, { useId, useState } from 'react';
 import { useGameStore, type DebateScenarioKey } from '../../store/gameStore';
 import { LEGACY_SCENARIOS, LEVEL_1_SCENARIOS, type ScenarioEntry } from '../../data/levels';
-import { DEFAULT_SIDE_SCENE_ID } from '../../data/sideScenes';
+import { DEFAULT_SIDE_SCENE_ID, SIDE_SCENE_MENU } from '../../data/sideScenes';
+import type { SideSceneId } from '../../types/sideScene';
 import { GameManager } from '../../utils/gameManager';
 import { useCodexStore } from '../../store/codexStore';
 import { useCodexUiStore } from '../../store/codexUiStore';
@@ -28,6 +29,15 @@ const MainMenuUI: React.FC = () => {
   };
 
   const enterFarm = () => GameManager.switchScene('FarmSide');
+
+  const enterSideScene = (id: SideSceneId) => {
+    const store = useGameStore.getState();
+    store.setActiveSideScene(id);
+    // Drop the last pose so this is a start, not a resume — Enter the Farm still
+    // restores `sideSceneResume` when the player comes back through the primary button.
+    store.setSideSceneResume(null);
+    GameManager.switchScene('FarmSide');
+  };
 
   const enterTopDownFarm = () => GameManager.switchScene('Farm');
 
@@ -118,6 +128,23 @@ const MainMenuUI: React.FC = () => {
             {getLabel('resetProgress')}
           </button>
         </div>
+        <section className={styles.menuGroup} aria-labelledby="sideScenesHeading">
+          <h2 id="sideScenesHeading" className={styles.menuGroupHeading}>
+            {getLabel('sideScenesHeading')}
+          </h2>
+          <div className={styles.sceneJumpList}>
+            {SIDE_SCENE_MENU.map((entry) => (
+              <button
+                key={entry.id}
+                className={styles.scenarioButton}
+                type="button"
+                onClick={() => enterSideScene(entry.id)}
+              >
+                {getLabel(entry.titleLabel)}
+              </button>
+            ))}
+          </div>
+        </section>
         {renderGroup('level1Heading', LEVEL_1_SCENARIOS)}
         {renderGroup('legacyScenariosHeading', LEGACY_SCENARIOS)}
       </div>

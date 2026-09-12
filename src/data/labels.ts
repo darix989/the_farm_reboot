@@ -32,6 +32,13 @@ const LABELS = {
   level1BramInsight: 'Down at the Fence: Looking Twice',
   level1LabCass: "The Fox's Lab: Dirty Paws",
   animationGallery: 'Animation Gallery',
+  /** Main-menu shortcuts that boot `FarmSide` onto a specific road. */
+  sideScenesHeading: 'Farm scenes',
+  sideSceneGreenMeadowsRoad: 'The main road',
+  sideSceneHettysBarn: "Hetty's barn",
+  sideSceneGateLane: 'The gate lane',
+  sideSceneEastOrchard: 'The east orchard',
+  sideSceneOldPond: 'The old pond',
   /** Main-menu toggle for the farm-talk skip button. `{state}` is On / Off. */
   devFarmTalkSkipToggle: 'Dialog skip: {state}',
   devFarmTalkSkipOn: 'On',

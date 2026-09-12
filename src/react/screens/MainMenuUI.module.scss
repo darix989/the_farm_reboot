@@ -224,6 +224,12 @@
   gap: 0.35rem;
 }
 
+.sceneJumpList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+
 .scenarioButton {
   padding: 0.45rem 0.75rem;
   font-size: var(--ui-font-caption);

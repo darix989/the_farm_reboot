@@ -5,14 +5,26 @@ import {
   FARM_SIDE_PORTAL_BACK_TO_ROAD,
   FARM_SIDE_PORTAL_BARN,
   FARM_SIDE_PORTAL_GATE,
+  SIDE_SCENE_OLD_POND,
   TALK_TO_BRAM,
   TALK_TO_CASS,
+  TALK_TO_HETTY,
   seedLevel1Started,
   test,
   waitForMainMenu,
 } from './helpers';
 
 test.describe('lateral farm scene', () => {
+  test('jumps from the menu straight onto the old pond beside Hetty', async ({ page }) => {
+    await seedLevel1Started(page);
+    await page.goto('/');
+    await waitForMainMenu(page);
+    await page.getByRole('button', { name: SIDE_SCENE_OLD_POND }).click();
+    await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
+    await page.getByRole('button', { name: TALK_TO_HETTY }).waitFor();
+    await attachScreenshot(page, 'farm-side-menu-jump-pond');
+  });
+
   test('boots the scene and shows the back button', async ({ page }) => {
     await seedLevel1Started(page);
     await page.goto('/');

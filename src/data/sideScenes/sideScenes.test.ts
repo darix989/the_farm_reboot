@@ -4,7 +4,7 @@
  * whole registry's combined farm-kit footprint stays inside budget.
  */
 import { describe, expect, it } from 'vitest';
-import { SIDE_SCENES } from './index';
+import { SIDE_SCENE_MENU, SIDE_SCENES } from './index';
 import {
   sideSceneAssetIds,
   validateSideSceneDescriptor,
@@ -17,6 +17,10 @@ import { PORTAL_INTERACT_RADIUS } from '../../phaser/sideScene/sideSceneInteract
 const INTERACT_RADIUS_NPC = 400;
 
 describe('SIDE_SCENES', () => {
+  it('lists every registered scene on the main menu exactly once', () => {
+    expect(SIDE_SCENE_MENU.map((entry) => entry.id)).toEqual(Object.keys(SIDE_SCENES));
+  });
+
   it('every registered scene validates clean', () => {
     Object.values(SIDE_SCENES).forEach((descriptor) => {
       expect(validateSideSceneDescriptor(descriptor, SIDE_SCENES)).toEqual([]);
