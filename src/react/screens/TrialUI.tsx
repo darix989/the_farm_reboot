@@ -12,6 +12,7 @@ import RoundAnalysisModal, {
   type AnalysisTarget,
 } from '../trial/roundAnalysisModal/RoundAnalysisModal';
 import type {
+  AnalysisGuessState,
   FallacyGuessSession,
   GuessPayload,
   GuessRecord,
@@ -271,7 +272,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   ]);
 
   const getNpcGuessState = useCallback(
-    (npcRoundId: string): 'correct' | 'partial' | 'wrong' | null => {
+    (npcRoundId: string): AnalysisGuessState | null => {
       for (const sess of fallacyGuesses.values()) {
         if (sess.npcRoundId !== npcRoundId) continue;
         return guessStateFromAttempts(sess.attempts);

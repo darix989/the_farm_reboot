@@ -26,7 +26,9 @@ import { resolvedOptionSentences } from '../utils/optionUnlock';
 import type { FallacyGuessSession, GuessPayload, GuessRecord } from '../utils/fallacyGuessTypes';
 import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from '../utils/fallacyGuessTypes';
 import {
+  computeExtraPairs,
   guessMultisetFromPicks,
+  isExtrasOnlyPartial,
   multisetToPairList,
   pairListToBySentence,
   picksToBySentence,
@@ -237,6 +239,42 @@ function GuessResultBanner({
 
   if (outcome === 'partial') {
     const showSpoilerSafePartial = spoilerSafe && !shouldRevealFullSolution;
+
+    if (isExtrasOnlyPartial(guess)) {
+      const extraPairs = computeExtraPairs(truth, guessMultisetFromPicks(guess.picks), fallacyById);
+      return (
+        <div className={cn(styles.trialGuessResult, styles.extras)}>
+          <span className={styles.trialGuessResultIcon}>~</span>
+          <div>
+            <p className={styles.trialGuessResultHeadline}>{getLabel('guessHeadlineExtrasOnly')}</p>
+            <p className={styles.trialGuessResultBody}>
+              {showSpoilerSafePartial
+                ? getLabel('guessExtrasOnlyBody')
+                : getLabel('guessExtrasOnlyRevealBody')}
+            </p>
+            {extraPairs.length > 0 && (
+              <p className={styles.trialGuessResultBody}>
+                {getLabel('extrasPrefix')}{' '}
+                {joinFallacyLabels(
+                  extraPairs.map((ep, i) => (
+                    <strong key={`${ep.sentenceId}-${ep.fallacy.id}-${i}`}>
+                      {ep.fallacy.label}{' '}
+                      {getLabel('sentenceReference', {
+                        replacements: {
+                          sentenceIndex: sentenceIndex(ep.sentenceId),
+                        },
+                      })}
+                    </strong>
+                  )),
+                )}
+                .
+              </p>
+            )}
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className={cn(styles.trialGuessResult, styles.partial)}>
         <span className={styles.trialGuessResultIcon}>◆</span>

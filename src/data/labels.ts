@@ -255,6 +255,7 @@ const LABELS = {
   guessHeadlineCorrect: 'Correct!',
   guessHeadlineIncorrect: 'Incorrect',
   guessHeadlinePartiallyCorrect: 'Partially correct',
+  guessHeadlineExtrasOnly: 'Close!',
   guessNoFallaciesCorrectBody: 'This statement contains no logical fallacies.',
   guessNoFallaciesWrongBodySpoiler:
     'This statement still contains logical fallacies. Try again if you have attempts left.',
@@ -263,10 +264,15 @@ const LABELS = {
   guessPartialIntro: 'Some of your selections matched. Confirmed for this attempt:',
   guessPartialConfirmedPrefix: 'Confirmed for this attempt:',
   guessPartialTryAgain:
-    'Other selections were not confirmed. You can try again if you have attempts left.',
+    'Some fallacies are still missing. You can try again if you have attempts left.',
   guessPartialFullBody:
-    'You found at least one fallacy correctly, but some selections were wrong or some fallacies were missed.',
+    'You found at least one fallacy correctly, but some fallacies were still missed.',
+  guessExtrasOnlyBody:
+    'You found every fallacy in the right sentences, but some extra tags were not fallacies. Drop those and try again.',
+  guessExtrasOnlyRevealBody:
+    'You found every fallacy in the right sentences, but extra tags were not fallacies.',
   missedPrefix: 'Missed:',
+  extrasPrefix: 'Extra:',
   guessNoneWrongLine1: 'None of your selections matched a logical fallacy in the right place.',
   guessNoneWrongLine2: 'You can try again if you have attempts left.',
   guessNoneRevealPrefix: 'The statement contains:',
