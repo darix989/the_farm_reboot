@@ -46,12 +46,14 @@ const INTERACT_RADIUS = 400;
  * more (Hetty is a whole sheep, Rue a crouching raccoon), and two of them may be standing
  * anywhere from nose to nose to the length of the interact radius apart. A constant that
  * frames one pair crops the next. `TALK_FILL` is the fraction of the hole the pair is fitted
- * into, leaving the rest as margin; `TALK_MAX_ZOOM` stops a fit pushing uncomfortably close
- * on two small animals, and the fit never drops below free roam's own zoom of 1.
+ * into — a little over half, so the move still reads as a push-in without shoving the
+ * camera in the animals' faces; `TALK_MAX_ZOOM` holds that line for a pair small enough
+ * that the fit would otherwise push past it, and the fit never drops below free roam's own
+ * zoom of 1.
  */
 const TALK_CAMERA_MS = 1500;
-const TALK_FILL = 0.72;
-const TALK_MAX_ZOOM = 2.1;
+const TALK_FILL = 0.58;
+const TALK_MAX_ZOOM = 1.7;
 
 /**
  * Aim ahead of the push, so the pair is in frame for most of the move instead of popping
