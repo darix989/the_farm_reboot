@@ -78,6 +78,16 @@ export const CHARACTERS: Readonly<Record<string, CharacterVisual>> = {
     kind: 'npc',
     animal: 'white-sheep-1',
   },
+  // TODO: switch `animal` to `'cow'` / `'cow-female-001'` once those have emotion clips.
+  // The atlas already ships; the Ludo generation has not been run. Until then Bella
+  // borrows Hetty's sheep so farm-talk portraits and emotions have something to play.
+  bella: {
+    id: 'bella',
+    nameLabel: 'farmNpcBella',
+    tint: 0xe8d0a8,
+    kind: 'npc',
+    animal: 'white-sheep-1',
+  },
   cass: { id: 'cass', nameLabel: 'farmNpcCass', tint: 0xd4623f, kind: 'npc', animal: 'fox' },
   bram: { id: 'bram', nameLabel: 'farmNpcBram', tint: 0x5c8f6b, kind: 'npc', animal: 'brown-wolf' },
   duchess: {

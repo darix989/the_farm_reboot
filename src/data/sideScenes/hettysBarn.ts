@@ -4,8 +4,9 @@
  * authors. Built strictly from asset ids `greenMeadowsRoad` already uses, so visiting it
  * is always a warm hop (see `docs/farm_side_scenes.md`).
  *
- * Hetty lives here — Level 1's gossip stand, reached through the barn door on the main
- * road. Cass took her old spot west of the picket gate.
+ * Bella stands here for now — a sheep-sprite placeholder (TODO: cow) with silly
+ * talk, occupying Hetty's old yard spot until a real cow character lands. Hetty
+ * moved to `oldPond`.
  */
 import type { SideSceneDescriptor } from '../../types/sideScene';
 import { STANDARD_FARM_LAYERS } from './greenMeadowsRoad';
@@ -42,7 +43,7 @@ export const HETTYS_BARN: SideSceneDescriptor = {
 
   fences: [],
 
-  npcs: [{ characterId: 'hetty', x: 2150, y: 952, facing: 'left' }],
+  npcs: [{ characterId: 'bella', x: 2150, y: 952, facing: 'left' }],
 
   portals: [
     {

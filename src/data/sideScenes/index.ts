@@ -3,6 +3,7 @@ import { GREEN_MEADOWS_ROAD } from './greenMeadowsRoad';
 import { HETTYS_BARN } from './hettysBarn';
 import { GATE_LANE } from './gateLane';
 import { EAST_ORCHARD } from './eastOrchard';
+import { OLD_POND } from './oldPond';
 
 export { STANDARD_FARM_LAYERS } from './greenMeadowsRoad';
 
@@ -23,4 +24,5 @@ export const SIDE_SCENES: Record<SideSceneId, SideSceneDescriptor> = {
   hettysBarn: HETTYS_BARN,
   gateLane: GATE_LANE,
   eastOrchard: EAST_ORCHARD,
+  oldPond: OLD_POND,
 };

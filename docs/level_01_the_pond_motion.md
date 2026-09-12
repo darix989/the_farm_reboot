@@ -89,12 +89,12 @@ road trough, half a mile down the lane. It is heard Sunday in front of Duchess, 
 one animal will speak against it**. Rue volunteers himself for the floor — the player is
 not assigned the fight, they take it — and only then does Dot mention that there are rules
 nobody has written down, which is where the goals come from: **Bram** first, through the
-gate, then Cass on the road just this side of the gate, then Hetty in the barn, then Duchess
-down the east road. Closing her talk early does not count: the `dot-welcomed` flag is set
+gate, then Cass on the road just this side of the gate, then Hetty at the pond (east road,
+walk up to the water), then Duchess down the east road. Closing her talk early does not count: the `dot-welcomed` flag is set
 only when the last beat's reveal settles. She has no encounter; her farm talk advances as
 you do those things. She pointedly refuses to warn you about the fox.
 
-Level 1 plays on the lateral `FarmSide` world (`greenMeadowsRoad` and its three pockets).
+Level 1 plays on the lateral `FarmSide` world (`greenMeadowsRoad` and its four pockets).
 The top-down `Farm` map is still on the menu as a secondary path.
 
 ### The ladder

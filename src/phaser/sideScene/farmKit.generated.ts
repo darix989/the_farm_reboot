@@ -16,6 +16,7 @@ export type FarmKitAssetId =
   | 'bg/midground-hill'
   | 'bg/midground-no-details'
   | 'bg/near-grass'
+  | 'bg/near-muddy-water'
   | 'bg/puddle-for-road-piece'
   | 'bg/road'
   | 'bg/sky'
@@ -187,6 +188,13 @@ export const FARM_KIT_ASSETS: Record<FarmKitAssetId, FarmKitAssetMeta> = {
     width: 995,
     height: 227,
     fileWidth: 1024,
+    fileHeight: 256,
+  },
+  'bg/near-muddy-water': {
+    file: 'bg/near-muddy-water.png',
+    width: 2048,
+    height: 245,
+    fileWidth: 2048,
     fileHeight: 256,
   },
   'bg/puddle-for-road-piece': {

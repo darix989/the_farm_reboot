@@ -121,6 +121,15 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneA' },
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneB' },
   ],
+  bella1: [
+    { speakerId: 'bella', textLabel: 'farmDialogBella1a' },
+    { speakerId: RUE, textLabel: 'farmDialogBella1b' },
+    { speakerId: 'bella', textLabel: 'farmDialogBella1c' },
+  ],
+  bellaDone: [
+    { speakerId: 'bella', textLabel: 'farmDialogBellaDoneA' },
+    { speakerId: 'bella', textLabel: 'farmDialogBellaDoneB' },
+  ],
   // The level opener, and the only conversation that starts on its own. It takes its time:
   // Dot names herself as the farm's guardian (why she stands at the entrance), asks after
   // Rue before she gets to the motion, and Rue volunteers for the floor himself — the goals

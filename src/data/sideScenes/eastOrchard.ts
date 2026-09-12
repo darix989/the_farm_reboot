@@ -7,8 +7,8 @@
  * `greenMeadowsRoad` already uses: the pond (`water/pond-muddy`) and its reeds
  * (`flowers/leaf-1-a`) are new, so the first hop into `eastOrchard` from any other scene
  * fetches those and shows the loading overlay briefly rather than being a warm hop (see
- * `docs/farm_side_scenes.md`). Worth it — the pond is the visual anchor for a future
- * scene that puts the player right at the water's edge.
+ * `docs/farm_side_scenes.md`). Worth it — the pond is the visual cue for the hop into
+ * `oldPond`, which puts the player right at the water's edge.
  */
 import type { SideSceneDescriptor } from '../../types/sideScene';
 import { STANDARD_FARM_LAYERS } from './greenMeadowsRoad';
@@ -73,6 +73,12 @@ export const EAST_ORCHARD: SideSceneDescriptor = {
       id: 'west',
       side: 'left',
       to: { scene: 'greenMeadowsRoad', portal: 'east', label: 'farmSidePortalBackToRoad' },
+    },
+    {
+      id: 'pond',
+      side: 'back',
+      x: POND_X,
+      to: { scene: 'oldPond', portal: 'orchard', label: 'farmSidePortalPond' },
     },
   ],
 };

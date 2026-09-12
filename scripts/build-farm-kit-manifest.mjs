@@ -42,6 +42,7 @@ const TILING_BANDS = new Set([
   'bg/midground-fields-large.png',
   'bg/midground-fields-small.png',
   'bg/near-grass.png',
+  'bg/near-muddy-water.png',
   'bg/road.png',
   'bg/front-grass.png',
 ]);

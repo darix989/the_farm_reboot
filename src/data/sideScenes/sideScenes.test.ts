@@ -25,19 +25,17 @@ describe('SIDE_SCENES', () => {
 
   /**
    * Pinned so a new scene that reaches for a farm-kit asset none of its siblings use
-   * gets caught here rather than as a surprise loading-overlay flash in play: every hop
-   * between the four registered scenes is supposed to be a warm hop, on the strength of
-   * the three new scenes being authored strictly from ids `greenMeadowsRoad` already
-   * loads. The budget has headroom above the measured total for exactly the kind of
-   * small variation (a different flower, one more tree) authoring a scene involves —
-   * not for a whole new backdrop band or prop category.
+   * gets caught here rather than as a surprise loading-overlay flash in play.
+   * `hettysBarn` and `gateLane` stay warm hops off `greenMeadowsRoad`; `eastOrchard`
+   * and `oldPond` pay a one-time fetch for the pond art and the water band. The budget
+   * has headroom above the measured total for small variation (a different flower, one
+   * more tree) — not for a whole extra backdrop category on top of the water band.
    */
   it('stays within the decoded farm-kit texture budget across every registered scene', () => {
     const BYTES_PER_PIXEL = 4;
-    // Measured total across all four registered scenes is ~40MB (they share
-    // `greenMeadowsRoad`'s own asset ids, so the union barely grows past its ~40MB-resident
-    // baseline) — 45MB leaves headroom for the odd extra flower or tree variant an author
-    // reaches for, without silently absorbing a whole new backdrop band or prop category.
+    // Measured total across the five registered scenes is ~42MB (they share most of
+    // `greenMeadowsRoad`'s asset ids; `bg/near-muddy-water` is the new ~2MB resident
+    // cost) — 45MB still leaves a little headroom for an extra flower or tree variant.
     const BUDGET_BYTES = 45 * 1024 * 1024;
 
     const ids = new Set<string>();
@@ -53,14 +51,15 @@ describe('SIDE_SCENES', () => {
     expect(totalBytes).toBeLessThanOrEqual(BUDGET_BYTES);
   });
 
-  it('places each Level 1 character once: Hetty in the barn, Cass on the road by the gate', () => {
+  it('places each Level 1 character once: Hetty at the pond, Cass on the road by the gate', () => {
     const byId: Record<string, string[]> = {};
     Object.values(SIDE_SCENES).forEach((descriptor) => {
       descriptor.npcs.forEach((npc) => {
         (byId[npc.characterId] ??= []).push(descriptor.id);
       });
     });
-    expect(byId.hetty).toEqual(['hettysBarn']);
+    expect(byId.hetty).toEqual(['oldPond']);
+    expect(byId.bella).toEqual(['hettysBarn']);
     expect(byId.cass).toEqual(['greenMeadowsRoad']);
     expect(byId.dot).toEqual(['greenMeadowsRoad']);
     expect(byId.bram).toEqual(['gateLane']);
@@ -80,5 +79,29 @@ describe('SIDE_SCENES', () => {
     expect(Math.abs(spawn.x - dot!.x)).toBeLessThan(INTERACT_RADIUS_NPC);
     expect(spawn.facing).toBe('right');
     expect(dot!.facing).toBe('left');
+  });
+
+  it('stands the orchard pond portal clear of Duchess and Tobias, and Hetty clear of the return', () => {
+    const orchard = SIDE_SCENES.eastOrchard;
+    const pond = orchard.portals.find((portal) => portal.id === 'pond');
+    const tobias = orchard.npcs.find((npc) => npc.characterId === 'tobias');
+    const duchess = orchard.npcs.find((npc) => npc.characterId === 'duchess');
+    expect(pond?.x).toBeDefined();
+    expect(tobias).toBeDefined();
+    expect(duchess).toBeDefined();
+    expect(Math.abs(pond!.x! - tobias!.x)).toBeGreaterThan(INTERACT_RADIUS_NPC);
+    expect(Math.abs(pond!.x! - duchess!.x)).toBeGreaterThan(INTERACT_RADIUS_NPC);
+
+    const shore = SIDE_SCENES.oldPond;
+    const hetty = shore.npcs.find((npc) => npc.characterId === 'hetty');
+    const orchardReturn = shore.portals.find((portal) => portal.id === 'orchard');
+    const spawn = resolveDefaultSpawn(shore);
+    expect(hetty).toBeDefined();
+    expect(orchardReturn?.x).toBeDefined();
+    expect(Math.abs(hetty!.x - orchardReturn!.x!)).toBeGreaterThan(INTERACT_RADIUS_NPC);
+    expect(Math.abs(spawn.x - orchardReturn!.x!)).toBeGreaterThan(PORTAL_INTERACT_RADIUS);
+    expect(Math.abs(spawn.x - hetty!.x)).toBeLessThan(INTERACT_RADIUS_NPC);
+    expect(spawn.facing).toBe('right');
+    expect(hetty!.facing).toBe('left');
   });
 });

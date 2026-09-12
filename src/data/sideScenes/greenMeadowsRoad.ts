@@ -185,7 +185,7 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
   // Cass waits a little west of the picket gate, far enough off it that the gate art still
   // reads as a gate and the walk-up talk does not frame her against a post. Dot stands on
   // the approach west of the silo — guardian at the entrance, not in the barn doorway —
-  // facing the road Rue arrives down. Hetty lives in the barn.
+  // facing the road Rue arrives down. Hetty lives at the pond.
   npcs: [
     { characterId: 'cass', x: GATE_X - 340, y: 952, facing: 'left' },
     { characterId: 'dot', x: DOT_X, y: DOT_Y, facing: 'left' },

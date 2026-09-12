@@ -1,9 +1,9 @@
 # Lateral farm scenes — authoring guide
 
-How the `FarmSide` scene assembly kit works, and how to author scene #5 and beyond.
+How the `FarmSide` scene assembly kit works, and how to author scene #6 and beyond.
 
-Four scenes so far — `greenMeadowsRoad` (the main road), `hettysBarn`, `gateLane` and
-`eastOrchard` — with the real Level 1 cast on them: Rue walks each road, the scene's
+Five scenes so far — `greenMeadowsRoad` (the main road), `hettysBarn`, `gateLane`,
+`eastOrchard` and `oldPond` — with the real Level 1 cast on them: Rue walks each road, the scene's
 authored NPCs stand on it, walking up to one opens the overworld talk chrome and can
 start a Trial, and walking up to a portal fades to black and lands you on the neighbouring
 scene. **Enter the Farm** boots `FarmSide`. `Farm.ts`, the top-down overworld, remains as
@@ -125,8 +125,9 @@ edge and a dog by the barn. Scenes without `playerSpawn` still fall back to the 
 portal (see "Travelling between scenes" below).
 
 Level 1's homes: Dot and Cass on `greenMeadowsRoad` (Dot on the west approach, guardian of
-the entrance; Cass west of the picket gate), Hetty only in `hettysBarn`, Bram in
-`gateLane`, Duchess and Tobias in `eastOrchard`.
+the entrance; Cass west of the picket gate), Bella in `hettysBarn` (a sheep-sprite
+placeholder until a cow lands), Bram in `gateLane`, Duchess and Tobias in `eastOrchard`,
+Hetty at the water's edge in `oldPond`.
 
 `sideSceneActors.ts` owns everything about standing on a road — scale, depth, facing, and
 Rue's movement — including **`SIDE_SCALE`**, one flat multiplier on
@@ -181,9 +182,11 @@ Because the camera can now zoom and tilt, the backdrop bands are `scrollFactor(0
 ## Authoring a new scene
 
 1. Add a file under `src/data/sideScenes/`, following `greenMeadowsRoad.ts` (or one of
-   the smaller pocket scenes, `hettysBarn.ts`/`gateLane.ts`/`eastOrchard.ts`, for a scene
-   with only a return portal): pick `scale`/`firstTop`, reuse `STANDARD_FARM_LAYERS` (or a
-   variant), author `road`, `props`, `fences`, `npcs`, optional `playerSpawn`, `portals`.
+   the smaller pocket scenes, `hettysBarn.ts`/`gateLane.ts`/`eastOrchard.ts`/`oldPond.ts`,
+   for a scene with only a return portal): pick `scale`/`firstTop`, reuse
+   `STANDARD_FARM_LAYERS` (or a variant — `oldPond` swaps `bg/near-grass` for
+   `bg/near-muddy-water`), author `road`, `props`, `fences`, `npcs`, optional
+   `playerSpawn`, `portals`.
 2. Widen the `SideSceneId` union in `src/types/sideScene.ts` with the new scene's id, and
    register the descriptor in `src/data/sideScenes/index.ts`'s `SIDE_SCENES` registry.
    `DEFAULT_SIDE_SCENE_ID` there is only the *initial value* of `gameStore.activeSideSceneId`
@@ -296,8 +299,9 @@ asset ids `greenMeadowsRoad` already uses, so every hop between them and the roa
 hop — no new texture ever has to be fetched mid-playthrough. `eastOrchard` breaks that: its
 pond (`water/pond-muddy`) and reeds (`flowers/leaf-1-a`) are new asset ids none of its
 siblings load, so the first hop into it from any other scene fetches them and shows the
-loading overlay briefly — a deliberate one-time cost for the pond's payoff as the visual
-anchor of a future water's-edge scene, not an oversight. `src/data/sideScenes/
+loading overlay briefly. `oldPond` does the same for `bg/near-muddy-water`, the
+near-background water band — a deliberate one-time cost for standing at the water's edge,
+not an oversight. `src/data/sideScenes/
 sideScenes.test.ts` pins the combined decoded-texture footprint of every asset id any
 registered scene references; a new scene (or new prop) that reaches for an asset none of
 its siblings load will grow that total and can fail the budget test, which is the point —

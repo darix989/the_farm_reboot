@@ -2,19 +2,26 @@
 /**
  * Bakes the muddy-water tile set (`assets-src/water-tiles/muddy-water/`, sourced from
  * gamedeveloperstudio.com's "Repeating water tiles" pack — licence in that folder's
- * README) into one pond prop for the farm kit.
+ * README) into two farm-kit assets:
  *
- * The source tiles are side-view: a solid body with a ~60px wavy band along the top,
- * meant for a platformer's water column. The farm kit instead reads a pond obliquely
- * (see `public/assets/farm-kit/bg/puddle-for-road-piece.png` — a flattened ellipse with
- * a dark mud rim), so rather than using a tile raw, this bakes several tiled strips
- * into that idiom: one wave band sitting just inside the water ellipse's top edge (the
- * far shore's ripple line), two more faded wave slices further down standing in for
- * ripples receding into the distance, all masked to a water ellipse that sits inside a
- * slightly larger dark-mud bank-rim ellipse.
+ * 1. `water/pond-muddy.png` — the distant ellipse pond on `eastOrchard`. The source tiles
+ *    are side-view: a solid body with a ~60px wavy band along the top, meant for a
+ *    platformer's water column. The farm kit instead reads a pond obliquely (see
+ *    `public/assets/farm-kit/bg/puddle-for-road-piece.png` — a flattened ellipse with a
+ *    dark mud rim), so rather than using a tile raw, this bakes several tiled strips
+ *    into that idiom: one wave band sitting just inside the water ellipse's top edge
+ *    (the far shore's ripple line), two more faded wave slices further down standing in
+ *    for ripples receding into the distance, all masked to a water ellipse that sits
+ *    inside a slightly larger dark-mud bank-rim ellipse.
+ * 2. `bg/near-muddy-water.png` — the near-background tiling band on `oldPond`. Eight
+ *    tiles wide (already power-of-two), cropped 11px off the bottom so the solid-fill
+ *    height matches `bg/near-grass` (205 native px) and the road seam stays at y≈796
+ *    with `firstTop: 400` / `scale: 0.8543`. Measured `opaqueFromRow` of the mixed
+ *    strip is 40 (the trough tile's fully-opaque row).
  *
  * Run with `npm run assets:pond`. Safe to re-run: deterministic output, nothing to
- * clobber.
+ * clobber. After a first bake of the band, run `npm run assets:farm-kit` so the
+ * manifest picks it up and POT-pads the 245px content height to 256.
  */
 import { mkdirSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
@@ -22,7 +29,8 @@ import sharp from 'sharp';
 
 const ROOT = join(import.meta.dirname, '..');
 const TILES_DIR = join(ROOT, 'assets-src/water-tiles/muddy-water');
-const OUT_FILE = join(ROOT, 'public/assets/farm-kit/water/pond-muddy.png');
+const POND_OUT_FILE = join(ROOT, 'public/assets/farm-kit/water/pond-muddy.png');
+const BAND_OUT_FILE = join(ROOT, 'public/assets/farm-kit/bg/near-muddy-water.png');
 
 const TILE_SIZE = 256;
 const CANVAS_WIDTH = 1400;
@@ -69,6 +77,24 @@ const RIPPLE_STRIP_ORDER = [
   'crest-top-one',
 ];
 
+/** Eight 256px tiles = 2048, already a power of two, so the farm-kit POT pad only
+ *  has to grow the cropped height (245 → 256). Mixing trough tiles is what pushes
+ *  `opaqueFromRow` to 40 — a strip of only flats/crests would report 20. */
+const BAND_STRIP_ORDER = [
+  'flat-top-one',
+  'crest-top-one',
+  'trough-top-one',
+  'flat-top-two',
+  'crest-top-one',
+  'trough-top-one',
+  'flat-top-one',
+  'flat-top-two',
+];
+/** 256 − 11 = 245: `nativeHeight - opaqueFromRow` (245 − 40) = 205, matching
+ *  `bg/near-grass` (227 − 22) so the road still lands at y≈796. */
+const BAND_CROP_BOTTOM = 11;
+const BAND_HEIGHT = TILE_SIZE - BAND_CROP_BOTTOM;
+
 function tilePath(name) {
   return join(TILES_DIR, `${name}.png`);
 }
@@ -105,8 +131,8 @@ function ellipseSvg(rx, ry, fill) {
   );
 }
 
-async function main() {
-  mkdirSync(dirname(OUT_FILE), { recursive: true });
+async function bakePondEllipse() {
+  mkdirSync(dirname(POND_OUT_FILE), { recursive: true });
 
   const mainStrip = await buildStrip(MAIN_STRIP_ORDER);
   const waterBody = await sharp({
@@ -149,9 +175,40 @@ async function main() {
       { input: waterMasked, top: 0, left: 0 },
     ])
     .png()
-    .toFile(OUT_FILE);
+    .toFile(POND_OUT_FILE);
 
-  console.log(`Wrote ${relative(ROOT, OUT_FILE)} (${CANVAS_WIDTH}x${CANVAS_HEIGHT})`);
+  console.log(`Wrote ${relative(ROOT, POND_OUT_FILE)} (${CANVAS_WIDTH}x${CANVAS_HEIGHT})`);
+}
+
+async function bakeNearWaterBand() {
+  mkdirSync(dirname(BAND_OUT_FILE), { recursive: true });
+  const bandWidth = BAND_STRIP_ORDER.length * TILE_SIZE;
+  const croppedTiles = await Promise.all(
+    BAND_STRIP_ORDER.map((name) =>
+      sharp(tilePath(name))
+        .extract({ left: 0, top: 0, width: TILE_SIZE, height: BAND_HEIGHT })
+        .png()
+        .toBuffer(),
+    ),
+  );
+  await sharp({
+    create: {
+      width: bandWidth,
+      height: BAND_HEIGHT,
+      channels: 4,
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
+    },
+  })
+    .composite(croppedTiles.map((input, i) => ({ input, left: i * TILE_SIZE, top: 0 })))
+    .png()
+    .toFile(BAND_OUT_FILE);
+
+  console.log(`Wrote ${relative(ROOT, BAND_OUT_FILE)} (${bandWidth}x${BAND_HEIGHT})`);
+}
+
+async function main() {
+  await bakePondEllipse();
+  await bakeNearWaterBand();
 }
 
 main().catch((err) => {

@@ -304,6 +304,7 @@ const LABELS = {
   enterTopDownFarm: 'Top-down farm',
   farmNpcRue: 'Rue',
   farmNpcHetty: 'Hetty',
+  farmNpcBella: 'Bella',
   farmNpcCass: 'Cass',
   farmNpcBram: 'Bram',
   farmNpcDuchess: 'Duchess',
@@ -439,6 +440,17 @@ const LABELS = {
   farmDialogTobiasDoneA: 'The pond is settled, then. For this year.',
   farmDialogTobiasDoneB:
     'I will say this once and not again: I have pulled a cart past that drain for eleven years and **[accent]never once looked into it[/accent]**. Good morning, Rue.',
+  farmDialogBella1:
+    'I am not Hetty. I only look like this until the proper coat arrives. She is at the pond.',
+  farmDialogBella1a:
+    'Before you ask: I am not Hetty. I only look like this until the proper coat arrives.',
+  farmDialogBella1b: 'You look exactly like Hetty.',
+  farmDialogBella1c:
+    'That is the whole joke, and it is not even mine. **[accent]Hetty is at the pond[/accent]** — down the east road, walk up to the water. I am holding the barn. Someone has to.',
+  farmDialogBellaDone: 'Still not Hetty. Still holding the barn.',
+  farmDialogBellaDoneA: 'Still not Hetty.',
+  farmDialogBellaDoneB:
+    'The coat is late. I am still holding the barn. She is still at the pond, I expect.',
   farmDialogDot1:
     'You are the new raccoon. Rue, is it? I am Dot, guardian of the farm — that is why I stand at the entrance. Tobias has put a motion to keep the Old Pond for the Meadow-Born and send the rest of you to the road trough — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, through the gate. Then Cass on the road.',
   farmDialogDot1a:
@@ -464,18 +476,18 @@ const LABELS = {
     'But there are rules, and nobody has written them down. Partly because not one animal here knows what writing is. Mostly because rules nobody wrote are the easiest kind to break. You will want to know **[accent]how this farm argues[/accent]** before you go and stand in front of it.',
   farmDialogDot1o: 'Where do I start?',
   farmDialogDot1p:
-    'Bram. The wolf, through the gate. He will pretend he is checking the fence. Let him. He is the one who will show you how a conversation works here, before Cass gets her teeth into you. Then Cass on the road, just this side of the gate, then Hetty in the barn, then Duchess down the east road when you want the floor.',
+    'Bram. The wolf, through the gate. He will pretend he is checking the fence. Let him. He is the one who will show you how a conversation works here, before Cass gets her teeth into you. Then Cass on the road, just this side of the gate, then Hetty at the pond — east road, walk up to the water — then Duchess further down that same road when you want the floor.',
   farmDialogDot2:
     'Bram has done his piece. Cass is on the road, just this side of the gate, and she will talk to you now.',
   farmDialogDot2a: 'Bram has done his piece. You know how a conversation works, then.',
   farmDialogDot2b: 'And now?',
   farmDialogDot2c:
     'Cass. The fox, on the road, just this side of the gate. She has something you need before Hetty will so much as look at you. Do not let anyone tell you about the fox first — let her do it.',
-  farmDialogDot3: 'Cass has done her piece. Hetty is in the barn, and she will talk to you now.',
+  farmDialogDot3: 'Cass has done her piece. Hetty is at the pond, and she will talk to you now.',
   farmDialogDot3a: 'Cass has done her piece. I heard it from here, some of it.',
   farmDialogDot3b: 'And Hetty?',
   farmDialogDot3c:
-    'In the barn, and she will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her — everyone does, and it has never once helped.',
+    'At the pond — east road, walk up to the water — and she will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her — everyone does, and it has never once helped.',
   farmDialogDot4:
     'Hetty has had her go at you. Back to Cass — she will know what to call the rest of it.',
   farmDialogDot4a: 'Hetty has had her go at you. I could hear it from the road.',
@@ -512,7 +524,7 @@ const LABELS = {
   farmDialogFollowUpBramRoundsB: 'Where now?',
   farmDialogFollowUpBramRoundsC:
     'The fox. On the road, just this side of the gate. I am not saying that because I am a wolf. I am saying it because she will give you **[accent]a name you do not have yet[/accent]**.',
-  farmDialogFollowUpCassAdHominemA: 'You have the name. Do not lose it on the walk to the barn.',
+  farmDialogFollowUpCassAdHominemA: 'You have the name. Do not lose it on the walk to the pond.',
   farmDialogFollowUpCassAdHominemB: 'Hetty.',
   farmDialogFollowUpCassAdHominemC:
     'She will use it on you and she will think she is being kind. Try not to hold it against her. I do.',
@@ -524,7 +536,7 @@ const LABELS = {
   farmDialogFollowUpCassPopularityA: 'How many, not how. You have both names now.',
   farmDialogFollowUpCassPopularityB: 'Hetty again?',
   farmDialogFollowUpCassPopularityC:
-    'The barn. She has more news, and this time it is not only about you. Buried in it is **[accent]something somebody actually saw[/accent]**.',
+    'The pond. East road, walk up to the water. She has more news, and this time it is not only about you. Buried in it is **[accent]something somebody actually saw[/accent]**.',
   farmDialogFollowUpHettyGrateA:
     'A grate. Bent. **[accent]I saw it with my own eyes[/accent]**, which is more than most animals can say.',
   farmDialogFollowUpHettyGrateB: 'I should tell someone who argues.',
@@ -582,13 +594,13 @@ const LABELS = {
   levelGoalCassTitle: 'Cass, on the road by the gate',
   levelGoalCassBody:
     'The fox. She has something you need before Hetty will so much as look at you. Do not let anyone tell you about the fox first — let her do it.',
-  levelGoalHettyTitle: 'Hetty, in the barn',
+  levelGoalHettyTitle: 'Hetty, at the pond',
   levelGoalHettyBody:
     'She will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her.',
   levelGoalCassPopularityTitle: 'Cass again, on the road by the gate',
   levelGoalCassPopularityBody:
     'Hetty counted heads at you and called it a reason. Cass knows the name of that one too, and she will make you say it before she hands it over.',
-  levelGoalHettyGrateTitle: 'Hetty again, in the barn',
+  levelGoalHettyGrateTitle: 'Hetty again, at the pond',
   levelGoalHettyGrateBody:
     'She has more news, and buried in the middle of it is the only thing on this farm anybody has actually seen with their own eyes.',
   levelGoalBramUnlocksTitle: 'Bram, for the locked line',
@@ -611,7 +623,7 @@ const LABELS = {
   codexSpottedTimes: 'spotted {count}×',
 
   // Dialog flags — the title doubles as the requirement phrase on a locked encounter, so it
-  // reads as an instruction ("hear Hetty out in the barn"), not as a headline.
+  // reads as an instruction ("hear Hetty out at the pond"), not as a headline.
   dialogFlagDotWelcomedTitle: 'get your bearings from Dot on the road',
   dialogFlagDotWelcomedBody:
     'Dot met you on the road by the barn, named Sunday in front of Duchess, and sent you to Bram through the gate before anyone else got hold of you.',
@@ -621,13 +633,13 @@ const LABELS = {
   dialogFlagCassNamedAdHominemTitle: 'let Cass name the trick for you',
   dialogFlagCassNamedAdHominemBody:
     'Cass named Ad Hominem after a season on the floor — answering the animal instead of the argument — and beat it. She does not stand there anymore. She made you use it on her first, so that you would recognise the shape of it from the inside.',
-  dialogFlagHettyWitnessedTitle: 'hear Hetty out in the barn',
+  dialogFlagHettyWitnessedTitle: 'hear Hetty out at the pond',
   dialogFlagHettyWitnessedBody:
     'Hetty went the whole way round the trough and never once reached the water: the bins, the straw in your fur, the six weeks. She said every word of it to your face, meant no harm by any of it, and asked you to agree — which is exactly what makes it work.',
   dialogFlagCassNamedPopularityTitle: 'let Cass name the second trick for you',
   dialogFlagCassNamedPopularityBody:
     'Forty-one of the Meadow-Born have put their names to the motion, and not one animal will say what any of the forty-one went and looked at. Cass calls that Appeal to Popularity, and left you a phrase to hold on to: how many, against how do you know.',
-  dialogFlagHettyGrateHeardTitle: 'let Hetty finish in the barn',
+  dialogFlagHettyGrateHeardTitle: 'let Hetty finish at the pond',
   dialogFlagHettyGrateHeardBody:
     'Somewhere between a headcount and a jab about drains, Hetty mentioned that she has seen the outflow grate bent with her own eyes, and that the mud settles behind it. She moved straight on as though it were weather.',
   dialogFlagBramTaughtUnlocksTitle: 'learn how to open a locked line from Bram beyond the gate',
@@ -659,6 +671,8 @@ const LABELS = {
   farmSidePortalBarn: 'Enter the barn',
   farmSidePortalGate: 'Go through the gate',
   farmSidePortalEastRoad: 'Head down the east road',
+  farmSidePortalPond: 'Walk down to the pond',
+  farmSidePortalBackToOrchard: 'Back to the orchard',
   farmSidePortalBackToRoad: 'Back to the road',
 } as const;
 

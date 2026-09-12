@@ -54,6 +54,7 @@ const REGISTRY: Readonly<Record<SideSceneId, SideSceneDescriptor>> = {
   hettysBarn: OTHER_DESCRIPTOR,
   gateLane: OTHER_DESCRIPTOR,
   eastOrchard: OTHER_DESCRIPTOR,
+  oldPond: OTHER_DESCRIPTOR,
 };
 
 describe('sideSceneAssetIds', () => {

@@ -16,7 +16,12 @@ import type { Labels } from '../data/labels';
  * pulling that value (and the whole descriptor data set) in with it. `data/sideScenes/index.ts`
  * re-exports this for existing consumers.
  */
-export type SideSceneId = 'greenMeadowsRoad' | 'hettysBarn' | 'gateLane' | 'eastOrchard';
+export type SideSceneId =
+  | 'greenMeadowsRoad'
+  | 'hettysBarn'
+  | 'gateLane'
+  | 'eastOrchard'
+  | 'oldPond';
 
 /**
  * One band in the parallax stack, ordered far -> near in `SideSceneDescriptor.layers`.
