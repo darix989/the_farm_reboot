@@ -491,17 +491,17 @@
       "frameHeight": 512,
       "frameCount": 25,
       "frameRate": 13,
-      "scale": 2.8537,
-      "originX": 0.5047,
-      "originY": 0.6602,
-      "prompt": "Side view, facing right. The entire grey mouse stays fixed inside the exact outer pixel bounds of the reference silhouette for every frame. Its torso, back, belly, head, nose, long arched pink tail and all four planted pink feet remain motionless at exactly their reference positions, sizes and heights. The camera, framing, scale and center remain fixed. ONLY THE FACE AND EARS MOVE, entirely inward within the starting silhouette: its two huge rounded ears fold slightly backward without any edge extending beyond their original outer boundaries; both eyes stay open and narrow into a hard glare; its snout opens into a small controlled snarl inside the original head boundary, showing the same two rectangular white front teeth in every open-mouth frame. Nothing translates, enlarges, lowers, crouches, leans, lunges or travels. No pixel of the mouse crosses the original top, bottom, left or right silhouette bounds. During the first quarter the face slowly tightens into the glare and snarl; during the middle half it holds; during the final quarter it returns along the identical path. The first and final frames exactly match the reference in position, silhouette, proportions and colors. One slow continuous closed motion, stationary camera, seamless repeating loop.",
+      "scale": 2.8193,
+      "originX": 0.5048,
+      "originY": 0.6621,
+      "prompt": "Side view, facing right. The entire grey mouse stays fixed inside the exact outer pixel bounds of the reference silhouette for every frame. Its torso, back, belly, head, nose, long arched pink tail and all four planted pink feet remain motionless at exactly their reference positions, sizes and heights. The camera, framing, scale and center remain fixed. ONLY THE EARS, EYES AND MOUTH MOVE, entirely inward within the starting silhouette: its two huge rounded ears fold slightly backward without any edge extending beyond their original outer boundaries; both eyes stay open and narrow into a hard glare. Its snout opens into a small controlled snarl: the two rectangular white front teeth stay exactly the same size, shape, spacing and position as the reference in every open-mouth frame, and behind them is one smooth flat pale-pink patch of color, the same flat pale pink in every single frame the mouth is open, with no red, no tongue, no gum line, no extra shading and no other color or shape ever appearing inside the mouth. Nothing translates, enlarges, lowers, crouches, leans, lunges or travels. No pixel of the mouse crosses the original top, bottom, left or right silhouette bounds. During the first quarter the face slowly tightens into the glare and snarl; during the middle half it holds; during the final quarter it returns along the identical path to the fully closed reference mouth. The first and final frames exactly match the reference in position, silhouette, proportions, mouth and colors. One slow continuous closed motion, stationary camera, seamless repeating loop.",
       "quality": {
-        "loopPop": 0.18,
-        "heightSwing": 3,
-        "driftX": 1,
+        "loopPop": 0.17,
+        "heightSwing": 1.8,
+        "driftX": 1.8,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T13:22:24.129Z"
+      "generatedAt": "2026-09-13T13:44:01.464Z"
     },
     "doubtful": {
       "file": "mouse-doubtful.png",
