@@ -102,6 +102,22 @@ export const EMOTION_SHEETS: Partial<
     },
   },
   cow: {
+    angry: {
+      file: 'cow-angry.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 1.7558,
+      originX: 0.49,
+      originY: 0.7012,
+      quality: {
+        loopPop: 0.37,
+        heightSwing: 19,
+        driftX: 6.8,
+        warnings: [],
+      },
+    },
     doubtful: {
       file: 'cow-doubtful.png',
       frameWidth: 512,
