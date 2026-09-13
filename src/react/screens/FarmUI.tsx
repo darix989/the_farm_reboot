@@ -11,6 +11,7 @@ import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
 import FarmDialogue from '../farm/FarmDialogue';
 import { useFarmOverworldTalk } from '../hooks/useFarmOverworldTalk';
 import { useCodexNotices } from '../codex/useCodexNotices';
+import { useOpenCodexShortcut } from '../hooks/useOpenCodexShortcut';
 import {
   canRunTutorialTargetAction,
   canRunTutorialUntargetedAction,
@@ -47,6 +48,7 @@ const FarmUI: React.FC = () => {
   const interactionPromptRef = useRef<HTMLButtonElement>(null);
 
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;
+  useOpenCodexShortcut(!dialogue && !pendingFollowUp, firstUnreadSection ?? undefined);
 
   useEffect(() => {
     if (!nearbyNpcId || dialogue) return;

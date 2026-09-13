@@ -13,6 +13,7 @@ import { useTutorialStore } from '../../store/tutorialStore';
 import FarmDialogue from '../farm/FarmDialogue';
 import { useFarmOverworldTalk } from '../hooks/useFarmOverworldTalk';
 import { useCodexNotices } from '../codex/useCodexNotices';
+import { useOpenCodexShortcut } from '../hooks/useOpenCodexShortcut';
 import {
   canRunTutorialTargetAction,
   canRunTutorialUntargetedAction,
@@ -81,6 +82,11 @@ const FarmSideUI: React.FC = () => {
           ? { kind: 'portal' as const, id: nearbyPortal.id }
           : null,
     [nearbyNpcId, nearbyPortal],
+  );
+
+  useOpenCodexShortcut(
+    !isTraveling && !dialogue && !pendingFollowUp,
+    firstUnreadSection ?? undefined,
   );
 
   useEffect(() => {

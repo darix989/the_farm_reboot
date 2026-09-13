@@ -9,6 +9,7 @@ import { useCodexUiStore } from '../../store/codexUiStore';
 import { useProgressStore } from '../../store/progressStore';
 import { useDevSettingsStore } from '../../store/devSettingsStore';
 import { useWindowKeyDown } from '../hooks/useWindowKeyDown';
+import { useOpenCodexShortcut } from '../hooks/useOpenCodexShortcut';
 import styles from './MainMenuUI.module.scss';
 import getLabel, { type Labels } from '../../data/labels';
 
@@ -45,6 +46,7 @@ const MainMenuUI: React.FC = () => {
 
   // Not a scene switch — the Codex is a global overlay, so it opens on top of the menu.
   const openCodex = useCodexUiStore((s) => s.openCodex);
+  useOpenCodexShortcut(!confirmingReset);
 
   const cancelReset = () => setConfirmingReset(false);
 
