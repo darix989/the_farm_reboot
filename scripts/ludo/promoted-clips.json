@@ -108,7 +108,10 @@
         "driftX": 6.8,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T00:26:35.180Z"
+      "generatedAt": "2026-09-13T00:26:35.180Z",
+      "reviewNotes": [
+        "First attempt read as sulking rather than angry despite clean numbers; this retry bellows convincingly but is still worth a second look in game."
+      ]
     },
     "doubtful": {
       "file": "cow-doubtful.png",
@@ -164,7 +167,7 @@
       },
       "generatedAt": "2026-09-12T23:58:33.758Z"
     },
-    "thinking": {
+    "approving": {
       "file": "cow-thinking.png",
       "frameWidth": 512,
       "frameHeight": 512,
