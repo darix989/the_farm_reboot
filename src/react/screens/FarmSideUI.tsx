@@ -134,6 +134,9 @@ const FarmSideUI: React.FC = () => {
             openDialogue(nearbyNpcId);
           }}
         >
+          <span className={styles.interactionCue} aria-hidden="true">
+            ✦
+          </span>
           {getLabel('farmTalkPrompt', {
             replacements: { name: resolveCharacter(nearbyNpcId).displayName },
           })}
@@ -153,6 +156,9 @@ const FarmSideUI: React.FC = () => {
             }
           }}
         >
+          <span className={styles.interactionCue} aria-hidden="true">
+            ✦
+          </span>
           {getLabel(nearbyPortal.to.label)}
           <span className={styles.talkPromptKey}>{getLabel('farmInteractHint')}</span>
         </button>

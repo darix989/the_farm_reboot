@@ -13,6 +13,9 @@
  */
 export const PORTAL_INTERACT_RADIUS = 220;
 
+/** How near Rue must stand before a side-scene character offers a conversation. */
+export const SIDE_NPC_INTERACT_RADIUS = 340;
+
 export type Focus = { kind: 'npc' | 'portal'; id: string } | null;
 
 export interface FocusPoint {

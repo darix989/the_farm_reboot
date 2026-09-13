@@ -53,7 +53,7 @@ const FAR_BANK_Y = 662;
 const REED_Y = 784;
 const HETTY_X = 1400;
 const HETTY_Y = 952;
-const INTRO_SPAWN_GAP = 360;
+const INTRO_SPAWN_GAP = 320;
 const ORCHARD_PORTAL_X = 360;
 /** Same value `greenMeadowsRoad` tuned for the front-grass band — the kit's flower art is
  *  oversized, and this is what makes a bloom read as a foreground plant. */

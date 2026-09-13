@@ -11,10 +11,10 @@ import {
 } from '../../phaser/sideScene/sideSceneAssets';
 import { FARM_KIT_ASSETS } from '../../phaser/sideScene/farmKit.generated';
 import { resolveDefaultSpawn } from '../../phaser/sideScene/sideSceneRoad';
-import { PORTAL_INTERACT_RADIUS } from '../../phaser/sideScene/sideSceneInteractions';
-
-/** Same 400px talk radius `FarmSide` uses — close enough to count as "beside". */
-const INTERACT_RADIUS_NPC = 400;
+import {
+  PORTAL_INTERACT_RADIUS,
+  SIDE_NPC_INTERACT_RADIUS,
+} from '../../phaser/sideScene/sideSceneInteractions';
 
 describe('SIDE_SCENES', () => {
   it('lists every registered scene on the main menu exactly once', () => {
@@ -80,7 +80,7 @@ describe('SIDE_SCENES', () => {
     const spawn = resolveDefaultSpawn(road);
     expect(barn!.x! - dot!.x).toBeGreaterThan(PORTAL_INTERACT_RADIUS);
     expect(barn!.x! - spawn.x).toBeGreaterThan(PORTAL_INTERACT_RADIUS);
-    expect(Math.abs(spawn.x - dot!.x)).toBeLessThan(INTERACT_RADIUS_NPC);
+    expect(Math.abs(spawn.x - dot!.x)).toBeLessThan(SIDE_NPC_INTERACT_RADIUS);
     expect(spawn.facing).toBe('right');
     expect(dot!.facing).toBe('left');
   });
@@ -117,8 +117,8 @@ describe('SIDE_SCENES', () => {
     expect(pond?.x).toBeDefined();
     expect(tobias).toBeDefined();
     expect(duchess).toBeDefined();
-    expect(Math.abs(pond!.x! - tobias!.x)).toBeGreaterThan(INTERACT_RADIUS_NPC);
-    expect(Math.abs(pond!.x! - duchess!.x)).toBeGreaterThan(INTERACT_RADIUS_NPC);
+    expect(Math.abs(pond!.x! - tobias!.x)).toBeGreaterThan(SIDE_NPC_INTERACT_RADIUS);
+    expect(Math.abs(pond!.x! - duchess!.x)).toBeGreaterThan(SIDE_NPC_INTERACT_RADIUS);
 
     const shore = SIDE_SCENES.oldPond;
     const hetty = shore.npcs.find((npc) => npc.characterId === 'hetty');
@@ -126,9 +126,9 @@ describe('SIDE_SCENES', () => {
     const spawn = resolveDefaultSpawn(shore);
     expect(hetty).toBeDefined();
     expect(orchardReturn?.x).toBeDefined();
-    expect(Math.abs(hetty!.x - orchardReturn!.x!)).toBeGreaterThan(INTERACT_RADIUS_NPC);
+    expect(Math.abs(hetty!.x - orchardReturn!.x!)).toBeGreaterThan(SIDE_NPC_INTERACT_RADIUS);
     expect(Math.abs(spawn.x - orchardReturn!.x!)).toBeGreaterThan(PORTAL_INTERACT_RADIUS);
-    expect(Math.abs(spawn.x - hetty!.x)).toBeLessThan(INTERACT_RADIUS_NPC);
+    expect(Math.abs(spawn.x - hetty!.x)).toBeLessThan(SIDE_NPC_INTERACT_RADIUS);
     expect(spawn.facing).toBe('right');
     expect(hetty!.facing).toBe('left');
   });

@@ -25,14 +25,14 @@ export const STANDARD_FARM_LAYERS: readonly SideSceneLayer[] = [
 const GROUND_SEAM_Y = 796;
 const GATE_X = 3800;
 /**
- * Dot on the approach, west of the silo (980) and well clear of the barn door (1260), so
+ * Dot on the west approach, well clear of the barn door (1260), so
  * talking to her never also offers "Enter the barn". Rue spawns this many px west of her,
  * facing in — close enough to read as a greeting, wide enough that the two sprites do not
  * overlap at `SIDE_SCALE`.
  */
-const DOT_X = 800;
+const DOT_X = 600;
 const DOT_Y = 952;
-const INTRO_SPAWN_GAP = 360;
+const INTRO_SPAWN_GAP = 320;
 /**
  * Front-grass flowers. Native art is oversized like the crops above; 0.72 is double the
  * first-pass 0.36 that made a bloom sit next to a fence post.

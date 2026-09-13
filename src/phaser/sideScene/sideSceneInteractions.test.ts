@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { resolveFocus } from './sideSceneInteractions';
+import {
+  PORTAL_INTERACT_RADIUS,
+  resolveFocus,
+  SIDE_NPC_INTERACT_RADIUS,
+} from './sideSceneInteractions';
 
-const RADII = { npc: 400, portal: 220 };
+const RADII = { npc: SIDE_NPC_INTERACT_RADIUS, portal: PORTAL_INTERACT_RADIUS };
 
 describe('resolveFocus', () => {
   it('returns null when nothing is in range', () => {
@@ -15,10 +19,10 @@ describe('resolveFocus', () => {
   });
 
   it('ties go to the NPC', () => {
-    // Both candidates score exactly 0.5: 200/400 for the NPC, 110/220 for the portal.
+    // Both candidates score exactly 0.5: 170/340 for the NPC, 110/220 for the portal.
     const focus = resolveFocus(
       { x: 0, y: 0 },
-      [{ id: 'hetty', x: 200, y: 0 }],
+      [{ id: 'hetty', x: 170, y: 0 }],
       [{ id: 'gate', x: -110, y: 0 }],
       RADII,
     );
@@ -27,7 +31,7 @@ describe('resolveFocus', () => {
 
   /**
    * Cass is deliberately beyond the combined talk/portal radii: a 660px horizontal gap
-   * (and 34px vertical offset) exceeds 400px + 220px. The gate must therefore be the only
+   * (and 34px vertical offset) exceeds 340px + 220px. The gate must therefore be the only
    * focus candidate when the player is at its threshold.
    */
   it('keeps Cass and the gate interaction zones separate', () => {

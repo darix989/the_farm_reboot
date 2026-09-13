@@ -151,6 +151,7 @@
   cursor: pointer;
   pointer-events: auto;
   box-shadow: 0 0 18px var(--ui-color-accent-glow);
+  animation: farm-interaction-available 1.2s ease-out 2;
 
   &:hover {
     color: var(--ui-color-accent);
@@ -164,6 +165,19 @@
   color: var(--ui-color-text-muted-2);
   font-size: var(--ui-font-caption);
   font-weight: normal;
+}
+
+.interactionCue {
+  display: grid;
+  width: 1.35rem;
+  height: 1.35rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ui-color-accent);
+  color: var(--ui-color-overlay-backdrop);
+  font-size: var(--ui-font-caption);
+  line-height: 1;
+  box-shadow: 0 0 10px var(--ui-color-accent);
 }
 
 /* Same chrome as `.talkPrompt` — a portal and an NPC are never both in range at once (see
@@ -188,8 +202,29 @@
   cursor: pointer;
   pointer-events: auto;
   box-shadow: 0 0 18px var(--ui-color-accent-glow);
+  animation: farm-interaction-available 1.2s ease-out 2;
 
   &:hover {
     color: var(--ui-color-accent);
+  }
+}
+
+@keyframes farm-interaction-available {
+  0%,
+  100% {
+    box-shadow: 0 0 18px var(--ui-color-accent-glow);
+  }
+
+  40% {
+    box-shadow:
+      0 0 0 0.35rem var(--ui-color-accent-glow),
+      0 0 28px var(--ui-color-accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .talkPrompt,
+  .portalPrompt {
+    animation: none;
   }
 }

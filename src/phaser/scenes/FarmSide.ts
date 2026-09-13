@@ -16,6 +16,7 @@ import {
 import {
   PORTAL_INTERACT_RADIUS,
   resolveFocus,
+  SIDE_NPC_INTERACT_RADIUS,
   type FocusPoint,
 } from '../sideScene/sideSceneInteractions';
 import { beginSideSceneTravel } from '../sideScene/sideSceneTravel';
@@ -42,9 +43,6 @@ import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reduced
  * transition. See `docs/farm_side_scenes.md`.
  */
 const DEBUG_SIDE_SCENE = false;
-
-/** How near Rue has to stand before an animal is offered for a talk, in world px. */
-const INTERACT_RADIUS = 400;
 
 /**
  * How long after `create()` an interact key press is ignored. OS key auto-repeat fires a
@@ -271,7 +269,7 @@ export class FarmSide extends Scene {
       .map((portal) => ({ id: portal.id, ...resolvePortal(portal, this.descriptor) }));
 
     const focus = resolveFocus(player, npcs, portals, {
-      npc: INTERACT_RADIUS,
+      npc: SIDE_NPC_INTERACT_RADIUS,
       portal: PORTAL_INTERACT_RADIUS,
     });
 
