@@ -113,6 +113,24 @@
         "First attempt read as sulking rather than angry despite clean numbers; this retry bellows convincingly but is still worth a second look in game."
       ]
     },
+    "approving": {
+      "file": "cow-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.7558,
+      "originX": 0.4861,
+      "originY": 0.7012,
+      "prompt": "Side view, facing left. The black and white cow stands in place on all fours and considers something: almost motionless, its head turned slightly away, its googly eyes rolling slowly, its big pink snout shut, the golden bell hanging still. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.29,
+        "heightSwing": 6,
+        "driftX": 2.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T00:29:58.149Z"
+    },
     "doubtful": {
       "file": "cow-doubtful.png",
       "frameWidth": 512,
@@ -169,24 +187,6 @@
         "warnings": []
       },
       "generatedAt": "2026-09-12T23:58:33.758Z"
-    },
-    "approving": {
-      "file": "cow-thinking.png",
-      "frameWidth": 512,
-      "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 1.7558,
-      "originX": 0.4861,
-      "originY": 0.7012,
-      "prompt": "Side view, facing left. The black and white cow stands in place on all fours and considers something: almost motionless, its head turned slightly away, its googly eyes rolling slowly, its big pink snout shut, the golden bell hanging still. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
-      "quality": {
-        "loopPop": 0.29,
-        "heightSwing": 6,
-        "driftX": 2.8,
-        "warnings": []
-      },
-      "generatedAt": "2026-09-13T00:29:58.149Z"
     }
   },
   "dog": {
@@ -592,6 +592,83 @@
         "warnings": []
       },
       "generatedAt": "2026-09-05T04:24:29.701Z"
+    }
+  },
+  "pig": {
+    "angry": {
+      "file": "pig-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.5986,
+      "originX": 0.4939,
+      "originY": 0.6348,
+      "prompt": "Side view, facing left. The pink pig stands in place on all fours and is furious: its small ears pin back, its eyes narrow, its head drops level with its shoulders and pushes forward at the target, its round snout is held open, and its corkscrew tail twitches hard. The open snout is always the same shape: one clean smooth rounded patch of flat darker pink inside, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.23,
+        "heightSwing": 3.5,
+        "driftX": 2.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T01:05:59.113Z",
+      "reviewNotes": [
+        "Approved with a check label: expression reads as a subdued head-down huff rather than strong anger, despite passing quality metrics."
+      ]
+    },
+    "doubtful": {
+      "file": "pig-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.6099,
+      "originX": 0.4968,
+      "originY": 0.6367,
+      "prompt": "Side view, facing left. The pink pig stands in place on all fours and is unconvinced: its head draws back and tilts, one small ear flicks, its round snout stays shut, and its corkscrew tail hangs still. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.21,
+        "heightSwing": 3.5,
+        "driftX": 2,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T01:03:44.261Z"
+    },
+    "talking": {
+      "file": "pig-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.5986,
+      "originX": 0.4958,
+      "originY": 0.6387,
+      "prompt": "Side view, facing left. The pink pig stands in place on all fours and talks: its round snout opens and closes with each phrase, its head bobs gently in time, its small ears flick once, and its corkscrew tail twitches. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.25,
+        "heightSwing": 1.4,
+        "driftX": 2,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T00:58:33.975Z"
+    },
+    "thinking": {
+      "file": "pig-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.5986,
+      "originX": 0.5017,
+      "originY": 0.6387,
+      "prompt": "Side view, facing left. Animate one complete closed thinking cycle of this exact pink pig, in place. Its round torso, four planted hooves, curled tail, snout shape and camera remain fixed exactly as in the reference throughout. Its eyes stay open with the same round white eye shapes and pupils. During the first quarter its head tilts just slightly in consideration; during the middle half it slowly returns along the same path; during the final quarter it has fully returned to the starting pose and settles motionless. The final pose, head position, ears, eyes, mouth, tail, silhouette, proportions and colors match the first frame and the reference exactly. Start and finish at rest in that identical pose. The mouth stays closed. The pig stays standing on all four short legs. One slow continuous out-and-back motion, seamless repeating loop, stationary camera, no travel.",
+      "quality": {
+        "loopPop": 0.25,
+        "heightSwing": 1.4,
+        "driftX": 4,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T01:12:47.104Z"
     }
   },
   "raccoon": {
