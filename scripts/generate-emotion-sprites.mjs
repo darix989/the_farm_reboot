@@ -1073,8 +1073,12 @@ async function readPromotedRecord() {
   return JSON.parse(await readFile(MODE.record, 'utf8'));
 }
 
-async function promote() {
-  const clips = await reviewedClips();
+async function promote(args) {
+  const clips = (await reviewedClips()).filter(
+    (clip) =>
+      (!args.animals || args.animals.includes(clip.animalId)) &&
+      (!args.emotions || args.emotions.includes(clip.emotion)),
+  );
   if (clips.length === 0) {
     console.error(`Nothing to promote — ${MODE.reviewDir} holds no generated ${MODE.noun}s.`);
     process.exit(1);
@@ -1479,7 +1483,7 @@ async function main() {
   MODE = args.faces ? FACE_MODE : BODY_MODE;
   if (args.remeasure) await remeasure(args);
   else if (args.reindex) await reindex();
-  else if (args.promote) await promote();
+  else if (args.promote) await promote(args);
   else if (MODE.kind === 'face') await cropFaces(args);
   else await generate(args);
 }

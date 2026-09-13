@@ -1,22 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
 import getLabel from '../../data/labels';
-import type { DebateScenarioKey } from '../../data/levels';
 import { resolveCharacter } from '../../data/characters';
-import { FARM_INTRO_NPC_ID, farmNpcById } from '../../data/farmMap';
-import { useFarmStore } from '../../store/farmStore';
-import { useGameStore } from '../../store/gameStore';
+import { farmNpcById } from '../../data/farmMap';
 import { useCodexUiStore } from '../../store/codexUiStore';
-import { useProgressStore } from '../../store/progressStore';
 import { useTutorialStore } from '../../store/tutorialStore';
-import { GameManager } from '../../utils/gameManager';
-import { farmDialogueFor, farmFollowUpDialogue } from '../farm/farmDialogueState';
-import { useFarmTutorials } from '../hooks/useFarmTutorials';
-import { useConditionContext } from '../hooks/useGameConditions';
-import { areConditionsMet, conditionContextSnapshot } from '../../utils/gameConditions';
-import { scenarioRequirements } from '../../data/levels';
 import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
 import FarmDialogue from '../farm/FarmDialogue';
+import { useFarmOverworldTalk } from '../hooks/useFarmOverworldTalk';
 import { useCodexNotices } from '../codex/useCodexNotices';
 import {
   canRunTutorialTargetAction,
@@ -36,10 +27,14 @@ const MOVE_HINT_LABEL = isSmartphone() ? 'farmMoveHintTouch' : 'farmMoveHint';
 const CODEX_OPEN_TARGET: TutorialTargetRef = { kind: 'codex_open' };
 
 const FarmUI: React.FC = () => {
-  const nearbyNpcId = useFarmStore((s) => s.nearbyNpcId);
-  const talkingToNpcId = useFarmStore((s) => s.talkingToNpcId);
-  const pendingFollowUp = useFarmStore((s) => s.pendingFollowUp);
-  const openDialogue = useFarmStore((s) => s.openDialogue);
+  const {
+    nearbyNpcId,
+    pendingFollowUp,
+    dialogue,
+    openDialogue,
+    closeFarmDialogue,
+    startEncounter,
+  } = useFarmOverworldTalk({ returnSceneKey: 'Farm', introNpcPresent: true });
   const openCodex = useCodexUiStore((s) => s.openCodex);
   const tutorialOpen = useTutorialStore((s) => s.isOpen);
   const { hasUnread, unreadIds, firstUnreadSection } = useCodexNotices();
@@ -47,19 +42,7 @@ const FarmUI: React.FC = () => {
   const markNoticesAnimated = useCodexUiStore((s) => s.markNoticesAnimated);
   const [codexBursting, setCodexBursting] = useState(false);
 
-  const completedScenarios = useProgressStore((s) => s.completedScenarios);
-  const conditionCtx = useConditionContext();
-  const dialogue = useMemo(() => {
-    if (!talkingToNpcId) return null;
-    if (pendingFollowUp?.kind === 'farm_talk' && pendingFollowUp.npcId === talkingToNpcId) {
-      return farmFollowUpDialogue(pendingFollowUp.npcId, pendingFollowUp.scenarioKey);
-    }
-    return farmDialogueFor(talkingToNpcId);
-  }, [talkingToNpcId, completedScenarios, pendingFollowUp, conditionCtx]);
-
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;
-
-  useFarmTutorials();
 
   // One-shot burst when unread ids appear while the HUD button is on screen. Talks and Trial
   // hide it; the lingering cue stays, but those ids are marked animated so coming back from a
@@ -75,43 +58,6 @@ const FarmUI: React.FC = () => {
     markNoticesAnimated(pending);
     setCodexBursting(true);
   }, [hudCodexVisible, unreadIds, animatedNoticeIds, markNoticesAnimated]);
-
-  // After the loading overlay unmounts — not in Phaser `create`, which runs while that
-  // overlay still covers the stage, and which used to skip anyone who already had progress.
-  useEffect(() => {
-    const progress = useProgressStore.getState();
-    if (progress.level1Started) return;
-    openDialogue(FARM_INTRO_NPC_ID);
-    progress.markLevel1Started();
-  }, [openDialogue]);
-
-  // Same timing as Dot's intro: Farm `create` has already reset talking, and the loading
-  // overlay has unmounted. Opening here (not in Phaser) keeps the talk on top of the farm.
-  useEffect(() => {
-    if (!pendingFollowUp || talkingToNpcId) return;
-    if (pendingFollowUp.kind !== 'farm_talk') return;
-    openDialogue(pendingFollowUp.npcId);
-  }, [pendingFollowUp, talkingToNpcId, openDialogue]);
-
-  const closeFarmDialogue = useCallback(() => {
-    useFarmStore.getState().closeTalkAndFollowUp();
-  }, []);
-
-  const startEncounter = useCallback((scenario: DebateScenarioKey) => {
-    // Re-checked here rather than trusted from the button's disabled state: this is the one
-    // door into the Trial scene from the overworld, and a locked encounter reached through a
-    // stale render would strand the player in a conversation that assumes things they have not
-    // been told.
-    if (!areConditionsMet(scenarioRequirements(scenario), conditionContextSnapshot())) return;
-
-    const store = useGameStore.getState();
-    // Order matters: the scenario must be set before the scene switch, or TrialUI
-    // mounts with the previous encounter for a frame.
-    store.setActiveDebate(scenario);
-    store.setReturnSceneKey('Farm');
-    useFarmStore.getState().closeDialogue();
-    GameManager.switchScene('Trial');
-  }, []);
 
   return (
     <div className={styles.farmUi}>

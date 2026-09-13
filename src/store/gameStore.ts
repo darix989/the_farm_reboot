@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { EventBus } from '../phaser/EventBus';
 import type { DebateScenarioKey } from '../data/levels';
+import { DEFAULT_SIDE_SCENE_ID } from '../data/sideScenes';
+import type { SideSceneId } from '../types/sideScene';
 
 // The key union and the scenario registry live together in `src/data/levels.ts`, so
 // adding a scenario is one edit rather than one per consumer.
@@ -22,6 +24,14 @@ export type { DebateScenarioKey } from '../data/levels';
  */
 export type GameBootPhase = 'idle' | 'booting' | 'ready';
 
+/** Where Rue last stood on a `FarmSide` road — restored after Trial Leave or a menu hop. */
+export interface SideSceneResume {
+  sceneId: SideSceneId;
+  x: number;
+  y: number;
+  facing: 'left' | 'right';
+}
+
 // Simple game state interface
 interface GameState {
   // Phaser instances
@@ -39,10 +49,20 @@ interface GameState {
   currentScene: string;
   /** Which debate JSON to use when `Trial` is shown. */
   activeDebateId: DebateScenarioKey;
+  /** Which `SIDE_SCENES` descriptor `FarmSide` reads on its next `create()`. Consulted by
+   *  `animalPacks.ts` / `sceneAssets.ts`, which have no Phaser scene in hand to ask. */
+  activeSideSceneId: SideSceneId;
+  /**
+   * Last pose on a `FarmSide` road. `FarmSide.create()` restores it when there is no
+   * `entryPortalId` (Trial Leave, Back to Menu then Enter the Farm). Portal hops spawn
+   * at the arrival door instead. A first visit with neither uses the scene's
+   * `playerSpawn` (beside Dot on the main road). Cleared by Reset Progress.
+   */
+  sideSceneResume: SideSceneResume | null;
   /**
    * Scene to return to when an encounter ends. Set by whoever launched the Trial —
-   * the main menu leaves it at `'MainMenu'`, the overworld sets `'Farm'` — so the
-   * same finished-encounter button works from both entry points.
+   * the main menu leaves it at `'MainMenu'`, the overworld sets `'Farm'` / `'FarmSide'` —
+   * so the same finished-encounter button works from every entry point.
    */
   returnSceneKey: string;
   isPaused: boolean;
@@ -75,6 +95,8 @@ interface GameStore extends GameState {
   // Game state actions
   setCurrentScene: (scene: string) => void;
   setActiveDebate: (id: DebateScenarioKey) => void;
+  setActiveSideScene: (id: SideSceneId) => void;
+  setSideSceneResume: (resume: SideSceneResume | null) => void;
   setReturnSceneKey: (sceneKey: string) => void;
   updatePlayerPosition: (x: number, y: number) => void;
   updateSpritePosition: (id: string, x: number, y: number) => void;
@@ -105,6 +127,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // `current-scene-ready`, so this stays honest until `MainMenu` reports in.
   currentScene: 'Boot',
   activeDebateId: '000_tutorial_the_blue_barn',
+  activeSideSceneId: DEFAULT_SIDE_SCENE_ID,
+  sideSceneResume: null,
   returnSceneKey: 'MainMenu',
   isPaused: false,
   spritePositions: {},
@@ -142,6 +166,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Game state actions
   setCurrentScene: (scene) => set({ currentScene: scene }),
   setActiveDebate: (id) => set({ activeDebateId: id }),
+  setActiveSideScene: (id) => set({ activeSideSceneId: id }),
+  setSideSceneResume: (resume) => set({ sideSceneResume: resume }),
   setReturnSceneKey: (sceneKey) => set({ returnSceneKey: sceneKey }),
 
   updatePlayerPosition: (x, y) =>

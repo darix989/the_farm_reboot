@@ -150,6 +150,17 @@ export const FARM_NPCS: readonly FarmNpc[] = [
     scenarios: ['021_hetty_ad_hominem_barrage', '010_gossip_trough_hetty'],
   },
   {
+    // The cow, in the barn. No encounters — just silly talk, and a Done line after
+    // Sunday. Offset west of Tobias so the two do not stack on the top-down map.
+    id: 'bella',
+    x: 480,
+    y: 620,
+    scenarios: [],
+    talkStages: [
+      { suffix: '1', until: { kind: 'encounter_completed', scenarioKey: '015_tobias_vs_rue' } },
+    ],
+  },
+  {
     id: 'cass',
     x: 520,
     y: 860,

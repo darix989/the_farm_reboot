@@ -69,7 +69,7 @@ Every character is the animal their sprite draws — see
 | **Bram** | Wolf | The fence line. Teaches how a conversation works, then how to answer on your feet. | Anxious, over-polite, apologises mid-sentence. | "I'm not saying it because I'm a wolf." |
 | **Tobias** | Donkey | Boss antagonist. Speaks for the Meadow-Born. | Warm, gracious, never raises his voice. Sincere, and lethal. | Never gets Rue's name right — Roo, Rufus, Ruin. |
 | **Duchess** | Owl | Moderator of the Public Farm. Talking to her starts the boss debate. | Old, tired, scrupulously fair. She *is* the moderator gauge. | Declines to hold an opinion about anything, including the weather. |
-| **Dot** | Dog | Yard greeter. No encounter. | Direct, breathless, kind. | Starts three sentences, finishes one. |
+| **Dot** | Dog | Yard greeter and guardian of the farm. No encounter. | Direct, breathless, kind. | Starts three sentences, finishes one. |
 
 Antagonists are sincere, not villainous — the house style established in `pitch/001`.
 **Cass is the reason Bram works**: two animals with the same problem, one who named it and
@@ -77,20 +77,25 @@ beat it and one who bought his way out by agreeing louder than anybody in the cr
 
 ### How you arrive
 
-**Dot** stands in the yard just off spawn, and her conversation opens on its own the first
-time the farm loads. It is deliberately unhurried — the level's only cold open, so it does
-not read as one. She asks after Rue first (six weeks, the hauling, the bins) and notices he
-is being talked about three steps away; that is what turns the conversation to the week the
-farm is having. Then the motion, stated in full so the player knows exactly what is at stake
-before anybody argues about it: Tobias wants the Old Pond kept for the Meadow-Born and every
-animal who arrived after them sent to the road trough, half a mile down the lane. It is heard
-Sunday in front of Duchess, and **not one animal will speak against it**. Rue
-volunteers himself for the floor — the player is not assigned the fight, they take it — and
-only then does Dot mention that there are rules nobody has written down, which is where the
-goals come from: **Bram** first, at the fence, then Cass at the west post, then Hetty at the
-trough, then the barn. Closing her talk early does not count: the `dot-welcomed` flag is set
-only when the last beat's reveal settles. She has no encounter; her farm talk advances as you
-do those things. She pointedly refuses to warn you about the fox.
+**Dot** stands on the main road at the west approach — guardian of the farm, which is why
+she is at the entrance — and her conversation opens on its own the first time the farm
+loads, with Rue already standing beside her. It is deliberately unhurried — the level's only
+cold open, so it does not read as one. She names the job first, then asks after Rue (six
+weeks, the hauling, the bins) and notices he is being talked about three steps away; that is
+what turns the conversation to the week the farm is having. Then the motion, stated in full
+so the player knows exactly what is at stake before anybody argues about it: Tobias wants
+the Old Pond kept for the Meadow-Born and every animal who arrived after them sent to the
+road trough, half a mile down the lane. It is heard Sunday in front of Duchess, and **not
+one animal will speak against it**. Rue volunteers himself for the floor — the player is
+not assigned the fight, they take it — and only then does Dot mention that there are rules
+nobody has written down, which is where the goals come from: **Bram** first, through the
+gate, then Cass on the road just this side of the gate, then Hetty at the pond (east road,
+walk up to the water), then Duchess down the east road. Closing her talk early does not count: the `dot-welcomed` flag is set
+only when the last beat's reveal settles. She has no encounter; her farm talk advances as
+you do those things. She pointedly refuses to warn you about the fox.
+
+Level 1 plays on the lateral `FarmSide` world (`greenMeadowsRoad` and its four pockets).
+The top-down `Farm` map is still on the menu as a secondary path.
 
 ### The ladder
 

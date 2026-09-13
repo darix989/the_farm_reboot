@@ -27,6 +27,7 @@ import {
   restoreStaging,
   type SpriteStaging,
 } from './animalEmotionAnimations';
+import { emotionFallback } from './emotionFallbacks';
 import type { AnimalEmotion } from './animalEmotions';
 import type { AnimalBehaviour } from './animalDescriptors';
 import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reducedMotion';
@@ -179,13 +180,15 @@ export class AnimalAnimator {
    * rather than re-rolling, because an emotion is a *state* the debate UI enters and leaves,
    * unlike `idle`/`alert` which re-roll a fresh weighted sequence each time they finish.
    *
-   * Falls back to `playAlert()` when this animal has no art for the emotion, so a partly
-   * generated cast degrades to exactly the behaviour it had before emotions existed instead
-   * of freezing on a missing key. Callers therefore never need to check `hasEmotionClip`.
+   * Falls back to a documented placeholder clip (`emotionFallback`) when this animal has no
+   * generated art for the emotion, and to `playAlert()` when it has neither — so a partly
+   * generated cast degrades gracefully at every stage instead of freezing on a missing key.
+   * Callers therefore never need to check `hasEmotionClip`.
    */
   playEmotion(emotion: AnimalEmotion): void {
     const sheet = emotionSheet(this.setup.textureKey, emotion);
-    if (!sheet) {
+    const fallback = sheet ? null : emotionFallback(this.setup.textureKey);
+    if (!sheet && !fallback) {
       this.playAlert();
       return;
     }
@@ -194,13 +197,13 @@ export class AnimalAnimator {
     }
     this.status = 'emotion';
     this.emotion = emotion;
+    // A fallback plays an ordinary atlas key by name; a generated clip plays its namespaced
+    // sequence key. `syncStagingToCurrentAnimation` only recognises the latter, so a fallback
+    // is staged as a plain atlas clip — correct, since it *is* one.
+    const key = sheet ? emotionSequenceKey(emotion) : fallback!.baseAnimationName;
     // No desync delay: scale/origin must land on the same frame as the texture swap, and a
     // debate reaction has to hit the beat of the line, not 0–200ms later.
-    this.playSequence(
-      [{ key: emotionSequenceKey(emotion), repeat: -1 }],
-      /* playImmediately */ true,
-      /* desync */ false,
-    );
+    this.playSequence([{ key, repeat: -1 }], /* playImmediately */ true, /* desync */ false);
   }
 
   /**

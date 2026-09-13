@@ -4,14 +4,16 @@
  *
  * Farm and Trial both load atlases *and* emotion sheets: the overworld does not play
  * emotions, but every farm NPC can be a Trial opponent, and prefetching here is what
- * makes Farm → Trial a cache hit. The gallery loads the whole descriptor list on open.
- * MainMenu loads none.
+ * makes Farm → Trial and FarmSide → Trial a cache hit. The gallery loads the whole
+ * descriptor list on open. MainMenu loads none.
  *
  * Textures stay in Phaser's game-wide cache once fetched, so a second visit queues
  * nothing and `queueAnimalAssets` returns false.
  */
 import type { Scene } from 'phaser';
 import { FARM_NPCS } from '../../data/farmMap';
+import { SIDE_SCENES } from '../../data/sideScenes';
+import type { SideSceneDescriptor, SideSceneId } from '../../types/sideScene';
 import { PLAYER_CHARACTER_ID, resolveCharacter, type AnimalSpriteId } from '../../data/characters';
 import { DEBATES, type DebateScenarioKey } from '../../data/levels';
 import { debateParticipantIds } from '../../data/debateCast';
@@ -55,6 +57,16 @@ export function farmAnimalIds(): AnimalSpriteId[] {
   ]);
 }
 
+/**
+ * A lateral farm world: Rue plus whoever `descriptor` stands on its road.
+ */
+export function sideSceneAnimalIds(descriptor: SideSceneDescriptor): AnimalSpriteId[] {
+  return uniqueIds([
+    resolveCharacter(PLAYER_CHARACTER_ID).animal,
+    ...descriptor.npcs.map((npc) => resolveCharacter(npc.characterId).animal),
+  ]);
+}
+
 /** The staged cast of one debate. Legacy speakers with no `animal` contribute nothing. */
 export function trialAnimalIds(debateId: DebateScenarioKey): AnimalSpriteId[] {
   const debate = DEBATES[debateId];
@@ -71,10 +83,13 @@ export function galleryAnimalIds(): AnimalSpriteId[] {
 export function animalPackForScene(
   sceneKey: string,
   debateId: DebateScenarioKey,
+  activeSideSceneId: SideSceneId,
 ): AnimalPack | null {
   switch (sceneKey) {
     case 'Farm':
       return { ids: farmAnimalIds(), emotions: true };
+    case 'FarmSide':
+      return { ids: sideSceneAnimalIds(SIDE_SCENES[activeSideSceneId]), emotions: true };
     case 'Trial':
       return { ids: trialAnimalIds(debateId), emotions: true };
     case 'AnimalGallery':
@@ -115,13 +130,15 @@ export function queueAnimalAssets(
 }
 
 export function queueAnimalPackForScene(scene: Scene): boolean {
-  const pack = animalPackForScene(scene.scene.key, useGameStore.getState().activeDebateId);
+  const store = useGameStore.getState();
+  const pack = animalPackForScene(scene.scene.key, store.activeDebateId, store.activeSideSceneId);
   if (!pack) return false;
   return queueAnimalAssets(scene, pack.ids, { emotions: pack.emotions });
 }
 
 export function ensureAnimalPackForScene(scene: Scene): void {
-  const pack = animalPackForScene(scene.scene.key, useGameStore.getState().activeDebateId);
+  const store = useGameStore.getState();
+  const pack = animalPackForScene(scene.scene.key, store.activeDebateId, store.activeSideSceneId);
   if (!pack) return;
   ensureAnimalAnimations(scene, pack.ids);
   if (pack.emotions) ensureAnimalEmotionAnimations(scene, pack.ids);

@@ -67,11 +67,12 @@ same slot formula `Trial.ts` uses for the sprites; the two are a mirrored contra
 Registered in `src/phaser/main.ts`, in order:
 
 ```
-Boot → Preloader → MainMenu → Farm → Game → Trial → GameOver
+Boot → Preloader → MainMenu → Farm → FarmSide → Game → Trial → GameOver
 ```
 
 `Boot` and `Preloader` are template plumbing. `Game` and `GameOver` are unused template
-stubs. The live ones are **MainMenu**, **Farm** and **Trial**.
+stubs. The live ones are **MainMenu**, **FarmSide** (Level 1), **Farm** (top-down, still
+on the menu), **Trial** and **AnimalGallery**.
 
 Routing is a one-way mirror:
 

@@ -58,6 +58,13 @@ const FARM_MULTIPLIER = 0.377; // donkey-grey -> ~140px tall next to the 56px pl
 const TRIAL_MULTIPLIER = 0.807; // donkey-grey -> ~300px tall in the 540px-tall Trial hole
 
 /**
+ * Farm-only lift on every animal except Rue. Her raccoon already carries a 1.5 farm
+ * adjust so she reads as the protagonist; without this the rest of the cast looks like
+ * it is standing at her feet. Trial is left alone — the podium composition is already fit.
+ */
+const FARM_NPC_SCALE = 1.2;
+
+/**
  * Per-animal fudge factor applied on top of the ratio-derived scale, for the rare case
  * where the source ratio still doesn't read right once actually seen in this world. A bare
  * number adjusts both surfaces; `{ farm, trial }` adjusts them independently, which the
@@ -65,7 +72,16 @@ const TRIAL_MULTIPLIER = 0.807; // donkey-grey -> ~300px tall in the 540px-tall 
  * Defaults to 1 (no adjustment) for every animal and surface not listed.
  */
 const MANUAL_ADJUST: Partial<Record<AnimalSpriteId, number | { farm?: number; trial?: number }>> = {
-  'white-sheep-1': 0.8, // read a little large next to the rest of the cast; shrunk 20%
+  /**
+   * The sheep's export canvas is by far the cast's smallest, so the source ratio nets her out
+   * mid-sized on paper and *small* on screen — next to Rue on a farm road she read as a lamb
+   * at his feet rather than an animal he is talking to. 1.68 is 2.1x the 0.8 she used to be
+   * on the farm surfaces: a full tripling overshot, reading bigger than the donkey.
+   *
+   * `trial` keeps the old 0.8: the podium is a fixed 540px hole a cast of three has to fit
+   * in, and that composition is already fit — this is a field-scale problem, not a staging one.
+   */
+  'white-sheep-1': { farm: 1.68, trial: 0.8 },
   /**
    * The two multipliers above were fit so *the player* lands at ~140px on the farm, back when
    * the player was the donkey. Rue is the raccoon now, and the raccoon is the cast's smallest
@@ -74,7 +90,8 @@ const MANUAL_ADJUST: Partial<Record<AnimalSpriteId, number | { farm?: number; tr
    *
    * Matching the donkey's old 140px height is not the fix — at 2.4:1 the crouch would come out
    * 336px wide. 1.5 splits the difference at roughly 202x85: unmistakably the biggest thing
-   * moving on the farm, without a footprint wider than the barn door.
+   * moving on the farm, without a footprint wider than the barn door. `FARM_NPC_SCALE` does
+   * not apply to her, so NPCs grow without her growing with them.
    *
    * `trial` stays at 1. There Rue sits up (`idleTrial`), a taller and much narrower pose, and
    * that is the pose the existing trial multiplier was already staging Tobias in.
@@ -84,9 +101,11 @@ const MANUAL_ADJUST: Partial<Record<AnimalSpriteId, number | { farm?: number; tr
 
 function adjustFor(id: AnimalSpriteId, surface: 'farm' | 'trial'): number {
   const adjust = MANUAL_ADJUST[id];
-  if (adjust === undefined) return 1;
-  if (typeof adjust === 'number') return adjust;
-  return adjust[surface] ?? 1;
+  let listed = 1;
+  if (typeof adjust === 'number') listed = adjust;
+  else if (adjust !== undefined) listed = adjust[surface] ?? 1;
+  if (surface === 'farm' && id !== 'raccoon') return listed * FARM_NPC_SCALE;
+  return listed;
 }
 
 export const ANIMAL_STAGING: Record<AnimalSpriteId, AnimalStagingScale> = Object.fromEntries(

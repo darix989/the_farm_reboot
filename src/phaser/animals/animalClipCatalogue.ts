@@ -20,6 +20,7 @@ import {
   type EmotionQuality,
 } from './animalEmotions';
 import { emotionAnimKey, emotionSheet } from './animalEmotionAnimations';
+import { emotionFallback } from './emotionFallbacks';
 import { faceSheet, type FaceSheet } from './animalFaces';
 import {
   emotionClipQualityStatus,
@@ -65,8 +66,28 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
   const textureKey = setup.textureKey;
   const descriptor = ANIMAL_DESCRIPTORS[textureKey];
 
+  const fallback = emotionFallback(textureKey);
+  const fallbackAnimation = fallback
+    ? descriptor.baseAnimations.find((animation) => animation.name === fallback.baseAnimationName)
+    : undefined;
+
   const emotions: AnimalClip[] = ANIMAL_EMOTIONS.map((emotion: AnimalEmotion) => {
     const sheet = emotionSheet(textureKey, emotion);
+    // A generated sheet always wins; the fallback only fills a gap it leaves, so promoting one
+    // emotion at a time retires this animal's placeholder entries one at a time too.
+    if (!sheet && fallbackAnimation) {
+      return {
+        name: emotion,
+        kind: 'emotion',
+        animKey: animalAnimKey(textureKey, fallbackAnimation.name),
+        available: true,
+        frameCount: fallbackAnimation.endFrameIndex - (fallbackAnimation.startFrameIndex ?? 0) + 1,
+        frameRate: fallbackAnimation.frameRate ?? 12,
+        isRest: false,
+        qualityStatus: 'placeholder',
+        reviewNotes: [fallback!.note],
+      };
+    }
     return {
       name: emotion,
       kind: 'emotion',

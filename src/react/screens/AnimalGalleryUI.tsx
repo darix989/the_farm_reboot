@@ -84,12 +84,14 @@ const QUALITY_PILL_LABEL: Record<Exclude<ClipQualityStatus, 'none'>, Labels> = {
   pass: 'galleryQualityPass',
   warn: 'galleryQualityWarn',
   unknown: 'galleryQualityUnknown',
+  placeholder: 'galleryQualityPlaceholder',
 };
 
 const ANIMAL_QUALITY_TITLE: Record<Exclude<ClipQualityStatus, 'none'>, Labels> = {
   pass: 'galleryQualityAnimalPass',
   warn: 'galleryQualityAnimalWarn',
   unknown: 'galleryQualityAnimalUnknown',
+  placeholder: 'galleryQualityAnimalPlaceholder',
 };
 
 /** The fields both registers' clips share, which is everything the badge tooltip reads. */
@@ -101,7 +103,10 @@ type QualityBearing = Pick<AnimalClip, 'qualityStatus' | 'quality' | 'frameCount
  */
 function clipQualityTitle(clip: QualityBearing, metrics: Labels = 'galleryQualityMetrics'): string {
   const parts: string[] = [];
-  if (clip.qualityStatus === 'unknown' || !clip.quality) {
+  if (clip.qualityStatus === 'placeholder') {
+    // No quality numbers apply to a clip borrowed from another animation — the note below
+    // (always present for a placeholder) says everything there is to say.
+  } else if (clip.qualityStatus === 'unknown' || !clip.quality) {
     parts.push(getLabel('galleryQualityUnmeasured'));
   } else {
     parts.push(
@@ -140,6 +145,7 @@ const QualityBadge: React.FC<{ status: ClipQualityStatus; title: string }> = ({
         status === 'pass' && styles.qualityBadgePass,
         status === 'warn' && styles.qualityBadgeWarn,
         status === 'unknown' && styles.qualityBadgeUnknown,
+        status === 'placeholder' && styles.qualityBadgePlaceholder,
       )}
       title={title}
     >
@@ -208,7 +214,13 @@ const AnimalGalleryUI: React.FC = () => {
         {clip.isRest ? ` · ${getLabel('galleryRestPose')}` : ''}
       </span>
       {clip.reviewNotes?.map((note) => (
-        <span key={note} className={styles.clipNote}>
+        <span
+          key={note}
+          className={cn(
+            styles.clipNote,
+            clip.qualityStatus === 'placeholder' && styles.clipNotePlaceholder,
+          )}
+        >
           {note}
         </span>
       ))}

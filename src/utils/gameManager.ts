@@ -1,5 +1,5 @@
 import { useGameStore, getGameInstance, getCurrentSceneInstance } from '../store/gameStore';
-import { animalAssetsMissing, animalPackForScene } from '../phaser/animals/animalPacks';
+import { sceneAssetsMissing } from './sceneAssets';
 
 /**
  * Game Manager - Centralized utility for game operations
@@ -43,11 +43,12 @@ export class GameManager {
    * The React overlay gates on `isGameReady` so this should be unreachable; it is a guard,
    * not a code path.
    *
-   * Also refuses while a scene is fetching its animal pack (`isSceneLoading`), and raises
-   * that flag *before* `scene.start` when the destination's pack is not yet in the cache.
-   * That is earlier than the destination's `preload()`, so a double-click cannot start a
-   * second scene alongside the first load. Cached revisits skip the flag, so Farm → Trial
-   * after the farm pack is in does not flash the loading overlay.
+   * Also refuses while a scene is fetching its assets (`isSceneLoading`), and raises that
+   * flag *before* `scene.start` when the destination's assets (animal pack, or a side
+   * scene's kit art — see `sceneAssetsMissing`) are not yet in the cache. That is earlier
+   * than the destination's `preload()`, so a double-click cannot start a second scene
+   * alongside the first load. Cached revisits skip the flag, so Farm → Trial after the
+   * farm pack is in does not flash the loading overlay.
    */
   static switchScene(sceneKey: string): void {
     const game = this.getGame();
@@ -72,8 +73,9 @@ export class GameManager {
       return;
     }
 
-    const pack = animalPackForScene(sceneKey, store.activeDebateId);
-    if (pack && animalAssetsMissing(game.textures, pack.ids, { emotions: pack.emotions })) {
+    if (
+      sceneAssetsMissing(sceneKey, game.textures, store.activeDebateId, store.activeSideSceneId)
+    ) {
       store.beginSceneLoad();
     }
 
