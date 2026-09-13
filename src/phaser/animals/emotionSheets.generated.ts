@@ -134,6 +134,22 @@ export const EMOTION_SHEETS: Partial<
         warnings: [],
       },
     },
+    sneaky: {
+      file: 'cow-sneaky.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 1.6784,
+      originX: 0.498,
+      originY: 0.7012,
+      quality: {
+        loopPop: 0.32,
+        heightSwing: 10.6,
+        driftX: 7.8,
+        warnings: [],
+      },
+    },
     talking: {
       file: 'cow-talking.png',
       frameWidth: 512,

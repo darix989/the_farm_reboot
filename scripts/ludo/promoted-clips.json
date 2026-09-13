@@ -128,6 +128,24 @@
       },
       "generatedAt": "2026-09-13T00:16:59.840Z"
     },
+    "sneaky": {
+      "file": "cow-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.6784,
+      "originX": 0.498,
+      "originY": 0.7012,
+      "prompt": "Side view, facing left. The black and white cow stands in place on all fours and speaks conspiratorially: its head cranes forward and dips a little toward the listener, its googly eyes narrow and flick sideways, and the golden bell on its collar stays still. Its big pink snout, including both dark nostrils, stays completely shut and unchanging in every frame, like a solid pink sticker glued to the front of its face — it never opens, never hinges, and no mouth or opening of any kind ever appears on or inside it. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.32,
+        "heightSwing": 10.6,
+        "driftX": 7.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T00:44:01.545Z"
+    },
     "talking": {
       "file": "cow-talking.png",
       "frameWidth": 512,
