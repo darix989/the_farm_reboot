@@ -92,6 +92,24 @@
     }
   },
   "cow": {
+    "doubtful": {
+      "file": "cow-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 1.8406,
+      "originX": 0.5006,
+      "originY": 0.7012,
+      "prompt": "Side view, facing left. The black and white cow stands in place on all fours and is unconvinced: its head draws back and tilts, one ear flicks, its big pink snout stays shut, and the golden bell on its collar hangs still. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.34,
+        "heightSwing": 11.7,
+        "driftX": 9.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T00:16:59.840Z"
+    },
     "talking": {
       "file": "cow-talking.png",
       "frameWidth": 512,
