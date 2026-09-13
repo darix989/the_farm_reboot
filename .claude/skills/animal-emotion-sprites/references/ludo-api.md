@@ -1,7 +1,7 @@
 # Ludo.ai REST API — the contract this pipeline is built on
 
-Only read this when debugging `scripts/ludo/ludoClient.mjs` or extending the pipeline to a new
-endpoint. The day-to-day workflow needs none of it.
+Read this when debugging `scripts/ludo/ludoClient.mjs`, extending the pipeline to a new
+endpoint, or preparing the approved image-edit fallback after two failed animation attempts.
 
 **Authoritative source is the OpenAPI document**, not the prose docs — they have drifted:
 
@@ -32,6 +32,71 @@ Other sprite endpoints exist and may be worth reaching for: `/assets/sprite/anim
 prose alone), `/assets/sprite/transfer-motion` (retarget one clip's motion onto another
 sprite, e.g. to give the whole cast an identical "thinking" rhythm), `/assets/sprite/pose`,
 `/assets/sprite/edit`.
+
+## Image-edit fallback after two failed attempts
+
+Verified 2026-09-13 against the [official OpenAPI schema](https://api.ludo.ai/api-documentation/swagger.json).
+The [Image Generator guide](https://ludo.ai/docs/image-generator) describes the UI modes;
+the [official MCP reference](https://github.com/Ludo-AI/ludo-mcp#edit-image-editimage) also
+documents `editImage`. API support is confirmed from the contract; this documentation update
+did not submit a paid test.
+
+Use **`POST /assets/image/edit`** for a still image. This is distinct from editing an animated
+spritesheet via `/assets/sprite/edit`. The existing `submitGeneration` helper accepts
+`'image/edit'` and supplies authentication and `async: true`; no new SDK is needed.
+
+| Field | Fallback use |
+|---|---|
+| `image` | Required source still as URL or PNG data URI; use locally saved bytes |
+| `prompt` | Required, exact user-approved edit instructions |
+| `reference_image` | Optional second image for style/content guidance |
+| `n` | Set `1`; API permits 1–4 |
+| `augment_prompt` | Set `false` to preserve the reviewed wording |
+| `request_id` | Unique to the approved image/prompt/settings; reuse only to recover that job |
+
+Inputs over 15 MB are rejected. Editing costs **0.5 credits per successful output**. Poll a
+`202` job with `awaitJob`; both its completed `result` and a direct `200` response contain an
+**array** of image results. Download `result[0].url` with `downloadAsset` immediately.
+
+### Preparing the fallback request
+
+Follow the confirmation gate in [SKILL.md](../SKILL.md#after-two-failed-animation-attempts-stop-and-review-an-image-edit-fallback)
+before executing a paid request. Prepare the payload and provenance locally first. Save the
+original still, proposed edit and motion prompts, settings, attempt history, and input hashes
+under `.ludo-review/<animal>/<emotion>/image-edit/`. Record approval scope and job IDs there
+when available; retain downloaded bytes rather than expiring URLs.
+
+Use this as a prompt structure, replacing every bracketed phrase for the actual animal and
+defect before showing it to the user:
+
+> Edit this full-body sprite so [specific expression or small pose adjustment]. Preserve
+> [character's identifying features], its palette, outlines, proportions, camera view,
+> facing, canvas framing, and foot positions. Keep the surroundings transparent. Hold
+> [unchanged body parts] in their reference positions. Depict [precise stable mouth/eye
+> details, if relevant].
+
+Describe a single still pose in the edit prompt. Put movement, timing, and the return to that
+pose in the separate animation prompt. Inspect the edit for identity drift, framing and alpha
+before using it; failed inspection stops the approved sequence before the animation charge.
+
+The current CLI has **no edited-reference flag**: it extracts the atlas frame on each run.
+Do not replace the atlas or assume overwriting `reference.png` changes the next generation.
+For an approved fallback, prepare a separate request through `submitGeneration`:
+
+- Use `'image/edit'` with the payload above, then download and review the still.
+- Use `'sprite/animate'` with the reviewed still as `initial_image` and, when `closeLoop` is
+  enabled, the same still as `final_image`. Carry over the approved frame count, duration,
+  model and other animation settings, set `augment_prompt: false`, and use a new request ID
+  derived from the edited image bytes, motion prompt and settings.
+- Preserve the original atlas `reference.png` for `measureNormalization`; save the edited
+  generation input separately. Before promotion, bring the output through the existing
+  quality/review and metadata flow in `scripts/generate-emotion-sprites.mjs`, recording the
+  edit provenance alongside the motion prompt. Do not hand-edit generated runtime metadata.
+
+An edited pose can change the cut against idle even when its loop is clean. Review with smooth
+transitions off, at stage scale and in enlarged facial frames. Promotion still requires human
+visual review. Any further edit, retry, or different prompt requires renewed approval when it
+falls outside the confirmed scope.
 
 ## Do not use this endpoint for headshots
 
