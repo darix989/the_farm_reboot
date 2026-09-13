@@ -19,6 +19,7 @@ import {
   notifyTutorialTargetAction,
 } from '../tutorial/tutorialInteractionGuard';
 import type { TutorialTargetRef } from '../../types/debateEntities';
+import { interactionPromptPosition } from '../farm/interactionPromptPosition';
 import styles from './FarmSideUI.module.scss';
 
 /**
@@ -94,8 +95,9 @@ const FarmSideUI: React.FC = () => {
           : null;
       const prompt = interactionPromptRef.current;
       if (anchor && prompt) {
-        prompt.style.left = `${anchor.x}px`;
-        prompt.style.top = `${anchor.y}px`;
+        const position = interactionPromptPosition(anchor);
+        prompt.style.left = position.left;
+        prompt.style.top = position.top;
       }
       frame = window.requestAnimationFrame(updatePromptPosition);
     };

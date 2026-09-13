@@ -28,7 +28,12 @@ import {
   applyAtlasFeetOrigin,
   atlasTrimmedDisplayWidth,
 } from '../animals/animalStaging';
-import { STAGE_DESIGN_HEIGHT, STAGE_DESIGN_WIDTH, TRIAL_STAGE_HOLE } from '../../utils/constants';
+import {
+  INTERACTION_PROMPT_LIFT,
+  STAGE_DESIGN_HEIGHT,
+  STAGE_DESIGN_WIDTH,
+  TRIAL_STAGE_HOLE,
+} from '../../utils/constants';
 
 const PLAYER_SPEED = 167; // slowed twice by 30% from the 340 the overworld shipped with
 /**
@@ -319,7 +324,7 @@ export class Farm extends Scene {
     const camera = this.cameras.main;
     return {
       x: camera.x + (actor.npc.x - camera.scrollX) * camera.zoom,
-      y: camera.y + (actor.npc.y - camera.scrollY - 245) * camera.zoom,
+      y: camera.y + (actor.npc.y - camera.scrollY) * camera.zoom - INTERACTION_PROMPT_LIFT,
     };
   }
 
