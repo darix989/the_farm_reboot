@@ -485,18 +485,18 @@ const LABELS = {
     'But there are rules, and nobody has written them down. Partly because not one animal here knows what writing is. Mostly because rules nobody wrote are the easiest kind to break. You will want to know **[accent]how this farm argues[/accent]** before you go and stand in front of it.',
   farmDialogDot1o: 'Where do I start?',
   farmDialogDot1p:
-    'Bram. The wolf, through the gate. He will pretend he is checking the fence. Let him. He is the one who will show you how a conversation works here, before Cass gets her teeth into you. Then Cass on the road, just this side of the gate, then Hetty at the pond — east road, walk up to the water — then Duchess further down that same road when you want the floor.',
+    '**[accent]Bram. The wolf[/accent]**, through the gate. He will pretend he is checking the fence. Let him. He is the one who will show you how a conversation works here, before **[accent]Cass[/accent]** gets her teeth into you. Then Cass on the road, just this side of the gate, then **[accent]Hetty[/accent]** at the pond — east road, walk up to the water — then Duchess further down that same road when you want the floor.',
   farmDialogDot2:
     'Bram has done his piece. Cass is on the road, just this side of the gate, and she will talk to you now.',
   farmDialogDot2a: 'Bram has done his piece. You know how a conversation works, then.',
   farmDialogDot2b: 'And now?',
   farmDialogDot2c:
-    'Cass. The fox, on the road, just this side of the gate. She has something you need before Hetty will so much as look at you. Do not let anyone tell you about the fox first — let her do it.',
+    '**[accent]Cass[/accent]**. The fox, on the road, just this side of the gate. She has something you need before Hetty will so much as look at you. Do not let anyone tell you about the fox first — let her do it.',
   farmDialogDot3: 'Cass has done her piece. Hetty is at the pond, and she will talk to you now.',
   farmDialogDot3a: 'Cass has done her piece. I heard it from here, some of it.',
   farmDialogDot3b: 'And Hetty?',
   farmDialogDot3c:
-    'At the pond — east road, walk up to the water — and she will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her — everyone does, and it has never once helped.',
+    '**[accent]Hetty[/accent]**, at the pond — east road, walk up to the water — and she will talk to you now. She is going to be horrible and she has no idea. Try not to hold it against her — everyone does, and it has never once helped.',
   farmDialogDot4:
     'Hetty has had her go at you. Back to Cass — she will know what to call the rest of it.',
   farmDialogDot4a: 'Hetty has had her go at you. I could hear it from the road.',
