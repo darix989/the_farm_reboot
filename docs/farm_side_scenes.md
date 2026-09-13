@@ -140,6 +140,39 @@ file's `MANUAL_ADJUST`, not in a side-scene special case.
 
 Nothing on the road is solid: not the props, not the animals. It is a lane, not a maze.
 
+## Patrolling NPCs
+
+An NPC can amble back and forth along a stretch of road instead of just standing there:
+add a `patrol: { fromX, toX, speed?, pauseMs? }` to its `SideSceneNpcSpec`
+(`sideScenePatrol.ts`). The NPC's own `y` *is* the lane — walking the fence means placing
+them close to it, not authoring a second coordinate. Bram on `gateLane` is the first: `y:
+855` sits just inside the top of the walkable road band, under the rail, and his
+`{ fromX: 1100, toX: 2200 }` stretch stays clear of the gate portal's interact radius.
+
+He walks to one end, stops, idles for `pauseMs` (default 1000ms), then turns and walks to
+the other — `sideScenePatrol.ts`'s `stepPatrol` is the pure stepper, ticked by
+`SideSceneNpc.update()`. Keep `speed` (default 140px/s) away from a plain guess: the walk
+clip's own playback rate is clamped by `AnimalAnimator.MOVE_RATE_AT_TOP_SPEED`, fitted
+against the player's 260px/s, so a patrol speed near half that lands on the clip's
+unclamped stride — much slower and every character's stride collapses to the same crawl
+rate regardless of `speed`.
+
+**Every animal freezes the instant a dialogue opens — not just the one being talked to.**
+`SideSceneNpc.update(deltaMs, canMove)` takes the same `canMove` gate the player's own
+movement is frozen by (`talkingToNpcId`, a scene hop in flight, or the tutorial overlay),
+so the whole road stops together the moment a talk starts. This isn't only cosmetic:
+`applyTalkCamera` frames the two actors' `visualBounds` at the instant the talk opens and
+turns them to face each other — an animal that kept walking would drift out of its own
+framing and re-flip away from the player on the very next tick. A patrolling NPC caught
+mid-stride settles onto its idle pose rather than freezing mid-step, and resumes its
+travel-direction facing (not the one it held to face the player) the moment the talk
+closes.
+
+Reduced motion (`prefersReducedMotion`) stops every patrol outright rather than letting it
+glide on a frozen rest frame — the same choice the animator itself already makes for a
+single sprite, applied to the scene's tick. `FarmSide` caches the preference in a field
+kept current by `onReducedMotionChange` rather than polling `matchMedia` every frame.
+
 ## The talk camera
 
 A walk-up talk runs *on this scene* (no `scene.start`), the same way a farm talk runs on

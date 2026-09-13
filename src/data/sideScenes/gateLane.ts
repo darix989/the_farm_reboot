@@ -40,8 +40,19 @@ export const GATE_LANE: SideSceneDescriptor = {
   ],
 
   // Bram keeps his distance from the gate itself, the way Hetty keeps hers from the barn
-  // door on the main road.
-  npcs: [{ characterId: 'bram', x: 1600, y: 952, facing: 'left' }],
+  // door on the main road. He walks the fence line — `y: 855` sits just inside the top of
+  // the walkable road band (`{ top: 837, bottom: 999 }`), right under the rail at
+  // `GROUND_SEAM_Y = 796` — and his patrol stretch stays clear of the gate portal's own
+  // interact radius so it never muddies that focus contest.
+  npcs: [
+    {
+      characterId: 'bram',
+      x: 1600,
+      y: 855,
+      facing: 'left',
+      patrol: { fromX: 1100, toX: 2200, speed: 140, pauseMs: 1000 },
+    },
+  ],
 
   portals: [
     {

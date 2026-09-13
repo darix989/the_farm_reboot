@@ -95,6 +95,24 @@ export interface SideSceneNpcSpec {
   y?: number;
   /** Which way they look before anyone walks up to them. Defaults to `'left'`. */
   facing?: 'left' | 'right';
+  /** An ambling back-and-forth walk along a fixed stretch of road. Omit for an NPC that
+   *  just stands where placed. See `sideScenePatrol.ts`. */
+  patrol?: SideNpcPatrol;
+}
+
+/**
+ * A back-and-forth walk along `[fromX, toX]` — the NPC's own `y` is the lane. Stepped by
+ * `sideScenePatrol.ts`'s pure `stepPatrol`, ticked by `SideSceneNpc.update` whenever the
+ * player is free to move (frozen the moment a dialogue opens, exactly like the player).
+ */
+export interface SideNpcPatrol {
+  fromX: number;
+  toX: number;
+  /** World px/s. Defaults to `DEFAULT_PATROL_SPEED` (140). */
+  speed?: number;
+  /** How long he stands at each end before turning, in ms. Defaults to
+   *  `DEFAULT_PATROL_PAUSE_MS` (1000). */
+  pauseMs?: number;
 }
 
 export type SidePortalSide = 'left' | 'right' | 'back' | 'front';

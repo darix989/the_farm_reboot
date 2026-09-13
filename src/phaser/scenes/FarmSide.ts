@@ -32,7 +32,7 @@ import { reportSceneLoadProgress } from '../bootProgress';
 import { useFarmStore } from '../../store/farmStore';
 import { useGameStore } from '../../store/gameStore';
 import { useTutorialStore } from '../../store/tutorialStore';
-import { prefersReducedMotion } from '../../utils/reducedMotion';
+import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reducedMotion';
 
 /**
  * The lateral farm world: one scene class restarted onto whichever `SIDE_SCENES`
@@ -110,6 +110,10 @@ export class FarmSide extends Scene {
   private talkTween: Phaser.Tweens.Tween | null = null;
   private unsubscribeFarmUi: (() => void) | null = null;
   private unsubscribeTutorial: (() => void) | null = null;
+  /** Cached rather than polled 60×/s (`prefersReducedMotion` allocates a `MediaQueryList`
+   *  per call) — kept current by `onReducedMotionChange`, unsubscribed in `teardown()`. */
+  private reducedMotion = false;
+  private unsubscribeReducedMotion: (() => void) | null = null;
 
   /** Portal id the player just arrived through, or undefined for a menu/default spawn. */
   private entryPortalId?: string;
@@ -156,6 +160,7 @@ export class FarmSide extends Scene {
     this.entryPortalId = data?.entryPortalId;
     this.disarmedPortalId = data?.entryPortalId ?? null;
     this.interactArmedAt = 0;
+    this.reducedMotion = prefersReducedMotion();
   }
 
   preload() {
@@ -209,6 +214,10 @@ export class FarmSide extends Scene {
     });
     this.applyTutorialInputLock(useTutorialStore.getState().isOpen);
 
+    this.unsubscribeReducedMotion = onReducedMotionChange((reduced) => {
+      this.reducedMotion = reduced;
+    });
+
     // No `startFollow` and no camera bounds: the scene drives the camera itself in
     // `update()` so every parallax calculation reads the same locally-computed `scrollX` in
     // the same tick, rather than the one-frame-stale value Phaser's own camera render pass
@@ -224,7 +233,12 @@ export class FarmSide extends Scene {
   update(_time: number, delta: number): void {
     const talking = useFarmStore.getState().talkingToNpcId;
     const tutorialOpen = useTutorialStore.getState().isOpen;
-    this.player?.update(delta, !(talking || this.travelling || tutorialOpen));
+    const canAct = !(talking || this.travelling || tutorialOpen);
+    this.player?.update(delta, canAct);
+    // Reduced motion parks every animal on its rest frame (see `AnimalAnimator`), so a
+    // patrolling NPC stands at its authored spot rather than gliding along the fence on a
+    // frozen pose — same contract the fades and the talk camera already honour.
+    this.npcs.forEach((npc) => npc.update(delta, canAct && !this.reducedMotion));
     this.updateFocus(talking);
     this.updateCamera();
     this.sceneLayers?.update(this.scrollX);
@@ -460,6 +474,8 @@ export class FarmSide extends Scene {
     this.unsubscribeFarmUi = null;
     this.unsubscribeTutorial?.();
     this.unsubscribeTutorial = null;
+    this.unsubscribeReducedMotion?.();
+    this.unsubscribeReducedMotion = null;
     this.talkTween?.remove();
     this.talkTween = null;
     this.talkFrame = null;

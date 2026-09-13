@@ -17,6 +17,12 @@ import type { Scene } from 'phaser';
 import { isRunHeld, movementVector, type FarmKeys } from '../farm/farmInput';
 import { clampToRoad, roadDepthScale, type EntrySpawn } from './sideSceneRoad';
 import { resolveBandDepth } from './sideSceneProps';
+import {
+  DEFAULT_PATROL_SPEED,
+  initPatrolState,
+  stepPatrol,
+  type PatrolState,
+} from './sideScenePatrol';
 import { PLAYER_CHARACTER_ID, resolveCharacter, type AnimalSpriteId } from '../../data/characters';
 import { animalSetup } from '../animals/animalAnimations';
 import { attachAnimalAnimator, type AnimalAnimator } from '../animals/AnimalAnimator';
@@ -145,6 +151,28 @@ export class SideSceneActor {
     this.animator?.playMove(speed01);
   }
 
+  /** Whether the walk cycle is running, so it starts and stops on the frame the character
+   *  actually starts and stops moving rather than being re-triggered every frame. Shared by
+   *  the player and any patrolling NPC — see `applyLocomotion`. */
+  private walking = false;
+
+  /**
+   * Drives the walk cycle from a per-frame speed fraction (0 = standing, up to 1 = top
+   * speed): starts the cycle the instant movement begins and cuts to idle the instant it
+   * ends, instead of riding out the rest of a stride after the character has already
+   * stopped (`playIdle(true)` — see its own doc for why `immediate` matters here).
+   */
+  protected applyLocomotion(speed01: number): void {
+    if (speed01 > 0) {
+      this.playMove(speed01);
+      this.walking = true;
+      return;
+    }
+    if (!this.walking) return;
+    this.walking = false;
+    this.playIdle(true);
+  }
+
   /**
    * Pseudo-depth: further down the road is nearer the camera, so bigger and sorted in
    * front. Re-applied every frame for the player, once at spawn for everyone else.
@@ -161,26 +189,63 @@ export class SideSceneActor {
   }
 }
 
-/** An authored NPC: stands where the descriptor put them, looking the way it says. */
+/**
+ * An authored NPC: stands where the descriptor put them, looking the way it says — and, if
+ * `spec.patrol` names a stretch, ambles back and forth along it (see `sideScenePatrol.ts`).
+ * A static NPC (no `patrol`) never gets `patrolState` and `update` is a no-op for it.
+ */
 export class SideSceneNpc extends SideSceneActor {
+  private readonly patrol: SideSceneNpcSpec['patrol'];
+  private readonly laneY: number;
+  private patrolState: PatrolState | null = null;
+
   constructor(scene: Scene, descriptor: SideSceneDescriptor, spec: SideSceneNpcSpec) {
-    super(
-      scene,
-      descriptor,
-      spec.characterId,
-      spec.x,
-      spec.y ?? (descriptor.road.top + descriptor.road.bottom) / 2,
-    );
-    this.faceDirection(spec.facing === 'right' ? 1 : -1);
+    const y = spec.y ?? (descriptor.road.top + descriptor.road.bottom) / 2;
+    super(scene, descriptor, spec.characterId, spec.x, y);
+    this.laneY = y;
+    this.patrol = spec.patrol;
+    const facing = spec.facing === 'right' ? 1 : -1;
+    this.faceDirection(facing);
+    if (this.patrol) {
+      this.patrolState = initPatrolState(
+        this.patrol,
+        spec.x,
+        spec.facing === 'right' ? 'right' : 'left',
+      );
+    }
+  }
+
+  /**
+   * Steps the patrol, or does nothing for a static NPC. `canMove` is the same gate the
+   * player's own movement is frozen by — a dialogue opening, a scene hop in flight, or the
+   * tutorial overlay — so every animal on the road stops the instant a talk starts, not
+   * only the one being talked to. While frozen this still calls `applyLocomotion(0)`, so an
+   * NPC caught mid-stride settles onto its idle instead of freezing mid-step.
+   */
+  update(deltaMs: number, canMove: boolean): void {
+    if (!this.patrol || !this.patrolState) return;
+
+    if (!canMove) {
+      this.applyLocomotion(0);
+      return;
+    }
+
+    const next = stepPatrol(this.patrolState, this.patrol, deltaMs);
+    this.patrolState = next;
+    this.sprite.setPosition(next.x, this.laneY);
+    // Re-assert travel facing on every moving frame, not only on a direction change: a
+    // talk that just closed turned this animal to face the player while it was frozen, and
+    // it has to re-face the way it is walking the moment it resumes.
+    if (next.moving) this.faceDirection(next.dir);
+    this.applyDepthAndScale();
+    const speed = this.patrol.speed ?? DEFAULT_PATROL_SPEED;
+    this.applyLocomotion(next.moving ? speed / PLAYER_SPEED : 0);
   }
 }
 
 /** Rue. Walks the road on the same keys as the top-down farm; frozen while a talk is up. */
 export class SideScenePlayer extends SideSceneActor {
   private readonly moveVector = new Phaser.Math.Vector2();
-  /** Whether the walk cycle is running, so it starts and stops on the frame the player
-   *  actually starts and stops moving rather than being re-triggered every frame. */
-  private walking = false;
 
   constructor(
     scene: Scene,
@@ -214,15 +279,6 @@ export class SideScenePlayer extends SideSceneActor {
 
     // `dir` is <= 1 and keeps its magnitude, so it doubles as the fraction of top speed to
     // pace the walk cycle at — same contract as `Farm.update`.
-    const speed = dir.length();
-    if (speed > 0) {
-      this.playMove(speed);
-      this.walking = true;
-      return;
-    }
-    if (!this.walking) return;
-    // `immediate`, or he marches on the spot for the rest of the stride after the key is up.
-    this.walking = false;
-    this.playIdle(true);
+    this.applyLocomotion(dir.length());
   }
 }

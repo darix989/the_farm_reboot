@@ -85,6 +85,30 @@ describe('SIDE_SCENES', () => {
     expect(dot!.facing).toBe('left');
   });
 
+  it('keeps every patrol stretch clear of every portal in its own scene', () => {
+    Object.values(SIDE_SCENES).forEach((descriptor) => {
+      descriptor.npcs.forEach((npc) => {
+        if (!npc.patrol) return;
+        descriptor.portals.forEach((portal) => {
+          if (portal.side === 'left' || portal.side === 'right') return;
+          const portalX = portal.x!;
+          const clear =
+            portalX + PORTAL_INTERACT_RADIUS < npc.patrol!.fromX ||
+            portalX - PORTAL_INTERACT_RADIUS > npc.patrol!.toX;
+          expect(clear).toBe(true);
+        });
+      });
+    });
+  });
+
+  it("walks Bram along the fence line, in the upper half of gateLane's road band", () => {
+    const gateLane = SIDE_SCENES.gateLane;
+    const bram = gateLane.npcs.find((npc) => npc.characterId === 'bram');
+    expect(bram?.patrol).toBeDefined();
+    const midY = (gateLane.road.top + gateLane.road.bottom) / 2;
+    expect(bram!.y!).toBeLessThan(midY);
+  });
+
   it('stands the orchard pond portal clear of Duchess and Tobias, and Hetty clear of the return', () => {
     const orchard = SIDE_SCENES.eastOrchard;
     const pond = orchard.portals.find((portal) => portal.id === 'pond');
