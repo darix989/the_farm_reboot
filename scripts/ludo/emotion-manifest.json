@@ -280,6 +280,12 @@
       "view": "Side view, facing left",
       "$comment": "Carrier is the huge PINK SNOUT + GOOGLY EYES + golden COWBELL on a teal collar: high-contrast silhouette pieces that read at stage scale, while the spotted body is a big oval that turns to mush if asked to deform. Its prior is GRAZING (the atlas ships eat / eat_start / eat_end), so every prompt holds the head UP at the reference height the way the sheep's did. The bell should move with talk and anger; the legs stay planted.",
       "reference": "__black_and_white_cow_idle/__black_and_white_cow_idle-0.png",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.08,
+        "w": 0.56,
+        "h": 0.7
+      },
       "overrides": {
         "talking": {
           "prompt": "{view}. The black and white cow stands in place on all fours and talks: its big pink snout opens and closes with each phrase, its head bobs gently in time, its googly eyes blink once, and the golden bell on its teal collar swings slightly. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
@@ -355,6 +361,12 @@
       "view": "Side view, facing right",
       "$comment": "The only animal whose source art faces RIGHT (isFlipped). Framing MUST stay 'facing right' — telling it 'facing left' turns the character and the clip will not cut against idle. Carrier: huge rounded EARS with pink interiors (the highest-contrast feature) plus the long arched PINK TAIL and the two rectangular BUCK TEETH. Its prior is LYING DOWN (the atlas ships lie / stand), so every prompt holds it standing and never lying down.",
       "reference": "mouse-idle-spritesheet-746px-by-469px-per-frame-0.png",
+      "headCrop": {
+        "x": 0.42,
+        "y": -0.06,
+        "w": 0.56,
+        "h": 0.7
+      },
       "overrides": {
         "talking": {
           "prompt": "{view}. The grey mouse stands in place on all fours and talks: its snout opens and closes showing the same two rectangular white front teeth in every frame the mouth is open, its head bobs gently in time, its big rounded ears with pink interiors flick once, and the long pink tail arched over its back sways slightly. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
@@ -378,6 +390,12 @@
       "view": "Side view, facing left",
       "$comment": "Carrier is the round PINK SNOUT (the face) plus the CORKSCREW TAIL (the only silhouette appendage). The body is a low wide oval that will collapse into a lying-down mud pose if unaddressed, so every prompt holds it standing on four short legs. Ears are small and do not carry emotion the way the fox's do.",
       "reference": "__pig_idle-0.png",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.08,
+        "w": 0.56,
+        "h": 0.7
+      },
       "overrides": {
         "talking": {
           "prompt": "{view}. The pink pig stands in place on all fours and talks: its round snout opens and closes with each phrase, its head bobs gently in time, its small ears flick once, and its corkscrew tail twitches. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
