@@ -4,9 +4,6 @@ export const PHASER_PARENT_ID = 'phaser-parent';
 export const STAGE_DESIGN_WIDTH = 1920;
 export const STAGE_DESIGN_HEIGHT = 1080;
 
-/** Screen-space gap between an interaction target and its prompt, in stage design pixels. */
-export const INTERACTION_PROMPT_LIFT = 200;
-
 /** Browser `rem` at full design width (Tailwind default scale assumes ~16px root). */
 export const STAGE_REM_BASE_PX = 16;
 

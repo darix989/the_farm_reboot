@@ -174,7 +174,15 @@ export const OLD_POND: SideSceneDescriptor = {
 
   fences: [],
 
-  npcs: [{ characterId: 'hetty', x: HETTY_X, y: HETTY_Y, facing: 'left' }],
+  npcs: [
+    {
+      characterId: 'hetty',
+      x: HETTY_X,
+      y: HETTY_Y,
+      facing: 'left',
+      interactionPromptLift: 350,
+    },
+  ],
 
   // First visit with no hop: beside Hetty, looking at her — same greeting frame Dot
   // gets on the main road. Portal hops and a saved pose still win over this.

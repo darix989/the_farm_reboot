@@ -196,6 +196,7 @@ export class SideSceneActor {
  */
 export class SideSceneNpc extends SideSceneActor {
   readonly interactive: boolean;
+  readonly interactionPromptLift: number | undefined;
   private readonly patrol: SideSceneNpcSpec['patrol'];
   private readonly laneY: number;
   private patrolState: PatrolState | null = null;
@@ -204,6 +205,7 @@ export class SideSceneNpc extends SideSceneActor {
     const y = spec.y ?? (descriptor.road.top + descriptor.road.bottom) / 2;
     super(scene, descriptor, spec.characterId, spec.x, y);
     this.interactive = spec.interactive !== false;
+    this.interactionPromptLift = spec.interactionPromptLift;
     this.laneY = y;
     this.patrol = spec.patrol;
     const facing = spec.facing === 'right' ? 1 : -1;

@@ -187,8 +187,20 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
   // the approach west of the silo — guardian at the entrance, not in the barn doorway —
   // facing the road Rue arrives down. Hetty lives at the pond.
   npcs: [
-    { characterId: 'cass', x: GATE_X - 660, y: 952, facing: 'left' },
-    { characterId: 'dot', x: DOT_X, y: DOT_Y, facing: 'left' },
+    {
+      characterId: 'cass',
+      x: GATE_X - 660,
+      y: 952,
+      facing: 'left',
+      interactionPromptLift: 200,
+    },
+    {
+      characterId: 'dot',
+      x: DOT_X,
+      y: DOT_Y,
+      facing: 'left',
+      interactionPromptLift: 275,
+    },
   ],
 
   // First visit (and Reset Progress): beside Dot, looking at her. Portal hops and a saved

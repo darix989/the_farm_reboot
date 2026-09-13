@@ -46,12 +46,19 @@ export const HETTYS_BARN: SideSceneDescriptor = {
   fences: [],
 
   npcs: [
-    { characterId: 'bella', x: 2150, y: 952, facing: 'left' },
+    {
+      characterId: 'bella',
+      x: 2150,
+      y: 952,
+      facing: 'left',
+      interactionPromptLift: 305,
+    },
     {
       characterId: 'pip',
       x: 1100,
       y: 855,
       facing: 'right',
+      interactionPromptLift: 140,
       patrol: { fromX: 800, toX: 1400, speed: 140, pauseMs: 1000 },
     },
   ],

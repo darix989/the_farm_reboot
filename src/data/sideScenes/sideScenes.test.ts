@@ -119,6 +119,25 @@ describe('SIDE_SCENES', () => {
     expect(bella!.x - pip!.patrol!.toX).toBeGreaterThan(SIDE_NPC_INTERACT_RADIUS);
   });
 
+  it('calibrates interaction prompts to each side-scene animal height', () => {
+    const lifts = Object.fromEntries(
+      Object.values(SIDE_SCENES).flatMap((scene) =>
+        scene.npcs.map((npc) => [npc.characterId, npc.interactionPromptLift]),
+      ),
+    );
+
+    expect(lifts).toEqual({
+      cass: 200,
+      dot: 275,
+      bella: 305,
+      pip: 140,
+      bram: 245,
+      tobias: 295,
+      duchess: 205,
+      hetty: 350,
+    });
+  });
+
   it('stands the orchard pond portal clear of Duchess and Tobias, and Hetty clear of the return', () => {
     const orchard = SIDE_SCENES.eastOrchard;
     const pond = orchard.portals.find((portal) => portal.id === 'pond');

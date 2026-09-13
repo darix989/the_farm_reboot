@@ -1,11 +1,10 @@
 import { Scene } from 'phaser';
 import { EventBus } from '../EventBus';
+import { STAGE_DESIGN_HEIGHT, STAGE_DESIGN_WIDTH, TRIAL_STAGE_HOLE } from '../../utils/constants';
 import {
-  INTERACTION_PROMPT_LIFT,
-  STAGE_DESIGN_HEIGHT,
-  STAGE_DESIGN_WIDTH,
-  TRIAL_STAGE_HOLE,
-} from '../../utils/constants';
+  DEFAULT_INTERACTION_PROMPT_LIFT,
+  resolveInteractionPromptLift,
+} from '../../utils/interactionPrompt';
 import { SIDE_SCENES } from '../../data/sideScenes';
 import type { SidePortalLink, SideSceneId } from '../../types/sideScene';
 import { queueSideSceneAssets } from '../sideScene/sideSceneAssets';
@@ -325,13 +324,18 @@ export class FarmSide extends Scene {
     id: string;
   }): { x: number; y: number } | null {
     let point: { x: number; y: number } | null = null;
+    let lift = DEFAULT_INTERACTION_PROMPT_LIFT;
     if (focus.kind === 'npc') {
       const npc = this.npcs.find((candidate) => candidate.characterId === focus.id);
-      if (npc) point = { x: npc.x, y: npc.y };
+      if (npc) {
+        point = { x: npc.x, y: npc.y };
+        lift = resolveInteractionPromptLift(npc.interactionPromptLift);
+      }
     } else {
       const portal = this.descriptor.portals.find((candidate) => candidate.id === focus.id);
       if (portal) {
         point = resolvePortal(portal, this.descriptor);
+        lift = resolveInteractionPromptLift(portal.interactionPromptLift);
       }
     }
     if (!point) return null;
@@ -339,7 +343,7 @@ export class FarmSide extends Scene {
     const camera = this.cameras.main;
     return {
       x: camera.x + (point.x - camera.scrollX) * camera.zoom,
-      y: camera.y + (point.y - camera.scrollY) * camera.zoom - INTERACTION_PROMPT_LIFT,
+      y: camera.y + (point.y - camera.scrollY) * camera.zoom - lift,
     };
   }
 

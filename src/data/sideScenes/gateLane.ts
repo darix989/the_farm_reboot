@@ -50,6 +50,7 @@ export const GATE_LANE: SideSceneDescriptor = {
       x: 1600,
       y: 855,
       facing: 'left',
+      interactionPromptLift: 245,
       patrol: { fromX: 1100, toX: 2200, speed: 140, pauseMs: 1000 },
     },
   ],

@@ -95,6 +95,8 @@ export interface SideSceneNpcSpec {
   y?: number;
   /** Which way they look before anyone walks up to them. Defaults to `'left'`. */
   facing?: 'left' | 'right';
+  /** Screen-space gap above the character for their interaction prompt, in design pixels. */
+  interactionPromptLift?: number;
   /** Whether Rue can focus and talk to this character. Defaults to true. */
   interactive?: boolean;
   /** An ambling back-and-forth walk along a fixed stretch of road. Omit for an NPC that
@@ -136,6 +138,8 @@ export interface SidePortalSpec {
   side: SidePortalSide;
   /** Required for 'back' / 'front'; derived from scene width for 'left' / 'right'. */
   x?: number;
+  /** Screen-space gap above the portal for its prompt, in design pixels. */
+  interactionPromptLift?: number;
   /** Omitted for a portal that leads nowhere yet (a menu spawn point). */
   to?: SidePortalLink;
 }

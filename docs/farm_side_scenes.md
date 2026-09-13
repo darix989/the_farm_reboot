@@ -114,12 +114,16 @@ behind the walker without a special case.
 ## The cast: who stands on the road
 
 `SideSceneDescriptor.npcs` names characters, never sprites — `{ characterId, x, y?,
-facing?, interactive? }`, resolved through `src/data/characters.ts` exactly the way
+facing?, interactionPromptLift?, interactive? }`, resolved through `src/data/characters.ts` exactly the way
 `FARM_NPCS` is in the top-down farm. `animalPacks.ts` reads the same list to work out which
 atlases `FarmSide` has to fetch (`sideSceneAnimalIds(descriptor)`), so adding an animal to
 a scene is one edit, not two. Set `interactive: false` for an ambient character that should
 animate without entering the conversation focus contest. Rue is not in the list: the player
 is spawned by the scene.
+
+`interactionPromptLift` is the screen-space distance above that entity's authored ground point,
+in 1920×1080 design pixels. Set it per character to clear the visible sprite; omit it to use
+the 200px default. Portals support the same optional override.
 Portal hops use `resolveEntrySpawn`. A first visit (no portal, no saved pose) uses an
 authored `playerSpawn` when the scene has one — on `greenMeadowsRoad` that is beside Dot,
 facing her, so her auto-opening greeting frames the pair rather than a raccoon at the west
