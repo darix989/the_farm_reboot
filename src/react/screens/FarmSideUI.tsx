@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
 import { GameManager } from '../../utils/gameManager';
 import type { FarmSide } from '../../phaser/scenes/FarmSide';
@@ -53,6 +53,7 @@ const FarmSideUI: React.FC = () => {
   const animatedNoticeIds = useCodexUiStore((s) => s.animatedNoticeIds);
   const markNoticesAnimated = useCodexUiStore((s) => s.markNoticesAnimated);
   const [codexBursting, setCodexBursting] = useState(false);
+  const interactionPromptRef = useRef<HTMLButtonElement>(null);
 
   const descriptor = useMemo(() => SIDE_SCENES[activeSideSceneId], [activeSideSceneId]);
   const introNpcPresent = descriptor.npcs.some((npc) => npc.characterId === FARM_INTRO_NPC_ID);
@@ -70,6 +71,37 @@ const FarmSideUI: React.FC = () => {
     if (!nearbyPortalId) return null;
     return descriptor.portals.find((portal) => portal.id === nearbyPortalId) ?? null;
   }, [descriptor, nearbyPortalId]);
+
+  const interactionFocus = useMemo(
+    () =>
+      nearbyNpcId
+        ? { kind: 'npc' as const, id: nearbyNpcId }
+        : nearbyPortal?.to
+          ? { kind: 'portal' as const, id: nearbyPortal.id }
+          : null,
+    [nearbyNpcId, nearbyPortal],
+  );
+
+  useEffect(() => {
+    if (!interactionFocus || dialogue) return;
+
+    let frame = 0;
+    const updatePromptPosition = () => {
+      const scene = GameManager.getCurrentScene();
+      const anchor =
+        scene?.scene.key === 'FarmSide'
+          ? (scene as FarmSide).getInteractionAnchor(interactionFocus)
+          : null;
+      const prompt = interactionPromptRef.current;
+      if (anchor && prompt) {
+        prompt.style.left = `${anchor.x}px`;
+        prompt.style.top = `${anchor.y}px`;
+      }
+      frame = window.requestAnimationFrame(updatePromptPosition);
+    };
+    updatePromptPosition();
+    return () => window.cancelAnimationFrame(frame);
+  }, [dialogue, interactionFocus]);
 
   const hudCodexVisible = !dialogue;
   useEffect(() => {
@@ -129,6 +161,7 @@ const FarmSideUI: React.FC = () => {
         <button
           type="button"
           className={styles.talkPrompt}
+          ref={interactionPromptRef}
           onClick={() => {
             if (!canRunTutorialUntargetedAction()) return;
             openDialogue(nearbyNpcId);
@@ -148,6 +181,7 @@ const FarmSideUI: React.FC = () => {
         <button
           type="button"
           className={styles.portalPrompt}
+          ref={interactionPromptRef}
           onClick={() => {
             if (!canRunTutorialUntargetedAction()) return;
             const scene = GameManager.getCurrentScene();

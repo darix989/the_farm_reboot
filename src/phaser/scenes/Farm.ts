@@ -311,6 +311,18 @@ export class Farm extends Scene {
     useFarmStore.getState().setNearbyNpc(closestId);
   }
 
+  /** Screen-space anchor for the React prompt floating directly above an available NPC. */
+  getNpcInteractionAnchor(npcId: string): { x: number; y: number } | null {
+    const actor = this.npcActors.find(({ npc }) => npc.id === npcId);
+    if (!actor) return null;
+
+    const camera = this.cameras.main;
+    return {
+      x: camera.x + (actor.npc.x - camera.scrollX) * camera.zoom,
+      y: camera.y + (actor.npc.y - camera.scrollY - 245) * camera.zoom,
+    };
+  }
+
   /**
    * While a farm overlay tutorial is up, Phaser must not walk, talk, or summon
    * the stick. The React overlay's root is `pointer-events: none`, so those

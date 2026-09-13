@@ -135,9 +135,7 @@
 .talkPrompt {
   position: absolute;
   z-index: 1;
-  top: 18%;
-  left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -100%);
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -180,15 +178,12 @@
   box-shadow: 0 0 10px var(--ui-color-accent);
 }
 
-/* Same chrome as `.talkPrompt` — a portal and an NPC are never both in range at once (see
-   `resolveFocus`), but a different `top` keeps the two visually distinct on the rare frame
-   both stores are mid-update. */
+/* Same chrome as `.talkPrompt`. The live Phaser camera supplies the target's on-screen
+   coordinates, so a gate prompt sits directly above its gate rather than in the HUD. */
 .portalPrompt {
   position: absolute;
   z-index: 1;
-  top: 26%;
-  left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -100%);
   display: flex;
   align-items: center;
   gap: 0.6rem;

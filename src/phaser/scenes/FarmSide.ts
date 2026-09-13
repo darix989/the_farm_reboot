@@ -309,6 +309,37 @@ export class FarmSide extends Scene {
   }
 
   /**
+   * Screen-space anchor for the React interaction prompt. It deliberately comes from the
+   * live camera rather than authored coordinates: the prompt must stay over its target as
+   * Rue walks and the lateral camera tracks her.
+   */
+  getInteractionAnchor(focus: {
+    kind: 'npc' | 'portal';
+    id: string;
+  }): { x: number; y: number } | null {
+    let point: { x: number; y: number } | null = null;
+    // Character portraits are tall enough that the prompt must sit well above the head.
+    let promptLift = 265;
+    if (focus.kind === 'npc') {
+      const npc = this.npcs.find((candidate) => candidate.characterId === focus.id);
+      if (npc) point = { x: npc.x, y: npc.y };
+    } else {
+      const portal = this.descriptor.portals.find((candidate) => candidate.id === focus.id);
+      if (portal) {
+        point = resolvePortal(portal, this.descriptor);
+        promptLift = 170;
+      }
+    }
+    if (!point) return null;
+
+    const camera = this.cameras.main;
+    return {
+      x: camera.x + (point.x - camera.scrollX) * camera.zoom,
+      y: camera.y + (point.y - camera.scrollY - promptLift) * camera.zoom,
+    };
+  }
+
+  /**
    * Fades to black, then hands off to `beginSideSceneTravel` — which restarts this same
    * scene instance onto `link`'s target descriptor. `prefersReducedMotion` skips straight
    * to the hand-off. If the hop is refused (the scene already shut down, another load in

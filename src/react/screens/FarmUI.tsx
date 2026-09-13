@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import getLabel from '../../data/labels';
+import { GameManager } from '../../utils/gameManager';
+import type { Farm } from '../../phaser/scenes/Farm';
 import { resolveCharacter } from '../../data/characters';
 import { farmNpcById } from '../../data/farmMap';
 import { useCodexUiStore } from '../../store/codexUiStore';
@@ -41,8 +43,28 @@ const FarmUI: React.FC = () => {
   const animatedNoticeIds = useCodexUiStore((s) => s.animatedNoticeIds);
   const markNoticesAnimated = useCodexUiStore((s) => s.markNoticesAnimated);
   const [codexBursting, setCodexBursting] = useState(false);
+  const interactionPromptRef = useRef<HTMLButtonElement>(null);
 
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;
+
+  useEffect(() => {
+    if (!nearbyNpcId || dialogue) return;
+
+    let frame = 0;
+    const updatePromptPosition = () => {
+      const scene = GameManager.getCurrentScene();
+      const anchor =
+        scene?.scene.key === 'Farm' ? (scene as Farm).getNpcInteractionAnchor(nearbyNpcId) : null;
+      const prompt = interactionPromptRef.current;
+      if (anchor && prompt) {
+        prompt.style.left = `${anchor.x}px`;
+        prompt.style.top = `${anchor.y}px`;
+      }
+      frame = window.requestAnimationFrame(updatePromptPosition);
+    };
+    updatePromptPosition();
+    return () => window.cancelAnimationFrame(frame);
+  }, [dialogue, nearbyNpcId]);
 
   // One-shot burst when unread ids appear while the HUD button is on screen. Talks and Trial
   // hide it; the lingering cue stays, but those ids are marked animated so coming back from a
@@ -98,6 +120,7 @@ const FarmUI: React.FC = () => {
         <button
           type="button"
           className={styles.talkPrompt}
+          ref={interactionPromptRef}
           onClick={() => {
             if (!canRunTutorialUntargetedAction()) return;
             openDialogue(nearbyNpc.id);
