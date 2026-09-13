@@ -58,6 +58,13 @@ const FARM_MULTIPLIER = 0.377; // donkey-grey -> ~140px tall next to the 56px pl
 const TRIAL_MULTIPLIER = 0.807; // donkey-grey -> ~300px tall in the 540px-tall Trial hole
 
 /**
+ * Farm-only lift on every animal except Rue. Her raccoon already carries a 1.5 farm
+ * adjust so she reads as the protagonist; without this the rest of the cast looks like
+ * it is standing at her feet. Trial is left alone — the podium composition is already fit.
+ */
+const FARM_NPC_SCALE = 1.2;
+
+/**
  * Per-animal fudge factor applied on top of the ratio-derived scale, for the rare case
  * where the source ratio still doesn't read right once actually seen in this world. A bare
  * number adjusts both surfaces; `{ farm, trial }` adjusts them independently, which the
@@ -83,7 +90,8 @@ const MANUAL_ADJUST: Partial<Record<AnimalSpriteId, number | { farm?: number; tr
    *
    * Matching the donkey's old 140px height is not the fix — at 2.4:1 the crouch would come out
    * 336px wide. 1.5 splits the difference at roughly 202x85: unmistakably the biggest thing
-   * moving on the farm, without a footprint wider than the barn door.
+   * moving on the farm, without a footprint wider than the barn door. `FARM_NPC_SCALE` does
+   * not apply to her, so NPCs grow without her growing with them.
    *
    * `trial` stays at 1. There Rue sits up (`idleTrial`), a taller and much narrower pose, and
    * that is the pose the existing trial multiplier was already staging Tobias in.
@@ -93,9 +101,11 @@ const MANUAL_ADJUST: Partial<Record<AnimalSpriteId, number | { farm?: number; tr
 
 function adjustFor(id: AnimalSpriteId, surface: 'farm' | 'trial'): number {
   const adjust = MANUAL_ADJUST[id];
-  if (adjust === undefined) return 1;
-  if (typeof adjust === 'number') return adjust;
-  return adjust[surface] ?? 1;
+  let listed = 1;
+  if (typeof adjust === 'number') listed = adjust;
+  else if (adjust !== undefined) listed = adjust[surface] ?? 1;
+  if (surface === 'farm' && id !== 'raccoon') return listed * FARM_NPC_SCALE;
+  return listed;
 }
 
 export const ANIMAL_STAGING: Record<AnimalSpriteId, AnimalStagingScale> = Object.fromEntries(
