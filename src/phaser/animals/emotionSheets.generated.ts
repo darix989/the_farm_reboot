@@ -150,6 +150,22 @@ export const EMOTION_SHEETS: Partial<
         warnings: [],
       },
     },
+    thinking: {
+      file: 'cow-thinking.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 1.7558,
+      originX: 0.4861,
+      originY: 0.7012,
+      quality: {
+        loopPop: 0.29,
+        heightSwing: 6,
+        driftX: 2.8,
+        warnings: [],
+      },
+    },
   },
   dog: {
     angry: {
