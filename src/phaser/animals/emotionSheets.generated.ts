@@ -168,6 +168,9 @@ export const EMOTION_SHEETS: Partial<
         driftX: 7.8,
         warnings: [],
       },
+      reviewNotes: [
+        'One frame (of 25) shows a brief stray red mark on the fur under the chin, not present in neighboring frames — small and easy to miss, but worth a second look on loop.',
+      ],
     },
     talking: {
       file: 'cow-talking.png',
