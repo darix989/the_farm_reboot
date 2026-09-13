@@ -463,7 +463,7 @@ const LABELS = {
   farmDialogDot1:
     'You are the new raccoon. Rue, is it? I am Dot, guardian of the farm — that is why I stand at the entrance. Tobias has put a motion to keep the Old Pond for the Meadow-Born and send the rest of you to the road trough — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, through the gate. Then Cass on the road.',
   farmDialogDot1a:
-    'You are the new raccoon! Rue, is it? Or Roo — somebody said Roo. I am Dot. Guardian of the farm — that is why I stand at the entrance.',
+    'You are [accent]the new raccoon! Rue[/accent], is it? Or Roo — somebody said Roo. I am [accent]Dot, the Guardian of the Farm[/accent] — that is why I stand at the entrance.',
   farmDialogDot1b: 'Rue. Six weeks now. I do the hauling, the repairs and the bins.',
   farmDialogDot1c:
     'The bins! Nobody volunteers for the bins. Are the others being decent to you, at least?',
