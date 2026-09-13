@@ -95,6 +95,8 @@ export interface SideSceneNpcSpec {
   y?: number;
   /** Which way they look before anyone walks up to them. Defaults to `'left'`. */
   facing?: 'left' | 'right';
+  /** Whether Rue can focus and talk to this character. Defaults to true. */
+  interactive?: boolean;
   /** An ambling back-and-forth walk along a fixed stretch of road. Omit for an NPC that
    *  just stands where placed. See `sideScenePatrol.ts`. */
   patrol?: SideNpcPatrol;

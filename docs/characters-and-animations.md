@@ -1,8 +1,8 @@
 # Characters and animations
 
-How Level 1's cast went from six coloured placeholder circles to six animated
-spritesheet sprites, shared between the Farm overworld (Phaser) and the Trial debate
-stage (also Phaser, labelled by React).
+How Level 1's cast went from coloured placeholder circles to animated spritesheet sprites,
+shared between the Farm overworld (Phaser) and the Trial debate stage (also Phaser, labelled
+by React).
 
 Ported from a sibling prototype (`the_farm`), which built this system against a full
 Tiled tilemap and a 16-strong background herd. This repo has neither — the farm is
@@ -28,6 +28,7 @@ about.
 | Tobias    | donkey  | `donkey-grey`                    | farm NPC, Trial opponent  |
 | Duchess   | owl     | `owl`                            | farm NPC, Trial moderator |
 | Dot       | dog     | `dog`                            | farm guardian / greeter   |
+| Pip       | mouse   | `mouse`                          | ambient barn NPC          |
 
 The three outsiders (raccoon, fox, wolf) are the ones the level's fallacies point at; the
 in-group is the sheep and the donkey. See `level_01_the_pond_motion.md`.
@@ -39,12 +40,12 @@ and thinking (sneaky was not cropped — the body clip's head dip saturates the 
 Dot still never debates; the clips are for her farm-talk portraits.
 
 The mapping lives in one place: the optional `animal` field on
-[`CHARACTERS`](../src/data/characters.ts). A character with no `animal` entry (every
-legacy scenario's speakers — `barnaby`, `pip`, `monty`, `penny`, `bella`, `woolsey`)
-keeps the original CSS bust in the Trial (the Farm's corner busts are gone — its dialogue
-box shows an `AnimalFace` portrait instead, and nothing where there is no art). Nothing else
-needs to know a character has no art — `resolveCharacter()` never throws, and both
-scenes check `visual.animal` before doing anything sprite-related.
+[`CHARACTERS`](../src/data/characters.ts). A character with no `animal` entry (legacy
+scenario speakers such as `barnaby`, `monty`, `penny`, and `woolsey`) keeps the original CSS
+bust in the Trial (the Farm's corner busts are gone — its dialogue box shows an `AnimalFace`
+portrait instead, and nothing where there is no art). Nothing else needs to know a character
+has no art — `resolveCharacter()` never throws, and both scenes check `visual.animal` before
+doing anything sprite-related.
 
 ---
 

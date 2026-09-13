@@ -319,6 +319,7 @@ const LABELS = {
   farmNpcDuchess: 'Duchess',
   farmNpcTobias: 'Tobias',
   farmNpcDot: 'Dot',
+  farmNpcPip: 'Pip',
   farmZoneBarn: 'THE BIG BARN',
   farmZonePond: 'THE OLD POND',
   farmTalkPrompt: 'Talk to {name}',

@@ -195,6 +195,7 @@ export class SideSceneActor {
  * A static NPC (no `patrol`) never gets `patrolState` and `update` is a no-op for it.
  */
 export class SideSceneNpc extends SideSceneActor {
+  readonly interactive: boolean;
   private readonly patrol: SideSceneNpcSpec['patrol'];
   private readonly laneY: number;
   private patrolState: PatrolState | null = null;
@@ -202,6 +203,7 @@ export class SideSceneNpc extends SideSceneActor {
   constructor(scene: Scene, descriptor: SideSceneDescriptor, spec: SideSceneNpcSpec) {
     const y = spec.y ?? (descriptor.road.top + descriptor.road.bottom) / 2;
     super(scene, descriptor, spec.characterId, spec.x, y);
+    this.interactive = spec.interactive !== false;
     this.laneY = y;
     this.patrol = spec.patrol;
     const facing = spec.facing === 'right' ? 1 : -1;

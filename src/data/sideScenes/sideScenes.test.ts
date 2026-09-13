@@ -69,6 +69,7 @@ describe('SIDE_SCENES', () => {
     expect(byId.bram).toEqual(['gateLane']);
     expect(byId.duchess).toEqual(['eastOrchard']);
     expect(byId.tobias).toEqual(['eastOrchard']);
+    expect(byId.pip).toEqual(['hettysBarn']);
   });
 
   it('stands Dot and the first-visit spawn west of the barn door, clear of its interact radius', () => {
@@ -107,6 +108,16 @@ describe('SIDE_SCENES', () => {
     expect(bram?.patrol).toBeDefined();
     const midY = (gateLane.road.top + gateLane.road.bottom) / 2;
     expect(bram!.y!).toBeLessThan(midY);
+  });
+
+  it('keeps ambient Pip patrolling well clear of Bella in the barn', () => {
+    const barn = SIDE_SCENES.hettysBarn;
+    const bella = barn.npcs.find((npc) => npc.characterId === 'bella');
+    const pip = barn.npcs.find((npc) => npc.characterId === 'pip');
+    expect(pip?.interactive).toBe(false);
+    expect(pip?.patrol).toBeDefined();
+    expect(bella).toBeDefined();
+    expect(bella!.x - pip!.patrol!.toX).toBeGreaterThan(SIDE_NPC_INTERACT_RADIUS);
   });
 
   it('stands the orchard pond portal clear of Duchess and Tobias, and Hetty clear of the return', () => {

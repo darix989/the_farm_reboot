@@ -259,11 +259,13 @@ export class FarmSide extends Scene {
       }
     }
 
-    const npcs: FocusPoint[] = this.npcs.map((npc) => ({
-      id: npc.characterId,
-      x: npc.x,
-      y: npc.y,
-    }));
+    const npcs: FocusPoint[] = this.npcs
+      .filter((npc) => npc.interactive)
+      .map((npc) => ({
+        id: npc.characterId,
+        x: npc.x,
+        y: npc.y,
+      }));
     const portals: FocusPoint[] = this.descriptor.portals
       .filter((portal) => portal.to && portal.id !== this.disarmedPortalId)
       .map((portal) => ({ id: portal.id, ...resolvePortal(portal, this.descriptor) }));
