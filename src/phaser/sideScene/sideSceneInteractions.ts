@@ -37,13 +37,10 @@ interface ScoredCandidate {
  *
  * Each candidate is scored as `distance / itsOwnRadius`, not raw distance: a flat
  * "nearest NPC always wins" rule makes a portal near a wide-radius NPC unenterable. On
- * `greenMeadowsRoad`, Hetty stands at `GATE_X - 340` with a 400px talk radius, which
- * reaches every point within 400px of the gate itself; a 220px-radius gate portal would
- * never win a raw-distance contest at any point where it is actually in range. Scoring by
- * radius fraction instead means the gate (a tight, close-in target) beats Hetty (a wide,
- * far-off one) exactly where a player standing at the gate would expect it to. Ties go to
- * the NPC — a conversation is the more common thing to want, and the only case this can
- * tie is standing equidistant (as a fraction of each radius) between the two.
+ * scoring by radius fraction instead makes a tight, close-in portal beat a wide, far-off
+ * NPC where a player would expect it to. Ties go to the NPC — a conversation is the more
+ * common thing to want, and the only case this can tie is standing equidistant (as a
+ * fraction of each radius) between the two.
  */
 export function resolveFocus(
   player: { x: number; y: number },
