@@ -91,6 +91,26 @@
       "generatedAt": "2026-09-05T01:44:47.545Z"
     }
   },
+  "cow": {
+    "talking": {
+      "file": "cow-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 12.5,
+      "scale": 1.9538,
+      "originX": 0.484,
+      "originY": 0.6797,
+      "prompt": "Side view, facing left. The black and white cow stands in place on all fours and talks: its big pink snout opens and closes with each phrase, its head bobs gently in time, its googly eyes blink once, and the golden bell on its teal collar swings slightly. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout. Preserve the exact character design, black and white spots, pink muzzle, teal collar and golden bell from the starting image. The mouth opening stays beneath the muzzle as in the reference, with a consistent dark interior and the same small rounded pink tongue whenever visible. Keep the camera, framing and character scale fixed.",
+      "quality": {
+        "loopPop": 0.22,
+        "heightSwing": 6.7,
+        "driftX": 2,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-12T23:58:33.758Z"
+    }
+  },
   "dog": {
     "angry": {
       "file": "dog-angry.png",
@@ -146,10 +166,10 @@
           "height swing 27% (over 20%) — check it is motion, not the character changing pose"
         ]
       },
+      "generatedAt": "2026-09-09T01:52:23.394Z",
       "reviewNotes": [
         "height swing is a head dip, not a pose collapse — accepted, same class as donkey sneaky"
-      ],
-      "generatedAt": "2026-09-09T01:52:23.394Z"
+      ]
     },
     "talking": {
       "file": "dog-talking.png",

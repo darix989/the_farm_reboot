@@ -101,6 +101,24 @@ export const EMOTION_SHEETS: Partial<
       },
     },
   },
+  cow: {
+    talking: {
+      file: 'cow-talking.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 12.5,
+      scale: 1.9538,
+      originX: 0.484,
+      originY: 0.6797,
+      quality: {
+        loopPop: 0.22,
+        heightSwing: 6.7,
+        driftX: 2,
+        warnings: [],
+      },
+    },
+  },
   dog: {
     angry: {
       file: 'dog-angry.png',
