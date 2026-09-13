@@ -461,6 +461,9 @@ const LABELS = {
   farmDialogBellaDoneA: 'Still not Hetty.',
   farmDialogBellaDoneB:
     'The coat is late. I am still holding the barn. She is still at the pond, I expect.',
+  farmDialogPipDoneA: 'Careful. Freshly swept.',
+  farmDialogPipDoneB: 'This is a dirt floor.',
+  farmDialogPipDoneC: 'Exactly. It takes forever.',
   farmDialogDot1:
     'You are the new raccoon. Rue, is it? I am Dot, guardian of the farm — that is why I stand at the entrance. Tobias has put a motion to keep the Old Pond for the Meadow-Born and send the rest of you to the road trough — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, through the gate. Then Cass on the road.',
   farmDialogDot1a:

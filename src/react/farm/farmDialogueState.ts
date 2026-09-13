@@ -72,9 +72,22 @@ function lastCompletedScenario(
 }
 
 export function farmDialogueFor(npcId: string): FarmDialogueState | null {
-  const npc = farmNpcById(npcId);
   const visual = characterById(npcId);
-  if (!npc || !visual) return null;
+  if (!visual) return null;
+
+  const npc = farmNpcById(npcId);
+  if (!npc) {
+    const suffix = 'Done';
+    return {
+      npcId: visual.id,
+      nameLabel: visual.nameLabel,
+      slotKey: farmTalkSlotKey(visual.id, suffix),
+      beats: farmTalkBeats(visual.id, suffix),
+      scenario: null,
+      scenarioRequires: [],
+      lessons: [],
+    };
+  }
 
   const progress = useProgressStore.getState();
   const ctx = conditionContextSnapshot();

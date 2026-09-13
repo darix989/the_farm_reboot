@@ -5,7 +5,7 @@
  * is always a warm hop (see `docs/farm_side_scenes.md`).
  *
  * Bella stands here as the cow, occupying Hetty's old yard spot. Hetty moved to
- * `oldPond`. Pip patrols the far side of the barn as an ambient character. Bella has no
+ * `oldPond`. Pip patrols the far side of the barn. Bella has no
  * generated emotion clips yet, so every emotion falls back to her "eating" animation (see
  * `emotionFallbacks.ts`), flagged as a placeholder in the Animation Gallery — swap it out
  * once real clips are generated for `cow`.
@@ -52,7 +52,6 @@ export const HETTYS_BARN: SideSceneDescriptor = {
       x: 1100,
       y: 855,
       facing: 'right',
-      interactive: false,
       patrol: { fromX: 800, toX: 1400, speed: 140, pauseMs: 1000 },
     },
   ],

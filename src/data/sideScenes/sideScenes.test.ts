@@ -110,11 +110,10 @@ describe('SIDE_SCENES', () => {
     expect(bram!.y!).toBeLessThan(midY);
   });
 
-  it('keeps ambient Pip patrolling well clear of Bella in the barn', () => {
+  it('keeps Pip patrolling well clear of Bella in the barn', () => {
     const barn = SIDE_SCENES.hettysBarn;
     const bella = barn.npcs.find((npc) => npc.characterId === 'bella');
     const pip = barn.npcs.find((npc) => npc.characterId === 'pip');
-    expect(pip?.interactive).toBe(false);
     expect(pip?.patrol).toBeDefined();
     expect(bella).toBeDefined();
     expect(bella!.x - pip!.patrol!.toX).toBeGreaterThan(SIDE_NPC_INTERACT_RADIUS);
