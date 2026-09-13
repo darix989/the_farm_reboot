@@ -683,8 +683,8 @@ const LABELS = {
   // portals reads differently depending which side of it you're standing on.
   farmSidePortalBarn: 'Enter the barn',
   farmSidePortalGate: 'Go through the gate',
-  farmSidePortalEastRoad: 'Head down the east road',
-  farmSidePortalPond: 'Walk down to the pond',
+  farmSidePortalEastRoad: 'Enter east orchard',
+  farmSidePortalPond: 'Walk to the pond',
   farmSidePortalBackToOrchard: 'Back to the orchard',
   farmSidePortalBackToRoad: 'Back to the road',
 } as const;

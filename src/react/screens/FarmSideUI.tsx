@@ -95,7 +95,14 @@ const FarmSideUI: React.FC = () => {
           : null;
       const prompt = interactionPromptRef.current;
       if (anchor && prompt) {
-        const position = interactionPromptPosition(anchor);
+        const stage = prompt.parentElement;
+        if (!stage) return;
+        const position = interactionPromptPosition(anchor, {
+          stageWidth: stage.clientWidth,
+          stageHeight: stage.clientHeight,
+          promptWidth: prompt.offsetWidth,
+          promptHeight: prompt.offsetHeight,
+        });
         prompt.style.left = position.left;
         prompt.style.top = position.top;
       }
@@ -172,9 +179,11 @@ const FarmSideUI: React.FC = () => {
           <span className={styles.interactionCue} aria-hidden="true">
             ✦
           </span>
-          {getLabel('farmTalkPrompt', {
-            replacements: { name: resolveCharacter(nearbyNpcId).displayName },
-          })}
+          <span className={styles.interactionLabel}>
+            {getLabel('farmTalkPrompt', {
+              replacements: { name: resolveCharacter(nearbyNpcId).displayName },
+            })}
+          </span>
           <span className={styles.talkPromptKey}>{getLabel('farmInteractHint')}</span>
         </button>
       )}
@@ -195,7 +204,7 @@ const FarmSideUI: React.FC = () => {
           <span className={styles.interactionCue} aria-hidden="true">
             ✦
           </span>
-          {getLabel(nearbyPortal.to.label)}
+          <span className={styles.interactionLabel}>{getLabel(nearbyPortal.to.label)}</span>
           <span className={styles.talkPromptKey}>{getLabel('farmInteractHint')}</span>
         </button>
       )}
