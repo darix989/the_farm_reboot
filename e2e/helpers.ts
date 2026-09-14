@@ -75,13 +75,19 @@ export async function attachScreenshot(page: Page, name: string): Promise<void> 
   });
 }
 
+const WASD: Record<'ArrowLeft' | 'ArrowRight', 'a' | 'd'> = {
+  ArrowLeft: 'a',
+  ArrowRight: 'd',
+};
+
 /**
- * Nudge along the road until `locator` is visible.
+ * Hold a walk key until `locator` is visible.
  *
- * Playwright never auto-repeats a held key, and Phaser `Key` objects drop a `down` that
- * landed before they existed — a single `keyboard.down` is then lost for the rest of the
- * hold. Short presses also keep each step smaller than a portal's interact radius, so a
- * large frame hitch cannot skip the prompt entirely.
+ * Linux CI is the load-bearing case: Phaser keys on `keyCode`, and Playwright's
+ * ArrowLeft/ArrowRight events often arrive with `keyCode` 0 there, so the cursor
+ * keys never go `isDown`. WASD (`a`/`d`) still carries a letter keyCode. A held
+ * key (re-asserted every tick) also overlaps slow software-WebGL frames; a 200ms
+ * tap can sit entirely between two updates and move nothing.
  */
 export async function walkUntilVisible(
   page: Page,
@@ -89,10 +95,23 @@ export async function walkUntilVisible(
   locator: Locator,
   timeout = 45_000,
 ): Promise<void> {
-  const deadline = Date.now() + timeout;
-  while (Date.now() < deadline) {
-    if (await locator.isVisible()) return;
-    await page.keyboard.press(key, { delay: 200 });
+  const wasd = WASD[key];
+  // Sky band, centre: no `pointer-events: auto` control. Focuses the canvas so
+  // the next keydowns are not delivered only to a leftover overlay button.
+  await page.mouse.click(960, 80);
+  await page.keyboard.down(key);
+  await page.keyboard.down(wasd);
+  try {
+    const deadline = Date.now() + timeout;
+    while (Date.now() < deadline) {
+      if (await locator.isVisible()) return;
+      await page.keyboard.down(key);
+      await page.keyboard.down(wasd);
+      await page.waitForTimeout(250);
+    }
+    await locator.waitFor({ timeout: 5_000 });
+  } finally {
+    await page.keyboard.up(wasd);
+    await page.keyboard.up(key);
   }
-  await locator.waitFor({ timeout: 1_000 });
 }

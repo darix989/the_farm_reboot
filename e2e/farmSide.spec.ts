@@ -88,8 +88,7 @@ test.describe('lateral farm scene', () => {
 
     // Walk right: barn door first (Dot stands further west now, so she is not in the
     // portal's radius contest), then the picket gate (Cass stands where Hetty used to,
-    // same focus contest). Short presses, not one held key — Playwright never repeats a
-    // down, and a hitch-sized step can skip a 220px portal radius entirely.
+    // same focus contest). `walkUntilVisible` holds WASD — Linux CI drops arrow keyCodes.
     await walkUntilVisible(
       page,
       'ArrowRight',
