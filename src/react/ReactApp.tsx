@@ -10,10 +10,13 @@ import GameLoadingScreen from './screens/GameLoadingScreen';
 import ReactRoot from './ReactRoot';
 import TutorialOverlay from './tutorial/TutorialOverlay';
 import CodexOverlay from './codex/CodexOverlay';
+import ShortcutHintBanner from './shortcuts/ShortcutHintBanner';
+import { useShortcutRevealListener } from './shortcuts/useShortcutReveal';
 import { useGameStore } from '../store/gameStore';
 import { DEBATES } from '../data/levels';
 
 const ReactApp: React.FC = () => {
+  useShortcutRevealListener();
   const { currentScene, isGameReady, isSceneLoading, activeDebateId } = useGameStore();
 
   // `isGameReady` means the first playable scene has run `create()` — not merely that a
@@ -57,6 +60,7 @@ const ReactApp: React.FC = () => {
       {/* Scene-independent, like the tutorial overlay: openable from the menu and the farm
           alike, and it renders nothing until `codexUiStore.isOpen`. */}
       <CodexOverlay />
+      <ShortcutHintBanner />
     </ReactRoot>
   );
 };

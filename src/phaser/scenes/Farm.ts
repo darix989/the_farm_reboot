@@ -29,6 +29,7 @@ import {
   atlasTrimmedDisplayWidth,
 } from '../animals/animalStaging';
 import { STAGE_DESIGN_HEIGHT, STAGE_DESIGN_WIDTH, TRIAL_STAGE_HOLE } from '../../utils/constants';
+import { resolveInteractionPromptLift } from '../../utils/interactionPrompt';
 
 const PLAYER_SPEED = 167; // slowed twice by 30% from the 340 the overworld shipped with
 /**
@@ -309,6 +310,19 @@ export class Farm extends Scene {
 
     // The store no-ops when the value is unchanged, so this is safe every frame.
     useFarmStore.getState().setNearbyNpc(closestId);
+  }
+
+  /** Screen-space anchor for the React prompt floating directly above an available NPC. */
+  getNpcInteractionAnchor(npcId: string): { x: number; y: number } | null {
+    const actor = this.npcActors.find(({ npc }) => npc.id === npcId);
+    if (!actor) return null;
+
+    const camera = this.cameras.main;
+    const lift = resolveInteractionPromptLift(actor.npc.interactionPromptLift);
+    return {
+      x: camera.x + (actor.npc.x - camera.scrollX) * camera.zoom,
+      y: camera.y + (actor.npc.y - camera.scrollY) * camera.zoom - lift,
+    };
   }
 
   /**

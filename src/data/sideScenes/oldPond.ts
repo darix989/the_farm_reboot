@@ -53,7 +53,7 @@ const FAR_BANK_Y = 662;
 const REED_Y = 784;
 const HETTY_X = 1400;
 const HETTY_Y = 952;
-const INTRO_SPAWN_GAP = 360;
+const INTRO_SPAWN_GAP = 320;
 const ORCHARD_PORTAL_X = 360;
 /** Same value `greenMeadowsRoad` tuned for the front-grass band — the kit's flower art is
  *  oversized, and this is what makes a bloom read as a foreground plant. */
@@ -174,7 +174,15 @@ export const OLD_POND: SideSceneDescriptor = {
 
   fences: [],
 
-  npcs: [{ characterId: 'hetty', x: HETTY_X, y: HETTY_Y, facing: 'left' }],
+  npcs: [
+    {
+      characterId: 'hetty',
+      x: HETTY_X,
+      y: HETTY_Y,
+      facing: 'left',
+      interactionPromptLift: 350,
+    },
+  ],
 
   // First visit with no hop: beside Hetty, looking at her — same greeting frame Dot
   // gets on the main road. Portal hops and a saved pose still win over this.

@@ -40,10 +40,11 @@
 .talkPrompt {
   position: absolute;
   z-index: 1;
-  bottom: 12%;
-  left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -100%);
   display: flex;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: calc(100% - 2rem);
   align-items: center;
   gap: 0.6rem;
   padding: 0.7rem 1.2rem;
@@ -56,6 +57,7 @@
   cursor: pointer;
   pointer-events: auto;
   box-shadow: 0 0 18px var(--ui-color-accent-glow);
+  animation: farm-interaction-available 1.2s ease-out 2;
 
   &:hover:not(:disabled) {
     color: var(--ui-color-accent);
@@ -67,15 +69,57 @@
     box-shadow: none;
     border-color: var(--ui-color-border-soft);
   }
+
+  &:has([data-shortcut-keycap]) {
+    .interactionCue,
+    .interactionLabel {
+      visibility: hidden;
+    }
+  }
 }
 
-.talkPromptKey {
-  padding: 0.15rem 0.5rem;
-  border: 1px solid var(--ui-color-border-fade);
-  border-radius: 4px;
-  color: var(--ui-color-text-muted-2);
+.interactionLabel {
+  display: -webkit-box;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.interactionCue {
+  display: grid;
+  flex: none;
+  width: 1.35rem;
+  height: 1.35rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ui-color-accent);
+  color: var(--ui-color-overlay-backdrop);
   font-size: var(--ui-font-caption);
-  font-weight: normal;
+  line-height: 1;
+  box-shadow: 0 0 10px var(--ui-color-accent);
+}
+
+@keyframes farm-interaction-available {
+  0%,
+  100% {
+    box-shadow: 0 0 18px var(--ui-color-accent-glow);
+  }
+
+  40% {
+    box-shadow:
+      0 0 0 0.35rem var(--ui-color-accent-glow),
+      0 0 28px var(--ui-color-accent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .talkPrompt {
+    animation: none;
+  }
 }
 
 /* Top-right corner, opposite the centred move hint, so the two never collide.
@@ -103,6 +147,19 @@
     color: var(--ui-color-accent);
     border-color: var(--ui-color-accent);
   }
+}
+
+.codexButtonLabel {
+  display: block;
+}
+
+.codexButton:has([data-shortcut-keycap]) .codexButtonLabel {
+  visibility: hidden;
+}
+
+.codexButton [data-shortcut-keycap] {
+  font-size: inherit;
+  border-radius: inherit;
 }
 
 .codexButtonHasCue {

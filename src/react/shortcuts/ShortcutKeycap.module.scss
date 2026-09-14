@@ -1,0 +1,38 @@
+/**
+ * Instant flip, no travel. Any transition ≥100ms would make the release lag
+ * the key, which reads as the stuck-key failure the hold reducer exists to
+ * prevent. No prefers-reduced-motion block is needed — there is nothing to
+ * reduce. Hosts that already transition color/background (`.trialChoiceBtn`)
+ * must not let that bleed onto this overlay: `transition: none` is the guard.
+ */
+
+.keycap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: var(--ui-color-overlay-backdrop);
+  color: var(--ui-color-text-emphasis);
+  font-size: var(--ui-font-subtitle);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  transition: none;
+}
+
+.square {
+  overflow: hidden;
+  border-radius: 0.5rem;
+  font-size: calc(var(--ui-font-display) * var(--ui-trial-panel-font-scale, 1));
+}
+
+.pill {
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.unbound {
+  opacity: 0.35;
+}

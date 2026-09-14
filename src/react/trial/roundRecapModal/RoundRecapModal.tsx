@@ -28,6 +28,8 @@ import { ModeratorOpinionInline } from '../utils/ModeratorOpinionInline';
 import ModeratorStatusFace from '../components/ModeratorStatusFace';
 import { useWindowKeyDown } from '../../hooks/useWindowKeyDown';
 import { isContinueCode, shouldIgnoreActionShortcut } from '../utils/trialActionShortcuts';
+import { ariaKeyShortcutsFor } from '../../../data/keyBindings';
+import ShortcutKeycap from '../../shortcuts/ShortcutKeycap';
 import cn from 'classnames';
 import shared from '../trialShared.module.scss';
 import styles from './RoundRecapModal.module.scss';
@@ -320,8 +322,14 @@ const RoundRecapModal: React.FC<RoundRecapModalProps> = ({
         </ScrollFadeContainer>
 
         <div className={styles.recapFooter}>
-          <TrialTextButton onClick={handleContinue} data-tutorial-round-recap-action="continue">
-            {getLabel('continue')}
+          <TrialTextButton
+            onClick={handleContinue}
+            data-tutorial-round-recap-action="continue"
+            aria-label={getLabel('continue')}
+            aria-keyshortcuts={ariaKeyShortcutsFor('trialContinue')}
+          >
+            <span>{getLabel('continue')}</span>
+            <ShortcutKeycap action="trialContinue" />
           </TrialTextButton>
         </div>
       </div>

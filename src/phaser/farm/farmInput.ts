@@ -2,7 +2,22 @@
  * Movement input for the overworld: arrows, WASD and the touch joystick all
  * collapse into one direction vector, so the scene has a single movement path.
  */
+import { KEY_BINDINGS } from '../../data/keyBindings';
 import type { VirtualJoystick } from './VirtualJoystick';
+
+const DOM_CODE_TO_PHASER_KEY: Record<string, number> = {
+  Space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+  KeyE: Phaser.Input.Keyboard.KeyCodes.E,
+  Enter: Phaser.Input.Keyboard.KeyCodes.ENTER,
+};
+
+function phaserKeyCodeFor(code: string): number {
+  const mapped = DOM_CODE_TO_PHASER_KEY[code];
+  if (mapped === undefined) {
+    throw new Error(`No Phaser KeyCodes mapping for binding code "${code}"`);
+  }
+  return mapped;
+}
 
 export interface FarmKeys {
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -24,8 +39,7 @@ export function createFarmKeys(scene: Phaser.Scene): FarmKeys | null {
       left: kb.addKey(K.A),
       right: kb.addKey(K.D),
     },
-    // Space and E both talk; Enter too, since it is the obvious key to try.
-    interact: [kb.addKey(K.SPACE), kb.addKey(K.E), kb.addKey(K.ENTER)],
+    interact: KEY_BINDINGS.farmInteract.codes.map((code) => kb.addKey(phaserKeyCodeFor(code))),
     run: [kb.addKey(K.SHIFT)],
   };
 }

@@ -484,6 +484,98 @@
       "generatedAt": "2026-09-05T04:34:32.892Z"
     }
   },
+  "mouse": {
+    "angry": {
+      "file": "mouse-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.8193,
+      "originX": 0.5048,
+      "originY": 0.6621,
+      "prompt": "Side view, facing right. The entire grey mouse stays fixed inside the exact outer pixel bounds of the reference silhouette for every frame. Its torso, back, belly, head, nose, long arched pink tail and all four planted pink feet remain motionless at exactly their reference positions, sizes and heights. The camera, framing, scale and center remain fixed. ONLY THE EARS, EYES AND MOUTH MOVE, entirely inward within the starting silhouette: its two huge rounded ears fold slightly backward without any edge extending beyond their original outer boundaries; both eyes stay open and narrow into a hard glare. Its snout opens into a small controlled snarl: the two rectangular white front teeth stay exactly the same size, shape, spacing and position as the reference in every open-mouth frame, and behind them is one smooth flat pale-pink patch of color, the same flat pale pink in every single frame the mouth is open, with no red, no tongue, no gum line, no extra shading and no other color or shape ever appearing inside the mouth. Nothing translates, enlarges, lowers, crouches, leans, lunges or travels. No pixel of the mouse crosses the original top, bottom, left or right silhouette bounds. During the first quarter the face slowly tightens into the glare and snarl; during the middle half it holds; during the final quarter it returns along the identical path to the fully closed reference mouth. The first and final frames exactly match the reference in position, silhouette, proportions, mouth and colors. One slow continuous closed motion, stationary camera, seamless repeating loop.",
+      "quality": {
+        "loopPop": 0.17,
+        "heightSwing": 1.8,
+        "driftX": 1.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T13:44:01.464Z"
+    },
+    "doubtful": {
+      "file": "mouse-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.6441,
+      "originX": 0.4904,
+      "originY": 0.6602,
+      "prompt": "Side view, facing right. The grey mouse stands in place on all fours and is unconvinced: its head draws back and tilts, one big rounded ear swivels back, its snout stays shut with the two white front teeth still visible, and its long pink tail hangs still. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.23,
+        "heightSwing": 7.9,
+        "driftX": 15.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T13:08:19.540Z"
+    },
+    "sneaky": {
+      "file": "mouse-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.8024,
+      "originX": 0.4999,
+      "originY": 0.6602,
+      "prompt": "Side view, facing right. The grey mouse stands in place on all fours and speaks conspiratorially: its head cranes forward and dips toward the listener, its big rounded ears tilt back, its eyes flick sideways, and its snout moves in a low mutter showing the same two rectangular white front teeth whenever the mouth opens. Its long pink tail stays whole and fully drawn in every frame, arched over its back in the same shape as the reference. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.18,
+        "heightSwing": 3.6,
+        "driftX": 4,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T13:12:16.789Z"
+    },
+    "talking": {
+      "file": "mouse-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.7209,
+      "originX": 0.4961,
+      "originY": 0.6602,
+      "prompt": "Side view, facing right. The grey mouse stands in place on all fours and talks: its snout opens and closes showing the same two rectangular white front teeth in every frame the mouth is open, its head bobs gently in time, its big rounded ears with pink interiors flick once, and the long pink tail arched over its back sways slightly. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.18,
+        "heightSwing": 4.7,
+        "driftX": 3.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T13:07:04.395Z"
+    },
+    "thinking": {
+      "file": "mouse-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.8024,
+      "originX": 0.5029,
+      "originY": 0.6602,
+      "prompt": "Side view, facing right. The grey mouse stands in place on all fours and considers something: almost motionless, its head turned slightly away, its big rounded ears rotating slowly, its snout shut with the two white front teeth still visible, its long pink tail arched still. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.21,
+        "heightSwing": 1.8,
+        "driftX": 0.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-13T13:11:00.191Z"
+    }
+  },
   "owl": {
     "angry": {
       "file": "owl-angry.png",

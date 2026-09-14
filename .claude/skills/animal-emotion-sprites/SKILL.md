@@ -24,6 +24,46 @@ State the projected cost before generating: `clips × 4 credits`. The four impor
 that still have no emotion art (`cow`, `cow-female-001`, `mouse`, `pig`) are 20 clips,
 ~80 credits. Do not generate them until asked.
 
+## After two failed animation attempts: stop and review an image-edit fallback
+
+For each animal/emotion, **stop after two unsuccessful generation attempts**. A terminal
+generation failure or a clip rejected on visual review counts; dry runs, polling an existing
+job, and cached results do not. A timeout is unresolved: inspect the existing job before
+resubmitting. Keep the attempt count, request/job IDs, exact prompts/settings, and rejection
+reasons in that clip's local review notes across runs. Archive failed outputs before replacing
+the review directory so the evidence survives a retry.
+
+Before a third attempt or any paid fallback:
+
+1. Compare both failures with the original reference, including enlarged consecutive frames.
+   Check playback speed, normalization, and crop alignment first; repair local processing
+   defects locally. Image editing can help an expression or pose that the reference does not
+   communicate; it does not repair API access errors or guarantee temporal stability.
+2. Prepare a **Ludo Image Generator → Edit Image** fallback: edit one full-body reference still
+   to make the intended expression/pose explicit, then animate the reviewed result. Read
+   [the image-edit API procedure](references/ludo-api.md#image-edit-fallback-after-two-failed-attempts).
+   Keep dialogue portraits on the existing free crop workflow.
+3. **Double-check the exact image-edit prompt and subsequent motion prompt** against both
+   failures and the Writing prompts rules below. Specify the smallest useful change and what
+   stays fixed: character identity, palette, linework, proportions, view/facing, canvas framing,
+   and foot placement. Preserve transparent surroundings and a stable mouth interior. Resolve
+   contradictory instructions and token placeholders; explicitly set `augment_prompt: false`
+   so Ludo does not silently rewrite the reviewed prompts.
+4. Show the user the two failure reasons, selected source image, both complete prompts,
+   settings, and proposed scope/cost. Default proposal: **one image edit (0.5 credits) plus
+   one animation retry (~4 credits at the current defaults), ~4.5 credits total**. Recheck
+   current prices/settings. **Ask for explicit confirmation and wait before either paid call**;
+   general permission to generate the original animation does not waive this two-failure gate.
+   Explain that this pause is the user's requested workflow rule and link this section.
+5. After approval, edit once, download and inspect the still beside the original, and animate
+   only if it preserves the character and addresses the defect. Keep the original atlas
+   reference for normalization. Review the loop and its cut against idle before promotion.
+   If the edit or retry fails, stop with findings and a revised proposal; do not start another
+   paid cycle without confirmation. Approval covers only the presented scope and prompts.
+
+This is an agent workflow gate, not an automatic CLI retry feature. The CLI still uses atlas
+references; the API reference explains how to prepare a separate, reviewable fallback request.
+
 ## The pipeline in one screen
 
 ```bash
@@ -199,6 +239,8 @@ weak first-try on the donkey and took five attempts on the owl. The fox nailed i
 because ears-pinned-back plus a snarl is an unambiguous canid anger signal that survives the
 downscale. If `angry` is not landing, the fix is usually a better carrier, not a stronger
 adjective.
+
+Those historical retry counts are not permission to exceed the two-failure gate above.
 
 8. **A carrier can only be spent once.** The owl's eyes belong to `angry` (slits under a hard V)
    and `sneaky` (narrowed, glancing). `approving` was added later and asked for the inverse —

@@ -1,0 +1,20 @@
+/*
+  TODO(shortcut-hint): TEMPORARY — always-on. Gate behind first-session or a
+  devSettingsStore toggle once the gesture is known.
+*/
+
+.root {
+  position: absolute;
+  z-index: 2;
+  bottom: 1rem;
+  left: 1rem;
+  margin: 0;
+  max-width: 22rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  background: var(--ui-color-overlay-backdrop);
+  color: var(--ui-color-text-muted-2);
+  font-size: var(--ui-font-caption);
+  opacity: 0.7;
+  pointer-events: none;
+}

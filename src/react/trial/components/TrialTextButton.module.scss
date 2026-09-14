@@ -3,6 +3,7 @@
 @use '../../breakpoints' as bp;
 
 .root {
+  position: relative;
   box-sizing: border-box;
   display: flex;
   min-height: 5.5rem;
@@ -52,6 +53,10 @@
   height: var(--trial-footer-icon-btn-size, 4rem);
   min-height: 0;
   padding: 0;
+}
+
+.root:has([data-shortcut-keycap]) > :not([data-shortcut-keycap]) {
+  visibility: hidden;
 }
 
 .variantSolid {

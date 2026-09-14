@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
 import { GameManager } from '../../utils/gameManager';
 import type { FarmSide } from '../../phaser/scenes/FarmSide';
 import getLabel from '../../data/labels';
+import { ariaKeyShortcutsFor } from '../../data/keyBindings';
 import { resolveCharacter } from '../../data/characters';
 import { FARM_INTRO_NPC_ID } from '../../data/farmMap';
 import { SIDE_SCENES } from '../../data/sideScenes';
@@ -13,12 +14,15 @@ import { useTutorialStore } from '../../store/tutorialStore';
 import FarmDialogue from '../farm/FarmDialogue';
 import { useFarmOverworldTalk } from '../hooks/useFarmOverworldTalk';
 import { useCodexNotices } from '../codex/useCodexNotices';
+import { useOpenCodexShortcut } from '../hooks/useOpenCodexShortcut';
 import {
   canRunTutorialTargetAction,
   canRunTutorialUntargetedAction,
   notifyTutorialTargetAction,
 } from '../tutorial/tutorialInteractionGuard';
 import type { TutorialTargetRef } from '../../types/debateEntities';
+import { interactionPromptPosition } from '../farm/interactionPromptPosition';
+import ShortcutKeycap from '../shortcuts/ShortcutKeycap';
 import styles from './FarmSideUI.module.scss';
 
 /**
@@ -53,6 +57,7 @@ const FarmSideUI: React.FC = () => {
   const animatedNoticeIds = useCodexUiStore((s) => s.animatedNoticeIds);
   const markNoticesAnimated = useCodexUiStore((s) => s.markNoticesAnimated);
   const [codexBursting, setCodexBursting] = useState(false);
+  const interactionPromptRef = useRef<HTMLButtonElement>(null);
 
   const descriptor = useMemo(() => SIDE_SCENES[activeSideSceneId], [activeSideSceneId]);
   const introNpcPresent = descriptor.npcs.some((npc) => npc.characterId === FARM_INTRO_NPC_ID);
@@ -70,6 +75,58 @@ const FarmSideUI: React.FC = () => {
     if (!nearbyPortalId) return null;
     return descriptor.portals.find((portal) => portal.id === nearbyPortalId) ?? null;
   }, [descriptor, nearbyPortalId]);
+
+  const nearbyTalkLabel = nearbyNpcId
+    ? getLabel('farmTalkPrompt', {
+        replacements: { name: resolveCharacter(nearbyNpcId).displayName },
+      })
+    : '';
+
+  const nearbyPortalLabel = nearbyPortal?.to ? getLabel(nearbyPortal.to.label) : '';
+
+  const interactionFocus = useMemo(
+    () =>
+      nearbyNpcId
+        ? { kind: 'npc' as const, id: nearbyNpcId }
+        : nearbyPortal?.to
+          ? { kind: 'portal' as const, id: nearbyPortal.id }
+          : null,
+    [nearbyNpcId, nearbyPortal],
+  );
+
+  useOpenCodexShortcut(
+    !isTraveling && !dialogue && !pendingFollowUp,
+    firstUnreadSection ?? undefined,
+  );
+
+  useEffect(() => {
+    if (!interactionFocus || dialogue) return;
+
+    let frame = 0;
+    const updatePromptPosition = () => {
+      const scene = GameManager.getCurrentScene();
+      const anchor =
+        scene?.scene.key === 'FarmSide'
+          ? (scene as FarmSide).getInteractionAnchor(interactionFocus)
+          : null;
+      const prompt = interactionPromptRef.current;
+      if (anchor && prompt) {
+        const stage = prompt.parentElement;
+        if (!stage) return;
+        const position = interactionPromptPosition(anchor, {
+          stageWidth: stage.clientWidth,
+          stageHeight: stage.clientHeight,
+          promptWidth: prompt.offsetWidth,
+          promptHeight: prompt.offsetHeight,
+        });
+        prompt.style.left = position.left;
+        prompt.style.top = position.top;
+      }
+      frame = window.requestAnimationFrame(updatePromptPosition);
+    };
+    updatePromptPosition();
+    return () => window.cancelAnimationFrame(frame);
+  }, [dialogue, interactionFocus]);
 
   const hudCodexVisible = !dialogue;
   useEffect(() => {
@@ -94,7 +151,10 @@ const FarmSideUI: React.FC = () => {
           <button
             className={styles.backButton}
             type="button"
-            onClick={() => GameManager.switchScene('MainMenu')}
+            onClick={() => {
+              useFarmStore.getState().setPendingForcedTalk(null);
+              GameManager.switchScene('MainMenu');
+            }}
           >
             {getLabel('farmSideBackToMenu')}
           </button>
@@ -109,7 +169,8 @@ const FarmSideUI: React.FC = () => {
             )}
             type="button"
             data-tutorial-codex-open
-            aria-label={hasUnread ? getLabel('codexOpenHasNew') : undefined}
+            aria-label={hasUnread ? getLabel('codexOpenHasNew') : getLabel('codexOpen')}
+            aria-keyshortcuts={ariaKeyShortcutsFor('codexOpen')}
             onAnimationEnd={(event) => {
               if (event.target !== event.currentTarget) return;
               setCodexBursting(false);
@@ -120,7 +181,8 @@ const FarmSideUI: React.FC = () => {
               notifyTutorialTargetAction(CODEX_OPEN_TARGET);
             }}
           >
-            {getLabel('codexOpen')}
+            <span className={styles.codexButtonLabel}>{getLabel('codexOpen')}</span>
+            <ShortcutKeycap action="codexOpen" />
           </button>
         </>
       )}
@@ -129,15 +191,19 @@ const FarmSideUI: React.FC = () => {
         <button
           type="button"
           className={styles.talkPrompt}
+          ref={interactionPromptRef}
+          aria-label={nearbyTalkLabel}
+          aria-keyshortcuts={ariaKeyShortcutsFor('farmInteract')}
           onClick={() => {
             if (!canRunTutorialUntargetedAction()) return;
             openDialogue(nearbyNpcId);
           }}
         >
-          {getLabel('farmTalkPrompt', {
-            replacements: { name: resolveCharacter(nearbyNpcId).displayName },
-          })}
-          <span className={styles.talkPromptKey}>{getLabel('farmInteractHint')}</span>
+          <span className={styles.interactionCue} aria-hidden="true">
+            ✦
+          </span>
+          <span className={styles.interactionLabel}>{nearbyTalkLabel}</span>
+          <ShortcutKeycap action="farmInteract" radius="pill" />
         </button>
       )}
 
@@ -145,6 +211,9 @@ const FarmSideUI: React.FC = () => {
         <button
           type="button"
           className={styles.portalPrompt}
+          ref={interactionPromptRef}
+          aria-label={nearbyPortalLabel}
+          aria-keyshortcuts={ariaKeyShortcutsFor('farmInteract')}
           onClick={() => {
             if (!canRunTutorialUntargetedAction()) return;
             const scene = GameManager.getCurrentScene();
@@ -153,8 +222,11 @@ const FarmSideUI: React.FC = () => {
             }
           }}
         >
-          {getLabel(nearbyPortal.to.label)}
-          <span className={styles.talkPromptKey}>{getLabel('farmInteractHint')}</span>
+          <span className={styles.interactionCue} aria-hidden="true">
+            ✦
+          </span>
+          <span className={styles.interactionLabel}>{nearbyPortalLabel}</span>
+          <ShortcutKeycap action="farmInteract" radius="pill" />
         </button>
       )}
 

@@ -6,6 +6,7 @@ import TrialActionRow from '../trial/components/TrialActionRow';
 import TrialChoiceButton from '../trial/components/TrialChoiceButton';
 import { useWindowKeyDown } from '../hooks/useWindowKeyDown';
 import {
+  OPTION_SHORTCUT_ACTIONS,
   optionIndexForCode,
   shouldIgnoreActionShortcut,
 } from '../trial/utils/trialActionShortcuts';
@@ -232,6 +233,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
                     replacements: { optionLetter, statement: preview },
                   })}
                   selected={selectedLessonKey === lesson.key}
+                  shortcutAction={OPTION_SHORTCUT_ACTIONS[idx]}
                   onClick={() => toggleLesson(lesson.key)}
                 />
               );
@@ -240,7 +242,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
         )}
         {mode === 'talk' && actionsReady && (
           <div className={styles.trialChoices}>
-            {talkActions.map((action) => (
+            {talkActions.map((action, idx) => (
               <TrialChoiceButton
                 key={action.id}
                 content={action.label}
@@ -251,6 +253,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
                     : action.label
                 }
                 disabled={action.disabled}
+                shortcutAction={OPTION_SHORTCUT_ACTIONS[idx]}
                 onClick={action.onClick}
               />
             ))}

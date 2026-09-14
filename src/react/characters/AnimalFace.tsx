@@ -3,21 +3,26 @@ import { resolveCharacter } from '../../data/characters';
 import type { AnimalEmotion } from '../../phaser/animals/animalEmotions';
 import {
   FACE_BOX_PX,
+  FACE_LOG_BOX_PX,
   preloadFaceSheets,
   resolvedFaceSheet,
 } from '../../phaser/animals/animalFaces';
+import { STAGE_REM_BASE_PX } from '../../utils/constants';
 import FaceClip from './FaceClip';
 
 /**
  * Where the portrait is being drawn. Only the box size differs, but the two sizes are named
- * rather than passed as a number so the dialogue box and the debate log cannot drift apart
- * by a few px, and so a third surface has to pick a side rather than invent a size.
+ * rather than passed as a length so the dialogue box and the debate log cannot drift apart,
+ * and so a third surface has to pick a side rather than invent a size.
+ *
+ * Lengths are `rem` so they track the stage-width root font (`App.tsx` / `STAGE_REM_*`).
+ * At design rem they equal `FACE_BOX_PX` / `FACE_LOG_BOX_PX`.
  */
 export type AnimalFaceSize = 'dialogue' | 'log';
 
-const BOX_PX: Record<AnimalFaceSize, number> = {
-  dialogue: FACE_BOX_PX,
-  log: 44,
+const BOX: Record<AnimalFaceSize, string> = {
+  dialogue: `${FACE_BOX_PX / STAGE_REM_BASE_PX}rem`,
+  log: `${FACE_LOG_BOX_PX / STAGE_REM_BASE_PX}rem`,
 };
 
 interface AnimalFaceProps {
@@ -43,7 +48,7 @@ const AnimalFace: React.FC<AnimalFaceProps> = ({ characterId, emotion, size = 'd
 
   useEffect(() => preloadFaceSheets(animal), [animal]);
 
-  return <FaceClip sheet={sheet} box={BOX_PX[size]} />;
+  return <FaceClip sheet={sheet} box={BOX[size]} />;
 };
 
 export default AnimalFace;

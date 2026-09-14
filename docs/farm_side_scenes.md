@@ -114,10 +114,16 @@ behind the walker without a special case.
 ## The cast: who stands on the road
 
 `SideSceneDescriptor.npcs` names characters, never sprites — `{ characterId, x, y?,
-facing? }`, resolved through `src/data/characters.ts` exactly the way
+facing?, interactionPromptLift?, interactive? }`, resolved through `src/data/characters.ts` exactly the way
 `FARM_NPCS` is in the top-down farm. `animalPacks.ts` reads the same list to work out which
 atlases `FarmSide` has to fetch (`sideSceneAnimalIds(descriptor)`), so adding an animal to
-a scene is one edit, not two. Rue is not in the list: the player is spawned by the scene.
+a scene is one edit, not two. Set `interactive: false` for an ambient character that should
+animate without entering the conversation focus contest. Rue is not in the list: the player
+is spawned by the scene.
+
+`interactionPromptLift` is the screen-space distance above that entity's authored ground point,
+in 1920×1080 design pixels. Set it per character to clear the visible sprite; omit it to use
+the 200px default. Portals support the same optional override.
 Portal hops use `resolveEntrySpawn`. A first visit (no portal, no saved pose) uses an
 authored `playerSpawn` when the scene has one — on `greenMeadowsRoad` that is beside Dot,
 facing her, so her auto-opening greeting frames the pair rather than a raccoon at the west
@@ -139,6 +145,39 @@ that reads wrong here reads wrong on the top-down farm too, and the fix belongs 
 file's `MANUAL_ADJUST`, not in a side-scene special case.
 
 Nothing on the road is solid: not the props, not the animals. It is a lane, not a maze.
+
+## Patrolling NPCs
+
+An NPC can amble back and forth along a stretch of road instead of just standing there:
+add a `patrol: { fromX, toX, speed?, pauseMs? }` to its `SideSceneNpcSpec`
+(`sideScenePatrol.ts`). The NPC's own `y` *is* the lane — walking the fence means placing
+them close to it, not authoring a second coordinate. Bram on `gateLane` is the first: `y:
+855` sits just inside the top of the walkable road band, under the rail, and his
+`{ fromX: 1100, toX: 2200 }` stretch stays clear of the gate portal's interact radius.
+
+He walks to one end, stops, idles for `pauseMs` (default 1000ms), then turns and walks to
+the other — `sideScenePatrol.ts`'s `stepPatrol` is the pure stepper, ticked by
+`SideSceneNpc.update()`. Keep `speed` (default 140px/s) away from a plain guess: the walk
+clip's own playback rate is clamped by `AnimalAnimator.MOVE_RATE_AT_TOP_SPEED`, fitted
+against the player's 260px/s, so a patrol speed near half that lands on the clip's
+unclamped stride — much slower and every character's stride collapses to the same crawl
+rate regardless of `speed`.
+
+**Every animal freezes the instant a dialogue opens — not just the one being talked to.**
+`SideSceneNpc.update(deltaMs, canMove)` takes the same `canMove` gate the player's own
+movement is frozen by (`talkingToNpcId`, a scene hop in flight, or the tutorial overlay),
+so the whole road stops together the moment a talk starts. This isn't only cosmetic:
+`applyTalkCamera` frames the two actors' `visualBounds` at the instant the talk opens and
+turns them to face each other — an animal that kept walking would drift out of its own
+framing and re-flip away from the player on the very next tick. A patrolling NPC caught
+mid-stride settles onto its idle pose rather than freezing mid-step, and resumes its
+travel-direction facing (not the one it held to face the player) the moment the talk
+closes.
+
+Reduced motion (`prefersReducedMotion`) stops every patrol outright rather than letting it
+glide on a frozen rest frame — the same choice the animator itself already makes for a
+single sprite, applied to the scene's tick. `FarmSide` caches the preference in a field
+kept current by `onReducedMotionChange` rather than polling `matchMedia` every frame.
 
 ## The talk camera
 

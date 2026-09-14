@@ -1,6 +1,10 @@
 import { Scene } from 'phaser';
 import { EventBus } from '../EventBus';
 import { STAGE_DESIGN_HEIGHT, STAGE_DESIGN_WIDTH, TRIAL_STAGE_HOLE } from '../../utils/constants';
+import {
+  DEFAULT_INTERACTION_PROMPT_LIFT,
+  resolveInteractionPromptLift,
+} from '../../utils/interactionPrompt';
 import { SIDE_SCENES } from '../../data/sideScenes';
 import type { SidePortalLink, SideSceneId } from '../../types/sideScene';
 import { queueSideSceneAssets } from '../sideScene/sideSceneAssets';
@@ -16,6 +20,7 @@ import {
 import {
   PORTAL_INTERACT_RADIUS,
   resolveFocus,
+  SIDE_NPC_INTERACT_RADIUS,
   type FocusPoint,
 } from '../sideScene/sideSceneInteractions';
 import { beginSideSceneTravel } from '../sideScene/sideSceneTravel';
@@ -32,7 +37,7 @@ import { reportSceneLoadProgress } from '../bootProgress';
 import { useFarmStore } from '../../store/farmStore';
 import { useGameStore } from '../../store/gameStore';
 import { useTutorialStore } from '../../store/tutorialStore';
-import { prefersReducedMotion } from '../../utils/reducedMotion';
+import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reducedMotion';
 
 /**
  * The lateral farm world: one scene class restarted onto whichever `SIDE_SCENES`
@@ -42,9 +47,6 @@ import { prefersReducedMotion } from '../../utils/reducedMotion';
  * transition. See `docs/farm_side_scenes.md`.
  */
 const DEBUG_SIDE_SCENE = false;
-
-/** How near Rue has to stand before an animal is offered for a talk, in world px. */
-const INTERACT_RADIUS = 400;
 
 /**
  * How long after `create()` an interact key press is ignored. OS key auto-repeat fires a
@@ -110,6 +112,10 @@ export class FarmSide extends Scene {
   private talkTween: Phaser.Tweens.Tween | null = null;
   private unsubscribeFarmUi: (() => void) | null = null;
   private unsubscribeTutorial: (() => void) | null = null;
+  /** Cached rather than polled 60×/s (`prefersReducedMotion` allocates a `MediaQueryList`
+   *  per call) — kept current by `onReducedMotionChange`, unsubscribed in `teardown()`. */
+  private reducedMotion = false;
+  private unsubscribeReducedMotion: (() => void) | null = null;
 
   /** Portal id the player just arrived through, or undefined for a menu/default spawn. */
   private entryPortalId?: string;
@@ -156,6 +162,7 @@ export class FarmSide extends Scene {
     this.entryPortalId = data?.entryPortalId;
     this.disarmedPortalId = data?.entryPortalId ?? null;
     this.interactArmedAt = 0;
+    this.reducedMotion = prefersReducedMotion();
   }
 
   preload() {
@@ -209,6 +216,10 @@ export class FarmSide extends Scene {
     });
     this.applyTutorialInputLock(useTutorialStore.getState().isOpen);
 
+    this.unsubscribeReducedMotion = onReducedMotionChange((reduced) => {
+      this.reducedMotion = reduced;
+    });
+
     // No `startFollow` and no camera bounds: the scene drives the camera itself in
     // `update()` so every parallax calculation reads the same locally-computed `scrollX` in
     // the same tick, rather than the one-frame-stale value Phaser's own camera render pass
@@ -224,7 +235,12 @@ export class FarmSide extends Scene {
   update(_time: number, delta: number): void {
     const talking = useFarmStore.getState().talkingToNpcId;
     const tutorialOpen = useTutorialStore.getState().isOpen;
-    this.player?.update(delta, !(talking || this.travelling || tutorialOpen));
+    const canAct = !(talking || this.travelling || tutorialOpen);
+    this.player?.update(delta, canAct);
+    // Reduced motion parks every animal on its rest frame (see `AnimalAnimator`), so a
+    // patrolling NPC stands at its authored spot rather than gliding along the fence on a
+    // frozen pose — same contract the fades and the talk camera already honour.
+    this.npcs.forEach((npc) => npc.update(delta, canAct && !this.reducedMotion));
     this.updateFocus(talking);
     this.updateCamera();
     this.sceneLayers?.update(this.scrollX);
@@ -247,17 +263,19 @@ export class FarmSide extends Scene {
       }
     }
 
-    const npcs: FocusPoint[] = this.npcs.map((npc) => ({
-      id: npc.characterId,
-      x: npc.x,
-      y: npc.y,
-    }));
+    const npcs: FocusPoint[] = this.npcs
+      .filter((npc) => npc.interactive)
+      .map((npc) => ({
+        id: npc.characterId,
+        x: npc.x,
+        y: npc.y,
+      }));
     const portals: FocusPoint[] = this.descriptor.portals
       .filter((portal) => portal.to && portal.id !== this.disarmedPortalId)
       .map((portal) => ({ id: portal.id, ...resolvePortal(portal, this.descriptor) }));
 
     const focus = resolveFocus(player, npcs, portals, {
-      npc: INTERACT_RADIUS,
+      npc: SIDE_NPC_INTERACT_RADIUS,
       portal: PORTAL_INTERACT_RADIUS,
     });
 
@@ -294,6 +312,39 @@ export class FarmSide extends Scene {
     if (this.travelling) return;
     const portal = this.descriptor.portals.find((candidate) => candidate.id === portalId);
     if (portal?.to) this.startTravel(portal.to);
+  }
+
+  /**
+   * Screen-space anchor for the React interaction prompt. It deliberately comes from the
+   * live camera rather than authored coordinates: the prompt must stay over its target as
+   * Rue walks and the lateral camera tracks her.
+   */
+  getInteractionAnchor(focus: {
+    kind: 'npc' | 'portal';
+    id: string;
+  }): { x: number; y: number } | null {
+    let point: { x: number; y: number } | null = null;
+    let lift = DEFAULT_INTERACTION_PROMPT_LIFT;
+    if (focus.kind === 'npc') {
+      const npc = this.npcs.find((candidate) => candidate.characterId === focus.id);
+      if (npc) {
+        point = { x: npc.x, y: npc.y };
+        lift = resolveInteractionPromptLift(npc.interactionPromptLift);
+      }
+    } else {
+      const portal = this.descriptor.portals.find((candidate) => candidate.id === focus.id);
+      if (portal) {
+        point = resolvePortal(portal, this.descriptor);
+        lift = resolveInteractionPromptLift(portal.interactionPromptLift);
+      }
+    }
+    if (!point) return null;
+
+    const camera = this.cameras.main;
+    return {
+      x: camera.x + (point.x - camera.scrollX) * camera.zoom,
+      y: camera.y + (point.y - camera.scrollY) * camera.zoom - lift,
+    };
   }
 
   /**
@@ -460,6 +511,8 @@ export class FarmSide extends Scene {
     this.unsubscribeFarmUi = null;
     this.unsubscribeTutorial?.();
     this.unsubscribeTutorial = null;
+    this.unsubscribeReducedMotion?.();
+    this.unsubscribeReducedMotion = null;
     this.talkTween?.remove();
     this.talkTween = null;
     this.talkFrame = null;

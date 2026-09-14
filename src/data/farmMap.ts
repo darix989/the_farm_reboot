@@ -55,6 +55,8 @@ export interface FarmNpc {
   id: string;
   x: number;
   y: number;
+  /** Screen-space gap above the character for their interaction prompt, in design pixels. */
+  interactionPromptLift?: number;
   /**
    * Encounters this animal owns, in the order they should be offered. The player
    * is given the first one they have not completed. Typed as `DebateScenarioKey`,

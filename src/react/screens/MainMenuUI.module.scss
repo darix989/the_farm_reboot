@@ -5,10 +5,16 @@
 .mainMenuUi {
   position: absolute;
   inset: 0;
+  container-type: size;
+  pointer-events: none;
+}
+
+.menuStage {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: stretch;
   justify-content: flex-start;
-  pointer-events: none;
 
   /* Darken the left so the panel reads, leave the painting open on the right. */
   background: linear-gradient(
@@ -64,10 +70,23 @@
   gap: 0.55rem;
 }
 
-.secondaryActions {
+.sectionNav {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+}
+
+.menuBackRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.menuViewHeading {
+  margin: 0;
+  font-size: var(--ui-font-body);
+  font-weight: bold;
+  color: var(--ui-color-text-emphasis);
 }
 
 .menuButton,
@@ -75,6 +94,7 @@
 .menuButtonDanger,
 .scenarioButton {
   width: 100%;
+  min-height: max(2.75rem, 44px);
   font-weight: bold;
   text-align: left;
   cursor: pointer;
@@ -245,5 +265,71 @@
   &:active {
     background: var(--ui-color-accent);
     color: var(--ui-color-text-on-accent);
+  }
+}
+
+@container (max-width: 1100px) {
+  .menuStage,
+  .confirmOverlay {
+    /* Stage rem is crushed on a letterboxed tablet; floor type in CSS pixels. */
+    --ui-font-caption: max(1.055rem, 15px);
+    --ui-font-label: max(1.172rem, 16px);
+    --ui-font-subtitle: max(1.289rem, 17px);
+    --ui-font-body: max(1.406rem, 18px);
+    --ui-font-display: max(2.109rem, 26px);
+  }
+
+  .menuContainer {
+    /* Percentage, not rem: 36rem at STAGE_REM_MIN is ~180px and wraps every label. */
+    width: max(36rem, 68%);
+    max-width: 72%;
+  }
+
+  .menuButton,
+  .menuButtonDanger,
+  .scenarioButton {
+    font-size: var(--ui-font-body);
+  }
+
+  .menuButtonPrimary {
+    font-size: var(--ui-font-subtitle);
+  }
+}
+
+/*
+ * Phone landscape 16:9 stages are height-capped (Pixel 10 fullscreen ≈ 732px wide,
+ * iPhone ≈ 693px). 720px left fullscreen Pixel just on the tablet rule.
+ */
+@container (max-width: 900px) {
+  .menuStage,
+  .confirmOverlay {
+    --ui-font-caption: max(1.055rem, 16px);
+    --ui-font-label: max(1.172rem, 17px);
+    --ui-font-subtitle: max(1.289rem, 18px);
+    --ui-font-body: max(1.406rem, 19px);
+    --ui-font-display: max(2.109rem, 28px);
+  }
+
+  .menuStage {
+    background: linear-gradient(
+      180deg,
+      var(--ui-color-overlay-backdrop) 0%,
+      var(--ui-color-overlay-deep) 100%
+    );
+  }
+
+  .menuContainer {
+    width: auto;
+    max-width: none;
+    max-height: 94%;
+    margin: auto 4%;
+
+    /* Clear the Chrome-Android fullscreen control in the stage corner. */
+    padding: max(1.1rem, 44px) 1.1rem 1rem max(1.1rem, 48px);
+    gap: 0.75rem;
+  }
+
+  .confirmActions {
+    grid-template-columns: 1fr;
   }
 }

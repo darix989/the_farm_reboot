@@ -90,6 +90,7 @@ src/
     codex/              # Field Notes overlay
     farm/               # Overworld talk screen
     tutorial/           # Tutorial overlay + spotlight
+    shortcuts/          # Hold-Shift keycap reveal (bindings in src/data/keyBindings.ts)
     characters/         # AnimalFace DOM dialogue portrait
   store/                # Zustand stores (gameStore, farmStore, progressStore, codexStore, etc.)
   utils/                # constants, gameManager, gameConditions, encounterRewards

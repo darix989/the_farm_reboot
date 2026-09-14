@@ -94,6 +94,27 @@ export function validateSideSceneDescriptor(
     });
   });
 
+  descriptor.npcs.forEach((npc, ni) => {
+    const patrol = npc.patrol;
+    if (!patrol) return;
+    if (patrol.toX <= patrol.fromX) {
+      issues.push({
+        message: `npcs[${ni}] "${npc.characterId}" patrol [${patrol.fromX}, ${patrol.toX}] is empty or inverted`,
+      });
+      return;
+    }
+    if (patrol.fromX < 0 || patrol.toX > descriptor.width) {
+      issues.push({
+        message: `npcs[${ni}] "${npc.characterId}" patrol [${patrol.fromX}, ${patrol.toX}] falls outside [0, ${descriptor.width}]`,
+      });
+    }
+    if (npc.x < patrol.fromX || npc.x > patrol.toX) {
+      issues.push({
+        message: `npcs[${ni}] "${npc.characterId}" stands at x=${npc.x}, outside its own patrol [${patrol.fromX}, ${patrol.toX}]`,
+      });
+    }
+  });
+
   if (descriptor.portals.length === 0) {
     issues.push({ message: `${descriptor.id} has no portals` });
   }

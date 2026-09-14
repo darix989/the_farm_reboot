@@ -114,6 +114,13 @@ export const CHARACTERS: Readonly<Record<string, CharacterVisual>> = {
     kind: 'npc',
     animal: 'dog',
   },
+  pip: {
+    id: 'pip',
+    nameLabel: 'farmNpcPip',
+    tint: 0x9ca3af,
+    kind: 'npc',
+    animal: 'mouse',
+  },
 };
 
 export function characterById(id: string): CharacterVisual | null {

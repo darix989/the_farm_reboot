@@ -280,6 +280,12 @@
       "view": "Side view, facing left",
       "$comment": "Carrier is the huge PINK SNOUT + GOOGLY EYES + golden COWBELL on a teal collar: high-contrast silhouette pieces that read at stage scale, while the spotted body is a big oval that turns to mush if asked to deform. Its prior is GRAZING (the atlas ships eat / eat_start / eat_end), so every prompt holds the head UP at the reference height the way the sheep's did. The bell should move with talk and anger; the legs stay planted.",
       "reference": "__black_and_white_cow_idle/__black_and_white_cow_idle-0.png",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.08,
+        "w": 0.56,
+        "h": 0.7
+      },
       "overrides": {
         "talking": {
           "prompt": "{view}. The black and white cow stands in place on all fours and talks: its big pink snout opens and closes with each phrase, its head bobs gently in time, its googly eyes blink once, and the golden bell on its teal collar swings slightly. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
@@ -355,6 +361,12 @@
       "view": "Side view, facing right",
       "$comment": "The only animal whose source art faces RIGHT (isFlipped). Framing MUST stay 'facing right' — telling it 'facing left' turns the character and the clip will not cut against idle. Carrier: huge rounded EARS with pink interiors (the highest-contrast feature) plus the long arched PINK TAIL and the two rectangular BUCK TEETH. Its prior is LYING DOWN (the atlas ships lie / stand), so every prompt holds it standing and never lying down.",
       "reference": "mouse-idle-spritesheet-746px-by-469px-per-frame-0.png",
+      "headCrop": {
+        "x": 0.42,
+        "y": -0.06,
+        "w": 0.56,
+        "h": 0.7
+      },
       "overrides": {
         "talking": {
           "prompt": "{view}. The grey mouse stands in place on all fours and talks: its snout opens and closes showing the same two rectangular white front teeth in every frame the mouth is open, its head bobs gently in time, its big rounded ears with pink interiors flick once, and the long pink tail arched over its back sways slightly. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
@@ -363,7 +375,7 @@
           "prompt": "{view}. The grey mouse stands in place on all fours and is unconvinced: its head draws back and tilts, one big rounded ear swivels back, its snout stays shut with the two white front teeth still visible, and its long pink tail hangs still. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
         },
         "angry": {
-          "prompt": "{view}. The grey mouse stands in place on all fours and is furious: its big rounded ears pin back, its eyes narrow, its head pushes forward at the target, its snout opens showing the same two rectangular white front teeth in every frame, and its long pink tail lashes. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits, never lunges. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
+          "prompt": "{view}. The entire grey mouse stays fixed inside the exact outer pixel bounds of the reference silhouette for every frame. Its torso, back, belly, head, nose, long arched pink tail and all four planted pink feet remain motionless at exactly their reference positions, sizes and heights. The camera, framing, scale and center remain fixed. ONLY THE EARS, EYES AND MOUTH MOVE, entirely inward within the starting silhouette: its two huge rounded ears fold slightly backward without any edge extending beyond their original outer boundaries; both eyes stay open and narrow into a hard glare. Its snout opens into a small controlled snarl: the two rectangular white front teeth stay exactly the same size, shape, spacing and position as the reference in every open-mouth frame, and behind them is one smooth flat pale-pink patch of color, the same flat pale pink in every single frame the mouth is open, with no red, no tongue, no gum line, no extra shading and no other color or shape ever appearing inside the mouth. Nothing translates, enlarges, lowers, crouches, leans, lunges or travels. No pixel of the mouse crosses the original top, bottom, left or right silhouette bounds. During the first quarter the face slowly tightens into the glare and snarl; during the middle half it holds; during the final quarter it returns along the identical path to the fully closed reference mouth. The first and final frames exactly match the reference in position, silhouette, proportions, mouth and colors. One slow continuous closed motion, stationary camera, seamless repeating loop."
         },
         "thinking": {
           "prompt": "{view}. The grey mouse stands in place on all fours and considers something: almost motionless, its head turned slightly away, its big rounded ears rotating slowly, its snout shut with the two white front teeth still visible, its long pink tail arched still. All four pink feet stay planted exactly where they are in the reference image and never move. It stays standing the whole time and never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."
@@ -378,6 +390,12 @@
       "view": "Side view, facing left",
       "$comment": "Carrier is the round PINK SNOUT (the face) plus the CORKSCREW TAIL (the only silhouette appendage). The body is a low wide oval that will collapse into a lying-down mud pose if unaddressed, so every prompt holds it standing on four short legs. Ears are small and do not carry emotion the way the fox's do.",
       "reference": "__pig_idle-0.png",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.08,
+        "w": 0.56,
+        "h": 0.7
+      },
       "overrides": {
         "talking": {
           "prompt": "{view}. The pink pig stands in place on all fours and talks: its round snout opens and closes with each phrase, its head bobs gently in time, its small ears flick once, and its corkscrew tail twitches. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout."

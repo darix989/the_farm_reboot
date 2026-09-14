@@ -1,5 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
+import { ariaKeyShortcutsFor } from '../../../data/keyBindings';
+import ShortcutKeycap from '../../shortcuts/ShortcutKeycap';
 import TrialTextButton from './TrialTextButton';
 import {
   canRunTutorialTargetAction,
@@ -9,6 +11,7 @@ import { useWindowKeyDown } from '../../hooks/useWindowKeyDown';
 import {
   ANALYZE_CODE,
   BACK_CODE,
+  SKIP_CODE,
   isContinueCode,
   shouldIgnoreActionShortcut,
 } from '../utils/trialActionShortcuts';
@@ -52,7 +55,7 @@ export interface TrialActionRowProps {
   submit: TrialActionSpec & { icon: 'reveal' | 'continue' | 'confirm' | 'leave' };
   /**
    * Optional fourth slot after Continue. Farm talks pass this when the dialog-skip
-   * toggle is on; debates omit it. Click-only — no shortcut, no tutorial target.
+   * toggle is on; debates omit it. **F** jumps to the last beat. No tutorial target.
    */
   skip?: TrialActionSpec | null;
   /** `data-tutorial-interactive-action` on the submit button. */
@@ -105,6 +108,11 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
     notifyTutorialTargetAction(target);
   };
 
+  const runSkip = () => {
+    if (skip == null || skip.disabled) return;
+    skip.onClick();
+  };
+
   useWindowKeyDown((event) => {
     if (shouldIgnoreActionShortcut(event)) return;
 
@@ -126,6 +134,13 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
       if (back.disabled) return;
       event.preventDefault();
       runBack();
+      return;
+    }
+
+    if (event.code === SKIP_CODE) {
+      if (skip == null || skip.disabled) return;
+      event.preventDefault();
+      runSkip();
     }
   }, shortcutsEnabled);
 
@@ -143,46 +158,51 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
           })}
           disabled={analyze.disabled}
           aria-label={analyze.label}
+          aria-keyshortcuts={ariaKeyShortcutsFor('trialAnalyze')}
           title={analyze.label}
           onClick={runAnalyze}
           data-tutorial-interactive-action="analyze"
         >
           <img src={magnifyingIcon} alt="" className={styles.trialFooterIcon} />
+          <ShortcutKeycap action="trialAnalyze" />
         </TrialTextButton>
       )}
       <TrialTextButton
         widthMode="square"
         disabled={back.disabled}
         aria-label={back.label}
+        aria-keyshortcuts={ariaKeyShortcutsFor('trialBack')}
         title={back.label}
         onClick={runBack}
         data-tutorial-interactive-action="back"
       >
         <img src={backIcon} alt="" className={styles.trialFooterIcon} />
+        <ShortcutKeycap action="trialBack" />
       </TrialTextButton>
       <TrialTextButton
         widthMode="square"
         variant={submit.icon === 'reveal' ? 'dashed' : 'solid'}
         disabled={submit.disabled}
         aria-label={submit.label}
+        aria-keyshortcuts={ariaKeyShortcutsFor('trialContinue', extraContinueCodes ?? [])}
         title={submit.label}
         onClick={runSubmit}
         data-tutorial-interactive-action={submitTutorialAction}
       >
         <img src={SUBMIT_ICON_SRC[submit.icon]} alt="" className={styles.trialFooterIcon} />
+        <ShortcutKeycap action="trialContinue" />
       </TrialTextButton>
       {skip != null && (
         <TrialTextButton
           widthMode="square"
           disabled={skip.disabled}
           aria-label={skip.label}
+          aria-keyshortcuts={ariaKeyShortcutsFor('farmTalkSkip')}
           title={skip.label}
-          onClick={() => {
-            if (skip.disabled) return;
-            skip.onClick();
-          }}
+          onClick={runSkip}
         >
           <img src={skipIcon} alt="" className={styles.trialFooterIcon} />
+          <ShortcutKeycap action="farmTalkSkip" />
         </TrialTextButton>
       )}
     </div>
