@@ -5,6 +5,7 @@ export const CONTINUE_CODES: readonly string[] = KEY_BINDINGS.trialContinue.code
 
 export const ANALYZE_CODE = KEY_BINDINGS.trialAnalyze.displayCode;
 export const BACK_CODE = KEY_BINDINGS.trialBack.displayCode;
+export const SKIP_CODE = KEY_BINDINGS.farmTalkSkip.displayCode;
 
 /** Visual option A / B / C, in that order. */
 export const OPTION_CODES = [

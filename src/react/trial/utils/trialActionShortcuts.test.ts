@@ -4,6 +4,7 @@ import {
   BACK_CODE,
   CONTINUE_CODES,
   OPTION_CODES,
+  SKIP_CODE,
   shouldIgnoreActionShortcut,
 } from './trialActionShortcuts';
 
@@ -24,6 +25,7 @@ describe('trialActionShortcuts registry', () => {
     expect(CONTINUE_CODES).toEqual(['Space', 'Enter', 'KeyD']);
     expect(ANALYZE_CODE).toBe('KeyA');
     expect(BACK_CODE).toBe('KeyS');
+    expect(SKIP_CODE).toBe('KeyF');
     expect(OPTION_CODES).toEqual(['KeyZ', 'KeyX', 'KeyC']);
   });
 });

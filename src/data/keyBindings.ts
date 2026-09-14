@@ -17,7 +17,8 @@ export type ShortcutAction =
   | 'trialOptionC'
   | 'trialAnalyze'
   | 'trialBack'
-  | 'trialContinue';
+  | 'trialContinue'
+  | 'farmTalkSkip';
 
 export interface KeyBinding {
   /** Every `event.code` that fires this action, primary first. */
@@ -35,6 +36,7 @@ export const KEY_BINDINGS: Record<ShortcutAction, KeyBinding> = {
   trialAnalyze: { codes: ['KeyA'], displayCode: 'KeyA' },
   trialBack: { codes: ['KeyS'], displayCode: 'KeyS' },
   trialContinue: { codes: ['Space', 'Enter', 'KeyD'], displayCode: 'KeyD' },
+  farmTalkSkip: { codes: ['KeyF'], displayCode: 'KeyF' },
 };
 
 /** Option A / B / C in visual order — Z / X / C. */

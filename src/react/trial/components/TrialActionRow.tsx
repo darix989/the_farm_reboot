@@ -11,6 +11,7 @@ import { useWindowKeyDown } from '../../hooks/useWindowKeyDown';
 import {
   ANALYZE_CODE,
   BACK_CODE,
+  SKIP_CODE,
   isContinueCode,
   shouldIgnoreActionShortcut,
 } from '../utils/trialActionShortcuts';
@@ -54,7 +55,7 @@ export interface TrialActionRowProps {
   submit: TrialActionSpec & { icon: 'reveal' | 'continue' | 'confirm' | 'leave' };
   /**
    * Optional fourth slot after Continue. Farm talks pass this when the dialog-skip
-   * toggle is on; debates omit it. Click-only — no shortcut, no tutorial target.
+   * toggle is on; debates omit it. **F** jumps to the last beat. No tutorial target.
    */
   skip?: TrialActionSpec | null;
   /** `data-tutorial-interactive-action` on the submit button. */
@@ -107,6 +108,11 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
     notifyTutorialTargetAction(target);
   };
 
+  const runSkip = () => {
+    if (skip == null || skip.disabled) return;
+    skip.onClick();
+  };
+
   useWindowKeyDown((event) => {
     if (shouldIgnoreActionShortcut(event)) return;
 
@@ -128,6 +134,13 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
       if (back.disabled) return;
       event.preventDefault();
       runBack();
+      return;
+    }
+
+    if (event.code === SKIP_CODE) {
+      if (skip == null || skip.disabled) return;
+      event.preventDefault();
+      runSkip();
     }
   }, shortcutsEnabled);
 
@@ -184,14 +197,12 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
           widthMode="square"
           disabled={skip.disabled}
           aria-label={skip.label}
+          aria-keyshortcuts={ariaKeyShortcutsFor('farmTalkSkip')}
           title={skip.label}
-          onClick={() => {
-            if (skip.disabled) return;
-            skip.onClick();
-          }}
+          onClick={runSkip}
         >
           <img src={skipIcon} alt="" className={styles.trialFooterIcon} />
-          <ShortcutKeycap action={null} />
+          <ShortcutKeycap action="farmTalkSkip" />
         </TrialTextButton>
       )}
     </div>
