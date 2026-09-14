@@ -5,6 +5,8 @@ import { useTutorialStore } from '../../store/tutorialStore';
 import { useCodexUiStore } from '../../store/codexUiStore';
 import { resolveStageSpotlightToViewport } from './spotlightRect';
 import { useStageRect } from './useStageRect';
+import { ariaKeyShortcutsFor, type ShortcutAction } from '../../data/keyBindings';
+import ShortcutKeycap from '../shortcuts/ShortcutKeycap';
 import TrialTextButton from '../trial/components/TrialTextButton';
 import ScrollFadeContainer from '../trial/components/ScrollFadeContainer';
 import panelStyles from '../trial/panels/TrialPanels.module.scss';
@@ -19,12 +21,41 @@ import { TutorialModalRichBody } from './tutorialRichMessage';
 import { GameManager } from '../../utils/gameManager';
 import { useGameStore } from '../../store/gameStore';
 import { useWindowKeyDown } from '../hooks/useWindowKeyDown';
-import { isContinueCode, isTextFieldTarget } from '../trial/utils/trialActionShortcuts';
+import { BACK_CODE, isContinueCode, isTextFieldTarget } from '../trial/utils/trialActionShortcuts';
 import type { TutorialModalAnchor } from '../../types/tutorialModalLayout';
 import {
   mergeTutorialModalSpecWithDevOverride,
   normalizeTutorialModalSpecToArea,
 } from './tutorialModalLayout';
+
+function TutorialFooterButton({
+  label,
+  action,
+  onClick,
+  disabled,
+  glow,
+}: {
+  label: string;
+  action: ShortcutAction | null;
+  onClick: () => void;
+  disabled?: boolean;
+  glow?: boolean;
+}) {
+  return (
+    <TrialTextButton
+      type="button"
+      variant="solid"
+      className={glow ? styles.primaryActionGlow : undefined}
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      aria-keyshortcuts={action ? ariaKeyShortcutsFor(action) : undefined}
+    >
+      <span>{label}</span>
+      <ShortcutKeycap action={action} />
+    </TrialTextButton>
+  );
+}
 
 declare global {
   interface Window {
@@ -90,12 +121,22 @@ const TutorialOverlay: React.FC = () => {
   };
 
   // Capture so this wins over footer Continue: on a reading step, D / Space / Enter
-  // dismiss or advance the dialog. `target_only` steps leave the keys alone so they
-  // can still press the highlighted control.
+  // dismiss or advance the dialog. `target_only` steps leave Continue keys alone so they
+  // can still press the highlighted control. S still steps Back when that button is shown.
   useWindowKeyDown(
     (event) => {
       if (event.repeat || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
       if (isTextFieldTarget(event)) return;
+
+      if (event.code === BACK_CODE) {
+        if (isSingle || exitsToMainMenu) return;
+        if (disableBackButton || stepIndex === 0) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        stepBack();
+        return;
+      }
+
       if (!isContinueCode(event.code)) return;
       if (isTargetOnlyStep) return;
       event.preventDefault();
@@ -176,17 +217,16 @@ const TutorialOverlay: React.FC = () => {
       });
 
   const renderFooter = () => {
+    const primaryAction = isTargetOnlyStep ? null : 'trialContinue';
     if (exitsToMainMenu) {
       return (
         <div className={cn(styles.footer, styles.footerSingle)}>
-          <TrialTextButton
-            type="button"
-            variant="solid"
-            className={styles.primaryActionGlow}
+          <TutorialFooterButton
+            label={primaryLabel}
+            action={primaryAction}
             onClick={onPrimary}
-          >
-            {primaryLabel}
-          </TrialTextButton>
+            glow
+          />
         </div>
       );
     }
@@ -194,34 +234,28 @@ const TutorialOverlay: React.FC = () => {
       return (
         <div className={cn(styles.footer, isSingle && styles.footerSingle)}>
           {isSingle ? (
-            <TrialTextButton
-              type="button"
-              variant="solid"
-              className={styles.primaryActionGlow}
+            <TutorialFooterButton
+              label={primaryLabel}
+              action={primaryAction}
               onClick={onPrimary}
               disabled
-            >
-              {primaryLabel}
-            </TrialTextButton>
+              glow
+            />
           ) : (
             <div className={panelStyles.trialFooterGrid}>
-              <TrialTextButton
-                type="button"
-                variant="solid"
+              <TutorialFooterButton
+                label={getLabel('back')}
+                action="trialBack"
                 onClick={stepBack}
                 disabled={disableBackButton || stepIndex === 0}
-              >
-                {getLabel('back')}
-              </TrialTextButton>
-              <TrialTextButton
-                type="button"
-                variant="solid"
-                className={styles.primaryActionGlow}
+              />
+              <TutorialFooterButton
+                label={primaryLabel}
+                action={primaryAction}
                 onClick={onPrimary}
                 disabled
-              >
-                {primaryLabel}
-              </TrialTextButton>
+                glow
+              />
             </div>
           )}
         </div>
@@ -230,32 +264,26 @@ const TutorialOverlay: React.FC = () => {
     return (
       <div className={cn(styles.footer, isSingle && styles.footerSingle)}>
         {isSingle ? (
-          <TrialTextButton
-            type="button"
-            variant="solid"
-            className={styles.primaryActionGlow}
+          <TutorialFooterButton
+            label={primaryLabel}
+            action={primaryAction}
             onClick={onPrimary}
-          >
-            {primaryLabel}
-          </TrialTextButton>
+            glow
+          />
         ) : (
           <div className={panelStyles.trialFooterGrid}>
-            <TrialTextButton
-              type="button"
-              variant="solid"
+            <TutorialFooterButton
+              label={getLabel('back')}
+              action="trialBack"
               onClick={stepBack}
               disabled={disableBackButton || stepIndex === 0}
-            >
-              {getLabel('back')}
-            </TrialTextButton>
-            <TrialTextButton
-              type="button"
-              variant="solid"
-              className={styles.primaryActionGlow}
+            />
+            <TutorialFooterButton
+              label={primaryLabel}
+              action={primaryAction}
               onClick={onPrimary}
-            >
-              {primaryLabel}
-            </TrialTextButton>
+              glow
+            />
           </div>
         )}
       </div>
