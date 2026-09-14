@@ -151,7 +151,10 @@ const FarmSideUI: React.FC = () => {
           <button
             className={styles.backButton}
             type="button"
-            onClick={() => GameManager.switchScene('MainMenu')}
+            onClick={() => {
+              useFarmStore.getState().setPendingForcedTalk(null);
+              GameManager.switchScene('MainMenu');
+            }}
           >
             {getLabel('farmSideBackToMenu')}
           </button>

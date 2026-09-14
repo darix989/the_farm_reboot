@@ -17,6 +17,7 @@ import { GameManager } from '../../utils/gameManager';
 import { areConditionsMet, conditionContextSnapshot } from '../../utils/gameConditions';
 import {
   farmDialogueFor,
+  farmDialogueForSlot,
   farmFollowUpDialogue,
   type FarmDialogueState,
 } from '../farm/farmDialogueState';
@@ -41,6 +42,7 @@ export function useFarmOverworldTalk(options: {
   const nearbyNpcId = useFarmStore((s) => s.nearbyNpcId);
   const talkingToNpcId = useFarmStore((s) => s.talkingToNpcId);
   const pendingFollowUp = useFarmStore((s) => s.pendingFollowUp);
+  const pendingForcedTalk = useFarmStore((s) => s.pendingForcedTalk);
   const openDialogue = useFarmStore((s) => s.openDialogue);
 
   const completedScenarios = useProgressStore((s) => s.completedScenarios);
@@ -51,11 +53,14 @@ export function useFarmOverworldTalk(options: {
     void completedScenarios;
     void conditionCtx;
     if (!talkingToNpcId) return null;
+    if (pendingForcedTalk && pendingForcedTalk.npcId === talkingToNpcId) {
+      return farmDialogueForSlot(pendingForcedTalk.npcId, pendingForcedTalk.slotKey);
+    }
     if (pendingFollowUp?.kind === 'farm_talk' && pendingFollowUp.npcId === talkingToNpcId) {
       return farmFollowUpDialogue(pendingFollowUp.npcId, pendingFollowUp.scenarioKey);
     }
     return farmDialogueFor(talkingToNpcId);
-  }, [talkingToNpcId, completedScenarios, pendingFollowUp, conditionCtx]);
+  }, [talkingToNpcId, completedScenarios, pendingFollowUp, pendingForcedTalk, conditionCtx]);
 
   useFarmTutorials();
 
@@ -63,19 +68,27 @@ export function useFarmOverworldTalk(options: {
   // overlay still covers the stage, and which used to skip anyone who already had progress.
   useEffect(() => {
     if (!introNpcPresent) return;
+    if (pendingForcedTalk) return;
     const progress = useProgressStore.getState();
     if (progress.level1Started) return;
     openDialogue(FARM_INTRO_NPC_ID);
     progress.markLevel1Started();
-  }, [introNpcPresent, openDialogue]);
+  }, [introNpcPresent, openDialogue, pendingForcedTalk]);
+
+  // Menu Dialogs jump: same timing as a Trial follow-up so the talk sits on the farm.
+  useEffect(() => {
+    if (!pendingForcedTalk || talkingToNpcId) return;
+    openDialogue(pendingForcedTalk.npcId);
+  }, [pendingForcedTalk, talkingToNpcId, openDialogue]);
 
   // Same timing as Dot's intro: scene `create` has already reset talking, and the loading
   // overlay has unmounted. Opening here (not in Phaser) keeps the talk on top of the farm.
   useEffect(() => {
+    if (pendingForcedTalk) return;
     if (!pendingFollowUp || talkingToNpcId) return;
     if (pendingFollowUp.kind !== 'farm_talk') return;
     openDialogue(pendingFollowUp.npcId);
-  }, [pendingFollowUp, talkingToNpcId, openDialogue]);
+  }, [pendingFollowUp, pendingForcedTalk, talkingToNpcId, openDialogue]);
 
   const closeFarmDialogue = useCallback(() => {
     useFarmStore.getState().closeTalkAndFollowUp();
@@ -86,15 +99,23 @@ export function useFarmOverworldTalk(options: {
       // Re-checked here rather than trusted from the button's disabled state: this is the
       // one door into the Trial scene from the overworld, and a locked encounter reached
       // through a stale render would strand the player in a conversation that assumes
-      // things they have not been told.
-      if (!areConditionsMet(scenarioRequirements(scenario), conditionContextSnapshot())) return;
+      // things they have not been told. Menu-forced talks skip the gate — the Dialogs
+      // section is a test harness, same as launching a Trial from the menu.
+      const farm = useFarmStore.getState();
+      const forced = !!farm.pendingForcedTalk;
+      if (
+        !forced &&
+        !areConditionsMet(scenarioRequirements(scenario), conditionContextSnapshot())
+      ) {
+        return;
+      }
 
       const store = useGameStore.getState();
       // Order matters: the scenario must be set before the scene switch, or TrialUI
       // mounts with the previous encounter for a frame.
       store.setActiveDebate(scenario);
       store.setReturnSceneKey(returnSceneKey);
-      useFarmStore.getState().closeDialogue();
+      farm.closeTalkAndFollowUp();
       GameManager.switchScene('Trial');
     },
     [returnSceneKey],

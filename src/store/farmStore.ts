@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 import type { PendingFollowUp } from '../data/encounterFollowUps';
 
+/** Queued by the main-menu Dialogs section; consumed once FarmSide's overlay is up. */
+export interface PendingForcedTalk {
+  npcId: string;
+  slotKey: string;
+}
+
 /**
  * Handoff between a farm Phaser scene (simulation) and the React overlay (UI) — both the
  * top-down `Farm` and the lateral `FarmSide` talk through it, since it is the same
@@ -35,6 +41,12 @@ interface FarmStore {
    * drop it before the overlay can open the talk.
    */
   pendingFollowUp: PendingFollowUp | null;
+  /**
+   * Menu-forced farm talk, consumed once FarmSideUI is up. Survives `resetFarmUi`
+   * for the same reason as `pendingFollowUp`: scene `create` would otherwise drop
+   * it before the overlay can open the conversation.
+   */
+  pendingForcedTalk: PendingForcedTalk | null;
 
   setNearbyNpc: (id: string | null) => void;
   setNearbyPortal: (id: string | null) => void;
@@ -42,10 +54,11 @@ interface FarmStore {
   openDialogue: (id: string) => void;
   closeDialogue: () => void;
   setPendingFollowUp: (pending: PendingFollowUp | null) => void;
+  setPendingForcedTalk: (pending: PendingForcedTalk | null) => void;
   /**
    * One write so a follow-up Leave cannot flash the next offer slot (pending cleared
    * while `talkingToNpcId` is still set) or re-open the pointer (talk closed while pending
-   * is still set).
+   * is still set). Also drops a menu-forced slot so Back / Talk into Trial cannot revive it.
    */
   closeTalkAndFollowUp: () => void;
   /** Clears nearby / talking / portal / traveling, so a fresh visit — or one interrupted
@@ -59,6 +72,7 @@ export const useFarmStore = create<FarmStore>((set) => ({
   nearbyPortalId: null,
   isTraveling: false,
   pendingFollowUp: null,
+  pendingForcedTalk: null,
 
   setNearbyNpc: (id) => set((s) => (s.nearbyNpcId === id ? s : { ...s, nearbyNpcId: id })),
   setNearbyPortal: (id) => set((s) => (s.nearbyPortalId === id ? s : { ...s, nearbyPortalId: id })),
@@ -66,7 +80,9 @@ export const useFarmStore = create<FarmStore>((set) => ({
   openDialogue: (id) => set({ talkingToNpcId: id }),
   closeDialogue: () => set({ talkingToNpcId: null }),
   setPendingFollowUp: (pending) => set({ pendingFollowUp: pending }),
-  closeTalkAndFollowUp: () => set({ talkingToNpcId: null, pendingFollowUp: null }),
+  setPendingForcedTalk: (pending) => set({ pendingForcedTalk: pending }),
+  closeTalkAndFollowUp: () =>
+    set({ talkingToNpcId: null, pendingFollowUp: null, pendingForcedTalk: null }),
   resetFarmUi: () =>
     set({
       nearbyNpcId: null,

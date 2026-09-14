@@ -5,10 +5,16 @@
 .mainMenuUi {
   position: absolute;
   inset: 0;
+  container-type: size;
+  pointer-events: none;
+}
+
+.menuStage {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: stretch;
   justify-content: flex-start;
-  pointer-events: none;
 
   /* Darken the left so the panel reads, leave the painting open on the right. */
   background: linear-gradient(
@@ -64,10 +70,23 @@
   gap: 0.55rem;
 }
 
-.secondaryActions {
+.sectionNav {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem;
+}
+
+.menuBackRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.menuViewHeading {
+  margin: 0;
+  font-size: var(--ui-font-body);
+  font-weight: bold;
+  color: var(--ui-color-text-emphasis);
 }
 
 .menuButton,
@@ -75,6 +94,7 @@
 .menuButtonDanger,
 .scenarioButton {
   width: 100%;
+  min-height: max(2.75rem, 44px);
   font-weight: bold;
   text-align: left;
   cursor: pointer;
@@ -245,5 +265,35 @@
   &:active {
     background: var(--ui-color-accent);
     color: var(--ui-color-text-on-accent);
+  }
+}
+
+@container (max-width: 1100px) {
+  .menuContainer {
+    width: min(36rem, 72%);
+    max-width: 72%;
+  }
+}
+
+@container (max-width: 720px) {
+  .menuStage {
+    background: linear-gradient(
+      180deg,
+      var(--ui-color-overlay-backdrop) 0%,
+      var(--ui-color-overlay-deep) 100%
+    );
+  }
+
+  .menuContainer {
+    width: auto;
+    max-width: none;
+    max-height: 94%;
+    margin: auto 4%;
+    padding: 1.1rem 1.1rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .confirmActions {
+    grid-template-columns: 1fr;
   }
 }

@@ -6,6 +6,7 @@ import {
   FARM_SIDE_PORTAL_BARN,
   FARM_SIDE_PORTAL_GATE,
   SIDE_SCENE_OLD_POND,
+  SIDE_SCENES_HEADING,
   TALK_TO_BRAM,
   TALK_TO_CASS,
   TALK_TO_HETTY,
@@ -19,6 +20,7 @@ test.describe('lateral farm scene', () => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
+    await page.getByRole('button', { name: SIDE_SCENES_HEADING }).click();
     await page.getByRole('button', { name: SIDE_SCENE_OLD_POND }).click();
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
     await page.getByRole('button', { name: TALK_TO_HETTY }).waitFor();
@@ -29,6 +31,7 @@ test.describe('lateral farm scene', () => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
+    await page.getByRole('button', { name: SIDE_SCENES_HEADING }).click();
     await page.getByRole('button', { name: SIDE_SCENE_OLD_POND }).click();
     const prompt = page.getByRole('button', { name: TALK_TO_HETTY });
     await prompt.waitFor();

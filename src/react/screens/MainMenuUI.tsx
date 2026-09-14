@@ -2,16 +2,28 @@ import React, { useId, useState } from 'react';
 import { useGameStore, type DebateScenarioKey } from '../../store/gameStore';
 import { LEGACY_SCENARIOS, LEVEL_1_SCENARIOS, type ScenarioEntry } from '../../data/levels';
 import { DEFAULT_SIDE_SCENE_ID, SIDE_SCENE_MENU } from '../../data/sideScenes';
+import { MENU_TALK_GROUPS, resumeBesideNpc, type MenuTalkEntry } from '../../data/menuTalks';
 import type { SideSceneId } from '../../types/sideScene';
 import { GameManager } from '../../utils/gameManager';
 import { useCodexStore } from '../../store/codexStore';
 import { useCodexUiStore } from '../../store/codexUiStore';
 import { useProgressStore } from '../../store/progressStore';
 import { useDevSettingsStore } from '../../store/devSettingsStore';
+import { useFarmStore } from '../../store/farmStore';
 import { useWindowKeyDown } from '../hooks/useWindowKeyDown';
 import { useOpenCodexShortcut } from '../hooks/useOpenCodexShortcut';
 import styles from './MainMenuUI.module.scss';
 import getLabel, { type Labels } from '../../data/labels';
+
+type MenuView = 'home' | 'progress' | 'farmScenes' | 'dialogs' | 'level1' | 'other';
+
+const SECTION_HEADING: Record<Exclude<MenuView, 'home'>, Labels> = {
+  progress: 'mainMenuProgressSettings',
+  farmScenes: 'sideScenesHeading',
+  dialogs: 'mainMenuDialogs',
+  level1: 'level1Heading',
+  other: 'mainMenuOther',
+};
 
 const MainMenuUI: React.FC = () => {
   const setActiveDebate = useGameStore((s) => s.setActiveDebate);
@@ -19,6 +31,7 @@ const MainMenuUI: React.FC = () => {
   const showFarmTalkSkip = useDevSettingsStore((s) => s.showFarmTalkSkip);
   const toggleFarmTalkSkip = useDevSettingsStore((s) => s.toggleFarmTalkSkip);
   const [confirmingReset, setConfirmingReset] = useState(false);
+  const [view, setView] = useState<MenuView>('home');
   const confirmTitleId = useId();
   const confirmBodyId = useId();
 
@@ -44,10 +57,20 @@ const MainMenuUI: React.FC = () => {
 
   const openAnimationGallery = () => GameManager.switchScene('AnimalGallery');
 
+  const enterForcedTalk = (entry: MenuTalkEntry) => {
+    const store = useGameStore.getState();
+    store.setActiveSideScene(entry.sceneId);
+    store.setSideSceneResume(resumeBesideNpc(entry.npcId, entry.sceneId));
+    useFarmStore.getState().setPendingForcedTalk({ npcId: entry.npcId, slotKey: entry.slotKey });
+    useProgressStore.getState().markLevel1Started();
+    GameManager.switchScene('FarmSide');
+  };
+
   // Not a scene switch — the Codex is a global overlay, so it opens on top of the menu.
   const openCodex = useCodexUiStore((s) => s.openCodex);
   useOpenCodexShortcut(!confirmingReset);
 
+  const goHome = () => setView('home');
   const cancelReset = () => setConfirmingReset(false);
 
   const confirmReset = () => {
@@ -58,97 +81,187 @@ const MainMenuUI: React.FC = () => {
     useCodexUiStore.getState().closeCodex();
     useGameStore.getState().setActiveSideScene(DEFAULT_SIDE_SCENE_ID);
     useGameStore.getState().setSideSceneResume(null);
+    useFarmStore.getState().setPendingForcedTalk(null);
     setConfirmingReset(false);
   };
 
-  useWindowKeyDown((event) => {
-    if (event.key !== 'Escape') return;
-    event.preventDefault();
-    cancelReset();
-  }, confirmingReset);
+  useWindowKeyDown(
+    (event) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      if (confirmingReset) {
+        cancelReset();
+        return;
+      }
+      goHome();
+    },
+    confirmingReset || view !== 'home',
+  );
 
-  const renderGroup = (headingLabel: Labels, entries: readonly ScenarioEntry[]) => (
-    <section className={styles.menuGroup} aria-labelledby={headingLabel}>
-      <h2 id={headingLabel} className={styles.menuGroupHeading}>
+  const renderScenarioButtons = (entries: readonly ScenarioEntry[]) => (
+    <div className={styles.scenarioList}>
+      {entries.map((entry) => (
+        <button
+          key={entry.key}
+          className={styles.scenarioButton}
+          type="button"
+          onClick={() => startTrial(entry.key)}
+        >
+          {getLabel(entry.titleLabel)}
+        </button>
+      ))}
+    </div>
+  );
+
+  const renderBackRow = (headingLabel: Labels) => (
+    <div className={styles.menuBackRow}>
+      <button className={styles.menuButton} type="button" onClick={goHome}>
+        {getLabel('mainMenuBack')}
+      </button>
+      <h2 id={headingLabel} className={styles.menuViewHeading}>
         {getLabel(headingLabel)}
       </h2>
-      <div className={styles.scenarioList}>
-        {entries.map((entry) => (
-          <button
-            key={entry.key}
-            className={styles.scenarioButton}
-            type="button"
-            onClick={() => startTrial(entry.key)}
-          >
-            {getLabel(entry.titleLabel)}
-          </button>
-        ))}
-      </div>
-    </section>
+    </div>
   );
 
   return (
     <div className={styles.mainMenuUi}>
-      <div className={styles.menuContainer}>
-        <header className={styles.menuHeader}>
-          <h1 className={styles.menuTitle}>{getLabel('gameTitle')}</h1>
-          <p className={styles.menuTagline}>{getLabel('gameTagline')}</p>
-        </header>
-        <div className={styles.primaryActions}>
-          <button className={styles.menuButtonPrimary} type="button" onClick={enterFarm}>
-            {getLabel('enterTheFarm')}
-          </button>
-          <div className={styles.secondaryActions}>
-            <button className={styles.menuButton} type="button" onClick={() => openCodex()}>
-              {getLabel('codexOpen')}
-            </button>
-            <button className={styles.menuButton} type="button" onClick={openAnimationGallery}>
-              {getLabel('animationGallery')}
-            </button>
-            <button className={styles.menuButton} type="button" onClick={enterTopDownFarm}>
-              {getLabel('enterTopDownFarm')}
-            </button>
-          </div>
-          <button
-            className={styles.menuButton}
-            type="button"
-            onClick={toggleFarmTalkSkip}
-            aria-pressed={showFarmTalkSkip}
-          >
-            {getLabel('devFarmTalkSkipToggle', {
-              replacements: {
-                state: getLabel(showFarmTalkSkip ? 'devFarmTalkSkipOn' : 'devFarmTalkSkipOff'),
-              },
-            })}
-          </button>
-          <button
-            className={styles.menuButtonDanger}
-            type="button"
-            onClick={() => setConfirmingReset(true)}
-            aria-haspopup="dialog"
-          >
-            {getLabel('resetProgress')}
-          </button>
+      <div className={styles.menuStage}>
+        <div className={styles.menuContainer}>
+          <header className={styles.menuHeader}>
+            <h1 className={styles.menuTitle}>{getLabel('gameTitle')}</h1>
+            <p className={styles.menuTagline}>{getLabel('gameTagline')}</p>
+          </header>
+          {view === 'home' && (
+            <>
+              <section className={styles.menuGroup} aria-labelledby="mainMenuMainOptions">
+                <h2 id="mainMenuMainOptions" className={styles.menuGroupHeading}>
+                  {getLabel('mainMenuMainOptions')}
+                </h2>
+                <div className={styles.primaryActions}>
+                  <button className={styles.menuButtonPrimary} type="button" onClick={enterFarm}>
+                    {getLabel('enterTheFarm')}
+                  </button>
+                  <button
+                    className={styles.menuButton}
+                    type="button"
+                    onClick={openAnimationGallery}
+                  >
+                    {getLabel('animationGallery')}
+                  </button>
+                </div>
+              </section>
+              <nav className={styles.sectionNav} aria-label={getLabel('mainMenu')}>
+                {(
+                  [
+                    ['progress', 'mainMenuProgressSettings'],
+                    ['farmScenes', 'sideScenesHeading'],
+                    ['dialogs', 'mainMenuDialogs'],
+                    ['level1', 'level1Heading'],
+                    ['other', 'mainMenuOther'],
+                  ] as const
+                ).map(([next, label]) => (
+                  <button
+                    key={next}
+                    className={styles.menuButton}
+                    type="button"
+                    onClick={() => setView(next)}
+                  >
+                    {getLabel(label)}
+                  </button>
+                ))}
+              </nav>
+            </>
+          )}
+          {view === 'progress' && (
+            <section className={styles.menuGroup} aria-labelledby={SECTION_HEADING.progress}>
+              {renderBackRow(SECTION_HEADING.progress)}
+              <div className={styles.primaryActions}>
+                <button
+                  className={styles.menuButtonDanger}
+                  type="button"
+                  onClick={() => setConfirmingReset(true)}
+                  aria-haspopup="dialog"
+                >
+                  {getLabel('resetProgress')}
+                </button>
+                <button
+                  className={styles.menuButton}
+                  type="button"
+                  onClick={toggleFarmTalkSkip}
+                  aria-pressed={showFarmTalkSkip}
+                >
+                  {getLabel('devFarmTalkSkipToggle', {
+                    replacements: {
+                      state: getLabel(
+                        showFarmTalkSkip ? 'devFarmTalkSkipOn' : 'devFarmTalkSkipOff',
+                      ),
+                    },
+                  })}
+                </button>
+                <button className={styles.menuButton} type="button" onClick={() => openCodex()}>
+                  {getLabel('codexOpen')}
+                </button>
+              </div>
+            </section>
+          )}
+          {view === 'farmScenes' && (
+            <section className={styles.menuGroup} aria-labelledby={SECTION_HEADING.farmScenes}>
+              {renderBackRow(SECTION_HEADING.farmScenes)}
+              <div className={styles.sceneJumpList}>
+                {SIDE_SCENE_MENU.map((entry) => (
+                  <button
+                    key={entry.id}
+                    className={styles.scenarioButton}
+                    type="button"
+                    onClick={() => enterSideScene(entry.id)}
+                  >
+                    {getLabel(entry.titleLabel)}
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+          {view === 'dialogs' && (
+            <section className={styles.menuGroup} aria-labelledby={SECTION_HEADING.dialogs}>
+              {renderBackRow(SECTION_HEADING.dialogs)}
+              {MENU_TALK_GROUPS.map((group) => (
+                <div key={group.id} className={styles.menuGroup}>
+                  <h3 className={styles.menuGroupHeading}>{getLabel(group.headingLabel)}</h3>
+                  <div className={styles.scenarioList}>
+                    {group.entries.map((entry) => (
+                      <button
+                        key={entry.slotKey}
+                        className={styles.scenarioButton}
+                        type="button"
+                        onClick={() => enterForcedTalk(entry)}
+                      >
+                        {getLabel(entry.titleLabel)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </section>
+          )}
+          {view === 'level1' && (
+            <section className={styles.menuGroup} aria-labelledby={SECTION_HEADING.level1}>
+              {renderBackRow(SECTION_HEADING.level1)}
+              {renderScenarioButtons(LEVEL_1_SCENARIOS)}
+            </section>
+          )}
+          {view === 'other' && (
+            <section className={styles.menuGroup} aria-labelledby={SECTION_HEADING.other}>
+              {renderBackRow(SECTION_HEADING.other)}
+              <div className={styles.primaryActions}>
+                <button className={styles.menuButton} type="button" onClick={enterTopDownFarm}>
+                  {getLabel('enterTopDownFarm')}
+                </button>
+              </div>
+              {renderScenarioButtons(LEGACY_SCENARIOS)}
+            </section>
+          )}
         </div>
-        <section className={styles.menuGroup} aria-labelledby="sideScenesHeading">
-          <h2 id="sideScenesHeading" className={styles.menuGroupHeading}>
-            {getLabel('sideScenesHeading')}
-          </h2>
-          <div className={styles.sceneJumpList}>
-            {SIDE_SCENE_MENU.map((entry) => (
-              <button
-                key={entry.id}
-                className={styles.scenarioButton}
-                type="button"
-                onClick={() => enterSideScene(entry.id)}
-              >
-                {getLabel(entry.titleLabel)}
-              </button>
-            ))}
-          </div>
-        </section>
-        {renderGroup('level1Heading', LEVEL_1_SCENARIOS)}
-        {renderGroup('legacyScenariosHeading', LEGACY_SCENARIOS)}
       </div>
       {confirmingReset && (
         <div

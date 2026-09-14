@@ -130,6 +130,83 @@ export function farmDialogueFor(npcId: string): FarmDialogueState | null {
   };
 }
 
+function isDebateScenarioKey(key: string): key is DebateScenarioKey {
+  return Object.prototype.hasOwnProperty.call(DEBATES, key);
+}
+
+/**
+ * Resolve a specific farm-talk slot, ignoring current progress. Used by the main-menu
+ * Dialogs section so a tester can preview any authored conversation. Pre-talks that
+ * belong to an encounter attach that scenario with empty `scenarioRequires` so Talk
+ * is ungated; Meet / Done / greeter stages stay leave-only.
+ */
+export function farmDialogueForSlot(npcId: string, slotKey: string): FarmDialogueState | null {
+  if (slotKey.startsWith('followUp:')) {
+    const scenarioKey = slotKey.slice('followUp:'.length);
+    if (isDebateScenarioKey(scenarioKey)) {
+      return farmFollowUpDialogue(npcId, scenarioKey);
+    }
+  }
+
+  const visual = characterById(npcId);
+  if (!visual) return null;
+
+  const suffix = slotKey.startsWith(npcId) ? slotKey.slice(npcId.length) : 'Done';
+  const npc = farmNpcById(npcId);
+  const lessons = npc
+    ? completedLessonsFor(npc.id, useProgressStore.getState().completedScenarios)
+    : [];
+
+  if (!npc) {
+    return {
+      npcId: visual.id,
+      nameLabel: visual.nameLabel,
+      slotKey: farmTalkSlotKey(visual.id, suffix),
+      beats: farmTalkBeats(visual.id, suffix),
+      scenario: null,
+      scenarioRequires: [],
+      lessons,
+    };
+  }
+
+  if (suffix === 'Meet' || suffix === 'Done') {
+    return {
+      npcId: npc.id,
+      nameLabel: visual.nameLabel,
+      slotKey: farmTalkSlotKey(npc.id, suffix),
+      beats: farmTalkBeats(npc.id, suffix),
+      scenario: null,
+      scenarioRequires: [],
+      lessons,
+    };
+  }
+
+  if (npc.scenarios.length > 0 && /^\d+$/.test(suffix)) {
+    const scenario = npc.scenarios[Number(suffix) - 1] ?? null;
+    return {
+      npcId: npc.id,
+      nameLabel: visual.nameLabel,
+      slotKey: farmTalkSlotKey(npc.id, suffix),
+      beats: farmTalkBeats(npc.id, suffix),
+      scenario,
+      scenarioRequires: [],
+      lessons,
+    };
+  }
+
+  const stage = npc.talkStages?.find((entry) => entry.suffix === suffix);
+  return {
+    npcId: npc.id,
+    nameLabel: visual.nameLabel,
+    slotKey: farmTalkSlotKey(npc.id, suffix),
+    beats: farmTalkBeats(npc.id, suffix),
+    scenario: null,
+    scenarioRequires: [],
+    completesFlags: stage?.completesFlag ? [stage.completesFlag] : undefined,
+    lessons,
+  };
+}
+
 /**
  * Leave-only pointer after a Trial. Must not reuse {@link farmDialogueFor}: that would
  * open the *next* offer slot, which is the wrong animal's pre-talk whenever the spine

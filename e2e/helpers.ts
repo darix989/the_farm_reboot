@@ -3,9 +3,13 @@ import getLabel from '../src/data/labels';
 
 export const GAME_TITLE = getLabel('gameTitle');
 export const ENTER_THE_FARM = getLabel('enterTheFarm');
+export const ANIMATION_GALLERY = getLabel('animationGallery');
+export const SIDE_SCENES_HEADING = getLabel('sideScenesHeading');
 export const SIDE_SCENE_OLD_POND = getLabel('sideSceneOldPond');
 export const FIELD_NOTES = getLabel('codexOpen');
+export const LEVEL_1_HEADING = getLabel('level1Heading');
 export const LEVEL_1_FIRST = getLabel('level1BramDialog');
+export const MAIN_MENU_PROGRESS = getLabel('mainMenuProgressSettings');
 export const CONTINUE = getLabel('continue');
 export const FARM_SIDE_BACK_TO_MENU = getLabel('farmSideBackToMenu');
 export const TALK_TO_CASS = getLabel('farmTalkPrompt', { replacements: { name: 'Cass' } });

@@ -23,11 +23,13 @@ import { useConditionContext } from './useGameConditions';
 export function useFarmTutorials(): void {
   const talkingToNpcId = useFarmStore((s) => s.talkingToNpcId);
   const pendingFollowUp = useFarmStore((s) => s.pendingFollowUp);
+  const pendingForcedTalk = useFarmStore((s) => s.pendingForcedTalk);
   const completedTutorials = useProgressStore((s) => s.completedTutorials);
   const ctx = useConditionContext();
 
   useEffect(() => {
     if (talkingToNpcId) return;
+    if (pendingForcedTalk) return;
 
     const tutorialStore = useTutorialStore.getState();
     if (tutorialStore.isOpen) return;
@@ -66,5 +68,5 @@ export function useFarmTutorials(): void {
       });
       return;
     }
-  }, [talkingToNpcId, pendingFollowUp, completedTutorials, ctx]);
+  }, [talkingToNpcId, pendingFollowUp, pendingForcedTalk, completedTutorials, ctx]);
 }
