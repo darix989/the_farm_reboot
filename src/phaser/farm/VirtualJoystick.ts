@@ -34,7 +34,6 @@ export class VirtualJoystick {
     scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMove, this);
     scene.input.on(Phaser.Input.Events.POINTER_UP, this.onUp, this);
     scene.input.on(Phaser.Input.Events.POINTER_UP_OUTSIDE, this.onUp, this);
-    scene.input.on(Phaser.Input.Events.GAME_OUT, this.onGameOut, this);
   }
 
   /** Current stick direction, magnitude 0..1. Zero when untouched. */
@@ -57,10 +56,6 @@ export class VirtualJoystick {
 
   private onUp(pointer: Phaser.Input.Pointer): void {
     if (this.pointerId !== pointer.id) return;
-    this.reset();
-  }
-
-  private onGameOut(): void {
     this.reset();
   }
 
@@ -93,7 +88,6 @@ export class VirtualJoystick {
     this.scene.input.off(Phaser.Input.Events.POINTER_MOVE, this.onMove, this);
     this.scene.input.off(Phaser.Input.Events.POINTER_UP, this.onUp, this);
     this.scene.input.off(Phaser.Input.Events.POINTER_UP_OUTSIDE, this.onUp, this);
-    this.scene.input.off(Phaser.Input.Events.GAME_OUT, this.onGameOut, this);
     this.base.destroy();
     this.thumb.destroy();
   }

@@ -1,4 +1,4 @@
-import type { CDPSession, Page } from '@playwright/test';
+import type { CDPSession, Locator, Page } from '@playwright/test';
 import getLabel from '../src/data/labels';
 import { JOYSTICK_CENTER, JOYSTICK_DRAG_RADIUS } from '../src/phaser/farm/virtualJoystickMath';
 import {
@@ -31,6 +31,28 @@ async function releaseJoystick(session: CDPSession): Promise<void> {
   await session.detach();
 }
 
+async function waitForHiddenWhileHolding(
+  session: CDPSession,
+  locator: Locator,
+  x: number,
+  y: number,
+  timeout = 15_000,
+): Promise<void> {
+  const deadline = Date.now() + timeout;
+  let nudge = 0;
+  while (Date.now() < deadline) {
+    if (!(await locator.isVisible())) return;
+    // Re-assert the held drag so slow headless frames cannot miss the only move event.
+    await session.send('Input.dispatchTouchEvent', {
+      type: 'touchMove',
+      touchPoints: [{ x: x + nudge, y, id: 1 }],
+    });
+    nudge = nudge === 0 ? 1 : 0;
+    await locator.page().waitForTimeout(100);
+  }
+  await locator.waitFor({ state: 'hidden', timeout: 1_000 });
+}
+
 test.describe('farm touch movement', () => {
   test.use({ hasTouch: true });
 
@@ -49,7 +71,12 @@ test.describe('farm touch movement', () => {
       JOYSTICK_CENTER.y,
     );
     try {
-      await dotPrompt.waitFor({ state: 'hidden', timeout: 15_000 });
+      await waitForHiddenWhileHolding(
+        session,
+        dotPrompt,
+        JOYSTICK_CENTER.x + JOYSTICK_DRAG_RADIUS,
+        JOYSTICK_CENTER.y,
+      );
     } finally {
       await releaseJoystick(session);
     }
@@ -70,7 +97,12 @@ test.describe('farm touch movement', () => {
       JOYSTICK_CENTER.y,
     );
     try {
-      await dotPrompt.waitFor({ state: 'hidden', timeout: 15_000 });
+      await waitForHiddenWhileHolding(
+        session,
+        dotPrompt,
+        JOYSTICK_CENTER.x - JOYSTICK_DRAG_RADIUS,
+        JOYSTICK_CENTER.y,
+      );
     } finally {
       await releaseJoystick(session);
     }
