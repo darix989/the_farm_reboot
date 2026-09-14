@@ -4,7 +4,6 @@ import { JOYSTICK_CENTER, JOYSTICK_DRAG_RADIUS } from '../src/phaser/farm/virtua
 import {
   ENTER_THE_FARM,
   FARM_SIDE_BACK_TO_MENU,
-  FARM_SIDE_PORTAL_BARN,
   seedLevel1Started,
   TALK_TO_DOT,
   test,
@@ -35,12 +34,14 @@ async function releaseJoystick(session: CDPSession): Promise<void> {
 test.describe('farm touch movement', () => {
   test.use({ hasTouch: true });
 
-  test('moves through the live lateral farm with the fixed joystick', async ({ page }) => {
+  test('moves away from the spawn NPC in the live lateral farm', async ({ page }) => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
     await page.getByRole('button', { name: ENTER_THE_FARM }).click();
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
+    const dotPrompt = page.getByRole('button', { name: TALK_TO_DOT });
+    await dotPrompt.waitFor();
 
     const session = await holdJoystick(
       page,
@@ -48,7 +49,7 @@ test.describe('farm touch movement', () => {
       JOYSTICK_CENTER.y,
     );
     try {
-      await page.getByRole('button', { name: FARM_SIDE_PORTAL_BARN }).waitFor({ timeout: 45_000 });
+      await dotPrompt.waitFor({ state: 'hidden', timeout: 15_000 });
     } finally {
       await releaseJoystick(session);
     }
