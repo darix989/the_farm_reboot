@@ -139,10 +139,12 @@ frame it hits zero, so Rue walks when he moves, steps at half rate on a half-pus
 and drops back to idling (and eating) the moment he stops. See
 [characters-and-animations.md](./characters-and-animations.md) §3.3.
 
-The joystick **anchors wherever the thumb lands** rather than sitting in a painted corner,
-which is far more forgiving on a phone, and stays hidden until the first `pointer.wasTouch`
-so desktop never sees it. Both sprites use `setScrollFactor(0)` to stay locked to the camera
-while the world scrolls underneath.
+The joystick is fixed in the bottom-left corner and shown immediately when the browser reports
+touch support, so players can discover it before guessing where to drag. A touch must begin in
+its activation area; the thumb then follows the drag with a dead zone and a clamped analogue
+vector. The same control feeds `FarmSide`, while keyboard input keeps priority in both worlds.
+It hides and clears its vector whenever dialogue, a tutorial, or travel owns input. Both sprites
+use `setScrollFactor(0)` to stay locked to the camera while the world scrolls underneath.
 
 ---
 

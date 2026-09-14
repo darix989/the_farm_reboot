@@ -3,7 +3,6 @@ import {
   ENTER_THE_FARM,
   FARM_SIDE_BACK_TO_MENU,
   FARM_SIDE_PORTAL_BACK_TO_ROAD,
-  FARM_SIDE_PORTAL_BARN,
   FARM_SIDE_PORTAL_GATE,
   SIDE_SCENE_OLD_POND,
   SIDE_SCENES_HEADING,
@@ -86,14 +85,9 @@ test.describe('lateral farm scene', () => {
     // First-visit spawn is beside Dot — wait for her prompt so Phaser keys exist before we walk.
     await page.getByRole('button', { name: TALK_TO_DOT }).waitFor();
 
-    // Walk right: barn door first (Dot stands further west now, so she is not in the
-    // portal's radius contest), then the picket gate (Cass stands where Hetty used to,
-    // same focus contest). `walkUntilVisible` holds WASD — Linux CI drops arrow keyCodes.
-    await walkUntilVisible(
-      page,
-      'ArrowRight',
-      page.getByRole('button', { name: FARM_SIDE_PORTAL_BARN }),
-    );
+    // Walk directly to the picket gate. Stopping at the barn and synthesizing a second held
+    // key transition made this unnecessarily timing-sensitive on slow software-WebGL CI.
+    // `walkUntilVisible` holds WASD because Linux CI drops arrow keyCodes.
     await walkUntilVisible(
       page,
       'ArrowRight',

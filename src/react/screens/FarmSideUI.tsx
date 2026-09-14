@@ -24,6 +24,7 @@ import type { TutorialTargetRef } from '../../types/debateEntities';
 import { interactionPromptPosition } from '../farm/interactionPromptPosition';
 import ShortcutKeycap from '../shortcuts/ShortcutKeycap';
 import styles from './FarmSideUI.module.scss';
+import { supportsTouchInput } from '../../utils/touchInput';
 
 /**
  * Overlay for the `FarmSide` scene: the way back to the menu, Field Notes, the walk-up
@@ -46,6 +47,7 @@ import styles from './FarmSideUI.module.scss';
  * itself (see `docs/architecture.md`).
  */
 const CODEX_OPEN_TARGET: TutorialTargetRef = { kind: 'codex_open' };
+const MOVE_HINT_LABEL = supportsTouchInput() ? 'farmSideMoveHintTouch' : 'farmSideMoveHint';
 
 const FarmSideUI: React.FC = () => {
   const activeSideSceneId = useGameStore((s) => s.activeSideSceneId);
@@ -159,7 +161,7 @@ const FarmSideUI: React.FC = () => {
             {getLabel('farmSideBackToMenu')}
           </button>
 
-          <p className={styles.moveHint}>{getLabel('farmSideMoveHint')}</p>
+          <p className={styles.moveHint}>{getLabel(MOVE_HINT_LABEL)}</p>
 
           <button
             className={cn(

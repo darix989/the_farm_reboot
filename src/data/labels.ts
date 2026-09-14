@@ -368,7 +368,7 @@ const LABELS = {
   farmTalkPrompt: 'Talk to {name}',
   shortcutRevealHint: 'Hold {key} to see keyboard shortcuts — release to use them',
   farmMoveHint: 'Arrows or WASD to move',
-  farmMoveHintTouch: 'Drag anywhere to move',
+  farmMoveHintTouch: 'Drag the bottom-left joypad to move',
   farmTalk: 'Talk',
   farmTalkSkip: 'Skip to last line',
   farmLeave: 'Leave',
@@ -721,6 +721,7 @@ const LABELS = {
   // --- Lateral farm scene ---
   farmSideBackToMenu: 'Back to Main Menu',
   farmSideMoveHint: 'Arrows / WASD to walk the road, Shift to run',
+  farmSideMoveHintTouch: 'Drag the bottom-left joypad to walk the road',
 
   // Portal prompts — the label belongs to the direction of travel, so a symmetric pair of
   // portals reads differently depending which side of it you're standing on.

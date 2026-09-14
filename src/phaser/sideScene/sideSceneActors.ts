@@ -15,6 +15,7 @@
  */
 import type { Scene } from 'phaser';
 import { isRunHeld, movementVector, type FarmKeys } from '../farm/farmInput';
+import type { VirtualJoystick } from '../farm/VirtualJoystick';
 import { clampToRoad, roadDepthScale, type EntrySpawn } from './sideSceneRoad';
 import { resolveBandDepth } from './sideSceneProps';
 import {
@@ -256,6 +257,7 @@ export class SideScenePlayer extends SideSceneActor {
     descriptor: SideSceneDescriptor,
     spawn: EntrySpawn,
     private readonly keys: FarmKeys | null,
+    private readonly joystick: VirtualJoystick | null,
   ) {
     super(scene, descriptor, PLAYER_CHARACTER_ID, spawn.x, spawn.y);
     this.faceDirection(spawn.facing === 'right' ? 1 : -1);
@@ -267,7 +269,9 @@ export class SideScenePlayer extends SideSceneActor {
    * reads as an invisible wall a step before the animal you are walking up to.
    */
   update(deltaMs: number, canMove: boolean): void {
-    const dir = canMove ? movementVector(this.keys, null, this.moveVector) : this.moveVector.set(0);
+    const dir = canMove
+      ? movementVector(this.keys, this.joystick, this.moveVector)
+      : this.moveVector.set(0);
     const dt = deltaMs / 1000;
     const groundSpeed = PLAYER_SPEED * (isRunHeld(this.keys) ? RUN_SPEED_MULTIPLIER : 1);
 

@@ -32,6 +32,8 @@ import {
   type SideSceneWorld,
 } from '../sideScene/sideSceneCamera';
 import { createFarmKeys, type FarmKeys } from '../farm/farmInput';
+import { VirtualJoystick } from '../farm/VirtualJoystick';
+import { ensureFarmJoystickTextures } from '../farm/farmTextures';
 import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { reportSceneLoadProgress } from '../bootProgress';
 import { useFarmStore } from '../../store/farmStore';
@@ -102,6 +104,7 @@ export class FarmSide extends Scene {
   private sceneLayers: SideSceneLayers | null = null;
   private groundBottom = STAGE_DESIGN_HEIGHT;
   private keys: FarmKeys | null = null;
+  private joystick: VirtualJoystick | null = null;
   private player: SideScenePlayer | null = null;
   private npcs: SideSceneNpc[] = [];
   private scrollX = 0;
@@ -150,6 +153,7 @@ export class FarmSide extends Scene {
     this.sceneLayers = null;
     this.groundBottom = STAGE_DESIGN_HEIGHT;
     this.keys = null;
+    this.joystick = null;
     this.player = null;
     this.npcs = [];
     this.scrollX = 0;
@@ -173,6 +177,7 @@ export class FarmSide extends Scene {
 
   create() {
     ensureAnimalPackForScene(this);
+    ensureFarmJoystickTextures(this);
     useFarmStore.getState().resetFarmUi();
 
     // Registered before anything else is built, so the first pixel this level ever shows
@@ -193,8 +198,9 @@ export class FarmSide extends Scene {
     this.npcs = this.descriptor.npcs.map((spec) => new SideSceneNpc(this, this.descriptor, spec));
 
     this.keys = createFarmKeys(this);
+    this.joystick = new VirtualJoystick(this);
     const spawn = this.resolveSpawn();
-    this.player = new SideScenePlayer(this, this.descriptor, spawn, this.keys);
+    this.player = new SideScenePlayer(this, this.descriptor, spawn, this.keys, this.joystick);
 
     this.interactArmedAt = this.time.now + INTERACT_ARM_DELAY_MS;
     this.keys?.interact.forEach((key) => key.on('down', () => this.tryInteract()));
@@ -206,6 +212,7 @@ export class FarmSide extends Scene {
     this.unsubscribeFarmUi = useFarmStore.subscribe((state, prevState) => {
       if (state.talkingToNpcId !== prevState.talkingToNpcId) {
         this.applyTalkCamera(state.talkingToNpcId);
+        this.syncJoystickEnabled();
       }
     });
 
@@ -356,11 +363,13 @@ export class FarmSide extends Scene {
   private startTravel(link: SidePortalLink): void {
     this.travelling = true;
     useFarmStore.getState().setTraveling(true);
+    this.syncJoystickEnabled();
 
     const commit = () => {
       if (beginSideSceneTravel(this, link)) return;
       this.travelling = false;
       useFarmStore.getState().setTraveling(false);
+      this.syncJoystickEnabled();
       if (!prefersReducedMotion()) this.cameras.main.fadeIn(FADE_IN_MS, 0, 0, 0);
     };
 
@@ -489,6 +498,15 @@ export class FarmSide extends Scene {
    */
   private applyTutorialInputLock(tutorialOpen: boolean): void {
     this.input.enabled = !tutorialOpen;
+    this.syncJoystickEnabled();
+  }
+
+  private syncJoystickEnabled(): void {
+    const enabled =
+      !this.travelling &&
+      !useTutorialStore.getState().isOpen &&
+      !useFarmStore.getState().talkingToNpcId;
+    this.joystick?.setEnabled(enabled);
   }
 
   private updateCamera(): void {
@@ -527,6 +545,8 @@ export class FarmSide extends Scene {
     }
     this.player?.destroy();
     this.player = null;
+    this.joystick?.destroy();
+    this.joystick = null;
     this.npcs.forEach((npc) => npc.destroy());
     this.npcs = [];
     useFarmStore.getState().resetFarmUi();

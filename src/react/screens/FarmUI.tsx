@@ -8,7 +8,7 @@ import { resolveCharacter } from '../../data/characters';
 import { farmNpcById } from '../../data/farmMap';
 import { useCodexUiStore } from '../../store/codexUiStore';
 import { useTutorialStore } from '../../store/tutorialStore';
-import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
+import { supportsTouchInput } from '../../utils/touchInput';
 import FarmDialogue from '../farm/FarmDialogue';
 import { useFarmOverworldTalk } from '../hooks/useFarmOverworldTalk';
 import { useCodexNotices } from '../codex/useCodexNotices';
@@ -28,8 +28,7 @@ import styles from '../farm/FarmUI.module.scss';
  * everything here sits on the `pointer-events: none` overlay, so each interactive
  * element re-enables pointer events for itself (see AGENTS.md).
  */
-/** Phones have no keyboard, and the joystick is summoned by touching anywhere. */
-const MOVE_HINT_LABEL = isSmartphone() ? 'farmMoveHintTouch' : 'farmMoveHint';
+const MOVE_HINT_LABEL = supportsTouchInput() ? 'farmMoveHintTouch' : 'farmMoveHint';
 const CODEX_OPEN_TARGET: TutorialTargetRef = { kind: 'codex_open' };
 
 const FarmUI: React.FC = () => {

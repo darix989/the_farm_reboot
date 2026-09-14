@@ -88,7 +88,20 @@ export function ensureFarmTextures(scene: Phaser.Scene): void {
     g.fillEllipse(PLAYER_SIZE / 2, 8, PLAYER_SIZE - 8, 12);
   });
 
-  // --- Virtual joystick ---
+  g.destroy();
+  ensureFarmJoystickTextures(scene);
+}
+
+/** The side-scrolling farm shares the control without needing the top-down terrain set. */
+export function ensureFarmJoystickTextures(scene: Phaser.Scene): void {
+  const g = scene.make.graphics({ x: 0, y: 0 }, false);
+  const bake = (key: string, width: number, height: number, draw: () => void) => {
+    if (scene.textures.exists(key)) return;
+    g.clear();
+    draw();
+    g.generateTexture(key, width, height);
+  };
+
   bake('farm-stick-base', 160, 160, () => {
     g.fillStyle(0xffffff, 0.12);
     g.fillCircle(80, 80, 78);

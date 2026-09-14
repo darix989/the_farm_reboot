@@ -48,7 +48,7 @@ Three consequences that catch people out:
 
 | Concern | Owner |
 |---|---|
-| Terrain, collision, movement, camera | Phaser (`Farm` scene) |
+| Terrain, collision, movement, camera | Phaser (`Farm` / `FarmSide` scenes) |
 | Everything the player reads or clicks | React |
 | Debate rules, scoring, analysis grading | React (`useTrialRoundWorkflow`, `TrialUI`) |
 | Which screen is showing | Phaser scene key, mirrored into `gameStore` |

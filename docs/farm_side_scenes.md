@@ -146,6 +146,10 @@ file's `MANUAL_ADJUST`, not in a side-scene special case.
 
 Nothing on the road is solid: not the props, not the animals. It is a lane, not a maze.
 
+`FarmSide` shares the top-down farm's fixed bottom-left analogue joystick on touch-capable
+devices. It feeds the same `movementVector()` path as arrows and WASD, and is cleared and hidden
+whenever dialogue, tutorials, or portal travel freeze the road.
+
 ## Patrolling NPCs
 
 An NPC can amble back and forth along a stretch of road instead of just standing there:
