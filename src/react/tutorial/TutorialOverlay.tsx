@@ -94,7 +94,7 @@ const TutorialOverlay: React.FC = () => {
   // can still press the highlighted control.
   useWindowKeyDown(
     (event) => {
-      if (event.repeat || event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.repeat || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
       if (isTextFieldTarget(event)) return;
       if (!isContinueCode(event.code)) return;
       if (isTargetOnlyStep) return;

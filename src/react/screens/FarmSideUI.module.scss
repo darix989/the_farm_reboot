@@ -80,6 +80,19 @@
   }
 }
 
+.codexButtonLabel {
+  display: block;
+}
+
+.codexButton:has([data-shortcut-keycap]) .codexButtonLabel {
+  visibility: hidden;
+}
+
+.codexButton [data-shortcut-keycap] {
+  font-size: inherit;
+  border-radius: inherit;
+}
+
 .codexButtonHasCue {
   color: var(--ui-color-accent);
   border-color: var(--ui-color-accent);
@@ -159,15 +172,11 @@
   }
 }
 
-.talkPromptKey {
-  flex: none;
-  padding: 0.15rem 0.5rem;
-  border: 1px solid var(--ui-color-border-fade);
-  border-radius: 4px;
-  color: var(--ui-color-text-muted-2);
-  font-size: var(--ui-font-caption);
-  font-weight: normal;
-  white-space: nowrap;
+.talkPrompt:has([data-shortcut-keycap]) {
+  .interactionCue,
+  .interactionLabel {
+    visibility: hidden;
+  }
 }
 
 .interactionLabel {
@@ -221,6 +230,13 @@
 
   &:hover {
     color: var(--ui-color-accent);
+  }
+}
+
+.portalPrompt:has([data-shortcut-keycap]) {
+  .interactionCue,
+  .interactionLabel {
+    visibility: hidden;
   }
 }
 

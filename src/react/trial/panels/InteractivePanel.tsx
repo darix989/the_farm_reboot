@@ -26,7 +26,11 @@ import {
   notifyTutorialTargetAction,
 } from '../../tutorial/tutorialInteractionGuard';
 import { useWindowKeyDown } from '../../hooks/useWindowKeyDown';
-import { optionIndexForCode, shouldIgnoreActionShortcut } from '../utils/trialActionShortcuts';
+import {
+  OPTION_SHORTCUT_ACTIONS,
+  optionIndexForCode,
+  shouldIgnoreActionShortcut,
+} from '../utils/trialActionShortcuts';
 import styles from './TrialPanels.module.scss';
 import getLabel from '../../../data/labels';
 
@@ -307,6 +311,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
               becameReady={phase === 'ready' && becameReadyOptionId === opt.id}
               revealFlash={revealFlash}
               tutorialOptionId={opt.id}
+              shortcutAction={OPTION_SHORTCUT_ACTIONS[idx]}
               onClick={() => activateChoice(opt)}
             />
           );

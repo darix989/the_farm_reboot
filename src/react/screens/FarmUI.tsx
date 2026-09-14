@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import getLabel from '../../data/labels';
+import { ariaKeyShortcutsFor } from '../../data/keyBindings';
 import { GameManager } from '../../utils/gameManager';
 import type { Farm } from '../../phaser/scenes/Farm';
 import { resolveCharacter } from '../../data/characters';
@@ -19,6 +20,7 @@ import {
 } from '../tutorial/tutorialInteractionGuard';
 import type { TutorialTargetRef } from '../../types/debateEntities';
 import { interactionPromptPosition } from '../farm/interactionPromptPosition';
+import ShortcutKeycap from '../shortcuts/ShortcutKeycap';
 import styles from '../farm/FarmUI.module.scss';
 
 /**
@@ -48,6 +50,11 @@ const FarmUI: React.FC = () => {
   const interactionPromptRef = useRef<HTMLButtonElement>(null);
 
   const nearbyNpc = nearbyNpcId ? farmNpcById(nearbyNpcId) : null;
+  const nearbyTalkLabel = nearbyNpc
+    ? getLabel('farmTalkPrompt', {
+        replacements: { name: resolveCharacter(nearbyNpc.id).displayName },
+      })
+    : '';
   useOpenCodexShortcut(!dialogue && !pendingFollowUp, firstUnreadSection ?? undefined);
 
   useEffect(() => {
@@ -112,7 +119,8 @@ const FarmUI: React.FC = () => {
           )}
           type="button"
           data-tutorial-codex-open
-          aria-label={hasUnread ? getLabel('codexOpenHasNew') : undefined}
+          aria-label={hasUnread ? getLabel('codexOpenHasNew') : getLabel('codexOpen')}
+          aria-keyshortcuts={ariaKeyShortcutsFor('codexOpen')}
           onAnimationEnd={(event) => {
             if (event.target !== event.currentTarget) return;
             setCodexBursting(false);
@@ -123,7 +131,8 @@ const FarmUI: React.FC = () => {
             notifyTutorialTargetAction(CODEX_OPEN_TARGET);
           }}
         >
-          {getLabel('codexOpen')}
+          <span className={styles.codexButtonLabel}>{getLabel('codexOpen')}</span>
+          <ShortcutKeycap action="codexOpen" />
         </button>
       )}
 
@@ -132,6 +141,8 @@ const FarmUI: React.FC = () => {
           type="button"
           className={styles.talkPrompt}
           ref={interactionPromptRef}
+          aria-label={nearbyTalkLabel}
+          aria-keyshortcuts={ariaKeyShortcutsFor('farmInteract')}
           onClick={() => {
             if (!canRunTutorialUntargetedAction()) return;
             openDialogue(nearbyNpc.id);
@@ -140,12 +151,8 @@ const FarmUI: React.FC = () => {
           <span className={styles.interactionCue} aria-hidden="true">
             ✦
           </span>
-          <span className={styles.interactionLabel}>
-            {getLabel('farmTalkPrompt', {
-              replacements: { name: resolveCharacter(nearbyNpc.id).displayName },
-            })}
-          </span>
-          <span className={styles.talkPromptKey}>{getLabel('farmInteractHint')}</span>
+          <span className={styles.interactionLabel}>{nearbyTalkLabel}</span>
+          <ShortcutKeycap action="farmInteract" radius="pill" />
         </button>
       )}
 

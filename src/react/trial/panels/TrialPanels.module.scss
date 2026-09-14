@@ -874,6 +874,14 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   }
 }
 
+.trialChoiceBtn:has([data-shortcut-keycap]) {
+  .trialChoiceLetter,
+  .trialChoiceWord,
+  .trialChoiceLockBadge {
+    visibility: hidden;
+  }
+}
+
 .trialChoiceBtnSelected {
   border-color: var(--ui-color-info-border-active);
   background: var(--ui-color-overlay-panel);

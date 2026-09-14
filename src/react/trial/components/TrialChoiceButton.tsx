@@ -1,5 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
+import { ariaKeyShortcutsFor, type ShortcutAction } from '../../../data/keyBindings';
+import ShortcutKeycap from '../../shortcuts/ShortcutKeycap';
 import styles from '../panels/TrialPanels.module.scss';
 
 export type ChoiceLockState = 'shut' | 'ready';
@@ -22,6 +24,8 @@ export interface TrialChoiceButtonProps {
   becameReady?: boolean;
   revealFlash?: boolean;
   tutorialOptionId?: string;
+  /** Shortcut this square fires; omitted when the host has none. */
+  shortcutAction?: ShortcutAction | null;
 }
 
 function LockBadge() {
@@ -51,6 +55,7 @@ const TrialChoiceButton: React.FC<TrialChoiceButtonProps> = ({
   becameReady,
   revealFlash,
   tutorialOptionId,
+  shortcutAction,
 }) => {
   return (
     <button
@@ -66,6 +71,7 @@ const TrialChoiceButton: React.FC<TrialChoiceButtonProps> = ({
         revealFlash && styles.trialChoiceBtnRevealFlash,
       )}
       aria-label={ariaLabel}
+      aria-keyshortcuts={shortcutAction ? ariaKeyShortcutsFor(shortcutAction) : undefined}
       onClick={onClick}
       disabled={disabled}
       data-tutorial-interactive-option-id={tutorialOptionId}
@@ -77,6 +83,7 @@ const TrialChoiceButton: React.FC<TrialChoiceButtonProps> = ({
       >
         {content}
       </span>
+      {shortcutAction !== undefined && <ShortcutKeycap action={shortcutAction} />}
     </button>
   );
 };

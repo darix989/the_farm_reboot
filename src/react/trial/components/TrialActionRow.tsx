@@ -1,5 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
+import { ariaKeyShortcutsFor } from '../../../data/keyBindings';
+import ShortcutKeycap from '../../shortcuts/ShortcutKeycap';
 import TrialTextButton from './TrialTextButton';
 import {
   canRunTutorialTargetAction,
@@ -143,33 +145,39 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
           })}
           disabled={analyze.disabled}
           aria-label={analyze.label}
+          aria-keyshortcuts={ariaKeyShortcutsFor('trialAnalyze')}
           title={analyze.label}
           onClick={runAnalyze}
           data-tutorial-interactive-action="analyze"
         >
           <img src={magnifyingIcon} alt="" className={styles.trialFooterIcon} />
+          <ShortcutKeycap action="trialAnalyze" />
         </TrialTextButton>
       )}
       <TrialTextButton
         widthMode="square"
         disabled={back.disabled}
         aria-label={back.label}
+        aria-keyshortcuts={ariaKeyShortcutsFor('trialBack')}
         title={back.label}
         onClick={runBack}
         data-tutorial-interactive-action="back"
       >
         <img src={backIcon} alt="" className={styles.trialFooterIcon} />
+        <ShortcutKeycap action="trialBack" />
       </TrialTextButton>
       <TrialTextButton
         widthMode="square"
         variant={submit.icon === 'reveal' ? 'dashed' : 'solid'}
         disabled={submit.disabled}
         aria-label={submit.label}
+        aria-keyshortcuts={ariaKeyShortcutsFor('trialContinue', extraContinueCodes ?? [])}
         title={submit.label}
         onClick={runSubmit}
         data-tutorial-interactive-action={submitTutorialAction}
       >
         <img src={SUBMIT_ICON_SRC[submit.icon]} alt="" className={styles.trialFooterIcon} />
+        <ShortcutKeycap action="trialContinue" />
       </TrialTextButton>
       {skip != null && (
         <TrialTextButton
@@ -183,6 +191,7 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
           }}
         >
           <img src={skipIcon} alt="" className={styles.trialFooterIcon} />
+          <ShortcutKeycap action={null} />
         </TrialTextButton>
       )}
     </div>

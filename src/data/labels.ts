@@ -323,7 +323,7 @@ const LABELS = {
   farmZoneBarn: 'THE BIG BARN',
   farmZonePond: 'THE OLD POND',
   farmTalkPrompt: 'Talk to {name}',
-  farmInteractHint: 'Space / E',
+  shortcutRevealHint: 'Hold {key} to see keyboard shortcuts — release to use them',
   farmMoveHint: 'Arrows or WASD to move',
   farmMoveHintTouch: 'Drag anywhere to move',
   farmTalk: 'Talk',

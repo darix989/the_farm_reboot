@@ -25,6 +25,20 @@ test.describe('lateral farm scene', () => {
     await attachScreenshot(page, 'farm-side-menu-jump-pond');
   });
 
+  test('holding Shift keeps the talk prompt locatable by accessible name', async ({ page }) => {
+    await seedLevel1Started(page);
+    await page.goto('/');
+    await waitForMainMenu(page);
+    await page.getByRole('button', { name: SIDE_SCENE_OLD_POND }).click();
+    const prompt = page.getByRole('button', { name: TALK_TO_HETTY });
+    await prompt.waitFor();
+    await page.keyboard.down('Shift');
+    await prompt.waitFor();
+    await attachScreenshot(page, 'farm-side-shift-reveal-hetty');
+    await page.keyboard.up('Shift');
+    await prompt.waitFor();
+  });
+
   test('boots the scene and shows the back button', async ({ page }) => {
     await seedLevel1Started(page);
     await page.goto('/');
