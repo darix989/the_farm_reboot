@@ -269,13 +269,42 @@
 }
 
 @container (max-width: 1100px) {
+  .menuStage,
+  .confirmOverlay {
+    /* Stage rem is crushed on a letterboxed tablet; floor type in CSS pixels. */
+    --ui-font-caption: max(1.055rem, 15px);
+    --ui-font-label: max(1.172rem, 16px);
+    --ui-font-subtitle: max(1.289rem, 17px);
+    --ui-font-body: max(1.406rem, 18px);
+    --ui-font-display: max(2.109rem, 26px);
+  }
+
   .menuContainer {
     width: min(36rem, 72%);
     max-width: 72%;
   }
+
+  .menuButton,
+  .menuButtonDanger,
+  .scenarioButton {
+    font-size: var(--ui-font-body);
+  }
+
+  .menuButtonPrimary {
+    font-size: var(--ui-font-subtitle);
+  }
 }
 
 @container (max-width: 720px) {
+  .menuStage,
+  .confirmOverlay {
+    --ui-font-caption: max(1.055rem, 16px);
+    --ui-font-label: max(1.172rem, 17px);
+    --ui-font-subtitle: max(1.289rem, 18px);
+    --ui-font-body: max(1.406rem, 19px);
+    --ui-font-display: max(2.109rem, 28px);
+  }
+
   .menuStage {
     background: linear-gradient(
       180deg,

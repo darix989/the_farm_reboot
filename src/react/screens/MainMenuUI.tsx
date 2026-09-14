@@ -11,7 +11,6 @@ import { useProgressStore } from '../../store/progressStore';
 import { useDevSettingsStore } from '../../store/devSettingsStore';
 import { useFarmStore } from '../../store/farmStore';
 import { useWindowKeyDown } from '../hooks/useWindowKeyDown';
-import { useOpenCodexShortcut } from '../hooks/useOpenCodexShortcut';
 import styles from './MainMenuUI.module.scss';
 import getLabel, { type Labels } from '../../data/labels';
 
@@ -67,8 +66,8 @@ const MainMenuUI: React.FC = () => {
   };
 
   // Not a scene switch — the Codex is a global overlay, so it opens on top of the menu.
+  // Tab does not open it here: that shortcut is farm-only (`FarmUI` / `FarmSideUI`).
   const openCodex = useCodexUiStore((s) => s.openCodex);
-  useOpenCodexShortcut(!confirmingReset);
 
   const goHome = () => setView('home');
   const cancelReset = () => setConfirmingReset(false);
