@@ -9,10 +9,12 @@ import {
   SIDE_SCENES_HEADING,
   TALK_TO_BRAM,
   TALK_TO_CASS,
+  TALK_TO_DOT,
   TALK_TO_HETTY,
   seedLevel1Started,
   test,
   waitForMainMenu,
+  walkUntilVisible,
 } from './helpers';
 
 test.describe('lateral farm scene', () => {
@@ -81,46 +83,45 @@ test.describe('lateral farm scene', () => {
     await waitForMainMenu(page);
     await page.getByRole('button', { name: ENTER_THE_FARM }).click();
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
+    // First-visit spawn is beside Dot — wait for her prompt so Phaser keys exist before we walk.
+    await page.getByRole('button', { name: TALK_TO_DOT }).waitFor();
 
     // Walk right: barn door first (Dot stands further west now, so she is not in the
     // portal's radius contest), then the picket gate (Cass stands where Hetty used to,
-    // same focus contest).
-    await page.keyboard.down('ArrowRight');
-    await page.getByRole('button', { name: FARM_SIDE_PORTAL_BARN }).waitFor({ timeout: 45_000 });
-    await page.getByRole('button', { name: FARM_SIDE_PORTAL_GATE }).waitFor({ timeout: 45_000 });
-    await page.keyboard.up('ArrowRight');
+    // same focus contest). Short presses, not one held key — Playwright never repeats a
+    // down, and a hitch-sized step can skip a 220px portal radius entirely.
+    await walkUntilVisible(
+      page,
+      'ArrowRight',
+      page.getByRole('button', { name: FARM_SIDE_PORTAL_BARN }),
+    );
+    await walkUntilVisible(
+      page,
+      'ArrowRight',
+      page.getByRole('button', { name: FARM_SIDE_PORTAL_GATE }),
+    );
 
-    // The config runs every e2e test under `prefers-reduced-motion: reduce`, so this hop
-    // cuts straight through rather than fading — but `scene.scene.start()` still tears
-    // down and rebuilds the scene (and its `Key` objects) across a real tick or two. A
-    // held key's next `down` dispatched into that gap lands on no `Key` at all — nothing
-    // is listening for it yet — and is silently lost for the rest of the hold, since
-    // Playwright's synthetic input never repeats a `down` on its own. This settles that
-    // race rather than racing the exact restart timing.
     await page.keyboard.press('Space');
     await page.waitForTimeout(300);
 
     // gateLane's own entry portal disarms itself on arrival, and Bram (x=1600) is too
     // far from the ~x=360 spawn to be in range yet — walk over until his talk prompt
     // confirms his level actually loaded.
-    await page.keyboard.down('ArrowRight');
-    await page.getByRole('button', { name: TALK_TO_BRAM }).waitFor({ timeout: 45_000 });
-    await page.keyboard.up('ArrowRight');
+    await walkUntilVisible(page, 'ArrowRight', page.getByRole('button', { name: TALK_TO_BRAM }));
     await attachScreenshot(page, 'farm-side-gate-lane');
 
     // Walk back to the return gate and travel home through it.
-    await page.keyboard.down('ArrowLeft');
-    await page
-      .getByRole('button', { name: FARM_SIDE_PORTAL_BACK_TO_ROAD })
-      .waitFor({ timeout: 45_000 });
-    await page.keyboard.up('ArrowLeft');
+    await walkUntilVisible(
+      page,
+      'ArrowLeft',
+      page.getByRole('button', { name: FARM_SIDE_PORTAL_BACK_TO_ROAD }),
+    );
     await page.keyboard.press('Space');
     await page.waitForTimeout(300);
 
-    // Cass stands close enough to the main road's gate that she's the only candidate
-    // once the just-arrived portal disarms itself — confirms the main road is back,
-    // not merely some `FarmSide` instance.
-    await page.getByRole('button', { name: TALK_TO_CASS }).waitFor({ timeout: 15_000 });
+    // Cass stands west of the gate, past the combined talk/portal radii — walk left
+    // until her prompt confirms the main road is back, not merely some `FarmSide` instance.
+    await walkUntilVisible(page, 'ArrowLeft', page.getByRole('button', { name: TALK_TO_CASS }));
     await attachScreenshot(page, 'farm-side-back-on-road');
 
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).click();

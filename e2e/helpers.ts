@@ -1,4 +1,4 @@
-import { test as base, type Page } from '@playwright/test';
+import { test as base, type Locator, type Page } from '@playwright/test';
 import getLabel from '../src/data/labels';
 
 export const GAME_TITLE = getLabel('gameTitle');
@@ -12,12 +12,15 @@ export const LEVEL_1_FIRST = getLabel('level1BramDialog');
 export const MAIN_MENU_PROGRESS = getLabel('mainMenuProgressSettings');
 export const CONTINUE = getLabel('continue');
 export const FARM_SIDE_BACK_TO_MENU = getLabel('farmSideBackToMenu');
+export const TALK_TO_DOT = getLabel('farmTalkPrompt', { replacements: { name: 'Dot' } });
 export const TALK_TO_CASS = getLabel('farmTalkPrompt', { replacements: { name: 'Cass' } });
 export const TALK_TO_BRAM = getLabel('farmTalkPrompt', { replacements: { name: 'Bram' } });
 export const TALK_TO_HETTY = getLabel('farmTalkPrompt', { replacements: { name: 'Hetty' } });
 export const FARM_SIDE_PORTAL_BARN = getLabel('farmSidePortalBarn');
 export const FARM_SIDE_PORTAL_GATE = getLabel('farmSidePortalGate');
 export const FARM_SIDE_PORTAL_BACK_TO_ROAD = getLabel('farmSidePortalBackToRoad');
+/** First-beat Dot greeting — case-insensitive so title-case tweaks in the label still match. */
+export const DOT_INTRO_GREETING = /guardian of the farm/i;
 
 /**
  * Wipe persisted zustand keys before any app script runs, so smokes always
@@ -70,4 +73,26 @@ export async function attachScreenshot(page: Page, name: string): Promise<void> 
     body: await page.screenshot(),
     contentType: 'image/png',
   });
+}
+
+/**
+ * Nudge along the road until `locator` is visible.
+ *
+ * Playwright never auto-repeats a held key, and Phaser `Key` objects drop a `down` that
+ * landed before they existed — a single `keyboard.down` is then lost for the rest of the
+ * hold. Short presses also keep each step smaller than a portal's interact radius, so a
+ * large frame hitch cannot skip the prompt entirely.
+ */
+export async function walkUntilVisible(
+  page: Page,
+  key: 'ArrowLeft' | 'ArrowRight',
+  locator: Locator,
+  timeout = 45_000,
+): Promise<void> {
+  const deadline = Date.now() + timeout;
+  while (Date.now() < deadline) {
+    if (await locator.isVisible()) return;
+    await page.keyboard.press(key, { delay: 200 });
+  }
+  await locator.waitFor({ timeout: 1_000 });
 }

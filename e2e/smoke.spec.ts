@@ -2,6 +2,7 @@ import {
   attachScreenshot,
   ANIMATION_GALLERY,
   CONTINUE,
+  DOT_INTRO_GREETING,
   ENTER_THE_FARM,
   FIELD_NOTES,
   LEVEL_1_FIRST,
@@ -47,7 +48,7 @@ test.describe('boot and overlays', () => {
     // First farm visit auto-opens Dot's greeting (TrialLayout, no canvas walking).
     await waitForOverlayChrome(page);
     await page.getByRole('button', { name: CONTINUE }).waitFor();
-    await expect(page.getByText(/Guardian of the farm/).first()).toBeVisible();
+    await expect(page.getByText(DOT_INTRO_GREETING).first()).toBeVisible();
     await attachScreenshot(page, 'farm-intro-talk');
   });
 });
