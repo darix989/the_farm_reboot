@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  faceBoxTransform,
-  faceFramePosition,
+  faceBoxPercent,
+  faceFramePercent,
   faceSheetUrl,
   type FaceSheet,
 } from '../../phaser/animals/animalFaces';
@@ -17,8 +17,11 @@ const FALLBACK_FRAME_RATE = 13;
 interface FaceClipProps {
   /** Null renders nothing — see below. */
   sheet: FaceSheet | null;
-  /** Side of the square box to fit the head into, in CSS px. */
-  box: number;
+  /**
+   * Side of the square box. A number is CSS px (gallery review at an exact ship/retina size);
+   * a string is any CSS length so dialogue/log portraits can track stage `rem`.
+   */
+  box: number | string;
 }
 
 /**
@@ -29,10 +32,10 @@ interface FaceClipProps {
  * a time: callers mount it unconditionally and the animals without portraits simply stay
  * text-only. Every surface is laid out so that costs no space rather than leaving a hole.
  *
- * Playback is a stepped `background-position` on a `frameWidth x frameHeight` element that is
- * then transformed to sit the head in the middle of the box, via the shared `faceBoxTransform`
- * — the same staging the pipeline's own review page uses, so what was approved offline is
- * framed identically here.
+ * Playback steps `background-position` via `faceFramePercent`; the head sits in the box via
+ * `faceBoxPercent` — the same percent staging `FaceStill` uses, so a looping portrait and a
+ * still of the same sheet frame identically at any box size. The gallery still passes a px
+ * number so a portrait is judged at the exact size it ships.
  *
  * Split out of `AnimalFace` because the animation gallery has an `AnimalSpriteId` and no
  * character to resolve it from: five of the gallery's animals are skins nobody in the cast
@@ -45,7 +48,8 @@ const FaceClip: React.FC<FaceClipProps> = ({ sheet, box }) => {
 
   if (!sheet) return null;
 
-  const { z, x, y } = faceBoxTransform(sheet, box);
+  const staged = faceBoxPercent(sheet);
+  const cell = faceFramePercent(sheet, frame);
 
   return (
     // Decorative: every surface already names the speaker or the clip in text beside it, so
@@ -54,11 +58,13 @@ const FaceClip: React.FC<FaceClipProps> = ({ sheet, box }) => {
       <div
         className={styles.frame}
         style={{
-          width: sheet.frameWidth,
-          height: sheet.frameHeight,
+          width: `${staged.width}%`,
+          height: `${staged.height}%`,
+          left: `${staged.left}%`,
+          top: `${staged.top}%`,
           backgroundImage: `url(${faceSheetUrl(sheet.file)})`,
-          backgroundPosition: faceFramePosition(sheet, frame),
-          transform: `translate(${x}px, ${y}px) scale(${z})`,
+          backgroundSize: cell.size,
+          backgroundPosition: cell.position,
         }}
       />
     </div>

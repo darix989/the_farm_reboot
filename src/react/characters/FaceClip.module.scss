@@ -2,6 +2,16 @@
   position: relative;
   flex: none;
   overflow: hidden;
+  box-sizing: border-box;
+
+  // The staged `.frame` is the full sheet cell, often larger than this box. Paint
+  // containment plus overflow keep it from leaking into the tutorial highlight.
+  contain: paint;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+  aspect-ratio: 1;
 
   // `.react-ui-overlay` is `pointer-events: none` and inherits it to every descendant. A
   // decorative portrait must not opt back in, or it swallows clicks meant for the dialogue
@@ -11,10 +21,5 @@
 
 .frame {
   position: absolute;
-  top: 0;
-  left: 0;
-
-  // The inline `transform` scales the head into the box from this corner.
-  transform-origin: 0 0;
   background-repeat: no-repeat;
 }

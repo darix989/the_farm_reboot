@@ -679,6 +679,8 @@ Equivalent structure (conceptually; actual class names come from CSS modules suc
 - Native scrollbars are hidden everywhere with `scrollbar-width: none` (Firefox) and `::-webkit-scrollbar { display: none }` (Chrome/Safari/Edge). Scrolling still works; only the track is hidden.
 - `scrollbar-gutter: stable` is **not** used (it would reserve space for a hidden bar).
 - **Font sizing** — `rem` tracks a responsive root `font-size` set by `App.tsx` based on the canvas width. Typography tokens (`--ui-font-*`) are applied on `.react-root` alongside that scale.
+- **Dialogue / log portraits** — `AnimalFace` sizes boxes in `rem` (`FACE_BOX_PX` / `FACE_LOG_BOX_PX` at design rem). `FaceClip` stages the sheet with `faceBoxPercent` / `faceFramePercent` so the loop tracks that box. The animation gallery still passes a pixel `box` so a portrait is judged at ship/retina size.
+- **Action hit targets** — Analyze / Back / Continue and A/B/C (Talk / Leave) use `--trial-footer-icon-btn-size: max(6rem, 44px)` on `.trialActionsCenter` (four-slot row: `max(5.5rem, 44px)`). Compact viewports must not shrink the squares below that floor.
 
 ---
 

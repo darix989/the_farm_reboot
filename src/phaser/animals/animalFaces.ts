@@ -62,6 +62,12 @@ export const FACE_ASSET_PATH = 'assets/characters/faces';
 export const FACE_BOX_PX = 112;
 
 /**
+ * Debate-log portrait box, in CSS px at design rem. `AnimalFace` converts this to rem so the
+ * log face tracks the stage the same way the dialogue face does.
+ */
+export const FACE_LOG_BOX_PX = 44;
+
+/**
  * How much of the portrait box the head fills.
  *
  * A runtime constant rather than a promoted measurement, deliberately: re-framing the whole
@@ -230,12 +236,11 @@ export function faceFramePosition(sheet: FaceSheet, frame: number): string {
 /**
  * The same staging as `faceBoxTransform`, expressed in percentages of the box instead of px.
  *
- * Why a second form exists: `faceBoxTransform` needs the box size as a *number*, which pins
- * whatever uses it to a fixed pixel size. That is right for the dialogue portrait and the log
- * portrait, which are chrome at a chosen size — but the moderator status face replaces a text
- * emoji that sized itself in `em`, and the game's root `rem` ranges over 5-28px
- * (`STAGE_REM_MIN_PX`/`STAGE_REM_MAX_PX`). A 40px icon would be a third of the panel's height
- * on a small stage and a postage stamp on a large one.
+ * Why a second form exists: `faceBoxTransform` needs the box size as a *number* of CSS pixels.
+ * Dialogue, log, and moderator-status portraits all live in boxes that track stage `rem` /
+ * `em` (`STAGE_REM_MIN_PX`/`STAGE_REM_MAX_PX`), so they use this percent form instead. The
+ * gallery still passes a pixel `box` into `FaceClip` so a portrait is judged at the exact
+ * size it ships.
  *
  * It is **derived from `faceBoxTransform`, not a reimplementation of it**: the transform is
  * linear in `size`, so evaluating it at `size = 100` yields percentages directly. The whole

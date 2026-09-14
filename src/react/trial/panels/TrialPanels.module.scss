@@ -10,6 +10,10 @@ $trial-guess-tint-extras: invert(1) sepia(1) saturate(3) hue-rotate(155deg);
 $trial-guess-tint-partial: invert(1) sepia(1) saturate(2.5) hue-rotate(15deg);
 $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
 
+/* Minimum hit target for Trial/Farm action squares. Desktop rem sizes stay larger; this
+   floor is what landscape phones hit once root rem clamps to `STAGE_REM_MIN_PX`. */
+$trial-touch-min: 44px;
+
 /* =========================================================================
    Trial panels — panel content wrappers
    ========================================================================= */
@@ -47,7 +51,8 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   text-align: center;
 }
 
-/* Hint → icons → letters, centred both axes in the space below the title strip. */
+/* Hint → icons → letters, centred both axes in the space below the title strip.
+   Size token lives here so the footer squares and the A/B/C (Talk/Leave) row share it. */
 .trialActionsCenter {
   display: flex;
   flex: 1;
@@ -56,6 +61,13 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
+
+  --trial-footer-icon-btn-size: max(6rem, #{$trial-touch-min});
+
+  /* Four slots (Analyze | Back | Continue | Skip) have to fit the same 30% column. */
+  &:has(.trialInteractiveFooterActions > :nth-child(4)) {
+    --trial-footer-icon-btn-size: max(5.5rem, #{$trial-touch-min});
+  }
 }
 
 /* Icon-only action row (Analyze | Back | Continue) — a flex row since the button count
@@ -68,22 +80,12 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   justify-content: center;
   gap: 1.5rem;
 
-  --trial-footer-icon-btn-size: 6rem;
-
-  @include bp.compact {
-    --trial-footer-icon-btn-size: 5rem;
-  }
-
-  /* Four slots (Analyze | Back | Continue | Skip) have to fit the same 30% column. */
+  /* Four slots: tighter gap only — size stays on `.trialActionsCenter` so choices match. */
   &:has(> :nth-child(4)) {
     gap: 1rem;
 
-    --trial-footer-icon-btn-size: 5.5rem;
-
     @include bp.compact {
       gap: 0.75rem;
-
-      --trial-footer-icon-btn-size: 4.5rem;
     }
   }
 }
@@ -321,13 +323,12 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   }
 }
 
-/* Speaker line + body: always at least 4 lines tall, so the box's background fully contains
-   `.trialWizardPortrait` (a fixed 112px square, see `FACE_BOX_PX`) even when the reveal has
-   only shown a word or two so far — a shorter block would let the floated portrait poke out
-   past the background underneath it. 3 lines still fell short of 112px at the default trial
-   panel font scale; 4 clears it with room to spare. */
+/* Speaker line + body: tall enough that the box's background fully contains the floated
+   `.trialWizardPortrait` even when the reveal has only shown a word or two. The portrait is
+   `FACE_BOX_PX / STAGE_REM_BASE_PX` rem (7rem at design rem); `max` with 4 lines covers both
+   a large rem and a compact type scale. */
 .trialWizardTextBlock {
-  min-height: calc(1.375em * 4);
+  min-height: max(calc(1.375em * 4), 7rem);
 }
 
 /* One spoken sentence of the statement, or the whole body when no reveal is attached. Sibling
@@ -639,8 +640,8 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
 .debateLogSpeakerRow {
   display: flex;
 
-  // Centred rather than top-aligned: a 44px portrait against a single line of caption text
-  // reads as attached to the name, not hanging off it.
+  // Centred rather than top-aligned: a rem-sized log portrait against a single line of
+  // caption text reads as attached to the name, not hanging off it.
   align-items: center;
   gap: calc(0.45rem * var(--ui-trial-panel-font-scale, 1));
   min-width: 0;
@@ -827,8 +828,8 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
   position: relative;
   box-sizing: border-box;
   display: flex;
-  width: calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8);
-  height: calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8);
+  width: max(calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8), #{$trial-touch-min});
+  height: max(calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8), #{$trial-touch-min});
   min-height: 0;
   flex-shrink: 0;
   align-items: center;
@@ -900,7 +901,7 @@ $trial-guess-tint-wrong: invert(1) sepia(1) saturate(3) hue-rotate(300deg);
 
 .trialChoiceBtnWord {
   width: auto;
-  min-width: calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8);
+  min-width: max(calc(var(--trial-footer-icon-btn-size, 6rem) * 0.8), #{$trial-touch-min});
   padding: 0 0.85rem;
   overflow: visible;
 }
