@@ -280,7 +280,8 @@
   }
 
   .menuContainer {
-    width: min(36rem, 72%);
+    /* Percentage, not rem: 36rem at STAGE_REM_MIN is ~180px and wraps every label. */
+    width: max(36rem, 68%);
     max-width: 72%;
   }
 
@@ -295,7 +296,11 @@
   }
 }
 
-@container (max-width: 720px) {
+/*
+ * Phone landscape 16:9 stages are height-capped (Pixel 10 fullscreen ≈ 732px wide,
+ * iPhone ≈ 693px). 720px left fullscreen Pixel just on the tablet rule.
+ */
+@container (max-width: 900px) {
   .menuStage,
   .confirmOverlay {
     --ui-font-caption: max(1.055rem, 16px);
@@ -318,7 +323,9 @@
     max-width: none;
     max-height: 94%;
     margin: auto 4%;
-    padding: 1.1rem 1.1rem 1rem;
+
+    /* Clear the Chrome-Android fullscreen control in the stage corner. */
+    padding: max(1.1rem, 44px) 1.1rem 1rem max(1.1rem, 48px);
     gap: 0.75rem;
   }
 
