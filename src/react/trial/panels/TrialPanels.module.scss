@@ -733,9 +733,14 @@ $trial-touch-min: 44px;
     border-color 0.15s ease-in-out,
     background 0.15s ease-in-out;
 
-  &:hover {
+  &:hover:not(:disabled) {
     border-color: var(--ui-color-info-border-active);
     background: var(--ui-color-info-bg);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.35;
   }
 
   img {
@@ -746,7 +751,7 @@ $trial-touch-min: 44px;
     filter: invert(1);
   }
 
-  &:hover img {
+  &:hover:not(:disabled) img {
     opacity: 1;
   }
 

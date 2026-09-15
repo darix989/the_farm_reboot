@@ -330,10 +330,12 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
       <div className={styles.trialActionsCenter}>
         <TrialActionRow
           analyze={
-            mechanics.analysisEnabled
+            mechanics.analysisVisible
               ? {
                   disabled: !analyzeTarget,
-                  label: analyzeTitle,
+                  label: mechanics.analysisEnabled
+                    ? analyzeTitle
+                    : getLabel('analyzeNotInThisConversation'),
                   guessState: analyzeGuessState,
                   attentionPulse: analyzePulse,
                   onClick: () => {

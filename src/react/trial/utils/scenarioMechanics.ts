@@ -12,7 +12,15 @@ import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './fallacyGuessTypes';
 import type { Labels } from '../../../data/labels';
 
 /** Every mode flag resolved to a concrete value — no `undefined` for consumers to handle. */
-export type ResolvedMechanics = Required<DebateScenarioMechanics>;
+export type ResolvedMechanics = Required<DebateScenarioMechanics> & {
+  /**
+   * Whether the analyze controls are in the DOM at all. Derived, never authored: only the
+   * `analysis` feature unlock turns this on. `analysisEnabled` then decides whether the
+   * button that is rendered can be pressed — a lesson that opts out shows it greyed rather
+   * than absent, so a player who has learned the lens is not left wondering where it went.
+   */
+  analysisVisible: boolean;
+};
 
 /**
  * Full-debate behaviour. A scenario with no `mechanics` block resolves to exactly this,
@@ -20,6 +28,7 @@ export type ResolvedMechanics = Required<DebateScenarioMechanics>;
  */
 export const DEFAULT_MECHANICS: ResolvedMechanics = {
   analysisEnabled: true,
+  analysisVisible: true,
   showInsightPoints: true,
   showModeratorOpinion: true,
   showRoundRecap: true,
@@ -103,6 +112,7 @@ export function resolveMechanics(debate: DebateScenarioJson): ResolvedMechanics 
 
   return {
     analysisEnabled: boolOr(m.analysisEnabled, DEFAULT_MECHANICS.analysisEnabled),
+    analysisVisible: DEFAULT_MECHANICS.analysisVisible,
     showInsightPoints: boolOr(m.showInsightPoints, DEFAULT_MECHANICS.showInsightPoints),
     showModeratorOpinion: boolOr(m.showModeratorOpinion, DEFAULT_MECHANICS.showModeratorOpinion),
     showRoundRecap: boolOr(m.showRoundRecap, DEFAULT_MECHANICS.showRoundRecap),
@@ -131,10 +141,12 @@ export function applyFeatureUnlocks(
   taughtHere: readonly GameFeatureId[] = [],
 ): ResolvedMechanics {
   const has = (id: GameFeatureId) => unlocked.includes(id) || taughtHere.includes(id);
+  const analysisVisible = unlocked.includes('analysis');
   return {
     ...m,
+    analysisVisible,
     // Analysis is introduced by a tutorial, never by merely opening its encounter.
-    analysisEnabled: m.analysisEnabled && unlocked.includes('analysis'),
+    analysisEnabled: m.analysisEnabled && analysisVisible,
     showInsightPoints: m.showInsightPoints && has('insight_points'),
     showRoundType: m.showRoundType && has('round_types'),
   };

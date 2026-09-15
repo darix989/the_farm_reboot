@@ -12,6 +12,7 @@ import {
 } from '../trial/utils/trialActionShortcuts';
 import styles from '../trial/panels/TrialPanels.module.scss';
 import { useDevSettingsStore } from '../../store/devSettingsStore';
+import { useCodexStore } from '../../store/codexStore';
 
 type TalkMode = 'talk' | 'lessons';
 
@@ -102,6 +103,7 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
   const continueLabel = getLabel('continue');
   const skipLabel = getLabel('farmTalkSkip');
   const showSkip = useDevSettingsStore((s) => s.showFarmTalkSkip);
+  const analysisUnlocked = useCodexStore((s) => s.unlockedFeatures).includes('analysis');
 
   // Talk / Lessons / Leave are mounted only once the last beat has been read in full. Leave
   // used to be shown on its own while it was still revealing, which let the player end the
@@ -179,11 +181,15 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
 
       <div className={styles.trialActionsCenter}>
         <TrialActionRow
-          analyze={{
-            disabled: true,
-            label: getLabel('analyzeThisStatement'),
-            onClick: () => {},
-          }}
+          analyze={
+            analysisUnlocked
+              ? {
+                  disabled: true,
+                  label: getLabel('analyzeNotInThisConversation'),
+                  onClick: () => {},
+                }
+              : null
+          }
           back={{
             disabled: mode !== 'lessons',
             label: getLabel('back'),

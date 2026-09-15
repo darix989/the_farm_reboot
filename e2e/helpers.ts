@@ -63,6 +63,29 @@ export async function seedLevel1Started(page: Page): Promise<void> {
   });
 }
 
+/**
+ * Seed the `analysis` feature as unlocked, as if the player had already reached Cass's
+ * round 5 tutorial. Must run before `page.goto` — the suite fixture wipes `the-farm-codex`
+ * on every context, so this seed has to land on top of that wipe.
+ */
+export async function seedAnalysisUnlocked(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    window.localStorage.setItem(
+      'the-farm-codex',
+      JSON.stringify({
+        state: {
+          knownFallacies: [],
+          spottedFallacies: [],
+          dialogFlags: [],
+          unlockedFeatures: ['analysis'],
+          seenNoticeIds: null,
+        },
+        version: 4,
+      }),
+    );
+  });
+}
+
 /** Shared TrialLayout Dialog panel — debates and farm talks both mount it. */
 export async function waitForOverlayChrome(page: Page): Promise<void> {
   await page.locator('[data-tutorial-panel="wizard"]').waitFor({ timeout: 60_000 });

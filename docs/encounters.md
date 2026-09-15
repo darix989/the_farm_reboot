@@ -228,7 +228,7 @@ raw scenario.
 
 | Flag | Default | Effect |
 |---|---|---|
-| `analysisEnabled` | `true` | Magnifying glasses and the analysis modal, hidden globally until the `analysis` feature is learned. |
+| `analysisEnabled` | `true` | Whether the magnifying glass can be used. `false` shows it greyed rather than hiding it; the control is hidden entirely until the `analysis` feature is learned. |
 | `showInsightPoints` | `true` | The Insight counter. |
 | `showModeratorOpinion` | `true` | Gauge, opinion emoji, per-round impact. |
 | `showRoundRecap` | `true` | The recap modal between rounds. |
@@ -277,7 +277,7 @@ that tutorial opens, before its spotlight resolves the newly mounted controls. C
 `teach-spot-it` tutorial grants `analysis` at round 5. Before then, the footer and log
 analysis buttons are absent in every encounter, including menu previews. Once taught,
 analysis remains available across encounters and reloads; `analysisEnabled: false` still
-keeps a lesson free of analysis.
+shows the glass greyed in a lesson that is not meant to be analyzed.
 
 Menu previews that skip Cass also skip tutorials requiring hidden analysis controls and
 `requiresAnalysis` progression gates until the feature is learned. Other feature previews

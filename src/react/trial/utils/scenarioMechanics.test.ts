@@ -62,12 +62,31 @@ describe('applyFeatureUnlocks', () => {
     expect(applyFeatureUnlocks(DEFAULT_MECHANICS, ['analysis']).analysisEnabled).toBe(true);
   });
 
-  it('keeps analysis-free lessons hidden even after the tutorial unlock', () => {
+  it('keeps analysis-free lessons greyed rather than absent after the tutorial unlock', () => {
     const mechanics = resolveMechanics({
       ...baseScenario,
       mechanics: { analysisEnabled: false, encounterKind: 'lesson' },
     });
-    expect(applyFeatureUnlocks(mechanics, ['analysis']).analysisEnabled).toBe(false);
+    const resolved = applyFeatureUnlocks(mechanics, ['analysis']);
+    expect(resolved.analysisEnabled).toBe(false);
+    expect(resolved.analysisVisible).toBe(true);
+  });
+
+  it('resolves the visible/usable matrix for the analyze control', () => {
+    const noUnlock = applyFeatureUnlocks(DEFAULT_MECHANICS, []);
+    expect(noUnlock.analysisVisible).toBe(false);
+    expect(noUnlock.analysisEnabled).toBe(false);
+
+    const unlockedDefault = applyFeatureUnlocks(DEFAULT_MECHANICS, ['analysis']);
+    expect(unlockedDefault.analysisVisible).toBe(true);
+    expect(unlockedDefault.analysisEnabled).toBe(true);
+
+    const unlockedOptedOut = applyFeatureUnlocks(
+      resolveMechanics({ ...baseScenario, mechanics: { analysisEnabled: false } }),
+      ['analysis'],
+    );
+    expect(unlockedOptedOut.analysisVisible).toBe(true);
+    expect(unlockedOptedOut.analysisEnabled).toBe(false);
   });
 
   it('hides Insight and round-type chrome until the matching feature is unlocked or taught here', () => {

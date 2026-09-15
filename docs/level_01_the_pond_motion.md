@@ -150,8 +150,10 @@ section never renders.
 
 ### 1.1 — "How a Conversation Works" (Bram teaches dialog and crossfire)
 
-*Flags: analysis off, insight hidden, moderator visible, recap off, intro summary off,
-`revealChoiceAssessment: true`, `encounterKind: 'lesson'`, `showRoundType: true`. Rewards:
+*Flags: analysis greyed once learned (`analysisEnabled: false` — absent until Cass teaches
+the feature, then visible but unusable here), insight hidden, moderator visible, recap off,
+intro summary off, `revealChoiceAssessment: true`, `encounterKind: 'lesson'`,
+`showRoundType: true`. Rewards:
 `setsDialogFlags: ['bram-taught-crossfire']`, `unlocksFeatures: ['round_types']`. Gated on
 `dot-welcomed`. Required for Cass.*
 

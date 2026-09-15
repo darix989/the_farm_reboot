@@ -200,6 +200,7 @@ const LABELS = {
   analyzeThisQuestion: 'Analyze this question',
   analyzeThisResponse: 'Analyze this response',
   analyzeThisRound: 'Analyze this round',
+  analyzeNotInThisConversation: 'Nothing to analyze in this conversation',
   analyzeImageAlt: 'Analyze',
   /** Icon row of fallacies correctly spotted in a statement, under its text in the Debate Log. */
   spottedFallaciesAria: 'Fallacies spotted in this statement',

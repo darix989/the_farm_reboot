@@ -1,6 +1,13 @@
 import type { Page } from '@playwright/test';
 import getLabel from '../src/data/labels';
-import { expect, LEVEL_1_HEADING, test, waitForMainMenu, waitForOverlayChrome } from './helpers';
+import {
+  expect,
+  LEVEL_1_HEADING,
+  seedAnalysisUnlocked,
+  test,
+  waitForMainMenu,
+  waitForOverlayChrome,
+} from './helpers';
 
 async function expectAnalysisClosed(page: Page) {
   await expect(page.locator('[data-tutorial-analysis-action="close"]')).toHaveCount(0);
@@ -101,3 +108,31 @@ for (const encounter of ['level1BramDialog', 'level1HettyBarrage'] as const) {
     }
   });
 }
+
+test('shows the analyze control greyed, not hidden, in a lesson that opts out once analysis is unlocked', async ({
+  page,
+}) => {
+  await seedAnalysisUnlocked(page);
+  await page.goto('/');
+  await waitForMainMenu(page);
+  await page.getByRole('button', { name: LEVEL_1_HEADING }).click();
+  await page.getByRole('button', { name: getLabel('level1BramDialog') }).click();
+  await waitForOverlayChrome(page);
+
+  const analyze = page.locator('[data-tutorial-interactive-action="analyze"]');
+  await expect(analyze).toBeVisible();
+  await expect(analyze).toBeDisabled();
+  await page.keyboard.press('a');
+  await expectAnalysisClosed(page);
+
+  // Round 1 stays "upcoming" (its expand toggle disabled) until the intro tutorial is
+  // dismissed and the debate moves past it.
+  await page.getByRole('button', { name: getLabel('tutorialGotIt') }).click();
+  await page.locator('[data-tutorial-interactive-action="continue"]').click();
+
+  await page.locator('[data-debate-log-toggle-panel]').click();
+  await page.locator('[data-debate-log-toggle-expand-round-id="round-1"]').click();
+  const logAnalyze = page.locator('[data-debate-log-analyze-round-id="round-1"]');
+  await expect(logAnalyze).toBeVisible();
+  await expect(logAnalyze).toBeDisabled();
+});

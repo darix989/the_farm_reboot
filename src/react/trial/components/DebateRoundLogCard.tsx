@@ -169,13 +169,13 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
         : getLabel('statusCompleted');
 
   const showPromptAnalyze =
-    mechanics.analysisEnabled &&
+    mechanics.analysisVisible &&
     round.kind === 'player' &&
     !!round.opponentPrompt &&
     showOpponentPrompt;
 
   const showResponseAnalyze =
-    mechanics.analysisEnabled &&
+    mechanics.analysisVisible &&
     round.kind === 'player' &&
     !!displayResponse &&
     showOpponentResponse;
@@ -310,14 +310,19 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                           : ''}
                       </p>
                     </div>
-                    {mechanics.analysisEnabled && (
+                    {mechanics.analysisVisible && (
                       <div
                         className={styles.debateLogAnalyzeGroup}
                         aria-label={getLabel('analyzeStatementGroupAria')}
                       >
                         <AnalyzeButton
+                          disabled={!mechanics.analysisEnabled}
                           guessState={getNpcGuessState(round.id)}
-                          title={getLabel('analyzeThisStatement')}
+                          title={
+                            mechanics.analysisEnabled
+                              ? getLabel('analyzeThisStatement')
+                              : getLabel('analyzeNotInThisConversation')
+                          }
                           dataRoundId={round.id}
                           onClick={() => {
                             const target = {
@@ -374,8 +379,13 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         aria-label={getLabel('analyzeQuestionGroupAria')}
                       >
                         <AnalyzeButton
+                          disabled={!mechanics.analysisEnabled}
                           guessState={getNpcGuessState(round.opponentPrompt.id)}
-                          title={getLabel('analyzeThisQuestion')}
+                          title={
+                            mechanics.analysisEnabled
+                              ? getLabel('analyzeThisQuestion')
+                              : getLabel('analyzeNotInThisConversation')
+                          }
                           dataRoundId={round.id}
                           onClick={() => {
                             const target = {
@@ -401,7 +411,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(round.opponentPrompt.sentences)}
                   </p>
-                  {showPromptAnalyze && (
+                  {showPromptAnalyze && mechanics.analysisEnabled && (
                     <SpottedFallacyIcons
                       fallacies={getSpottedFallacies(
                         round.opponentPrompt.id,
@@ -432,14 +442,19 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         {impactFaceLine != null ? <> — {impactFaceLine}</> : null}
                       </p>
                     </div>
-                    {mechanics.analysisEnabled && (
+                    {mechanics.analysisVisible && (
                       <div
                         className={styles.debateLogAnalyzeGroup}
                         aria-label={getLabel('analyzeYourLineGroupAria')}
                       >
                         <AnalyzeButton
+                          disabled={!mechanics.analysisEnabled}
                           guessState={getNpcGuessState(chosenOption.id)}
-                          title={getLabel('analyzeThisStatement')}
+                          title={
+                            mechanics.analysisEnabled
+                              ? getLabel('analyzeThisStatement')
+                              : getLabel('analyzeNotInThisConversation')
+                          }
                           dataRoundId={round.id}
                           onClick={() => {
                             const target = {
@@ -503,8 +518,13 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         aria-label={getLabel('analyzeResponseGroupAria')}
                       >
                         <AnalyzeButton
+                          disabled={!mechanics.analysisEnabled}
                           guessState={getNpcGuessState(displayResponse.statement.id)}
-                          title={getLabel('analyzeThisResponse')}
+                          title={
+                            mechanics.analysisEnabled
+                              ? getLabel('analyzeThisResponse')
+                              : getLabel('analyzeNotInThisConversation')
+                          }
                           dataRoundId={round.id}
                           onClick={() => {
                             const target = {
@@ -530,7 +550,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                   <p style={{ marginTop: '0.25rem', color: uiColor.textMuted }}>
                     {statementText(displayResponse.statement.sentences)}
                   </p>
-                  {showResponseAnalyze && (
+                  {showResponseAnalyze && mechanics.analysisEnabled && (
                     <SpottedFallacyIcons
                       fallacies={getSpottedFallacies(
                         displayResponse.statement.id,
