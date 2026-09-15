@@ -520,18 +520,25 @@ const LABELS = {
   farmDialogDot1f: 'What is wrong with the week?',
   farmDialogDot1g:
     'There is a **[accent]debate[/accent]** coming. Tobias has put a motion on the Old Pond — that the water be kept for the Meadow-Born, the ones born on this meadow, and that **[accent]every animal who arrived here after them go and drink at the road trough instead[/accent]**. It is heard Sunday, on the floor of the Public Farm, in front of Duchess.',
-  farmDialogDot1h: 'That is me, then. And the road trough is half a mile down the lane.',
+  farmDialogDot1h:
+    'Arrived after them — that is me. Six weeks. And the road trough is half a mile down the lane.',
   farmDialogDot1i:
     'It is. He says the arrivals are what turned the water brown, and he says it so warmly that everybody has agreed with him before they work out what they have agreed to.',
   farmDialogDot1j: 'And who speaks for the rest of us? The ones he wants sent down the lane.',
   farmDialogDot1k:
     'Nobody. Not one animal. Plenty of them grumble about it at home, and then agree with him to his face. **[accent]Only the agreeing out loud gets counted.[/accent]**',
-  farmDialogDot1l: 'Then I will speak for us.',
-  farmDialogDot1m: 'You — you have been here six — right. Yes. Somebody had to be somebody.',
-  farmDialogDot1n:
+  farmDialogDot1l: 'Then somebody has to say it out loud. Who is allowed to?',
+  farmDialogDot1m:
+    'There is no list, if that is what you are asking. **[accent]Anyone on the farm may ask Duchess for the floor[/accent]**, and she has to give it. It is the oldest rule we have and it is in perfect condition, because not one animal has ever used it.',
+  farmDialogDot1n: 'Anyone. Even somebody who arrived six weeks ago.',
+  farmDialogDot1o:
+    'The rule does not ask how long you have been here. The farm asks, afterwards, and it asks loudly — which is the whole reason the rest of them stay sitting down.',
+  farmDialogDot1p: 'Then I will speak for us.',
+  farmDialogDot1q: 'You — you have been here six — right. Yes. Somebody had to be somebody.',
+  farmDialogDot1r:
     'But there are rules, and nobody has written them down. Partly because not one animal here knows what writing is. Mostly because rules nobody wrote are the easiest kind to break. You will want to know **[accent]how this farm argues[/accent]** before you go and stand in front of it.',
-  farmDialogDot1o: 'Where do I start?',
-  farmDialogDot1p:
+  farmDialogDot1s: 'Where do I start?',
+  farmDialogDot1t:
     '**[accent]Bram. The wolf[/accent]**, through the gate. He will pretend he is checking the fence. Let him. He is the one who will show you how a conversation works here, before **[accent]Cass[/accent]** gets her teeth into you. Then Cass on the road, just this side of the gate, then **[accent]Hetty[/accent]** at the pond — east road, walk up to the water — then Duchess further down that same road when you want the floor.',
   farmDialogDot2:
     'Bram has done his piece. Cass is on the road, just this side of the gate, and she will talk to you now.',
