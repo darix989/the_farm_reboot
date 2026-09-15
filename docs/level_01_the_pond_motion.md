@@ -190,49 +190,49 @@ cap.
 `revealChoiceAssessment: true`, `encounterKind: 'sparring'`. Rewards:
 `teachesFallacies: ['ad-hominem']`, `setsDialogFlags: ['cass-named-ad-hominem']`.*
 
-Cass used to stand on the floor. They came at her tail before she had finished her first
-sentence; it took her a season to name that one, and some of the others took longer. She
-named those too, then left the floor by choice and keeps the west post.
+Cass introduces herself through Bram's referral and offers to prepare Rue for Tobias's
+personal attacks. She recalls being dismissed as a fox at the Public Farm; it took her a
+season to recognise how opponents made her defend herself without answering her argument.
+She eventually learned the name and the response, and now teaches at the sparring post.
 
 Seven rounds. She sets up her own history (1–2), makes Rue commit the fallacy (3), debriefs
 what he just did (4), does it back to him in Tobias's voice (5, `requiresAnalysis`), names it
 (6) and sends him off her post (7). Rounds 1, 2, 4, 5, 6 and 7 are `gossip` — monologues at
 the post, nobody asking anything. Round 3 is the genuine `crossfire`. Round types are live
 from 1.1, so the labels have to be honest. Round 2 states the deal plainly — the name comes at the
-end, once he has felt it, because a name you are handed is gone by Sunday — rather than
-teasing a name it will not say. Round 6 also points at Field Notes after Leave: **Fallacies
+end, after he has practised both making and hearing a personal attack. Round 6 also points at Field Notes after Leave: **Fallacies
 you know** is the name she just gave; **Fallacies you have spotted** is the line they tagged.
 She does not repeat **Next** — Bram already sent them there.
 
 The lines the lesson turns on carry inline
-[emphasis](./encounters.md#emphasis-inside-a-spoken-line): the season she named the trick in the
-introduction, *"You did not argue with me. You priced me."* and *"That is the trick."* in
+[emphasis](./encounters.md#emphasis-inside-a-spoken-line): recognising when an argument turns
+personal in the introduction, *"You gave a reason to dismiss me without examining my claim."* in
 round 4, the bins remark inside Tobias's line in round 5, and **Ad Hominem**, **Field Notes**
 and the two list names in round 6.
 
-**Round 3 is the load-bearing beat: all three options are personal attacks.** Cass asks for the
-first thing in his head — *about her, pointedly not about the pond* — and every available
+**Round 3 is the load-bearing beat: all three options are personal attacks.** Cass proposes
+inspecting the pond, then asks Rue to dismiss that claim based on his opinion of her. Every available
 answer is an Ad Hominem, `quality: 'logical_fallacy'`, `impact: 0`. There is no way to be
 polite, and that is the design:
 
 | | Angle | Line |
 |---|---|---|
-| **A** | species | "You are a fox. Foxes say whatever suits them…" |
-| **B** | record | "You are not even on the floor anymore…" |
-| **C** | motive | "You only care about any of this because you are bitter." |
+| **A** | species | "You are a fox. You must have something to gain from an inspection…" |
+| **B** | record | "You do not even speak at the Public Farm anymore…" |
+| **C** | motive | "You only want an inspection because you are bitter about the animals running the farm." |
 
 Nothing is punished — the moderator is hidden and every impact is zero — so the player
 commits the fallacy without being scored for obeying an instruction. Each option has its own
-reply from Cass, and round 4 collects all three: *"You did not argue with me. You priced me.
-My tail, my record, my mood — three ways of saying she does not count, and not one of them
-says why."*
+reply from Cass, and round 4 collects all three: *"You gave a reason to dismiss me without
+examining my claim. My species, my retirement, my temper. None of those tells us whether
+the pond needs checking."*
 
 > **The teaching here is carried by dialogue, on purpose.** 1.1 sets both
 > `revealChoiceAssessment: true` and `showRoundRecap: false`, and the recap modal is the only
 > surface that renders an option's `reason` — so in this rung the assessments never appear.
 > That is why round 4 exists as its own beat rather than being folded into round 5. The
 > `reason` strings are still authored and still correct (species / record / motive are three
-> different ways of pricing an animal); they would surface immediately if the recap were
+> different ways of dismissing an animal's claim); they would surface immediately if the recap were
 > switched on, which it is not, because five NPC rounds would each get a "Round complete."
 > modal for nothing.
 

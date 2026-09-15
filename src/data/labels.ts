@@ -417,11 +417,11 @@ const LABELS = {
   farmDialogHettyMeetC:
     'You are very good about standing still. Come back when I have something friendly to say, which I will.',
   farmDialogCass1:
-    'You. Come here. They came at my tail until I put a name on it, and you do not even know it has a name. That changes this morning.',
-  farmDialogCass1a: 'You. Come here.',
-  farmDialogCass1b: 'You are the fox.',
+    'So you are the one taking on Tobias. I am Cass. Come here. Let us make your first mistakes somewhere they will cost you less.',
+  farmDialogCass1a: 'So you are the one taking on Tobias. I am Cass.',
+  farmDialogCass1b: 'Bram said you could help. He made it sound rather urgent.',
   farmDialogCass1c:
-    'Yes. I am the fox. Get it out of your system, because in about a minute I am going to make you say it properly.',
+    'Sensible of him. Come here. Let us make your first mistakes somewhere they will cost you less.',
   farmDialogCass2:
     'Back at the post. Somebody has been counting at you, and there is a name for that one as well.',
   farmDialogCass2a: 'Back already. And somebody has been counting at you.',

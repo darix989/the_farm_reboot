@@ -1,7 +1,7 @@
 {
   "id": "level1-cass-teaches-ad-hominem",
-  "introduction": "Cass used to stand on the Public Farm floor. They came at her tail; [accent]she named the trick in a season[/accent] and beat the rest of them after that. She does not stand there anymore. She keeps this post, and she has a way of teaching it that you are not going to enjoy.",
-  "introductionSummary": "A retired master at the west post. They came at her tail; she named it in a season. She means to make you feel that from the other end.",
+  "introduction": "Cass steps aside and leaves you a place by the sparring post. She has faced her share of arguments at the Public Farm, and she knows [accent]how quickly they can turn personal[/accent]. Today she wants you to [accent]recognise the moment that happens[/accent].",
+  "introductionSummary": "A retired debater prepares Rue for personal attacks by having him practise both sides of an exchange.",
   "playerSide": "opposition",
   "characters": {
     "cass": "Cass",
@@ -39,21 +39,21 @@
         "sentences": [
           {
             "id": "s-r1-1",
-            "text": "I used to stand on that floor. They came at my tail before I had finished my first sentence.",
+            "text": "When I first spoke at the Public Farm, they barely let me finish. Why listen to a fox? Surely I must be up to something.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-2",
-            "text": "It took me a season to put a name on that one. Some of the others took longer. I named those too.",
+            "text": "It took me a season to recognise the trick: they could make me defend myself without ever answering my argument.",
             "logicalFallacies": []
           },
           {
             "id": "s-r1-3",
-            "text": "I do not stand there anymore. I keep this post. That is the whole of my retirement.",
+            "text": "Eventually I learned what to call it, and how to answer it. These days I teach here. Retirement was getting dull.",
             "logicalFallacies": []
           }
         ],
-        "summary": "She used to stand on the floor; they came at her tail, she named it in a season, and she keeps this post now rather than the floor."
+        "summary": "Cass recalls learning to recognise personal attacks during her debating days. She now passes that experience on to others."
       }
     },
     {
@@ -70,21 +70,21 @@
         "sentences": [
           {
             "id": "s-r2-1",
-            "text": "It has a name. You get the name at the end, once you have felt it.",
+            "text": "There is a name for that trick. I will give it to you after we have tried it.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-2",
-            "text": "And you will feel it. You are a raccoon who takes his supper out of a bin — nobody is going to have to work very hard.",
+            "text": "Tobias will find plenty to say about a raccoon who eats from bins. Every moment you spend defending your supper is a moment he need not explain the water.",
             "logicalFallacies": []
           },
           {
             "id": "s-r2-3",
-            "text": "A name you are handed is gone by Sunday. So you are going to do the trick to me first.",
+            "text": "So we will practise from both sides. First you dismiss my argument by taking a swipe at me. Then we swap.",
             "logicalFallacies": []
           }
         ],
-        "summary": "The name comes at the end. First he has to play the trick on her, because a word handed over is gone again by Sunday."
+        "summary": "Rue will practise making a personal attack, then hearing one, before Cass explains the term."
       }
     },
     {
@@ -100,21 +100,21 @@
         "sentences": [
           {
             "id": "s-r3-p1",
-            "text": "Look at me and say the first thing that comes into your head.",
+            "text": "Here is my claim: we should inspect the pond before we decide whether the water is safe.",
             "logicalFallacies": []
           },
           {
             "id": "s-r3-p2",
-            "text": "Not about the pond. About me. Do not be polite — I have heard all of it, and I would like it fresh.",
+            "text": "For this exercise, find an excuse to dismiss that claim based on what you think of me.",
             "logicalFallacies": []
           },
           {
             "id": "s-r3-p3",
-            "text": "Go on.",
+            "text": "Go on. I have heard worse from animals who meant it.",
             "logicalFallacies": []
           }
         ],
-        "summary": "She demands the first thing in Rue's head about her — about her, pointedly not about the pond."
+        "summary": "Cass proposes inspecting the pond, then asks Rue to dismiss her proposal with a personal attack."
       },
       "options": [
         {
@@ -122,16 +122,16 @@
           "quality": "logical_fallacy",
           "impact": 0,
           "emotion": "talking",
-          "reason": "Straight to the species. You did not answer her, you priced her — and you did it in about a heartbeat, which is roughly how long it will take somebody to do it to you.",
-          "summary": "You reach for the species: a fox says what suits a fox, so nothing she says counts.",
+          "reason": "You rejected the inspection because Cass is a fox. Suspecting her motives tells you nothing about whether the pond needs checking.",
+          "summary": "You assume a fox has an ulterior motive and use that suspicion to dismiss the inspection.",
           "sentences": [
             {
               "id": "s-r3-opt-a-1",
-              "text": "You are a fox. Foxes say whatever suits them, so I have no idea why I would believe any of this.",
+              "text": "You are a fox. You must have something to gain from an inspection, so why should we listen to you?",
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "Being a fox is a fact about Cass, not about the claim. It disposes of her without touching a word she said."
+                  "explanation": "Assuming Cass has a hidden motive because she is a fox does not answer her proposal to inspect the pond."
                 }
               ]
             }
@@ -142,16 +142,16 @@
           "quality": "logical_fallacy",
           "impact": 0,
           "emotion": "talking",
-          "reason": "You went at her record instead of her reasoning. Leaving the floor cannot make a sentence false, and staying on it cannot make one true.",
-          "summary": "You go at her record instead: she is not on the floor anymore, so why would her advice be worth anything.",
+          "reason": "You used her retirement to dismiss her judgement. Whether she still debates has no bearing on whether the water needs inspecting.",
+          "summary": "You treat retirement as proof that her judgement, and therefore her proposal, can be dismissed.",
           "sentences": [
             {
               "id": "s-r3-opt-b-1",
-              "text": "You are not even on the floor anymore. If you knew how it was done you would still be standing there on Sunday, not barking at me from a post.",
+              "text": "You do not even speak at the Public Farm anymore. If your judgement were worth much, you would still be there telling them what to do.",
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "Her record is a fact about Cass. It is an answer to who she is rather than to anything she has argued."
+                  "explanation": "Cass retiring from debate does not show that her proposal is wrong. The inspection needs to be judged on its merits."
                 }
               ]
             }
@@ -162,16 +162,16 @@
           "quality": "logical_fallacy",
           "impact": 0,
           "emotion": "talking",
-          "reason": "You explained her away by her motive. Even if she is bitter, bitterness cannot make a true thing false — it only saves you the trouble of checking.",
-          "summary": "You put the whole lesson down to her motive: she is bitter, so this is really about her.",
+          "reason": "You dismissed her proposal as a grudge. Even if she is bitter, the pond may still need checking.",
+          "summary": "You attribute the proposal to resentment without considering whether an inspection is needed.",
           "sentences": [
             {
               "id": "s-r3-opt-c-1",
-              "text": "You only care about any of this because you are bitter. This is not a lesson, it is a grudge with a pupil.",
+              "text": "You only want an inspection because you are bitter about the animals running the farm. This is a grudge with a pupil.",
               "logicalFallacies": [
                 {
                   "id": "ad-hominem",
-                  "explanation": "Her motive is a fact about Cass. Naming it settles how she feels, not whether she is right."
+                  "explanation": "Attributing the proposal to bitterness does not establish whether an inspection is needed."
                 }
               ]
             }
@@ -189,11 +189,11 @@
             "sentences": [
               {
                 "id": "s-resp-r3-a-1",
-                "text": "The tail. Straight to the tail. I spent a season putting a name on that, and you managed it before you had finished sitting down.",
+                "text": "There it is. One look at the tail and you need not consider the inspection. Saves you a walk to the pond, too.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "She notes, sourly, that she spent a season naming the tail and Rue reached for it before he had finished sitting down."
+            "summary": "Cass shows how prejudice against foxes lets Rue reject an inspection without considering its merits."
           }
         },
         {
@@ -206,11 +206,11 @@
             "sentences": [
               {
                 "id": "s-resp-r3-b-1",
-                "text": "I left, therefore I am wrong. Splendid. By that reasoning the pond went brown because you are new.",
+                "text": "So retiring made me wrong. Remarkable. Does the water get cleaner every time I miss a meeting?",
                 "logicalFallacies": []
               }
             ],
-            "summary": "She runs the same reasoning back at him and it comes out saying the water went bad because Rue arrived."
+            "summary": "Cass challenges the supposed link between her retirement and whether the pond needs checking."
           }
         },
         {
@@ -223,11 +223,11 @@
             "sentences": [
               {
                 "id": "s-resp-r3-c-1",
-                "text": "Bitter. Yes. Now notice that you settled the whole question of whether I am right without once looking at the pond.",
+                "text": "Bitter? On occasion. Now tell me what my temper tells you about the water.",
                 "logicalFallacies": []
               }
             ],
-            "summary": "She concedes the bitterness and points out he closed the question without going anywhere near the water."
+            "summary": "Cass allows that she can be bitter, then asks how her mood bears on the condition of the pond."
           }
         }
       ]
@@ -246,21 +246,21 @@
         "sentences": [
           {
             "id": "s-r4-1",
-            "text": "Now. Whichever of those you reached for, notice what you did not do.",
+            "text": "Notice how easily we lost sight of the inspection.",
             "logicalFallacies": []
           },
           {
             "id": "s-r4-2",
-            "text": "[accent]You did not argue with me. You priced me.[/accent] My tail, my record, my mood — three ways of saying she does not count, and not one of them says why.",
+            "text": "[accent]You gave a reason to dismiss me without examining my claim.[/accent] My species, my retirement, my temper. None of those tells us whether the pond needs checking.",
             "logicalFallacies": []
           },
           {
             "id": "s-r4-3",
-            "text": "[accent]That is the trick.[/accent] You have just used it, on purpose, on somebody who asked you to. That is why you are going to remember it.",
+            "text": "That is the trick. I asked you to use it here so you can recognise it when somebody uses it in earnest.",
             "logicalFallacies": []
           }
         ],
-        "summary": "Every answer available to him priced her instead of answering her, and she made him use the trick so that it would stick."
+        "summary": "All three attacks dismiss Cass personally while leaving her proposal to inspect the pond unanswered."
       }
     },
     {
@@ -278,7 +278,7 @@
         "sentences": [
           {
             "id": "s-r5-1",
-            "text": "Other way round now. I am Tobias, it is Sunday, and you are standing on the floor.",
+            "text": "Now we swap. I am Tobias, it is Sunday, and you have just asked whether the pond is safe.",
             "logicalFallacies": []
           },
           {
@@ -297,7 +297,7 @@
             "logicalFallacies": []
           }
         ],
-        "summary": "Cass plays Tobias, and the middle of it is a gracious remark about bins standing in for an argument about water."
+        "summary": "Playing Tobias, Cass uses a polite remark about Rue eating from bins to undermine his concern about the water."
       }
     },
     {
@@ -314,17 +314,17 @@
         "sentences": [
           {
             "id": "s-r6-1",
-            "text": "There. That is the whole of it.",
+            "text": "Did you hear how polite he made it sound?",
             "logicalFallacies": []
           },
           {
             "id": "s-r6-2",
-            "text": "He talked about what you are — a raccoon, a bin, six weeks of it — and never once about what happened to the water.",
+            "text": "He questioned your idea of clean because you eat from bins. He gave you no reason to think the water was safe.",
             "logicalFallacies": []
           },
           {
             "id": "s-r6-3",
-            "text": "So here is the phrase you keep: what I am, against what happened. When a line is about you instead of about the pond, you have heard it. The name is [accent]Ad Hominem[/accent].",
+            "text": "Keep this distinction in mind: what I am, against what happened. Dismissing your argument by attacking you is called [accent]Ad Hominem[/accent]. Your supper does not settle the question of the pond.",
             "logicalFallacies": []
           },
           {
@@ -334,11 +334,11 @@
           },
           {
             "id": "s-r6-5",
-            "text": "[accent]Fallacies you know[/accent] is the names you have been given. [accent]Fallacies you have spotted[/accent] is what you caught just now. They are not the same list.",
+            "text": "[accent]Fallacies you know[/accent] records the names you have learned. [accent]Fallacies you have spotted[/accent] records the examples you have caught. You now have an entry in each.",
             "logicalFallacies": []
           }
         ],
-        "summary": "She names it Ad Hominem, hands over the phrase to hold on to, and points at the two Field Notes lists."
+        "summary": "Cass names Ad Hominem, separates personal attacks from evidence about the pond, and explains the two Field Notes lists."
       }
     },
     {
@@ -355,16 +355,16 @@
         "sentences": [
           {
             "id": "s-r7-1",
-            "text": "Right. Off my post, then.",
+            "text": "That will do for today.",
             "logicalFallacies": []
           },
           {
             "id": "s-r7-2",
-            "text": "Come back when somebody tries it on you and you want to know what to say next. You will not be waiting long.",
+            "text": "When somebody makes it personal, keep listening for an answer to your question. Come back and tell me how you get on. I expect I will still be here.",
             "logicalFallacies": []
           }
         ],
-        "summary": "She sends him off her post and tells him to come back the first time somebody tries it on him."
+        "summary": "Cass sends Rue out to practise recognising personal attacks and invites him to report back."
       }
     }
   ],
@@ -377,7 +377,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "Cass is going to tell you something.\n\n**[muted]No score here.[/muted]**",
+            "message": "Practise recognising **[accent]personal attacks[/accent]** with Cass.\n\n**[muted]This is a training exercise. There is no score.[/muted]**",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "panel",
@@ -402,7 +402,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "She asked to be insulted, so **[accent]all three answers are personal attacks[/accent]**. Pick whichever one you like.\n\n**[muted]There is no right one. That is the lesson.[/muted]**",
+            "message": "For this exercise, **[accent]all three answers dismiss Cass personally[/accent]**. Choose one to see how she responds.\n\n**[muted]Each uses the same trick. None answers her proposal.[/muted]**",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "panel",
