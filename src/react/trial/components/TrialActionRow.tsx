@@ -181,7 +181,7 @@ const TrialActionRow: React.FC<TrialActionRowProps> = ({
       </TrialTextButton>
       <TrialTextButton
         widthMode="square"
-        variant={submit.icon === 'reveal' ? 'dashed' : 'solid'}
+        variant="solid"
         disabled={submit.disabled}
         aria-label={submit.label}
         aria-keyshortcuts={ariaKeyShortcutsFor('trialContinue', extraContinueCodes ?? [])}

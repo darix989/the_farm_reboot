@@ -51,9 +51,10 @@ export interface InteractiveFooter {
   submitLabel: string;
   submitDisabled: boolean;
   /**
-   * `'reveal'` is the lesser, momentary step — pacing the wizard's typewriter forward a
-   * sentence at a time — rendered dashed with a single chevron. The other three are the
-   * real round/phase advance, rendered solid with their own icon.
+   * `'reveal'` paces the wizard's typewriter forward one sentence at a time and uses a
+   * single chevron. The other three advance the round or phase with their own icon.
+   * Every submit state remains a normal solid action so an available reveal is not
+   * mistaken for a disabled control.
    */
   submitIcon: 'reveal' | 'continue' | 'confirm' | 'leave';
   onSubmit?: () => void;
