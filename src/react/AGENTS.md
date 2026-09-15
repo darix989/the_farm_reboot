@@ -584,9 +584,9 @@ Called from `TrialUI`. It subscribes once per unique event referenced in the tut
 
 ### Target ring focus modes
 
-`focusMode` on a step (`'normal' | 'pulsing'`, default `'normal'`) controls the target highlight ring drawn by `tutorialHighlight.module.scss`. Use `'pulsing'` only for steps where the ring is the only affordance telling the player what to press (typically a `target_only` step with no other visible cue) — everything else stays on the static `'normal'` ring. Ring thickness (`border-width` / the inset targets' `outline` width) is never animated, so a pulsing step never reflows its target.
+`focusMode` on a step (`'normal' | 'new'`, default `'normal'`) controls the target highlight drawn by `tutorialHighlight.module.scss`. Use `'new'` when introducing a feature: the ring pulses and `TutorialOverlay` portals a yellow NEW badge onto the target's top-right corner. Everything else stays on the static `'normal'` ring. Ring thickness (`border-width` / the inset targets' `outline` width) is never animated, so a `'new'` step never reflows its target.
 
-The ring is split into a geometry class (`.tutorialTargetRing`, `!important` border-width/style, never animated) plus a colour class chosen per step (`.tutorialTargetRingStatic` or `.tutorialTargetRingPulsing`). This split exists because `!important` author declarations beat `@keyframes` animations in the cascade — an animated `border-color` / `box-shadow` under an `!important` rule would silently do nothing, so only the non-animated geometry stays `!important`; the colour/glow declarations that do animate are not.
+The ring is split into a geometry class (`.tutorialTargetRing`, `!important` border-width/style, never animated) plus a colour class chosen per step (`.tutorialTargetRingStatic` or `.tutorialTargetRingNew`). This split exists because `!important` author declarations beat `@keyframes` animations in the cascade — an animated `border-color` / `box-shadow` under an `!important` rule would silently do nothing, so only the non-animated geometry stays `!important`; the colour/glow declarations that do animate are not. The NEW badge is not a CSS `::after` on the target: panel `overflow: hidden` would clip a corner sticker, so it lives in the overlay portal.
 
 ### Onboarding tutorial (`introduction:start`)
 

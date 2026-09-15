@@ -81,6 +81,7 @@ const TutorialOverlay: React.FC = () => {
 
   const { stageRect } = useStageRect();
   const codexIsOpen = useCodexUiStore((s) => s.isOpen);
+  const [newBadgePos, setNewBadgePos] = useState<{ top: number; left: number } | null>(null);
 
   const [, setRenderTick] = useState(0);
   useEffect(() => {
@@ -169,24 +170,38 @@ const TutorialOverlay: React.FC = () => {
     }
   }, [isOpen, step]);
 
-  useEffect(() => {
-    if (!isOpen || !step?.targetComponent) return;
+  // Stamp the ring before paint, then measure the NEW badge from that box so the
+  // thicker `!important` border does not leave the chip one frame behind.
+  useLayoutEffect(() => {
+    if (!isOpen || !step?.targetComponent) {
+      setNewBadgePos(null);
+      return;
+    }
     const targetEl = resolveTutorialTargetElement(step.targetComponent);
-    if (!targetEl) return;
+    if (!targetEl) {
+      setNewBadgePos(null);
+      return;
+    }
     // `classList.add` throws on a name containing whitespace, so split the override.
     const classNames = step.targetClassName
       ? step.targetClassName.split(/\s+/).filter(Boolean)
       : [
           highlightStyles.tutorialTargetRing,
-          step.focusMode === 'pulsing'
-            ? highlightStyles.tutorialTargetRingPulsing
+          step.focusMode === 'new'
+            ? highlightStyles.tutorialTargetRingNew
             : highlightStyles.tutorialTargetRingStatic,
         ];
     targetEl.classList.add(...classNames);
+    if (step.focusMode === 'new') {
+      const rect = targetEl.getBoundingClientRect();
+      setNewBadgePos({ top: rect.top, left: rect.right });
+    } else {
+      setNewBadgePos(null);
+    }
     return () => {
       targetEl.classList.remove(...classNames);
     };
-  }, [isOpen, step, codexIsOpen]);
+  }, [isOpen, step, codexIsOpen, stageRect]);
 
   if (!isOpen || !step) {
     return null;
@@ -300,6 +315,15 @@ const TutorialOverlay: React.FC = () => {
 
   const ui = (
     <div className={styles.root} role="presentation">
+      {newBadgePos && (
+        <span
+          className={styles.newFeatureBadge}
+          style={{ top: newBadgePos.top, left: newBadgePos.left }}
+          aria-hidden="true"
+        >
+          {getLabel('tutorialNewBadge')}
+        </span>
+      )}
       <div className={styles.dialogWrap}>
         <div
           className={cn(shared.trialModalFontScope, styles.dialog)}

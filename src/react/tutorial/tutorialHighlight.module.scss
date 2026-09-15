@@ -4,7 +4,7 @@ $ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
 /* Geometry only. Kept `!important` because this is stamped onto elements that
    carry their own border — width/style must win outright, but never animates,
    so it can stay in the same declaration as the colour override below without
-   blocking the pulsing variant's `animation`. */
+   blocking the `new` variant's `animation`. */
 .tutorialTargetRing {
   border-width: $ring-width !important;
   border-style: solid !important;
@@ -24,8 +24,8 @@ $ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
    `box-shadow` under an `!important` rule would silently do nothing. An
    animation-origin declaration still outranks the target's own normal-origin
    border, so this wins over e.g. `.trialFooterAnalyzeBtn`'s own border without
-   needing `!important`. */
-.tutorialTargetRingPulsing {
+   needing `!important`. Used by `focusMode: 'new'`. */
+.tutorialTargetRingNew {
   animation: tutorial-target-pulse 1.6s ease-in-out infinite;
   will-change: box-shadow;
 }
@@ -57,10 +57,10 @@ $ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
 }
 
 /* Inset targets draw an `outline`, not a `border` — the border keyframes above
-   are invisible there, so the pulsing variant swaps in an outline-animating
+   are invisible there, so the `new` variant swaps in an outline-animating
    keyframes instead. */
-.tutorialTargetRingPulsing[data-tutorial-debate-log-moderator-score],
-.tutorialTargetRingPulsing[data-tutorial-debate-log-recap-moderator-score] {
+.tutorialTargetRingNew[data-tutorial-debate-log-moderator-score],
+.tutorialTargetRingNew[data-tutorial-debate-log-recap-moderator-score] {
   animation-name: tutorial-target-pulse-inset;
 }
 
@@ -80,7 +80,7 @@ $ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
 
 /* Playwright runs `reducedMotion: 'reduce'`; this branch must leave a visible ring. */
 @media (prefers-reduced-motion: reduce) {
-  .tutorialTargetRingPulsing {
+  .tutorialTargetRingNew {
     animation: none;
     border-color: var(--ui-color-tutorial-guidance-border-strong) !important;
     box-shadow:
@@ -88,8 +88,8 @@ $ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
       0 0 clamp(0.8rem, 1.6vw, 1.76rem) var(--ui-color-tutorial-guidance-glow) !important;
   }
 
-  .tutorialTargetRingPulsing[data-tutorial-debate-log-moderator-score],
-  .tutorialTargetRingPulsing[data-tutorial-debate-log-recap-moderator-score] {
+  .tutorialTargetRingNew[data-tutorial-debate-log-moderator-score],
+  .tutorialTargetRingNew[data-tutorial-debate-log-recap-moderator-score] {
     animation: none;
     outline-color: var(--ui-color-tutorial-guidance-border-strong) !important;
     box-shadow: inset 0 0 0 clamp(0.06rem, 0.16vw, 0.14rem)

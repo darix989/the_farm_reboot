@@ -356,8 +356,8 @@ export interface TutorialArtificialInteraction {
 }
 
 export type TutorialInteractionMode = 'modal_only' | 'target_only' | 'highlight';
-/** `normal` (default): static ring. `pulsing`: ring brightens/swells on a loop. */
-export type TutorialFocusMode = 'normal' | 'pulsing';
+/** `normal` (default): static ring. `new`: pulse ring + NEW badge when introducing a feature. */
+export type TutorialFocusMode = 'normal' | 'new';
 export type TutorialStepOnFinish = 'exit';
 
 /** Field Notes sections. Mirrors `CodexSection` in `codexUiStore` so this file stays store-free. */
@@ -446,9 +446,9 @@ export interface DebateTutorialStep {
   /** Behavior used when `targetComponent` is present. Defaults to `modal_only`. */
   interactionMode?: TutorialInteractionMode;
   /**
-   * Visual treatment of the target ring. Defaults to `normal`. Use `pulsing`
-   * for steps where the ring is the only affordance telling the player what
-   * to press (e.g. a `target_only` step with no other visible cue).
+   * Visual treatment of the target ring. Defaults to `normal`. Use `new`
+   * when introducing a feature: the ring pulses and a yellow NEW badge sits
+   * on the target's top-right corner.
    */
   focusMode?: TutorialFocusMode;
   /**

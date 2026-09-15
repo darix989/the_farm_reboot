@@ -264,6 +264,7 @@ const LABELS = {
   tutorialDialogTitleSingle: 'Tutorial',
   tutorialDialogTitle: 'Tutorial ({currentStep} of {totalSteps})',
   tutorialSpotlightHint: 'Click the button in the highlighted area to continue',
+  tutorialNewBadge: 'NEW',
 
   // --- Intro summary modal ---
   beforeTheDebate: 'Before the debate',
