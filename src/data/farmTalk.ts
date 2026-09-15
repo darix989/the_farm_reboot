@@ -121,10 +121,14 @@ export const FARM_TALK: Readonly<Record<string, readonly FarmTalkBeat[]>> = {
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneA' },
     { speakerId: 'tobias', textLabel: 'farmDialogTobiasDoneB' },
   ],
+  // Ambient only: Bella dismisses Pip's opinion with an ad hominem even while questioning
+  // the pond accusation. No analysis, rewards, or progression depend on spotting it.
   bella1: [
     { speakerId: 'bella', textLabel: 'farmDialogBella1a' },
     { speakerId: RUE, textLabel: 'farmDialogBella1b' },
     { speakerId: 'bella', textLabel: 'farmDialogBella1c' },
+    { speakerId: RUE, textLabel: 'farmDialogBella1d' },
+    { speakerId: 'bella', textLabel: 'farmDialogBella1e' },
   ],
   bellaDone: [
     { speakerId: 'bella', textLabel: 'farmDialogBellaDoneA' },

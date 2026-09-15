@@ -80,7 +80,7 @@ const LABELS = {
   menuTalkDuchessDone: 'Done',
   menuTalkTobias1: 'Silly talk',
   menuTalkTobiasDone: 'Done',
-  menuTalkBella1: 'Silly talk',
+  menuTalkBella1: 'Pip and the pond',
   menuTalkBellaDone: 'Done',
   menuTalkPipDone: 'Ambient',
   menuTalkFollowUpBramRounds: 'Bram — after 1.1',
@@ -494,16 +494,20 @@ const LABELS = {
   farmDialogTobiasDoneB:
     'I will say this once and not again: I have pulled a cart past that drain for eleven years and **[accent]never once looked into it[/accent]**. Good morning, Rue.',
   farmDialogBella1:
-    'I am not Hetty. I only look like this until the proper coat arrives. She is at the pond.',
+    'I keep thinking about this debate. How does the pond get dirtier just because a few new animals move here?',
   farmDialogBella1a:
-    'Before you ask: I am not Hetty. I only look like this until the proper coat arrives.',
-  farmDialogBella1b: 'You look exactly like Hetty.',
+    'I keep thinking about this debate. How does the pond get dirtier just because a few new animals move here?',
+  farmDialogBella1b: 'Like Pip? He thinks the motion is unfair. He works hard here.',
   farmDialogBella1c:
-    'That is the whole joke, and it is not even mine. **[accent]Hetty is at the pond[/accent]** — down the east road, walk up to the water. I am holding the barn. Someone has to.',
-  farmDialogBellaDone: 'Still not Hetty. Still holding the barn.',
-  farmDialogBellaDoneA: 'Still not Hetty.',
+    'Oh, I would not take Pip’s word for anything. He is probably stealing cheese, like every rat.',
+  farmDialogBella1d: 'He is a mouse. What would cheese have to do with the pond, anyway?',
+  farmDialogBella1e:
+    'Nothing. That is what bothers me. A missing bit of cheese I could understand. But how is a little fellow like Pip supposed to turn a whole pond brown? It makes no sense.',
+  farmDialogBellaDone:
+    'The debate is over, then. I still cannot see what anyone’s birthplace had to do with brown water.',
+  farmDialogBellaDoneA: 'The debate is over, then.',
   farmDialogBellaDoneB:
-    'The coat is late. I am still holding the barn. She is still at the pond, I expect.',
+    'I still cannot see what anyone’s birthplace had to do with brown water. You could tell me where every animal was born and I would still want someone to explain the pond.',
   farmDialogPipDoneA: 'You are new here too, aren’t you? I am Rue.',
   farmDialogPipDoneB:
     'Pip. Two weeks here. I work in the barn — sweeping, sorting grain, getting under the shelves. They call that last one a specialist skill.',
