@@ -510,6 +510,8 @@ export type EncounterKind = 'debate' | 'gossip' | 'sparring' | 'lab' | 'lesson';
 export interface DebateScenarioMechanics {
   /** Analyze buttons and the analysis modal. Default `true`. */
   analysisEnabled?: boolean;
+  /** First round where analysis becomes usable, including earlier log entries. Default `1`. */
+  analysisAvailableFromRound?: number;
   /** Insight Points counter in the debate log header. Default `true`. */
   showInsightPoints?: boolean;
   /** Moderator gauge, opinion face and per-round impact numbers. Default `true`. */

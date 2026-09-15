@@ -6,7 +6,11 @@ import type { AnalysisTarget } from '../roundAnalysisModal/RoundAnalysisModal';
 import type { AnalysisGuessState } from '../utils/fallacyGuessTypes';
 import AnalyzeButton from './AnalyzeButton';
 import SpottedFallacyIcons from './SpottedFallacyIcons';
-import { encounterLabels, type ResolvedMechanics } from '../utils/scenarioMechanics';
+import {
+  encounterLabels,
+  isAnalysisAvailable,
+  type ResolvedMechanics,
+} from '../utils/scenarioMechanics';
 import {
   emotionForOption,
   emotionFromStatement,
@@ -80,6 +84,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
   mechanics,
 }) => {
   const bodyId = useId();
+  const analysisAvailable = isAnalysisAvailable(mechanics, wf.currentRoundIndex + 1);
   const status = roundStatus(roundIndex, wf.gamePhase, wf.currentRoundIndex);
   const isUpcoming = status === 'upcoming';
 
@@ -316,6 +321,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         aria-label={getLabel('analyzeStatementGroupAria')}
                       >
                         <AnalyzeButton
+                          disabled={!analysisAvailable}
                           guessState={getNpcGuessState(round.id)}
                           title={getLabel('analyzeThisStatement')}
                           dataRoundId={round.id}
@@ -374,6 +380,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         aria-label={getLabel('analyzeQuestionGroupAria')}
                       >
                         <AnalyzeButton
+                          disabled={!analysisAvailable}
                           guessState={getNpcGuessState(round.opponentPrompt.id)}
                           title={getLabel('analyzeThisQuestion')}
                           dataRoundId={round.id}
@@ -438,6 +445,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         aria-label={getLabel('analyzeYourLineGroupAria')}
                       >
                         <AnalyzeButton
+                          disabled={!analysisAvailable}
                           guessState={getNpcGuessState(chosenOption.id)}
                           title={getLabel('analyzeThisStatement')}
                           dataRoundId={round.id}
@@ -503,6 +511,7 @@ const DebateRoundLogCard: React.FC<DebateRoundLogCardProps> = ({
                         aria-label={getLabel('analyzeResponseGroupAria')}
                       >
                         <AnalyzeButton
+                          disabled={!analysisAvailable}
                           guessState={getNpcGuessState(displayResponse.statement.id)}
                           title={getLabel('analyzeThisResponse')}
                           dataRoundId={round.id}

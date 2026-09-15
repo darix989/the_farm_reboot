@@ -229,6 +229,7 @@ raw scenario.
 | Flag | Default | Effect |
 |---|---|---|
 | `analysisEnabled` | `true` | Magnifying glasses and the analysis modal. |
+| `analysisAvailableFromRound` | `1` | Keeps analysis buttons disabled and unfocusable until this round. Once reached, earlier log entries also become available. Requires `analysisEnabled`. |
 | `showInsightPoints` | `true` | The Insight counter. |
 | `showModeratorOpinion` | `true` | Gauge, opinion emoji, per-round impact. |
 | `showRoundRecap` | `true` | The recap modal between rounds. |

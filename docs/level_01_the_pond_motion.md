@@ -190,6 +190,10 @@ cap.
 `revealChoiceAssessment: true`, `encounterKind: 'sparring'`. Rewards:
 `teachesFallacies: ['ad-hominem']`, `setsDialogFlags: ['cass-named-ad-hominem']`.*
 
+`analysisAvailableFromRound: 5` keeps the footer and log analysis buttons disabled and
+unfocusable until Cass introduces the magnifying glass. At round 5, earlier log entries
+also become available for analysis.
+
 Cass introduces herself through Bram's referral and offers to prepare Rue for Tobias's
 personal attacks. She recalls being dismissed as a fox at the Public Farm; it took her a
 season to recognise how opponents made her defend herself without answering her argument.
