@@ -1,6 +1,7 @@
 import {
   attachScreenshot,
-  ENTER_THE_FARM,
+  enableDevMode,
+  enterFarmFromMenu,
   FARM_SIDE_BACK_TO_MENU,
   FARM_SIDE_PORTAL_BACK_TO_ROAD,
   FARM_SIDE_PORTAL_GATE,
@@ -21,6 +22,7 @@ test.describe('lateral farm scene', () => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
+    await enableDevMode(page);
     await page.getByRole('button', { name: SIDE_SCENES_HEADING }).click();
     await page.getByRole('button', { name: SIDE_SCENE_OLD_POND }).click();
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
@@ -32,6 +34,7 @@ test.describe('lateral farm scene', () => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
+    await enableDevMode(page);
     await page.getByRole('button', { name: SIDE_SCENES_HEADING }).click();
     await page.getByRole('button', { name: SIDE_SCENE_OLD_POND }).click();
     const prompt = page.getByRole('button', { name: TALK_TO_HETTY });
@@ -47,7 +50,7 @@ test.describe('lateral farm scene', () => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
-    await page.getByRole('button', { name: ENTER_THE_FARM }).click();
+    await enterFarmFromMenu(page);
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
     await attachScreenshot(page, 'farm-side-scene');
   });
@@ -56,7 +59,7 @@ test.describe('lateral farm scene', () => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
-    await page.getByRole('button', { name: ENTER_THE_FARM }).click();
+    await enterFarmFromMenu(page);
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
 
     for (let i = 0; i < 20; i += 1) {
@@ -80,7 +83,7 @@ test.describe('lateral farm scene', () => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
-    await page.getByRole('button', { name: ENTER_THE_FARM }).click();
+    await enterFarmFromMenu(page);
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
     // First-visit spawn is beside Dot — wait for her prompt so Phaser keys exist before we walk.
     await page.getByRole('button', { name: TALK_TO_DOT }).waitFor();

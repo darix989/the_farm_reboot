@@ -2,14 +2,19 @@ import { test as base, type Locator, type Page } from '@playwright/test';
 import getLabel from '../src/data/labels';
 
 export const GAME_TITLE = getLabel('gameTitle');
-export const ENTER_THE_FARM = getLabel('enterTheFarm');
+export const MAIN_MENU_CONTINUE = getLabel('mainMenuContinue');
+export const MAIN_MENU_NEW_GAME = getLabel('mainMenuNewGame');
+export const MAIN_MENU_NEW_GAME_CONFIRM = getLabel('newGameConfirmAction');
+export const MAIN_MENU_SETTINGS = getLabel('mainMenuProgressSettings');
+export const DEV_MODE_OFF = getLabel('devModeToggle', {
+  replacements: { state: getLabel('devFarmTalkSkipOff') },
+});
 export const ANIMATION_GALLERY = getLabel('animationGallery');
 export const SIDE_SCENES_HEADING = getLabel('sideScenesHeading');
 export const SIDE_SCENE_OLD_POND = getLabel('sideSceneOldPond');
 export const FIELD_NOTES = getLabel('codexOpen');
 export const LEVEL_1_HEADING = getLabel('level1Heading');
 export const LEVEL_1_FIRST = getLabel('level1BramDialog');
-export const MAIN_MENU_PROGRESS = getLabel('mainMenuProgressSettings');
 export const CONTINUE = getLabel('continue');
 export const FARM_SIDE_BACK_TO_MENU = getLabel('farmSideBackToMenu');
 export const TALK_TO_DOT = getLabel('farmTalkPrompt', { replacements: { name: 'Dot' } });
@@ -44,6 +49,24 @@ export async function waitForMainMenu(page: Page): Promise<void> {
   await page.getByRole('heading', { name: GAME_TITLE, level: 1 }).waitFor({
     timeout: 60_000,
   });
+}
+
+/** Turn on the hidden authoring launcher, then return to its menu root. */
+export async function enableDevMode(page: Page): Promise<void> {
+  await page.getByRole('button', { name: MAIN_MENU_SETTINGS }).click();
+  await page.getByRole('button', { name: DEV_MODE_OFF }).click();
+  await page.getByRole('button', { name: getLabel('mainMenuBack') }).click();
+}
+
+/** Continue a save when one exists; otherwise begin a fresh game and confirm the replacement. */
+export async function enterFarmFromMenu(page: Page): Promise<void> {
+  const continueButton = page.getByRole('button', { name: MAIN_MENU_CONTINUE });
+  if (await continueButton.isVisible()) {
+    await continueButton.click();
+    return;
+  }
+  await page.getByRole('button', { name: MAIN_MENU_NEW_GAME }).click();
+  await page.getByRole('button', { name: MAIN_MENU_NEW_GAME_CONFIRM }).click();
 }
 
 /**

@@ -14,10 +14,11 @@ import { useWindowKeyDown } from '../hooks/useWindowKeyDown';
 import styles from './MainMenuUI.module.scss';
 import getLabel, { type Labels } from '../../data/labels';
 
-type MenuView = 'home' | 'progress' | 'farmScenes' | 'dialogs' | 'level1' | 'other';
+type MenuView = 'home' | 'settings' | 'farmScenes' | 'dialogs' | 'level1' | 'other';
+type ConfirmationAction = 'newGame' | 'resetProgress';
 
 const SECTION_HEADING: Record<Exclude<MenuView, 'home'>, Labels> = {
-  progress: 'mainMenuProgressSettings',
+  settings: 'mainMenuProgressSettings',
   farmScenes: 'sideScenesHeading',
   dialogs: 'mainMenuDialogs',
   level1: 'level1Heading',
@@ -27,9 +28,14 @@ const SECTION_HEADING: Record<Exclude<MenuView, 'home'>, Labels> = {
 const MainMenuUI: React.FC = () => {
   const setActiveDebate = useGameStore((s) => s.setActiveDebate);
   const setReturnSceneKey = useGameStore((s) => s.setReturnSceneKey);
+  const devMode = useDevSettingsStore((s) => s.devMode);
+  const toggleDevMode = useDevSettingsStore((s) => s.toggleDevMode);
   const showFarmTalkSkip = useDevSettingsStore((s) => s.showFarmTalkSkip);
   const toggleFarmTalkSkip = useDevSettingsStore((s) => s.toggleFarmTalkSkip);
-  const [confirmingReset, setConfirmingReset] = useState(false);
+  const hasSavedProgress = useProgressStore(
+    (s) => s.level1Started || s.completedScenarios.length > 0 || s.completedTutorials.length > 0,
+  );
+  const [confirmation, setConfirmation] = useState<ConfirmationAction | null>(null);
   const [view, setView] = useState<MenuView>('home');
   const confirmTitleId = useId();
   const confirmBodyId = useId();
@@ -70,9 +76,9 @@ const MainMenuUI: React.FC = () => {
   const openCodex = useCodexUiStore((s) => s.openCodex);
 
   const goHome = () => setView('home');
-  const cancelReset = () => setConfirmingReset(false);
+  const cancelConfirmation = () => setConfirmation(null);
 
-  const confirmReset = () => {
+  const resetSavedProgress = () => {
     // Persist middleware writes the empty snapshot to `localStorage` on `set`.
     useProgressStore.getState().resetProgress();
     useCodexStore.getState().resetCodex();
@@ -81,20 +87,29 @@ const MainMenuUI: React.FC = () => {
     useGameStore.getState().setActiveSideScene(DEFAULT_SIDE_SCENE_ID);
     useGameStore.getState().setSideSceneResume(null);
     useFarmStore.getState().setPendingForcedTalk(null);
-    setConfirmingReset(false);
+  };
+
+  const confirmAction = () => {
+    if (confirmation === 'newGame') {
+      resetSavedProgress();
+      enterFarm();
+    } else if (confirmation === 'resetProgress') {
+      resetSavedProgress();
+    }
+    cancelConfirmation();
   };
 
   useWindowKeyDown(
     (event) => {
       if (event.key !== 'Escape') return;
       event.preventDefault();
-      if (confirmingReset) {
-        cancelReset();
+      if (confirmation) {
+        cancelConfirmation();
         return;
       }
       goHome();
     },
-    confirmingReset || view !== 'home',
+    confirmation !== null || view !== 'home',
   );
 
   const renderScenarioButtons = (entries: readonly ScenarioEntry[]) => (
@@ -131,7 +146,30 @@ const MainMenuUI: React.FC = () => {
             <h1 className={styles.menuTitle}>{getLabel('gameTitle')}</h1>
             <p className={styles.menuTagline}>{getLabel('gameTagline')}</p>
           </header>
-          {view === 'home' && (
+          {view === 'home' && !devMode && (
+            <section className={styles.primaryActions} aria-label={getLabel('mainMenu')}>
+              {hasSavedProgress && (
+                <button className={styles.menuButtonPrimary} type="button" onClick={enterFarm}>
+                  {getLabel('mainMenuContinue')}
+                </button>
+              )}
+              <button
+                className={styles.menuButtonPrimary}
+                type="button"
+                onClick={() => setConfirmation('newGame')}
+              >
+                {getLabel('mainMenuNewGame')}
+              </button>
+              <button
+                className={styles.menuButton}
+                type="button"
+                onClick={() => setView('settings')}
+              >
+                {getLabel('mainMenuProgressSettings')}
+              </button>
+            </section>
+          )}
+          {view === 'home' && devMode && (
             <>
               <section className={styles.menuGroup} aria-labelledby="mainMenuMainOptions">
                 <h2 id="mainMenuMainOptions" className={styles.menuGroupHeading}>
@@ -153,7 +191,7 @@ const MainMenuUI: React.FC = () => {
               <nav className={styles.sectionNav} aria-label={getLabel('mainMenu')}>
                 {(
                   [
-                    ['progress', 'mainMenuProgressSettings'],
+                    ['settings', 'mainMenuProgressSettings'],
                     ['farmScenes', 'sideScenesHeading'],
                     ['dialogs', 'mainMenuDialogs'],
                     ['level1', 'level1Heading'],
@@ -172,35 +210,51 @@ const MainMenuUI: React.FC = () => {
               </nav>
             </>
           )}
-          {view === 'progress' && (
-            <section className={styles.menuGroup} aria-labelledby={SECTION_HEADING.progress}>
-              {renderBackRow(SECTION_HEADING.progress)}
+          {view === 'settings' && (
+            <section className={styles.menuGroup} aria-labelledby={SECTION_HEADING.settings}>
+              {renderBackRow(SECTION_HEADING.settings)}
               <div className={styles.primaryActions}>
-                <button
-                  className={styles.menuButtonDanger}
-                  type="button"
-                  onClick={() => setConfirmingReset(true)}
-                  aria-haspopup="dialog"
-                >
-                  {getLabel('resetProgress')}
-                </button>
                 <button
                   className={styles.menuButton}
                   type="button"
-                  onClick={toggleFarmTalkSkip}
-                  aria-pressed={showFarmTalkSkip}
+                  onClick={toggleDevMode}
+                  aria-pressed={devMode}
                 >
-                  {getLabel('devFarmTalkSkipToggle', {
+                  {getLabel('devModeToggle', {
                     replacements: {
-                      state: getLabel(
-                        showFarmTalkSkip ? 'devFarmTalkSkipOn' : 'devFarmTalkSkipOff',
-                      ),
+                      state: getLabel(devMode ? 'devFarmTalkSkipOn' : 'devFarmTalkSkipOff'),
                     },
                   })}
                 </button>
-                <button className={styles.menuButton} type="button" onClick={() => openCodex()}>
-                  {getLabel('codexOpen')}
-                </button>
+                {devMode && (
+                  <>
+                    <button
+                      className={styles.menuButtonDanger}
+                      type="button"
+                      onClick={() => setConfirmation('resetProgress')}
+                      aria-haspopup="dialog"
+                    >
+                      {getLabel('resetProgress')}
+                    </button>
+                    <button
+                      className={styles.menuButton}
+                      type="button"
+                      onClick={toggleFarmTalkSkip}
+                      aria-pressed={showFarmTalkSkip}
+                    >
+                      {getLabel('devFarmTalkSkipToggle', {
+                        replacements: {
+                          state: getLabel(
+                            showFarmTalkSkip ? 'devFarmTalkSkipOn' : 'devFarmTalkSkipOff',
+                          ),
+                        },
+                      })}
+                    </button>
+                    <button className={styles.menuButton} type="button" onClick={() => openCodex()}>
+                      {getLabel('codexOpen')}
+                    </button>
+                  </>
+                )}
               </div>
             </section>
           )}
@@ -262,11 +316,11 @@ const MainMenuUI: React.FC = () => {
           )}
         </div>
       </div>
-      {confirmingReset && (
+      {confirmation && (
         <div
           className={styles.confirmOverlay}
           onClick={(event) => {
-            if (event.target === event.currentTarget) cancelReset();
+            if (event.target === event.currentTarget) cancelConfirmation();
           }}
         >
           <div
@@ -278,17 +332,25 @@ const MainMenuUI: React.FC = () => {
             onClick={(event) => event.stopPropagation()}
           >
             <p id={confirmTitleId} className={styles.confirmTitle}>
-              {getLabel('resetProgressConfirmTitle')}
+              {getLabel(
+                confirmation === 'newGame' ? 'newGameConfirmTitle' : 'resetProgressConfirmTitle',
+              )}
             </p>
             <p id={confirmBodyId} className={styles.confirmBody}>
-              {getLabel('resetProgressConfirmBody')}
+              {getLabel(
+                confirmation === 'newGame' ? 'newGameConfirmBody' : 'resetProgressConfirmBody',
+              )}
             </p>
             <div className={styles.confirmActions}>
-              <button className={styles.menuButton} type="button" onClick={cancelReset}>
+              <button className={styles.menuButton} type="button" onClick={cancelConfirmation}>
                 {getLabel('cancel')}
               </button>
-              <button className={styles.menuButtonDanger} type="button" onClick={confirmReset}>
-                {getLabel('resetProgressConfirmAction')}
+              <button className={styles.menuButtonDanger} type="button" onClick={confirmAction}>
+                {getLabel(
+                  confirmation === 'newGame'
+                    ? 'newGameConfirmAction'
+                    : 'resetProgressConfirmAction',
+                )}
               </button>
             </div>
           </div>

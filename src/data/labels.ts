@@ -41,15 +41,22 @@ const LABELS = {
   sideSceneOldPond: 'The old pond',
   /** Main-menu toggle for the farm-talk skip button. `{state}` is On / Off. */
   devFarmTalkSkipToggle: 'Dialog skip: {state}',
+  devModeToggle: 'Dev mode: {state}',
   devFarmTalkSkipOn: 'On',
   devFarmTalkSkipOff: 'Off',
+  mainMenuContinue: 'Continue',
+  mainMenuNewGame: 'New Game',
+  newGameConfirmTitle: 'Start a new game?',
+  newGameConfirmBody:
+    'This replaces your saved encounters, Field Notes, and tutorials with a fresh start.',
+  newGameConfirmAction: 'Start New Game',
   resetProgress: 'Reset Progress',
   resetProgressConfirmTitle: 'Reset all progress?',
   resetProgressConfirmBody:
     'This clears your saved encounters, Field Notes, and tutorials from this browser. It cannot be undone.',
   resetProgressConfirmAction: 'Reset',
   mainMenuMainOptions: 'Main options',
-  mainMenuProgressSettings: 'Progress & Settings',
+  mainMenuProgressSettings: 'Settings',
   mainMenuDialogs: 'Dialogs',
   mainMenuOther: 'Other',
   mainMenuBack: 'Back',

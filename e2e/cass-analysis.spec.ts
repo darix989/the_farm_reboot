@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test';
 import getLabel from '../src/data/labels';
 import {
   expect,
+  enableDevMode,
   LEVEL_1_HEADING,
   seedAnalysisUnlocked,
   test,
@@ -16,6 +17,7 @@ async function expectAnalysisClosed(page: Page) {
 test('Cass reveals analysis at round 5 and persists it for other encounters', async ({ page }) => {
   await page.goto('/');
   await waitForMainMenu(page);
+  await enableDevMode(page);
   await page.getByRole('button', { name: LEVEL_1_HEADING }).click();
   await page.getByRole('button', { name: getLabel('level1CassTeaches') }).click();
   await waitForOverlayChrome(page);
@@ -80,6 +82,7 @@ test('Cass reveals analysis at round 5 and persists it for other encounters', as
   await page.addInitScript((saved) => localStorage.setItem('the-farm-codex', saved!), savedCodex);
   await page.reload();
   await waitForMainMenu(page);
+  await enableDevMode(page);
   await page.getByRole('button', { name: LEVEL_1_HEADING }).click();
   await page.getByRole('button', { name: getLabel('level1HettyBarrage') }).click();
   await waitForOverlayChrome(page);
@@ -90,6 +93,7 @@ for (const encounter of ['level1BramDialog', 'level1HettyBarrage'] as const) {
   test(`hides analysis before Cass's tutorial in ${encounter}`, async ({ page }) => {
     await page.goto('/');
     await waitForMainMenu(page);
+    await enableDevMode(page);
     await page.getByRole('button', { name: LEVEL_1_HEADING }).click();
     await page.getByRole('button', { name: getLabel(encounter) }).click();
     await waitForOverlayChrome(page);
@@ -115,6 +119,7 @@ test('shows the analyze control greyed, not hidden, in a lesson that opts out on
   await seedAnalysisUnlocked(page);
   await page.goto('/');
   await waitForMainMenu(page);
+  await enableDevMode(page);
   await page.getByRole('button', { name: LEVEL_1_HEADING }).click();
   await page.getByRole('button', { name: getLabel('level1BramDialog') }).click();
   await waitForOverlayChrome(page);

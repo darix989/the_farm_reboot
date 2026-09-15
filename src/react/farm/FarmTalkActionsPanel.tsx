@@ -102,7 +102,9 @@ const FarmTalkActionsPanel: React.FC<FarmTalkActionsPanelProps> = ({
   const lessonsLabel = getLabel('farmLessons');
   const continueLabel = getLabel('continue');
   const skipLabel = getLabel('farmTalkSkip');
-  const showSkip = useDevSettingsStore((s) => s.showFarmTalkSkip);
+  const devMode = useDevSettingsStore((s) => s.devMode);
+  const showFarmTalkSkip = useDevSettingsStore((s) => s.showFarmTalkSkip);
+  const showSkip = devMode && showFarmTalkSkip;
   const analysisUnlocked = useCodexStore((s) => s.unlockedFeatures).includes('analysis');
 
   // Talk / Lessons / Leave are mounted only once the last beat has been read in full. Leave

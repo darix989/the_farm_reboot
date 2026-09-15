@@ -2,7 +2,8 @@ import type { CDPSession, Locator, Page } from '@playwright/test';
 import getLabel from '../src/data/labels';
 import { JOYSTICK_CENTER, JOYSTICK_DRAG_RADIUS } from '../src/phaser/farm/virtualJoystickMath';
 import {
-  ENTER_THE_FARM,
+  enableDevMode,
+  enterFarmFromMenu,
   FARM_SIDE_BACK_TO_MENU,
   seedLevel1Started,
   TALK_TO_DOT,
@@ -60,7 +61,7 @@ test.describe('farm touch movement', () => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
-    await page.getByRole('button', { name: ENTER_THE_FARM }).click();
+    await enterFarmFromMenu(page);
     await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
     const dotPrompt = page.getByRole('button', { name: TALK_TO_DOT });
     await dotPrompt.waitFor();
@@ -86,6 +87,7 @@ test.describe('farm touch movement', () => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
+    await enableDevMode(page);
     await page.getByRole('button', { name: OTHER }).click();
     await page.getByRole('button', { name: TOP_DOWN_FARM }).click();
 
