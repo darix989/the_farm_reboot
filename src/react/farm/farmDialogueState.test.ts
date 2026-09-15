@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { FARM_TALK } from '../../data/farmTalk';
 import { farmDialogueFor, farmDialogueForSlot } from './farmDialogueState';
 
 describe('farmDialogueFor', () => {
@@ -13,11 +14,7 @@ describe('farmDialogueFor', () => {
       scenarioRequires: [],
       lessons: [],
     });
-    expect(dialogue?.beats).toEqual([
-      { speakerId: 'pip', textLabel: 'farmDialogPipDoneA' },
-      { speakerId: 'rue', textLabel: 'farmDialogPipDoneB' },
-      { speakerId: 'pip', textLabel: 'farmDialogPipDoneC' },
-    ]);
+    expect(dialogue?.beats).toEqual(FARM_TALK.pipDone);
   });
 });
 
@@ -30,7 +27,7 @@ describe('farmDialogueForSlot', () => {
       scenario: null,
       scenarioRequires: [],
     });
-    expect(dialogue?.beats).toHaveLength(3);
+    expect(dialogue?.beats).toEqual(FARM_TALK.pipDone);
   });
 
   it('attaches the matching encounter on a numeric pre-talk and leaves it ungated', () => {
