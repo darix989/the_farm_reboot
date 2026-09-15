@@ -62,11 +62,7 @@ import {
   resolvedOptionSentences,
 } from '../trial/utils/optionUnlock';
 import { useConditionContext } from '../hooks/useGameConditions';
-import {
-  encounterLabels,
-  isAnalysisAvailable,
-  useResolvedMechanics,
-} from '../trial/utils/scenarioMechanics';
+import { encounterLabels, useResolvedMechanics } from '../trial/utils/scenarioMechanics';
 import { debateEventBus, type AnalysisTargetKind } from '../trial/utils/debateEventBus';
 import { useScenarioTutorials } from '../hooks/useScenarioTutorials';
 import CharacterStage from '../farm/CharacterStage';
@@ -124,7 +120,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds, conditions, {
     showRoundType: mechanics.showRoundType,
   });
-  const analysisAvailable = isAnalysisAvailable(mechanics, wf.currentRoundIndex + 1);
+  const analysisAvailable = mechanics.analysisEnabled;
 
   // Opens scenario-defined tutorial overlays in response to bus events,
   // including the onboarding overlay wired to `introduction:start`.
@@ -498,7 +494,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
    * analysed, which is the whole gameplay of those scenarios.
    */
   const analysisGatePending = useMemo(() => {
-    if (wf.gamePhase !== 'npc_speaking') return false;
+    if (!analysisAvailable || wf.gamePhase !== 'npc_speaking') return false;
     const round = wf.currentNpcRound;
     if (!round?.requiresAnalysis) return false;
     for (const session of fallacyGuesses.values()) {
@@ -506,7 +502,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       return !isSessionTerminal(session) && session.attempts.length < session.maxAttempts;
     }
     return true;
-  }, [wf.gamePhase, wf.currentNpcRound, fallacyGuesses]);
+  }, [analysisAvailable, wf.gamePhase, wf.currentNpcRound, fallacyGuesses]);
 
   /**
    * The opponent's current line, for the footer analyze button — current-round only, so it
@@ -1215,7 +1211,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             onOpenAnalysis={openAnalysis}
             getNpcGuessState={getNpcGuessState}
             mechanics={mechanics}
-            // Unavailable until the authored teaching round and the end of the line reveal.
+            // Hidden until learned; disabled while the current line is still being revealed.
             analyzeTarget={!analysisAvailable || revealActive ? null : currentAnalysisTarget}
             hint={actionsHint}
             shortcutsEnabled={!analysisTarget && !introSummaryOpen}

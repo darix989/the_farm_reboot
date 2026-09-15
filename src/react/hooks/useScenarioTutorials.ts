@@ -18,7 +18,9 @@ import { useEffect, useRef } from 'react';
 import type { DebateScenarioTutorialEntry, EventTrigger } from '../../types/debateEntities';
 import { useTutorialStore, type TutorialStepInput } from '../../store/tutorialStore';
 import { useDebateLogStore } from '../../store/debateLogStore';
+import { useCodexStore } from '../../store/codexStore';
 import { tutorialNeedsDebateLog } from '../trial/utils/debateLogTutorialNeeds';
+import { tutorialNeedsAnalysis } from '../trial/utils/tutorialNeedsAnalysis';
 import {
   debateEventBus,
   debateTutorialTriggerMatches,
@@ -79,6 +81,16 @@ export function useScenarioTutorials(
           // Don't clobber an open overlay. The next matching emit will retry.
           if (store.isOpen) continue;
 
+          // Menu previews can enter later lessons before Cass has taught analysis.
+          // Do not trap them in a tutorial whose only permitted action is hidden.
+          if (
+            !useCodexStore.getState().hasFeature('analysis') &&
+            !entry.unlocksFeatures?.includes('analysis') &&
+            tutorialNeedsAnalysis(entry.tutorial.steps)
+          ) {
+            continue;
+          }
+
           firedRef.current.add(dedupKey);
           const steps: TutorialStepInput[] = entry.tutorial.steps.map((step) => ({
             message: step.message,
@@ -100,6 +112,9 @@ export function useScenarioTutorials(
             useDebateLogStore.getState().setExpanded(true);
           }
 
+          // Mount newly taught controls in the same commit as the tutorial so its
+          // one-shot spotlight lookup can find them. This persists across encounters.
+          entry.unlocksFeatures?.forEach((id) => useCodexStore.getState().unlockFeature(id));
           store.openTutorial({ id: entry.id, steps });
           // First match wins per emission, even if several entries would match.
           return;

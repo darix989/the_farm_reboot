@@ -228,8 +228,7 @@ raw scenario.
 
 | Flag | Default | Effect |
 |---|---|---|
-| `analysisEnabled` | `true` | Magnifying glasses and the analysis modal. |
-| `analysisAvailableFromRound` | `1` | Keeps analysis buttons disabled and unfocusable until this round. Once reached, earlier log entries also become available. Requires `analysisEnabled`. |
+| `analysisEnabled` | `true` | Magnifying glasses and the analysis modal, hidden globally until the `analysis` feature is learned. |
 | `showInsightPoints` | `true` | The Insight counter. |
 | `showModeratorOpinion` | `true` | Gauge, opinion emoji, per-round impact. |
 | `showRoundRecap` | `true` | The recap modal between rounds. |
@@ -268,6 +267,21 @@ Presentation only; it never changes behaviour.
 It also swaps the opening guidance and makes the intro card read "Setting" rather than
 "Moderator". A one-beat skirmish stays a `debate` — it is one beat of one, using the same
 chrome on purpose.
+
+---
+
+### Tutorial feature unlocks
+
+A `DebateScenarioTutorialEntry` can declare `unlocksFeatures`. These features persist when
+that tutorial opens, before its spotlight resolves the newly mounted controls. Cass's
+`teach-spot-it` tutorial grants `analysis` at round 5. Before then, the footer and log
+analysis buttons are absent in every encounter, including menu previews. Once taught,
+analysis remains available across encounters and reloads; `analysisEnabled: false` still
+keeps a lesson free of analysis.
+
+Menu previews that skip Cass also skip tutorials requiring hidden analysis controls and
+`requiresAnalysis` progression gates until the feature is learned. Other feature previews
+(such as round-type labels) keep their existing behavior.
 
 ---
 

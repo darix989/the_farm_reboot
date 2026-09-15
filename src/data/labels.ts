@@ -725,6 +725,9 @@ const LABELS = {
     'You put it to him straight beyond the gate and he gave it up on the spot: the outflow grate has been bent since before the frost, and he has known the whole time. Bram is one of Tobias’s own forty-one, which makes him the best witness on this farm and the one it costs him most to be.',
 
   // Feature unlocks — titles read as directions, same contract as dialog flags.
+  featureAnalysisTitle: 'learn how to analyse an argument with Cass',
+  featureAnalysisBody:
+    'Cass showed you how to use the magnifying glass to examine a statement and identify its fallacies. You can also revisit earlier statements in the log.',
   featureInsightPointsTitle: 'learn what Insight is from Bram beyond the gate',
   featureInsightPointsBody:
     'Bram handed you the habit he uses to survive a room that has already decided about him: never answer the first time. Insight is the one thing in this game you can spend, and you are never forced to.',

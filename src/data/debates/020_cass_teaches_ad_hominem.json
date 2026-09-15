@@ -17,7 +17,6 @@
   "teachesFallacies": ["ad-hominem"],
   "setsDialogFlags": ["cass-named-ad-hominem"],
   "mechanics": {
-    "analysisAvailableFromRound": 5,
     "showInsightPoints": false,
     "showModeratorOpinion": false,
     "showRoundRecap": false,
@@ -419,6 +418,7 @@
     },
     {
       "id": "teach-spot-it",
+      "unlocksFeatures": ["analysis"],
       "trigger": {
         "event": "round:start",
         "where": {

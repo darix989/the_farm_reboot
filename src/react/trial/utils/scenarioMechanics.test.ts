@@ -3,12 +3,10 @@
 import { describe, expect, it } from 'vitest';
 import type { DebateScenarioJson } from '../../../types/debateEntities';
 import { DEFAULT_MAX_ANALYSIS_ATTEMPTS } from './fallacyGuessTypes';
-import cassSparring from '../../../data/debates/020_cass_teaches_ad_hominem.json';
 import {
   applyFeatureUnlocks,
   DEFAULT_MECHANICS,
   encounterLabels,
-  isAnalysisAvailable,
   resolveMechanics,
 } from './scenarioMechanics';
 
@@ -54,44 +52,24 @@ describe('resolveMechanics', () => {
         .maxAnalysisAttempts,
     ).toBe(DEFAULT_MAX_ANALYSIS_ATTEMPTS);
   });
-
-  it.each([0, -1, 2.5, Number.NaN, Number.POSITIVE_INFINITY])(
-    'falls back to round 1 for an invalid analysis start round: %s',
-    (analysisAvailableFromRound) => {
-      expect(
-        resolveMechanics({ ...baseScenario, mechanics: { analysisAvailableFromRound } })
-          .analysisAvailableFromRound,
-      ).toBe(1);
-    },
-  );
-});
-
-describe('isAnalysisAvailable', () => {
-  it('keeps ordinary encounters available from round 1', () => {
-    expect(isAnalysisAvailable(resolveMechanics(baseScenario), 1)).toBe(true);
-  });
-
-  it('locks Cass sparring until her round 5 tutorial and leaves history available afterwards', () => {
-    const mechanics = resolveMechanics(cassSparring as DebateScenarioJson);
-    for (const round of [1, 2, 3, 4]) {
-      expect(isAnalysisAvailable(mechanics, round)).toBe(false);
-    }
-    for (const round of [5, 6, 7, 8]) {
-      expect(isAnalysisAvailable(mechanics, round)).toBe(true);
-    }
-  });
-
-  it('never unlocks analysis when the encounter disables it', () => {
-    const mechanics = resolveMechanics({
-      ...baseScenario,
-      mechanics: { analysisEnabled: false, analysisAvailableFromRound: 5 },
-    });
-    expect(isAnalysisAvailable(mechanics, 5)).toBe(false);
-    expect(isAnalysisAvailable(mechanics, 8)).toBe(false);
-  });
 });
 
 describe('applyFeatureUnlocks', () => {
+  it('hides analysis in every encounter until the tutorial has unlocked it', () => {
+    expect(applyFeatureUnlocks(DEFAULT_MECHANICS, []).analysisEnabled).toBe(false);
+    expect(applyFeatureUnlocks(DEFAULT_MECHANICS, ['round_types']).analysisEnabled).toBe(false);
+    expect(applyFeatureUnlocks(DEFAULT_MECHANICS, [], ['analysis']).analysisEnabled).toBe(false);
+    expect(applyFeatureUnlocks(DEFAULT_MECHANICS, ['analysis']).analysisEnabled).toBe(true);
+  });
+
+  it('keeps analysis-free lessons hidden even after the tutorial unlock', () => {
+    const mechanics = resolveMechanics({
+      ...baseScenario,
+      mechanics: { analysisEnabled: false, encounterKind: 'lesson' },
+    });
+    expect(applyFeatureUnlocks(mechanics, ['analysis']).analysisEnabled).toBe(false);
+  });
+
   it('hides Insight and round-type chrome until the matching feature is unlocked or taught here', () => {
     const hidden = applyFeatureUnlocks(DEFAULT_MECHANICS, []);
     expect(hidden.showInsightPoints).toBe(false);

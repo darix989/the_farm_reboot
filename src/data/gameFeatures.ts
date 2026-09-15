@@ -2,16 +2,17 @@
  * Named mechanics the player can have been taught, as opposed to fallacies they can name.
  *
  * A feature unlock hides UI for a concept nobody has introduced yet — Insight Points, round-type
- * labels — so a control never appears for a word the player has not heard. Ids are a closed
+ * labels, analysis — so a control never appears for a word the player has not heard. Ids are a closed
  * union so a typo in scenario JSON is a compile error, and so a stale id in `localStorage`
  * can be dropped on load. The same shape as `dialogFlags.ts`, on purpose.
  *
  * A feature is granted when an encounter that declares it in `unlocksFeatures` is finished —
- * see `src/utils/encounterRewards.ts`. Walking out halfway unlocks nothing.
+ * see `src/utils/encounterRewards.ts`. A tutorial can also declare `unlocksFeatures` to grant
+ * a feature as soon as it introduces the control, before its spotlight looks for that control.
  */
 import type { Labels } from './labels';
 
-export type GameFeatureId = 'insight_points' | 'round_types';
+export type GameFeatureId = 'insight_points' | 'round_types' | 'analysis';
 
 export interface GameFeatureEntry {
   /** One-line heading, also used as the requirement text on a locked encounter. */
@@ -21,6 +22,10 @@ export interface GameFeatureEntry {
 }
 
 export const GAME_FEATURES: Readonly<Record<GameFeatureId, GameFeatureEntry>> = {
+  analysis: {
+    titleLabel: 'featureAnalysisTitle',
+    bodyLabel: 'featureAnalysisBody',
+  },
   insight_points: {
     titleLabel: 'featureInsightPointsTitle',
     bodyLabel: 'featureInsightPointsBody',

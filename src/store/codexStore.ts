@@ -222,6 +222,19 @@ export const useCodexStore = create<CodexStore>()(
           .filter(isGameFeatureId)
           .filter((id, i, all) => all.indexOf(id) === i);
 
+        // Saves from before analysis became a feature may already have reached Cass's
+        // lesson. Keep that learning without requiring a replay of the tutorial.
+        const learnedAnalysis =
+          dialogFlags.includes('cass-named-ad-hominem') ||
+          spottedFallacies.some(
+            (entry) =>
+              entry.scenarioKey === '020_cass_teaches_ad_hominem' &&
+              entry.statementId === 'round-5',
+          );
+        if (learnedAnalysis && !unlockedFeatures.includes('analysis')) {
+          unlockedFeatures.push('analysis');
+        }
+
         const seenNoticeIds = Array.isArray(saved?.seenNoticeIds)
           ? saved.seenNoticeIds.filter(
               (id, i, all): id is string => typeof id === 'string' && all.indexOf(id) === i,

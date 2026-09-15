@@ -20,7 +20,6 @@ export type ResolvedMechanics = Required<DebateScenarioMechanics>;
  */
 export const DEFAULT_MECHANICS: ResolvedMechanics = {
   analysisEnabled: true,
-  analysisAvailableFromRound: 1,
   showInsightPoints: true,
   showModeratorOpinion: true,
   showRoundRecap: true,
@@ -97,13 +96,6 @@ export function resolveMechanics(debate: DebateScenarioJson): ResolvedMechanics 
   if (!m) return DEFAULT_MECHANICS;
 
   const attempts = m.maxAnalysisAttempts;
-  const analysisFromRound = m.analysisAvailableFromRound;
-  const analysisAvailableFromRound =
-    typeof analysisFromRound === 'number' &&
-    Number.isInteger(analysisFromRound) &&
-    analysisFromRound >= 1
-      ? analysisFromRound
-      : DEFAULT_MECHANICS.analysisAvailableFromRound;
   const maxAnalysisAttempts =
     typeof attempts === 'number' && Number.isFinite(attempts) && attempts >= 1
       ? Math.floor(attempts)
@@ -111,7 +103,6 @@ export function resolveMechanics(debate: DebateScenarioJson): ResolvedMechanics 
 
   return {
     analysisEnabled: boolOr(m.analysisEnabled, DEFAULT_MECHANICS.analysisEnabled),
-    analysisAvailableFromRound,
     showInsightPoints: boolOr(m.showInsightPoints, DEFAULT_MECHANICS.showInsightPoints),
     showModeratorOpinion: boolOr(m.showModeratorOpinion, DEFAULT_MECHANICS.showModeratorOpinion),
     showRoundRecap: boolOr(m.showRoundRecap, DEFAULT_MECHANICS.showRoundRecap),
@@ -125,14 +116,6 @@ export function resolveMechanics(debate: DebateScenarioJson): ResolvedMechanics 
     encounterKind: m.encounterKind ?? DEFAULT_MECHANICS.encounterKind,
     showRoundType: boolOr(m.showRoundType, DEFAULT_MECHANICS.showRoundType),
   };
-}
-
-/** Gate all analysis entry points by encounter progress, not the round being inspected. */
-export function isAnalysisAvailable(
-  mechanics: ResolvedMechanics,
-  currentRoundNumber: number,
-): boolean {
-  return mechanics.analysisEnabled && currentRoundNumber >= mechanics.analysisAvailableFromRound;
 }
 
 /**
@@ -150,6 +133,8 @@ export function applyFeatureUnlocks(
   const has = (id: GameFeatureId) => unlocked.includes(id) || taughtHere.includes(id);
   return {
     ...m,
+    // Analysis is introduced by a tutorial, never by merely opening its encounter.
+    analysisEnabled: m.analysisEnabled && unlocked.includes('analysis'),
     showInsightPoints: m.showInsightPoints && has('insight_points'),
     showRoundType: m.showRoundType && has('round_types'),
   };
@@ -163,7 +148,10 @@ export function useResolvedMechanics(debate: DebateScenarioJson): ResolvedMechan
   return useMemo(() => {
     // Menu launches skip farm gates, so preview the features earlier rungs would
     // already have taught — otherwise Tobias round 3 hides `— crossfire`.
-    const previewed = returnSceneKey === 'MainMenu' ? featuresUnlockedBefore(activeDebateId) : [];
+    const previewed =
+      returnSceneKey === 'MainMenu'
+        ? featuresUnlockedBefore(activeDebateId).filter((id) => id !== 'analysis')
+        : [];
     const combined = previewed.length === 0 ? unlocked : [...new Set([...unlocked, ...previewed])];
     return applyFeatureUnlocks(resolveMechanics(debate), combined, debate.unlocksFeatures);
   }, [debate, unlocked, returnSceneKey, activeDebateId]);

@@ -7,7 +7,6 @@ import styles from '../panels/TrialPanels.module.scss';
 
 interface AnalyzeButtonProps {
   onClick: () => void;
-  disabled?: boolean;
   guessState?: AnalysisGuessState | null;
   title?: string;
   /**
@@ -20,14 +19,12 @@ interface AnalyzeButtonProps {
 
 const AnalyzeButton: React.FC<AnalyzeButtonProps> = ({
   onClick,
-  disabled = false,
   guessState,
   title = getLabel('analyzeThisRound'),
   dataRoundId,
 }) => (
   <button
     type="button"
-    disabled={disabled}
     className={cn(styles.trialAnalyzeBtn, {
       [styles.correct]: guessState === 'correct',
       [styles.extras]: guessState === 'extras',

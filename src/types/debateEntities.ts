@@ -484,6 +484,8 @@ export interface DebateScenarioTutorialEntry {
   id?: string;
   /** When true, this tutorial entry is ignored and never triggered. */
   disabled?: boolean;
+  /** Features granted when this tutorial opens, before its targets are resolved. */
+  unlocksFeatures?: readonly GameFeatureId[];
   trigger: DebateTutorialTrigger;
   tutorial: DebateTutorialJson;
 }
@@ -510,8 +512,6 @@ export type EncounterKind = 'debate' | 'gossip' | 'sparring' | 'lab' | 'lesson';
 export interface DebateScenarioMechanics {
   /** Analyze buttons and the analysis modal. Default `true`. */
   analysisEnabled?: boolean;
-  /** First round where analysis becomes usable, including earlier log entries. Default `1`. */
-  analysisAvailableFromRound?: number;
   /** Insight Points counter in the debate log header. Default `true`. */
   showInsightPoints?: boolean;
   /** Moderator gauge, opinion face and per-round impact numbers. Default `true`. */

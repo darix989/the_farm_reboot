@@ -206,7 +206,11 @@ Feature unlocks (`src/data/gameFeatures.ts`, stored on `codexStore.unlockedFeatu
 for a concept nobody has introduced yet. Insight Points and round-type labels stay off until
 Bram teaches them. `resolveMechanics()` stays pure; `applyFeatureUnlocks` ANDs those flags
 with the unlock, and the teaching encounter can still show the feature during play via
-`unlocksFeatures`.
+`unlocksFeatures`. Analysis stays hidden in all encounters until Cass’s round-5 tutorial
+grants the persistent `analysis` feature through its own `unlocksFeatures` declaration.
+The grant happens before opening the tutorial, so its spotlight can find the new button.
+Analysis is never granted by menu feature previews; older saves with evidence of Cass’s
+lesson retain access.
 
 **Field Notes is a React overlay, not a Phaser scene.** Mounted globally in `ReactApp`
 next to `TutorialOverlay`. Routing to a Codex scene would tear down the overworld (and
