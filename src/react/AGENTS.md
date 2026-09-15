@@ -582,6 +582,12 @@ Called from `TrialUI`. It subscribes once per unique event referenced in the tut
 ]
 ```
 
+### Target ring focus modes
+
+`focusMode` on a step (`'normal' | 'pulsing'`, default `'normal'`) controls the target highlight ring drawn by `tutorialHighlight.module.scss`. Use `'pulsing'` only for steps where the ring is the only affordance telling the player what to press (typically a `target_only` step with no other visible cue) — everything else stays on the static `'normal'` ring. Ring thickness (`border-width` / the inset targets' `outline` width) is never animated, so a pulsing step never reflows its target.
+
+The ring is split into a geometry class (`.tutorialTargetRing`, `!important` border-width/style, never animated) plus a colour class chosen per step (`.tutorialTargetRingStatic` or `.tutorialTargetRingPulsing`). This split exists because `!important` author declarations beat `@keyframes` animations in the cascade — an animated `border-color` / `box-shadow` under an `!important` rule would silently do nothing, so only the non-animated geometry stays `!important`; the colour/glow declarations that do animate are not.
+
 ### Onboarding tutorial (`introduction:start`)
 
 The onboarding overlay that used to live on a dedicated `introTutorial` field is now authored as a regular `tutorials` entry with `trigger.event === 'introduction:start'`. `TrialUI` emits `introduction:start` (with the scenario id as payload) once per scenario when the `debate_intro` phase begins, and `useScenarioTutorials` opens the matching entry via `useTutorialStore`. While any tutorial overlay is open during `debate_intro`, the Continue footer is disabled and the wizard panel hides the intro body — the same gating that was previously tied to the legacy `introTutorial` field.

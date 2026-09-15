@@ -173,10 +173,18 @@ const TutorialOverlay: React.FC = () => {
     if (!isOpen || !step?.targetComponent) return;
     const targetEl = resolveTutorialTargetElement(step.targetComponent);
     if (!targetEl) return;
-    const className = step.targetClassName ?? highlightStyles.tutorialTargetHighlight;
-    targetEl.classList.add(className);
+    // `classList.add` throws on a name containing whitespace, so split the override.
+    const classNames = step.targetClassName
+      ? step.targetClassName.split(/\s+/).filter(Boolean)
+      : [
+          highlightStyles.tutorialTargetRing,
+          step.focusMode === 'pulsing'
+            ? highlightStyles.tutorialTargetRingPulsing
+            : highlightStyles.tutorialTargetRingStatic,
+        ];
+    targetEl.classList.add(...classNames);
     return () => {
-      targetEl.classList.remove(className);
+      targetEl.classList.remove(...classNames);
     };
   }, [isOpen, step, codexIsOpen]);
 

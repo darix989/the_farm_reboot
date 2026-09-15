@@ -356,6 +356,8 @@ export interface TutorialArtificialInteraction {
 }
 
 export type TutorialInteractionMode = 'modal_only' | 'target_only' | 'highlight';
+/** `normal` (default): static ring. `pulsing`: ring brightens/swells on a loop. */
+export type TutorialFocusMode = 'normal' | 'pulsing';
 export type TutorialStepOnFinish = 'exit';
 
 /** Field Notes sections. Mirrors `CodexSection` in `codexUiStore` so this file stays store-free. */
@@ -443,6 +445,12 @@ export interface DebateTutorialStep {
   targetComponent?: TutorialTargetRef;
   /** Behavior used when `targetComponent` is present. Defaults to `modal_only`. */
   interactionMode?: TutorialInteractionMode;
+  /**
+   * Visual treatment of the target ring. Defaults to `normal`. Use `pulsing`
+   * for steps where the ring is the only affordance telling the player what
+   * to press (e.g. a `target_only` step with no other visible cue).
+   */
+  focusMode?: TutorialFocusMode;
   /**
    * Optional custom class name applied to the highlighted target element.
    * When omitted, the tutorial default highlight class is used.

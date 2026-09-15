@@ -1,17 +1,98 @@
-.tutorialTargetHighlight {
-  /* Scale highlight with root rem (set from stage width in App.tsx), not fixed px. */
-  border: clamp(0.3rem, 0.52vw, 0.63rem) solid var(--ui-color-tutorial-guidance) !important;
+/* Scale highlight with root rem (set from stage width in App.tsx), not fixed px. */
+$ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
+
+/* Geometry only. Kept `!important` because this is stamped onto elements that
+   carry their own border — width/style must win outright, but never animates,
+   so it can stay in the same declaration as the colour override below without
+   blocking the pulsing variant's `animation`. */
+.tutorialTargetRing {
+  border-width: $ring-width !important;
+  border-style: solid !important;
+  border-radius: 0.4rem;
+}
+
+/* Static colour + glow. `!important` is safe here because nothing animates it. */
+.tutorialTargetRingStatic {
+  border-color: var(--ui-color-tutorial-guidance) !important;
   box-shadow:
     0 0 0 clamp(0.03rem, 0.08vw, 0.07rem) var(--ui-color-tutorial-guidance-border),
     0 0 clamp(0.4rem, 0.8vw, 0.88rem) var(--ui-color-tutorial-guidance-glow) !important;
-  border-radius: 0.4rem;
+}
+
+/* Animated colour + glow. Deliberately NOT `!important` — `!important` author
+   declarations beat animations in the cascade, so animating `border-color` /
+   `box-shadow` under an `!important` rule would silently do nothing. An
+   animation-origin declaration still outranks the target's own normal-origin
+   border, so this wins over e.g. `.trialFooterAnalyzeBtn`'s own border without
+   needing `!important`. */
+.tutorialTargetRingPulsing {
+  animation: tutorial-target-pulse 1.6s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+@keyframes tutorial-target-pulse {
+  0%,
+  100% {
+    border-color: var(--ui-color-tutorial-guidance);
+    box-shadow:
+      0 0 0 clamp(0.03rem, 0.08vw, 0.07rem) var(--ui-color-tutorial-guidance-border),
+      0 0 clamp(0.4rem, 0.8vw, 0.88rem) var(--ui-color-tutorial-guidance-glow);
+  }
+
+  50% {
+    border-color: var(--ui-color-tutorial-guidance-border-strong);
+    box-shadow:
+      0 0 0 clamp(0.06rem, 0.16vw, 0.14rem) var(--ui-color-tutorial-guidance-border-strong),
+      0 0 clamp(0.8rem, 1.6vw, 1.76rem) var(--ui-color-tutorial-guidance-glow);
+  }
 }
 
 /* Moderator status face: a border would grow the 1.6em square past the log header.
    Draw the ring inside the already-capped box instead. */
-.tutorialTargetHighlight[data-tutorial-debate-log-moderator-score],
-.tutorialTargetHighlight[data-tutorial-debate-log-recap-moderator-score] {
+.tutorialTargetRing[data-tutorial-debate-log-moderator-score],
+.tutorialTargetRing[data-tutorial-debate-log-recap-moderator-score] {
   border: none !important;
-  outline: clamp(0.3rem, 0.52vw, 0.63rem) solid var(--ui-color-tutorial-guidance);
-  outline-offset: calc(-1 * clamp(0.3rem, 0.52vw, 0.63rem));
+  outline: $ring-width solid var(--ui-color-tutorial-guidance);
+  outline-offset: calc(-1 * $ring-width);
+}
+
+/* Inset targets draw an `outline`, not a `border` — the border keyframes above
+   are invisible there, so the pulsing variant swaps in an outline-animating
+   keyframes instead. */
+.tutorialTargetRingPulsing[data-tutorial-debate-log-moderator-score],
+.tutorialTargetRingPulsing[data-tutorial-debate-log-recap-moderator-score] {
+  animation-name: tutorial-target-pulse-inset;
+}
+
+@keyframes tutorial-target-pulse-inset {
+  0%,
+  100% {
+    outline-color: var(--ui-color-tutorial-guidance);
+    box-shadow: inset 0 0 0 clamp(0.03rem, 0.08vw, 0.07rem) var(--ui-color-tutorial-guidance-border);
+  }
+
+  50% {
+    outline-color: var(--ui-color-tutorial-guidance-border-strong);
+    box-shadow: inset 0 0 0 clamp(0.06rem, 0.16vw, 0.14rem)
+      var(--ui-color-tutorial-guidance-border-strong);
+  }
+}
+
+/* Playwright runs `reducedMotion: 'reduce'`; this branch must leave a visible ring. */
+@media (prefers-reduced-motion: reduce) {
+  .tutorialTargetRingPulsing {
+    animation: none;
+    border-color: var(--ui-color-tutorial-guidance-border-strong) !important;
+    box-shadow:
+      0 0 0 clamp(0.06rem, 0.16vw, 0.14rem) var(--ui-color-tutorial-guidance-border-strong),
+      0 0 clamp(0.8rem, 1.6vw, 1.76rem) var(--ui-color-tutorial-guidance-glow) !important;
+  }
+
+  .tutorialTargetRingPulsing[data-tutorial-debate-log-moderator-score],
+  .tutorialTargetRingPulsing[data-tutorial-debate-log-recap-moderator-score] {
+    animation: none;
+    outline-color: var(--ui-color-tutorial-guidance-border-strong) !important;
+    box-shadow: inset 0 0 0 clamp(0.06rem, 0.16vw, 0.14rem)
+      var(--ui-color-tutorial-guidance-border-strong) !important;
+  }
 }

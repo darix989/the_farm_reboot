@@ -99,6 +99,7 @@ export function useScenarioTutorials(
             onFinish: step.onFinish,
             targetComponent: step.targetComponent,
             interactionMode: step.interactionMode,
+            focusMode: step.focusMode,
             targetClassName: step.targetClassName,
             artificialInteractions: step.artificialInteractions,
           }));

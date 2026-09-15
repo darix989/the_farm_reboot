@@ -430,6 +430,7 @@
           {
             "message": "Now she is doing it to you. Open the **[accent]magnifying glass[/accent]** and read her line sentence by sentence.",
             "interactionMode": "target_only",
+            "focusMode": "pulsing",
             "targetComponent": {
               "kind": "interactive_action",
               "action": "analyze"
