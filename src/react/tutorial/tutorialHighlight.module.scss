@@ -1,6 +1,12 @@
 /* Scale highlight with root rem (set from stage width in App.tsx), not fixed px. */
 $ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
 
+/* Peak flash for `focusMode: 'new'` — brighter than the shared guidance glow so the
+   pulse reads at a glance. File-local: only this module animates it. */
+$pulse-peak-border: rgb(224, 252, 255);
+$pulse-peak-glow: rgba(103, 232, 249, 0.95);
+$pulse-peak-halo: rgba(34, 211, 238, 0.55);
+
 /* Geometry only. Kept `!important` because this is stamped onto elements that
    carry their own border — width/style must win outright, but never animates,
    so it can stay in the same declaration as the colour override below without
@@ -26,7 +32,7 @@ $ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
    border, so this wins over e.g. `.trialFooterAnalyzeBtn`'s own border without
    needing `!important`. Used by `focusMode: 'new'`. */
 .tutorialTargetRingNew {
-  animation: tutorial-target-pulse 1.6s ease-in-out infinite;
+  animation: tutorial-target-pulse 0.85s ease-in-out infinite;
   will-change: box-shadow;
 }
 
@@ -35,15 +41,16 @@ $ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
   100% {
     border-color: var(--ui-color-tutorial-guidance);
     box-shadow:
-      0 0 0 clamp(0.03rem, 0.08vw, 0.07rem) var(--ui-color-tutorial-guidance-border),
-      0 0 clamp(0.4rem, 0.8vw, 0.88rem) var(--ui-color-tutorial-guidance-glow);
+      0 0 0 clamp(0.04rem, 0.1vw, 0.09rem) var(--ui-color-tutorial-guidance-border),
+      0 0 clamp(0.5rem, 1vw, 1.1rem) var(--ui-color-tutorial-guidance-glow);
   }
 
   50% {
-    border-color: var(--ui-color-tutorial-guidance-border-strong);
+    border-color: $pulse-peak-border;
     box-shadow:
-      0 0 0 clamp(0.06rem, 0.16vw, 0.14rem) var(--ui-color-tutorial-guidance-border-strong),
-      0 0 clamp(0.8rem, 1.6vw, 1.76rem) var(--ui-color-tutorial-guidance-glow);
+      0 0 0 clamp(0.12rem, 0.28vw, 0.28rem) var(--ui-color-tutorial-guidance-border-strong),
+      0 0 clamp(1.4rem, 2.8vw, 3.2rem) $pulse-peak-glow,
+      0 0 clamp(2.2rem, 4.4vw, 4.8rem) $pulse-peak-halo;
   }
 }
 
@@ -68,13 +75,14 @@ $ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
   0%,
   100% {
     outline-color: var(--ui-color-tutorial-guidance);
-    box-shadow: inset 0 0 0 clamp(0.03rem, 0.08vw, 0.07rem) var(--ui-color-tutorial-guidance-border);
+    box-shadow: inset 0 0 0 clamp(0.04rem, 0.1vw, 0.09rem) var(--ui-color-tutorial-guidance-border);
   }
 
   50% {
-    outline-color: var(--ui-color-tutorial-guidance-border-strong);
-    box-shadow: inset 0 0 0 clamp(0.06rem, 0.16vw, 0.14rem)
-      var(--ui-color-tutorial-guidance-border-strong);
+    outline-color: $pulse-peak-border;
+    box-shadow:
+      inset 0 0 0 clamp(0.12rem, 0.28vw, 0.28rem) var(--ui-color-tutorial-guidance-border-strong),
+      0 0 clamp(1.4rem, 2.8vw, 3.2rem) $pulse-peak-glow;
   }
 }
 
@@ -82,17 +90,19 @@ $ring-width: clamp(0.3rem, 0.52vw, 0.63rem);
 @media (prefers-reduced-motion: reduce) {
   .tutorialTargetRingNew {
     animation: none;
-    border-color: var(--ui-color-tutorial-guidance-border-strong) !important;
+    border-color: $pulse-peak-border !important;
     box-shadow:
-      0 0 0 clamp(0.06rem, 0.16vw, 0.14rem) var(--ui-color-tutorial-guidance-border-strong),
-      0 0 clamp(0.8rem, 1.6vw, 1.76rem) var(--ui-color-tutorial-guidance-glow) !important;
+      0 0 0 clamp(0.12rem, 0.28vw, 0.28rem) var(--ui-color-tutorial-guidance-border-strong),
+      0 0 clamp(1.4rem, 2.8vw, 3.2rem) $pulse-peak-glow,
+      0 0 clamp(2.2rem, 4.4vw, 4.8rem) $pulse-peak-halo !important;
   }
 
   .tutorialTargetRingNew[data-tutorial-debate-log-moderator-score],
   .tutorialTargetRingNew[data-tutorial-debate-log-recap-moderator-score] {
     animation: none;
-    outline-color: var(--ui-color-tutorial-guidance-border-strong) !important;
-    box-shadow: inset 0 0 0 clamp(0.06rem, 0.16vw, 0.14rem)
-      var(--ui-color-tutorial-guidance-border-strong) !important;
+    outline-color: $pulse-peak-border !important;
+    box-shadow:
+      inset 0 0 0 clamp(0.12rem, 0.28vw, 0.28rem) var(--ui-color-tutorial-guidance-border-strong),
+      0 0 clamp(1.4rem, 2.8vw, 3.2rem) $pulse-peak-glow !important;
   }
 }
