@@ -445,7 +445,7 @@ const LABELS = {
   farmDialogBram1b: 'You — against Tobias. On the floor. And you came down here. To the wolf.',
   farmDialogBram1c: 'You were the first name she gave me. I need help.',
   farmDialogBram1d:
-    'I walk the fence. Both ways. From the far side of a hedge you hear every conversation on this farm. I will show you how one works, before anyone else gets hold of you.',
+    'I walk the fence. Both ways. From the far side of a hedge [accent]I can hear every conversation on this farm[/accent]. I will show you how one works, before anyone else gets hold of you.',
   farmDialogBram2:
     'There is another piece. I have to be unpleasant to you first, on purpose, so you can catch me at it.',
   farmDialogBram2a: 'There is another piece.',
