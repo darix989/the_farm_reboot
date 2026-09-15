@@ -14,6 +14,8 @@
  *   farm-shadow         56x16, origin centred
  *   farm-stick-base     160x160, origin centred
  *   farm-stick-thumb    72x72, origin centred
+ *   farm-interact-base  160x160, origin centred
+ *   farm-interact-icon  72x72, origin centred
  */
 import type { FarmZoneKind } from '../../data/farmMap';
 import { farmPalette } from './farmPalette';
@@ -113,6 +115,22 @@ export function ensureFarmJoystickTextures(scene: Phaser.Scene): void {
     g.fillCircle(36, 36, 34);
     g.lineStyle(3, 0xffffff, 0.7);
     g.strokeCircle(36, 36, 33);
+  });
+
+  // The matching right-hand touch control is an action button rather than a second stick.
+  // A four-point spark reads as a general "interact" affordance for both talking and gates.
+  bake('farm-interact-base', 160, 160, () => {
+    g.fillStyle(farmPalette.accent, 0.3);
+    g.fillCircle(80, 80, 78);
+    g.lineStyle(4, farmPalette.accent, 0.9);
+    g.strokeCircle(80, 80, 76);
+  });
+  bake('farm-interact-icon', 72, 72, () => {
+    g.fillStyle(0xffffff, 0.92);
+    g.fillTriangle(36, 6, 45, 28, 27, 28);
+    g.fillTriangle(66, 36, 44, 45, 44, 27);
+    g.fillTriangle(36, 66, 27, 44, 45, 44);
+    g.fillTriangle(6, 36, 28, 27, 28, 45);
   });
 
   g.destroy();

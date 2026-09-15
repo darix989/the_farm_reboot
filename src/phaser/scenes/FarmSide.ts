@@ -33,6 +33,7 @@ import {
 } from '../sideScene/sideSceneCamera';
 import { createFarmKeys, type FarmKeys } from '../farm/farmInput';
 import { VirtualJoystick } from '../farm/VirtualJoystick';
+import { VirtualInteractButton } from '../farm/VirtualInteractButton';
 import { ensureFarmJoystickTextures } from '../farm/farmTextures';
 import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { reportSceneLoadProgress } from '../bootProgress';
@@ -105,6 +106,7 @@ export class FarmSide extends Scene {
   private groundBottom = STAGE_DESIGN_HEIGHT;
   private keys: FarmKeys | null = null;
   private joystick: VirtualJoystick | null = null;
+  private interactButton: VirtualInteractButton | null = null;
   private player: SideScenePlayer | null = null;
   private npcs: SideSceneNpc[] = [];
   private scrollX = 0;
@@ -154,6 +156,7 @@ export class FarmSide extends Scene {
     this.groundBottom = STAGE_DESIGN_HEIGHT;
     this.keys = null;
     this.joystick = null;
+    this.interactButton = null;
     this.player = null;
     this.npcs = [];
     this.scrollX = 0;
@@ -199,6 +202,7 @@ export class FarmSide extends Scene {
 
     this.keys = createFarmKeys(this);
     this.joystick = new VirtualJoystick(this);
+    this.interactButton = new VirtualInteractButton(this, () => this.tryInteract());
     const spawn = this.resolveSpawn();
     this.player = new SideScenePlayer(this, this.descriptor, spawn, this.keys, this.joystick);
 
@@ -507,6 +511,7 @@ export class FarmSide extends Scene {
       !useTutorialStore.getState().isOpen &&
       !useFarmStore.getState().talkingToNpcId;
     this.joystick?.setEnabled(enabled);
+    this.interactButton?.setEnabled(enabled);
   }
 
   private updateCamera(): void {
@@ -547,6 +552,8 @@ export class FarmSide extends Scene {
     this.player = null;
     this.joystick?.destroy();
     this.joystick = null;
+    this.interactButton?.destroy();
+    this.interactButton = null;
     this.npcs.forEach((npc) => npc.destroy());
     this.npcs = [];
     useFarmStore.getState().resetFarmUi();

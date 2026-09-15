@@ -12,6 +12,7 @@ import {
 import { ensureFarmTextures, farmZoneTextureKey } from '../farm/farmTextures';
 import { createFarmKeys, movementVector, type FarmKeys } from '../farm/farmInput';
 import { VirtualJoystick } from '../farm/VirtualJoystick';
+import { VirtualInteractButton } from '../farm/VirtualInteractButton';
 import { farmPalette } from '../farm/farmPalette';
 import { useGameStore } from '../../store/gameStore';
 import { useFarmStore } from '../../store/farmStore';
@@ -67,6 +68,7 @@ export class Farm extends Scene {
   private playerAnimator: AnimalAnimator | null = null;
   private keys: FarmKeys | null = null;
   private joystick: VirtualJoystick | null = null;
+  private interactButton: VirtualInteractButton | null = null;
   private npcActors: { npc: FarmNpc; animator: AnimalAnimator | null }[] = [];
   private moveVector = new Phaser.Math.Vector2();
   /** Whether the walk cycle is currently running, so it is started and stopped on the frame
@@ -103,6 +105,7 @@ export class Farm extends Scene {
 
     this.keys = createFarmKeys(this);
     this.joystick = new VirtualJoystick(this);
+    this.interactButton = new VirtualInteractButton(this, () => this.tryInteract());
 
     this.keys?.interact.forEach((key) => {
       key.on('down', () => this.tryInteract());
@@ -334,6 +337,7 @@ export class Farm extends Scene {
     this.input.enabled = !tutorialOpen;
     if (tutorialOpen) {
       this.joystick?.setEnabled(false);
+      this.interactButton?.setEnabled(false);
       if (this.player?.body) {
         this.player.setVelocity(0, 0);
         this.stopWalking();
@@ -342,6 +346,7 @@ export class Farm extends Scene {
     }
     if (!useFarmStore.getState().talkingToNpcId) {
       this.joystick?.setEnabled(true);
+      this.interactButton?.setEnabled(true);
     }
   }
 
@@ -374,12 +379,14 @@ export class Farm extends Scene {
       const cy = npc ? (this.player.y + npc.y) / 2 : this.player.y;
       cam.centerOn(cx, cy);
       this.joystick?.setEnabled(false);
+      this.interactButton?.setEnabled(false);
       return;
     }
     cam.setViewport(0, 0, STAGE_DESIGN_WIDTH, STAGE_DESIGN_HEIGHT);
     cam.startFollow(this.player, true, 0.12, 0.12);
     if (!useTutorialStore.getState().isOpen) {
       this.joystick?.setEnabled(true);
+      this.interactButton?.setEnabled(true);
     }
   }
 
@@ -393,6 +400,8 @@ export class Farm extends Scene {
     useGameStore.getState().updatePlayerPosition(this.player.x, this.player.y);
     this.joystick?.destroy();
     this.joystick = null;
+    this.interactButton?.destroy();
+    this.interactButton = null;
     this.playerAnimator?.destroy();
     this.playerAnimator = null;
     this.npcActors.forEach(({ animator }) => animator?.destroy());
