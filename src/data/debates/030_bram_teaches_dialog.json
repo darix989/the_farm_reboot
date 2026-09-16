@@ -40,7 +40,7 @@
           },
           {
             "id": "s-r1-2",
-            "text": "One animal says a thing. The other answers. Each instance is standard round. In a debate, it could be an [accent]opening round[/accent], or a [accent]rebuttal round[/accent].",
+            "text": "One animal says a thing. The other answers. Each instance is standard round. In a debate, it could be an [accent]opening/closing round[/accent] or a [accent]rebuttal round[/accent].",
             "logicalFallacies": []
           },
           {
@@ -346,6 +346,18 @@
               "size": "medium",
               "position": "topLeft"
             }
+          },
+          {
+            "message": "This is **[accent]Actions[/accent]**. The buttons live here.\n\nThe sentence at the top says what to do in every moment.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
           }
         ]
       }
@@ -422,7 +434,7 @@
             }
           },
           {
-            "message": "This **[accent]arrow[/accent]** opens the **[accent]Log[/accent]**. That panel holds the whole conversation back, round by round.\n\n**[muted]You can open it whenever you like. You do not have to open it now.[/muted]**",
+            "message": "**[accent]This button[/accent]** opens the **[accent]Log[/accent]**. That panel holds the whole conversation back, round by round.\n\n**[muted]You can open it whenever you like. You do not have to open it now.[/muted]**",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "debate_log_panel_toggle"

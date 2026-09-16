@@ -14,6 +14,15 @@ $tutorial-modal-glow: var(--ui-color-tutorial-guidance-glow);
   inset: 0;
   z-index: 20000;
   pointer-events: none;
+
+  /* In-game menu covers this overlay; child `pointer-events: auto` must not win. */
+  &[inert] {
+    .dialog,
+    .clickBlocker,
+    .shutter {
+      pointer-events: none;
+    }
+  }
 }
 
 /* Full-viewport catch when the spotlight “hole” is the whole stage (or viewport): blocks clicks without extra dimming. */

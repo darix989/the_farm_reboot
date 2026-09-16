@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import getLabel from '../../data/labels';
 import { useFarmStore } from '../../store/farmStore';
 import { useGameStore } from '../../store/gameStore';
@@ -7,7 +8,10 @@ import { useTrialSessionStore } from '../../store/trialSessionStore';
 import { GameManager } from '../../utils/gameManager';
 import styles from './InGameMenu.module.scss';
 
-/** Full-stage input shield and the small menu that sits above the active scene. */
+/**
+ * Full-viewport input shield and the small menu that sits above the active scene.
+ * Portaled to `document.body` so it paints above `TutorialOverlay` (also body-portaled).
+ */
 const InGameMenuOverlay: React.FC = () => {
   const view = useInGameMenuStore((s) => s.view);
   const closeMenu = useInGameMenuStore((s) => s.closeMenu);
@@ -30,7 +34,7 @@ const InGameMenuOverlay: React.FC = () => {
     GameManager.switchScene('MainMenu');
   };
 
-  return (
+  return createPortal(
     <div
       className={styles.menuOverlay}
       role="dialog"
@@ -71,7 +75,8 @@ const InGameMenuOverlay: React.FC = () => {
           </>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 

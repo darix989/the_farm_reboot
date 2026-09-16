@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import { useTutorialStore } from '../../store/tutorialStore';
 import { useCodexUiStore } from '../../store/codexUiStore';
+import { useInGameMenuStore } from '../../store/inGameMenuStore';
 import { resolveStageSpotlightToViewport } from './spotlightRect';
 import { useStageRect } from './useStageRect';
 import { ariaKeyShortcutsFor, type ShortcutAction } from '../../data/keyBindings';
@@ -81,6 +82,7 @@ const TutorialOverlay: React.FC = () => {
 
   const { stageRect } = useStageRect();
   const codexIsOpen = useCodexUiStore((s) => s.isOpen);
+  const menuOpen = useInGameMenuStore((s) => s.view !== 'closed');
   const [newBadgePos, setNewBadgePos] = useState<{ top: number; left: number } | null>(null);
 
   const [, setRenderTick] = useState(0);
@@ -144,7 +146,7 @@ const TutorialOverlay: React.FC = () => {
       event.stopImmediatePropagation();
       onPrimary();
     },
-    isOpen && !!step,
+    isOpen && !!step && !menuOpen,
     { capture: true },
   );
 
@@ -314,7 +316,13 @@ const TutorialOverlay: React.FC = () => {
   };
 
   const ui = (
-    <div className={styles.root} role="presentation">
+    <div
+      className={styles.root}
+      role="presentation"
+      // Pause menu portals above this overlay; keep the tutorial visible but inert.
+      inert={menuOpen ? true : undefined}
+      aria-hidden={menuOpen || undefined}
+    >
       {newBadgePos && (
         <span
           className={styles.newFeatureBadge}

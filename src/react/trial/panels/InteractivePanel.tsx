@@ -280,7 +280,6 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     return (
       <div
         className={styles.trialChoices}
-        data-tutorial-panel="interactive"
         aria-hidden={hideOptions || undefined}
         style={hideOptions ? { visibility: 'hidden' } : undefined}
       >
@@ -322,7 +321,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   };
 
   return (
-    <div className={styles.trialInteractiveBody}>
+    <div className={styles.trialInteractiveBody} data-tutorial-panel="interactive">
       <div className={styles.trialAreaTitle}>
         <h2 className={styles.trialPanelHeading}>{getLabel('interactive')}</h2>
       </div>
