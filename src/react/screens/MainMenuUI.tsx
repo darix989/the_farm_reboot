@@ -161,7 +161,7 @@ const MainMenuUI: React.FC = () => {
                 {getLabel('mainMenuNewGame')}
               </button>
               <button
-                className={styles.menuButton}
+                className={styles.menuButtonPrimary}
                 type="button"
                 onClick={() => setView('settings')}
               >
