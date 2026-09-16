@@ -88,6 +88,11 @@ export class GameManager {
   static pauseGame(): void {
     const scene = this.getCurrentScene();
     if (scene) {
+      // Pausing stops a Scene update, but Phaser's keyboard plugin can still retain a held
+      // key. Disable and clear the scene input too, so reopening the menu cannot make Rue
+      // walk or fire an action on the first resumed frame.
+      scene.input.enabled = false;
+      scene.input.keyboard?.resetKeys();
       scene.scene.pause();
       useGameStore.getState().setPaused(true);
     }
@@ -99,6 +104,8 @@ export class GameManager {
   static resumeGame(): void {
     const scene = this.getCurrentScene();
     if (scene) {
+      scene.input.keyboard?.resetKeys();
+      scene.input.enabled = true;
       scene.scene.resume();
       useGameStore.getState().setPaused(false);
     }

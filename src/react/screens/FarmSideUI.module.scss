@@ -20,26 +20,6 @@
   touch-action: none;
 }
 
-.backButton {
-  position: absolute;
-  z-index: 1;
-  top: 1rem;
-  left: 1rem;
-  pointer-events: auto;
-  padding: 0.6rem 1.2rem;
-  font-size: var(--ui-font-body);
-  color: var(--ui-color-text-primary);
-  background: var(--ui-color-overlay-backdrop);
-  border: 1px solid var(--ui-color-border-emphasis);
-  border-radius: 0.4rem;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--ui-color-accent);
-    border-color: var(--ui-color-accent);
-  }
-}
-
 /* Both hints sit over the sky band, well clear of the road: the lateral world draws its
    characters near the bottom of the stage, where an overworld-style bottom hint would land
    right on top of them. */
@@ -54,95 +34,6 @@
   background: var(--ui-color-overlay-backdrop);
   color: var(--ui-color-text-muted-2);
   font-size: var(--ui-font-body);
-}
-
-.codexButton {
-  position: absolute;
-  z-index: 1;
-  top: 1rem;
-  right: 1rem;
-  box-sizing: border-box;
-  padding: 0.55rem 1.15rem;
-  border: 1px solid var(--ui-color-border-emphasis);
-  border-radius: 0.4rem;
-  background: var(--ui-color-overlay-backdrop);
-  color: var(--ui-color-text-primary);
-  font-size: var(--ui-font-subtitle);
-  font-weight: 600;
-  line-height: 1.2;
-  cursor: pointer;
-  pointer-events: auto;
-  white-space: nowrap;
-
-  &:hover {
-    color: var(--ui-color-accent);
-    border-color: var(--ui-color-accent);
-  }
-}
-
-.codexButtonLabel {
-  display: block;
-}
-
-.codexButton:has([data-shortcut-keycap]) .codexButtonLabel {
-  visibility: hidden;
-}
-
-.codexButton [data-shortcut-keycap] {
-  font-size: inherit;
-  border-radius: inherit;
-}
-
-.codexButtonHasCue {
-  color: var(--ui-color-accent);
-  border-color: var(--ui-color-accent);
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: -0.2rem;
-    right: -0.2rem;
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: var(--ui-color-accent);
-    box-shadow: 0 0 8px var(--ui-color-accent-glow);
-  }
-}
-
-.codexButtonBurst {
-  animation: farm-codex-button-burst 1.1s ease-in-out;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .codexButtonBurst {
-    animation: farm-codex-button-burst-static 1.1s ease-in-out;
-  }
-}
-
-@keyframes farm-codex-button-burst {
-  0%,
-  100% {
-    box-shadow: none;
-  }
-
-  40% {
-    border-color: var(--ui-color-accent);
-    box-shadow:
-      0 0 0 3px var(--ui-color-accent-glow),
-      0 0 16px -2px var(--ui-color-accent);
-  }
-}
-
-@keyframes farm-codex-button-burst-static {
-  0%,
-  100% {
-    border-color: var(--ui-color-accent);
-  }
-
-  40% {
-    border-color: var(--ui-color-info);
-  }
 }
 
 .talkPrompt {

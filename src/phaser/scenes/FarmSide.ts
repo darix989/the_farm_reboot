@@ -40,6 +40,7 @@ import { reportSceneLoadProgress } from '../bootProgress';
 import { useFarmStore } from '../../store/farmStore';
 import { useDevSettingsStore } from '../../store/devSettingsStore';
 import { useGameStore } from '../../store/gameStore';
+import { useProgressStore } from '../../store/progressStore';
 import { useTutorialStore } from '../../store/tutorialStore';
 import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reducedMotion';
 
@@ -246,7 +247,9 @@ export class FarmSide extends Scene {
     const talking = useFarmStore.getState().talkingToNpcId;
     const tutorialOpen = useTutorialStore.getState().isOpen;
     const canAct = !(talking || this.travelling || tutorialOpen);
-    this.player?.update(delta, canAct);
+    if (this.player?.update(delta, canAct)) {
+      useProgressStore.getState().dismissFarmSideMoveHint();
+    }
     // Reduced motion parks every animal on its rest frame (see `AnimalAnimator`), so a
     // patrolling NPC stands at its authored spot rather than gliding along the fence on a
     // frozen pose — same contract the fades and the talk camera already honour.

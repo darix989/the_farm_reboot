@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import cn from 'classnames';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { GameManager } from '../../utils/gameManager';
 import type { FarmSide } from '../../phaser/scenes/FarmSide';
 import getLabel from '../../data/labels';
@@ -9,26 +8,18 @@ import { FARM_INTRO_NPC_ID } from '../../data/farmMap';
 import { SIDE_SCENES } from '../../data/sideScenes';
 import { useGameStore } from '../../store/gameStore';
 import { useFarmStore } from '../../store/farmStore';
-import { useCodexUiStore } from '../../store/codexUiStore';
+import { useProgressStore } from '../../store/progressStore';
 import { useTutorialStore } from '../../store/tutorialStore';
 import FarmDialogue from '../farm/FarmDialogue';
 import { useFarmOverworldTalk } from '../hooks/useFarmOverworldTalk';
-import { useCodexNotices } from '../codex/useCodexNotices';
-import { useOpenCodexShortcut } from '../hooks/useOpenCodexShortcut';
-import {
-  canRunTutorialTargetAction,
-  canRunTutorialUntargetedAction,
-  notifyTutorialTargetAction,
-} from '../tutorial/tutorialInteractionGuard';
-import type { TutorialTargetRef } from '../../types/debateEntities';
+import { canRunTutorialUntargetedAction } from '../tutorial/tutorialInteractionGuard';
 import { interactionPromptPosition } from '../farm/interactionPromptPosition';
 import ShortcutKeycap from '../shortcuts/ShortcutKeycap';
 import styles from './FarmSideUI.module.scss';
 import { supportsTouchInput } from '../../utils/touchInput';
 
 /**
- * Overlay for the `FarmSide` scene: the way back to the menu, Field Notes, the walk-up
- * talk prompt, the portal travel prompt, and the talk itself.
+ * Overlay for the `FarmSide` scene: the walk-up talk prompt, portal travel prompt, and talk.
  *
  * Same handoff as the top-down overworld — the scene writes `nearbyNpcId` / reads
  * `talkingToNpcId` through `farmStore`, and the conversation is the shared `FarmDialogue`
@@ -40,25 +31,20 @@ import { supportsTouchInput } from '../../utils/touchInput';
  * keep showing the previous level's cast.
  *
  * `isTraveling` hides everything but the empty root: the camera fade darkens only the
- * Phaser canvas, so without this the back button and hints would sit at full brightness
+ * Phaser canvas, so without this the prompts and hints would sit at full brightness
  * over a black screen for the whole transition, and would never even blink on a warm hop.
  *
  * `.react-ui-overlay` is `pointer-events: none`, so every control here re-enables them for
  * itself (see `docs/architecture.md`).
  */
-const CODEX_OPEN_TARGET: TutorialTargetRef = { kind: 'codex_open' };
 const MOVE_HINT_LABEL = supportsTouchInput() ? 'farmSideMoveHintTouch' : 'farmSideMoveHint';
 
 const FarmSideUI: React.FC = () => {
   const activeSideSceneId = useGameStore((s) => s.activeSideSceneId);
   const nearbyPortalId = useFarmStore((s) => s.nearbyPortalId);
   const isTraveling = useFarmStore((s) => s.isTraveling);
-  const openCodex = useCodexUiStore((s) => s.openCodex);
+  const farmSideMoveHintDismissed = useProgressStore((s) => s.farmSideMoveHintDismissed);
   const tutorialOpen = useTutorialStore((s) => s.isOpen);
-  const { hasUnread, unreadIds, firstUnreadSection } = useCodexNotices();
-  const animatedNoticeIds = useCodexUiStore((s) => s.animatedNoticeIds);
-  const markNoticesAnimated = useCodexUiStore((s) => s.markNoticesAnimated);
-  const [codexBursting, setCodexBursting] = useState(false);
   const interactionPromptRef = useRef<HTMLButtonElement>(null);
 
   const descriptor = useMemo(() => SIDE_SCENES[activeSideSceneId], [activeSideSceneId]);
@@ -96,11 +82,6 @@ const FarmSideUI: React.FC = () => {
     [nearbyNpcId, nearbyPortal],
   );
 
-  useOpenCodexShortcut(
-    !isTraveling && !dialogue && !pendingFollowUp,
-    firstUnreadSection ?? undefined,
-  );
-
   useEffect(() => {
     if (!interactionFocus || dialogue) return;
 
@@ -130,63 +111,14 @@ const FarmSideUI: React.FC = () => {
     return () => window.cancelAnimationFrame(frame);
   }, [dialogue, interactionFocus]);
 
-  const hudCodexVisible = !dialogue;
-  useEffect(() => {
-    if (!hudCodexVisible) {
-      setCodexBursting(false);
-      return;
-    }
-    const pending = unreadIds.filter((id) => !animatedNoticeIds.includes(id));
-    if (pending.length === 0) return;
-    markNoticesAnimated(pending);
-    setCodexBursting(true);
-  }, [hudCodexVisible, unreadIds, animatedNoticeIds, markNoticesAnimated]);
-
   if (isTraveling) return <div className={styles.farmSideUi} />;
 
   return (
     <div className={styles.farmSideUi}>
       {tutorialOpen && <div className={styles.tutorialInputGate} aria-hidden="true" />}
 
-      {!dialogue && (
-        <>
-          <button
-            className={styles.backButton}
-            type="button"
-            onClick={() => {
-              useFarmStore.getState().setPendingForcedTalk(null);
-              GameManager.switchScene('MainMenu');
-            }}
-          >
-            {getLabel('farmSideBackToMenu')}
-          </button>
-
-          <p className={styles.moveHint}>{getLabel(MOVE_HINT_LABEL)}</p>
-
-          <button
-            className={cn(
-              styles.codexButton,
-              hasUnread && styles.codexButtonHasCue,
-              codexBursting && styles.codexButtonBurst,
-            )}
-            type="button"
-            data-tutorial-codex-open
-            aria-label={hasUnread ? getLabel('codexOpenHasNew') : getLabel('codexOpen')}
-            aria-keyshortcuts={ariaKeyShortcutsFor('codexOpen')}
-            onAnimationEnd={(event) => {
-              if (event.target !== event.currentTarget) return;
-              setCodexBursting(false);
-            }}
-            onClick={() => {
-              if (!canRunTutorialTargetAction(CODEX_OPEN_TARGET)) return;
-              openCodex(firstUnreadSection ?? undefined);
-              notifyTutorialTargetAction(CODEX_OPEN_TARGET);
-            }}
-          >
-            <span className={styles.codexButtonLabel}>{getLabel('codexOpen')}</span>
-            <ShortcutKeycap action="codexOpen" />
-          </button>
-        </>
+      {!dialogue && !farmSideMoveHintDismissed && (
+        <p className={styles.moveHint}>{getLabel(MOVE_HINT_LABEL)}</p>
       )}
 
       {nearbyNpcId && !dialogue && !tutorialOpen && !pendingFollowUp && (

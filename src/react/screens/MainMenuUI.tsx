@@ -92,6 +92,7 @@ const MainMenuUI: React.FC = () => {
   const confirmAction = () => {
     if (confirmation === 'newGame') {
       resetSavedProgress();
+      useProgressStore.getState().restoreFarmSideMoveHint();
       enterFarm();
     } else if (confirmation === 'resetProgress') {
       resetSavedProgress();

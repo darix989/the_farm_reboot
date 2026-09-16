@@ -76,6 +76,7 @@ import { GameManager } from '../../utils/gameManager';
 import { applyEncounterRewards, shouldQueueFollowUp } from '../../utils/encounterRewards';
 import { encounterFollowUpFor } from '../../data/encounterFollowUps';
 import { useFarmStore } from '../../store/farmStore';
+import { useTrialSessionStore } from '../../store/trialSessionStore';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
@@ -131,6 +132,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const isTutorialOpen = useTutorialStore((s) => s.isOpen);
 
   useEffect(() => {
+    useTrialSessionStore.getState().begin();
     setIntroSummaryOpen(false);
     introStartEmittedRef.current = false;
     moderatorStartEmittedRef.current = false;
@@ -765,6 +767,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
               ...followUp,
             });
           }
+          useTrialSessionStore.getState().complete();
           GameManager.switchScene(returnSceneKey);
         };
         break;

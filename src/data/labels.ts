@@ -51,6 +51,13 @@ const LABELS = {
     'This replaces your saved encounters, Field Notes, and tutorials with a fresh start.',
   newGameConfirmAction: 'Start New Game',
   resetProgress: 'Reset Progress',
+  inGameMenuOpen: 'Menu',
+  inGameMenuTitle: 'Menu',
+  inGameMenuResume: 'Resume',
+  inGameMenuExit: 'Exit',
+  inGameMenuExitTitle: 'Exit to Main Menu?',
+  inGameMenuExitFarmBody: 'You can continue your progress from the main menu.',
+  inGameMenuExitTrialBody: 'This debate will be abandoned and its progress will be lost.',
   resetProgressConfirmTitle: 'Reset all progress?',
   resetProgressConfirmBody:
     'This clears your saved encounters, Field Notes, and tutorials from this browser. It cannot be undone.',
@@ -750,7 +757,6 @@ const LABELS = {
   trialScenePlaceholder: 'Trial Scene\n\nThis is where the trial gameplay\nwould be implemented.',
 
   // --- Lateral farm scene ---
-  farmSideBackToMenu: 'Back to Main Menu',
   farmSideMoveHint: 'Arrows / WASD to walk the road, Shift to run',
   farmSideMoveHintTouch: 'Drag the bottom-left joypad to walk the road',
 

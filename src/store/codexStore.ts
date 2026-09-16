@@ -31,6 +31,14 @@ export interface SpottedFallacy {
   sentenceId: string;
 }
 
+/** Persistent learning that belongs to an active Trial and can be rolled back on abandon. */
+export interface CodexProgressSnapshot {
+  knownFallacies: LogicalFallacyId[];
+  spottedFallacies: SpottedFallacy[];
+  dialogFlags: DialogFlagId[];
+  unlockedFeatures: GameFeatureId[];
+}
+
 interface CodexStore {
   /** Fallacies the player can name. Starts empty — nothing is known until it is taught. */
   knownFallacies: LogicalFallacyId[];
@@ -68,6 +76,9 @@ interface CodexStore {
    */
   hydrateNotices: (liveIds: readonly string[]) => void;
   markNoticesSeen: (ids: readonly string[]) => void;
+
+  snapshotProgress: () => CodexProgressSnapshot;
+  restoreProgress: (snapshot: CodexProgressSnapshot) => void;
 
   resetCodex: () => void;
 }
@@ -148,6 +159,24 @@ export const useCodexStore = create<CodexStore>()(
             changed = true;
           }
           return changed ? { ...s, seenNoticeIds: next } : s;
+        }),
+
+      snapshotProgress: () => {
+        const state = get();
+        return {
+          knownFallacies: [...state.knownFallacies],
+          spottedFallacies: state.spottedFallacies.map((entry) => ({ ...entry })),
+          dialogFlags: [...state.dialogFlags],
+          unlockedFeatures: [...state.unlockedFeatures],
+        };
+      },
+
+      restoreProgress: (snapshot) =>
+        set({
+          knownFallacies: [...snapshot.knownFallacies],
+          spottedFallacies: snapshot.spottedFallacies.map((entry) => ({ ...entry })),
+          dialogFlags: [...snapshot.dialogFlags],
+          unlockedFeatures: [...snapshot.unlockedFeatures],
         }),
 
       resetCodex: () =>

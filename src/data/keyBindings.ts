@@ -12,6 +12,7 @@
 export type ShortcutAction =
   | 'farmInteract'
   | 'codexOpen'
+  | 'inGameMenu'
   | 'trialOptionA'
   | 'trialOptionB'
   | 'trialOptionC'
@@ -30,6 +31,7 @@ export interface KeyBinding {
 export const KEY_BINDINGS: Record<ShortcutAction, KeyBinding> = {
   farmInteract: { codes: ['Space', 'KeyE', 'Enter'], displayCode: 'KeyE' },
   codexOpen: { codes: ['Tab'], displayCode: 'Tab' },
+  inGameMenu: { codes: ['Escape'], displayCode: 'Escape' },
   trialOptionA: { codes: ['KeyZ'], displayCode: 'KeyZ' },
   trialOptionB: { codes: ['KeyX'], displayCode: 'KeyX' },
   trialOptionC: { codes: ['KeyC'], displayCode: 'KeyC' },

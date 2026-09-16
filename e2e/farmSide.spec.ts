@@ -2,7 +2,9 @@ import {
   attachScreenshot,
   enableDevMode,
   enterFarmFromMenu,
-  FARM_SIDE_BACK_TO_MENU,
+  IN_GAME_MENU,
+  IN_GAME_MENU_EXIT,
+  FARM_SIDE_MOVE_HINT,
   FARM_SIDE_PORTAL_BACK_TO_ROAD,
   FARM_SIDE_PORTAL_GATE,
   SIDE_SCENE_OLD_POND,
@@ -25,7 +27,7 @@ test.describe('lateral farm scene', () => {
     await enableDevMode(page);
     await page.getByRole('button', { name: SIDE_SCENES_HEADING }).click();
     await page.getByRole('button', { name: SIDE_SCENE_OLD_POND }).click();
-    await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
+    await page.getByRole('button', { name: IN_GAME_MENU }).waitFor();
     await page.getByRole('button', { name: TALK_TO_HETTY }).waitFor();
     await attachScreenshot(page, 'farm-side-menu-jump-pond');
   });
@@ -46,13 +48,28 @@ test.describe('lateral farm scene', () => {
     await prompt.waitFor();
   });
 
-  test('boots the scene and shows the back button', async ({ page }) => {
+  test('boots the scene and shows the menu button', async ({ page }) => {
     await seedLevel1Started(page);
     await page.goto('/');
     await waitForMainMenu(page);
     await enterFarmFromMenu(page);
-    await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
+    await page.getByRole('button', { name: IN_GAME_MENU }).waitFor();
     await attachScreenshot(page, 'farm-side-scene');
+  });
+
+  test('hides the movement hint after the player starts walking', async ({ page }) => {
+    await seedLevel1Started(page);
+    await page.goto('/');
+    await waitForMainMenu(page);
+    await enterFarmFromMenu(page);
+    await page.getByRole('button', { name: IN_GAME_MENU }).waitFor();
+
+    const moveHint = page.getByText(FARM_SIDE_MOVE_HINT);
+    await moveHint.waitFor();
+    await page.keyboard.down('ArrowRight');
+    await page.waitForTimeout(100);
+    await page.keyboard.up('ArrowRight');
+    await moveHint.waitFor({ state: 'hidden' });
   });
 
   test('walking right scrolls the road without leaving the main menu behind', async ({ page }) => {
@@ -60,7 +77,7 @@ test.describe('lateral farm scene', () => {
     await page.goto('/');
     await waitForMainMenu(page);
     await enterFarmFromMenu(page);
-    await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
+    await page.getByRole('button', { name: IN_GAME_MENU }).waitFor();
 
     for (let i = 0; i < 20; i += 1) {
       await page.keyboard.down('ArrowRight');
@@ -69,7 +86,9 @@ test.describe('lateral farm scene', () => {
     await page.keyboard.up('ArrowRight');
     await attachScreenshot(page, 'farm-side-scene-scrolled');
 
-    await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).click();
+    await page.getByRole('button', { name: IN_GAME_MENU }).click();
+    await page.getByRole('button', { name: IN_GAME_MENU_EXIT }).click();
+    await page.getByRole('button', { name: IN_GAME_MENU_EXIT }).click();
     await waitForMainMenu(page);
   });
 
@@ -84,7 +103,7 @@ test.describe('lateral farm scene', () => {
     await page.goto('/');
     await waitForMainMenu(page);
     await enterFarmFromMenu(page);
-    await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
+    await page.getByRole('button', { name: IN_GAME_MENU }).waitFor();
     // First-visit spawn is beside Dot — wait for her prompt so Phaser keys exist before we walk.
     await page.getByRole('button', { name: TALK_TO_DOT }).waitFor();
 
@@ -120,7 +139,9 @@ test.describe('lateral farm scene', () => {
     await walkUntilVisible(page, 'ArrowLeft', page.getByRole('button', { name: TALK_TO_CASS }));
     await attachScreenshot(page, 'farm-side-back-on-road');
 
-    await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).click();
+    await page.getByRole('button', { name: IN_GAME_MENU }).click();
+    await page.getByRole('button', { name: IN_GAME_MENU_EXIT }).click();
+    await page.getByRole('button', { name: IN_GAME_MENU_EXIT }).click();
     await waitForMainMenu(page);
   });
 });

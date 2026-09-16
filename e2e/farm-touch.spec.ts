@@ -4,7 +4,7 @@ import { JOYSTICK_CENTER, JOYSTICK_DRAG_RADIUS } from '../src/phaser/farm/virtua
 import {
   enableDevMode,
   enterFarmFromMenu,
-  FARM_SIDE_BACK_TO_MENU,
+  IN_GAME_MENU,
   seedLevel1Started,
   TALK_TO_DOT,
   test,
@@ -62,7 +62,7 @@ test.describe('farm touch movement', () => {
     await page.goto('/');
     await waitForMainMenu(page);
     await enterFarmFromMenu(page);
-    await page.getByRole('button', { name: FARM_SIDE_BACK_TO_MENU }).waitFor();
+    await page.getByRole('button', { name: IN_GAME_MENU }).waitFor();
     const dotPrompt = page.getByRole('button', { name: TALK_TO_DOT });
     await dotPrompt.waitFor();
 
