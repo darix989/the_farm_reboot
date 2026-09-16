@@ -30,19 +30,19 @@ describe('resolveFocus', () => {
   });
 
   /**
-   * Cass is deliberately beyond the combined talk/portal radii: a 660px horizontal gap
-   * (and 34px vertical offset) exceeds 340px + 220px. The gate must therefore be the only
-   * focus candidate when the player is at its threshold.
+   * Cass is deliberately beyond the combined talk/portal radii: a 760px horizontal gap
+   * (and a ~115px vertical offset to the north-side gate sphere) exceeds 340px + 220px.
+   * The gate must therefore be the only focus candidate when the player is at its threshold.
    */
   it('keeps Cass and the gate interaction zones separate', () => {
     const GATE_X = 3800;
-    const CASS_X = GATE_X - 660;
+    const CASS_X = GATE_X - 760;
     const player = { x: 3790, y: 952 };
 
     const focus = resolveFocus(
       player,
       [{ id: 'cass', x: CASS_X, y: 952 }],
-      [{ id: 'gate', x: GATE_X, y: 918 }],
+      [{ id: 'gate', x: GATE_X, y: 837 }],
       RADII,
     );
 

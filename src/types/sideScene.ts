@@ -138,6 +138,12 @@ export interface SidePortalSpec {
   side: SidePortalSide;
   /** Required for 'back' / 'front'; derived from scene width for 'left' / 'right'. */
   x?: number;
+  /**
+   * World y of the interact centre. Defaults to mid-road. Author a value on the north
+   * (smaller y) or south (larger y) edge of `road` to sit the sphere against a back
+   * door / gate rather than in the middle of the lane.
+   */
+  y?: number;
   /** Screen-space gap above the portal for its prompt, in design pixels. */
   interactionPromptLift?: number;
   /** Omitted for a portal that leads nowhere yet (a menu spawn point). */

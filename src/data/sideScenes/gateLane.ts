@@ -5,7 +5,7 @@
  * a warm hop (see `docs/farm_side_scenes.md`).
  */
 import type { SideSceneDescriptor } from '../../types/sideScene';
-import { STANDARD_FARM_LAYERS } from './greenMeadowsRoad';
+import { GATE_PORTAL_Y, STANDARD_FARM_LAYERS } from './greenMeadowsRoad';
 
 const GROUND_SEAM_Y = 796;
 const GATE_X = 320;
@@ -60,6 +60,7 @@ export const GATE_LANE: SideSceneDescriptor = {
       id: 'gate',
       side: 'back',
       x: GATE_X,
+      y: GATE_PORTAL_Y,
       to: { scene: 'greenMeadowsRoad', portal: 'gate', label: 'farmSidePortalBackToRoad' },
     },
   ],
