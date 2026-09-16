@@ -7,7 +7,7 @@
   left: 1rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 0.55rem;
   pointer-events: auto;
 }
@@ -15,20 +15,27 @@
 .hudButton {
   position: relative;
   box-sizing: border-box;
-  padding: 0.65rem 1.2rem;
-  border: 1px solid var(--ui-color-border-emphasis);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: max(2.75rem, 44px);
+  padding: 0.55rem 1.1rem;
+  border: 2px solid var(--ui-color-info);
   border-radius: 0.4rem;
   background: var(--ui-color-overlay-backdrop);
-  color: var(--ui-color-text-primary);
+  color: var(--ui-color-info-text);
   font-size: var(--ui-font-body);
   font-weight: 600;
   line-height: 1.2;
+  text-align: center;
   cursor: pointer;
   white-space: nowrap;
 
   &:hover {
-    color: var(--ui-color-accent);
-    border-color: var(--ui-color-accent);
+    color: var(--ui-color-info-bright);
+    border-color: var(--ui-color-info-bright);
+    background: var(--ui-color-info-bg-faint);
   }
 }
 

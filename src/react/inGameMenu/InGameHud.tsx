@@ -75,7 +75,8 @@ const InGameHud: React.FC = () => {
           openMenu();
         }}
       >
-        {getLabel('inGameMenuOpen')}
+        <span className={styles.hudButtonLabel}>{getLabel('inGameMenuOpen')}</span>
+        <ShortcutKeycap action="inGameMenu" />
       </button>
       <button
         className={cn(
