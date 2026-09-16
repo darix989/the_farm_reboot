@@ -4,6 +4,10 @@ import type { DebateScenarioJson } from '../../../types/debateEntities';
 import { useDebateLogStore } from '../../../store/debateLogStore';
 import { debateEventBus } from '../utils/debateEventBus';
 import { encounterLabels } from '../utils/scenarioMechanics';
+import {
+  canRunTutorialTargetAction,
+  notifyTutorialTargetAction,
+} from '../../tutorial/tutorialInteractionGuard';
 import styles from '../panels/TrialPanels.module.scss';
 import getLabel from '../../../data/labels';
 
@@ -56,12 +60,15 @@ const DebateLogToggleButton: React.FC<DebateLogToggleButtonProps> = ({
       title={actionLabel}
       data-debate-log-toggle-panel
       onClick={() => {
+        const target = { kind: 'debate_log_panel_toggle' } as const;
+        if (!canRunTutorialTargetAction(target)) return;
         // `isExpanded` is the state *before* the toggle, so the event we emit names the
         // intended transition — matching how the per-round toggle reports itself.
         debateEventBus.emit(isExpanded ? 'debate_log:collapse' : 'debate_log:expand', {
           roundNumber,
         });
         toggleExpanded();
+        notifyTutorialTargetAction(target);
       }}
     >
       <svg viewBox="0 0 24 24" aria-hidden>

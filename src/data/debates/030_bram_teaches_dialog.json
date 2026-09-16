@@ -434,8 +434,21 @@
             }
           },
           {
-            "message": "**[accent]This button[/accent]** opens the **[accent]Log[/accent]**. That panel holds the whole conversation back, round by round.\n\n**[muted]You can open it whenever you like. You do not have to open it now.[/muted]**",
-            "interactionMode": "modal_only",
+            "message": "**[accent]This button[/accent]** opens the **[accent]Log[/accent]**. That panel holds the whole conversation back, round by round.\n\nPress it.",
+            "interactionMode": "target_only",
+            "focusMode": "new",
+            "targetComponent": {
+              "kind": "debate_log_panel_toggle"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          },
+          {
+            "message": "Every round lives here, in order. Press **[accent]this button[/accent]** to shrink it again.\n\n**[muted]You can open it whenever you like.[/muted]**",
+            "interactionMode": "target_only",
+            "onlyForward": true,
             "targetComponent": {
               "kind": "debate_log_panel_toggle"
             },

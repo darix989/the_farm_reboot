@@ -174,13 +174,15 @@ where every later `— crossfire` in the level is unlocked.
 Five tutorials, all `medium`: this is the **introduction** (`introduction:start`, wizard);
 what a round is (`round:start` / `round-1`, wizard); now you speak
 (`round:start` / `round-2`, interactive); then after confirm, the moderator emoji **on the
-collapsed recap chip** (`debate_log_recap_moderator_score`) and the expand arrow
-(`debate_log_panel_toggle`); then they call this **crossfire** (`round:start` / `round-3`,
+collapsed recap chip** (`debate_log_recap_moderator_score`), a forced press of the expand
+arrow (`debate_log_panel_toggle`, `target_only`), and a forced shrink of the same button
+once the log is open; then they call this **crossfire** (`round:start` / `round-3`,
 wizard, pointing at the round label). Field Notes **Next** is not in this file: Leave
 returns to the farm, Bram's follow-up pointer talks (the fox, west post),
 `bram-taught-crossfire` lands when that last beat settles, Next flips to Cass, and then
 `field-notes-intro` (`farmTutorials.ts`) points at the opening button and the Codex tabs.
-The log stays collapsed here, unlike 1.8.
+The expand/collapse pair never targets `panel: debate_log`, so `tutorialNeedsDebateLog`
+does not auto-open the panel and unmount the recap chip.
 
 Bram's farm talk offers a lettered **Lessons** menu for any lesson he has already taught.
 After this rung he has one; after the locked-line lesson he has two — under the Z / X / C
