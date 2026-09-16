@@ -230,7 +230,7 @@ raw scenario.
 |---|---|---|
 | `analysisEnabled` | `true` | Whether the magnifying glass can be used. `false` shows it greyed rather than hiding it; the control is hidden entirely until the `analysis` feature is learned. |
 | `showInsightPoints` | `true` | The Insight counter. |
-| `showModeratorOpinion` | `true` | Gauge, opinion emoji, per-round impact. |
+| `showModeratorOpinion` | `true` | Gauge, opinion face, per-round impact. |
 | `showRoundRecap` | `true` | The recap modal between rounds. |
 | `showIntroSummary` | `true` | The pre-round-1 briefing modal. |
 | `revealChoiceAssessment` | `false` | Recap shows the chosen option's quality + `reason`. |

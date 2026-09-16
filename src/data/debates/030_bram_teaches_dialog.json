@@ -361,7 +361,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "A conversation here goes in **[accent]rounds[/accent]**. One animal says a thing. The other answers. That pair is a round.\n\n**[muted]That is the whole of it.[/muted]**",
+            "message": "A conversation here goes in **[accent]rounds[/accent]**. One animal says a thing. The other answers. Each instance is standard round. In a debate, it could be an [accent]opening round[/accent], or a [accent]rebuttal round[/accent].",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "panel",
@@ -411,7 +411,7 @@
       "tutorial": {
         "steps": [
           {
-            "message": "What you just said leans the **[accent]moderator[/accent]**. The **[accent]emoji[/accent]** is how you see it — a smile, a frown, or still waiting.\n\n**[muted]This is not a test. Later, it will matter.[/muted]**",
+            "message": "What you just said leans the **[accent]moderator[/accent]**. Their **[accent]face[/accent]** is how you see it — pleased, still, or not.\n\n**[muted]This is a tutorial, not a test. Later, it will matter.[/muted]**",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "debate_log_recap_moderator_score"
@@ -422,7 +422,7 @@
             }
           },
           {
-            "message": "This **[accent]arrow[/accent]** opens **[accent]Lesson Notes[/accent]**. That panel holds the whole conversation back, round by round.\n\n**[muted]You can open it whenever you like. You do not have to open it now.[/muted]**",
+            "message": "This **[accent]arrow[/accent]** opens the **[accent]Log[/accent]**. That panel holds the whole conversation back, round by round.\n\n**[muted]You can open it whenever you like. You do not have to open it now.[/muted]**",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "debate_log_panel_toggle"

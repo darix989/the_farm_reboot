@@ -46,7 +46,6 @@ import {
   emotionFromStatement,
   getSpeakerName,
   getStartingInsightPoints,
-  moderatorOpinionPlainText,
   revealChunks,
   statementText,
 } from '../trial/utils/trialHelpers';
@@ -1027,7 +1026,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_complete':
         return {
           title: getLabel(encounterLabels(debate).finished),
-          body: mechanics.showModeratorOpinion ? moderatorOpinionPlainText(wf.totalScore) : '',
+          body: '',
+          moderatorOpinion: mechanics.showModeratorOpinion
+            ? { score: wf.totalScore, characterId: debateModeratorId(debate) }
+            : undefined,
         };
       default:
         return null;

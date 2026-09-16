@@ -852,7 +852,7 @@
             }
           },
           {
-            "message": "The **[accent]emoji score[/accent]** beside **Debate Log** shows how the moderator leans; **[accent]Insights Points[/accent]** sit just to its left (explained later).\n\nThe match runs **[accent]10 rounds[/accent]** (plus introduction): 1) proposition's opening constructive; 2) opposition's  opening constructive; 3) opposition crossfire; 4) proposition crossfire; 5) proposition's rebuttal; 6) opposition's rebuttal; 7) proposition's crossfire 8) opposition's crossfire 9) proposition's closing constructive and 10) opposition's closing constructive.",
+            "message": "The **[accent]moderator's face[/accent]** beside **Debate Log** shows how they lean; **[accent]Insights Points[/accent]** sit just to its left (explained later).\n\nThe match runs **[accent]10 rounds[/accent]** (plus introduction): 1) proposition's opening constructive; 2) opposition's  opening constructive; 3) opposition crossfire; 4) proposition crossfire; 5) proposition's rebuttal; 6) opposition's rebuttal; 7) proposition's crossfire 8) opposition's crossfire 9) proposition's closing constructive and 10) opposition's closing constructive.",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "debate_log_moderator_score"

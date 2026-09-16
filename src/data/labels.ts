@@ -244,7 +244,7 @@ const LABELS = {
   gossipFinished: 'There is nothing more to overhear.',
   sparringFinished: 'That is the session done.',
   labFinished: 'That is the exercise done.',
-  lessonFinished: 'That is the lesson done.',
+  lessonFinished: 'That is the tutorial done.',
 
   // --- useTrialRoundWorkflow (wizard strip) ---
   // Opening guidance, one per `EncounterKind`.
@@ -459,7 +459,7 @@ const LABELS = {
   farmDialogBram1b: 'You — against Tobias. On the floor. And you came down here. To the wolf.',
   farmDialogBram1c: 'You were the first name she gave me. I need help.',
   farmDialogBram1d:
-    'I walk the fence. Both ways. From the far side of a hedge I can hear every conversation and [accent]debate on this farm. I will show you how one works[/accent], before anyone else gets hold of you.',
+    'I walk the fence. Both ways. From the far side of a hedge I can hear every conversation and [accent]debate on this farm[/accent]. [accent]I will show you how one works[/accent], before anyone else gets hold of you.',
   farmDialogBram2:
     'There is another piece. I have to be unpleasant to you first, on purpose, so you can catch me at it.',
   farmDialogBram2a: 'There is another piece.',

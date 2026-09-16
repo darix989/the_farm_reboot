@@ -340,6 +340,13 @@ $trial-touch-min: 44px;
   margin: 0.5rem 0 0;
 }
 
+/* Closing verdict: same type scale as the log header / recap chip so the still is 1.6em
+   of `--ui-font-moderator-opinion`, not of the wizard body. */
+.trialWizardModeratorOpinion {
+  font-size: calc(var(--ui-font-moderator-opinion) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.2;
+}
+
 /* =========================================================================
    Trial panels — scroll area
    ========================================================================= */

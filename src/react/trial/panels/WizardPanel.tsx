@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import cn from 'classnames';
 import styles from './TrialPanels.module.scss';
 import ScrollFadeContainer from '../components/ScrollFadeContainer';
 import TypewriterText from '../components/TypewriterText';
@@ -10,6 +11,8 @@ import shared from '../trialShared.module.scss';
 import { uiColor } from '../../uiColor';
 import getLabel from '../../../data/labels';
 import AnimalFace from '../../characters/AnimalFace';
+import ModeratorStatusFace from '../components/ModeratorStatusFace';
+import { MODERATOR_OPINION_LABEL } from '../utils/trialHelpers';
 import type { AnimalEmotion } from '../../../phaser/animals/animalEmotions';
 import type { LogicalFallacy } from '../../../types/debateEntities';
 
@@ -32,6 +35,11 @@ export interface WizardPanelDetail {
    * line is settled; a badge on a statement still filling in would spoil it.
    */
   spottedFallacies?: LogicalFallacy[];
+  /**
+   * Closing verdict: the moderator's still beside "Moderator's opinion". Replaces the old
+   * emoji string — a wizard body cannot hold a portrait, so this is a dedicated slot.
+   */
+  moderatorOpinion?: { score: number; characterId?: string };
 }
 
 /** Set while `detail.body` is being paced out a sentence at a time, or once it all has been. */
@@ -186,9 +194,34 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
                       )}
                     </>
                   ) : (
-                    <p className={styles.trialWizardSentence}>
-                      <SpokenRichText text={detail.body} />
-                    </p>
+                    <>
+                      {detail.moderatorOpinion && (
+                        <p
+                          className={cn(
+                            styles.trialWizardSentence,
+                            styles.trialWizardModeratorOpinion,
+                          )}
+                        >
+                          <span
+                            className={shared.moderatorOpinionInline}
+                            aria-label={`${MODERATOR_OPINION_LABEL}: ${
+                              detail.moderatorOpinion.score > 0 ? '+' : ''
+                            }${detail.moderatorOpinion.score}`}
+                          >
+                            <ModeratorStatusFace
+                              score={detail.moderatorOpinion.score}
+                              characterId={detail.moderatorOpinion.characterId}
+                            />
+                            <span aria-hidden="true">{MODERATOR_OPINION_LABEL}</span>
+                          </span>
+                        </p>
+                      )}
+                      {detail.body ? (
+                        <p className={styles.trialWizardSentence}>
+                          <SpokenRichText text={detail.body} />
+                        </p>
+                      ) : null}
+                    </>
                   )}
                 </div>
                 {(!reveal || reveal.settled) &&
