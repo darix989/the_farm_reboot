@@ -26,6 +26,7 @@ export class Preloader extends Scene {
 
     this.load.image('logo', 'logo.png');
     this.load.image('star', 'star.png');
+    this.load.image('main-menu-background', 'bg_farm_menu_scene.png');
   }
 
   create() {

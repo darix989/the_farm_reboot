@@ -1,7 +1,7 @@
 /**
  * Debug-only overlay for a lateral scene: the walkable road band, the portal markers (plus
  * each one's `PORTAL_INTERACT_RADIUS` ring), and the default entry spawn point, drawn once
- * in world space. Gated behind `DEBUG_SIDE_SCENE` in `FarmSide.ts`. Pays for itself while
+ * in world space. Gated behind Dev Mode in `FarmSide.ts`. Pays for itself while
  * tuning a scene's portal placements and spawn — no need to walk to a portal and watch the
  * store to see where its arm radius actually reaches.
  *

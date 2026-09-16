@@ -11,8 +11,8 @@ a secondary menu path.
 
 Iteration 1's debug walker is gone — the traversal contract it proved (a scene carries a
 character from one entrance to one or more exits, walking on the road only) is carried by
-the cast now. `DEBUG_SIDE_SCENE` in `FarmSide.ts` still draws the road band and the portal
-markers over it.
+the cast now. Enabling Dev Mode in Settings draws the road band and portal markers over it;
+they are absent during normal play.
 
 ---
 
