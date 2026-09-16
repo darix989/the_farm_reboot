@@ -164,20 +164,25 @@ without apologising for the showing. The introduction — every talk and every d
 one — is Bram naming that, with emphasis on **introduction**. Then a conversation here
 goes in **rounds**: one animal says a thing, the other answers, and that pair is a round;
 the spoken line highlights **rounds**. Then some rounds are not speeches — somebody asks
-and you answer on your feet. They call that **crossfire**. Four beats. He explains (1),
+and you answer on your feet. They call that **crossfire**. Seven beats. He explains (1),
 you speak (2, three options, no wrong one, `preventOptionsShuffle`;
 A is impact 0, B and C are a light +8 so the face can move), he asks and you answer (3,
-NPC-raises), you ask and he has to answer (4, player-raises). No fallacy appears in this
-file at all. This is where the word **crossfire** first appears on the round label, and
-where every later `— crossfire` in the level is unlocked.
+NPC-raises), you ask and he has to answer (4, player-raises), he names a **closing** and
+the skipped **rebuttal** and the looser shape of a non-debate talk (5), you close (6, three
+options: A asks for more, B and C thank him), then he wraps it himself as **gossip** (7) —
+in a debate the moderator would end it; here he is just finishing a conversation. No
+fallacy appears in this file at all. This is where the word **crossfire** first appears on
+the round label, and where every later `— crossfire` in the level is unlocked.
 
-Five tutorials, all `medium`: this is the **introduction** (`introduction:start`, wizard);
+Eight tutorials, all `medium`: this is the **introduction** (`introduction:start`, wizard);
 what a round is (`round:start` / `round-1`, wizard); now you speak
 (`round:start` / `round-2`, interactive); then after confirm, the moderator emoji **on the
 collapsed recap chip** (`debate_log_recap_moderator_score`), a forced press of the expand
 arrow (`debate_log_panel_toggle`, `target_only`), and a forced shrink of the same button
 once the log is open; then they call this **crossfire** (`round:start` / `round-3`,
-wizard, pointing at the round label). Field Notes **Next** is not in this file: Leave
+wizard, pointing at the round label); then the **closing** (`round:start` / `round-5`),
+now you close (`round:start` / `round-6`), and the wrap with no moderator
+(`round:start` / `round-7`). Field Notes **Next** is not in this file: Leave
 returns to the farm, Bram's follow-up pointer talks (the fox, west post),
 `bram-taught-crossfire` lands when that last beat settles, Next flips to Cass, and then
 `field-notes-intro` (`farmTutorials.ts`) points at the opening button and the Codex tabs.

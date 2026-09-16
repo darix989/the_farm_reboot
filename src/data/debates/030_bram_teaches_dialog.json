@@ -325,6 +325,114 @@
           }
         }
       ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-5",
+      "roundNumber": 5,
+      "type": "closing_constructive",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r5-bram",
+        "speakerId": "bram",
+        "type": "closing_constructive",
+        "sentences": [
+          {
+            "id": "s-r5-1",
+            "text": "This is a [accent]closing[/accent]. Pretty standard, at the end of a debate.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-2",
+            "text": "We did not have a [accent]rebuttal[/accent] today. Debates have those too — you answer what they said, not just say your own piece.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r5-3",
+            "text": "Talks that are not debates still go in rounds. They are just less formal. No opening, no closing, no label you have to watch.",
+            "logicalFallacies": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "player",
+      "id": "round-6",
+      "roundNumber": 6,
+      "type": "closing_constructive",
+      "preventOptionsShuffle": true,
+      "options": [
+        {
+          "id": "r6-opt-a",
+          "quality": "ineffective",
+          "impact": 0,
+          "reason": "You asked for another round. A closing is you finishing, not starting again.",
+          "sentences": [
+            {
+              "id": "s-r6-opt-a-1",
+              "text": "Can you show me a rebuttal as well, while I am here?",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-b",
+          "quality": "effective",
+          "impact": 8,
+          "reason": "You closed. You named what you learned, and you stopped.",
+          "sentences": [
+            {
+              "id": "s-r6-opt-b-1",
+              "text": "Thank you. I know how a conversation works here now.",
+              "logicalFallacies": []
+            }
+          ]
+        },
+        {
+          "id": "r6-opt-c",
+          "quality": "effective",
+          "impact": 8,
+          "reason": "Short, and it is still a closing. He can go back to the fence.",
+          "sentences": [
+            {
+              "id": "s-r6-opt-c-1",
+              "text": "Thanks. I will let you get back to the fence.",
+              "logicalFallacies": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "npc",
+      "id": "round-7",
+      "roundNumber": 7,
+      "type": "gossip",
+      "speakerId": "bram",
+      "impact": 0,
+      "statement": {
+        "id": "stmt-r7-bram",
+        "speakerId": "bram",
+        "type": "gossip",
+        "sentences": [
+          {
+            "id": "s-r7-1",
+            "text": "In a proper debate the last word is not mine. The [accent]moderator[/accent] ends it. They tell the floor what they heard, and that is the finish.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r7-2",
+            "text": "This is not that. I am not sitting the floor. I am wrapping up a conversation with you.",
+            "logicalFallacies": []
+          },
+          {
+            "id": "s-r7-3",
+            "text": "Cass is west, at the post. She will not walk you through it. Go on.",
+            "logicalFallacies": []
+          }
+        ]
+      }
     }
   ],
   "tutorials": [
@@ -472,6 +580,81 @@
         "steps": [
           {
             "message": "They call this **[accent]crossfire[/accent]**. Somebody asks, and you answer on your feet.\n\nThe round label says so, so you can see it coming.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "dialog-the-closing",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-5"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "This is a **[accent]closing[/accent]**. Pretty standard, at the end of a debate.\n\nThe round label says so, so you can see it coming.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "wizard"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topLeft"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "dialog-now-you-close",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-6"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "Now **[accent]you[/accent]** close. Three ways of saying it.\n\nPick A, B or C, then Continue.",
+            "interactionMode": "modal_only",
+            "targetComponent": {
+              "kind": "panel",
+              "panel": "interactive"
+            },
+            "modal": {
+              "size": "medium",
+              "position": "topRight"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "dialog-the-wrap",
+      "trigger": {
+        "event": "round:start",
+        "where": {
+          "roundId": "round-7"
+        }
+      },
+      "tutorial": {
+        "steps": [
+          {
+            "message": "In a debate the **[accent]moderator[/accent]** ends it. This is not a debate.\n\nBram is wrapping the talk up himself.",
             "interactionMode": "modal_only",
             "targetComponent": {
               "kind": "panel",
