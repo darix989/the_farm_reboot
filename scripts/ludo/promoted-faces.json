@@ -1,4 +1,764 @@
 {
+  "brown-bull": {
+    "angry": {
+      "file": "brown-bull-angry.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0,
+        "y": 0.0199,
+        "width": 1,
+        "height": 0.9602
+      },
+      "sourceClip": "brown-bull-angry.png",
+      "sourceEmotion": "angry",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.1,
+        "w": 0.68,
+        "h": 0.82
+      },
+      "headRect": {
+        "left": 104,
+        "top": 130,
+        "width": 176,
+        "height": 169
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -2,
+            "dy": 6
+          },
+          {
+            "dx": -8,
+            "dy": 15
+          },
+          {
+            "dx": -13,
+            "dy": 27
+          },
+          {
+            "dx": -15,
+            "dy": 31
+          },
+          {
+            "dx": -15,
+            "dy": 32
+          },
+          {
+            "dx": -15,
+            "dy": 32
+          },
+          {
+            "dx": -15,
+            "dy": 32
+          },
+          {
+            "dx": -15,
+            "dy": 31
+          },
+          {
+            "dx": -13,
+            "dy": 31
+          },
+          {
+            "dx": -12,
+            "dy": 29
+          },
+          {
+            "dx": -11,
+            "dy": 27
+          },
+          {
+            "dx": -9,
+            "dy": 26
+          },
+          {
+            "dx": -7,
+            "dy": 26
+          },
+          {
+            "dx": -6,
+            "dy": 24
+          },
+          {
+            "dx": -6,
+            "dy": 24
+          },
+          {
+            "dx": -6,
+            "dy": 23
+          },
+          {
+            "dx": -6,
+            "dy": 23
+          },
+          {
+            "dx": -6,
+            "dy": 23
+          },
+          {
+            "dx": -5,
+            "dy": 21
+          },
+          {
+            "dx": -5,
+            "dy": 17
+          },
+          {
+            "dx": -4,
+            "dy": 13
+          },
+          {
+            "dx": -3,
+            "dy": 8
+          },
+          {
+            "dx": -2,
+            "dy": 4
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 32,
+        "maxJump": 12,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 2.26,
+        "heightSwing": 3.2,
+        "driftX": 2.3,
+        "warnings": [
+          "loop seam 2.26% (over 2%) — it will visibly jump on every repeat"
+        ]
+      },
+      "generatedAt": "2026-09-26T20:48:27.976Z"
+    },
+    "doubtful": {
+      "file": "brown-bull-doubtful.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.0199,
+        "width": 1,
+        "height": 0.9602
+      },
+      "sourceClip": "brown-bull-doubtful.png",
+      "sourceEmotion": "doubtful",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.1,
+        "w": 0.68,
+        "h": 0.82
+      },
+      "headRect": {
+        "left": 104,
+        "top": 130,
+        "width": 176,
+        "height": 169
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 3,
+            "dy": -3
+          },
+          {
+            "dx": 4,
+            "dy": -4
+          },
+          {
+            "dx": 4,
+            "dy": -4
+          },
+          {
+            "dx": 4,
+            "dy": -4
+          },
+          {
+            "dx": 2,
+            "dy": -3
+          },
+          {
+            "dx": -6,
+            "dy": -1
+          },
+          {
+            "dx": -24,
+            "dy": -6
+          },
+          {
+            "dx": -29,
+            "dy": -6
+          },
+          {
+            "dx": -17,
+            "dy": 1
+          },
+          {
+            "dx": -6,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 29,
+        "maxJump": 18,
+        "warnings": [
+          "alignment jumps 18px between consecutive frames — faster than any clean clip measured, so the matcher may have locked onto the wrong feature"
+        ]
+      },
+      "quality": {
+        "loopPop": 0.63,
+        "heightSwing": 6.7,
+        "driftX": 5.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:48:30.536Z"
+    },
+    "sneaky": {
+      "file": "brown-bull-sneaky.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.0199,
+        "width": 1,
+        "height": 0.9602
+      },
+      "sourceClip": "brown-bull-sneaky.png",
+      "sourceEmotion": "sneaky",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.1,
+        "w": 0.68,
+        "h": 0.82
+      },
+      "headRect": {
+        "left": 104,
+        "top": 130,
+        "width": 176,
+        "height": 169
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 4,
+            "dy": -5
+          },
+          {
+            "dx": 8,
+            "dy": -8
+          },
+          {
+            "dx": 8,
+            "dy": -7
+          },
+          {
+            "dx": 9,
+            "dy": -8
+          },
+          {
+            "dx": 8,
+            "dy": -8
+          },
+          {
+            "dx": 8,
+            "dy": -7
+          },
+          {
+            "dx": 8,
+            "dy": -8
+          },
+          {
+            "dx": 8,
+            "dy": -7
+          },
+          {
+            "dx": 8,
+            "dy": -7
+          },
+          {
+            "dx": 7,
+            "dy": -7
+          },
+          {
+            "dx": 6,
+            "dy": -7
+          },
+          {
+            "dx": 6,
+            "dy": -7
+          },
+          {
+            "dx": 4,
+            "dy": -6
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 9,
+        "maxJump": 4,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.72,
+        "heightSwing": 4.6,
+        "driftX": 1.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:48:33.082Z"
+    },
+    "talking": {
+      "file": "brown-bull-talking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.0199,
+        "width": 1,
+        "height": 0.9602
+      },
+      "sourceClip": "brown-bull-talking.png",
+      "sourceEmotion": "talking",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.1,
+        "w": 0.68,
+        "h": 0.82
+      },
+      "headRect": {
+        "left": 104,
+        "top": 130,
+        "width": 176,
+        "height": 169
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": -3,
+            "dy": 3
+          },
+          {
+            "dx": -3,
+            "dy": 3
+          },
+          {
+            "dx": -1,
+            "dy": -4
+          },
+          {
+            "dx": -1,
+            "dy": -3
+          },
+          {
+            "dx": -2,
+            "dy": -2
+          },
+          {
+            "dx": -3,
+            "dy": -1
+          },
+          {
+            "dx": -2,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": -2
+          },
+          {
+            "dx": 0,
+            "dy": -3
+          },
+          {
+            "dx": 0,
+            "dy": -3
+          },
+          {
+            "dx": 0,
+            "dy": -2
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 4,
+        "maxJump": 7,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.71,
+        "heightSwing": 4.1,
+        "driftX": 1,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:48:35.674Z"
+    },
+    "thinking": {
+      "file": "brown-bull-thinking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.0199,
+        "width": 1,
+        "height": 0.9602
+      },
+      "sourceClip": "brown-bull-thinking.png",
+      "sourceEmotion": "thinking",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.1,
+        "w": 0.68,
+        "h": 0.82
+      },
+      "headRect": {
+        "left": 104,
+        "top": 130,
+        "width": 176,
+        "height": 169
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -10,
+            "dy": 5
+          },
+          {
+            "dx": -12,
+            "dy": 6
+          },
+          {
+            "dx": -13,
+            "dy": 6
+          },
+          {
+            "dx": -13,
+            "dy": 6
+          },
+          {
+            "dx": -11,
+            "dy": 5
+          },
+          {
+            "dx": -3,
+            "dy": 3
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 13,
+        "maxJump": 8,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.63,
+        "heightSwing": 3.2,
+        "driftX": 2.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:48:38.207Z"
+    }
+  },
   "brown-wolf": {
     "angry": {
       "file": "brown-wolf-angry.png",
@@ -5479,6 +6239,3120 @@
         "warnings": []
       },
       "generatedAt": "2026-09-08T03:17:36.533Z"
+    }
+  },
+  "seagull": {
+    "angry": {
+      "file": "seagull-angry.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0,
+        "y": 0.074,
+        "width": 1,
+        "height": 0.8521
+      },
+      "sourceClip": "seagull-angry.png",
+      "sourceEmotion": "angry",
+      "headCrop": {
+        "x": -0.12,
+        "y": -0.05,
+        "w": 0.8,
+        "h": 0.56
+      },
+      "headRect": {
+        "left": 123,
+        "top": 114,
+        "width": 169,
+        "height": 144
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 2,
+        "maxJump": 1,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.25,
+        "heightSwing": 0.5,
+        "driftX": 3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:49:10.054Z"
+    },
+    "doubtful": {
+      "file": "seagull-doubtful.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.074,
+        "width": 1,
+        "height": 0.8521
+      },
+      "sourceClip": "seagull-doubtful.png",
+      "sourceEmotion": "doubtful",
+      "headCrop": {
+        "x": -0.12,
+        "y": -0.05,
+        "w": 0.8,
+        "h": 0.56
+      },
+      "headRect": {
+        "left": 123,
+        "top": 114,
+        "width": 169,
+        "height": 144
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 3,
+            "dy": -2
+          },
+          {
+            "dx": 10,
+            "dy": -9
+          },
+          {
+            "dx": 14,
+            "dy": -6
+          },
+          {
+            "dx": 17,
+            "dy": -14
+          },
+          {
+            "dx": 22,
+            "dy": -17
+          },
+          {
+            "dx": 23,
+            "dy": -17
+          },
+          {
+            "dx": 23,
+            "dy": -17
+          },
+          {
+            "dx": 23,
+            "dy": -17
+          },
+          {
+            "dx": 20,
+            "dy": -16
+          },
+          {
+            "dx": 20,
+            "dy": -16
+          },
+          {
+            "dx": 7,
+            "dy": -5
+          },
+          {
+            "dx": 1,
+            "dy": -2
+          },
+          {
+            "dx": -8,
+            "dy": 1
+          },
+          {
+            "dx": -10,
+            "dy": 3
+          },
+          {
+            "dx": -11,
+            "dy": 3
+          },
+          {
+            "dx": -8,
+            "dy": 1
+          },
+          {
+            "dx": -4,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 2,
+            "dy": -2
+          },
+          {
+            "dx": 5,
+            "dy": -3
+          },
+          {
+            "dx": 5,
+            "dy": -3
+          },
+          {
+            "dx": 2,
+            "dy": -2
+          }
+        ],
+        "maxOffset": 23,
+        "maxJump": 13,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 2.99,
+        "heightSwing": 12.6,
+        "driftX": 11.5,
+        "warnings": [
+          "loop seam 2.99% (over 2%) — it will visibly jump on every repeat"
+        ]
+      },
+      "generatedAt": "2026-09-26T20:49:12.001Z"
+    },
+    "sneaky": {
+      "file": "seagull-sneaky.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.074,
+        "width": 1,
+        "height": 0.8521
+      },
+      "sourceClip": "seagull-sneaky.png",
+      "sourceEmotion": "sneaky",
+      "headCrop": {
+        "x": -0.12,
+        "y": -0.05,
+        "w": 0.8,
+        "h": 0.56
+      },
+      "headRect": {
+        "left": 123,
+        "top": 114,
+        "width": 169,
+        "height": 144
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": -3,
+            "dy": 2
+          },
+          {
+            "dx": -3,
+            "dy": 2
+          },
+          {
+            "dx": -3,
+            "dy": 2
+          },
+          {
+            "dx": -3,
+            "dy": 2
+          },
+          {
+            "dx": -3,
+            "dy": 2
+          },
+          {
+            "dx": -3,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 3,
+        "maxJump": 3,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.45,
+        "heightSwing": 1,
+        "driftX": 4.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:49:14.008Z"
+    },
+    "talking": {
+      "file": "seagull-talking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.074,
+        "width": 1,
+        "height": 0.8521
+      },
+      "sourceClip": "seagull-talking.png",
+      "sourceEmotion": "talking",
+      "headCrop": {
+        "x": -0.12,
+        "y": -0.05,
+        "w": 0.8,
+        "h": 0.56
+      },
+      "headRect": {
+        "left": 123,
+        "top": 114,
+        "width": 169,
+        "height": 144
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 6,
+            "dy": -3
+          },
+          {
+            "dx": 8,
+            "dy": -4
+          },
+          {
+            "dx": 10,
+            "dy": -5
+          },
+          {
+            "dx": 18,
+            "dy": -18
+          },
+          {
+            "dx": 18,
+            "dy": -8
+          },
+          {
+            "dx": 19,
+            "dy": -8
+          },
+          {
+            "dx": 19,
+            "dy": -8
+          },
+          {
+            "dx": 19,
+            "dy": -8
+          },
+          {
+            "dx": 19,
+            "dy": -8
+          },
+          {
+            "dx": 19,
+            "dy": -8
+          },
+          {
+            "dx": 20,
+            "dy": -8
+          },
+          {
+            "dx": 19,
+            "dy": -8
+          },
+          {
+            "dx": 20,
+            "dy": -8
+          },
+          {
+            "dx": 19,
+            "dy": -8
+          },
+          {
+            "dx": 20,
+            "dy": -8
+          },
+          {
+            "dx": 20,
+            "dy": -8
+          },
+          {
+            "dx": 19,
+            "dy": -7
+          },
+          {
+            "dx": 16,
+            "dy": -7
+          },
+          {
+            "dx": 7,
+            "dy": -3
+          },
+          {
+            "dx": 4,
+            "dy": -2
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 20,
+        "maxJump": 13,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 1.17,
+        "heightSwing": 16.2,
+        "driftX": 8.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:49:16.130Z"
+    },
+    "thinking": {
+      "file": "seagull-thinking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0,
+        "y": 0.074,
+        "width": 1,
+        "height": 0.8521
+      },
+      "sourceClip": "seagull-thinking.png",
+      "sourceEmotion": "thinking",
+      "headCrop": {
+        "x": -0.12,
+        "y": -0.05,
+        "w": 0.8,
+        "h": 0.56
+      },
+      "headRect": {
+        "left": 123,
+        "top": 114,
+        "width": 169,
+        "height": 144
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 0,
+        "maxJump": 0,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.26,
+        "heightSwing": 0,
+        "driftX": 0.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:49:19.472Z"
+    }
+  },
+  "skunk": {
+    "angry": {
+      "file": "skunk-angry.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0.0045,
+        "y": 0,
+        "width": 0.9911,
+        "height": 1
+      },
+      "sourceClip": "skunk-angry.png",
+      "sourceEmotion": "angry",
+      "headCrop": {
+        "x": -0.06,
+        "y": -0.04,
+        "w": 0.42,
+        "h": 1.15
+      },
+      "headRect": {
+        "left": 110,
+        "top": 202,
+        "width": 111,
+        "height": 112
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -2
+          },
+          {
+            "dx": 1,
+            "dy": -5
+          },
+          {
+            "dx": 1,
+            "dy": -7
+          },
+          {
+            "dx": 1,
+            "dy": -7
+          },
+          {
+            "dx": 1,
+            "dy": -9
+          },
+          {
+            "dx": 2,
+            "dy": -11
+          },
+          {
+            "dx": 3,
+            "dy": -16
+          },
+          {
+            "dx": 6,
+            "dy": -28
+          },
+          {
+            "dx": 7,
+            "dy": -38
+          },
+          {
+            "dx": 10,
+            "dy": -44
+          },
+          {
+            "dx": 9,
+            "dy": -44
+          },
+          {
+            "dx": 9,
+            "dy": -46
+          },
+          {
+            "dx": 8,
+            "dy": -45
+          },
+          {
+            "dx": 7,
+            "dy": -42
+          },
+          {
+            "dx": 6,
+            "dy": -36
+          },
+          {
+            "dx": 3,
+            "dy": -25
+          },
+          {
+            "dx": 3,
+            "dy": -16
+          },
+          {
+            "dx": 1,
+            "dy": -11
+          },
+          {
+            "dx": 1,
+            "dy": -7
+          },
+          {
+            "dx": 0,
+            "dy": -3
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 46,
+        "maxJump": 12,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 1.15,
+        "heightSwing": 7.5,
+        "driftX": 2.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:48:57.952Z"
+    },
+    "doubtful": {
+      "file": "skunk-doubtful.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0.0045,
+        "y": 0,
+        "width": 0.9911,
+        "height": 1
+      },
+      "sourceClip": "skunk-doubtful.png",
+      "sourceEmotion": "doubtful",
+      "headCrop": {
+        "x": -0.06,
+        "y": -0.04,
+        "w": 0.42,
+        "h": 1.15
+      },
+      "headRect": {
+        "left": 110,
+        "top": 202,
+        "width": 111,
+        "height": 112
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -2
+          },
+          {
+            "dx": 2,
+            "dy": -3
+          },
+          {
+            "dx": 2,
+            "dy": -3
+          },
+          {
+            "dx": 2,
+            "dy": -3
+          },
+          {
+            "dx": 3,
+            "dy": -5
+          },
+          {
+            "dx": 3,
+            "dy": -7
+          },
+          {
+            "dx": 3,
+            "dy": -7
+          },
+          {
+            "dx": 3,
+            "dy": -9
+          },
+          {
+            "dx": 3,
+            "dy": -10
+          },
+          {
+            "dx": 3,
+            "dy": -11
+          },
+          {
+            "dx": 3,
+            "dy": -11
+          },
+          {
+            "dx": 5,
+            "dy": -11
+          },
+          {
+            "dx": 4,
+            "dy": -5
+          },
+          {
+            "dx": 2,
+            "dy": -3
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          }
+        ],
+        "maxOffset": 11,
+        "maxJump": 6,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 1.14,
+        "heightSwing": 3.4,
+        "driftX": 3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:48:59.699Z"
+    },
+    "sneaky": {
+      "file": "skunk-sneaky.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0.0045,
+        "y": 0,
+        "width": 0.9911,
+        "height": 1
+      },
+      "sourceClip": "skunk-sneaky.png",
+      "sourceEmotion": "sneaky",
+      "headCrop": {
+        "x": -0.06,
+        "y": -0.04,
+        "w": 0.42,
+        "h": 1.15
+      },
+      "headRect": {
+        "left": 110,
+        "top": 202,
+        "width": 111,
+        "height": 112
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": 1,
+            "dy": -2
+          },
+          {
+            "dx": 3,
+            "dy": -8
+          },
+          {
+            "dx": 4,
+            "dy": -11
+          },
+          {
+            "dx": 4,
+            "dy": -13
+          },
+          {
+            "dx": 5,
+            "dy": -13
+          },
+          {
+            "dx": 5,
+            "dy": -13
+          },
+          {
+            "dx": 5,
+            "dy": -13
+          },
+          {
+            "dx": 5,
+            "dy": -13
+          },
+          {
+            "dx": 4,
+            "dy": -11
+          },
+          {
+            "dx": 3,
+            "dy": -8
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 2,
+            "dy": -5
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 0,
+            "dy": -2
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 13,
+        "maxJump": 6,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 1.05,
+        "heightSwing": 8.5,
+        "driftX": 1,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:49:01.425Z"
+    },
+    "talking": {
+      "file": "skunk-talking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0.0045,
+        "y": 0,
+        "width": 0.9911,
+        "height": 1
+      },
+      "sourceClip": "skunk-talking.png",
+      "sourceEmotion": "talking",
+      "headCrop": {
+        "x": -0.06,
+        "y": -0.04,
+        "w": 0.42,
+        "h": 1.15
+      },
+      "headRect": {
+        "left": 110,
+        "top": 202,
+        "width": 111,
+        "height": 112
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 3,
+            "dy": -8
+          },
+          {
+            "dx": 3,
+            "dy": -10
+          },
+          {
+            "dx": 3,
+            "dy": -11
+          },
+          {
+            "dx": 3,
+            "dy": -13
+          },
+          {
+            "dx": 5,
+            "dy": -16
+          },
+          {
+            "dx": 3,
+            "dy": -14
+          },
+          {
+            "dx": 3,
+            "dy": -15
+          },
+          {
+            "dx": 3,
+            "dy": -15
+          },
+          {
+            "dx": 3,
+            "dy": -13
+          },
+          {
+            "dx": 2,
+            "dy": -9
+          },
+          {
+            "dx": 2,
+            "dy": -7
+          },
+          {
+            "dx": 1,
+            "dy": -5
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 16,
+        "maxJump": 5,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.99,
+        "heightSwing": 5.7,
+        "driftX": 4.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:49:03.202Z"
+    },
+    "thinking": {
+      "file": "skunk-thinking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0.0045,
+        "y": 0,
+        "width": 0.9911,
+        "height": 1
+      },
+      "sourceClip": "skunk-thinking.png",
+      "sourceEmotion": "thinking",
+      "headCrop": {
+        "x": -0.06,
+        "y": -0.04,
+        "w": 0.42,
+        "h": 1.15
+      },
+      "headRect": {
+        "left": 110,
+        "top": 202,
+        "width": 111,
+        "height": 112
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -2
+          },
+          {
+            "dx": 0,
+            "dy": -2
+          },
+          {
+            "dx": 0,
+            "dy": -3
+          },
+          {
+            "dx": 0,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -4
+          },
+          {
+            "dx": 1,
+            "dy": -4
+          },
+          {
+            "dx": 1,
+            "dy": -4
+          },
+          {
+            "dx": 1,
+            "dy": -4
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 0,
+            "dy": -3
+          },
+          {
+            "dx": 0,
+            "dy": -2
+          },
+          {
+            "dx": 0,
+            "dy": -2
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          }
+        ],
+        "maxOffset": 4,
+        "maxJump": 1,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 1.21,
+        "heightSwing": 6.6,
+        "driftX": 0.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:49:04.968Z"
+    }
+  },
+  "snake": {
+    "angry": {
+      "file": "snake-angry.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0,
+        "y": 0.0763,
+        "width": 1,
+        "height": 0.8475
+      },
+      "sourceClip": "snake-angry.png",
+      "sourceEmotion": "angry",
+      "headCrop": {
+        "x": -0.04,
+        "y": -0.06,
+        "w": 0.46,
+        "h": 0.82
+      },
+      "headRect": {
+        "left": 118,
+        "top": 182,
+        "width": 118,
+        "height": 100
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": -2
+          },
+          {
+            "dx": -2,
+            "dy": -2
+          },
+          {
+            "dx": -2,
+            "dy": -2
+          },
+          {
+            "dx": -2,
+            "dy": -3
+          },
+          {
+            "dx": -2,
+            "dy": -3
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -3,
+            "dy": -5
+          },
+          {
+            "dx": -2,
+            "dy": -5
+          },
+          {
+            "dx": -2,
+            "dy": -3
+          },
+          {
+            "dx": -2,
+            "dy": -3
+          },
+          {
+            "dx": -2,
+            "dy": -3
+          },
+          {
+            "dx": -2,
+            "dy": -3
+          },
+          {
+            "dx": -2,
+            "dy": -2
+          },
+          {
+            "dx": -1,
+            "dy": -2
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          }
+        ],
+        "maxOffset": 5,
+        "maxJump": 2,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 1.88,
+        "heightSwing": 3.4,
+        "driftX": 2.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:53:45.577Z"
+    },
+    "doubtful": {
+      "file": "snake-doubtful.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.0763,
+        "width": 1,
+        "height": 0.8475
+      },
+      "sourceClip": "snake-doubtful.png",
+      "sourceEmotion": "doubtful",
+      "headCrop": {
+        "x": -0.04,
+        "y": -0.06,
+        "w": 0.46,
+        "h": 0.82
+      },
+      "headRect": {
+        "left": 118,
+        "top": 182,
+        "width": 118,
+        "height": 100
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 2
+          },
+          {
+            "dx": 0,
+            "dy": 3
+          },
+          {
+            "dx": 0,
+            "dy": 3
+          },
+          {
+            "dx": 0,
+            "dy": 3
+          },
+          {
+            "dx": 0,
+            "dy": 3
+          },
+          {
+            "dx": 0,
+            "dy": 3
+          },
+          {
+            "dx": 0,
+            "dy": 3
+          },
+          {
+            "dx": 0,
+            "dy": 3
+          },
+          {
+            "dx": 0,
+            "dy": 2
+          },
+          {
+            "dx": 0,
+            "dy": 2
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 3,
+        "maxJump": 1,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.32,
+        "heightSwing": 1.1,
+        "driftX": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:53:47.712Z"
+    },
+    "sneaky": {
+      "file": "snake-sneaky.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.0763,
+        "width": 1,
+        "height": 0.8475
+      },
+      "sourceClip": "snake-sneaky.png",
+      "sourceEmotion": "sneaky",
+      "headCrop": {
+        "x": -0.04,
+        "y": -0.06,
+        "w": 0.46,
+        "h": 0.82
+      },
+      "headRect": {
+        "left": 118,
+        "top": 182,
+        "width": 118,
+        "height": 100
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 2
+          },
+          {
+            "dx": -1,
+            "dy": 7
+          },
+          {
+            "dx": -1,
+            "dy": 8
+          },
+          {
+            "dx": 0,
+            "dy": 9
+          },
+          {
+            "dx": 0,
+            "dy": 9
+          },
+          {
+            "dx": 0,
+            "dy": 9
+          },
+          {
+            "dx": 0,
+            "dy": 9
+          },
+          {
+            "dx": 0,
+            "dy": 9
+          },
+          {
+            "dx": -1,
+            "dy": 9
+          },
+          {
+            "dx": -1,
+            "dy": 9
+          },
+          {
+            "dx": -1,
+            "dy": 8
+          },
+          {
+            "dx": 0,
+            "dy": 5
+          },
+          {
+            "dx": 0,
+            "dy": 3
+          },
+          {
+            "dx": 0,
+            "dy": 2
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 9,
+        "maxJump": 5,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.28,
+        "heightSwing": 5.3,
+        "driftX": 7,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:53:49.861Z"
+    },
+    "talking": {
+      "file": "snake-talking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.0763,
+        "width": 1,
+        "height": 0.8475
+      },
+      "sourceClip": "snake-talking.png",
+      "sourceEmotion": "talking",
+      "headCrop": {
+        "x": -0.04,
+        "y": -0.06,
+        "w": 0.46,
+        "h": 0.82
+      },
+      "headRect": {
+        "left": 118,
+        "top": 182,
+        "width": 118,
+        "height": 100
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -5
+          },
+          {
+            "dx": 1,
+            "dy": -6
+          },
+          {
+            "dx": 1,
+            "dy": -8
+          },
+          {
+            "dx": 2,
+            "dy": -9
+          },
+          {
+            "dx": 3,
+            "dy": -9
+          },
+          {
+            "dx": 3,
+            "dy": -9
+          },
+          {
+            "dx": 3,
+            "dy": -9
+          },
+          {
+            "dx": 2,
+            "dy": -7
+          },
+          {
+            "dx": 1,
+            "dy": -7
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -5
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 1,
+            "dy": -7
+          },
+          {
+            "dx": 2,
+            "dy": -7
+          },
+          {
+            "dx": 1,
+            "dy": -5
+          },
+          {
+            "dx": 1,
+            "dy": -4
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          }
+        ],
+        "maxOffset": 9,
+        "maxJump": 4,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 1.64,
+        "heightSwing": 3.3,
+        "driftX": 3.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:53:52.106Z"
+    },
+    "thinking": {
+      "file": "snake-thinking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.0763,
+        "width": 1,
+        "height": 0.8475
+      },
+      "sourceClip": "snake-thinking.png",
+      "sourceEmotion": "thinking",
+      "headCrop": {
+        "x": -0.04,
+        "y": -0.06,
+        "w": 0.46,
+        "h": 0.82
+      },
+      "headRect": {
+        "left": 118,
+        "top": 182,
+        "width": 118,
+        "height": 100
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 0,
+        "maxJump": 0,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.24,
+        "heightSwing": 0,
+        "driftX": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:53:54.204Z"
+    }
+  },
+  "white-chicken": {
+    "angry": {
+      "file": "white-chicken-angry.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.0789,
+        "width": 1,
+        "height": 0.8421
+      },
+      "sourceClip": "white-chicken-angry.png",
+      "sourceEmotion": "angry",
+      "headCrop": {
+        "x": -0.2,
+        "y": -0.06,
+        "w": 0.9,
+        "h": 0.5
+      },
+      "headRect": {
+        "left": 136,
+        "top": 113,
+        "width": 152,
+        "height": 128
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": -4,
+            "dy": 2
+          },
+          {
+            "dx": -5,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": -2
+          },
+          {
+            "dx": 7,
+            "dy": -8
+          },
+          {
+            "dx": 9,
+            "dy": -8
+          },
+          {
+            "dx": 6,
+            "dy": -7
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": 5,
+            "dy": -5
+          },
+          {
+            "dx": 6,
+            "dy": -6
+          },
+          {
+            "dx": 3,
+            "dy": -3
+          },
+          {
+            "dx": -1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -3,
+            "dy": 0
+          },
+          {
+            "dx": -14,
+            "dy": 4
+          },
+          {
+            "dx": -5,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 6,
+            "dy": -6
+          },
+          {
+            "dx": 8,
+            "dy": -7
+          },
+          {
+            "dx": 8,
+            "dy": -7
+          },
+          {
+            "dx": 7,
+            "dy": -6
+          },
+          {
+            "dx": 4,
+            "dy": -4
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          }
+        ],
+        "maxOffset": 14,
+        "maxJump": 11,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.52,
+        "heightSwing": 3.7,
+        "driftX": 10,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:53:00.710Z"
+    },
+    "doubtful": {
+      "file": "white-chicken-doubtful.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0,
+        "y": 0.0789,
+        "width": 1,
+        "height": 0.8421
+      },
+      "sourceClip": "white-chicken-doubtful.png",
+      "sourceEmotion": "doubtful",
+      "headCrop": {
+        "x": -0.2,
+        "y": -0.06,
+        "w": 0.9,
+        "h": 0.5
+      },
+      "headRect": {
+        "left": 136,
+        "top": 113,
+        "width": 152,
+        "height": 128
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 2,
+            "dy": 1
+          },
+          {
+            "dx": 3,
+            "dy": 2
+          },
+          {
+            "dx": 3,
+            "dy": 2
+          },
+          {
+            "dx": 3,
+            "dy": 1
+          },
+          {
+            "dx": 5,
+            "dy": 1
+          },
+          {
+            "dx": 6,
+            "dy": 0
+          },
+          {
+            "dx": 7,
+            "dy": 0
+          },
+          {
+            "dx": 7,
+            "dy": 0
+          },
+          {
+            "dx": 6,
+            "dy": 0
+          },
+          {
+            "dx": 6,
+            "dy": 0
+          },
+          {
+            "dx": 7,
+            "dy": 0
+          },
+          {
+            "dx": 6,
+            "dy": 0
+          },
+          {
+            "dx": 7,
+            "dy": 0
+          },
+          {
+            "dx": 6,
+            "dy": 0
+          },
+          {
+            "dx": 6,
+            "dy": 0
+          },
+          {
+            "dx": 7,
+            "dy": 0
+          },
+          {
+            "dx": 7,
+            "dy": 0
+          },
+          {
+            "dx": 7,
+            "dy": 0
+          },
+          {
+            "dx": 6,
+            "dy": 0
+          },
+          {
+            "dx": 5,
+            "dy": 0
+          },
+          {
+            "dx": 3,
+            "dy": 1
+          },
+          {
+            "dx": 3,
+            "dy": 2
+          },
+          {
+            "dx": 3,
+            "dy": 1
+          },
+          {
+            "dx": 2,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          }
+        ],
+        "maxOffset": 7,
+        "maxJump": 2,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.32,
+        "heightSwing": 1,
+        "driftX": 14.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:53:04.115Z"
+    },
+    "sneaky": {
+      "file": "white-chicken-sneaky.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
+      "fit": {
+        "x": 0,
+        "y": 0.0789,
+        "width": 1,
+        "height": 0.8421
+      },
+      "sourceClip": "white-chicken-sneaky.png",
+      "sourceEmotion": "sneaky",
+      "headCrop": {
+        "x": -0.2,
+        "y": -0.06,
+        "w": 0.9,
+        "h": 0.5
+      },
+      "headRect": {
+        "left": 136,
+        "top": 113,
+        "width": 152,
+        "height": 128
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          }
+        ],
+        "maxOffset": 1,
+        "maxJump": 0,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.55,
+        "heightSwing": 0.5,
+        "driftX": 0.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:53:05.979Z"
+    },
+    "talking": {
+      "file": "white-chicken-talking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0,
+        "y": 0.0789,
+        "width": 1,
+        "height": 0.8421
+      },
+      "sourceClip": "white-chicken-talking.png",
+      "sourceEmotion": "talking",
+      "headCrop": {
+        "x": -0.2,
+        "y": -0.06,
+        "w": 0.9,
+        "h": 0.5
+      },
+      "headRect": {
+        "left": 136,
+        "top": 113,
+        "width": 152,
+        "height": 128
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -3,
+            "dy": 1
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 2,
+            "dy": 0
+          },
+          {
+            "dx": 3,
+            "dy": 0
+          },
+          {
+            "dx": 5,
+            "dy": -1
+          },
+          {
+            "dx": 5,
+            "dy": -1
+          },
+          {
+            "dx": 5,
+            "dy": -1
+          },
+          {
+            "dx": 5,
+            "dy": -1
+          },
+          {
+            "dx": 4,
+            "dy": -1
+          },
+          {
+            "dx": 4,
+            "dy": 0
+          },
+          {
+            "dx": 3,
+            "dy": 0
+          },
+          {
+            "dx": 2,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 2,
+            "dy": 0
+          },
+          {
+            "dx": 3,
+            "dy": 0
+          },
+          {
+            "dx": 5,
+            "dy": -1
+          },
+          {
+            "dx": 5,
+            "dy": -1
+          },
+          {
+            "dx": 5,
+            "dy": -1
+          },
+          {
+            "dx": 5,
+            "dy": -1
+          },
+          {
+            "dx": 5,
+            "dy": -1
+          },
+          {
+            "dx": 4,
+            "dy": -1
+          },
+          {
+            "dx": 2,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 5,
+        "maxJump": 2,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.42,
+        "heightSwing": 1,
+        "driftX": 11.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:53:09.318Z"
+    },
+    "thinking": {
+      "file": "white-chicken-thinking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0,
+        "y": 0.0789,
+        "width": 1,
+        "height": 0.8421
+      },
+      "sourceClip": "white-chicken-thinking.png",
+      "sourceEmotion": "thinking",
+      "headCrop": {
+        "x": -0.2,
+        "y": -0.06,
+        "w": 0.9,
+        "h": 0.5
+      },
+      "headRect": {
+        "left": 136,
+        "top": 113,
+        "width": 152,
+        "height": 128
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          }
+        ],
+        "maxOffset": 2,
+        "maxJump": 1,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.52,
+        "heightSwing": 1,
+        "driftX": 1,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:53:12.753Z"
     }
   },
   "white-sheep-1": {

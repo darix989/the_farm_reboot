@@ -422,10 +422,10 @@
       "$comment": "Carrier is the pair of big pale HORNS crowning the silhouette plus the heavy head-and-shoulder mass they sit on, with the brass NOSE RING as a bright secondary: the head swings and the outline changes, while the barrel body is a solid mass that turns to mush if asked to deform. Its priors are CHARGING and STOMPING (the atlas ships charge, charge_start, run, stomp, back_kick), so every prompt pins the four hooves and the body position positively before letting the head move. Like the wolf, its resting face already scowls, so the calm emotions have to ease the brow explicitly or `talking` reads as quietly furious.",
       "reference": "__brown_bull_idle-0.png",
       "headCrop": {
-        "x": -0.06,
-        "y": -0.08,
-        "w": 0.52,
-        "h": 0.72
+        "x": -0.08,
+        "y": -0.1,
+        "w": 0.68,
+        "h": 0.82
       },
       "overrides": {
         "talking": {
@@ -451,7 +451,7 @@
       "$comment": "Carrier is the floppy RED COMB and WATTLE: the only saturated colour on a white bird, and they crown and front the head, so a head tilt reads at stage scale the way the sheep's black head does on white fleece. Big round white eyes and the yellow beak are the secondary signal; the upturned tail feathers move with attitude. Two legs, never four — the generic `sneaky` prompt's \"stays standing on all fours\" is wrong for this body and is overridden. Priors are PECKING at the ground (the atlas ships peck and lay_egg) and FLAPPING away (fly, jump), so every prompt holds the head up and the wings folded.",
       "reference": "__white_chicken_idle-0.png",
       "headCrop": {
-        "x": -0.1,
+        "x": -0.2,
         "y": -0.06,
         "w": 0.9,
         "h": 0.5
@@ -480,10 +480,10 @@
       "$comment": "Carrier is the WHITE STRIPE running head to tail on black, plus the two big white eyes in a dark face — a high-contrast pattern like the sheep's, where the shape itself is small. The huge BUSHY TAIL is most of the silhouette and is therefore the thing to hold still: it is also the animal's loudest prior, because raising it means spraying (the atlas ships squirt and squirt_start, and neither returns to the crouch). The body is a very low crouch, so nothing may ask it to stand, rear or draw itself up — that is a state change it cannot loop back from. Expression has to come from the head and ears.",
       "reference": "__skunk_idle-0.png",
       "headCrop": {
-        "x": -0.04,
-        "y": 0.25,
-        "w": 0.34,
-        "h": 0.78
+        "x": -0.06,
+        "y": -0.04,
+        "w": 0.42,
+        "h": 1.15
       },
       "overrides": {
         "talking": {
@@ -509,10 +509,10 @@
       "$comment": "Carrier is the huge YELLOW BEAK — roughly a third of the head, the only saturated colour on the bird, and it leads the silhouette, so beak angle and beak aperture are what read at stage scale. The two big round white eyes are the owl's trick at smaller scale and carry the narrow/wide signal. Two legs, never four. Its prior is FLYING (the atlas ships flying and flying_hover), and an open-beak prompt will otherwise flare the wings the way an angry bird prompt flared the owl's, so the wings are described positively as folded in every prompt rather than forbidden from spreading.",
       "reference": "__seagull_idle-0.png",
       "headCrop": {
-        "x": -0.05,
+        "x": -0.12,
         "y": -0.05,
-        "w": 0.95,
-        "h": 0.45
+        "w": 0.8,
+        "h": 0.56
       },
       "overrides": {
         "talking": {
@@ -538,10 +538,10 @@
       "$comment": "Carrier is the HEAD and its hinged JAW — the only articulated part of what is otherwise a long featureless tube — with the forked RED TONGUE as the one saturated accent and the white eyes under heavy dark brows carrying narrow/wide. Nothing about this body can be described in the cast's usual terms: no legs, no ears, no feet to plant, no weight to shift, so every generic prompt is overridden. The prior is STRIKING (the atlas ships bite) and slithering off, so each prompt pins the whole coil in place positively and leaves only the head free. Its reference face already glowers, so the calm emotions ease the brow.",
       "reference": "__snake_idle-0.png",
       "headCrop": {
-        "x": -0.03,
-        "y": -0.05,
-        "w": 0.33,
-        "h": 0.65
+        "x": -0.04,
+        "y": -0.06,
+        "w": 0.46,
+        "h": 0.82
       },
       "overrides": {
         "talking": {
