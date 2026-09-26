@@ -953,6 +953,80 @@
       "generatedAt": "2026-09-05T02:00:36.331Z"
     }
   },
+  "seagull": {
+    "doubtful": {
+      "file": "seagull-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.9035,
+      "originX": 0.5552,
+      "originY": 0.748,
+      "prompt": "Side view, facing left. The grey and white seagull's head, yellow beak, neck, body, folded wings, tail and both planted feet stay exactly as in the reference image and do not move at all: the head holds its exact position and angle in every frame, and it never flaps or takes off. ONLY THE FACE MOVES. A thick black cartoon brow line sits above each big round eye: the brow over the near eye arches HIGH up in disbelief while the brow over the far eye presses down low and flat, the near eye stays wide open while the far eye narrows to a half-lidded squint, and the shut beak tilts down at the corner in a sceptical frown. Then the brows settle back. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.6,
+        "heightSwing": 2.3,
+        "driftX": 2.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T18:43:56.758Z"
+    },
+    "sneaky": {
+      "file": "seagull-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.9261,
+      "originX": 0.5528,
+      "originY": 0.748,
+      "prompt": "Side view, facing left. The grey and white seagull stands in place on both legs and schemes: a thick black cartoon brow line sits above each big round eye, and the brows curve into a sly, smug arch while the eyes sink to heavy half-lidded slits and the pupils slide sideways toward the listener; the corner of its shut yellow beak curls up into a smug little smirk. Then the brows relax, the eyes open and the pupils slide back. Its head leans only slightly toward the listener and stays at the height it is in the reference. Both orange feet stay planted exactly where they are in the reference image, its body stays at the same height above them, its grey wings stay folded flat against its sides exactly as in the reference, and its head stays UP at the height it is in the reference for the whole clip; it never flaps, never hops and never takes off. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.11,
+        "heightSwing": 1.2,
+        "driftX": 2,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T18:47:40.267Z"
+    },
+    "talking": {
+      "file": "seagull-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.9375,
+      "originX": 0.5526,
+      "originY": 0.748,
+      "prompt": "Side view, facing left. The grey and white seagull stands in place and chats in a friendly, conversational way: its long yellow beak opens to a clear medium gap and closes again with each phrase, four even open-and-shut beats across the clip, the lower half of the beak dropping enough that the open gap is plainly visible each time, never gaping wide. The open beak always shows the same shape: one clean smooth patch of flat dark pink inside, drawn identically in every frame it appears, with no tongue and no teeth. Its head gives a small nod in time, and its big round white eyes stay open, relaxed and friendly. Both orange feet stay planted exactly where they are in the reference image, its body stays at the same height above them, its grey wings stay folded flat against its sides exactly as in the reference, and its head stays UP at the height it is in the reference for the whole clip; it never flaps, never hops and never takes off. Steady, easy speaking rhythm with no sudden jumps. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.19,
+        "heightSwing": 2,
+        "driftX": 1.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T18:42:42.417Z"
+    },
+    "thinking": {
+      "file": "seagull-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.9375,
+      "originX": 0.5555,
+      "originY": 0.748,
+      "prompt": "Side view, facing left. The grey and white seagull stands in place, quietly pondering. Its head, yellow beak, neck, body, folded wings, tail and both planted feet stay exactly as in the reference image and do not move at all. Its eyelids stay fully open and completely still for the whole clip, so both big round white eyes keep their full round shape in every frame. ONLY THE PUPILS MOVE, very slowly: they drift up and to one side as if searching for an answer, taking the whole first half of the clip to get there, rest there, then drift just as slowly back. One smooth gliding path, the same slow speed throughout. The beak stays shut, drawn exactly as in the reference. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.1,
+        "heightSwing": 0,
+        "driftX": 0.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T19:19:34.799Z"
+    }
+  },
   "skunk": {
     "angry": {
       "file": "skunk-angry.png",
