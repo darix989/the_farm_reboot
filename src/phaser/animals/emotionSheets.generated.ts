@@ -36,6 +36,25 @@ export const EMOTION_SHEETS: Partial<
         warnings: [],
       },
     },
+    doubtful: {
+      file: 'brown-bull-doubtful.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 3.1963,
+      originX: 0.4852,
+      originY: 0.6973,
+      quality: {
+        loopPop: 0.18,
+        heightSwing: 5.6,
+        driftX: 4.8,
+        warnings: [],
+      },
+      reviewNotes: [
+        'Accepted on human review after two failed attempts (Blitz, then Hydra, both reared the head far back) and two drifting image edits. This fresh attempt holds the head for most of the loop, but frames 11-14 still dip the head and swing the horns.',
+      ],
+    },
     sneaky: {
       file: 'brown-bull-sneaky.png',
       frameWidth: 512,

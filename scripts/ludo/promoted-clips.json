@@ -18,6 +18,27 @@
       },
       "generatedAt": "2026-09-26T16:49:15.456Z"
     },
+    "doubtful": {
+      "file": "brown-bull-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.1963,
+      "originX": 0.4852,
+      "originY": 0.6973,
+      "prompt": "Side view, facing left. The brown bull's head, horns, ears, muzzle, nose ring, barrel body, four planted hooves and tail stay exactly as in the reference image and do not move at all: the head holds its exact position and angle in every frame, and both horns keep the same shape, size and place. ONLY THE BROWS AND EYES MOVE. The brow above the near eye slowly lifts into a high sceptical arch while the brow above the far eye stays low, then it eases back down; the big white eyes stay open and round with their small black pupils, and glance once toward the listener. The muzzle stays closed, drawn exactly as in the reference. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.18,
+        "heightSwing": 5.6,
+        "driftX": 4.8,
+        "warnings": []
+      },
+      "reviewNotes": [
+        "Accepted on human review after two failed attempts (Blitz, then Hydra, both reared the head far back) and two drifting image edits. This fresh attempt holds the head for most of the loop, but frames 11-14 still dip the head and swing the horns."
+      ],
+      "generatedAt": "2026-09-26T17:03:40.808Z"
+    },
     "sneaky": {
       "file": "brown-bull-sneaky.png",
       "frameWidth": 512,
