@@ -33,8 +33,9 @@ import styles from './AnimalGalleryUI.module.scss';
  * it can render the clip list from `animalClips()` without caring which loader owns each clip.
  *
  * **Emotions are one button each.** A phased emotion (ease-in, loop, ease-out) is still one
- * button; picking it lights a part switch under the grid — Whole / Ease in / Loop / Ease out —
- * and the part chosen there is remembered across emotions and animals (see `setPart`).
+ * button; the part switch under the grid — Whole / Ease in / Loop / Ease out — picks which part
+ * plays, and is remembered across emotions and animals (see `setPart`). The switch is always
+ * there: a clip with no phases shows Whole lit and the rest greyed out.
  *
  * **The dialogue portrait plays on the stage, never in the panel.** Whenever an emotion is
  * selected, its portrait loops over the top-left of the scene beside the body clip it was cut
@@ -415,31 +416,32 @@ const AnimalGalleryUI: React.FC = () => {
           </p>
         )}
 
-        {/* Only while a phased emotion is lit: the part is a property of that button. */}
-        {selected?.part && selectedGroup && (
+        {/* Always shown, so the panel does not reflow as you move between clips. Anything that is
+            not a phased emotion plays whole, so Whole is lit and the phases are greyed out. */}
+        {selected && (
           <>
             <div
               className={styles.partSwitch}
               role="radiogroup"
               aria-label={getLabel('galleryPartHeading')}
             >
-              {EMOTION_PARTS.filter((part) =>
-                selectedGroup.parts.some((clip) => clip.part === part),
-              ).map((part) => (
-                <button
-                  key={part}
-                  type="button"
-                  role="radio"
-                  aria-checked={selected.part === part}
-                  className={cn(
-                    styles.partButton,
-                    selected.part === part && styles.partButtonActive,
-                  )}
-                  onClick={() => setPart(part)}
-                >
-                  {getLabel(PART_LABEL[part])}
-                </button>
-              ))}
+              {EMOTION_PARTS.map((part) => {
+                const checked = (selected.part ?? 'sequence') === part;
+                const available = selectedGroup?.parts.some((clip) => clip.part === part) ?? false;
+                return (
+                  <button
+                    key={part}
+                    type="button"
+                    role="radio"
+                    aria-checked={checked}
+                    disabled={!available && !checked}
+                    className={cn(styles.partButton, checked && styles.partButtonActive)}
+                    onClick={() => setPart(part)}
+                  >
+                    {getLabel(PART_LABEL[part])}
+                  </button>
+                );
+              })}
             </div>
             <div className={styles.partDetail}>
               <span className={styles.clipHeader}>

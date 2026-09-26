@@ -348,7 +348,8 @@ output. Re-promote is only needed when the PNG itself changed.
 
 **Main menu → Animation Gallery** (`AnimalGallery` scene). Pick an animal from the dropdown,
 hold any clip on a loop, compare generated clips against the atlas clips they sit beside. A
-phased emotion is one button with a **Whole / Ease in / Loop / Ease out** switch under the grid.
+phased emotion is one button; the **Whole / Ease in / Loop / Ease out** switch under the grid
+picks the part (always shown, with only Whole enabled for clips with no phases).
 Ease in and ease out hold their last frame for a beat before replaying. Emotions with no art are
 listed dashed and marked "no art yet". Clip and animal badges are **OK** / **check** / **?**.
 A clip is **check** if metrics trip, the frame count is neither 25 (Blitz) nor 36 (a Hydra retry), or it has `reviewNotes`. The

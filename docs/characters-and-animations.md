@@ -19,16 +19,16 @@ Since the Level 1 rewrite, **every character is the animal their sprite draws**.
 way round, because Level 1 teaches Ad Hominem and needs a cast a farm already has opinions
 about.
 
-| Character | Species | Art (`AnimalSpriteId`)           | Role                      |
-| --------- | ------- | -------------------------------- | ------------------------- |
-| Rue       | raccoon | `raccoon`                        | player                    |
-| Hetty     | sheep   | `white-sheep-1`                  | farm NPC                  |
-| Cass      | fox     | `fox`                            | farm NPC, coach           |
-| Bram      | wolf    | `brown-wolf`                     | farm NPC                  |
-| Tobias    | donkey  | `donkey-grey`                    | farm NPC, Trial opponent  |
-| Duchess   | owl     | `owl`                            | farm NPC, Trial moderator |
-| Dot       | dog     | `dog`                            | farm guardian / greeter   |
-| Pip       | mouse   | `mouse`                          | barn NPC                  |
+| Character | Species | Art (`AnimalSpriteId`) | Role                      |
+| --------- | ------- | ---------------------- | ------------------------- |
+| Rue       | raccoon | `raccoon`              | player                    |
+| Hetty     | sheep   | `white-sheep-1`        | farm NPC                  |
+| Cass      | fox     | `fox`                  | farm NPC, coach           |
+| Bram      | wolf    | `brown-wolf`           | farm NPC                  |
+| Tobias    | donkey  | `donkey-grey`          | farm NPC, Trial opponent  |
+| Duchess   | owl     | `owl`                  | farm NPC, Trial moderator |
+| Dot       | dog     | `dog`                  | farm guardian / greeter   |
+| Pip       | mouse   | `mouse`                | barn NPC                  |
 
 The three outsiders (raccoon, fox, wolf) are the ones the level's fallacies point at; the
 in-group is the sheep and the donkey. See `level_01_the_pond_motion.md`.
@@ -91,11 +91,11 @@ inside each descriptor is the ultimate authority:
 
 **Frame naming — three shapes in this set:**
 
-| Shape                              | Example frame filename                                    | Animals                                                                 | Needs `framePrefix`?                     |
-| ---------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------- |
-| Flat, dash-separated               | `__red_fox_idle-3.png`                                    | donkey-grey, fox, white-sheep-1, brown-wolf, raccoon, dog, mouse, pig, cow-female-001 | no — matches the default `${frameStem}-` |
-| Foldered, dash-separated           | `__black_and_white_cow_die/__black_and_white_cow_die-0.png` | cow                                                                     | yes                                      |
-| Foldered, **underscore**-separated | `__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_4.png` | owl                                                                     | yes, on all five animations              |
+| Shape                              | Example frame filename                                      | Animals                                                                               | Needs `framePrefix`?                     |
+| ---------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------- |
+| Flat, dash-separated               | `__red_fox_idle-3.png`                                      | donkey-grey, fox, white-sheep-1, brown-wolf, raccoon, dog, mouse, pig, cow-female-001 | no — matches the default `${frameStem}-` |
+| Foldered, dash-separated           | `__black_and_white_cow_die/__black_and_white_cow_die-0.png` | cow                                                                                   | yes                                      |
+| Foldered, **underscore**-separated | `__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_4.png`   | owl                                                                                   | yes, on all five animations              |
 
 The owl is the trap: its frame folder ends in `_`, not `-`, so every one of its
 `baseAnimations` entries needs an explicit `framePrefix` copied character-for-character.
@@ -314,7 +314,7 @@ as the 56px placeholder NPC boxes it is meant to be the protagonist among. Match
 donkey's old 140px height is not the fix either: at 2.4:1 the crouch would come out
 336px wide. `MANUAL_ADJUST` therefore accepts either a bare number (both surfaces, as
 before) or `{ farm?, trial? }`. The raccoon is `{ farm: 1.5 }` (~202×85 on the farm);
-`trial` stays at 1 because there Rue *sits up*, a taller and much narrower pose, and that
+`trial` stays at 1 because there Rue _sits up_, a taller and much narrower pose, and that
 is the pose the existing trial multiplier was already staging Tobias in.
 
 The sheep is the other split adjustment, `{ farm: 1.68, trial: 0.8 }`. Her export canvas is
@@ -330,19 +330,19 @@ can hugely overstate a crouching or narrow pose — the raccoon's idle crouch fi
 ~40% of its canvas height) — multiplying by the prototype's scale gives the "as designed"
 apparent size the two multipliers above were fit to:
 
-| Animal          | Source scale | Idle frame visible (w×h) | As-designed apparent (w×h)     |
-| --------------- | ------------ | ------------------------ | ------------------------------ |
-| `donkey-grey`   | 0.7          | 561×531                  | 393×372                        |
-| `owl`           | 0.4          | 448×587                  | 179×235                        |
-| `raccoon`       | 0.4          | 896×373                  | **358×149 — wide, low crouch** |
-| `fox`           | 0.6          | 598×391                  | 359×235                        |
-| `white-sheep-1` | 1.0          | 311×267                  | 311×267                        |
-| `brown-wolf`    | 0.7          | 589×468                  | 412×328                        |
-| `cow`           | 1.0          | 479×383                  | 479×383                        |
-| `cow-female-001`| 1.3          | 406×330                  | **528×429 — largest in the set** |
-| `dog`           | 0.6          | 700×568                  | 420×341                        |
-| `mouse`         | 0.35         | 735×469                  | 257×164                        |
-| `pig`           | 1.0          | 419×229                  | 419×229                        |
+| Animal           | Source scale | Idle frame visible (w×h) | As-designed apparent (w×h)       |
+| ---------------- | ------------ | ------------------------ | -------------------------------- |
+| `donkey-grey`    | 0.7          | 561×531                  | 393×372                          |
+| `owl`            | 0.4          | 448×587                  | 179×235                          |
+| `raccoon`        | 0.4          | 896×373                  | **358×149 — wide, low crouch**   |
+| `fox`            | 0.6          | 598×391                  | 359×235                          |
+| `white-sheep-1`  | 1.0          | 311×267                  | 311×267                          |
+| `brown-wolf`     | 0.7          | 589×468                  | 412×328                          |
+| `cow`            | 1.0          | 479×383                  | 479×383                          |
+| `cow-female-001` | 1.3          | 406×330                  | **528×429 — largest in the set** |
+| `dog`            | 0.6          | 700×568                  | 420×341                          |
+| `mouse`          | 0.35         | 735×469                  | 257×164                          |
+| `pig`            | 1.0          | 419×229                  | 419×229                          |
 
 Recomputing: pick a target donkey height for the surface, divide by 372 (its as-designed
 apparent height above) to get that surface's multiplier, then multiply every animal's
@@ -374,8 +374,7 @@ the visual centre (`{x:0.5,y:0.5}` on idle). Phaser copies that onto the sprite 
 every `setFrame`, which undoes the feet origin the moment a clip plays. The helper
 clears `customPivot` on the whole texture so those anchors are ignored.
 
-**Trial speaker depths.** Idle and non-speakers sit at depth 1, the active speaker at
-10. Formal debates (`encounterKind === 'debate'`, including the default when `mechanics`
+**Trial speaker depths.** Idle and non-speakers sit at depth 1, the active speaker at 10. Formal debates (`encounterKind === 'debate'`, including the default when `mechanics`
 is omitted) insert a stage dimmer at 5 and a spotlight cone at 9, from the top of the
 hole down onto the speaker. The cone is off during `debate_intro` (no speaker) and aims
 at the moderator during `moderator_speaking`. Lessons, gossip, sparring and lab skip that
@@ -642,8 +641,9 @@ will place it. A gallery that staged clips its own way would be worse than no ga
 Things worth knowing:
 
 - **One button per emotion, with a part switch for phased ones.** A phased emotion (ease-in,
-  loop, ease-out) is listed only as its parts, and the panel shows it as one button. Picking it
-  lights a **Whole / Ease in / Loop / Ease out** switch under the grid. Whole plays the chain the
+  loop, ease-out) is listed only as its parts, and the panel shows it as one button, and a **Whole /
+  Ease in / Loop / Ease out** switch under the grid picks the part. The switch is always shown;
+  for a clip with no phases, Whole is lit and the other parts are greyed out. Whole plays the chain the
   game plays (in → loop ×2 → out → atlas rest) and restarts. Ease in and ease out each hold
   their last frame for a beat before replaying, so you can read where the ease lands instead of
   watching it pop back to frame 0. The raw generated clip the phases were cut from is not
@@ -708,10 +708,10 @@ cause is structural, not a prompt problem: a head submitted at a 485×363 boundi
 at 257×192, so the endpoint reframes its input and redraws the head from scratch every frame
 rather than animating the pixels it was given.
 
-`animalFaces.ts` also used to argue that a portrait *could not* be cropped from a body clip —
+`animalFaces.ts` also used to argue that a portrait _could not_ be cropped from a body clip —
 "the head is 90-110px of real pixels… blown up to a 112px portrait that is mush". That was
 measured against a 512px generator target rather than the **112px a portrait actually ships at**.
-Heads run ~100-150px, so a crop *downscales* into the box at 1× and upscales ~1.2-2.2× at 2× DPR.
+Heads run ~100-150px, so a crop _downscales_ into the box at 1× and upscales ~1.2-2.2× at 2× DPR.
 The body clips' faces also hold still, because the generator was animating posture and left the
 face alone — which is exactly the property a portrait needs.
 
@@ -723,7 +723,7 @@ face alone — which is exactly the property a portrait needs.
    across all frames of its `talking` clip. Never one per emotion: all five play in the same box
    in the same dialogue, so a per-emotion rect would make the head jump size between beats.
 2. **One alignment template per animal**, also from `talking` — the rect's rigid top 55% (skull,
-   ears, eye). The bottom is excluded because the mouth is the thing the clip is *for* and would
+   ears, eye). The bottom is excluded because the mouth is the thing the clip is _for_ and would
    fight the match.
 3. **Per-frame tracking.** The head bobs through a body clip (the fox's by 30px, its `thinking`
    by 40px), so a fixed rect drifts. Frame 0 searches the whole window; later frames search only
@@ -744,7 +744,7 @@ ships one animal at a time.
 To look at the result, the gallery (§9.6) plays each emotion's portrait on the stage beside its
 body clip — the in-game counterpart to `boxes.html`, and the only place the two registers can be
 compared without walking into a conversation and hoping the right beat comes up. It renders
-through `FaceClip`, the presentational half of `AnimalFace`: `AnimalFace` resolves a *character*
+through `FaceClip`, the presentational half of `AnimalFace`: `AnimalFace` resolves a _character_
 and asks for the game's forgiving behaviour (fall back to `talking`, render nothing at all when
 there is no art), which is exactly wrong for a review tool, so the gallery addresses sheets
 directly and shows "no portrait yet" where none was cropped.
@@ -755,14 +755,14 @@ directly and shows "no portrait yet" where none was cropped.
 portrait where it was a fraction of the body frame, so a seam invisible at body scale is loud at
 portrait scale. This decides which animals work:
 
-| animal | worst source seam | worst crop seam | upscale |
-|---|---|---|---|
-| owl | 0.43% | 0.77% | ×1.23 |
-| raccoon | 0.17% | 0.66% | ×1.72 |
-| fox | 0.20% | 0.93% | ×1.94 |
-| white-sheep-1 | 0.32% | 1.26% | ×1.92 |
-| brown-wolf | 0.33% | 1.83% | ×2.21 |
-| **donkey-grey** | **2.52%** | **11.22%** | ×1.86 |
+| animal          | worst source seam | worst crop seam | upscale |
+| --------------- | ----------------- | --------------- | ------- |
+| owl             | 0.43%             | 0.77%           | ×1.23   |
+| raccoon         | 0.17%             | 0.66%           | ×1.72   |
+| fox             | 0.20%             | 0.93%           | ×1.94   |
+| white-sheep-1   | 0.32%             | 1.26%           | ×1.92   |
+| brown-wolf      | 0.33%             | 1.83%           | ×2.21   |
+| **donkey-grey** | **2.52%**         | **11.22%**      | ×1.86   |
 
 Everything lands under the 2% gate except the donkey, whose body clips are the cast's weakest —
 the only ones that ever carried a loop-seam warning of their own. Its portraits are deliberately
@@ -792,10 +792,10 @@ reads as talking and a motionless one reads as idle (§9). The crop faithfully r
 that was requested.
 
 **Accepted rather than fixed.** If it needs improving, the lever is the cropper: the aligner
-matches the rect's rigid top 55%, so when the head *rotates* the best translation-only match is a
+matches the rect's rigid top 55%, so when the head _rotates_ the best translation-only match is a
 compromise that leaves the face offset. Narrowing the template to just the facial region would pin
 what the viewer actually looks at and let the ears drift instead; sub-pixel refinement and a small
-rotation search would take the rest. The structural answer is that head travel *is* part of a
+rotation search would take the rest. The structural answer is that head travel _is_ part of a
 posture animation, so a portrait cut from one always inherits some of it.
 
 ### 10.5 `_still` variants — tried, and they do not do what their name says
@@ -810,10 +810,10 @@ generated at body framing where the generator is reliable.
 portrait, a band with no speech animation in it, so anything moving there is pose change the
 aligner cannot remove:
 
-| portrait cut from | skull+ears change/frame | crop loop seam |
-|---|---|---|
-| `talking` (bobbing) | 1.07% | 4.15% — fails the 2% gate |
-| `talking_still` | **2.54%** | **0.56%** — passes |
+| portrait cut from   | skull+ears change/frame | crop loop seam            |
+| ------------------- | ----------------------- | ------------------------- |
+| `talking` (bobbing) | 1.07%                   | 4.15% — fails the 2% gate |
+| `talking_still`     | **2.54%**               | **0.56%** — passes        |
 
 Twice as unstable, plus a ~22px lateral slide the bobbing clip did not have: with the body pinned,
 the generator moved the head instead. Against the shipped cast — owl 0.53%, raccoon 0.94%,
@@ -843,15 +843,15 @@ in [`trialHelpers.ts`](../src/react/trial/utils/trialHelpers.ts) maps a score to
 and **all three come from the same clip** — `approving` opens the owl's eyes from nearly shut to
 fully round over its 25 frames, so three of them are one head in one pose at three apertures:
 
-| score | frame | eyes |
-| --- | --- | --- |
-| `> 0` | 20 | fully open, big and round, bright yellow |
-| `= 0` | 6 | half open — yellow below, lid above |
-| `< 0` | 4 | nearly shut, only slivers of yellow left in the corners |
+| score | frame | eyes                                                    |
+| ----- | ----- | ------------------------------------------------------- |
+| `> 0` | 20    | fully open, big and round, bright yellow                |
+| `= 0` | 6     | half open — yellow below, lid above                     |
+| `< 0` | 4     | nearly shut, only slivers of yellow left in the corners |
 
 The axis a player reads is therefore **how much bright yellow is left in the eyes**: one
 continuous quantity, monotonic with the score, on a face that is otherwise identical between
-states. That is a change in *area and value*, so it survives the downscale — this icon renders at
+states. That is a change in _area and value_, so it survives the downscale — this icon renders at
 about 1.6em, roughly the size of the glyph it replaced, where an expression would not.
 
 The first arrangement took its three frames from three different emotion clips (`approving` /
@@ -870,7 +870,7 @@ nothing once the pixels change.
 
 ### 11.2 Duchess lends her face to debates she is not in
 
-Most *smaller-mode* encounters show a moderator's opinion with no moderator on stage: the
+Most _smaller-mode_ encounters show a moderator's opinion with no moderator on stage: the
 score is the room's judgement, not a character's, and Bram's first lesson has no owl in
 it. The indicator still needs a face, so it uses `debateModeratorId()` from
 [`debateCast.ts`](../src/data/debateCast.ts) — an authored `moderatorId` if present (Cass

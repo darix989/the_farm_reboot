@@ -215,8 +215,14 @@
     border-left: 1px solid var(--ui-color-border-default);
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     color: var(--ui-color-accent);
+  }
+
+  /* Shown rather than hidden, so the control keeps its place; this clip just has no phases. */
+  &:disabled {
+    color: var(--ui-color-text-muted-2);
+    cursor: default;
   }
 }
 
