@@ -628,8 +628,8 @@ that generated them and the review directory holds bytes, never URLs.
 ### 9.6 The gallery scene
 
 `AnimalGallery` (main menu → **Animation Gallery**) is where you actually look at any of
-this. Pick an animal, hold any one of its clips on a loop, switch between them faster than a
-debate ever would.
+this. Pick an animal from the dropdown, hold any one of its clips on a loop, switch between
+them faster than a debate ever would.
 
 It deliberately does **not** use `AnimalAnimator`. That class plays animations the way the
 _game_ wants them — weighted, random, interrupted by whatever the debate is doing — which
@@ -639,32 +639,39 @@ What it does share is staging: it calls the same `applyEmotionStaging` / `restor
 (§9.4) that `AnimalAnimator` calls, so a clip previewed here is placed exactly as the Trial
 will place it. A gallery that staged clips its own way would be worse than no gallery.
 
-Three things worth knowing:
+Things worth knowing:
 
+- **One button per emotion, with a part switch for phased ones.** A phased emotion (ease-in,
+  loop, ease-out) is listed only as its parts, and the panel shows it as one button. Picking it
+  lights a **Whole / Ease in / Loop / Ease out** switch under the grid. Whole plays the chain the
+  game plays (in → loop ×2 → out → atlas rest) and restarts. Ease in and ease out each hold
+  their last frame for a beat before replaying, so you can read where the ease lands instead of
+  watching it pop back to frame 0. The raw generated clip the phases were cut from is not
+  offered: which cells of it survive depends on how the phases were last authored, so it is not
+  something the game plays.
 - **Switching animal keeps the clip you were looking at.** The question a reviewer actually has
   is "how does _this_ emotion read on each animal", so the selection carries across the cast
-  rather than resetting to idle every time. Emotion names exist for every animal, so an emotion
-  stays selected the whole way round and lands on the "no art yet" state where the art is
-  missing. Base animations are per-animal, so carrying `buck` from the donkey to the fox falls
-  back to the fox's rest pose.
+  rather than resetting to idle every time. Emotions carry by emotion, not by exact name:
+  `angry` · Loop on the sheep lands on plain `angry` on the fox, and back on the sheep it lands
+  on Loop again, because the chosen part is remembered. Where the art is missing, it lands on
+  the "no art yet" state. Base animations are per-animal, so carrying `buck` from the donkey to
+  the fox falls back to the fox's rest pose.
 - **Clips with no art are listed, not hidden.** `animalClipCatalogue.ts` returns every
   `ANIMAL_EMOTIONS` entry with an `available` flag, and the UI shows the missing ones dashed
   and labelled "no art yet". With the cast generated one animal at a time, the gap between the
   vocabulary and the art is the thing you most need to see.
-- **Both registers are in the panel.** Under the body emotions sits a **Dialogue portraits**
-  section listing the same five emotions again, each with a live thumbnail of the crop, and a
-  large preview over the stage at the two sizes `.ludo-review-faces/boxes.html` uses — 112px as
-  it ships and 224px for a 2× display, where softness actually shows (§10). Portrait selection
-  is independent of clip selection on purpose: a portrait is cut from the body clip of the same
-  name, so you want them playing side by side, not one replacing the other.
-- **The portraits section is the one place React draws its own art.** Face clips are DOM-played
+- **The dialogue portrait plays on the stage by itself.** Whenever an emotion is selected, its
+  portrait loops over the top-left of the stage, next to the body clip it was cut from, at the
+  two sizes `.ludo-review-faces/boxes.html` uses: 112px as it ships and 224px for a 2× display,
+  where softness actually shows (§10). There is no separate portrait list in the panel. Base
+  animations have no portrait, so the preview hides for them.
+- **The portrait is the one piece of art React draws itself.** Face clips are DOM-played
   (§10), so there is no scene to delegate to — it mounts the game's own `FaceClip` with the
   game's own `faceBoxTransform`, for the same reason the body clips share `applyEmotionStaging`.
   A gallery that framed a portrait its own way would be worse than no gallery.
-- **The smooth-transition toggle is a diagnostic, not decoration.** Switching from an atlas
-  clip to a generated one changes the sprite's texture, scale and origin on a single frame.
-  The crossfade hides that; turning it off is how you check whether a switch that looks fine
-  actually is fine.
+- **Switching is a plain cut.** Going from an atlas clip to a generated one changes the
+  sprite's texture, scale and origin on a single frame, and the gallery shows that as it is
+  rather than hiding it behind a fade.
 - **React never touches Phaser.** Every control is a write to `animalGalleryStore`, which the
   scene subscribes to — the same split, for the same reason, as `trialStageStore`.
 
@@ -734,8 +741,8 @@ The record is `scripts/ludo/promoted-faces.json` and the generated index
 merged with them. `AnimalFace.tsx` renders nothing for an animal with no entry, so the register
 ships one animal at a time.
 
-To look at the result, the gallery (§9.6) now has a **Dialogue portraits** section beside the
-body clips — the in-game counterpart to `boxes.html`, and the only place the two registers can be
+To look at the result, the gallery (§9.6) plays each emotion's portrait on the stage beside its
+body clip — the in-game counterpart to `boxes.html`, and the only place the two registers can be
 compared without walking into a conversation and hoping the right beat comes up. It renders
 through `FaceClip`, the presentational half of `AnimalFace`: `AnimalFace` resolves a *character*
 and asks for the game's forgiving behaviour (fall back to `talking`, render nothing at all when

@@ -346,8 +346,10 @@ output. Re-promote is only needed when the PNG itself changed.
 
 ## Reviewing in game
 
-**Main menu → Animation Gallery** (`AnimalGallery` scene). Pick an animal, hold any clip on a
-loop, compare generated clips against the atlas clips they sit beside. Emotions with no art are
+**Main menu → Animation Gallery** (`AnimalGallery` scene). Pick an animal from the dropdown,
+hold any clip on a loop, compare generated clips against the atlas clips they sit beside. A
+phased emotion is one button with a **Whole / Ease in / Loop / Ease out** switch under the grid.
+Ease in and ease out hold their last frame for a beat before replaying. Emotions with no art are
 listed dashed and marked "no art yet". Clip and animal badges are **OK** / **check** / **?**.
 A clip is **check** if metrics trip, the frame count is neither 25 (Blitz) nor 36 (a Hydra retry), or it has `reviewNotes`. The
 animal is **OK** only when all five emotions pass.
@@ -355,17 +357,14 @@ animal is **OK** only when all five emotions pass.
 When a clip looks wrong but the numbers are clean, add `reviewNotes` on that clip in
 `promoted-clips.json` and `--reindex`. Do not hand-edit the generated TS.
 
-Turn **off** the smooth-transition toggle to see the raw cut — switching between an atlas clip
-and a generated one changes texture, scale and origin on one frame, and the crossfade hides
-whether that switch is actually clean.
+Switching clip is a plain cut, so a texture/scale/origin jump between an atlas clip and a
+generated one shows as it is.
 
-The panel's **Dialogue portraits** section does the same job for the crop register: the five
-emotions again, each with a live thumbnail, and a large preview over the stage at 112px (as it
-ships) and 224px (a 2x display). It is the in-game counterpart to `boxes.html` and uses the
-game's own `FaceClip`, so what you approve there is framed exactly as it ships. Portrait
-selection is independent of clip selection — a portrait plays beside the body clip it was cut
-from, which is the comparison worth having. Badges use the crop thresholds, so **no height-swing
-gate**: a crop cannot zoom.
+Selecting an emotion also plays its **dialogue portrait** over the stage, at 112px (as it ships)
+and 224px (a 2x display), beside the body clip it was cut from. It is the in-game counterpart to
+`boxes.html` and uses the game's own `FaceClip`, so what you approve there is framed exactly as
+it ships. Portrait badges use the crop thresholds, so **no height-swing gate**: a crop cannot
+zoom.
 
 ## Dialogue portraits (`--faces`) — cropped, never generated
 
@@ -403,7 +402,7 @@ retired `face` rect used. Rules C1-C6 are in the manifest's `$faceComment`. The 
   portrait instead of a floating head.
 - **Judge at both sizes the review page shows.** 112px is what ships; 224px is a 2x display, and
   softness only shows at the second. Upscales run x1.23 (owl, best) to x2.21 (brown-wolf, worst).
-  The gallery's portraits section shows the same pair, so this check can also be done in game.
+  The gallery's stage preview shows the same pair, so this check can also be done in game.
 - **Read the alignment numbers, not the height swing.** The head bobs through a body clip — the
   fox's by 30px, its `thinking` by 40px — and the cropper tracks it per frame.
 

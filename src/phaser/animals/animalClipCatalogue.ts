@@ -18,6 +18,7 @@ import {
   EMOTION_FRAME_RATE,
   EMOTION_PHASES,
   type AnimalEmotion,
+  type EmotionPhase,
   type EmotionQuality,
 } from './animalEmotions';
 import { emotionAnimKey, emotionPhaseAnimKey, emotionSheet } from './animalEmotionAnimations';
@@ -34,6 +35,12 @@ import type { AnimalSpriteId } from '../../data/characters';
 /** `emotion` clips are generated; `base` clips came with the source art. */
 export type AnimalClipKind = 'emotion' | 'base';
 
+/** Which part of a phased emotion to play: one phase alone, or the whole chain. */
+export type EmotionPart = 'sequence' | EmotionPhase;
+
+/** The gallery's part switch, in order. The whole chain leads because it is what a debate plays. */
+export const EMOTION_PARTS: readonly EmotionPart[] = ['sequence', ...EMOTION_PHASES];
+
 export interface AnimalClip {
   /**
    * Logical name — `'idle'`, `'sneaky'`, or `'angry@in'` for a phase clip. Unique per animal
@@ -41,6 +48,10 @@ export interface AnimalClip {
    */
   name: string;
   kind: AnimalClipKind;
+  /** Set on every emotion clip, phase parts included — the group the gallery's button stands for. */
+  emotion?: AnimalEmotion;
+  /** Set only on a phased emotion's parts (`angry@in` … `angry@sequence`). */
+  part?: EmotionPart;
   /** Phaser animation key, or `null` when there is no art (emotions only). */
   animKey: string | null;
   /** False only for an emotion in `ANIMAL_EMOTIONS` that has not been generated yet. */
@@ -67,6 +78,10 @@ export interface AnimalClip {
  * Every clip for one animal: emotions first (in `ANIMAL_EMOTIONS` order, missing art
  * included), then the atlas animations in descriptor order.
  *
+ * A phased emotion is listed **only as its parts** — no bare `angry` entry. Its main sheet is
+ * the raw generation the phases were cut from, and which cells of it survive depends on how
+ * the phases were last authored, so it is not something the game ever plays.
+ *
  * Emotions lead because they are the ones under active review; the atlas clips below them are
  * the fixed reference you compare against.
  */
@@ -90,6 +105,7 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
       const placeholder: AnimalClip = {
         name: emotion,
         kind: 'emotion',
+        emotion,
         animKey: animalAnimKey(textureKey, fallbackAnimation.name),
         available: true,
         frameCount: fallbackAnimation.endFrameIndex - (fallbackAnimation.startFrameIndex ?? 0) + 1,
@@ -103,6 +119,7 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
     const main: AnimalClip = {
       name: emotion,
       kind: 'emotion',
+      emotion,
       animKey: sheet ? emotionAnimKey(textureKey, emotion) : null,
       available: Boolean(sheet),
       frameCount: sheet?.frameCount ?? 0,
@@ -122,6 +139,8 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
             {
               name: `${emotion}@${phase}`,
               kind: 'emotion' as const,
+              emotion,
+              part: phase,
               animKey: emotionPhaseAnimKey(textureKey, emotion, phase),
               available: true,
               frameCount: phaseSheet.frameCount,
@@ -152,6 +171,8 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
           {
             name: `${emotion}@sequence`,
             kind: 'emotion',
+            emotion,
+            part: 'sequence',
             animKey: sequenceSteps[0]!.animKey,
             available: true,
             frameCount:
@@ -164,7 +185,7 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
           },
         ]
       : [];
-    return [main, ...phaseClips, ...sequenceClip];
+    return phases ? [...sequenceClip, ...phaseClips] : [main];
   });
 
   const base: AnimalClip[] = descriptor.baseAnimations.map((animation) => {
@@ -190,6 +211,30 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
 export function defaultClip(animalId: AnimalSpriteId): AnimalClip | null {
   const clips = animalClips(animalId);
   return clips.find((clip) => clip.isRest) ?? clips.find((clip) => clip.available) ?? null;
+}
+
+/** The emotion a clip name belongs to: `'angry@loop'` → `'angry'`. Base names pass through. */
+export function clipEmotion(clipName: string): string {
+  const at = clipName.indexOf('@');
+  return at === -1 ? clipName : clipName.slice(0, at);
+}
+
+/**
+ * The clip to play for `emotion` given the part the reviewer last asked for.
+ *
+ * The part is a preference, not a promise: an emotion with no phases has only its bare clip,
+ * and a phased one missing the requested phase (no ease-in authored) falls back to the whole
+ * chain. That is what lets one part selection ride across the cast.
+ */
+export function emotionClipName(
+  clips: readonly AnimalClip[],
+  emotion: string,
+  part: EmotionPart,
+): string {
+  const has = (name: string) => clips.some((clip) => clip.name === name);
+  if (has(`${emotion}@${part}`)) return `${emotion}@${part}`;
+  if (has(`${emotion}@sequence`)) return `${emotion}@sequence`;
+  return emotion;
 }
 
 /**

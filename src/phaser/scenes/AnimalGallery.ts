@@ -12,6 +12,9 @@
  * functions `AnimalAnimator` calls, so a clip previewed here is placed exactly as the Trial
  * will place it. A gallery that staged clips its own way would be worse than no gallery.
  *
+ * Switching clip is a plain cut. A crossfade would hide exactly the scale/origin jump between
+ * an atlas clip and a generated one that a reviewer needs to see.
+ *
  * React draws the controls (`AnimalGalleryUI`) over the right-hand side of the stage; this
  * scene keeps the animal inside `ANIMAL_GALLERY_STAGE` so the two never overlap.
  */
@@ -45,8 +48,13 @@ const GALLERY_SCALE_OF_TRIAL = 1.6;
 /** Fraction of the stage height the animal stands on. */
 const FLOOR_RATIO = 0.82;
 
-/** Half of one crossfade. Short enough not to feel like a transition you are waiting on. */
-const FADE_MS = 130;
+/**
+ * How long an ease-in or ease-out holds its last frame before replaying. A one-way phase
+ * looped back-to-back pops from its end pose to its start pose every cycle, which hides the
+ * one thing worth judging about it: where it lands. Long enough to read the landing, short
+ * enough that the replay does not feel like waiting.
+ */
+const PHASE_HOLD_MS = 700;
 
 const BACKGROUND = 0x2f2f33;
 const FLOOR_LINE = 0x4a4a52;
@@ -57,7 +65,6 @@ export class AnimalGallery extends Scene {
   /** The `@sequence` chain being played, restarted each time it runs out. */
   private sequence: AnimalClip['sequence'] | null = null;
   private unsubscribe: (() => void) | null = null;
-  private fadeTween: Phaser.Tweens.Tween | null = null;
 
   constructor() {
     super('AnimalGallery');
@@ -80,17 +87,12 @@ export class AnimalGallery extends Scene {
     // see `gameManager.ts` for the selector-style call that does NOT type-check here.
     this.unsubscribe = useAnimalGalleryStore.subscribe((next, prev) => {
       if (next.animalId !== prev.animalId) {
-        this.switchTo(() => {
-          this.buildSprite(next.animalId);
-          this.applyClip(this.findClip(next.animalId, next.clipName));
-        }, next.smoothTransitions);
+        this.buildSprite(next.animalId);
+        this.applyClip(this.findClip(next.animalId, next.clipName));
         return;
       }
       if (next.clipName !== prev.clipName) {
-        this.switchTo(
-          () => this.applyClip(this.findClip(next.animalId, next.clipName)),
-          next.smoothTransitions,
-        );
+        this.applyClip(this.findClip(next.animalId, next.clipName));
       }
     });
 
@@ -208,6 +210,8 @@ export class AnimalGallery extends Scene {
     } else if (clip.sequence) {
       this.sequence = clip.sequence;
       this.playSequence(clip.sequence);
+    } else if (clip.part === 'in' || clip.part === 'out') {
+      sprite.play({ key: clip.animKey, repeat: -1, repeatDelay: PHASE_HOLD_MS });
     } else {
       sprite.play({ key: clip.animKey, repeat: -1 });
     }
@@ -219,49 +223,9 @@ export class AnimalGallery extends Scene {
     }
   }
 
-  /**
-   * Runs `swap` either instantly or hidden behind a fade-out/fade-in.
-   *
-   * A fade rather than a true crossfade: two spritesheets cannot be blended, and dissolving
-   * through the background is both simpler and enough to hide the scale/origin jump that
-   * makes an instant switch pop. The in-flight tween is stopped and alpha forced back to 1
-   * first, so hammering the buttons cannot strand the sprite half-transparent.
-   */
-  private switchTo(swap: () => void, smooth: boolean): void {
-    const sprite = this.sprite;
-
-    if (this.fadeTween) {
-      this.fadeTween.stop();
-      this.fadeTween = null;
-    }
-
-    if (!smooth || !sprite || prefersReducedMotion()) {
-      sprite?.setAlpha(1);
-      swap();
-      // `swap` may have replaced the sprite, so re-read it rather than reusing the local.
-      this.sprite?.setAlpha(1);
-      return;
-    }
-
-    this.fadeTween = this.tweens.add({
-      targets: sprite,
-      alpha: 0,
-      duration: FADE_MS,
-      onComplete: () => {
-        swap();
-        const next = this.sprite;
-        if (!next) return;
-        next.setAlpha(0);
-        this.fadeTween = this.tweens.add({ targets: next, alpha: 1, duration: FADE_MS });
-      },
-    });
-  }
-
   private teardown(): void {
     this.unsubscribe?.();
     this.unsubscribe = null;
-    this.fadeTween?.stop();
-    this.fadeTween = null;
     this.sprite?.destroy();
     this.sprite = null;
     this.baseStaging = null;
