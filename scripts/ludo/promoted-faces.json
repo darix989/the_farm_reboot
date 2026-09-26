@@ -2471,139 +2471,419 @@
       "file": "donkey-grey-angry.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 16,
-      "frameRate": 8,
-      "cols": 4,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
       "fit": {
-        "x": 0.1087,
+        "x": 0.1148,
         "y": 0,
-        "width": 0.7826,
+        "width": 0.7705,
         "height": 1
       },
       "sourceClip": "donkey-grey-angry.png",
       "sourceEmotion": "angry",
       "headCrop": {
-        "x": -0.03,
-        "y": -0.03,
-        "w": 0.42,
-        "h": 0.56
+        "x": -0.04,
+        "y": -0.04,
+        "w": 0.55,
+        "h": 0.74
       },
       "headRect": {
-        "left": 120,
-        "top": 124,
-        "width": 108,
-        "height": 138
+        "left": 118,
+        "top": 121,
+        "width": 141,
+        "height": 183
       },
       "alignment": {
         "offsets": [
           {
             "dx": 0,
-            "dy": 0
+            "dy": -1
           },
           {
             "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
             "dy": 0
-          },
-          {
-            "dx": 0,
-            "dy": 0
-          },
-          {
-            "dx": 2,
-            "dy": -2
-          },
-          {
-            "dx": 6,
-            "dy": -7
-          },
-          {
-            "dx": 14,
-            "dy": -12
-          },
-          {
-            "dx": 24,
-            "dy": -18
-          },
-          {
-            "dx": 25,
-            "dy": -19
           },
           {
             "dx": 5,
             "dy": 1
           },
           {
-            "dx": -15,
-            "dy": 19
+            "dx": 8,
+            "dy": 0
           },
           {
-            "dx": -18,
-            "dy": 19
+            "dx": 12,
+            "dy": 2
           },
           {
-            "dx": -17,
-            "dy": 18
-          },
-          {
-            "dx": -12,
-            "dy": 13
-          },
-          {
-            "dx": -8,
-            "dy": 8
-          },
-          {
-            "dx": -4,
+            "dx": 17,
             "dy": 4
           },
           {
-            "dx": 0,
+            "dx": 21,
+            "dy": 4
+          },
+          {
+            "dx": 1,
+            "dy": 1
+          },
+          {
+            "dx": -2,
             "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -2,
+            "dy": 2
+          },
+          {
+            "dx": -2,
+            "dy": 2
+          },
+          {
+            "dx": -3,
+            "dy": 1
+          },
+          {
+            "dx": -3,
+            "dy": 1
+          },
+          {
+            "dx": -3,
+            "dy": 1
+          },
+          {
+            "dx": -2,
+            "dy": 2
+          },
+          {
+            "dx": -2,
+            "dy": 2
+          },
+          {
+            "dx": -3,
+            "dy": 0
+          },
+          {
+            "dx": -3,
+            "dy": 0
+          },
+          {
+            "dx": -3,
+            "dy": 0
+          },
+          {
+            "dx": -3,
+            "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 0
+          },
+          {
+            "dx": 17,
+            "dy": 2
+          },
+          {
+            "dx": 12,
+            "dy": 2
+          },
+          {
+            "dx": 8,
+            "dy": 2
+          },
+          {
+            "dx": 5,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
           }
         ],
-        "maxOffset": 25,
+        "maxOffset": 21,
         "maxJump": 20,
         "warnings": [
           "alignment hit its 20px per-frame limit — the head moves faster than the tracker follows, so it lags for a frame or two; check the clip before promoting"
         ]
       },
       "quality": {
-        "loopPop": 0.57,
-        "heightSwing": 9.2,
-        "driftX": 12.5,
+        "loopPop": 0.47,
+        "heightSwing": 14.5,
+        "driftX": 3.5,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:53:58.480Z"
+      "generatedAt": "2026-09-26T22:04:45.655Z"
+    },
+    "doubtful": {
+      "file": "donkey-grey-doubtful.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0.1148,
+        "y": 0,
+        "width": 0.7705,
+        "height": 1
+      },
+      "sourceClip": "donkey-grey-doubtful.png",
+      "sourceEmotion": "doubtful",
+      "headCrop": {
+        "x": -0.04,
+        "y": -0.04,
+        "w": 0.55,
+        "h": 0.74
+      },
+      "headRect": {
+        "left": 118,
+        "top": 121,
+        "width": 141,
+        "height": 183
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 5,
+            "dy": 1
+          },
+          {
+            "dx": 8,
+            "dy": 2
+          },
+          {
+            "dx": 13,
+            "dy": 1
+          },
+          {
+            "dx": 15,
+            "dy": -6
+          },
+          {
+            "dx": -5,
+            "dy": -6
+          },
+          {
+            "dx": -14,
+            "dy": -10
+          },
+          {
+            "dx": -16,
+            "dy": -8
+          },
+          {
+            "dx": -16,
+            "dy": -8
+          },
+          {
+            "dx": -16,
+            "dy": -8
+          },
+          {
+            "dx": -16,
+            "dy": -10
+          },
+          {
+            "dx": -16,
+            "dy": -10
+          },
+          {
+            "dx": -16,
+            "dy": -10
+          },
+          {
+            "dx": -16,
+            "dy": -10
+          },
+          {
+            "dx": -16,
+            "dy": -10
+          },
+          {
+            "dx": -16,
+            "dy": -10
+          },
+          {
+            "dx": -16,
+            "dy": -10
+          },
+          {
+            "dx": -17,
+            "dy": -13
+          },
+          {
+            "dx": -21,
+            "dy": -14
+          },
+          {
+            "dx": -23,
+            "dy": -15
+          },
+          {
+            "dx": -27,
+            "dy": -17
+          },
+          {
+            "dx": -30,
+            "dy": -17
+          },
+          {
+            "dx": -10,
+            "dy": -37
+          },
+          {
+            "dx": 4,
+            "dy": -17
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 37,
+        "maxJump": 20,
+        "warnings": [
+          "alignment hit its 20px per-frame limit — the head moves faster than the tracker follows, so it lags for a frame or two; check the clip before promoting"
+        ]
+      },
+      "quality": {
+        "loopPop": 0.32,
+        "heightSwing": 23.4,
+        "driftX": 12.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T22:04:48.825Z"
     },
     "sneaky": {
       "file": "donkey-grey-sneaky.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 16,
-      "frameRate": 8,
-      "cols": 4,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
       "fit": {
-        "x": 0.1087,
+        "x": 0.1148,
         "y": 0,
-        "width": 0.7826,
+        "width": 0.7705,
         "height": 1
       },
       "sourceClip": "donkey-grey-sneaky.png",
       "sourceEmotion": "sneaky",
       "headCrop": {
-        "x": -0.03,
-        "y": -0.03,
-        "w": 0.42,
-        "h": 0.56
+        "x": -0.04,
+        "y": -0.04,
+        "w": 0.55,
+        "h": 0.74
       },
       "headRect": {
-        "left": 120,
-        "top": 124,
-        "width": 108,
-        "height": 138
+        "left": 118,
+        "top": 121,
+        "width": 141,
+        "height": 183
       },
       "alignment": {
         "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
           {
             "dx": 0,
             "dy": 0
@@ -2613,75 +2893,143 @@
             "dy": -1
           },
           {
-            "dx": -1,
-            "dy": 1
+            "dx": 1,
+            "dy": -1
           },
           {
-            "dx": -16,
-            "dy": 9
+            "dx": 7,
+            "dy": 0
           },
           {
-            "dx": -29,
-            "dy": 17
+            "dx": 9,
+            "dy": 0
           },
           {
-            "dx": -40,
-            "dy": 32
+            "dx": 13,
+            "dy": 0
           },
           {
-            "dx": -25,
-            "dy": 24
+            "dx": 16,
+            "dy": 0
           },
           {
-            "dx": -28,
-            "dy": 25
+            "dx": 22,
+            "dy": 0
           },
           {
-            "dx": -26,
-            "dy": 24
+            "dx": 4,
+            "dy": -6
           },
           {
-            "dx": -39,
-            "dy": 25
-          },
-          {
-            "dx": -24,
-            "dy": 10
+            "dx": -8,
+            "dy": -10
           },
           {
             "dx": -7,
-            "dy": 7
+            "dy": -9
           },
           {
             "dx": -4,
-            "dy": 1
+            "dy": -8
           },
           {
-            "dx": -1,
+            "dx": -3,
+            "dy": -8
+          },
+          {
+            "dx": -3,
+            "dy": -8
+          },
+          {
+            "dx": -3,
+            "dy": -8
+          },
+          {
+            "dx": -3,
+            "dy": -8
+          },
+          {
+            "dx": -3,
+            "dy": -8
+          },
+          {
+            "dx": -3,
+            "dy": -8
+          },
+          {
+            "dx": -4,
+            "dy": -8
+          },
+          {
+            "dx": -7,
+            "dy": -9
+          },
+          {
+            "dx": -8,
+            "dy": -10
+          },
+          {
+            "dx": -14,
+            "dy": -14
+          },
+          {
+            "dx": 6,
+            "dy": 0
+          },
+          {
+            "dx": 15,
+            "dy": 0
+          },
+          {
+            "dx": 11,
+            "dy": 0
+          },
+          {
+            "dx": 8,
+            "dy": 0
+          },
+          {
+            "dx": 1,
             "dy": -1
           },
           {
-            "dx": -1,
+            "dx": 1,
             "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
           },
           {
             "dx": 0,
             "dy": 0
           }
         ],
-        "maxOffset": 40,
-        "maxJump": 17,
+        "maxOffset": 22,
+        "maxJump": 20,
         "warnings": [
-          "alignment jumps 17px between consecutive frames — faster than any clean clip measured, so the matcher may have locked onto the wrong feature"
+          "alignment hit its 20px per-frame limit — the head moves faster than the tracker follows, so it lags for a frame or two; check the clip before promoting"
         ]
       },
       "quality": {
-        "loopPop": 0.54,
-        "heightSwing": 33.6,
-        "driftX": 14.3,
+        "loopPop": 0.34,
+        "heightSwing": 7.8,
+        "driftX": 7.3,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:54:00.407Z"
+      "generatedAt": "2026-09-26T22:04:52.079Z"
     },
     "talking": {
       "file": "donkey-grey-talking.png",
@@ -2691,24 +3039,24 @@
       "frameRate": 13,
       "cols": 5,
       "fit": {
-        "x": 0.1087,
+        "x": 0.1148,
         "y": 0,
-        "width": 0.7826,
+        "width": 0.7705,
         "height": 1
       },
       "sourceClip": "donkey-grey-talking_still.png",
       "sourceEmotion": "talking_still",
       "headCrop": {
-        "x": -0.03,
-        "y": -0.03,
-        "w": 0.42,
-        "h": 0.56
+        "x": -0.04,
+        "y": -0.04,
+        "w": 0.55,
+        "h": 0.74
       },
       "headRect": {
-        "left": 120,
-        "top": 124,
-        "width": 108,
-        "height": 138
+        "left": 118,
+        "top": 121,
+        "width": 141,
+        "height": 183
       },
       "alignment": {
         "offsets": [
@@ -2722,15 +3070,15 @@
           },
           {
             "dx": 5,
-            "dy": 3
-          },
-          {
-            "dx": 9,
-            "dy": 4
-          },
-          {
-            "dx": 15,
             "dy": 2
+          },
+          {
+            "dx": 11,
+            "dy": 5
+          },
+          {
+            "dx": 14,
+            "dy": 3
           },
           {
             "dx": 17,
@@ -2741,71 +3089,71 @@
             "dy": 0
           },
           {
-            "dx": 20,
-            "dy": -2
+            "dx": 22,
+            "dy": 0
           },
           {
-            "dx": 19,
-            "dy": -3
+            "dx": 23,
+            "dy": 0
           },
           {
-            "dx": 21,
-            "dy": -3
+            "dx": 23,
+            "dy": -1
           },
           {
-            "dx": 21,
-            "dy": -5
+            "dx": 23,
+            "dy": -1
+          },
+          {
+            "dx": 23,
+            "dy": -1
+          },
+          {
+            "dx": 23,
+            "dy": -1
+          },
+          {
+            "dx": 23,
+            "dy": -1
+          },
+          {
+            "dx": 23,
+            "dy": -1
+          },
+          {
+            "dx": 23,
+            "dy": 0
+          },
+          {
+            "dx": 23,
+            "dy": 0
           },
           {
             "dx": 22,
-            "dy": -5
+            "dy": 0
           },
           {
             "dx": 22,
-            "dy": -5
-          },
-          {
-            "dx": 22,
-            "dy": -4
-          },
-          {
-            "dx": 22,
-            "dy": -4
-          },
-          {
-            "dx": 22,
-            "dy": -4
-          },
-          {
-            "dx": 22,
-            "dy": -2
-          },
-          {
-            "dx": 19,
-            "dy": -3
-          },
-          {
-            "dx": 19,
-            "dy": -3
+            "dy": 0
           },
           {
             "dx": 13,
-            "dy": 5
-          },
-          {
-            "dx": 8,
-            "dy": 8
-          },
-          {
-            "dx": 0,
             "dy": 6
           },
           {
-            "dx": -2,
+            "dx": 9,
+            "dy": 7
+          },
+          {
+            "dx": 0,
             "dy": 2
           },
           {
             "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": 0,
             "dy": 0
           },
           {
@@ -2813,17 +3161,203 @@
             "dy": 0
           }
         ],
-        "maxOffset": 22,
-        "maxJump": 8,
+        "maxOffset": 23,
+        "maxJump": 9,
         "warnings": []
       },
       "quality": {
-        "loopPop": 0.56,
-        "heightSwing": 3.3,
-        "driftX": 6.8,
+        "loopPop": 0.46,
+        "heightSwing": 4.1,
+        "driftX": 4.8,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:54:02.211Z"
+      "generatedAt": "2026-09-26T22:04:53.891Z"
+    },
+    "thinking": {
+      "file": "donkey-grey-thinking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0.1148,
+        "y": 0,
+        "width": 0.7705,
+        "height": 1
+      },
+      "sourceClip": "donkey-grey-thinking.png",
+      "sourceEmotion": "thinking",
+      "headCrop": {
+        "x": -0.04,
+        "y": -0.04,
+        "w": 0.55,
+        "h": 0.74
+      },
+      "headRect": {
+        "left": 118,
+        "top": 121,
+        "width": 141,
+        "height": 183
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -2
+          },
+          {
+            "dx": 1,
+            "dy": -2
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 2,
+            "dy": -3
+          },
+          {
+            "dx": 2,
+            "dy": -3
+          },
+          {
+            "dx": 2,
+            "dy": -4
+          },
+          {
+            "dx": 2,
+            "dy": -5
+          },
+          {
+            "dx": 2,
+            "dy": -5
+          },
+          {
+            "dx": 2,
+            "dy": -5
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 2,
+            "dy": -6
+          },
+          {
+            "dx": 2,
+            "dy": -5
+          },
+          {
+            "dx": 2,
+            "dy": -4
+          },
+          {
+            "dx": 2,
+            "dy": -4
+          },
+          {
+            "dx": 2,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -3
+          },
+          {
+            "dx": 1,
+            "dy": -2
+          },
+          {
+            "dx": 1,
+            "dy": -2
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": -1
+          }
+        ],
+        "maxOffset": 6,
+        "maxJump": 1,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.96,
+        "heightSwing": 3.8,
+        "driftX": 1,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T22:04:57.215Z"
     }
   },
   "fox": {

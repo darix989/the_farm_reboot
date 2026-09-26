@@ -103,10 +103,10 @@
       "view": "Side view, facing left",
       "reference": "__grey_donkey_idle-0.png",
       "headCrop": {
-        "x": -0.03,
-        "y": -0.03,
-        "w": 0.42,
-        "h": 0.56
+        "x": -0.04,
+        "y": -0.04,
+        "w": 0.55,
+        "h": 0.74
       },
       "overrides": {
         "talking_still": {
