@@ -1141,6 +1141,108 @@
       "generatedAt": "2026-09-26T18:15:54.133Z"
     }
   },
+  "snake": {
+    "angry": {
+      "file": "snake-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 3.513,
+      "originX": 0.4573,
+      "originY": 0.6094,
+      "prompt": "Side view, facing left. The green snake is furious. Its long body lies along the ground and its raised neck stays exactly where and how it is in the reference image for the whole clip: the neck does not bend, sway or lean, so the head holds the position and height it has in the reference, and the snake never strikes, never lunges and never slithers off. ONLY THE FACE MOVES, on an even, symmetrical timeline. During the first two fifths of the clip its thick dark brows, already drawn in the reference, slowly slam further down into a hard, heavy V while its eyes narrow to a hard glare with the black pupils clearly visible and locked on the target, and its jaw slowly opens wide into a hiss. During the middle fifth it holds that furious face. During the last two fifths it eases back just as slowly along the same path, the jaw closing gradually at the same speed it opened, and it comes fully to rest in the exact pose of the reference image a few frames before the end, holding still there. Both eyes stay open in every frame. The open mouth always shows the same shape: one clean smooth patch of flat dark pink inside with the same two small white fangs as in the reference, drawn identically in every frame it appears, and the forked red tongue keeps the same shape. The closing is never faster than the opening, with no sudden jumps. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.07,
+        "heightSwing": 3.5,
+        "driftX": 0.3,
+        "edgeMargin": 127,
+        "flatCut": 12,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:37:27.768Z"
+    },
+    "doubtful": {
+      "file": "snake-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.6071,
+      "originX": 0.4594,
+      "originY": 0.6094,
+      "prompt": "Side view, facing left. The green snake stays in place and schemes: its thick dark brows, already drawn in the reference, curve into a sly, smug arch while its eyes sink to heavy half-lidded slits and the pupils slide sideways toward the listener, and the corner of its shut mouth curls up into a smug little grin. Then the brows relax, the eyes open and the pupils slide back. Its long body lies along the ground and its raised neck stays exactly where and how it is in the reference image for the whole clip: the neck does not bend, sway or lean, so the head holds the position and height it has in the reference, and the snake never strikes, never lunges and never slithers off. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.04,
+        "heightSwing": 2.7,
+        "driftX": 0,
+        "edgeMargin": 128,
+        "flatCut": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:27:52.583Z"
+    },
+    "sneaky": {
+      "file": "snake-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.513,
+      "originX": 0.4573,
+      "originY": 0.6094,
+      "prompt": "Side view, facing left. The green snake's head, neck, long body and tail stay exactly as in the reference image and do not move at all: the head holds its exact position and angle in every frame, and it never strikes or slithers off. ONLY THE FACE MOVES. Using the thick dark brows already drawn in the reference, the brow over the near eye arches HIGH up in disbelief while the brow over the far eye presses down low and flat, the near eye stays wide open while the far eye narrows to a half-lidded squint, and the shut mouth pulls down at the corner in a sceptical frown. Then the brows settle back. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.04,
+        "heightSwing": 10.4,
+        "driftX": 0.3,
+        "edgeMargin": 127,
+        "flatCut": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:23:40.878Z"
+    },
+    "talking": {
+      "file": "snake-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.2846,
+      "originX": 0.4554,
+      "originY": 0.6094,
+      "prompt": "Side view, facing left. The green snake stays in place and chats in a friendly, conversational way: its dark brows lift from a glower into a relaxed, easy line, and its long jaw opens to a clear medium gap and closes again with each phrase, four even open-and-shut beats across the clip, never gaping wide. The open mouth always shows the same shape: one clean smooth patch of flat dark pink inside with the same two small white fangs as in the reference, drawn identically in every frame it appears, and the forked red tongue keeps the same shape. Its head gives only a small nod in time, and its big white eyes stay open and friendly. Its long body lies along the ground and its raised neck stays exactly where and how it is in the reference image for the whole clip: the neck does not bend, sway or lean, so the head holds the position and height it has in the reference, and the snake never strikes, never lunges and never slithers off. Steady, easy speaking rhythm with no sudden jumps. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.17,
+        "heightSwing": 8.9,
+        "driftX": 0.5,
+        "edgeMargin": 128,
+        "flatCut": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:22:07.162Z"
+    },
+    "thinking": {
+      "file": "snake-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.6071,
+      "originX": 0.4594,
+      "originY": 0.6094,
+      "prompt": "Side view, facing left. The green snake stays in place, quietly pondering. Its head, neck, long body and tail stay exactly as in the reference image and do not move at all, and its dark brows ease from a glower into a calm, level line. Its eyelids stay fully open and completely still for the whole clip, so both big white eyes keep their full round shape in every frame. ONLY THE PUPILS MOVE, very slowly: they drift up and to one side as if searching for an answer, taking the whole first half of the clip to get there, rest there, then drift just as slowly back. One smooth gliding path, the same slow speed throughout. The mouth stays shut, drawn exactly as in the reference. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.04,
+        "heightSwing": 0,
+        "driftX": 0,
+        "edgeMargin": 128,
+        "flatCut": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:26:33.831Z"
+    }
+  },
   "white-chicken": {
     "angry": {
       "file": "white-chicken-angry.png",
