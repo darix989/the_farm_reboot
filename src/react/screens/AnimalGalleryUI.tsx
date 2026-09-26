@@ -211,22 +211,25 @@ function groupEmotions(clips: readonly AnimalClip[]): EmotionGroup[] {
 }
 
 /**
- * The badge a phased emotion's button carries: its worst part, named, so a warn on the ease-out
- * is not hidden behind a clean loop. The whole-chain entry has no measurements of its own.
+ * The badge a phased emotion carries, on its button and on Whole: OK only when every phase is,
+ * otherwise the worst of them, so a warn on the ease-out is not hidden behind a clean loop. The
+ * whole-chain entry has no measurements of its own. The tooltip lists every phase, worst first.
  */
 function groupQuality(group: EmotionGroup): { status: ClipQualityStatus; title: string } {
   if (group.parts.length === 0) {
     return { status: group.lead.qualityStatus ?? 'none', title: clipQualityTitle(group.lead) };
   }
   const measured = group.parts.filter((clip) => clip.qualityStatus);
-  const worst = [...measured].sort(
+  const ranked = [...measured].sort(
     (a, b) =>
       QUALITY_SEVERITY.indexOf(a.qualityStatus!) - QUALITY_SEVERITY.indexOf(b.qualityStatus!),
-  )[0];
-  if (!worst) return { status: 'none', title: '' };
+  );
+  if (ranked.length === 0) return { status: 'none', title: '' };
   return {
-    status: worst.qualityStatus!,
-    title: `${getLabel(PART_LABEL[worst.part!])}: ${clipQualityTitle(worst)}`,
+    status: ranked[0]!.qualityStatus!,
+    title: ranked
+      .map((clip) => `${getLabel(PART_LABEL[clip.part!])}: ${clipQualityTitle(clip)}`)
+      .join('\n'),
   };
 }
 
@@ -267,6 +270,14 @@ const AnimalGalleryUI: React.FC = () => {
   const missingArt = emotionGroups.filter((group) => !group.lead.available).length;
   const statusCharacterId = moderatorCharacterIdForAnimal(animalId);
   const animalQuality = animalEmotionQualityStatus(animalId);
+  // The whole chain has no measurements of its own, so it rolls up its parts — OK only when
+  // every phase is, otherwise the worst of them — exactly like the emotion's button.
+  const partQuality =
+    selected?.part === 'sequence' && selectedGroup
+      ? groupQuality(selectedGroup)
+      : selected?.qualityStatus
+        ? { status: selected.qualityStatus, title: clipQualityTitle(selected) }
+        : null;
 
   const renderNotes = (clip: AnimalClip) =>
     clip.reviewNotes?.map((note) => (
@@ -446,11 +457,8 @@ const AnimalGalleryUI: React.FC = () => {
             <div className={styles.partDetail}>
               <span className={styles.clipHeader}>
                 <span className={styles.clipMeta}>{clipMeta(selected)}</span>
-                {selected.qualityStatus && (
-                  <QualityBadge
-                    status={selected.qualityStatus}
-                    title={clipQualityTitle(selected)}
-                  />
+                {partQuality && (
+                  <QualityBadge status={partQuality.status} title={partQuality.title} />
                 )}
               </span>
               {renderNotes(selected)}
