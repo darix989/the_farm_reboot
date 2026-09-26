@@ -272,16 +272,14 @@ export const EMOTION_SHEETS: Partial<
       frameHeight: 512,
       frameCount: 36,
       frameRate: 12,
-      scale: 2.7081,
-      originX: 0.508,
-      originY: 0.7051,
+      scale: 2.7212,
+      originX: 0.5041,
+      originY: 0.7031,
       quality: {
-        loopPop: 0.24,
-        heightSwing: 21.2,
-        driftX: 3,
-        warnings: [
-          'height swing 21% (over 20%) — check it is motion, not the character changing pose',
-        ],
+        loopPop: 0.12,
+        heightSwing: 13,
+        driftX: 2,
+        warnings: [],
       },
     },
     doubtful: {
