@@ -16,6 +16,7 @@ import {
   seedLevel1Started,
   test,
   waitForMainMenu,
+  pressFarmInteract,
   walkUntilVisible,
 } from './helpers';
 
@@ -109,34 +110,24 @@ test.describe('lateral farm scene', () => {
 
     // Walk directly to the picket gate. Stopping at the barn and synthesizing a second held
     // key transition made this unnecessarily timing-sensitive on slow software-WebGL CI.
-    // `walkUntilVisible` holds WASD because Linux CI drops arrow keyCodes.
-    await walkUntilVisible(
-      page,
-      'ArrowRight',
-      page.getByRole('button', { name: FARM_SIDE_PORTAL_GATE }),
-    );
-
-    await page.keyboard.press('Space');
+    await walkUntilVisible(page, 'ArrowRight', FARM_SIDE_PORTAL_GATE);
+    await pressFarmInteract(page);
     await page.waitForTimeout(300);
 
     // gateLane's own entry portal disarms itself on arrival, and Bram (x=1600) is too
     // far from the ~x=360 spawn to be in range yet — walk over until his talk prompt
     // confirms his level actually loaded.
-    await walkUntilVisible(page, 'ArrowRight', page.getByRole('button', { name: TALK_TO_BRAM }));
+    await walkUntilVisible(page, 'ArrowRight', TALK_TO_BRAM);
     await attachScreenshot(page, 'farm-side-gate-lane');
 
     // Walk back to the return gate and travel home through it.
-    await walkUntilVisible(
-      page,
-      'ArrowLeft',
-      page.getByRole('button', { name: FARM_SIDE_PORTAL_BACK_TO_ROAD }),
-    );
-    await page.keyboard.press('Space');
+    await walkUntilVisible(page, 'ArrowLeft', FARM_SIDE_PORTAL_BACK_TO_ROAD);
+    await pressFarmInteract(page);
     await page.waitForTimeout(300);
 
     // Cass stands west of the gate, past the combined talk/portal radii — walk left
     // until her prompt confirms the main road is back, not merely some `FarmSide` instance.
-    await walkUntilVisible(page, 'ArrowLeft', page.getByRole('button', { name: TALK_TO_CASS }));
+    await walkUntilVisible(page, 'ArrowLeft', TALK_TO_CASS);
     await attachScreenshot(page, 'farm-side-back-on-road');
 
     await page.getByRole('button', { name: IN_GAME_MENU }).click();
