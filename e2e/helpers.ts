@@ -1,4 +1,4 @@
-import { test as base, type Locator, type Page } from '@playwright/test';
+import { test as base, type Page } from '@playwright/test';
 import getLabel from '../src/data/labels';
 
 export const GAME_TITLE = getLabel('gameTitle');
@@ -147,11 +147,12 @@ const WASD: Record<
   ArrowRight: { key: 'd', code: 'KeyD', keyCode: 68 },
 };
 
-async function dispatchFarmKey(
-  page: Page,
-  type: 'keydown' | 'keyup',
-  key: { key: string; code: string; keyCode: number },
-): Promise<void> {
+/** Phaser `KeyCodes.SPACE`. Same legacy `keyCode` path as WASD — Playwright's Space often arrives as 0 on Linux CI. */
+const FARM_INTERACT_KEY = { key: ' ', code: 'Space', keyCode: 32 };
+
+type FarmKeyInit = { key: string; code: string; keyCode: number };
+
+async function dispatchFarmKey(page: Page, type: 'keydown' | 'keyup', key: FarmKeyInit): Promise<void> {
   await page.evaluate(
     ({ eventType, init }) => {
       const event = new KeyboardEvent(eventType, {
@@ -161,7 +162,7 @@ async function dispatchFarmKey(
         cancelable: true,
       });
       // Phaser 3.90 indexes its Key objects by legacy `keyCode`. Chromium's constructor
-      // leaves that property at zero, so define the same values a physical A/D key emits.
+      // leaves that property at zero, so define the same values a physical key emits.
       Object.defineProperties(event, {
         keyCode: { value: init.keyCode },
         which: { value: init.keyCode },
@@ -173,29 +174,85 @@ async function dispatchFarmKey(
 }
 
 /**
- * Hold a walk key until `locator` is visible.
+ * Hold a walk key until a button with this accessible name is on screen.
  *
- * Linux CI is the load-bearing case: Phaser keys on legacy `keyCode`, which Chromium's
- * synthetic events do not populate consistently. `dispatchFarmKey` supplies the physical
- * WASD values explicitly and re-asserts the hold across slow software-WebGL frames.
+ * Phaser 3.90 reads legacy `keyCode`, which Playwright's arrow events leave at 0 on
+ * Linux CI, so the hold is a synthetic WASD event. Polling that from Playwright
+ * freezes the page between checks and the next frame steps through a gate-sized
+ * interact radius, so the watch runs on `requestAnimationFrame` and releases the
+ * key before control returns to the test.
  */
 export async function walkUntilVisible(
   page: Page,
   key: 'ArrowLeft' | 'ArrowRight',
-  locator: Locator,
+  name: string,
   timeout = 45_000,
 ): Promise<void> {
   const wasd = WASD[key];
-  await dispatchFarmKey(page, 'keydown', wasd);
   try {
-    const deadline = Date.now() + timeout;
-    while (Date.now() < deadline) {
-      if (await locator.isVisible()) return;
-      await dispatchFarmKey(page, 'keydown', wasd);
-      await page.waitForTimeout(250);
+    const found = await page.evaluate(
+      ({ init, timeoutMs, buttonName }) => {
+        const dispatch = (eventType: 'keydown' | 'keyup') => {
+          const event = new KeyboardEvent(eventType, {
+            key: init.key,
+            code: init.code,
+            bubbles: true,
+            cancelable: true,
+          });
+          Object.defineProperties(event, {
+            keyCode: { value: init.keyCode },
+            which: { value: init.keyCode },
+          });
+          window.dispatchEvent(event);
+        };
+        const deadline = performance.now() + timeoutMs;
+        const target = buttonName.toLowerCase();
+        const buttonVisible = () => {
+          for (const button of document.querySelectorAll('button')) {
+            const label = (button.getAttribute('aria-label') ?? '').toLowerCase();
+            if (!label.includes(target)) continue;
+            const style = getComputedStyle(button);
+            if (style.display === 'none' || style.visibility === 'hidden') continue;
+            const box = button.getBoundingClientRect();
+            if (box.width > 0 && box.height > 0) return true;
+          }
+          return false;
+        };
+        const stop = (seen: boolean) => {
+          // Release before yielding to Playwright. A key still down across that
+          // round trip walks Rue out of the interact radius she just reached.
+          dispatch('keyup');
+          return seen;
+        };
+        dispatch('keydown');
+        return new Promise<boolean>((resolve) => {
+          const tick = () => {
+            dispatch('keydown');
+            if (buttonVisible()) {
+              resolve(stop(true));
+              return;
+            }
+            if (performance.now() >= deadline) {
+              resolve(stop(false));
+              return;
+            }
+            requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        });
+      },
+      { init: wasd, timeoutMs: timeout, buttonName: name },
+    );
+    if (!found) {
+      await page.getByRole('button', { name }).waitFor({ timeout: 5_000 });
     }
-    await locator.waitFor({ timeout: 5_000 });
   } finally {
     await dispatchFarmKey(page, 'keyup', wasd);
   }
+}
+
+/** Space, with an explicit `keyCode`, so a portal hop is not a no-op on Linux CI. */
+export async function pressFarmInteract(page: Page): Promise<void> {
+  await dispatchFarmKey(page, 'keydown', FARM_INTERACT_KEY);
+  await dispatchFarmKey(page, 'keyup', FARM_INTERACT_KEY);
 }

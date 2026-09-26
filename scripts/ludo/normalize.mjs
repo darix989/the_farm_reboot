@@ -43,7 +43,7 @@ const ALPHA_THRESHOLD = 8;
  * Tight bounding box of the non-transparent pixels in a raw RGBA buffer, or null when the
  * image is fully transparent.
  */
-function alphaBounds({ data, width, height }) {
+export function alphaBounds({ data, width, height }) {
   let minX = width;
   let minY = height;
   let maxX = -1;

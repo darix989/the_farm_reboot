@@ -1,4 +1,100 @@
 {
+  "brown-bull": {
+    "angry": {
+      "file": "brown-bull-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 3.3529,
+      "originX": 0.497,
+      "originY": 0.6992,
+      "prompt": "Side view, facing left. The brown bull stands in place and is furious: its ears pin flat back, its brow drops into a hard scowl over narrowed eyes, its head and horns swing down level with its shoulders and push forward at the target, and its nostrils flare around the brass ring. The muzzle is held open and always the same shape: one clean smooth rounded patch of flat dark pink inside, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and its shoulders stay directly over them for the whole clip, so its body holds the same place in the frame from first frame to last — it never lowers its horns to charge, never paws or stomps the ground, never runs forward. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.16,
+        "heightSwing": 13.7,
+        "driftX": 1,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T16:49:15.456Z"
+    },
+    "doubtful": {
+      "file": "brown-bull-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 3.3204,
+      "originX": 0.5048,
+      "originY": 0.6992,
+      "prompt": "Side view, facing left. The brown bull's head, horns, ears, muzzle, nose ring, body, four planted hooves and tail stay exactly as in the reference image and do not move at all: the head holds its exact position and angle in every frame. ONLY THE FACE MOVES, on an even, symmetrical timeline. Using the heavy brow already drawn in the reference, the brow over the near eye slowly arches HIGH up in disbelief while the brow over the far eye presses down low and flat, the near eye narrows to a sceptical half-lidded squint with the pupil sliding sideways toward the listener, and the shut muzzle pulls down at one corner in a doubtful frown; it holds that look, then eases back just as slowly and comes to rest in the exact pose of the reference a few frames before the end. The eye never goes wide and round. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.12,
+        "heightSwing": 1.5,
+        "driftX": 3.3,
+        "edgeMargin": 120,
+        "flatCut": 6,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T21:29:10.668Z"
+    },
+    "sneaky": {
+      "file": "brown-bull-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.1963,
+      "originX": 0.4969,
+      "originY": 0.6973,
+      "prompt": "Side view, facing left. The brown bull stands in place and speaks conspiratorially: its head cranes forward and dips toward the listener, its ears tilt back, its eyes flick sideways, and its muzzle moves in a low mutter. Its horns stay whole and the same size in every frame. All four hooves stay planted exactly where they are in the reference image and its shoulders stay directly over them for the whole clip, so its body holds the same place in the frame from first frame to last — it never lowers its horns to charge, never paws or stomps the ground, never runs forward. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.2,
+        "heightSwing": 5.1,
+        "driftX": 2.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T16:37:08.924Z"
+    },
+    "talking": {
+      "file": "brown-bull-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.3204,
+      "originX": 0.495,
+      "originY": 0.6973,
+      "prompt": "Side view, facing left. The brown bull stands in place and talks: its wide muzzle opens and closes with each phrase, its head and horns bob gently in time, its ears flick once, and the brass ring in its nose swings slightly. Its brow is eased and smooth rather than furrowed. Each time the muzzle opens it shows the same shape every frame — one clean smooth rounded patch of flat dark pink inside a plain dark muzzle, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and its shoulders stay directly over them for the whole clip, so its body holds the same place in the frame from first frame to last — it never lowers its horns to charge, never paws or stomps the ground, never runs forward. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.19,
+        "heightSwing": 1.5,
+        "driftX": 1,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T16:26:25.285Z"
+    },
+    "thinking": {
+      "file": "brown-bull-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 3.2264,
+      "originX": 0.5076,
+      "originY": 0.6973,
+      "prompt": "Side view, facing left. Animate one complete closed thinking cycle of this exact brown bull, in place. Its barrel body, four planted hooves, tail, horn shape and camera remain fixed exactly as in the reference throughout. Its eyes stay open with the same white eye shapes and pupils, and its brow is eased and smooth rather than furrowed. During the first quarter its head tilts just slightly in consideration; during the middle half it slowly returns along the same path; during the final quarter it has fully returned to the starting pose and settles motionless. The final pose, head position, horns, ears, eyes, mouth, tail, silhouette, proportions and colors match the first frame and the reference exactly. Start and finish at rest in that identical pose. The mouth stays closed. One slow continuous out-and-back motion, seamless repeating loop, stationary camera, no travel.",
+      "quality": {
+        "loopPop": 0.16,
+        "heightSwing": 4.7,
+        "driftX": 4,
+        "edgeMargin": 107,
+        "flatCut": 13,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T21:12:07.896Z"
+    }
+  },
   "brown-wolf": {
     "angry": {
       "file": "brown-wolf-angry.png",
@@ -96,22 +192,21 @@
       "file": "cow-angry.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 1.7558,
-      "originX": 0.49,
-      "originY": 0.7012,
-      "prompt": "Side view, facing left. The black and white cow stands in place on all fours and is furious: its googly eyes narrow, its head drops until it is level with its shoulders and pushes forward at the target, its big pink snout is held open in one long hard bellow, and the golden bell on its teal collar jerks. The open mouth is always the same shape: one big clean smooth rounded patch of flat pink inside the snout, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and never move. Its head never drops below shoulder height, never lowers to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 1.7887,
+      "originX": 0.4855,
+      "originY": 0.6992,
+      "prompt": "Side view, facing left. The black-and-white cow is furious. Its body, four planted hooves, tail and golden cowbell stay exactly as in the reference image and do not move at all, and its head holds exactly the position and height it has in the reference — it never tips up, never lowers to graze. ONLY THE FACE MOVES, on an even, symmetrical timeline. During the first two fifths its brows slam down into a hard V and both googly eyes narrow to a fierce glare, staying OPEN with the pupils clearly visible and locked on the target, while its huge pink snout opens into a wide angry bellow. During the middle fifth it holds that furious face. During the last two fifths it eases back just as slowly along the same path and comes fully to rest in the exact pose of the reference a few frames before the end. The open mouth always shows the same shape: one clean smooth patch of flat dark pink inside, drawn identically in every frame it appears. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.37,
-        "heightSwing": 19,
-        "driftX": 6.8,
+        "loopPop": 0.36,
+        "heightSwing": 7.5,
+        "driftX": 2.3,
+        "edgeMargin": 120,
+        "flatCut": 0,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T00:26:35.180Z",
-      "reviewNotes": [
-        "First attempt read as sulking rather than angry despite clean numbers; this retry bellows convincingly but is still worth a second look in game."
-      ]
+      "generatedAt": "2026-09-26T21:27:47.182Z"
     },
     "approving": {
       "file": "cow-thinking.png",
@@ -153,22 +248,21 @@
       "file": "cow-sneaky.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 1.6784,
-      "originX": 0.498,
-      "originY": 0.7012,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 1.8406,
+      "originX": 0.4703,
+      "originY": 0.6992,
       "prompt": "Side view, facing left. The black and white cow stands in place on all fours and speaks conspiratorially: its head cranes forward and dips a little toward the listener, its googly eyes narrow and flick sideways, and the golden bell on its collar stays still. Its big pink snout, including both dark nostrils, stays completely shut and unchanging in every frame, like a solid pink sticker glued to the front of its face — it never opens, never hinges, and no mouth or opening of any kind ever appears on or inside it. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.32,
-        "heightSwing": 10.6,
-        "driftX": 7.8,
+        "loopPop": 0.36,
+        "heightSwing": 9.2,
+        "driftX": 5.5,
+        "edgeMargin": 114,
+        "flatCut": 0,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T00:44:01.545Z",
-      "reviewNotes": [
-        "One frame (of 25) shows a brief stray red mark on the fur under the chin, not present in neighboring frames — small and easy to miss, but worth a second look on loop."
-      ]
+      "generatedAt": "2026-09-26T21:14:48.826Z"
     },
     "talking": {
       "file": "cow-talking.png",
@@ -194,19 +288,21 @@
       "file": "dog-angry.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
+      "frameCount": 36,
+      "frameRate": 12,
       "scale": 2.7212,
-      "originX": 0.5177,
+      "originX": 0.5041,
       "originY": 0.7031,
-      "prompt": "Side view, facing left. The tan alsatian dog stands in place on all fours, ears flattened hard back against its skull for the whole clip, muzzle wrinkled open in a snarl showing teeth, head lowered until it is level with its shoulders and pushed toward the target, and its tail held low. All four feet stay planted exactly where they are in the reference image and never move — it does not step, lunge, walk or pounce, and the body stays standing, never sits, never lies down. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "prompt": "Side view, facing left. The tan alsatian dog is furious. Its body, four planted feet and its tail stay exactly as in the reference image and do not move at all: its head holds exactly the position and height it has in the reference, and the tail stays still at exactly the length and position it has in the reference, so the whole dog stays inside the same framing as the reference in every frame. ONLY THE FACE AND EARS MOVE, on an even, symmetrical timeline. During the first two fifths its ears flatten hard back against its skull, thick brows drop into a hard V, both eyes stay OPEN narrowed to a fierce glare with the pupils locked on the target, and its muzzle wrinkles up and opens into a snarl. During the middle fifth it holds that snarl. During the last two fifths it eases back just as slowly along the same path and comes fully to rest in the exact pose of the reference a few frames before the end. The open snarl always shows exactly the same thing: one neat row of small pointed white teeth along the top jaw and one along the bottom jaw, the same number, size and spacing in every frame, on a plain flat dark pink mouth; nothing white appears anywhere outside the mouth, and the chin and throat stay the same tan fur as the reference. It never steps, lunges, sits or lies down. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.22,
-        "heightSwing": 16.3,
-        "driftX": 5.8,
+        "loopPop": 0.12,
+        "heightSwing": 13,
+        "driftX": 2,
+        "edgeMargin": 113,
+        "flatCut": 0,
         "warnings": []
       },
-      "generatedAt": "2026-09-09T01:49:50.286Z"
+      "generatedAt": "2026-09-26T22:12:27.449Z"
     },
     "doubtful": {
       "file": "dog-doubtful.png",
@@ -230,24 +326,21 @@
       "file": "dog-sneaky.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
+      "frameCount": 36,
+      "frameRate": 12,
       "scale": 2.7212,
-      "originX": 0.5392,
+      "originX": 0.5099,
       "originY": 0.7031,
-      "prompt": "Side view, facing left. The tan alsatian dog stands in place on all fours and speaks conspiratorially: its head lowers and cranes slowly forward toward the listener, its ears tilt back, and its eyes flick sideways. Its tail stays whole and fully drawn for every frame, held low. All four feet stay planted exactly where they are in the reference image and never move; it stays standing the whole time and never crouches flat, never lies down, never sits. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "prompt": "Side view, facing left. The tan alsatian dog stands in place on all fours and schemes. Its body, neck, head position, ears, four planted feet and its tail stay exactly as in the reference image and do not move at all: the head holds exactly the position and angle it has in the reference and never cranes or lowers, and the tail stays still at exactly the length, height and position it has in the reference, so the whole dog stays inside the same framing as the reference in every frame. ONLY THE FACE MOVES, on an even, symmetrical timeline. During the first two fifths its brows curve down into a sly, smug arch, both eyes sink to heavy half-lidded slits and the pupils slide sideways toward the listener, and one corner of its closed mouth curls up into a knowing smirk. During the middle fifth it holds that scheming look. During the last two fifths it eases back just as slowly and comes fully to rest in the exact pose of the reference a few frames before the end. It never sits, crouches or lies down. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.22,
-        "heightSwing": 27.4,
-        "driftX": 14.5,
-        "warnings": [
-          "height swing 27% (over 20%) — check it is motion, not the character changing pose"
-        ]
+        "loopPop": 0.13,
+        "heightSwing": 1,
+        "driftX": 3,
+        "edgeMargin": 113,
+        "flatCut": 0,
+        "warnings": []
       },
-      "generatedAt": "2026-09-09T01:52:23.394Z",
-      "reviewNotes": [
-        "height swing is a head dip, not a pose collapse — accepted, same class as donkey sneaky"
-      ]
+      "generatedAt": "2026-09-26T21:39:20.080Z"
     },
     "talking": {
       "file": "dog-talking.png",
@@ -291,69 +384,85 @@
       "file": "donkey-grey-angry.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.0584,
-      "originX": 0.5384,
-      "originY": 0.7383,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.177,
+      "originX": 0.5324,
+      "originY": 0.7363,
+      "prompt": "Side view, facing left. The grey donkey is furious. The grey donkey's body, all four planted hooves, its mane and its tail stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference, and the tail stays still at exactly the length and position it has in the reference, so the whole donkey stays inside the same framing as the reference in every frame. It never walks, never lowers its head, never sits or lies down. ONLY THE FACE AND EARS MOVE, on an even, symmetrical timeline. During the first two fifths of the clip thick dark brows slam down into a hard V over its big eyes; both eyes stay OPEN in every frame, narrowed to a fierce glare with the black pupils clearly visible and locked on the target; both huge ears pin flat back along its head; its nostrils flare; and its pale muzzle opens into a braying snarl. During the middle fifth it holds that look. During the last two fifths it eases back just as slowly along the same path and comes fully to rest in the exact pose of the reference image a few frames before the end. The open mouth always shows the same shape: one clean smooth patch of flat pink inside, drawn identically in every frame it appears. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.23,
-        "heightSwing": 12.9,
-        "driftX": 1.5,
-        "warnings": []
-      }
+        "loopPop": 0.27,
+        "heightSwing": 10.3,
+        "driftX": 3,
+        "edgeMargin": 124,
+        "flatCut": 36,
+        "warnings": [
+          "flat cut on the left edge in frame 17 (36px opaque run, limit 16px) — part of the character leaves the generator's canvas and is sliced off"
+        ]
+      },
+      "generatedAt": "2026-09-26T21:49:02.042Z"
     },
     "doubtful": {
       "file": "donkey-grey-doubtful.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.0268,
-      "originX": 0.5332,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.1417,
+      "originX": 0.5281,
       "originY": 0.7363,
+      "prompt": "Side view, facing left. The grey donkey is unconvinced. The grey donkey's body, all four planted hooves, its mane and its tail stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference, and the tail stays still at exactly the length and position it has in the reference, so the whole donkey stays inside the same framing as the reference in every frame. It never walks, never lowers its head, never sits or lies down. ONLY THE FACE AND EARS MOVE, on an even, symmetrical timeline. During the first two fifths of the clip the brow over its near eye arches HIGH up in disbelief while the brow over its far eye presses down low and flat, the far eye narrows to a sceptical half-lidded squint with the pupil sliding sideways toward the listener, the shut pale muzzle pulls to one side in a doubtful pout, and one long ear tilts back. During the middle fifth it holds that look. During the last two fifths it eases back just as slowly along the same path and comes fully to rest in the exact pose of the reference image a few frames before the end. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 2.52,
-        "heightSwing": 9.6,
-        "driftX": 10.5,
+        "loopPop": 0.17,
+        "heightSwing": 2.8,
+        "driftX": 3.5,
+        "edgeMargin": 119,
+        "flatCut": 20,
         "warnings": [
-          "loop seam 2.52% (over 2%) — it will visibly jump on every repeat"
+          "flat cut on the left edge in frame 11 (20px opaque run, limit 16px) — part of the character leaves the generator's canvas and is sliced off"
         ]
-      }
+      },
+      "generatedAt": "2026-09-26T21:47:36.312Z"
     },
     "sneaky": {
       "file": "donkey-grey-sneaky.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.177,
-      "originX": 0.5266,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.1245,
+      "originX": 0.5324,
       "originY": 0.7363,
+      "prompt": "Side view, facing left. The grey donkey schemes. The grey donkey's body, all four planted hooves, its mane and its tail stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference, and the tail stays still at exactly the length and position it has in the reference, so the whole donkey stays inside the same framing as the reference in every frame. It never walks, never lowers its head, never sits or lies down. ONLY THE FACE AND EARS MOVE, on an even, symmetrical timeline. During the first two fifths of the clip its brows curve down into a sly, smug arch, both eyes sink to heavy half-lidded slits and the pupils slide sideways toward the listener, one corner of its closed pale muzzle curls up into a knowing smirk, and both long ears tilt back. During the middle fifth it holds that look. During the last two fifths it eases back just as slowly along the same path and comes fully to rest in the exact pose of the reference image a few frames before the end. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.22,
-        "heightSwing": 28,
-        "driftX": 5.5,
-        "warnings": [
-          "height swing 28% (over 20%) — check it is motion, not the character changing pose"
-        ]
-      }
+        "loopPop": 0.17,
+        "heightSwing": 3.2,
+        "driftX": 2.8,
+        "edgeMargin": 123,
+        "flatCut": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T21:51:54.430Z"
     },
     "talking": {
       "file": "donkey-grey-talking.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
+      "frameCount": 36,
+      "frameRate": 12,
       "scale": 2.1331,
-      "originX": 0.5361,
+      "originX": 0.5342,
       "originY": 0.7363,
+      "prompt": "Side view, facing left. The grey donkey chats in a friendly, conversational way. The grey donkey's body, all four planted hooves, its mane and its tail stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference, and the tail stays still at exactly the length and position it has in the reference, so the whole donkey stays inside the same framing as the reference in every frame. It never walks, never lowers its head, never sits or lies down. Its pale muzzle opens to a clear medium gap and closes again with each phrase, four even open-and-shut beats across the clip, never gaping wide; its head gives only a small nod in time, one long ear flicks once, and its big round eyes stay open, bright and friendly. The open mouth always shows the same shape: one clean smooth patch of flat pink inside, drawn identically in every frame it appears. Steady, easy speaking rhythm with no sudden jumps. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.74,
-        "heightSwing": 3.2,
-        "driftX": 1.5,
+        "loopPop": 0.21,
+        "heightSwing": 2,
+        "driftX": 3.3,
+        "edgeMargin": 122,
+        "flatCut": 0,
         "warnings": []
-      }
+      },
+      "generatedAt": "2026-09-26T21:46:11.580Z"
     },
     "talking_still": {
       "file": "donkey-grey-talking_still.png",
@@ -377,17 +486,21 @@
       "file": "donkey-grey-thinking.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 16,
-      "frameRate": 8,
-      "scale": 2.0584,
-      "originX": 0.5257,
-      "originY": 0.7383,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.168,
+      "originX": 0.5345,
+      "originY": 0.7363,
+      "prompt": "Side view, facing left. The grey donkey stands quietly, pondering. The grey donkey's body, all four planted hooves, its mane and its tail stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference, and the tail stays still at exactly the length and position it has in the reference, so the whole donkey stays inside the same framing as the reference in every frame. It never walks, never lowers its head, never sits or lies down. Its brows are eased and level. Its eyelids stay fully open and completely still for the whole clip, so both big round eyes keep their full shape in every frame. ONLY THE PUPILS AND ONE EAR MOVE, very slowly: the pupils drift up and to one side as if searching for an answer, taking the whole first half of the clip to get there, rest there, then drift just as slowly back, while one long ear slowly rotates back and forward again. One smooth gliding path, the same slow speed throughout. Its muzzle stays closed, drawn exactly as in the reference. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 1.54,
-        "heightSwing": 10.9,
-        "driftX": 6.3,
+        "loopPop": 0.27,
+        "heightSwing": 2,
+        "driftX": 1.8,
+        "edgeMargin": 126,
+        "flatCut": 0,
         "warnings": []
-      }
+      },
+      "generatedAt": "2026-09-26T21:50:34.158Z"
     }
   },
   "fox": {
@@ -467,21 +580,21 @@
       "file": "fox-thinking.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 2.3018,
-      "originX": 0.5726,
-      "originY": 0.666,
-      "prompt": "Side view, facing left. The red fox stands in place on all fours and considers something: nearly still, its head lowered and turned slightly away, its ears rotating slowly back and forward again, its muzzle closed, its bushy tail hanging still. All four feet stay planted exactly where they are in the reference image and never move. Quiet and deliberate. Seamless loop, no travel, same silhouette throughout.",
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.2882,
+      "originX": 0.5552,
+      "originY": 0.6641,
+      "prompt": "Side view, facing left. The red fox stands in place on all fours, quietly pondering. Its body, head, four planted feet and its bushy tail stay exactly as in the reference image and do not move at all, and the tail stays still at exactly the length and position it has in the reference, so the whole fox stays inside the same framing as the reference in every frame. Its ears stay upright and its brows are eased and level, calm rather than worried. Its eyelids stay fully open and completely still for the whole clip, so both eyes keep their full shape in every frame. ONLY THE PUPILS MOVE, very slowly: they drift up and to one side as if searching for an answer, taking the whole first half of the clip to get there, rest there, then drift just as slowly back. One smooth gliding path, the same slow speed throughout. Its muzzle stays closed, drawn exactly as in the reference. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
         "loopPop": 0.17,
-        "heightSwing": 26.8,
-        "driftX": 11.3,
-        "warnings": [
-          "height swing 27% (over 20%) — check it is motion, not the character changing pose"
-        ]
+        "heightSwing": 1.8,
+        "driftX": 3.5,
+        "edgeMargin": 114,
+        "flatCut": 0,
+        "warnings": []
       },
-      "generatedAt": "2026-09-05T04:34:32.892Z"
+      "generatedAt": "2026-09-26T21:44:46.623Z"
     }
   },
   "mouse": {
@@ -691,22 +804,21 @@
       "file": "pig-angry.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 1.5986,
-      "originX": 0.4939,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 1.6214,
+      "originX": 0.4949,
       "originY": 0.6348,
       "prompt": "Side view, facing left. The pink pig stands in place on all fours and is furious: its small ears pin back, its eyes narrow, its head drops level with its shoulders and pushes forward at the target, its round snout is held open, and its corkscrew tail twitches hard. The open snout is always the same shape: one clean smooth rounded patch of flat darker pink inside, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.23,
-        "heightSwing": 3.5,
-        "driftX": 2.5,
+        "loopPop": 0.31,
+        "heightSwing": 5.7,
+        "driftX": 1.5,
+        "edgeMargin": 124,
+        "flatCut": 0,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T01:05:59.113Z",
-      "reviewNotes": [
-        "Approved with a check label: expression reads as a subdued head-down huff rather than strong anger, despite passing quality metrics."
-      ]
+      "generatedAt": "2026-09-26T21:16:35.271Z"
     },
     "doubtful": {
       "file": "pig-doubtful.png",
@@ -855,27 +967,408 @@
       "generatedAt": "2026-09-05T02:00:36.331Z"
     }
   },
+  "seagull": {
+    "angry": {
+      "file": "seagull-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.9261,
+      "originX": 0.547,
+      "originY": 0.75,
+      "prompt": "Side view, facing left. The grey and white seagull is furious. Its neck, body, folded grey wings, tail and both planted orange feet stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference in every frame, so the long yellow beak stays inside the same framing as the reference. ONLY THE FACE MOVES. The thin brow lines already drawn above its eyes in the reference slowly thicken and slant down into a hard, heavy V, then ease back into the same thin lines; the brows are solid opaque black strokes in every single frame, attached to the head, the same colour as its outlines. Both eyes stay OPEN in every frame, the upper lids lowered only to a hard narrowed glare with the black pupils clearly visible and locked on the target; and its beak gapes wide open in a squawking shriek. The open beak always shows the same shape: one clean smooth patch of flat dark pink inside, drawn identically in every frame it appears, with no tongue and no teeth. It never flaps, never hops and never takes off. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.09,
+        "heightSwing": 0.8,
+        "driftX": 2.3,
+        "edgeMargin": 127,
+        "flatCut": 7,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:02:52.769Z"
+    },
+    "doubtful": {
+      "file": "seagull-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.9035,
+      "originX": 0.5552,
+      "originY": 0.748,
+      "prompt": "Side view, facing left. The grey and white seagull's head, yellow beak, neck, body, folded wings, tail and both planted feet stay exactly as in the reference image and do not move at all: the head holds its exact position and angle in every frame, and it never flaps or takes off. ONLY THE FACE MOVES. A thick black cartoon brow line sits above each big round eye: the brow over the near eye arches HIGH up in disbelief while the brow over the far eye presses down low and flat, the near eye stays wide open while the far eye narrows to a half-lidded squint, and the shut beak tilts down at the corner in a sceptical frown. Then the brows settle back. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.6,
+        "heightSwing": 2.3,
+        "driftX": 2.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T18:43:56.758Z"
+    },
+    "sneaky": {
+      "file": "seagull-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.9261,
+      "originX": 0.5528,
+      "originY": 0.748,
+      "prompt": "Side view, facing left. The grey and white seagull stands in place on both legs and schemes: a thick black cartoon brow line sits above each big round eye, and the brows curve into a sly, smug arch while the eyes sink to heavy half-lidded slits and the pupils slide sideways toward the listener; the corner of its shut yellow beak curls up into a smug little smirk. Then the brows relax, the eyes open and the pupils slide back. Its head leans only slightly toward the listener and stays at the height it is in the reference. Both orange feet stay planted exactly where they are in the reference image, its body stays at the same height above them, its grey wings stay folded flat against its sides exactly as in the reference, and its head stays UP at the height it is in the reference for the whole clip; it never flaps, never hops and never takes off. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.11,
+        "heightSwing": 1.2,
+        "driftX": 2,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T18:47:40.267Z"
+    },
+    "talking": {
+      "file": "seagull-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.9375,
+      "originX": 0.5526,
+      "originY": 0.748,
+      "prompt": "Side view, facing left. The grey and white seagull stands in place and chats in a friendly, conversational way: its long yellow beak opens to a clear medium gap and closes again with each phrase, four even open-and-shut beats across the clip, the lower half of the beak dropping enough that the open gap is plainly visible each time, never gaping wide. The open beak always shows the same shape: one clean smooth patch of flat dark pink inside, drawn identically in every frame it appears, with no tongue and no teeth. Its head gives a small nod in time, and its big round white eyes stay open, relaxed and friendly. Both orange feet stay planted exactly where they are in the reference image, its body stays at the same height above them, its grey wings stay folded flat against its sides exactly as in the reference, and its head stays UP at the height it is in the reference for the whole clip; it never flaps, never hops and never takes off. Steady, easy speaking rhythm with no sudden jumps. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.19,
+        "heightSwing": 2,
+        "driftX": 1.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T18:42:42.417Z"
+    },
+    "thinking": {
+      "file": "seagull-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.9375,
+      "originX": 0.5555,
+      "originY": 0.748,
+      "prompt": "Side view, facing left. The grey and white seagull stands in place, quietly pondering. Its head, yellow beak, neck, body, folded wings, tail and both planted feet stay exactly as in the reference image and do not move at all. Its eyelids stay fully open and completely still for the whole clip, so both big round white eyes keep their full round shape in every frame. ONLY THE PUPILS MOVE, very slowly: they drift up and to one side as if searching for an answer, taking the whole first half of the clip to get there, rest there, then drift just as slowly back. One smooth gliding path, the same slow speed throughout. The beak stays shut, drawn exactly as in the reference. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.1,
+        "heightSwing": 0,
+        "driftX": 0.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T19:19:34.799Z"
+    }
+  },
+  "skunk": {
+    "angry": {
+      "file": "skunk-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.5446,
+      "originX": 0.5175,
+      "originY": 0.5938,
+      "prompt": "Side view, facing left. The black and white skunk stays low in place and is furious: thick black brows slam down into a hard V over its big eyes, which narrow into a fierce glare; the white tuft of fur on its head bristles up into sharp spikes; its ears pin flat back; and it bares its teeth in a snarl, the open mouth showing one neat row of small white teeth on flat dark pink, drawn identically in every frame it appears. Its head pushes a little forward toward the target but stays low at the height it is in the reference. Its low crouched body, all four planted paws and its long striped tail stay exactly where they are in the reference image for the whole clip: the tail stays low and trailing at exactly the height and shape it has in the reference, and the skunk never stands up, never rears, never lifts its tail, never sprays and never scurries off. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.12,
+        "heightSwing": 7,
+        "driftX": 0.8,
+        "edgeMargin": 122,
+        "flatCut": 1,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T21:18:52.128Z"
+    },
+    "doubtful": {
+      "file": "skunk-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.6771,
+      "originX": 0.5157,
+      "originY": 0.5938,
+      "prompt": "Side view, facing left. The black and white skunk's head, ears, white tuft of fur, muzzle, low body, four planted paws and long striped tail stay exactly as in the reference image and do not move at all: the head holds its exact position and angle in every frame, the tail never lifts and it never sprays. ONLY THE FACE MOVES. A thick black cartoon brow line sits above each big round eye: the brow over the near eye arches HIGH up in disbelief while the brow over the far eye presses down low and flat, the near eye stays wide open while the far eye narrows to a half-lidded squint, and the shut muzzle pulls to one side in a sceptical pout. Then the brows settle back. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.16,
+        "heightSwing": 2.1,
+        "driftX": 0.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T18:10:32.780Z"
+    },
+    "sneaky": {
+      "file": "skunk-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.6495,
+      "originX": 0.5198,
+      "originY": 0.5918,
+      "prompt": "Side view, facing left. The black and white skunk stays low in place and schemes: a thick black cartoon brow line sits above each big round eye, and the brows curve into a sly, smug arch while the eyes sink to heavy half-lidded slits and the pupils slide sideways toward the listener; one corner of its shut muzzle curls up into a smug little smirk. Then the brows relax, the eyes open and the pupils slide back. Its head leans only slightly toward the listener and stays low at the height it is in the reference. Its low crouched body, all four planted paws and its long striped tail stay exactly where they are in the reference image for the whole clip: the tail stays low and trailing at exactly the height and shape it has in the reference, and the skunk never stands up, never rears, never lifts its tail, never sprays and never scurries off. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.18,
+        "heightSwing": 4.1,
+        "driftX": 3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T18:17:14.313Z"
+    },
+    "talking": {
+      "file": "skunk-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.6495,
+      "originX": 0.5188,
+      "originY": 0.5918,
+      "prompt": "Side view, facing left. The black and white skunk stays low in place and chats in a friendly, lively way: its muzzle opens to a clear medium gap and closes again with every phrase, four even open-and-shut beats across the clip, the lower jaw dropping enough that the open mouth is plainly visible each time. The open mouth always shows the same shape: one clean smooth rounded patch of flat dark pink inside, drawn identically in every frame it appears. Its head gives a small nod in time so the white tuft of fur on its head bounces, one ear flicks, and its big round eyes stay open, bright and friendly. Its low crouched body, all four planted paws and its long striped tail stay exactly where they are in the reference image for the whole clip: the tail stays low and trailing at exactly the height and shape it has in the reference, and the skunk never stands up, never rears, never lifts its tail, never sprays and never scurries off. Steady, easy speaking rhythm with no sudden jumps. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.16,
+        "heightSwing": 3.1,
+        "driftX": 2.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T18:09:14.993Z"
+    },
+    "thinking": {
+      "file": "skunk-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.6224,
+      "originX": 0.516,
+      "originY": 0.5918,
+      "prompt": "Side view, facing left. The black and white skunk stays low in place, quietly pondering. Its head, ears, white tuft of fur, muzzle, low body, four planted paws and long striped tail stay exactly as in the reference image and do not move at all. Its eyelids stay fully open and completely still for the whole clip, so both big round white eyes keep their full round shape in every frame. ONLY THE PUPILS MOVE, very slowly: they drift up and to one side as if searching for an answer, taking the whole first half of the clip to get there, rest there, then drift just as slowly back. One smooth gliding path, the same slow speed throughout. The muzzle stays shut, drawn exactly as in the reference. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.18,
+        "heightSwing": 3.1,
+        "driftX": 0.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T18:15:54.133Z"
+    }
+  },
+  "snake": {
+    "angry": {
+      "file": "snake-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 3.513,
+      "originX": 0.4573,
+      "originY": 0.6094,
+      "prompt": "Side view, facing left. The green snake is furious. Its long body lies along the ground and its raised neck stays exactly where and how it is in the reference image for the whole clip: the neck does not bend, sway or lean, so the head holds the position and height it has in the reference, and the snake never strikes, never lunges and never slithers off. ONLY THE FACE MOVES, on an even, symmetrical timeline. During the first two fifths of the clip its thick dark brows, already drawn in the reference, slowly slam further down into a hard, heavy V while its eyes narrow to a hard glare with the black pupils clearly visible and locked on the target, and its jaw slowly opens wide into a hiss. During the middle fifth it holds that furious face. During the last two fifths it eases back just as slowly along the same path, the jaw closing gradually at the same speed it opened, and it comes fully to rest in the exact pose of the reference image a few frames before the end, holding still there. Both eyes stay open in every frame. The open mouth always shows the same shape: one clean smooth patch of flat dark pink inside with the same two small white fangs as in the reference, drawn identically in every frame it appears, and the forked red tongue keeps the same shape. The closing is never faster than the opening, with no sudden jumps. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.07,
+        "heightSwing": 3.5,
+        "driftX": 0.3,
+        "edgeMargin": 127,
+        "flatCut": 12,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:37:27.768Z"
+    },
+    "doubtful": {
+      "file": "snake-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.6071,
+      "originX": 0.4594,
+      "originY": 0.6094,
+      "prompt": "Side view, facing left. The green snake stays in place and schemes: its thick dark brows, already drawn in the reference, curve into a sly, smug arch while its eyes sink to heavy half-lidded slits and the pupils slide sideways toward the listener, and the corner of its shut mouth curls up into a smug little grin. Then the brows relax, the eyes open and the pupils slide back. Its long body lies along the ground and its raised neck stays exactly where and how it is in the reference image for the whole clip: the neck does not bend, sway or lean, so the head holds the position and height it has in the reference, and the snake never strikes, never lunges and never slithers off. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.04,
+        "heightSwing": 2.7,
+        "driftX": 0,
+        "edgeMargin": 128,
+        "flatCut": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:27:52.583Z"
+    },
+    "sneaky": {
+      "file": "snake-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.513,
+      "originX": 0.4573,
+      "originY": 0.6094,
+      "prompt": "Side view, facing left. The green snake's head, neck, long body and tail stay exactly as in the reference image and do not move at all: the head holds its exact position and angle in every frame, and it never strikes or slithers off. ONLY THE FACE MOVES. Using the thick dark brows already drawn in the reference, the brow over the near eye arches HIGH up in disbelief while the brow over the far eye presses down low and flat, the near eye stays wide open while the far eye narrows to a half-lidded squint, and the shut mouth pulls down at the corner in a sceptical frown. Then the brows settle back. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.04,
+        "heightSwing": 10.4,
+        "driftX": 0.3,
+        "edgeMargin": 127,
+        "flatCut": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:23:40.878Z"
+    },
+    "talking": {
+      "file": "snake-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.2846,
+      "originX": 0.4554,
+      "originY": 0.6094,
+      "prompt": "Side view, facing left. The green snake stays in place and chats in a friendly, conversational way: its dark brows lift from a glower into a relaxed, easy line, and its long jaw opens to a clear medium gap and closes again with each phrase, four even open-and-shut beats across the clip, never gaping wide. The open mouth always shows the same shape: one clean smooth patch of flat dark pink inside with the same two small white fangs as in the reference, drawn identically in every frame it appears, and the forked red tongue keeps the same shape. Its head gives only a small nod in time, and its big white eyes stay open and friendly. Its long body lies along the ground and its raised neck stays exactly where and how it is in the reference image for the whole clip: the neck does not bend, sway or lean, so the head holds the position and height it has in the reference, and the snake never strikes, never lunges and never slithers off. Steady, easy speaking rhythm with no sudden jumps. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.17,
+        "heightSwing": 8.9,
+        "driftX": 0.5,
+        "edgeMargin": 128,
+        "flatCut": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:22:07.162Z"
+    },
+    "thinking": {
+      "file": "snake-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.6071,
+      "originX": 0.4594,
+      "originY": 0.6094,
+      "prompt": "Side view, facing left. The green snake stays in place, quietly pondering. Its head, neck, long body and tail stay exactly as in the reference image and do not move at all, and its dark brows ease from a glower into a calm, level line. Its eyelids stay fully open and completely still for the whole clip, so both big white eyes keep their full round shape in every frame. ONLY THE PUPILS MOVE, very slowly: they drift up and to one side as if searching for an answer, taking the whole first half of the clip to get there, rest there, then drift just as slowly back. One smooth gliding path, the same slow speed throughout. The mouth stays shut, drawn exactly as in the reference. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.04,
+        "heightSwing": 0,
+        "driftX": 0,
+        "edgeMargin": 128,
+        "flatCut": 0,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:26:33.831Z"
+    }
+  },
+  "white-chicken": {
+    "angry": {
+      "file": "white-chicken-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.249,
+      "originX": 0.409,
+      "originY": 0.75,
+      "prompt": "Side view, facing left. The white chicken stands in place and talks animatedly: its yellow beak opens WIDE and shuts again with every phrase, four clear open-and-shut beats across the clip, the lower half of the beak dropping far away from the upper half each time so the open gap is big and plainly visible. The open beak always shows the same shape: one clean smooth patch of flat dark pink inside, drawn identically in every frame it appears, with no tongue and no teeth. Its head bobs in time so the red comb and wattle swing, and its big round eyes stay wide and lively. Both feet stay planted exactly where they are in the reference image, its body stays at the same height above them, its wings stay folded flat against its sides and its head stays UP at the height it is in the reference for the whole clip, and no egg ever appears. Steady speaking rhythm with no sudden jumps. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.24,
+        "heightSwing": 4.2,
+        "driftX": 4,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T17:36:42.515Z"
+    },
+    "doubtful": {
+      "file": "white-chicken-doubtful.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.284,
+      "originX": 0.4162,
+      "originY": 0.75,
+      "prompt": "Side view, facing left. The white chicken's head, red comb and wattle, neck, body, folded wings, tail feathers and both planted feet stay exactly as in the reference image and do not move at all: the head holds its exact position and angle in every frame, and no egg ever appears. ONLY THE FACE MOVES. A thick black cartoon brow line sits above each big round eye: the brow over the near eye arches HIGH up in disbelief while the brow over the far eye presses down low and flat, the near eye stays wide open while the far eye narrows to a half-lidded squint, and the shut beak pulls to one side in a sceptical pout. Then the brows settle back. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.22,
+        "heightSwing": 1.2,
+        "driftX": 1.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T17:48:54.148Z"
+    },
+    "sneaky": {
+      "file": "white-chicken-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 2.2752,
+      "originX": 0.4159,
+      "originY": 0.752,
+      "prompt": "Side view, facing left. The white chicken stands in place, lost in thought. Its head, comb, wattle, beak, body, folded wings, tail feathers and both planted feet stay exactly as in the reference image and do not move at all. ONLY THE EYES MOVE, and very slowly: the pupils drift up and to one side as if searching for an answer, taking the whole first half of the clip to get there, rest there for a moment while the upper lids lower slightly in concentration, then drift just as slowly back. The eyes stay open the whole time, and the pupils glide in one smooth path rather than darting or flicking. The beak stays shut, drawn exactly as in the reference. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.25,
+        "heightSwing": 0.4,
+        "driftX": 0.5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T17:39:40.148Z"
+    },
+    "talking": {
+      "file": "white-chicken-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.284,
+      "originX": 0.4133,
+      "originY": 0.752,
+      "prompt": "Side view, facing left. The white chicken stands in place and chats in a calm, friendly, conversational way: its yellow beak opens to a clear medium gap and closes again with each phrase, four even open-and-shut beats across the clip, never gaping wide. The open beak always shows the same shape: one clean smooth patch of flat dark pink inside, drawn identically in every frame it appears, with no tongue and no teeth. Its head gives a small nod in time so the red comb and wattle sway gently, and its big round eyes stay open, relaxed and friendly. Both feet stay planted exactly where they are in the reference image, its body stays at the same height above them, its wings stay folded flat against its sides and its head stays UP at the height it is in the reference for the whole clip, and no egg ever appears. Steady, easy speaking rhythm with no sudden jumps. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.25,
+        "heightSwing": 0.4,
+        "driftX": 1,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T17:47:12.114Z"
+    },
+    "thinking": {
+      "file": "white-chicken-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.284,
+      "originX": 0.4172,
+      "originY": 0.75,
+      "prompt": "Side view, facing left. The white chicken stands in place, quietly pondering. Its head, comb, wattle, beak, body, folded wings, tail feathers and both planted feet stay exactly as in the reference image and do not move at all. Its eyelids stay fully open and completely still for the whole clip, so both big round white eyes keep their full round shape in every frame. ONLY THE PUPILS MOVE, very slowly: they drift up and to one side as if searching for an answer, taking the whole first half of the clip to get there, rest there, then drift just as slowly back. One smooth gliding path, the same slow speed throughout. The beak stays shut, drawn exactly as in the reference. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.23,
+        "heightSwing": 0.8,
+        "driftX": 0.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T17:50:17.991Z"
+    }
+  },
   "white-sheep-1": {
     "angry": {
       "file": "white-sheep-1-angry.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 1.0861,
-      "originX": 0.4797,
-      "originY": 0.7148,
-      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep stands in place and is FURIOUS. Its white eyes narrow into hard angry slits with the brows driven down low over them and stay narrowed for the whole clip — the white of the eye is still clearly visible against the dark head in every frame. Its floppy black ears pin flat back against its skull. Its dark head drops until it is level with its shoulders and pushes forward at the target. Its dark muzzle is held WIDE OPEN in one long hard bleat for most of the clip. The open mouth is always the same shape: one big clean smooth rounded patch of flat pink inside a plain dark muzzle, drawn identically in every frame it appears, flat pink and nothing else — no white shapes, no teeth, no tongue detail — never changing shape, size or colour between frames. Its head never drops below shoulder height. Its fleece body keeps exactly the same full round shape as the reference image and all four legs stay planted exactly where they are and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 1.1572,
+      "originX": 0.4746,
+      "originY": 0.7324,
+      "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep is FURIOUS. Its woolly body, four planted legs and the tuft of wool on top of its head stay exactly as in the reference image and do not move at all: its head holds exactly the position and height it has in the reference and the tuft never rises above that height, so the whole sheep stays inside the same framing as the reference in every frame. ONLY THE FACE AND EARS MOVE, on an even, symmetrical timeline. During the first two fifths of the clip thick dark brows slam down into a hard V over its eyes; both eyes stay OPEN in every frame, narrowed to a fierce glare, the white of each eye clearly visible against the dark head with the pupils locked on the target; its floppy ears pin back; and its dark muzzle opens into a hard, angry bleat. During the middle fifth it holds that look. During the last two fifths it eases back just as slowly along the same path and comes fully to rest in the exact pose of the reference image a few frames before the end. The open mouth always shows the same shape: one clean smooth patch of flat pink inside, drawn identically in every frame it appears. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.31,
-        "heightSwing": 18.5,
-        "driftX": 3.5,
+        "loopPop": 1.15,
+        "heightSwing": 5.3,
+        "driftX": 2,
+        "edgeMargin": 120,
+        "flatCut": 0,
         "warnings": []
       },
-      "reviewNotes": [
-        "fleece sits a few pixels lower than the other emotions, so the clip reads slightly smaller"
-      ],
-      "generatedAt": "2026-09-05T01:31:45.481Z"
+      "generatedAt": "2026-09-26T21:43:28.959Z"
     },
     "doubtful": {
       "file": "white-sheep-1-doubtful.png",

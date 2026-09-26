@@ -162,13 +162,9 @@ export function faceSheet(
  * The clip to actually play for a pairing, falling back to `talking` before giving up.
  *
  * This is what lets the register ship one animal at a time, and coverage is still uneven:
- * `donkey-grey` has only `talking`, `sneaky` and `angry` cropped (its body clips carry the
- * cast's worst loop seams, which cropping amplifies ~4x), so Tobias falls back to `talking`
- * for the other two — which costs nothing, because a boss antagonist derives `sneaky` on any
- * line carrying a fallacy and `talking` on the rest. The owl, raccoon, fox, sheep and wolf
- * have all five. `dog` has talking, doubtful, angry and thinking — sneaky was not cropped,
- * because the body clip's head dip saturates the aligner — so Dot's farm-talk portrait
- * falls back to `talking` on a sneaky beat.
+ * most of the cast has all five, but `dog` has talking, doubtful, angry and thinking —
+ * sneaky was not cropped, because the body clip's head dip saturates the aligner — so Dot's
+ * farm-talk portrait falls back to `talking` on a sneaky beat.
  * Callers never have to check — the same discipline `AnimalAnimator.playEmotion()` follows
  * when it falls back to `playAlert()`.
  */

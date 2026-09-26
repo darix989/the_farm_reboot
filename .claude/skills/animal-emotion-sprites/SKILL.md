@@ -29,14 +29,30 @@ that still have no emotion art (`cow`, `cow-female-001`, `mouse`, `pig`, `brown-
 ~252 credits. `--animal` and `--emotion` are what keep a run to what was actually asked for;
 always scope it and always state the arithmetic first.
 
+## After the first failure: one Hydra retry, then stop
+
+For each animal/emotion, the **first** attempt stays on the manifest default: `blitz`,
+25 frames, duration 2, about 4 credits. If that attempt fails — a terminal generation
+failure or a clip rejected on visual review — the **second** attempt may switch to `hydra`
+for a better result. Do not start on Hydra, and do not change `defaults.model`.
+
+Hydra's shortest duration is 3 seconds, so the retry is not a drop-in of the Blitz payload.
+Use duration `3` and `36` frames (12 fps, near the 12.5 fps of 25/2) at **9 credits**
+(3 credits/s × 3s). Duration 2 is rejected. Read
+[the Hydra retry procedure](references/ludo-api.md#hydra-retry-after-the-first-attempt-fails)
+before changing a payload. State that 9-credit cost and wait for a yes; permission for the
+original Blitz clip does not cover it.
+
+A dry run, polling an existing job, and a cached result do not count as the first failure.
+A timeout is unresolved: inspect the existing job before resubmitting. Keep the attempt
+count, request/job IDs, exact prompts/settings, and rejection reasons in that clip's local
+review notes across runs. Archive failed outputs before replacing the review directory so
+the evidence survives a retry.
+
 ## After two failed animation attempts: stop and review an image-edit fallback
 
-For each animal/emotion, **stop after two unsuccessful generation attempts**. A terminal
-generation failure or a clip rejected on visual review counts; dry runs, polling an existing
-job, and cached results do not. A timeout is unresolved: inspect the existing job before
-resubmitting. Keep the attempt count, request/job IDs, exact prompts/settings, and rejection
-reasons in that clip's local review notes across runs. Archive failed outputs before replacing
-the review directory so the evidence survives a retry.
+**Stop after two unsuccessful generation attempts** — the default attempt plus, when it
+failed, the one Hydra retry. Do not send a second Hydra job.
 
 Before a third attempt or any paid fallback:
 
@@ -131,7 +147,7 @@ If you inherit clips at the wrong rate, fix `frameRate` in `promoted-clips.json`
 > and a bounding box are, exactly how each number is computed, what it can and cannot catch, and
 > where to find the numbers. Start there; this section is the short form.
 
-Generation prints three metrics per clip, and they are also stored in each clip's `meta.json`
+Generation prints three metrics per clip (the two edge checks print only when they fire), and they are also stored in each clip's `meta.json`
 and shown on the contact sheet. They exist because each caught a real failure that is hard to
 see in a single loop and obvious once the clip is in the game.
 
@@ -140,6 +156,8 @@ see in a single loop and obvious once the clip is in the game.
 | `loop seam` | 2% | Last frame differs from the first, so it jumps on every repeat | Confirm `closeLoop` is on; regenerate with `--force` |
 | `height swing` | 20% | Character's height wanders across frames | Check it is motion (a head dipping) and not a pose collapse (lying down). See the prompt rules |
 | `drift ±px` | 20px | Character slides horizontally | Add "in place, no travel" emphasis; regenerate |
+| `edgeMargin` | ≤ 2px | Character touches a cell edge and is cut off there | Reject; hold the part that reaches out (usually the head) still in the prompt |
+| `flatCut` | ≥ 16px | A straight opaque slice on the outline — the part left the generator's own canvas, which sits ~130px *inside* the cell, so `edgeMargin` stays clean | Reject; hold the neck/head still so it cannot swing past the reference framing. Drawn outlines score ≤ 9px |
 
 A clip can also be **rushed without tripping any of these** — the metrics measure the frames,
 not the tempo. If motion looks hurried or snaps between poses, check the frame rate maths above
@@ -260,7 +278,7 @@ Those historical retry counts are not permission to exceed the two-failure gate 
 
 ## Things about the Ludo API that will bite you
 
-Full contract in [references/ludo-api.md](references/ludo-api.md). The four that cost time:
+Full contract in [references/ludo-api.md](references/ludo-api.md). The ones that cost time:
 
 - **`request_id` is an idempotency key, not a label.** The docs sell it as a tag for finding a
   result later. Re-submitting one returns the earlier generation verbatim — no new job, no
@@ -274,6 +292,9 @@ Full contract in [references/ludo-api.md](references/ludo-api.md). The four that
   construction (measured 5.88% → 0.22% seam).
 - **The REST default flips from synchronous to async on 2026-09-10.** The client already sends
   `async: true` and long-polls, so it is unaffected. Do not "simplify" that away.
+- **`hydra` is a second attempt, not the default.** The API's own default is now Hydra, and
+  Blitz is legacy, but the first clip stays on Blitz. Hydra rejects duration 2 and costs 9
+  credits at its 3-second minimum. See the failure section above.
 
 ### The third register: the moderator status face
 
@@ -328,7 +349,7 @@ output. Re-promote is only needed when the PNG itself changed.
 **Main menu → Animation Gallery** (`AnimalGallery` scene). Pick an animal, hold any clip on a
 loop, compare generated clips against the atlas clips they sit beside. Emotions with no art are
 listed dashed and marked "no art yet". Clip and animal badges are **OK** / **check** / **?**.
-A clip is **check** if metrics trip, the frame count is not 25, or it has `reviewNotes`. The
+A clip is **check** if metrics trip, the frame count is neither 25 (Blitz) nor 36 (a Hydra retry), or it has `reviewNotes`. The
 animal is **OK** only when all five emotions pass.
 
 When a clip looks wrong but the numbers are clean, add `reviewNotes` on that clip in

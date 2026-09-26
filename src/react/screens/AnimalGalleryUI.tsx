@@ -9,7 +9,7 @@ import {
   type AnimalFaceClip,
 } from '../../phaser/animals/animalClipCatalogue';
 import { ANIMAL_SPRITE_IDS } from '../../phaser/animals/animalDescriptors';
-import { CURRENT_EMOTION_FRAME_COUNT } from '../../phaser/animals/animalEmotions';
+import { isCurrentEmotionFrameCount } from '../../phaser/animals/animalEmotions';
 import { FACE_BOX_PX, preloadFaceSheets } from '../../phaser/animals/animalFaces';
 import {
   animalEmotionQualityStatus,
@@ -118,7 +118,7 @@ function clipQualityTitle(clip: QualityBearing, metrics: Labels = 'galleryQualit
         },
       }),
     );
-    if (clip.frameCount !== CURRENT_EMOTION_FRAME_COUNT) {
+    if (!isCurrentEmotionFrameCount(clip.frameCount)) {
       parts.push(
         getLabel('galleryQualityStale', { replacements: { frames: String(clip.frameCount) } }),
       );
