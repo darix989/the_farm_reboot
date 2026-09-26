@@ -55,6 +55,12 @@ export interface AnimalClip {
   quality?: EmotionQuality;
   /** Human review notes from the promoted record; also force a warn badge. */
   reviewNotes?: readonly string[];
+  /**
+   * Set on a phased emotion's `@sequence` entry: the chain the gallery plays end to end and
+   * then restarts, so the joins can be judged the way a debate plays them. `animKey` is the
+   * first step's key.
+   */
+  sequence?: readonly { animKey: string; repeat: number }[];
 }
 
 /**
@@ -128,7 +134,37 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
           ];
         })
       : [];
-    return [main, ...phaseClips];
+    // The whole state as the game plays it: in → loop (two passes) → out → the atlas rest.
+    const sequenceSteps = phases
+      ? [
+          ...(phases.in
+            ? [{ animKey: emotionPhaseAnimKey(textureKey, emotion, 'in'), repeat: 0 }]
+            : []),
+          { animKey: emotionPhaseAnimKey(textureKey, emotion, 'loop'), repeat: 1 },
+          ...(phases.out
+            ? [{ animKey: emotionPhaseAnimKey(textureKey, emotion, 'out'), repeat: 0 }]
+            : []),
+          ...(setup.restAnimKey ? [{ animKey: setup.restAnimKey, repeat: 0 }] : []),
+        ]
+      : [];
+    const sequenceClip: AnimalClip[] = phases
+      ? [
+          {
+            name: `${emotion}@sequence`,
+            kind: 'emotion',
+            animKey: sequenceSteps[0]!.animKey,
+            available: true,
+            frameCount:
+              (phases.in?.frameCount ?? 0) +
+              phases.loop.frameCount * 2 +
+              (phases.out?.frameCount ?? 0),
+            frameRate: phases.loop.frameRate ?? EMOTION_FRAME_RATE,
+            isRest: false,
+            sequence: sequenceSteps,
+          },
+        ]
+      : [];
+    return [main, ...phaseClips, ...sequenceClip];
   });
 
   const base: AnimalClip[] = descriptor.baseAnimations.map((animation) => {

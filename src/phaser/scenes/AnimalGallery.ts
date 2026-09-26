@@ -54,6 +54,8 @@ const FLOOR_LINE = 0x4a4a52;
 export class AnimalGallery extends Scene {
   private sprite: Phaser.GameObjects.Sprite | null = null;
   private baseStaging: SpriteStaging | null = null;
+  /** The `@sequence` chain being played, restarted each time it runs out. */
+  private sequence: AnimalClip['sequence'] | null = null;
   private unsubscribe: (() => void) | null = null;
   private fadeTween: Phaser.Tweens.Tween | null = null;
 
@@ -129,6 +131,38 @@ export class AnimalGallery extends Scene {
     // Captured after staging and before any clip plays — this is what `restoreStaging` puts
     // back when leaving a generated clip.
     this.baseStaging = captureStaging(this.sprite);
+    // A sequence swaps texture at every step, so staging follows the clip that just started —
+    // the same hook `AnimalAnimator` uses.
+    this.sprite.on(Phaser.Animations.Events.ANIMATION_START, this.restageToCurrentClip, this);
+    this.sprite.on(Phaser.Animations.Events.ANIMATION_COMPLETE, this.onClipComplete, this);
+  }
+
+  private restageToCurrentClip(): void {
+    const sprite = this.sprite;
+    const base = this.baseStaging;
+    const key = sprite?.anims.currentAnim?.key;
+    if (!sprite || !base || !key) return;
+    const sheet = emotionClipForAnimKey(key)?.sheet;
+    if (sheet) applyEmotionStaging(sprite, sheet, base);
+    else {
+      restoreStaging(sprite, base);
+      applyAtlasFeetOrigin(sprite);
+    }
+  }
+
+  /** Replays the sequence from the top once its last step (the atlas rest) finishes. */
+  private onClipComplete(): void {
+    if (!this.sequence || this.sprite?.anims.nextAnim) return;
+    this.playSequence(this.sequence);
+  }
+
+  private playSequence(steps: NonNullable<AnimalClip['sequence']>): void {
+    const sprite = this.sprite;
+    if (!sprite) return;
+    const [first, ...rest] = steps.map((step) => ({ key: step.animKey, repeat: step.repeat }));
+    sprite.chain();
+    sprite.play(first!);
+    if (rest.length > 0) sprite.chain(rest);
   }
 
   private findClip(animalId: AnimalSpriteId, clipName: string | null): AnimalClip | null {
@@ -149,6 +183,7 @@ export class AnimalGallery extends Scene {
     const setup = animalSetup(useAnimalGalleryStore.getState().animalId);
 
     if (!clip?.available || !clip.animKey) {
+      this.sequence = null;
       sprite.anims.stop();
       restoreStaging(sprite, base);
       if (setup.restFrameName) sprite.setFrame(setup.restFrameName);
@@ -163,11 +198,16 @@ export class AnimalGallery extends Scene {
     // normalization; a fallback emotion plays an atlas key and resolves to null, as it should.
     const sheet = emotionClipForAnimKey(clip.animKey)?.sheet ?? null;
 
+    this.sequence = null;
+    sprite.chain();
     if (prefersReducedMotion()) {
       // Hold frame 0 of the requested clip: still shows which clip is selected, without
       // motion. Matches `AnimalAnimator`'s treatment rather than inventing a second one.
       sprite.anims.stop();
       sprite.anims.setCurrentFrame(this.anims.get(clip.animKey).frames[0]!);
+    } else if (clip.sequence) {
+      this.sequence = clip.sequence;
+      this.playSequence(clip.sequence);
     } else {
       sprite.play({ key: clip.animKey, repeat: -1 });
     }
