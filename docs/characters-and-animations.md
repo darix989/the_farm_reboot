@@ -51,7 +51,9 @@ doing anything sprite-related.
 
 ## 2. Assets on disk
 
-Eleven multi-page TexturePacker atlases, copied from the prototype:
+Sixteen multi-page atlases. Eleven were copied from the prototype, already packed with
+TexturePacker; five were packed here from raw GameDeveloperStudio character packs by
+[`scripts/build-animal-atlas.mjs`](../scripts/build-animal-atlas.mjs) (see §2.1).
 
 ```
 public/assets/characters/
@@ -66,6 +68,11 @@ public/assets/characters/
   dog.json         + dog/dog-{0..11}.png
   mouse.json       + mouse/mouse-{0..7}.png
   pig.json         + pig/pig-{0..1}.png
+  brown-bull.json    + brown-bull/brown-bull-{0..28}.png
+  white-chicken.json + white-chicken/white-chicken-{0..5}.png
+  skunk.json         + skunk/skunk-{0..7}.png
+  seagull.json       + seagull/seagull-{0..11}.png
+  snake.json         + snake/snake-{0..5}.png
 ```
 
 Both the JSON descriptors and the PNG pages live under `public/assets/` (loaded by
@@ -94,6 +101,45 @@ The owl is the trap: its frame folder ends in `_`, not `-`, so every one of its
 `baseAnimations` entries needs an explicit `framePrefix` copied character-for-character.
 Get it wrong and `generateFrameNames` silently returns zero frames. The cow is the same
 shape with a trailing `-`, so its prefixes are easier to copy but still mandatory.
+
+The five packed here are deliberately all in the first shape — see below.
+
+### 2.1 Packing an atlas from a raw character pack
+
+The prototype's eleven arrived already packed. A pack bought from GameDeveloperStudio does
+not: it ships either **loose keyframe PNGs** (one file per frame, every frame on the same
+export canvas, named `<stem>_<nnn>.png`) or **strip spritesheets** (one PNG per animation on
+a fixed grid). `scripts/build-animal-atlas.mjs` is the missing export step, so a new animal
+can be imported without the GUI tool:
+
+```bash
+node scripts/build-animal-atlas.mjs --src "<pack root>" [--animal brown-bull] [--dry-run]
+```
+
+`--src` (or `GSD_CHAR_DIR`) points at the directory holding the downloaded packs; the
+per-animal source spec — which subdirectory, which colour variant of the several a pack
+ships, and the cell size for a strip sheet — is the `SOURCES` table at the top of the script.
+`--dry-run` prints each animation's frame count and `endFrameIndex` without writing, which is
+what the `baseAnimations` block is copied from.
+
+Three things it does that matter downstream:
+
+- **Frame names are normalised** to the flat dash-separated shape (`__brown_bull_idle-0.png`),
+  dropping the source's zero padding, so none of these descriptors needs a `framePrefix`.
+- **Frames are trimmed but keep their canvas**, so `sourceSize`/`spriteSourceSize` are real.
+  `scripts/ludo/referenceFrame.mjs` un-trims a frame back onto that canvas to use as an
+  emotion-generation reference, and a page of hard-cropped silhouettes would hand the
+  generator a character with no room for its own legs and ears.
+- **Pages are palettised PNG**, unlike TexturePacker's RGBA8888. On flat cartoon art inside
+  hard outlines this is effectively lossless — measured against the truecolour write of the
+  same page, the mean per-channel error over non-transparent pixels is 0.07/255 — and it
+  roughly halves the payload. The bull needs it: it has the cast's largest export canvas
+  (1230x942) and its 123 frames come to 9.4MB truecolour, 4.0MB palettised.
+
+The packer is a shelf packer, not TexturePacker's MaxRects, so it wastes whatever the
+shortest frame in a row leaves under the tallest. That is a good fit here — frames within an
+animation are near-uniform in height — but it is why the bull needs 29 pages: at 865x684 a
+frame only four of them fit on a 2048px page however they are arranged.
 
 ---
 

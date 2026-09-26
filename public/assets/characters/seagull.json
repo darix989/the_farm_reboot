@@ -1,0 +1,1590 @@
+{
+  "textures": [
+    {
+      "image": "seagull/seagull-0.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1784,
+        "h": 1734
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_flying_hover-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 195,
+            "y": 62,
+            "w": 952,
+            "h": 899
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 952,
+            "h": 899
+          }
+        },
+        {
+          "filename": "__seagull_flying_hover-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 209,
+            "y": 125,
+            "w": 826,
+            "h": 830
+          },
+          "frame": {
+            "x": 956,
+            "y": 2,
+            "w": 826,
+            "h": 830
+          }
+        },
+        {
+          "filename": "__seagull_flying_hover-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 210,
+            "y": 125,
+            "w": 818,
+            "h": 829
+          },
+          "frame": {
+            "x": 2,
+            "y": 903,
+            "w": 818,
+            "h": 829
+          }
+        },
+        {
+          "filename": "__seagull_flying_hover-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 225,
+            "y": 127,
+            "w": 704,
+            "h": 822
+          },
+          "frame": {
+            "x": 822,
+            "y": 903,
+            "w": 704,
+            "h": 822
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-1.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1947,
+        "h": 1630
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_flying_hover-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 226,
+            "y": 127,
+            "w": 700,
+            "h": 821
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 700,
+            "h": 821
+          }
+        },
+        {
+          "filename": "__seagull_flying_hover-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 242,
+            "y": 130,
+            "w": 620,
+            "h": 813
+          },
+          "frame": {
+            "x": 704,
+            "y": 2,
+            "w": 620,
+            "h": 813
+          }
+        },
+        {
+          "filename": "__seagull_flying_hover-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 242,
+            "y": 130,
+            "w": 619,
+            "h": 812
+          },
+          "frame": {
+            "x": 1326,
+            "y": 2,
+            "w": 619,
+            "h": 812
+          }
+        },
+        {
+          "filename": "__seagull_flying_hover-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 259,
+            "y": 133,
+            "w": 598,
+            "h": 803
+          },
+          "frame": {
+            "x": 2,
+            "y": 825,
+            "w": 598,
+            "h": 803
+          }
+        },
+        {
+          "filename": "__seagull_flying_hover-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 259,
+            "y": 133,
+            "w": 598,
+            "h": 803
+          },
+          "frame": {
+            "x": 602,
+            "y": 825,
+            "w": 598,
+            "h": 803
+          }
+        },
+        {
+          "filename": "__seagull_flying_hover-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 274,
+            "y": 138,
+            "w": 578,
+            "h": 792
+          },
+          "frame": {
+            "x": 1202,
+            "y": 825,
+            "w": 578,
+            "h": 792
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-2.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1791,
+        "h": 1577
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_flying_hover-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 274,
+            "y": 138,
+            "w": 578,
+            "h": 792
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 578,
+            "h": 792
+          }
+        },
+        {
+          "filename": "__seagull_flying_hover-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 225,
+            "y": 139,
+            "w": 622,
+            "h": 785
+          },
+          "frame": {
+            "x": 582,
+            "y": 2,
+            "w": 622,
+            "h": 785
+          }
+        },
+        {
+          "filename": "__seagull_squark-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 237,
+            "y": 153,
+            "w": 583,
+            "h": 779
+          },
+          "frame": {
+            "x": 1206,
+            "y": 2,
+            "w": 583,
+            "h": 779
+          }
+        },
+        {
+          "filename": "__seagull_squark-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 237,
+            "y": 153,
+            "w": 583,
+            "h": 779
+          },
+          "frame": {
+            "x": 2,
+            "y": 796,
+            "w": 583,
+            "h": 779
+          }
+        },
+        {
+          "filename": "__seagull_flying-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 11,
+            "y": 5,
+            "w": 902,
+            "h": 768
+          },
+          "frame": {
+            "x": 587,
+            "y": 796,
+            "w": 902,
+            "h": 768
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1819,
+        "h": 1526
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_idle-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 190,
+            "y": 171,
+            "w": 605,
+            "h": 761
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 605,
+            "h": 761
+          }
+        },
+        {
+          "filename": "__seagull_idle-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 172,
+            "w": 603,
+            "h": 760
+          },
+          "frame": {
+            "x": 609,
+            "y": 2,
+            "w": 603,
+            "h": 760
+          }
+        },
+        {
+          "filename": "__seagull_idle-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 172,
+            "w": 603,
+            "h": 760
+          },
+          "frame": {
+            "x": 1214,
+            "y": 2,
+            "w": 603,
+            "h": 760
+          }
+        },
+        {
+          "filename": "__seagull_idle-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 173,
+            "w": 603,
+            "h": 759
+          },
+          "frame": {
+            "x": 2,
+            "y": 765,
+            "w": 603,
+            "h": 759
+          }
+        },
+        {
+          "filename": "__seagull_idle-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 173,
+            "w": 603,
+            "h": 759
+          },
+          "frame": {
+            "x": 607,
+            "y": 765,
+            "w": 603,
+            "h": 759
+          }
+        },
+        {
+          "filename": "__seagull_idle-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 174,
+            "w": 603,
+            "h": 758
+          },
+          "frame": {
+            "x": 1212,
+            "y": 765,
+            "w": 603,
+            "h": 758
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-4.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1828,
+        "h": 1521
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_idle-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 174,
+            "w": 603,
+            "h": 758
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 603,
+            "h": 758
+          }
+        },
+        {
+          "filename": "__seagull_walk-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 179,
+            "y": 170,
+            "w": 615,
+            "h": 758
+          },
+          "frame": {
+            "x": 607,
+            "y": 2,
+            "w": 615,
+            "h": 758
+          }
+        },
+        {
+          "filename": "__seagull_idle-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 175,
+            "w": 602,
+            "h": 757
+          },
+          "frame": {
+            "x": 1224,
+            "y": 2,
+            "w": 602,
+            "h": 757
+          }
+        },
+        {
+          "filename": "__seagull_idle-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 175,
+            "w": 602,
+            "h": 757
+          },
+          "frame": {
+            "x": 2,
+            "y": 762,
+            "w": 602,
+            "h": 757
+          }
+        },
+        {
+          "filename": "__seagull_idle-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 176,
+            "w": 602,
+            "h": 756
+          },
+          "frame": {
+            "x": 606,
+            "y": 762,
+            "w": 602,
+            "h": 756
+          }
+        },
+        {
+          "filename": "__seagull_idle-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 176,
+            "w": 602,
+            "h": 756
+          },
+          "frame": {
+            "x": 1210,
+            "y": 762,
+            "w": 602,
+            "h": 756
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-5.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1881,
+        "h": 1517
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_idle-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 176,
+            "w": 602,
+            "h": 756
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 602,
+            "h": 756
+          }
+        },
+        {
+          "filename": "__seagull_idle-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 191,
+            "y": 176,
+            "w": 602,
+            "h": 756
+          },
+          "frame": {
+            "x": 606,
+            "y": 2,
+            "w": 602,
+            "h": 756
+          }
+        },
+        {
+          "filename": "__seagull_walk-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 130,
+            "y": 162,
+            "w": 669,
+            "h": 756
+          },
+          "frame": {
+            "x": 1210,
+            "y": 2,
+            "w": 669,
+            "h": 756
+          }
+        },
+        {
+          "filename": "__seagull_idle-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 177,
+            "w": 601,
+            "h": 755
+          },
+          "frame": {
+            "x": 2,
+            "y": 760,
+            "w": 601,
+            "h": 755
+          }
+        },
+        {
+          "filename": "__seagull_idle-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 177,
+            "w": 601,
+            "h": 755
+          },
+          "frame": {
+            "x": 605,
+            "y": 760,
+            "w": 601,
+            "h": 755
+          }
+        },
+        {
+          "filename": "__seagull_walk-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 180,
+            "w": 600,
+            "h": 755
+          },
+          "frame": {
+            "x": 1208,
+            "y": 760,
+            "w": 600,
+            "h": 755
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-6.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1863,
+        "h": 1513
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_idle-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 178,
+            "w": 600,
+            "h": 754
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 600,
+            "h": 754
+          }
+        },
+        {
+          "filename": "__seagull_idle-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 178,
+            "w": 600,
+            "h": 754
+          },
+          "frame": {
+            "x": 604,
+            "y": 2,
+            "w": 600,
+            "h": 754
+          }
+        },
+        {
+          "filename": "__seagull_walk-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 143,
+            "y": 163,
+            "w": 655,
+            "h": 754
+          },
+          "frame": {
+            "x": 1206,
+            "y": 2,
+            "w": 655,
+            "h": 754
+          }
+        },
+        {
+          "filename": "__seagull_idle-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 179,
+            "w": 600,
+            "h": 753
+          },
+          "frame": {
+            "x": 2,
+            "y": 758,
+            "w": 600,
+            "h": 753
+          }
+        },
+        {
+          "filename": "__seagull_idle-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 179,
+            "w": 600,
+            "h": 753
+          },
+          "frame": {
+            "x": 604,
+            "y": 758,
+            "w": 600,
+            "h": 753
+          }
+        },
+        {
+          "filename": "__seagull_walk-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 167,
+            "y": 167,
+            "w": 629,
+            "h": 753
+          },
+          "frame": {
+            "x": 1206,
+            "y": 758,
+            "w": 629,
+            "h": 753
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-7.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1881,
+        "h": 1510
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_idle-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 180,
+            "w": 600,
+            "h": 752
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 600,
+            "h": 752
+          }
+        },
+        {
+          "filename": "__seagull_peck-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 180,
+            "w": 600,
+            "h": 752
+          },
+          "frame": {
+            "x": 604,
+            "y": 2,
+            "w": 600,
+            "h": 752
+          }
+        },
+        {
+          "filename": "__seagull_squark-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 192,
+            "y": 180,
+            "w": 600,
+            "h": 752
+          },
+          "frame": {
+            "x": 1206,
+            "y": 2,
+            "w": 600,
+            "h": 752
+          }
+        },
+        {
+          "filename": "__seagull_walk-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 130,
+            "y": 172,
+            "w": 669,
+            "h": 752
+          },
+          "frame": {
+            "x": 2,
+            "y": 756,
+            "w": 669,
+            "h": 752
+          }
+        },
+        {
+          "filename": "__seagull_squark-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 195,
+            "y": 181,
+            "w": 602,
+            "h": 751
+          },
+          "frame": {
+            "x": 673,
+            "y": 756,
+            "w": 602,
+            "h": 751
+          }
+        },
+        {
+          "filename": "__seagull_squark-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 195,
+            "y": 181,
+            "w": 602,
+            "h": 751
+          },
+          "frame": {
+            "x": 1277,
+            "y": 756,
+            "w": 602,
+            "h": 751
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-8.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1988,
+        "h": 1500
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_walk-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 118,
+            "y": 166,
+            "w": 681,
+            "h": 751
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 681,
+            "h": 751
+          }
+        },
+        {
+          "filename": "__seagull_walk-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 142,
+            "y": 174,
+            "w": 657,
+            "h": 748
+          },
+          "frame": {
+            "x": 685,
+            "y": 2,
+            "w": 657,
+            "h": 748
+          }
+        },
+        {
+          "filename": "__seagull_walk-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 155,
+            "y": 170,
+            "w": 642,
+            "h": 743
+          },
+          "frame": {
+            "x": 1344,
+            "y": 2,
+            "w": 642,
+            "h": 743
+          }
+        },
+        {
+          "filename": "__seagull_walk-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 154,
+            "y": 170,
+            "w": 644,
+            "h": 743
+          },
+          "frame": {
+            "x": 2,
+            "y": 755,
+            "w": 644,
+            "h": 743
+          }
+        },
+        {
+          "filename": "__seagull_walk-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 167,
+            "y": 178,
+            "w": 629,
+            "h": 734
+          },
+          "frame": {
+            "x": 648,
+            "y": 755,
+            "w": 629,
+            "h": 734
+          }
+        },
+        {
+          "filename": "__seagull_walk-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 180,
+            "y": 181,
+            "w": 614,
+            "h": 733
+          },
+          "frame": {
+            "x": 1279,
+            "y": 755,
+            "w": 614,
+            "h": 733
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-9.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1969,
+        "h": 2044
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_peck-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 154,
+            "y": 217,
+            "w": 612,
+            "h": 715
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 612,
+            "h": 715
+          }
+        },
+        {
+          "filename": "__seagull_peck-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 154,
+            "y": 217,
+            "w": 612,
+            "h": 715
+          },
+          "frame": {
+            "x": 616,
+            "y": 2,
+            "w": 612,
+            "h": 715
+          }
+        },
+        {
+          "filename": "__seagull_flying-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 90,
+            "y": 317,
+            "w": 832,
+            "h": 675
+          },
+          "frame": {
+            "x": 2,
+            "y": 719,
+            "w": 832,
+            "h": 675
+          }
+        },
+        {
+          "filename": "__seagull_peck-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 109,
+            "y": 283,
+            "w": 524,
+            "h": 649
+          },
+          "frame": {
+            "x": 836,
+            "y": 719,
+            "w": 524,
+            "h": 649
+          }
+        },
+        {
+          "filename": "__seagull_peck-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 126,
+            "y": 286,
+            "w": 605,
+            "h": 646
+          },
+          "frame": {
+            "x": 1362,
+            "y": 719,
+            "w": 605,
+            "h": 646
+          }
+        },
+        {
+          "filename": "__seagull_peck-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 126,
+            "y": 286,
+            "w": 605,
+            "h": 646
+          },
+          "frame": {
+            "x": 2,
+            "y": 1396,
+            "w": 605,
+            "h": 646
+          }
+        },
+        {
+          "filename": "__seagull_peck-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 119,
+            "y": 318,
+            "w": 532,
+            "h": 614
+          },
+          "frame": {
+            "x": 609,
+            "y": 1396,
+            "w": 532,
+            "h": 614
+          }
+        },
+        {
+          "filename": "__seagull_peck-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 119,
+            "y": 318,
+            "w": 532,
+            "h": 614
+          },
+          "frame": {
+            "x": 1143,
+            "y": 1396,
+            "w": 532,
+            "h": 614
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-10.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1788,
+        "h": 1609
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_flying-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 24,
+            "y": 155,
+            "w": 891,
+            "h": 609
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 891,
+            "h": 609
+          }
+        },
+        {
+          "filename": "__seagull_flying-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 24,
+            "y": 155,
+            "w": 891,
+            "h": 608
+          },
+          "frame": {
+            "x": 895,
+            "y": 2,
+            "w": 891,
+            "h": 608
+          }
+        },
+        {
+          "filename": "__seagull_flying-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 312,
+            "w": 846,
+            "h": 539
+          },
+          "frame": {
+            "x": 2,
+            "y": 613,
+            "w": 846,
+            "h": 539
+          }
+        },
+        {
+          "filename": "__seagull_flying-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 312,
+            "w": 846,
+            "h": 537
+          },
+          "frame": {
+            "x": 850,
+            "y": 613,
+            "w": 846,
+            "h": 537
+          }
+        },
+        {
+          "filename": "__seagull_flying-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 301,
+            "w": 881,
+            "h": 453
+          },
+          "frame": {
+            "x": 2,
+            "y": 1154,
+            "w": 881,
+            "h": 453
+          }
+        },
+        {
+          "filename": "__seagull_flying-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 301,
+            "w": 880,
+            "h": 453
+          },
+          "frame": {
+            "x": 885,
+            "y": 1154,
+            "w": 880,
+            "h": 453
+          }
+        }
+      ]
+    },
+    {
+      "image": "seagull/seagull-11.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1746,
+        "h": 872
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__seagull_flying-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 304,
+            "w": 871,
+            "h": 440
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 871,
+            "h": 440
+          }
+        },
+        {
+          "filename": "__seagull_flying-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 50,
+            "y": 304,
+            "w": 869,
+            "h": 440
+          },
+          "frame": {
+            "x": 875,
+            "y": 2,
+            "w": 869,
+            "h": 440
+          }
+        },
+        {
+          "filename": "__seagull_flying-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 63,
+            "y": 308,
+            "w": 858,
+            "h": 426
+          },
+          "frame": {
+            "x": 2,
+            "y": 444,
+            "w": 858,
+            "h": 426
+          }
+        },
+        {
+          "filename": "__seagull_flying-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1154,
+            "h": 1011
+          },
+          "spriteSourceSize": {
+            "x": 63,
+            "y": 308,
+            "w": 858,
+            "h": 426
+          },
+          "frame": {
+            "x": 862,
+            "y": 444,
+            "w": 858,
+            "h": 426
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "scripts/build-animal-atlas.mjs",
+    "version": "1.0",
+    "source": "seagull--1t5j3e21542n377m60"
+  }
+}

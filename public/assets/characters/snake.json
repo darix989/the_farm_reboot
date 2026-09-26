@@ -1,0 +1,1083 @@
+{
+  "textures": [
+    {
+      "image": "snake/snake-0.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1758,
+        "h": 1855
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__snake_bite-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 286,
+            "y": 20,
+            "w": 655,
+            "h": 547
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 655,
+            "h": 547
+          }
+        },
+        {
+          "filename": "__snake_bite-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 286,
+            "y": 20,
+            "w": 655,
+            "h": 547
+          },
+          "frame": {
+            "x": 659,
+            "y": 2,
+            "w": 655,
+            "h": 547
+          }
+        },
+        {
+          "filename": "__snake_bite-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 81,
+            "y": 102,
+            "w": 976,
+            "h": 469
+          },
+          "frame": {
+            "x": 2,
+            "y": 551,
+            "w": 976,
+            "h": 469
+          }
+        },
+        {
+          "filename": "__snake_bite-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 235,
+            "y": 122,
+            "w": 654,
+            "h": 441
+          },
+          "frame": {
+            "x": 980,
+            "y": 551,
+            "w": 654,
+            "h": 441
+          }
+        },
+        {
+          "filename": "__snake_slither-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 227,
+            "y": 146,
+            "w": 662,
+            "h": 417
+          },
+          "frame": {
+            "x": 2,
+            "y": 1022,
+            "w": 662,
+            "h": 417
+          }
+        },
+        {
+          "filename": "__snake_bite-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 162,
+            "y": 160,
+            "w": 876,
+            "h": 412
+          },
+          "frame": {
+            "x": 666,
+            "y": 1022,
+            "w": 876,
+            "h": 412
+          }
+        },
+        {
+          "filename": "__snake_slither-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 162,
+            "y": 160,
+            "w": 876,
+            "h": 412
+          },
+          "frame": {
+            "x": 2,
+            "y": 1441,
+            "w": 876,
+            "h": 412
+          }
+        },
+        {
+          "filename": "__snake_slither-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 162,
+            "y": 160,
+            "w": 876,
+            "h": 412
+          },
+          "frame": {
+            "x": 880,
+            "y": 1441,
+            "w": 876,
+            "h": 412
+          }
+        }
+      ]
+    },
+    {
+      "image": "snake/snake-1.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1868,
+        "h": 1648
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__snake_idle-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 162,
+            "w": 931,
+            "h": 411
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 931,
+            "h": 411
+          }
+        },
+        {
+          "filename": "__snake_bite-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 178,
+            "y": 159,
+            "w": 819,
+            "h": 409
+          },
+          "frame": {
+            "x": 935,
+            "y": 2,
+            "w": 819,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_bite-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 196,
+            "y": 158,
+            "w": 745,
+            "h": 409
+          },
+          "frame": {
+            "x": 2,
+            "y": 415,
+            "w": 745,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_bite-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 196,
+            "y": 158,
+            "w": 745,
+            "h": 409
+          },
+          "frame": {
+            "x": 749,
+            "y": 415,
+            "w": 745,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_idle-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 163,
+            "w": 931,
+            "h": 409
+          },
+          "frame": {
+            "x": 2,
+            "y": 826,
+            "w": 931,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_idle-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 163,
+            "w": 931,
+            "h": 409
+          },
+          "frame": {
+            "x": 935,
+            "y": 826,
+            "w": 931,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_idle-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 163,
+            "w": 931,
+            "h": 409
+          },
+          "frame": {
+            "x": 2,
+            "y": 1237,
+            "w": 931,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_idle-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 163,
+            "w": 931,
+            "h": 409
+          },
+          "frame": {
+            "x": 935,
+            "y": 1237,
+            "w": 931,
+            "h": 409
+          }
+        }
+      ]
+    },
+    {
+      "image": "snake/snake-2.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1868,
+        "h": 1645
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__snake_slither-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 178,
+            "y": 159,
+            "w": 819,
+            "h": 409
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 819,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_slither-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 196,
+            "y": 158,
+            "w": 745,
+            "h": 409
+          },
+          "frame": {
+            "x": 823,
+            "y": 2,
+            "w": 745,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_slither-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 196,
+            "y": 158,
+            "w": 745,
+            "h": 409
+          },
+          "frame": {
+            "x": 2,
+            "y": 413,
+            "w": 745,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_slither-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 196,
+            "y": 158,
+            "w": 745,
+            "h": 409
+          },
+          "frame": {
+            "x": 749,
+            "y": 413,
+            "w": 745,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_slither-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 196,
+            "y": 158,
+            "w": 745,
+            "h": 409
+          },
+          "frame": {
+            "x": 2,
+            "y": 824,
+            "w": 745,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_slither-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 178,
+            "y": 159,
+            "w": 819,
+            "h": 409
+          },
+          "frame": {
+            "x": 749,
+            "y": 824,
+            "w": 819,
+            "h": 409
+          }
+        },
+        {
+          "filename": "__snake_idle-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 164,
+            "w": 931,
+            "h": 408
+          },
+          "frame": {
+            "x": 2,
+            "y": 1235,
+            "w": 931,
+            "h": 408
+          }
+        },
+        {
+          "filename": "__snake_idle-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 164,
+            "w": 931,
+            "h": 408
+          },
+          "frame": {
+            "x": 935,
+            "y": 1235,
+            "w": 931,
+            "h": 408
+          }
+        }
+      ]
+    },
+    {
+      "image": "snake/snake-3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1868,
+        "h": 2044
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__snake_idle-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 164,
+            "w": 931,
+            "h": 408
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 931,
+            "h": 408
+          }
+        },
+        {
+          "filename": "__snake_idle-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 164,
+            "w": 931,
+            "h": 408
+          },
+          "frame": {
+            "x": 935,
+            "y": 2,
+            "w": 931,
+            "h": 408
+          }
+        },
+        {
+          "filename": "__snake_idle-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 164,
+            "w": 931,
+            "h": 407
+          },
+          "frame": {
+            "x": 2,
+            "y": 412,
+            "w": 931,
+            "h": 407
+          }
+        },
+        {
+          "filename": "__snake_idle-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 164,
+            "w": 931,
+            "h": 407
+          },
+          "frame": {
+            "x": 935,
+            "y": 412,
+            "w": 931,
+            "h": 407
+          }
+        },
+        {
+          "filename": "__snake_idle-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 165,
+            "w": 931,
+            "h": 406
+          },
+          "frame": {
+            "x": 2,
+            "y": 821,
+            "w": 931,
+            "h": 406
+          }
+        },
+        {
+          "filename": "__snake_idle-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 165,
+            "w": 931,
+            "h": 406
+          },
+          "frame": {
+            "x": 935,
+            "y": 821,
+            "w": 931,
+            "h": 406
+          }
+        },
+        {
+          "filename": "__snake_idle-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 165,
+            "w": 931,
+            "h": 406
+          },
+          "frame": {
+            "x": 2,
+            "y": 1229,
+            "w": 931,
+            "h": 406
+          }
+        },
+        {
+          "filename": "__snake_idle-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 165,
+            "w": 931,
+            "h": 406
+          },
+          "frame": {
+            "x": 935,
+            "y": 1229,
+            "w": 931,
+            "h": 406
+          }
+        },
+        {
+          "filename": "__snake_idle-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 931,
+            "h": 405
+          },
+          "frame": {
+            "x": 2,
+            "y": 1637,
+            "w": 931,
+            "h": 405
+          }
+        },
+        {
+          "filename": "__snake_idle-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 931,
+            "h": 405
+          },
+          "frame": {
+            "x": 935,
+            "y": 1637,
+            "w": 931,
+            "h": 405
+          }
+        }
+      ]
+    },
+    {
+      "image": "snake/snake-4.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1866,
+        "h": 2032
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__snake_bite-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 930,
+            "h": 404
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 930,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__snake_bite-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 930,
+            "h": 404
+          },
+          "frame": {
+            "x": 934,
+            "y": 2,
+            "w": 930,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__snake_bite-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 930,
+            "h": 404
+          },
+          "frame": {
+            "x": 2,
+            "y": 408,
+            "w": 930,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__snake_die-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 930,
+            "h": 404
+          },
+          "frame": {
+            "x": 934,
+            "y": 408,
+            "w": 930,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__snake_idle-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 930,
+            "h": 404
+          },
+          "frame": {
+            "x": 2,
+            "y": 814,
+            "w": 930,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__snake_idle-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 930,
+            "h": 404
+          },
+          "frame": {
+            "x": 934,
+            "y": 814,
+            "w": 930,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__snake_idle-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 930,
+            "h": 404
+          },
+          "frame": {
+            "x": 2,
+            "y": 1220,
+            "w": 930,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__snake_slither-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 930,
+            "h": 404
+          },
+          "frame": {
+            "x": 934,
+            "y": 1220,
+            "w": 930,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__snake_slither-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 930,
+            "h": 404
+          },
+          "frame": {
+            "x": 2,
+            "y": 1626,
+            "w": 930,
+            "h": 404
+          }
+        },
+        {
+          "filename": "__snake_slither-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 151,
+            "y": 166,
+            "w": 930,
+            "h": 404
+          },
+          "frame": {
+            "x": 934,
+            "y": 1626,
+            "w": 930,
+            "h": 404
+          }
+        }
+      ]
+    },
+    {
+      "image": "snake/snake-5.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1992,
+        "h": 579
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__snake_die-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 105,
+            "y": 244,
+            "w": 952,
+            "h": 327
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 952,
+            "h": 327
+          }
+        },
+        {
+          "filename": "__snake_bite-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 32,
+            "y": 246,
+            "w": 1025,
+            "h": 325
+          },
+          "frame": {
+            "x": 956,
+            "y": 2,
+            "w": 1025,
+            "h": 325
+          }
+        },
+        {
+          "filename": "__snake_die-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 58,
+            "y": 324,
+            "w": 968,
+            "h": 246
+          },
+          "frame": {
+            "x": 2,
+            "y": 331,
+            "w": 968,
+            "h": 246
+          }
+        },
+        {
+          "filename": "__snake_die-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 1082,
+            "h": 621
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 410,
+            "w": 1018,
+            "h": 193
+          },
+          "frame": {
+            "x": 972,
+            "y": 331,
+            "w": 1018,
+            "h": 193
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "scripts/build-animal-atlas.mjs",
+    "version": "1.0",
+    "source": "snake--1s5m1c2t104w519v19"
+  }
+}

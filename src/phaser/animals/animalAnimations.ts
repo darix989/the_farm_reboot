@@ -50,6 +50,11 @@ const REST_POSE: Record<AnimalSpriteId, string> = {
   dog: 'idle',
   mouse: 'idle',
   pig: 'idle',
+  'brown-bull': 'idle',
+  'white-chicken': 'idle',
+  skunk: 'idle',
+  seagull: 'idle',
+  snake: 'idle',
 };
 
 function buildAnimalSetup(id: AnimalSpriteId): AnimalSetup {

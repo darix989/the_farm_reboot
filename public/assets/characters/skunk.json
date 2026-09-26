@@ -1,0 +1,2092 @@
+{
+  "textures": [
+    {
+      "image": "skunk/skunk-0.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1948,
+        "h": 2025
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__skunk_squirt_position_transition-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 64,
+            "y": 46,
+            "w": 516,
+            "h": 515
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 516,
+            "h": 515
+          }
+        },
+        {
+          "filename": "__skunk_squirt_position_transition-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 60,
+            "y": 47,
+            "w": 547,
+            "h": 514
+          },
+          "frame": {
+            "x": 520,
+            "y": 2,
+            "w": 547,
+            "h": 514
+          }
+        },
+        {
+          "filename": "__skunk_squirt_position_transition-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 59,
+            "w": 423,
+            "h": 501
+          },
+          "frame": {
+            "x": 1069,
+            "y": 2,
+            "w": 423,
+            "h": 501
+          }
+        },
+        {
+          "filename": "__skunk_squirt-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 452,
+            "h": 500
+          },
+          "frame": {
+            "x": 1494,
+            "y": 2,
+            "w": 452,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 509,
+            "h": 500
+          },
+          "frame": {
+            "x": 2,
+            "y": 519,
+            "w": 509,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 588,
+            "h": 500
+          },
+          "frame": {
+            "x": 513,
+            "y": 519,
+            "w": 588,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 633,
+            "h": 500
+          },
+          "frame": {
+            "x": 1103,
+            "y": 519,
+            "w": 633,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 658,
+            "h": 500
+          },
+          "frame": {
+            "x": 2,
+            "y": 1021,
+            "w": 658,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 676,
+            "h": 500
+          },
+          "frame": {
+            "x": 662,
+            "y": 1021,
+            "w": 676,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 714,
+            "h": 500
+          },
+          "frame": {
+            "x": 2,
+            "y": 1523,
+            "w": 714,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 743,
+            "h": 500
+          },
+          "frame": {
+            "x": 718,
+            "y": 1523,
+            "w": 743,
+            "h": 500
+          }
+        }
+      ]
+    },
+    {
+      "image": "skunk/skunk-1.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1991,
+        "h": 1847
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__skunk_squirt-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 744,
+            "h": 500
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 744,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 721,
+            "h": 500
+          },
+          "frame": {
+            "x": 748,
+            "y": 2,
+            "w": 721,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt_position_transition-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 421,
+            "h": 500
+          },
+          "frame": {
+            "x": 1471,
+            "y": 2,
+            "w": 421,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt_position_transition-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 421,
+            "h": 500
+          },
+          "frame": {
+            "x": 2,
+            "y": 504,
+            "w": 421,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_squirt_position_transition-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 76,
+            "y": 60,
+            "w": 421,
+            "h": 500
+          },
+          "frame": {
+            "x": 425,
+            "y": 504,
+            "w": 421,
+            "h": 500
+          }
+        },
+        {
+          "filename": "__skunk_jump-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 62,
+            "y": 85,
+            "w": 492,
+            "h": 474
+          },
+          "frame": {
+            "x": 848,
+            "y": 504,
+            "w": 492,
+            "h": 474
+          }
+        },
+        {
+          "filename": "__skunk_squirt_position_transition-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 53,
+            "y": 88,
+            "w": 618,
+            "h": 474
+          },
+          "frame": {
+            "x": 1342,
+            "y": 504,
+            "w": 618,
+            "h": 474
+          }
+        },
+        {
+          "filename": "__skunk_jump-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 32,
+            "y": 38,
+            "w": 642,
+            "h": 461
+          },
+          "frame": {
+            "x": 2,
+            "y": 1006,
+            "w": 642,
+            "h": 461
+          }
+        },
+        {
+          "filename": "__skunk_jump-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 39,
+            "y": 146,
+            "w": 667,
+            "h": 415
+          },
+          "frame": {
+            "x": 646,
+            "y": 1006,
+            "w": 667,
+            "h": 415
+          }
+        },
+        {
+          "filename": "__skunk_squirt_position_transition-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 47,
+            "y": 167,
+            "w": 674,
+            "h": 394
+          },
+          "frame": {
+            "x": 1315,
+            "y": 1006,
+            "w": 674,
+            "h": 394
+          }
+        },
+        {
+          "filename": "__skunk_run-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 29,
+            "y": 183,
+            "w": 707,
+            "h": 376
+          },
+          "frame": {
+            "x": 2,
+            "y": 1469,
+            "w": 707,
+            "h": 376
+          }
+        },
+        {
+          "filename": "__skunk_run-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 31,
+            "y": 195,
+            "w": 707,
+            "h": 368
+          },
+          "frame": {
+            "x": 711,
+            "y": 1469,
+            "w": 707,
+            "h": 368
+          }
+        }
+      ]
+    },
+    {
+      "image": "skunk/skunk-2.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1464,
+        "h": 1981
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__skunk_run-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 19,
+            "y": 207,
+            "w": 720,
+            "h": 353
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 720,
+            "h": 353
+          }
+        },
+        {
+          "filename": "__skunk_run-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 33,
+            "y": 215,
+            "w": 704,
+            "h": 345
+          },
+          "frame": {
+            "x": 724,
+            "y": 2,
+            "w": 704,
+            "h": 345
+          }
+        },
+        {
+          "filename": "__skunk_jump-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 25,
+            "y": 189,
+            "w": 691,
+            "h": 341
+          },
+          "frame": {
+            "x": 2,
+            "y": 357,
+            "w": 691,
+            "h": 341
+          }
+        },
+        {
+          "filename": "__skunk_squirt_position_transition-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 44,
+            "y": 223,
+            "w": 691,
+            "h": 338
+          },
+          "frame": {
+            "x": 695,
+            "y": 357,
+            "w": 691,
+            "h": 338
+          }
+        },
+        {
+          "filename": "__skunk_run-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 13,
+            "y": 232,
+            "w": 728,
+            "h": 330
+          },
+          "frame": {
+            "x": 2,
+            "y": 700,
+            "w": 728,
+            "h": 330
+          }
+        },
+        {
+          "filename": "__skunk_run-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 10,
+            "y": 231,
+            "w": 730,
+            "h": 328
+          },
+          "frame": {
+            "x": 732,
+            "y": 700,
+            "w": 730,
+            "h": 328
+          }
+        },
+        {
+          "filename": "__skunk_run-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 244,
+            "w": 726,
+            "h": 319
+          },
+          "frame": {
+            "x": 2,
+            "y": 1032,
+            "w": 726,
+            "h": 319
+          }
+        },
+        {
+          "filename": "__skunk_run-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 8,
+            "y": 261,
+            "w": 728,
+            "h": 319
+          },
+          "frame": {
+            "x": 730,
+            "y": 1032,
+            "w": 728,
+            "h": 319
+          }
+        },
+        {
+          "filename": "__skunk_run-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 35,
+            "y": 245,
+            "w": 700,
+            "h": 316
+          },
+          "frame": {
+            "x": 2,
+            "y": 1353,
+            "w": 700,
+            "h": 316
+          }
+        },
+        {
+          "filename": "__skunk_confused-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 26,
+            "y": 265,
+            "w": 717,
+            "h": 308
+          },
+          "frame": {
+            "x": 704,
+            "y": 1353,
+            "w": 717,
+            "h": 308
+          }
+        },
+        {
+          "filename": "__skunk_confused-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 26,
+            "y": 265,
+            "w": 717,
+            "h": 308
+          },
+          "frame": {
+            "x": 2,
+            "y": 1671,
+            "w": 717,
+            "h": 308
+          }
+        },
+        {
+          "filename": "__skunk_jump-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 26,
+            "y": 128,
+            "w": 721,
+            "h": 302
+          },
+          "frame": {
+            "x": 721,
+            "y": 1671,
+            "w": 721,
+            "h": 302
+          }
+        }
+      ]
+    },
+    {
+      "image": "skunk/skunk-3.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1435,
+        "h": 2043
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__skunk_jump-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 50,
+            "y": 251,
+            "w": 671,
+            "h": 301
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 671,
+            "h": 301
+          }
+        },
+        {
+          "filename": "__skunk_confused-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 276,
+            "w": 705,
+            "h": 297
+          },
+          "frame": {
+            "x": 675,
+            "y": 2,
+            "w": 705,
+            "h": 297
+          }
+        },
+        {
+          "filename": "__skunk_confused-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 277,
+            "w": 705,
+            "h": 296
+          },
+          "frame": {
+            "x": 2,
+            "y": 305,
+            "w": 705,
+            "h": 296
+          }
+        },
+        {
+          "filename": "__skunk_confused-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 278,
+            "w": 705,
+            "h": 295
+          },
+          "frame": {
+            "x": 709,
+            "y": 305,
+            "w": 705,
+            "h": 295
+          }
+        },
+        {
+          "filename": "__skunk_confused-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 22,
+            "y": 282,
+            "w": 721,
+            "h": 291
+          },
+          "frame": {
+            "x": 2,
+            "y": 603,
+            "w": 721,
+            "h": 291
+          }
+        },
+        {
+          "filename": "__skunk_run-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 26,
+            "y": 278,
+            "w": 705,
+            "h": 291
+          },
+          "frame": {
+            "x": 725,
+            "y": 603,
+            "w": 705,
+            "h": 291
+          }
+        },
+        {
+          "filename": "__skunk_run-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 10,
+            "y": 268,
+            "w": 724,
+            "h": 288
+          },
+          "frame": {
+            "x": 2,
+            "y": 896,
+            "w": 724,
+            "h": 288
+          }
+        },
+        {
+          "filename": "__skunk_confused-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 288,
+            "w": 705,
+            "h": 285
+          },
+          "frame": {
+            "x": 728,
+            "y": 896,
+            "w": 705,
+            "h": 285
+          }
+        },
+        {
+          "filename": "__skunk_confused-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 288,
+            "w": 705,
+            "h": 285
+          },
+          "frame": {
+            "x": 2,
+            "y": 1186,
+            "w": 705,
+            "h": 285
+          }
+        },
+        {
+          "filename": "__skunk_walk-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 48,
+            "y": 292,
+            "w": 695,
+            "h": 285
+          },
+          "frame": {
+            "x": 709,
+            "y": 1186,
+            "w": 695,
+            "h": 285
+          }
+        },
+        {
+          "filename": "__skunk_walk-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 44,
+            "y": 293,
+            "w": 694,
+            "h": 284
+          },
+          "frame": {
+            "x": 2,
+            "y": 1473,
+            "w": 694,
+            "h": 284
+          }
+        },
+        {
+          "filename": "__skunk_confused-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 291,
+            "w": 705,
+            "h": 282
+          },
+          "frame": {
+            "x": 698,
+            "y": 1473,
+            "w": 705,
+            "h": 282
+          }
+        },
+        {
+          "filename": "__skunk_confused-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 291,
+            "w": 705,
+            "h": 282
+          },
+          "frame": {
+            "x": 2,
+            "y": 1759,
+            "w": 705,
+            "h": 282
+          }
+        },
+        {
+          "filename": "__skunk_confused-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 294,
+            "w": 705,
+            "h": 279
+          },
+          "frame": {
+            "x": 709,
+            "y": 1759,
+            "w": 705,
+            "h": 279
+          }
+        }
+      ]
+    },
+    {
+      "image": "skunk/skunk-4.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1441,
+        "h": 1905
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__skunk_confused-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 294,
+            "w": 705,
+            "h": 279
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 705,
+            "h": 279
+          }
+        },
+        {
+          "filename": "__skunk_confused-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 295,
+            "w": 705,
+            "h": 278
+          },
+          "frame": {
+            "x": 709,
+            "y": 2,
+            "w": 705,
+            "h": 278
+          }
+        },
+        {
+          "filename": "__skunk_confused-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 25,
+            "y": 297,
+            "w": 718,
+            "h": 276
+          },
+          "frame": {
+            "x": 2,
+            "y": 283,
+            "w": 718,
+            "h": 276
+          }
+        },
+        {
+          "filename": "__skunk_run-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 17,
+            "y": 277,
+            "w": 717,
+            "h": 273
+          },
+          "frame": {
+            "x": 722,
+            "y": 283,
+            "w": 717,
+            "h": 273
+          }
+        },
+        {
+          "filename": "__skunk_jump-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 25,
+            "y": 177,
+            "w": 731,
+            "h": 272
+          },
+          "frame": {
+            "x": 2,
+            "y": 561,
+            "w": 731,
+            "h": 272
+          }
+        },
+        {
+          "filename": "__skunk_walk-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 44,
+            "y": 301,
+            "w": 694,
+            "h": 271
+          },
+          "frame": {
+            "x": 735,
+            "y": 561,
+            "w": 694,
+            "h": 271
+          }
+        },
+        {
+          "filename": "__skunk_walk-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 47,
+            "y": 292,
+            "w": 695,
+            "h": 269
+          },
+          "frame": {
+            "x": 2,
+            "y": 835,
+            "w": 695,
+            "h": 269
+          }
+        },
+        {
+          "filename": "__skunk_walk-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 45,
+            "y": 293,
+            "w": 694,
+            "h": 268
+          },
+          "frame": {
+            "x": 699,
+            "y": 835,
+            "w": 694,
+            "h": 268
+          }
+        },
+        {
+          "filename": "__skunk_confused-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 308,
+            "w": 705,
+            "h": 265
+          },
+          "frame": {
+            "x": 2,
+            "y": 1106,
+            "w": 705,
+            "h": 265
+          }
+        },
+        {
+          "filename": "__skunk_walk-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 46,
+            "y": 296,
+            "w": 695,
+            "h": 265
+          },
+          "frame": {
+            "x": 709,
+            "y": 1106,
+            "w": 695,
+            "h": 265
+          }
+        },
+        {
+          "filename": "__skunk_idle-10.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 35,
+            "y": 298,
+            "w": 703,
+            "h": 264
+          },
+          "frame": {
+            "x": 2,
+            "y": 1373,
+            "w": 703,
+            "h": 264
+          }
+        },
+        {
+          "filename": "__skunk_walk-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 50,
+            "y": 296,
+            "w": 693,
+            "h": 264
+          },
+          "frame": {
+            "x": 707,
+            "y": 1373,
+            "w": 693,
+            "h": 264
+          }
+        },
+        {
+          "filename": "__skunk_walk-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 49,
+            "y": 300,
+            "w": 694,
+            "h": 264
+          },
+          "frame": {
+            "x": 2,
+            "y": 1639,
+            "w": 694,
+            "h": 264
+          }
+        },
+        {
+          "filename": "__skunk_walk-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 43,
+            "y": 298,
+            "w": 692,
+            "h": 264
+          },
+          "frame": {
+            "x": 698,
+            "y": 1639,
+            "w": 692,
+            "h": 264
+          }
+        }
+      ]
+    },
+    {
+      "image": "skunk/skunk-5.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 1414,
+        "h": 1845
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__skunk_idle-9.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 35,
+            "y": 298,
+            "w": 704,
+            "h": 263
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 704,
+            "h": 263
+          }
+        },
+        {
+          "filename": "__skunk_idle-11.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 35,
+            "y": 298,
+            "w": 704,
+            "h": 263
+          },
+          "frame": {
+            "x": 708,
+            "y": 2,
+            "w": 704,
+            "h": 263
+          }
+        },
+        {
+          "filename": "__skunk_walk-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 46,
+            "y": 296,
+            "w": 694,
+            "h": 263
+          },
+          "frame": {
+            "x": 2,
+            "y": 267,
+            "w": 694,
+            "h": 263
+          }
+        },
+        {
+          "filename": "__skunk_idle-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 299,
+            "w": 703,
+            "h": 262
+          },
+          "frame": {
+            "x": 698,
+            "y": 267,
+            "w": 703,
+            "h": 262
+          }
+        },
+        {
+          "filename": "__skunk_idle-12.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 299,
+            "w": 703,
+            "h": 262
+          },
+          "frame": {
+            "x": 2,
+            "y": 532,
+            "w": 703,
+            "h": 262
+          }
+        },
+        {
+          "filename": "__skunk_walk-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 47,
+            "y": 300,
+            "w": 695,
+            "h": 262
+          },
+          "frame": {
+            "x": 707,
+            "y": 532,
+            "w": 695,
+            "h": 262
+          }
+        },
+        {
+          "filename": "__skunk_confused-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 38,
+            "y": 312,
+            "w": 705,
+            "h": 261
+          },
+          "frame": {
+            "x": 2,
+            "y": 796,
+            "w": 705,
+            "h": 261
+          }
+        },
+        {
+          "filename": "__skunk_idle-7.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 299,
+            "w": 703,
+            "h": 261
+          },
+          "frame": {
+            "x": 709,
+            "y": 796,
+            "w": 703,
+            "h": 261
+          }
+        },
+        {
+          "filename": "__skunk_idle-13.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 299,
+            "w": 703,
+            "h": 261
+          },
+          "frame": {
+            "x": 2,
+            "y": 1059,
+            "w": 703,
+            "h": 261
+          }
+        },
+        {
+          "filename": "__skunk_walk-8.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 45,
+            "y": 301,
+            "w": 695,
+            "h": 261
+          },
+          "frame": {
+            "x": 707,
+            "y": 1059,
+            "w": 695,
+            "h": 261
+          }
+        },
+        {
+          "filename": "__skunk_idle-6.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 300,
+            "w": 704,
+            "h": 260
+          },
+          "frame": {
+            "x": 2,
+            "y": 1322,
+            "w": 704,
+            "h": 260
+          }
+        },
+        {
+          "filename": "__skunk_idle-14.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 300,
+            "w": 704,
+            "h": 260
+          },
+          "frame": {
+            "x": 708,
+            "y": 1322,
+            "w": 704,
+            "h": 260
+          }
+        },
+        {
+          "filename": "__skunk_idle-5.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 300,
+            "w": 704,
+            "h": 259
+          },
+          "frame": {
+            "x": 2,
+            "y": 1584,
+            "w": 704,
+            "h": 259
+          }
+        },
+        {
+          "filename": "__skunk_idle-15.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 300,
+            "w": 704,
+            "h": 259
+          },
+          "frame": {
+            "x": 708,
+            "y": 1584,
+            "w": 704,
+            "h": 259
+          }
+        }
+      ]
+    },
+    {
+      "image": "skunk/skunk-6.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 2030,
+        "h": 2041
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__skunk_die-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 23,
+            "y": 304,
+            "w": 676,
+            "h": 258
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 676,
+            "h": 258
+          }
+        },
+        {
+          "filename": "__skunk_idle-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 302,
+            "w": 703,
+            "h": 258
+          },
+          "frame": {
+            "x": 680,
+            "y": 2,
+            "w": 703,
+            "h": 258
+          }
+        },
+        {
+          "filename": "__skunk_idle-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 301,
+            "w": 704,
+            "h": 258
+          },
+          "frame": {
+            "x": 2,
+            "y": 262,
+            "w": 704,
+            "h": 258
+          }
+        },
+        {
+          "filename": "__skunk_idle-16.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 36,
+            "y": 301,
+            "w": 704,
+            "h": 258
+          },
+          "frame": {
+            "x": 708,
+            "y": 262,
+            "w": 704,
+            "h": 258
+          }
+        },
+        {
+          "filename": "__skunk_idle-18.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 302,
+            "w": 703,
+            "h": 258
+          },
+          "frame": {
+            "x": 2,
+            "y": 522,
+            "w": 703,
+            "h": 258
+          }
+        },
+        {
+          "filename": "__skunk_die-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 303,
+            "w": 703,
+            "h": 257
+          },
+          "frame": {
+            "x": 707,
+            "y": 522,
+            "w": 703,
+            "h": 257
+          }
+        },
+        {
+          "filename": "__skunk_idle-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 303,
+            "w": 703,
+            "h": 257
+          },
+          "frame": {
+            "x": 2,
+            "y": 782,
+            "w": 703,
+            "h": 257
+          }
+        },
+        {
+          "filename": "__skunk_idle-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 303,
+            "w": 704,
+            "h": 257
+          },
+          "frame": {
+            "x": 707,
+            "y": 782,
+            "w": 704,
+            "h": 257
+          }
+        },
+        {
+          "filename": "__skunk_idle-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 302,
+            "w": 703,
+            "h": 257
+          },
+          "frame": {
+            "x": 2,
+            "y": 1041,
+            "w": 703,
+            "h": 257
+          }
+        },
+        {
+          "filename": "__skunk_idle-17.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 302,
+            "w": 703,
+            "h": 257
+          },
+          "frame": {
+            "x": 707,
+            "y": 1041,
+            "w": 703,
+            "h": 257
+          }
+        },
+        {
+          "filename": "__skunk_idle-19.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 303,
+            "w": 704,
+            "h": 257
+          },
+          "frame": {
+            "x": 2,
+            "y": 1300,
+            "w": 704,
+            "h": 257
+          }
+        },
+        {
+          "filename": "__skunk_jump-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 303,
+            "w": 703,
+            "h": 257
+          },
+          "frame": {
+            "x": 708,
+            "y": 1300,
+            "w": 703,
+            "h": 257
+          }
+        },
+        {
+          "filename": "__skunk_squirt_position_transition-0.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 37,
+            "y": 303,
+            "w": 703,
+            "h": 257
+          },
+          "frame": {
+            "x": 2,
+            "y": 1559,
+            "w": 703,
+            "h": 257
+          }
+        },
+        {
+          "filename": "__skunk_die-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 18,
+            "y": 322,
+            "w": 649,
+            "h": 233
+          },
+          "frame": {
+            "x": 707,
+            "y": 1559,
+            "w": 649,
+            "h": 233
+          }
+        },
+        {
+          "filename": "__skunk_jump-2.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 40,
+            "y": 348,
+            "w": 695,
+            "h": 221
+          },
+          "frame": {
+            "x": 2,
+            "y": 1818,
+            "w": 695,
+            "h": 221
+          }
+        },
+        {
+          "filename": "__skunk_die-3.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 24,
+            "y": 355,
+            "w": 622,
+            "h": 213
+          },
+          "frame": {
+            "x": 699,
+            "y": 1818,
+            "w": 622,
+            "h": 213
+          }
+        },
+        {
+          "filename": "__skunk_jump-1.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 39,
+            "y": 351,
+            "w": 705,
+            "h": 208
+          },
+          "frame": {
+            "x": 1323,
+            "y": 1818,
+            "w": 705,
+            "h": 208
+          }
+        }
+      ]
+    },
+    {
+      "image": "skunk/skunk-7.png",
+      "format": "RGBA8888",
+      "size": {
+        "w": 611,
+        "h": 206
+      },
+      "scale": 1,
+      "frames": [
+        {
+          "filename": "__skunk_die-4.png",
+          "rotated": false,
+          "trimmed": true,
+          "sourceSize": {
+            "w": 820,
+            "h": 626
+          },
+          "spriteSourceSize": {
+            "x": 27,
+            "y": 364,
+            "w": 607,
+            "h": 202
+          },
+          "frame": {
+            "x": 2,
+            "y": 2,
+            "w": 607,
+            "h": 202
+          }
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "app": "scripts/build-animal-atlas.mjs",
+    "version": "1.0",
+    "source": "skunk - 1m6v0q501k0m2u8583"
+  }
+}
