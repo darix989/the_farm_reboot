@@ -26,6 +26,11 @@
  *                                so a face run can never touch a body clip and vice versa.
  *                                See `$faceComment` in the manifest for the prompt rules,
  *                                which are NOT the body rules.
+ *   --phase loop[,out]           Generate PHASE clips (ease-in / loop / ease-out) for emotions
+ *                                whose manifest override has a `phases` block, on top of the
+ *                                already-promoted main clip. Endpoints are cells of that main
+ *                                clip (`"main:23"`). Lands in `<review>/<animal>/<emotion>@<phase>/`;
+ *                                `--promote` then anchors and measures them. See `ludo/phases.mjs`.
  *   --remeasure                  Re-run `measureNormalization` and `measureClipQuality`
  *                                against the shipped PNGs in `public/assets/characters/emotions/`
  *                                (and the atlas reference frames for scale/origin), then rewrite
@@ -81,6 +86,7 @@ import {
   QUALITY_THRESHOLDS,
   CROP_QUALITY_THRESHOLDS,
 } from './ludo/qualityCheck.mjs';
+import { endpointFrame, measurePhases } from './ludo/phases.mjs';
 
 const MANIFEST_PATH = 'scripts/ludo/emotion-manifest.json';
 
@@ -151,6 +157,7 @@ function parseArgs(argv) {
     reindex: false,
     remeasure: false,
     faces: false,
+    phases: null,
   };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -162,6 +169,14 @@ function parseArgs(argv) {
     else if (arg === '--faces') args.faces = true;
     else if (arg === '--animal') args.animals = (argv[++i] ?? '').split(',').filter(Boolean);
     else if (arg === '--emotion') args.emotions = (argv[++i] ?? '').split(',').filter(Boolean);
+    else if (arg === '--phase') {
+      args.phases = (argv[++i] ?? '').split(',').filter(Boolean);
+      const bad = args.phases.filter((p) => p !== 'loop' && p !== 'out');
+      if (bad.length) {
+        console.error(`--phase takes loop and/or out (the ease-in is cut, not generated): ${bad}`);
+        process.exit(1);
+      }
+    }
     else {
       console.error(`Unknown flag: ${arg}`);
       process.exit(1);
@@ -235,6 +250,58 @@ function planJobs(manifest, args) {
 }
 
 /**
+ * One job per requested phase of every emotion whose override declares `phases`. Settings are
+ * the defaults overlaid with the phase block, so a phase can pick its own model and length;
+ * `initial` / `final` name cells of the *promoted* main clip, which must therefore exist.
+ */
+async function planPhaseJobs(manifest, args) {
+  const record = await readPromotedRecord();
+  const jobs = [];
+  for (const [animalId, animal] of Object.entries(manifest.animals)) {
+    if (args.animals && !args.animals.includes(animalId)) continue;
+    for (const [emotion, override] of Object.entries(animal.overrides ?? {})) {
+      if (args.emotions && !args.emotions.includes(emotion)) continue;
+      if (!override.phases) continue;
+      const main = record[animalId]?.[emotion];
+      if (!main) {
+        throw new Error(`${animalId}/${emotion} declares phases but has no promoted main clip.`);
+      }
+      const mainBuffer = await readFile(join(MODE.publicDir, main.file));
+      for (const phase of args.phases) {
+        const spec = override.phases[phase];
+        if (!spec) continue;
+        // `endFrame` is a promote-time trim, not a generation setting: kept out of `settings` so
+        // retuning it never changes the request_id and re-bills the clip.
+        const { prompt: rawPrompt, initial, final, endFrame: _trim, ...phaseSettings } = spec;
+        const prompt = rawPrompt
+          .replaceAll('{species}', animal.species)
+          .replaceAll('{view}', animal.view);
+        const settings = { ...manifest.defaults, ...phaseSettings, closeLoop: false };
+        settings.frameRate = playbackFrameRate(settings);
+        const initialBuffer = await endpointFrame(mainBuffer, main, initial);
+        const finalBuffer = await endpointFrame(mainBuffer, main, final);
+        jobs.push({
+          animalId,
+          emotion,
+          phase,
+          prompt,
+          settings,
+          reference: animal.reference,
+          initial,
+          final,
+          initialBuffer,
+          finalBuffer,
+          // The endpoints are pixels, not names: hash them, or a re-promoted main clip would
+          // get the previous generation back from the request_id cache (see `requestId`).
+          inputHash: createHash('sha1').update(initialBuffer).update(finalBuffer).digest('hex'),
+        });
+      }
+    }
+  }
+  return jobs;
+}
+
+/**
  * `request_id` is an **idempotency key**, not just a label.
  *
  * The docs present it as a tag for finding a result again later, which undersold it badly:
@@ -250,10 +317,11 @@ function planJobs(manifest, args) {
 function requestId(job, force) {
   const suffix = force ? `-${Date.now().toString(36)}` : '';
   const fingerprint = createHash('sha1')
-    .update(JSON.stringify([job.prompt, job.reference, job.settings]))
+    .update(JSON.stringify([job.prompt, job.reference, job.settings, job.inputHash ?? null]))
     .digest('hex')
     .slice(0, 8);
-  return `farm-emotion-${job.animalId}-${job.emotion}-${fingerprint}${suffix}`;
+  const name = job.phase ? `${job.emotion}-${job.phase}` : job.emotion;
+  return `farm-emotion-${job.animalId}-${name}-${fingerprint}${suffix}`;
 }
 
 /**
@@ -283,6 +351,8 @@ function playbackFrameRate(settings) {
  * picture in it.
  */
 function buildPayload(job, referenceDataUri, force) {
+  // A phase job brings its own endpoints (cells of the main clip); see `planPhaseJobs`.
+  if (job.initialBuffer) referenceDataUri = toDataUri(job.initialBuffer);
   return {
     initial_image: referenceDataUri,
     motion_prompt: job.prompt,
@@ -296,7 +366,11 @@ function buildPayload(job, referenceDataUri, force) {
     // a hint the generator is free to miss — measured on the first real run, an unpinned clip
     // drifted from a standing donkey to a lying-down one and popped hard on every repeat.
     // Handing it the same image as both ends removes the ambiguity instead of asking nicely.
-    ...(job.settings.closeLoop ? { final_image: referenceDataUri } : {}),
+    ...(job.finalBuffer
+      ? { final_image: toDataUri(job.finalBuffer) }
+      : job.settings.closeLoop
+        ? { final_image: referenceDataUri }
+        : {}),
     margin_ratio_mode: job.settings.marginRatioMode,
     // Off deliberately: `crop` gives per-frame sizes, and a uniform grid is the entire
     // reason `load.spritesheet` can read these without an atlas.
@@ -310,7 +384,8 @@ function buildPayload(job, referenceDataUri, force) {
 // generate
 // ---------------------------------------------------------------------------
 
-const clipDir = (animalId, emotion) => join(MODE.reviewDir, animalId, emotion);
+const clipDir = (animalId, emotion, phase) =>
+  join(MODE.reviewDir, animalId, phase ? `${emotion}@${phase}` : emotion);
 
 async function exists(path) {
   try {
@@ -323,7 +398,7 @@ async function exists(path) {
 
 async function generate(args) {
   const manifest = await readManifest();
-  const jobs = planJobs(manifest, args);
+  const jobs = args.phases ? await planPhaseJobs(manifest, args) : planJobs(manifest, args);
 
   if (jobs.length === 0) {
     console.error('Nothing to generate — check --animal / --emotion against the manifest.');
@@ -346,8 +421,8 @@ async function generate(args) {
   console.log(`${jobs.length} ${MODE.noun}(s) to generate.\n`);
 
   for (const job of jobs) {
-    const label = `${job.animalId}/${job.emotion}`;
-    const dir = clipDir(job.animalId, job.emotion);
+    const label = `${job.animalId}/${job.emotion}${job.phase ? `@${job.phase}` : ''}`;
+    const dir = clipDir(job.animalId, job.emotion, job.phase);
 
     if (!args.force && (await exists(join(dir, 'meta.json')))) {
       console.log(`- ${label}: already in ${MODE.reviewDir} — skipping (use --force to redo)`);
@@ -360,9 +435,16 @@ async function generate(args) {
     if (args.dryRun) {
       await mkdir(dir, { recursive: true });
       await writeFile(join(dir, 'reference.png'), reference.buffer);
+      await writePhaseEndpoints(dir, job);
       console.log(`- ${label}: reference ${reference.width}x${reference.height} → ${dir}`);
       console.log(
-        `  payload ${JSON.stringify({ ...payload, initial_image: `<${reference.buffer.length} bytes>` })}`,
+        `  payload ${JSON.stringify({
+          ...payload,
+          initial_image: `<${payload.initial_image.length} chars${job.initial ? ` from ${job.initial}` : ''}>`,
+          ...(payload.final_image
+            ? { final_image: `<${payload.final_image.length} chars${job.final ? ` from ${job.final}` : ''}>` }
+            : {}),
+        })}`,
       );
       continue;
     }
@@ -382,6 +464,7 @@ async function generate(args) {
     await writeFile(join(dir, 'spritesheet.png'), sheet);
     // What `--remeasure` measures against, so it never needs another API call.
     await writeFile(join(dir, 'reference.png'), reference.buffer);
+    await writePhaseEndpoints(dir, job);
     if (result.gif_url) {
       await writeFile(join(dir, 'preview.gif'), await downloadAsset(result.gif_url));
     }
@@ -398,6 +481,7 @@ async function generate(args) {
       kind: MODE.kind,
       animalId: job.animalId,
       emotion: job.emotion,
+      ...(job.phase ? { phase: job.phase, initial: job.initial, final: job.final } : {}),
       prompt: job.prompt,
       referenceFrame: job.reference,
       settings: job.settings,
@@ -429,6 +513,13 @@ async function generate(args) {
   console.log(
     `Delete any ${MODE.noun} directory that missed, then: npm run sprites:emotions -- --promote`,
   );
+}
+
+/** The exact endpoint images a phase job sent, kept next to its sheet for review. */
+async function writePhaseEndpoints(dir, job) {
+  if (!job.initialBuffer) return;
+  await writeFile(join(dir, 'initial.png'), job.initialBuffer);
+  await writeFile(join(dir, 'final.png'), job.finalBuffer);
 }
 
 // ---------------------------------------------------------------------------
@@ -463,7 +554,12 @@ const STILL_SUFFIX = '_still';
  */
 function cropSource(emotions, emotion) {
   const still = emotions[`${emotion}${STILL_SUFFIX}`];
-  return still ? { source: still, sourceEmotion: `${emotion}${STILL_SUFFIX}` } : { source: emotions[emotion], sourceEmotion: emotion };
+  if (still) return { source: still, sourceEmotion: `${emotion}${STILL_SUFFIX}` };
+  // A phased emotion's loop is the held face — what a looping portrait should show. The main
+  // clip ramps in and out of it, so a portrait cut from it drops the expression every loop.
+  const loop = emotions[emotion]?.phases?.loop;
+  if (loop) return { source: loop, sourceEmotion: `${emotion}@loop` };
+  return { source: emotions[emotion], sourceEmotion: emotion };
 }
 
 /**
@@ -657,7 +753,7 @@ async function cropFaces(args) {
       reviewed[reviewed.length - 1].clips.push({ emotion: job.emotion, alignment, quality });
       console.log(
         `  ${job.emotion}: ${grid.frameCount} frames from ${job.source.file}` +
-          `${job.sourceEmotion === job.emotion ? '' : ` (still variant)`} ` +
+          `${job.sourceEmotion === job.emotion ? '' : ` (via ${job.sourceEmotion})`} ` +
           `(align ≤${alignment.maxOffset}px, jump ≤${alignment.maxJump}px)`,
       );
       [...alignment.warnings, ...quality.warnings].forEach((w) => console.log(`    ⚠ ${w}`));
@@ -839,16 +935,17 @@ async function writeContactSheet() {
   const clips = await reviewedClips();
   const cards = clips
     .map((c) => {
-      const src = `${c.animalId}/${c.emotion}/spritesheet.png`;
+      const name = c.phase ? `${c.emotion}@${c.phase}` : c.emotion;
+      const src = `${c.animalId}/${name}/spritesheet.png`;
       const rate = c.settings.frameRate ?? 12;
-      const id = `${c.animalId}-${c.emotion}`.replace(/[^a-z0-9-]/gi, '-');
+      const id = `${c.animalId}-${name}`.replace(/[^a-z0-9-]/gi, '-');
       return `
       <figure class="card">
         <div class="stage">
           <div class="clip" id="${id}"></div>
         </div>
         <figcaption>
-          <strong>${c.animalId} · ${c.emotion}</strong>
+          <strong>${c.animalId} · ${name}</strong>
           <span>${c.frameCount} frames @ ${rate}fps · ${c.frameWidth}×${c.frameHeight}</span>
           ${
             c.quality
@@ -1102,7 +1199,8 @@ async function promote(args) {
   // Merge, never replace: clips promoted in earlier runs stay promoted even though their
   // review directories are long gone.
   const byAnimal = await readPromotedRecord();
-  for (const clip of clips.sort((a, b) =>
+  const phaseClips = clips.filter((clip) => clip.phase);
+  for (const clip of clips.filter((c) => !c.phase).sort((a, b) =>
     `${a.animalId}${a.emotion}`.localeCompare(`${b.animalId}${b.emotion}`),
   )) {
     const dir = clipDir(clip.animalId, clip.emotion);
@@ -1124,8 +1222,21 @@ async function promote(args) {
         ? { fit: clip.fit ?? fitForRect(clip.headRect, clip.frameWidth), cols: clip.cols }
         : await measureNormalization(sheetBuffer, await readFile(join(dir, 'reference.png')), clip);
 
-    await copyFile(join(dir, 'spritesheet.png'), join(MODE.publicDir, file));
+    const shippedPath = join(MODE.publicDir, file);
+    const unchanged =
+      (await exists(shippedPath)) && (await readFile(shippedPath)).equals(sheetBuffer);
+    await copyFile(join(dir, 'spritesheet.png'), shippedPath);
     const previous = byAnimal[clip.animalId]?.[clip.emotion];
+    // Re-promoting the very same sheet (its review dir simply still exists) keeps its phases.
+    const keptPhases = unchanged ? previous?.phases : undefined;
+    if (previous?.phases && !keptPhases) {
+      // The phases were generated from cells of the clip being replaced; their endpoints no
+      // longer exist. Keeping them would ship an ease-in cut from new art into an old loop.
+      console.warn(
+        `  ⚠ ${clip.animalId}/${clip.emotion}: dropped its phases — they were generated from the ` +
+          `previous main clip. Regenerate them with --phase.`,
+      );
+    }
     (byAnimal[clip.animalId] ??= {})[clip.emotion] = {
       file,
       frameWidth: clip.frameWidth,
@@ -1162,6 +1273,7 @@ async function promote(args) {
       generatedAt: clip.generatedAt,
       // Human notes live on the record, not on the generation. Keep them across a re-promote.
       ...(previous?.reviewNotes?.length ? { reviewNotes: previous.reviewNotes } : {}),
+      ...(keptPhases ? { phases: keptPhases } : {}),
     };
     console.log(
       `- ${clip.animalId}/${clip.emotion} → ${join(MODE.publicDir, file)}` +
@@ -1171,6 +1283,8 @@ async function promote(args) {
     );
   }
 
+  if (phaseClips.length > 0) await promotePhases(phaseClips, byAnimal);
+
   await writeFile(MODE.record, `${JSON.stringify(sortRecord(byAnimal), null, 2)}\n`);
   await writeGeneratedModule(sortRecord(byAnimal));
 
@@ -1179,6 +1293,86 @@ async function promote(args) {
     `\nRewrote ${MODE.generatedTs} with all ${total} promoted clip(s) across ${Object.keys(byAnimal).length} animal(s).`,
   );
   console.log(`Run \`npx tsc --noEmit\` and reload the game.`);
+}
+
+/**
+ * Promotes reviewed phase clips onto their emotion's record entry, then re-derives the whole
+ * `phases` block (ease-in cut, anchored scale/origin, seams) with `measurePhases`.
+ */
+async function promotePhases(phaseClips, byAnimal) {
+  if (MODE.kind !== 'body') throw new Error('Phase clips are body clips only.');
+  const manifest = await readManifest();
+  const groups = new Map();
+  for (const clip of phaseClips) {
+    const key = `${clip.animalId}/${clip.emotion}`;
+    groups.set(key, [...(groups.get(key) ?? []), clip]);
+  }
+  for (const [key, group] of [...groups].sort()) {
+    const [animalId, emotion] = key.split('/');
+    const main = byAnimal[animalId]?.[emotion];
+    if (!main) throw new Error(`${key}: phase clips need a promoted main clip first.`);
+    const phases = { ...(main.phases ?? {}) };
+    const specs = manifest.animals[animalId]?.overrides?.[emotion]?.phases ?? {};
+    for (const clip of group) {
+      // Trim a static tail: an ease-out that settles early would otherwise hold every exit.
+      const endFrame = specs[clip.phase]?.endFrame;
+      const file = `${animalId}-${emotion}-${clip.phase}.png`;
+      await copyFile(
+        join(clipDir(animalId, emotion, clip.phase), 'spritesheet.png'),
+        join(MODE.publicDir, file),
+      );
+      phases[clip.phase] = {
+        file,
+        frameWidth: clip.frameWidth,
+        frameHeight: clip.frameHeight,
+        frameCount: endFrame != null ? Math.min(endFrame + 1, clip.frameCount) : clip.frameCount,
+        frameRate: clip.settings.frameRate,
+        initial: clip.initial,
+        final: clip.final,
+        prompt: clip.prompt,
+        generatedAt: clip.generatedAt,
+        ...(phases[clip.phase]?.reviewNotes?.length
+          ? { reviewNotes: phases[clip.phase].reviewNotes }
+          : {}),
+      };
+    }
+    main.phases = await measurePhases({
+      main,
+      mainBuffer: await readFile(join(MODE.publicDir, main.file)),
+      phases,
+      inRange: easeInRange(manifest, animalId, emotion, main),
+      readBuffer: (file) => readFile(join(MODE.publicDir, file)),
+    });
+    logPhases(key, main.phases);
+  }
+}
+
+/** The ease-in cut: from the manifest, else whatever the record already ships. */
+function easeInRange(manifest, animalId, emotion, main) {
+  const fromMain = manifest.animals[animalId]?.overrides?.[emotion]?.phases?.in?.fromMain;
+  if (fromMain) return fromMain;
+  const shipped = main.phases?.in;
+  if (!shipped) return null;
+  const startFrame = shipped.startFrame ?? 0;
+  return { startFrame, endFrame: startFrame + shipped.frameCount - 1 };
+}
+
+function logPhases(key, phases) {
+  for (const phase of ['in', 'loop', 'out']) {
+    const sheet = phases[phase];
+    if (!sheet) continue;
+    const q = sheet.quality;
+    const seams = [
+      q.seamIn != null ? `seam in ${q.seamIn}%` : null,
+      q.seamOut != null ? `seam out ${q.seamOut}%` : null,
+      phase === 'loop' ? `loop seam ${q.loopPop}%` : null,
+    ].filter(Boolean);
+    console.log(
+      `- ${key}@${phase} → ${sheet.file}${sheet.startFrame != null ? ` [${sheet.startFrame}+${sheet.frameCount}]` : ''}` +
+        `  (scale ×${sheet.scale}, origin ${sheet.originX}/${sheet.originY}; ${seams.join(', ')})`,
+    );
+    q.warnings.forEach((warning) => console.log(`    ⚠ ${warning}`));
+  }
 }
 
 /**
@@ -1256,11 +1450,15 @@ function serializeQuality(quality) {
         churnMean: ${quality.churnMean},
         churnPeak: ${quality.churnPeak},
         churnPeakIndex: ${quality.churnPeakIndex},`;
+  const seams = ['seamIn', 'seamOut']
+    .filter((field) => quality[field] != null)
+    .map((field) => `\n        ${field}: ${quality[field]},`)
+    .join('');
   return `
       quality: {
         loopPop: ${quality.loopPop},
         heightSwing: ${quality.heightSwing},
-        driftX: ${quality.driftX},${churn}
+        driftX: ${quality.driftX},${churn}${seams}
         warnings: [${warnings}],
       },`;
 }
@@ -1282,11 +1480,21 @@ function serializeSheet(sheet) {
       scale: ${sheet.scale},
       originX: ${sheet.originX},
       originY: ${sheet.originY},`;
+  const start = sheet.startFrame == null ? '' : `\n      startFrame: ${sheet.startFrame},`;
+  // Provenance (`initial`, `final`, `prompt`) stays in the record; the runtime needs none of it.
+  const phases = sheet.phases
+    ? `
+      phases: {${['in', 'loop', 'out']
+        .filter((phase) => sheet.phases[phase])
+        .map((phase) => `\n        ${phase}: ${serializeSheet(sheet.phases[phase])},`)
+        .join('')}
+      },`
+    : '';
   return `{
       file: '${sheet.file}',
       frameWidth: ${sheet.frameWidth},
       frameHeight: ${sheet.frameHeight},
-      frameCount: ${sheet.frameCount},${rate}${geometry}${serializeQuality(sheet.quality)}${serializeReviewNotes(sheet.reviewNotes)}
+      frameCount: ${sheet.frameCount},${start}${rate}${geometry}${serializeQuality(sheet.quality)}${serializeReviewNotes(sheet.reviewNotes)}${phases}
     }`;
 }
 
@@ -1469,6 +1677,17 @@ async function remeasure(args) {
         `    loop seam ${quality.loopPop}%  height swing ${quality.heightSwing}%  drift ±${quality.driftX}px`,
       );
       quality.warnings.forEach((warning) => console.log(`    ⚠ ${warning}`));
+      if (MODE.kind === 'body' && sheet.phases) {
+        // Anchored to the main clip's normalization, so they must follow it.
+        sheet.phases = await measurePhases({
+          main: sheet,
+          mainBuffer: sheetBuffer,
+          phases: sheet.phases,
+          inRange: easeInRange(manifest, animalId, emotion, sheet),
+          readBuffer: (file) => readFile(join(MODE.publicDir, file)),
+        });
+        logPhases(`${animalId}/${emotion}`, sheet.phases);
+      }
     }
   }
 

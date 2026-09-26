@@ -9894,16 +9894,17 @@
       "file": "white-sheep-1-angry.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 25,
-      "frameRate": 13,
-      "cols": 5,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
       "fit": {
         "x": 0,
         "y": 0.015,
         "width": 1,
         "height": 0.9699
       },
-      "sourceClip": "white-sheep-1-angry.png",
+      "sourceClip": "white-sheep-1-angry-loop.png",
+      "sourceEmotion": "angry@loop",
       "headCrop": {
         "x": 0,
         "y": 0,
@@ -9919,119 +9920,161 @@
       "alignment": {
         "offsets": [
           {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
             "dx": -3,
-            "dy": 4
-          },
-          {
-            "dx": -8,
-            "dy": 11
-          },
-          {
-            "dx": -10,
-            "dy": 16
-          },
-          {
-            "dx": -13,
-            "dy": 19
-          },
-          {
-            "dx": -22,
-            "dy": 2
+            "dy": -2
           },
           {
             "dx": -2,
-            "dy": -18
+            "dy": -3
           },
           {
-            "dx": 13,
-            "dy": -29
+            "dx": -2,
+            "dy": -3
           },
           {
-            "dx": 11,
-            "dy": -25
+            "dx": -1,
+            "dy": -3
           },
           {
-            "dx": 9,
-            "dy": -23
+            "dx": -1,
+            "dy": -3
           },
           {
-            "dx": 11,
-            "dy": -16
+            "dx": -1,
+            "dy": -3
           },
           {
-            "dx": 2,
-            "dy": -4
+            "dx": -1,
+            "dy": -3
           },
           {
-            "dx": 0,
-            "dy": -1
+            "dx": -1,
+            "dy": -3
           },
           {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
+            "dx": -1,
+            "dy": -2
           },
           {
             "dx": -1,
             "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -5,
+            "dy": 3
+          },
+          {
+            "dx": -10,
+            "dy": 3
+          },
+          {
+            "dx": -10,
+            "dy": 4
+          },
+          {
+            "dx": -11,
+            "dy": 4
+          },
+          {
+            "dx": -11,
+            "dy": 4
+          },
+          {
+            "dx": -10,
+            "dy": 3
+          },
+          {
+            "dx": -8,
+            "dy": 3
+          },
+          {
+            "dx": -8,
+            "dy": 1
+          },
+          {
+            "dx": -6,
+            "dy": 1
+          },
+          {
+            "dx": -6,
+            "dy": 0
+          },
+          {
+            "dx": -4,
+            "dy": -1
+          },
+          {
+            "dx": -4,
+            "dy": -1
+          },
+          {
+            "dx": -3,
+            "dy": -2
+          },
+          {
+            "dx": -2,
+            "dy": -3
+          },
+          {
+            "dx": -1,
+            "dy": -4
+          },
+          {
+            "dx": -1,
+            "dy": -5
+          },
+          {
+            "dx": 0,
+            "dy": -5
+          },
+          {
+            "dx": 0,
+            "dy": -5
+          },
+          {
+            "dx": -1,
+            "dy": -5
+          },
+          {
+            "dx": -1,
+            "dy": -5
+          },
+          {
+            "dx": -1,
+            "dy": -4
+          },
+          {
+            "dx": -2,
+            "dy": -4
+          },
+          {
+            "dx": -2,
+            "dy": -3
+          },
+          {
+            "dx": -3,
+            "dy": -2
           }
         ],
-        "maxOffset": 29,
-        "maxJump": 20,
-        "warnings": [
-          "alignment hit its 20px per-frame limit — the head moves faster than the tracker follows, so it lags for a frame or two; check the clip before promoting"
-        ]
-      },
-      "quality": {
-        "loopPop": 1.46,
-        "heightSwing": 11.7,
-        "driftX": 13.8,
+        "maxOffset": 11,
+        "maxJump": 5,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:24:57.034Z"
+      "quality": {
+        "loopPop": 1.4,
+        "heightSwing": 5.6,
+        "driftX": 6.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T22:39:49.918Z"
     },
     "doubtful": {
       "file": "white-sheep-1-doubtful.png",

@@ -200,7 +200,7 @@ const AnimalGalleryUI: React.FC = () => {
       aria-pressed={clip.name === clipName}
     >
       <span className={styles.clipHeader}>
-        <span className={styles.clipName}>{clip.name.replace(/_/g, ' ')}</span>
+        <span className={styles.clipName}>{clip.name.replace(/_/g, ' ').replace('@', ' · ')}</span>
         {clip.qualityStatus && clip.qualityStatus !== 'none' && (
           <QualityBadge status={clip.qualityStatus} title={clipQualityTitle(clip)} />
         )}

@@ -159,6 +159,8 @@ export function isCurrentEmotionFrameCount(frameCount: number): boolean {
 export const EMOTION_QUALITY_THRESHOLDS = {
   /** Below ~1% the seam is invisible; by 3% it reads as a stutter every loop. */
   loopPop: 2,
+  /** A join between two phase clips (`EmotionQuality.seamIn` / `seamOut`) — same eye, same gate. */
+  seam: 2,
   /** Beyond this the union-box scale noticeably under-sizes the character. */
   heightSwing: 20,
   /** In frame pixels, half the total wander. */
@@ -184,7 +186,50 @@ export interface EmotionQuality {
   churnMean?: number;
   churnPeak?: number;
   churnPeakIndex?: number;
+  /**
+   * Phase clips only (see `EmotionPhases`): difference between the frame the previous phase
+   * ends on and this clip's first frame, and between this clip's last frame and the frame the
+   * next phase starts on. Same scale and gate as `loopPop` — a phase join is a loop seam
+   * between two sheets instead of within one. `out`'s `seamOut` compares against the main
+   * clip's frame 0, the rest pose the animal returns to.
+   */
+  seamIn?: number;
+  seamOut?: number;
   warnings: readonly string[];
+}
+
+/**
+ * The optional three-part shape of a *state* emotion: ramp into it, hold it, ramp out of it.
+ *
+ * A plain clip starts at rest, peaks and returns to rest, then loops — fine for an emotion that
+ * breathes around rest (`talking`), wrong for one whose peak has to *stay* up while the
+ * character holds the floor (`angry`): every loop visibly drops the feeling. A phased emotion
+ * enters through `in`, holds on `loop` for as long as it lasts, and leaves through `out` — see
+ * `planTransition` in `emotionTransitions.ts` for the playback rules and
+ * `docs/characters-and-animations.md` for the authoring workflow.
+ */
+export const EMOTION_PHASES = ['in', 'loop', 'out'] as const;
+export type EmotionPhase = (typeof EMOTION_PHASES)[number];
+
+/**
+ * One phase clip. A full sheet in its own right (own normalization and quality) that may be a
+ * sub-range of its file: `in` is typically the leading frames of the main clip, cut by
+ * metadata rather than by re-packing the PNG.
+ */
+export interface EmotionPhaseSheet extends Omit<EmotionSheet, 'phases'> {
+  /** First frame index inside `file`. Defaults to 0. */
+  startFrame?: number;
+}
+
+/**
+ * `loop` is what makes an emotion phased; `in` and `out` are each optional. An emotion with
+ * `loop` but no `in` enters with a cut, one with no `out` leaves with a cut — each half
+ * degrades to today's behaviour on its own.
+ */
+export interface EmotionPhases {
+  in?: EmotionPhaseSheet;
+  loop: EmotionPhaseSheet;
+  out?: EmotionPhaseSheet;
 }
 
 /**
@@ -231,4 +276,10 @@ export interface EmotionSheet {
    * gallery badge to warn even when the numeric gates are clean.
    */
   reviewNotes?: readonly string[];
+  /**
+   * Ease-in / loop / ease-out clips for this emotion. When present the animator plays these
+   * instead of looping the sheet above, which stays the source of `in` and the fallback for
+   * every consumer that does not know about phases.
+   */
+  phases?: EmotionPhases;
 }

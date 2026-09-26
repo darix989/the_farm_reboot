@@ -18,7 +18,10 @@ import { animalAnimKey } from './animalAnimations';
 import {
   ANIMAL_EMOTIONS,
   EMOTION_FRAME_RATE,
+  EMOTION_PHASES,
   type AnimalEmotion,
+  type EmotionPhase,
+  type EmotionPhaseSheet,
   type EmotionSheet,
 } from './animalEmotions';
 import type { AnimalSpriteId } from '../../data/characters';
@@ -43,6 +46,52 @@ export function emotionSequenceKey(emotion: AnimalEmotion): string {
 /** Phaser animation key for one generated clip. */
 export function emotionAnimKey(animalId: AnimalSpriteId, emotion: AnimalEmotion): string {
   return animalAnimKey(animalId, emotionSequenceKey(emotion));
+}
+
+/**
+ * Logical name of one phase clip (`emotion_angry@in`). `@` rather than `_` because emotion
+ * names already contain underscores (`talking_still`), and a phase key must never be mistaken
+ * for — or collide with — a plain emotion's.
+ */
+export function emotionPhaseSequenceKey(emotion: AnimalEmotion, phase: EmotionPhase): string {
+  return `${emotionSequenceKey(emotion)}@${phase}`;
+}
+
+/** Phaser animation key for one phase clip. */
+export function emotionPhaseAnimKey(
+  animalId: AnimalSpriteId,
+  emotion: AnimalEmotion,
+  phase: EmotionPhase,
+): string {
+  return animalAnimKey(animalId, emotionPhaseSequenceKey(emotion, phase));
+}
+
+/**
+ * Texture key for one phase clip. A phase cut out of the main clip's own file (`in`, usually)
+ * shares the main texture rather than loading the same PNG twice under a second key.
+ */
+export function emotionPhaseTextureKey(
+  animalId: AnimalSpriteId,
+  emotion: AnimalEmotion,
+  phase: EmotionPhase,
+  main: EmotionSheet,
+  sheet: EmotionPhaseSheet,
+): string {
+  const mainKey = emotionTextureKey(animalId, emotion);
+  return sheet.file === main.file ? mainKey : `${mainKey}@${phase}`;
+}
+
+/** Every phase an emotion sheet carries, in `in → loop → out` order. */
+function eachPhase(
+  main: EmotionSheet,
+  visit: (phase: EmotionPhase, sheet: EmotionPhaseSheet) => void,
+): void {
+  const phases = main.phases;
+  if (!phases) return;
+  EMOTION_PHASES.forEach((phase) => {
+    const sheet = phases[phase];
+    if (sheet) visit(phase, sheet);
+  });
 }
 
 /** Flattens the nested generated record into `[animal, emotion, sheet]` triples. */
@@ -97,14 +146,23 @@ export function loadAnimalEmotionSheets(
   scene.load.setPath(EMOTION_ASSET_PATH);
 
   let queued = false;
-  eachSheetFor(ids, (animalId, emotion, sheet) => {
-    const key = emotionTextureKey(animalId, emotion);
+  const seen = new Set<string>();
+  const queue = (key: string, sheet: EmotionSheet | EmotionPhaseSheet) => {
+    // A phase cut from the main file resolves to the main key — queue it once.
+    if (seen.has(key)) return;
+    seen.add(key);
     if (scene.textures.exists(key)) return; // React StrictMode / scene restart / already lazy-loaded
     scene.load.spritesheet(key, sheet.file, {
       frameWidth: sheet.frameWidth,
       frameHeight: sheet.frameHeight,
     });
     queued = true;
+  };
+  eachSheetFor(ids, (animalId, emotion, sheet) => {
+    queue(emotionTextureKey(animalId, emotion), sheet);
+    eachPhase(sheet, (phase, phaseSheet) =>
+      queue(emotionPhaseTextureKey(animalId, emotion, phase, sheet, phaseSheet), phaseSheet),
+    );
   });
 
   scene.load.setPath(previousPath);
@@ -121,9 +179,12 @@ export function ensureAnimalEmotionAnimations(
   scene: Phaser.Scene,
   ids: readonly AnimalSpriteId[],
 ): void {
-  eachSheetFor(ids, (animalId, emotion, sheet) => {
-    const textureKey = emotionTextureKey(animalId, emotion);
-    const animKey = emotionAnimKey(animalId, emotion);
+  const create = (
+    animKey: string,
+    textureKey: string,
+    sheet: EmotionSheet | EmotionPhaseSheet,
+    startFrame = 0,
+  ) => {
     if (scene.anims.exists(animKey)) return;
 
     if (!scene.textures.exists(textureKey)) {
@@ -136,10 +197,24 @@ export function ensureAnimalEmotionAnimations(
       // `end` is inclusive, and `frameCount` counts frames rather than indices — the grid's
       // trailing cells are blank whenever cols*rows overshoots the generated frame count,
       // and playing them would flash an empty frame mid-loop.
-      frames: scene.anims.generateFrameNumbers(textureKey, { start: 0, end: sheet.frameCount - 1 }),
+      frames: scene.anims.generateFrameNumbers(textureKey, {
+        start: startFrame,
+        end: startFrame + sheet.frameCount - 1,
+      }),
       frameRate: sheet.frameRate ?? EMOTION_FRAME_RATE,
       // `repeat` is set per playback, matching the base animations' convention.
     });
+  };
+  eachSheetFor(ids, (animalId, emotion, sheet) => {
+    create(emotionAnimKey(animalId, emotion), emotionTextureKey(animalId, emotion), sheet);
+    eachPhase(sheet, (phase, phaseSheet) =>
+      create(
+        emotionPhaseAnimKey(animalId, emotion, phase),
+        emotionPhaseTextureKey(animalId, emotion, phase, sheet, phaseSheet),
+        phaseSheet,
+        phaseSheet.startFrame ?? 0,
+      ),
+    );
   });
 }
 
@@ -152,6 +227,43 @@ export function emotionSheet(
   emotion: AnimalEmotion,
 ): EmotionSheet | null {
   return EMOTION_SHEETS[animalId]?.[emotion] ?? null;
+}
+
+/** What a Phaser animation key plays, when it is a generated clip. */
+export interface EmotionClipRef {
+  emotion: AnimalEmotion;
+  /** `null` for the main (unphased) clip. */
+  phase: EmotionPhase | null;
+  /** The sheet whose scale/origin apply while this key plays. */
+  sheet: EmotionSheet | EmotionPhaseSheet;
+}
+
+let clipsByAnimKey: Map<string, EmotionClipRef> | null = null;
+
+/**
+ * Resolves a playing animation key back to its generated clip, or null for an atlas clip.
+ *
+ * Staging has to be keyed off the animation actually on the sprite, not off whatever emotion
+ * the animator *wants*: during an ease-out the animator has already moved on (to `idle`, say)
+ * while the sprite is still showing the emotion's cells — restoring atlas scale there is the
+ * ~2× flash `applyEmotionStaging` exists to prevent.
+ */
+export function emotionClipForAnimKey(animKey: string): EmotionClipRef | null {
+  if (!clipsByAnimKey) {
+    const index = new Map<string, EmotionClipRef>();
+    eachSheet((animalId, emotion, sheet) => {
+      index.set(emotionAnimKey(animalId, emotion), { emotion, phase: null, sheet });
+      eachPhase(sheet, (phase, phaseSheet) =>
+        index.set(emotionPhaseAnimKey(animalId, emotion, phase), {
+          emotion,
+          phase,
+          sheet: phaseSheet,
+        }),
+      );
+    });
+    clipsByAnimKey = index;
+  }
+  return clipsByAnimKey.get(animKey) ?? null;
 }
 
 /** Every emotion this animal has generated art for, in `ANIMAL_EMOTIONS` order. */

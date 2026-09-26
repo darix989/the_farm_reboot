@@ -16,14 +16,16 @@ import { animalAnimKey, animalSetup } from './animalAnimations';
 import {
   ANIMAL_EMOTIONS,
   EMOTION_FRAME_RATE,
+  EMOTION_PHASES,
   type AnimalEmotion,
   type EmotionQuality,
 } from './animalEmotions';
-import { emotionAnimKey, emotionSheet } from './animalEmotionAnimations';
+import { emotionAnimKey, emotionPhaseAnimKey, emotionSheet } from './animalEmotionAnimations';
 import { emotionFallback } from './emotionFallbacks';
 import { faceSheet, type FaceSheet } from './animalFaces';
 import {
   emotionClipQualityStatus,
+  emotionPhaseQualityStatus,
   faceClipQualityStatus,
   type ClipQualityStatus,
 } from './emotionQuality';
@@ -33,7 +35,10 @@ import type { AnimalSpriteId } from '../../data/characters';
 export type AnimalClipKind = 'emotion' | 'base';
 
 export interface AnimalClip {
-  /** Logical name — `'idle'`, `'sneaky'`. Unique per animal across both kinds. */
+  /**
+   * Logical name — `'idle'`, `'sneaky'`, or `'angry@in'` for a phase clip. Unique per animal
+   * across both kinds.
+   */
   name: string;
   kind: AnimalClipKind;
   /** Phaser animation key, or `null` when there is no art (emotions only). */
@@ -71,12 +76,12 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
     ? descriptor.baseAnimations.find((animation) => animation.name === fallback.baseAnimationName)
     : undefined;
 
-  const emotions: AnimalClip[] = ANIMAL_EMOTIONS.map((emotion: AnimalEmotion) => {
+  const emotions: AnimalClip[] = ANIMAL_EMOTIONS.flatMap((emotion: AnimalEmotion): AnimalClip[] => {
     const sheet = emotionSheet(textureKey, emotion);
     // A generated sheet always wins; the fallback only fills a gap it leaves, so promoting one
     // emotion at a time retires this animal's placeholder entries one at a time too.
     if (!sheet && fallbackAnimation) {
-      return {
+      const placeholder: AnimalClip = {
         name: emotion,
         kind: 'emotion',
         animKey: animalAnimKey(textureKey, fallbackAnimation.name),
@@ -87,8 +92,9 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
         qualityStatus: 'placeholder',
         reviewNotes: [fallback!.note],
       };
+      return [placeholder];
     }
-    return {
+    const main: AnimalClip = {
       name: emotion,
       kind: 'emotion',
       animKey: sheet ? emotionAnimKey(textureKey, emotion) : null,
@@ -100,6 +106,29 @@ export function animalClips(animalId: AnimalSpriteId): AnimalClip[] {
       quality: sheet?.quality,
       reviewNotes: sheet?.reviewNotes,
     };
+    // Each phase is its own reviewable clip, listed right after the clip it belongs to.
+    const phases = sheet?.phases;
+    const phaseClips: AnimalClip[] = phases
+      ? EMOTION_PHASES.flatMap((phase) => {
+          const phaseSheet = phases[phase];
+          if (!phaseSheet) return [];
+          return [
+            {
+              name: `${emotion}@${phase}`,
+              kind: 'emotion' as const,
+              animKey: emotionPhaseAnimKey(textureKey, emotion, phase),
+              available: true,
+              frameCount: phaseSheet.frameCount,
+              frameRate: phaseSheet.frameRate ?? EMOTION_FRAME_RATE,
+              isRest: false,
+              qualityStatus: emotionPhaseQualityStatus(phase, phaseSheet),
+              quality: phaseSheet.quality,
+              reviewNotes: phaseSheet.reviewNotes,
+            },
+          ];
+        })
+      : [];
+    return [main, ...phaseClips];
   });
 
   const base: AnimalClip[] = descriptor.baseAnimations.map((animation) => {

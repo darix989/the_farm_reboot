@@ -26,11 +26,10 @@ import { animalArtFacesLeft, ANIMAL_STAGING, applyAtlasFeetOrigin } from '../ani
 import {
   applyEmotionStaging,
   captureStaging,
-  emotionSheet,
+  emotionClipForAnimKey,
   restoreStaging,
   type SpriteStaging,
 } from '../animals/animalEmotionAnimations';
-import { isAnimalEmotion } from '../animals/animalEmotions';
 import { prefersReducedMotion } from '../../utils/reducedMotion';
 import type { AnimalSpriteId } from '../../data/characters';
 import { reportSceneLoadProgress } from '../bootProgress';
@@ -160,10 +159,9 @@ export class AnimalGallery extends Scene {
     // Texture first, then scale/origin. A generated cell is a different canvas from an atlas
     // frame; applying emotion scale while the atlas texture is still showing (or the reverse)
     // is a ~2× flash. `AnimalAnimator` does the same on `ANIMATION_START`.
-    const sheet =
-      clip.kind === 'emotion' && isAnimalEmotion(clip.name)
-        ? emotionSheet(setup.textureKey, clip.name)
-        : null;
+    // Resolved from the animation key so a phase clip (`angry@in`) gets its own sheet's
+    // normalization; a fallback emotion plays an atlas key and resolves to null, as it should.
+    const sheet = emotionClipForAnimKey(clip.animKey)?.sheet ?? null;
 
     if (prefersReducedMotion()) {
       // Hold frame 0 of the requested clip: still shows which clip is selected, without

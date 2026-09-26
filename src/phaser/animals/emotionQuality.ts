@@ -12,6 +12,8 @@ import {
   ANIMAL_EMOTIONS,
   isCurrentEmotionFrameCount,
   EMOTION_QUALITY_THRESHOLDS,
+  type EmotionPhase,
+  type EmotionPhaseSheet,
   type EmotionQuality,
   type EmotionSheet,
 } from './animalEmotions';
@@ -44,6 +46,29 @@ export function emotionClipQualityStatus(sheet: EmotionSheet | null): ClipQualit
   const stale = !isCurrentEmotionFrameCount(sheet.frameCount);
   if (stale || metricsOverThreshold(sheet.quality)) return 'warn';
   return 'pass';
+}
+
+/**
+ * Classify one phase clip (`EmotionSheet.phases`). Differs from a main clip in two gates:
+ * frame count is free (an `in` cut from a 36-frame clip is 24 frames by design), and only the
+ * `loop` is a loop — an ease's first and last frames are *supposed* to differ, so `loopPop` is
+ * ignored there and the joins to its neighbours (`seamIn` / `seamOut`) are gated instead.
+ */
+export function emotionPhaseQualityStatus(
+  phase: EmotionPhase,
+  sheet: EmotionPhaseSheet,
+): ClipQualityStatus {
+  if ((sheet.reviewNotes?.length ?? 0) > 0) return 'warn';
+  const q = sheet.quality;
+  if (!q) return 'unknown';
+  const tripped =
+    (phase === 'loop' && q.loopPop > EMOTION_QUALITY_THRESHOLDS.loopPop) ||
+    (q.seamIn ?? 0) > EMOTION_QUALITY_THRESHOLDS.seam ||
+    (q.seamOut ?? 0) > EMOTION_QUALITY_THRESHOLDS.seam ||
+    q.heightSwing > EMOTION_QUALITY_THRESHOLDS.heightSwing ||
+    q.driftX > EMOTION_QUALITY_THRESHOLDS.driftX ||
+    q.warnings.length > 0;
+  return tripped ? 'warn' : 'pass';
 }
 
 /**
