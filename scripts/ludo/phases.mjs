@@ -41,21 +41,40 @@ export const PHASES = ['in', 'loop', 'out'];
 /** Same gate as a loop seam: a phase join is a seam between two sheets. Mirrors `seam` in TS. */
 export const SEAM_THRESHOLD = QUALITY_THRESHOLDS.loopPop;
 
-/** `"main:23"` / `"main:last"` → a frame index into the main clip. */
-export function parseEndpoint(spec, mainFrameCount) {
-  const match = /^main:(\d+|last)$/.exec(spec ?? '');
-  if (!match) throw new Error(`Phase endpoint "${spec}" must be "main:<frame>" or "main:last"`);
-  const index = match[1] === 'last' ? mainFrameCount - 1 : Number(match[1]);
-  if (index >= mainFrameCount) {
-    throw new Error(`Phase endpoint "${spec}" is past the main clip's ${mainFrameCount} frames`);
+/**
+ * `"main:23"`, `"main:last"`, `"loop:last"` → which shipped sheet and which frame of it.
+ *
+ * `loop:` exists for the ease-out. Generating it from `main:23` (the frame the loop was itself
+ * generated from) leaves it starting on a *similar* drawing to the one the loop really ends on
+ * — Ludo re-renders its input — and that difference shows as a small shift at the join.
+ * `loop:last` hands it the exact cell it will follow, so the loop must be promoted first.
+ */
+export function parseEndpoint(spec, frameCounts) {
+  const match = /^(main|loop):(\d+|last)$/.exec(spec ?? '');
+  if (!match) {
+    throw new Error(`Phase endpoint "${spec}" must be "<main|loop>:<frame>" or "<main|loop>:last"`);
   }
-  return index;
+  const source = match[1];
+  const count = frameCounts[source];
+  if (count == null) throw new Error(`Phase endpoint "${spec}": no promoted ${source} clip`);
+  const index = match[2] === 'last' ? count - 1 : Number(match[2]);
+  if (index >= count)
+    throw new Error(`Phase endpoint "${spec}" is past the ${source}'s ${count} frames`);
+  return { source, index };
 }
 
-/** One cell of a shipped sheet as a standalone PNG — what a phase job sends as an endpoint. */
-export async function endpointFrame(mainBuffer, main, spec) {
-  const grid = await gridOf(mainBuffer, main);
-  return frameAt(mainBuffer, parseEndpoint(spec, main.frameCount), grid);
+/**
+ * One cell of a shipped sheet as a standalone PNG — what a phase job sends as an endpoint.
+ * `sources` maps `main` / `loop` to `{ buffer, sheet }`.
+ */
+export async function endpointFrame(sources, spec) {
+  const { source, index } = parseEndpoint(spec, frameCountsOf(sources));
+  const { buffer, sheet } = sources[source];
+  return frameAt(buffer, index, await gridOf(buffer, sheet));
+}
+
+function frameCountsOf(sources) {
+  return Object.fromEntries(Object.entries(sources).map(([k, v]) => [k, v.sheet.frameCount]));
 }
 
 /** The grid of a promoted sheet. Column count is derived: the record stores cell size only. */
@@ -183,16 +202,26 @@ export async function measurePhases({ main, mainBuffer, phases, inRange, readBuf
     };
   }
 
+  // Loop before out: an ease-out generated from `loop:…` is anchored to the loop's own frame,
+  // through the loop's already-anchored normalization.
+  const anchors = {
+    main: { buffer: mainBuffer, grid: mainGrid, norm: normOf(main), frameCount: main.frameCount },
+  };
   for (const phase of ['loop', 'out']) {
     const sheet = phases?.[phase];
     if (!sheet) continue;
     const buffer = await readBuffer(sheet.file);
     const grid = await gridOf(buffer, sheet);
+    const { source, index } = parseEndpoint(
+      sheet.initial,
+      Object.fromEntries(Object.entries(anchors).map(([k, v]) => [k, v.frameCount])),
+    );
+    const anchor = anchors[source];
     const norm = await measureSeamNormalization({
-      mainBuffer,
-      mainGrid,
-      mainNorm: normOf(main),
-      anchorFrame: parseEndpoint(sheet.initial, main.frameCount),
+      mainBuffer: anchor.buffer,
+      mainGrid: anchor.grid,
+      mainNorm: anchor.norm,
+      anchorFrame: index,
       phaseBuffer: buffer,
       phaseGrid: grid,
     });
@@ -204,6 +233,7 @@ export async function measurePhases({ main, mainBuffer, phases, inRange, readBuf
       quality: phase === 'loop' ? quality : stripLoopSeam(quality),
     };
     frames[phase] = { buffer, grid, norm: geometry, first: 0, last: sheet.frameCount - 1 };
+    anchors[phase] = { buffer, grid, norm: geometry, frameCount: sheet.frameCount };
   }
 
   if (!result.loop) throw new Error(`${main.file}: a phased emotion needs a promoted loop`);

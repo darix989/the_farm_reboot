@@ -266,7 +266,13 @@ async function planPhaseJobs(manifest, args) {
       if (!main) {
         throw new Error(`${animalId}/${emotion} declares phases but has no promoted main clip.`);
       }
-      const mainBuffer = await readFile(join(MODE.publicDir, main.file));
+      const sources = { main: { buffer: await readFile(join(MODE.publicDir, main.file)), sheet: main } };
+      if (main.phases?.loop) {
+        sources.loop = {
+          buffer: await readFile(join(MODE.publicDir, main.phases.loop.file)),
+          sheet: main.phases.loop,
+        };
+      }
       for (const phase of args.phases) {
         const spec = override.phases[phase];
         if (!spec) continue;
@@ -278,8 +284,8 @@ async function planPhaseJobs(manifest, args) {
           .replaceAll('{view}', animal.view);
         const settings = { ...manifest.defaults, ...phaseSettings, closeLoop: false };
         settings.frameRate = playbackFrameRate(settings);
-        const initialBuffer = await endpointFrame(mainBuffer, main, initial);
-        const finalBuffer = await endpointFrame(mainBuffer, main, final);
+        const initialBuffer = await endpointFrame(sources, initial);
+        const finalBuffer = await endpointFrame(sources, final);
         jobs.push({
           animalId,
           emotion,
