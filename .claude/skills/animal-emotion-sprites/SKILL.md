@@ -29,14 +29,30 @@ that still have no emotion art (`cow`, `cow-female-001`, `mouse`, `pig`, `brown-
 ~252 credits. `--animal` and `--emotion` are what keep a run to what was actually asked for;
 always scope it and always state the arithmetic first.
 
+## After the first failure: one Hydra retry, then stop
+
+For each animal/emotion, the **first** attempt stays on the manifest default: `blitz`,
+25 frames, duration 2, about 4 credits. If that attempt fails — a terminal generation
+failure or a clip rejected on visual review — the **second** attempt may switch to `hydra`
+for a better result. Do not start on Hydra, and do not change `defaults.model`.
+
+Hydra's shortest duration is 3 seconds, so the retry is not a drop-in of the Blitz payload.
+Use duration `3` and `36` frames (12 fps, near the 12.5 fps of 25/2) at **9 credits**
+(3 credits/s × 3s). Duration 2 is rejected. Read
+[the Hydra retry procedure](references/ludo-api.md#hydra-retry-after-the-first-attempt-fails)
+before changing a payload. State that 9-credit cost and wait for a yes; permission for the
+original Blitz clip does not cover it.
+
+A dry run, polling an existing job, and a cached result do not count as the first failure.
+A timeout is unresolved: inspect the existing job before resubmitting. Keep the attempt
+count, request/job IDs, exact prompts/settings, and rejection reasons in that clip's local
+review notes across runs. Archive failed outputs before replacing the review directory so
+the evidence survives a retry.
+
 ## After two failed animation attempts: stop and review an image-edit fallback
 
-For each animal/emotion, **stop after two unsuccessful generation attempts**. A terminal
-generation failure or a clip rejected on visual review counts; dry runs, polling an existing
-job, and cached results do not. A timeout is unresolved: inspect the existing job before
-resubmitting. Keep the attempt count, request/job IDs, exact prompts/settings, and rejection
-reasons in that clip's local review notes across runs. Archive failed outputs before replacing
-the review directory so the evidence survives a retry.
+**Stop after two unsuccessful generation attempts** — the default attempt plus, when it
+failed, the one Hydra retry. Do not send a second Hydra job.
 
 Before a third attempt or any paid fallback:
 
@@ -260,7 +276,7 @@ Those historical retry counts are not permission to exceed the two-failure gate 
 
 ## Things about the Ludo API that will bite you
 
-Full contract in [references/ludo-api.md](references/ludo-api.md). The four that cost time:
+Full contract in [references/ludo-api.md](references/ludo-api.md). The ones that cost time:
 
 - **`request_id` is an idempotency key, not a label.** The docs sell it as a tag for finding a
   result later. Re-submitting one returns the earlier generation verbatim — no new job, no
@@ -274,6 +290,9 @@ Full contract in [references/ludo-api.md](references/ludo-api.md). The four that
   construction (measured 5.88% → 0.22% seam).
 - **The REST default flips from synchronous to async on 2026-09-10.** The client already sends
   `async: true` and long-polls, so it is unaffected. Do not "simplify" that away.
+- **`hydra` is a second attempt, not the default.** The API's own default is now Hydra, and
+  Blitz is legacy, but the first clip stays on Blitz. Hydra rejects duration 2 and costs 9
+  credits at its 3-second minimum. See the failure section above.
 
 ### The third register: the moderator status face
 
