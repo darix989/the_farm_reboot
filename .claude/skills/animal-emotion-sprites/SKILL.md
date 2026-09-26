@@ -20,9 +20,14 @@ settings). **Never run a generating command without the user having asked for th
 generation, and confirm the scope first if they gave a budget or an ambiguous "do the rest".**
 `--dry-run` is free and needs no key — start there, always.
 
-State the projected cost before generating: `clips × 4 credits`. The four imported animals
-that still have no emotion art (`cow`, `cow-female-001`, `mouse`, `pig`) are 20 clips,
-~80 credits. Do not generate them until asked.
+State the projected cost before generating: `clips × 4 credits`. The nine imported animals
+that still have no emotion art (`cow`, `cow-female-001`, `mouse`, `pig`, `brown-bull`,
+`white-chicken`, `skunk`, `seagull`, `snake`) are 45 clips at the five core emotions,
+~180 credits. Do not generate them until asked.
+
+**A bare run is the whole manifest**, which is now nine animals × seven prompts = 63 clips,
+~252 credits. `--animal` and `--emotion` are what keep a run to what was actually asked for;
+always scope it and always state the arithmetic first.
 
 ## After two failed animation attempts: stop and review an image-edit fallback
 
@@ -284,9 +289,10 @@ and re-pick — a diffusion clip's frames are in no fixed order across generatio
 means nothing once the pixels change. `docs/characters-and-animations.md` §11 has the rest.
 
 **Seven animals are generated** (`donkey-grey`, `owl`, `raccoon`, `fox`, `white-sheep-1`,
-`brown-wolf`, `dog`). Four more atlases are imported (`cow`, `cow-female-001`, `mouse`,
-`pig`) and listed in the emotion manifest, but they have no generated clips yet — do not
-generate them until asked. `dog` has all five body clips and four portraits (`talking`,
+`brown-wolf`, `dog`). Nine more atlases are imported (`cow`, `cow-female-001`, `mouse`,
+`pig`, and the GameDeveloperStudio five — `brown-bull`, `white-chicken`, `skunk`, `seagull`,
+`snake`) and listed in the emotion manifest with prompts and a seeded `headCrop`, but they
+have no generated clips yet — do not generate them until asked. `dog` has all five body clips and four portraits (`talking`,
 `doubtful`, `angry`, `thinking`); sneaky was not cropped, because the head dip saturates
 the aligner. Reach for this skill to regenerate a clip that reads wrong, add an emotion
 to the vocabulary, or give art to a newly added animal.
@@ -458,6 +464,16 @@ Add an entry under `animals` in the manifest with `species`, `view`, and `refere
 frame filename from that animal's atlas JSON — check it, the owl's are foldered). Add
 `overrides` for any emotion whose generic posture prompt makes no sense for that body. Then
 dry-run, look at the extracted `reference.png` to confirm the pose and facing, and generate.
+
+The generic prompts assume a quadruped: they say "stays standing on all fours" and talk about
+planting hooves and shifting weight. `white-chicken` and `seagull` are bipeds and `snake` has
+no legs at all, so all five core emotions are overridden for each of them — check this before
+trusting a generic prompt on a body shape the cast did not have before.
+
+If the animal has no atlas yet, `scripts/build-animal-atlas.mjs` packs one from a raw
+GameDeveloperStudio character pack (loose keyframes or strip spritesheets) — see
+`docs/characters-and-animations.md` §2.1. Its `--dry-run` also prints the frame counts the
+descriptor's `baseAnimations` block needs.
 
 ## Troubleshooting
 

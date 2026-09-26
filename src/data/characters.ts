@@ -41,7 +41,12 @@ export type AnimalSpriteId =
   | 'cow-female-001'
   | 'dog'
   | 'mouse'
-  | 'pig';
+  | 'pig'
+  | 'brown-bull'
+  | 'white-chicken'
+  | 'skunk'
+  | 'seagull'
+  | 'snake';
 
 export interface CharacterVisual {
   id: string;

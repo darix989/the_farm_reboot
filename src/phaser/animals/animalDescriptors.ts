@@ -394,6 +394,140 @@ const MOUSE: AnimalDescriptor = {
   move: [[1, [{ key: 'walk', repeat: -1 }]]],
 };
 
+// ---------------------------------------------------------------------------------------
+// Imported from GameDeveloperStudio packs of loose keyframes, repacked into multiatlases by
+// `scripts/build-animal-atlas.mjs` (the eleven above arrived pre-packed from the prototype).
+// Frame names are the source stems with a dash index, so none of these needs a `framePrefix`.
+// No character wears them yet: they exist to be previewed in the Animation Gallery and to
+// give the emotion generator a reference frame.
+// ---------------------------------------------------------------------------------------
+
+// The pack ships five recolours (black, brown, grey, white, plus a `confused` variant sheet);
+// only brown is imported. `stomp_to_charge` is renamed `charge_start` to read as the
+// transition it is — it ends head-down in the charge pose, so nothing idle should roll it.
+const BROWN_BULL: AnimalDescriptor = {
+  id: 'brown-bull',
+  baseAnimations: [
+    { name: 'back_kick', frameStem: '__brown_bull_back_kick', endFrameIndex: 9 },
+    { name: 'charge', frameStem: '__brown_bull_charge', endFrameIndex: 7 },
+    { name: 'charge_start', frameStem: '__brown_bull_stomp_to_charge', endFrameIndex: 9 },
+    { name: 'die', frameStem: '__brown_bull_die', endFrameIndex: 4 },
+    { name: 'head_flick', frameStem: '__brown_bull_head_flick', endFrameIndex: 7 },
+    { name: 'idle', frameStem: '__brown_bull_idle', endFrameIndex: 19 },
+    { name: 'jump', frameStem: '__brown_bull_jump', endFrameIndex: 9 },
+    { name: 'run', frameStem: '__brown_bull_run', endFrameIndex: 7 },
+    { name: 'snort', frameStem: '__brown_bull_snort', endFrameIndex: 9 },
+    { name: 'stomp', frameStem: '__brown_bull_stomp', endFrameIndex: 9 },
+    { name: 'walk', frameStem: '__brown_bull_walk', endFrameIndex: 7 },
+    { name: 'whacked', frameStem: '__brown_bull_whacked', endFrameIndex: 15 },
+  ],
+  idle: [
+    [0.5, [{ key: 'idle', repeat: 6 }]],
+    [0.3, [{ key: 'idle', repeat: 1 }, { key: 'head_flick' }, { key: 'idle', repeat: 2 }]],
+    [0.2, [{ key: 'idle', repeat: 1 }, { key: 'stomp' }, { key: 'idle', repeat: 2 }]],
+  ],
+  // `snort` draws two visible puffs at the nose ring — the one clip that reads as a reaction
+  // at farm scale, where a hoof stomp is lost under the body.
+  alert: [[1, [{ key: 'snort', repeat: -1 }]]],
+  move: [[1, [{ key: 'walk', repeat: -1 }]]],
+};
+
+// Five recolours in the pack (black, brown, orange, white, yellow); white is imported.
+// `fying` is the source's own typo in the frame stem, kept character-for-character because
+// the atlas is the authority; the logical name here is `fly`.
+const WHITE_CHICKEN: AnimalDescriptor = {
+  id: 'white-chicken',
+  baseAnimations: [
+    { name: 'die', frameStem: '__white_chicken_die', endFrameIndex: 4 },
+    { name: 'throw_egg', frameStem: '__white_chicken_egg_projectile', endFrameIndex: 9 },
+    { name: 'fly', frameStem: '__white_chicken_fying', endFrameIndex: 9 },
+    { name: 'idle', frameStem: '__white_chicken_idle', endFrameIndex: 19 },
+    { name: 'jump', frameStem: '__white_chicken_jump', endFrameIndex: 9 },
+    { name: 'lay_egg', frameStem: '__white_chicken_lay_egg', endFrameIndex: 9 },
+    { name: 'peck', frameStem: '__white_chicken_peck', endFrameIndex: 9 },
+    { name: 'walk', frameStem: '__white_chicken_walk', endFrameIndex: 11 },
+  ],
+  idle: [
+    [0.55, [{ key: 'idle', repeat: 6 }]],
+    [
+      0.45,
+      [
+        { key: 'idle', repeat: 1 },
+        { key: 'peck', repeat: 2 },
+        { key: 'idle', repeat: 2 },
+      ],
+    ],
+  ],
+  // Wing-flapping in place, which is what a startled chicken does; `fly` does not translate.
+  alert: [[1, [{ key: 'fly', repeat: -1 }]]],
+  move: [[1, [{ key: 'walk', repeat: -1 }]]],
+};
+
+// `squirt_start` raises the tail and `squirt` holds it there — neither returns to the resting
+// crouch and the pack ships no reverse, so the idle rolls stay clear of both. The spray cloud
+// ships as a separate VFX sprite sheet in the pack and is deliberately not imported.
+const SKUNK: AnimalDescriptor = {
+  id: 'skunk',
+  baseAnimations: [
+    { name: 'confused', frameStem: '__skunk_confused', endFrameIndex: 15 },
+    { name: 'die', frameStem: '__skunk_die', endFrameIndex: 4 },
+    { name: 'idle', frameStem: '__skunk_idle', endFrameIndex: 19 },
+    { name: 'jump', frameStem: '__skunk_jump', endFrameIndex: 9 },
+    { name: 'run', frameStem: '__skunk_run', endFrameIndex: 11 },
+    { name: 'squirt', frameStem: '__skunk_squirt', endFrameIndex: 9 },
+    { name: 'squirt_start', frameStem: '__skunk_squirt_position_transition', endFrameIndex: 9 },
+    { name: 'walk', frameStem: '__skunk_walk', endFrameIndex: 11 },
+  ],
+  idle: [
+    [0.6, [{ key: 'idle', repeat: 6 }]],
+    [0.4, [{ key: 'idle', repeat: 1 }, { key: 'confused' }, { key: 'idle', repeat: 2 }]],
+  ],
+  alert: [[1, [{ key: 'confused', repeat: -1 }]]],
+  move: [[1, [{ key: 'walk', repeat: -1 }]]],
+};
+
+const SEAGULL: AnimalDescriptor = {
+  id: 'seagull',
+  baseAnimations: [
+    { name: 'flying', frameStem: '__seagull_flying', endFrameIndex: 11 },
+    { name: 'flying_hover', frameStem: '__seagull_flying_hover', endFrameIndex: 11 },
+    { name: 'idle', frameStem: '__seagull_idle', endFrameIndex: 19 },
+    { name: 'peck', frameStem: '__seagull_peck', endFrameIndex: 7 },
+    { name: 'squark', frameStem: '__seagull_squark', endFrameIndex: 4 },
+    { name: 'walk', frameStem: '__seagull_walk', endFrameIndex: 11 },
+  ],
+  idle: [
+    [0.55, [{ key: 'idle', repeat: 6 }]],
+    [
+      0.45,
+      [
+        { key: 'idle', repeat: 1 },
+        { key: 'peck', repeat: 2 },
+        { key: 'idle', repeat: 2 },
+      ],
+    ],
+  ],
+  // Five frames of open beak and thrown-back head — the pack's own reaction clip.
+  alert: [[1, [{ key: 'squark', repeat: -1 }]]],
+  move: [[1, [{ key: 'walk', repeat: -1 }]]],
+};
+
+// Cut from the pack's strip spritesheets rather than loose keyframes (see the builder script).
+// The green variant is the pack's unprefixed default; blue and red are recolours of the same
+// frames. `die` is four frames, not the five every other animal here ships.
+const SNAKE: AnimalDescriptor = {
+  id: 'snake',
+  baseAnimations: [
+    { name: 'bite', frameStem: '__snake_bite', endFrameIndex: 11 },
+    { name: 'die', frameStem: '__snake_die', endFrameIndex: 3 },
+    { name: 'idle', frameStem: '__snake_idle', endFrameIndex: 19 },
+    { name: 'slither', frameStem: '__snake_slither', endFrameIndex: 11 },
+  ],
+  idle: [[1, [{ key: 'idle', repeat: -1 }]]],
+  alert: [[1, [{ key: 'bite', repeat: -1 }]]],
+  move: [[1, [{ key: 'slither', repeat: -1 }]]],
+};
+
 export const ANIMAL_DESCRIPTORS: Readonly<Record<AnimalSpriteId, AnimalDescriptor>> = {
   'donkey-grey': DONKEY_GREY,
   owl: OWL,
@@ -406,6 +540,11 @@ export const ANIMAL_DESCRIPTORS: Readonly<Record<AnimalSpriteId, AnimalDescripto
   dog: DOG,
   mouse: MOUSE,
   pig: PIG,
+  'brown-bull': BROWN_BULL,
+  'white-chicken': WHITE_CHICKEN,
+  skunk: SKUNK,
+  seagull: SEAGULL,
+  snake: SNAKE,
 };
 
 export const ANIMAL_SPRITE_IDS = Object.keys(ANIMAL_DESCRIPTORS) as AnimalSpriteId[];

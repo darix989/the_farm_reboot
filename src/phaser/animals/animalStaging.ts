@@ -52,6 +52,24 @@ const SOURCE_SCALE: Record<AnimalSpriteId, number> = {
   dog: 0.6,
   mouse: 0.35,
   pig: 1.0,
+  /**
+   * The five GameDeveloperStudio imports have no prototype scale to inherit, so these were
+   * picked the way the header describes: measure the idle rest frame's visible size, pick a
+   * design size that sits right against the cast, divide. Design sizes (visible x scale):
+   *
+   *   brown-bull    865x684 x 0.6  -> 519x410  the biggest animal here, just over the cow
+   *   white-chicken 375x587 x 0.35 -> 131x205  smaller than the sheep, as a hen should be
+   *   skunk         703x257 x 0.5  -> 352x129  the raccoon's crouch footprint (358x146)
+   *   seagull       600x752 x 0.25 -> 150x188  a shade under the chicken
+   *   snake        930x404 x 0.45 -> 419x182  long and low; the height is its reared head
+   *
+   * Starting points, tuned by eye in the Animation Gallery — none of them is cast yet.
+   */
+  'brown-bull': 0.6,
+  'white-chicken': 0.35,
+  skunk: 0.5,
+  seagull: 0.25,
+  snake: 0.45,
 };
 
 const FARM_MULTIPLIER = 0.377; // donkey-grey -> ~140px tall next to the 56px placeholder NPCs
