@@ -116,6 +116,22 @@ export async function waitForOverlayChrome(page: Page): Promise<void> {
   await page.locator('[data-tutorial-panel="wizard"]').waitFor({ timeout: 60_000 });
 }
 
+/**
+ * Bram's lesson opens on a two-step intro. Step 1's button is Continue — the same
+ * accessible name as the disabled trial footer — so the click stays inside the dialog.
+ * Step 2 is Got it.
+ */
+export async function dismissBramIntroTutorial(page: Page): Promise<void> {
+  const intro = page.getByRole('dialog', {
+    name: getLabel('tutorialDialogTitle', {
+      replacements: { currentStep: 1, totalSteps: 2 },
+    }),
+  });
+  await intro.waitFor();
+  await intro.getByRole('button', { name: CONTINUE }).click();
+  await page.getByRole('button', { name: getLabel('tutorialGotIt') }).click();
+}
+
 export async function attachScreenshot(page: Page, name: string): Promise<void> {
   await test.info().attach(name, {
     body: await page.screenshot(),
