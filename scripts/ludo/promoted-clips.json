@@ -1,4 +1,63 @@
 {
+  "brown-bull": {
+    "sneaky": {
+      "file": "brown-bull-sneaky.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.1963,
+      "originX": 0.4969,
+      "originY": 0.6973,
+      "prompt": "Side view, facing left. The brown bull stands in place and speaks conspiratorially: its head cranes forward and dips toward the listener, its ears tilt back, its eyes flick sideways, and its muzzle moves in a low mutter. Its horns stay whole and the same size in every frame. All four hooves stay planted exactly where they are in the reference image and its shoulders stay directly over them for the whole clip, so its body holds the same place in the frame from first frame to last — it never lowers its horns to charge, never paws or stomps the ground, never runs forward. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.2,
+        "heightSwing": 5.1,
+        "driftX": 2.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T16:37:08.924Z"
+    },
+    "talking": {
+      "file": "brown-bull-talking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.3204,
+      "originX": 0.495,
+      "originY": 0.6973,
+      "prompt": "Side view, facing left. The brown bull stands in place and talks: its wide muzzle opens and closes with each phrase, its head and horns bob gently in time, its ears flick once, and the brass ring in its nose swings slightly. Its brow is eased and smooth rather than furrowed. Each time the muzzle opens it shows the same shape every frame — one clean smooth rounded patch of flat dark pink inside a plain dark muzzle, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and its shoulders stay directly over them for the whole clip, so its body holds the same place in the frame from first frame to last — it never lowers its horns to charge, never paws or stomps the ground, never runs forward. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.19,
+        "heightSwing": 1.5,
+        "driftX": 1,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T16:26:25.285Z"
+    },
+    "thinking": {
+      "file": "brown-bull-thinking.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 25,
+      "frameRate": 13,
+      "scale": 3.3695,
+      "originX": 0.4999,
+      "originY": 0.6973,
+      "prompt": "Side view, facing left. Animate one complete closed thinking cycle of this exact brown bull, in place. Its barrel body, four planted hooves, tail, horn shape and camera remain fixed exactly as in the reference throughout. Its eyes stay open with the same white eye shapes and pupils, and its brow is eased and smooth rather than furrowed. During the first quarter its head tilts just slightly in consideration; during the middle half it slowly returns along the same path; during the final quarter it has fully returned to the starting pose and settles motionless. The final pose, head position, horns, ears, eyes, mouth, tail, silhouette, proportions and colors match the first frame and the reference exactly. Start and finish at rest in that identical pose. The mouth stays closed. One slow continuous out-and-back motion, seamless repeating loop, stationary camera, no travel.",
+      "quality": {
+        "loopPop": 0.19,
+        "heightSwing": 1,
+        "driftX": 1.5,
+        "warnings": []
+      },
+      "reviewNotes": [
+        "Accepted on human review with a known defect: frames 9-13 draw the eye as a solid dark blob, which reads as a brief black eye patch at stage scale. Clean loop otherwise."
+      ],
+      "generatedAt": "2026-09-26T16:35:23.414Z"
+    }
+  },
   "brown-wolf": {
     "angry": {
       "file": "brown-wolf-angry.png",

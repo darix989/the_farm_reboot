@@ -19,6 +19,59 @@ import type { AnimalEmotion, EmotionSheet } from './animalEmotions';
 export const EMOTION_SHEETS: Partial<
   Record<AnimalSpriteId, Partial<Record<AnimalEmotion, EmotionSheet>>>
 > = {
+  'brown-bull': {
+    sneaky: {
+      file: 'brown-bull-sneaky.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 3.1963,
+      originX: 0.4969,
+      originY: 0.6973,
+      quality: {
+        loopPop: 0.2,
+        heightSwing: 5.1,
+        driftX: 2.3,
+        warnings: [],
+      },
+    },
+    talking: {
+      file: 'brown-bull-talking.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 3.3204,
+      originX: 0.495,
+      originY: 0.6973,
+      quality: {
+        loopPop: 0.19,
+        heightSwing: 1.5,
+        driftX: 1,
+        warnings: [],
+      },
+    },
+    thinking: {
+      file: 'brown-bull-thinking.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 25,
+      frameRate: 13,
+      scale: 3.3695,
+      originX: 0.4999,
+      originY: 0.6973,
+      quality: {
+        loopPop: 0.19,
+        heightSwing: 1,
+        driftX: 1.5,
+        warnings: [],
+      },
+      reviewNotes: [
+        'Accepted on human review with a known defect: frames 9-13 draw the eye as a solid dark blob, which reads as a brief black eye patch at stage scale. Clean loop otherwise.',
+      ],
+    },
+  },
   'brown-wolf': {
     angry: {
       file: 'brown-wolf-angry.png',
