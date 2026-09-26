@@ -1411,31 +1411,31 @@
             "flatCut": 0,
             "warnings": [],
             "seamIn": 0.46,
-            "seamOut": 0.64
+            "seamOut": 0.47
           }
         },
         "out": {
           "file": "white-sheep-1-angry-out.png",
           "frameWidth": 512,
           "frameHeight": 512,
-          "frameCount": 27,
+          "frameCount": 21,
           "frameRate": 12,
-          "initial": "main:23",
+          "initial": "loop:last",
           "final": "main:0",
-          "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep starts FURIOUS, exactly as in the reference image — brows in a hard V, eyes narrowed in a glare, ears pinned back, muzzle open — and over the clip its anger slowly drains away. Its woolly body, four planted legs and the tuft of wool on top of its head stay exactly as in the reference image and do not move at all: its head holds exactly the position and height it has in the reference and the tuft never rises above that height, so the whole sheep stays inside the same framing as the reference in every frame. ONLY THE FACE AND EARS MOVE, on an even timeline: the brows lift and smooth out, the eyes open back to a calm, relaxed look, the ears drop forward to their resting position and the muzzle closes. It comes fully to rest in the calm pose of the final image a few frames before the end and holds it still. The movement is ONE slow continuous motion with no sudden jumps. No travel, same silhouette throughout.",
-          "generatedAt": "2026-09-26T22:35:36.968Z",
-          "scale": 1.1415,
-          "originX": 0.4882,
-          "originY": 0.7207,
+          "prompt": "Side view, facing left, its head turned slightly toward the viewer. The white sheep starts FURIOUS, exactly as in the reference image — brows in a hard V, eyes narrowed in a glare, ears pinned back, muzzle open — and over the clip its anger slowly fades away until it looks exactly like the calm sheep in the final image. Its woolly body, four planted legs and the tuft of wool on top of its head stay exactly as in the reference image and do not move at all: the whole sheep stays at exactly the same height and position in every frame, its feet never move up or down and the body never shifts, bobs or sinks. ONLY THE FACE AND EARS MOVE, and every part moves in ONE direction only, from angry straight to calm, on an even timeline: the dark V brows relax and smooth out; the narrowed eyes soften DIRECTLY into the relaxed, heavy-lidded look of the final image — the eyes NEVER open wide, never look surprised, startled, scared or alarmed, and the white of the eyes never grows larger than it is in the reference image; the muzzle closes gently and stays closed; the ears drop forward to their resting position. There is no intermediate expression between angry and calm. It comes fully to rest in the exact pose of the final image a few frames before the end and holds it perfectly still. The movement is ONE slow continuous motion with no sudden jumps. No travel, same silhouette throughout.",
+          "generatedAt": "2026-09-26T22:55:02.802Z",
+          "scale": 1.1313,
+          "originX": 0.4901,
+          "originY": 0.7286,
           "quality": {
             "loopPop": 1.62,
-            "heightSwing": 5.7,
-            "driftX": 2.5,
-            "edgeMargin": 121,
+            "heightSwing": 3.5,
+            "driftX": 1.3,
+            "edgeMargin": 126,
             "flatCut": 0,
             "warnings": [],
-            "seamIn": 0.64,
-            "seamOut": 1.13
+            "seamIn": 0.47,
+            "seamOut": 1.16
           }
         }
       }
