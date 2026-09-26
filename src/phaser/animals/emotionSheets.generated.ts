@@ -880,6 +880,22 @@ export const EMOTION_SHEETS: Partial<
     },
   },
   seagull: {
+    angry: {
+      file: 'seagull-angry.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 36,
+      frameRate: 12,
+      scale: 2.9261,
+      originX: 0.547,
+      originY: 0.75,
+      quality: {
+        loopPop: 0.09,
+        heightSwing: 0.8,
+        driftX: 2.3,
+        warnings: [],
+      },
+    },
     doubtful: {
       file: 'seagull-doubtful.png',
       frameWidth: 512,

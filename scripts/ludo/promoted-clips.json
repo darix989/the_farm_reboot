@@ -954,6 +954,26 @@
     }
   },
   "seagull": {
+    "angry": {
+      "file": "seagull-angry.png",
+      "frameWidth": 512,
+      "frameHeight": 512,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.9261,
+      "originX": 0.547,
+      "originY": 0.75,
+      "prompt": "Side view, facing left. The grey and white seagull is furious. Its neck, body, folded grey wings, tail and both planted orange feet stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference in every frame, so the long yellow beak stays inside the same framing as the reference. ONLY THE FACE MOVES. The thin brow lines already drawn above its eyes in the reference slowly thicken and slant down into a hard, heavy V, then ease back into the same thin lines; the brows are solid opaque black strokes in every single frame, attached to the head, the same colour as its outlines. Both eyes stay OPEN in every frame, the upper lids lowered only to a hard narrowed glare with the black pupils clearly visible and locked on the target; and its beak gapes wide open in a squawking shriek. The open beak always shows the same shape: one clean smooth patch of flat dark pink inside, drawn identically in every frame it appears, with no tongue and no teeth. It never flaps, never hops and never takes off. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "quality": {
+        "loopPop": 0.09,
+        "heightSwing": 0.8,
+        "driftX": 2.3,
+        "edgeMargin": 127,
+        "flatCut": 7,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T20:02:52.769Z"
+    },
     "doubtful": {
       "file": "seagull-doubtful.png",
       "frameWidth": 512,
