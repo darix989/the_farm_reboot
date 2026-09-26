@@ -42,7 +42,8 @@ test.describe('boot and overlays', () => {
     await page.getByRole('button', { name: LEVEL_1_HEADING }).click();
     await page.getByRole('button', { name: LEVEL_1_FIRST }).click();
     await waitForOverlayChrome(page);
-    await page.getByRole('button', { name: CONTINUE }).waitFor();
+    // The intro tutorial's first step is also named Continue, so wait on the footer.
+    await page.locator('[data-tutorial-interactive-action="continue"]').waitFor();
     await attachScreenshot(page, 'trial-overlay');
   });
 

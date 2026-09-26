@@ -1,11 +1,11 @@
 import {
-  CONTINUE,
   FIELD_NOTES,
   IN_GAME_MENU,
   IN_GAME_MENU_EXIT,
   LEVEL_1_FIRST,
   LEVEL_1_HEADING,
   attachScreenshot,
+  dismissBramIntroTutorial,
   enableDevMode,
   enterFarmFromMenu,
   expect,
@@ -75,12 +75,7 @@ test.describe('in-game menu', () => {
     await page.getByRole('button', { name: LEVEL_1_HEADING }).click();
     await page.getByRole('button', { name: LEVEL_1_FIRST }).click();
     await waitForOverlayChrome(page);
-    await page.getByRole('button', { name: CONTINUE }).waitFor();
-    const introTutorial = page.getByRole('dialog', { name: BRAM_INTRO_TUTORIAL_STEP_1 });
-    if (await introTutorial.isVisible()) {
-      await introTutorial.getByRole('button', { name: CONTINUE }).click();
-      await page.getByRole('button', { name: getLabel('tutorialGotIt') }).click();
-    }
+    await dismissBramIntroTutorial(page);
     await page.getByRole('button', { name: FIELD_NOTES }).click();
     await expect(page.getByRole('heading', { name: FIELD_NOTES })).toBeVisible();
     await attachScreenshot(page, 'trial-field-notes');

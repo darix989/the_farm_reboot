@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test';
 import getLabel from '../src/data/labels';
 import {
+  dismissBramIntroTutorial,
   expect,
   enableDevMode,
   LEVEL_1_HEADING,
@@ -131,9 +132,11 @@ test('shows the analyze control greyed, not hidden, in a lesson that opts out on
   await expectAnalysisClosed(page);
 
   // Round 1 stays "upcoming" (its expand toggle disabled) until the intro tutorial is
-  // dismissed and the debate moves past it.
-  await page.getByRole('button', { name: getLabel('tutorialGotIt') }).click();
+  // dismissed and the debate moves past it. Starting the round opens a second
+  // single-step tutorial that blocks the log toggle until it is dismissed.
+  await dismissBramIntroTutorial(page);
   await page.locator('[data-tutorial-interactive-action="continue"]').click();
+  await page.getByRole('button', { name: getLabel('tutorialGotIt') }).click();
 
   await page.locator('[data-debate-log-toggle-panel]').click();
   await page.locator('[data-debate-log-toggle-expand-round-id="round-1"]').click();
