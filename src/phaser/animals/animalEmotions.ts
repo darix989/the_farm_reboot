@@ -137,9 +137,20 @@ export const EMOTION_FRAME_RATE = 12;
 
 /**
  * Manifest default `frames`. Older promoted clips shipped 16 frames at 8fps; those are the
- * choppy generation. The gallery treats anything other than this count as a quality warn.
+ * choppy generation.
  */
 export const CURRENT_EMOTION_FRAME_COUNT = 25;
+
+/**
+ * Frames on a Hydra retry: Hydra's shortest duration is 3s, and 36/3 = 12fps keeps it at the
+ * Blitz clip's ~12.5fps tempo. It is as current as the 25-frame default, not stale.
+ */
+export const HYDRA_EMOTION_FRAME_COUNT = 36;
+
+/** True for the frame counts the current pipeline ships; the gallery warns on anything else. */
+export function isCurrentEmotionFrameCount(frameCount: number): boolean {
+  return frameCount === CURRENT_EMOTION_FRAME_COUNT || frameCount === HYDRA_EMOTION_FRAME_COUNT;
+}
 
 /**
  * Numeric gates from `scripts/ludo/qualityCheck.mjs`. Duplicated here so the gallery can

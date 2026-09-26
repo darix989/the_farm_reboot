@@ -10,7 +10,7 @@
  */
 import {
   ANIMAL_EMOTIONS,
-  CURRENT_EMOTION_FRAME_COUNT,
+  isCurrentEmotionFrameCount,
   EMOTION_QUALITY_THRESHOLDS,
   type EmotionQuality,
   type EmotionSheet,
@@ -41,7 +41,7 @@ export function emotionClipQualityStatus(sheet: EmotionSheet | null): ClipQualit
   const noted = (sheet.reviewNotes?.length ?? 0) > 0;
   if (noted) return 'warn';
   if (!sheet.quality) return 'unknown';
-  const stale = sheet.frameCount !== CURRENT_EMOTION_FRAME_COUNT;
+  const stale = !isCurrentEmotionFrameCount(sheet.frameCount);
   if (stale || metricsOverThreshold(sheet.quality)) return 'warn';
   return 'pass';
 }
@@ -58,7 +58,7 @@ export function faceClipQualityStatus(sheet: FaceSheet | null): ClipQualityStatu
   if (!sheet) return 'none';
   if ((sheet.reviewNotes?.length ?? 0) > 0) return 'warn';
   if (!sheet.quality) return 'unknown';
-  const stale = sheet.frameCount !== CURRENT_EMOTION_FRAME_COUNT;
+  const stale = !isCurrentEmotionFrameCount(sheet.frameCount);
   const tripped =
     sheet.quality.loopPop > FACE_QUALITY_THRESHOLDS.loopPop ||
     sheet.quality.driftX > sheet.frameWidth * FACE_QUALITY_THRESHOLDS.driftXRatio ||

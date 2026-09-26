@@ -349,7 +349,7 @@ output. Re-promote is only needed when the PNG itself changed.
 **Main menu → Animation Gallery** (`AnimalGallery` scene). Pick an animal, hold any clip on a
 loop, compare generated clips against the atlas clips they sit beside. Emotions with no art are
 listed dashed and marked "no art yet". Clip and animal badges are **OK** / **check** / **?**.
-A clip is **check** if metrics trip, the frame count is not 25, or it has `reviewNotes`. The
+A clip is **check** if metrics trip, the frame count is neither 25 (Blitz) nor 36 (a Hydra retry), or it has `reviewNotes`. The
 animal is **OK** only when all five emotions pass.
 
 When a clip looks wrong but the numbers are clean, add `reviewNotes` on that clip in
