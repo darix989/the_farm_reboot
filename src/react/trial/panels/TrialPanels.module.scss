@@ -340,6 +340,13 @@ $trial-touch-min: 44px;
   margin: 0.5rem 0 0;
 }
 
+/* Closing verdict: same type scale as the log header / recap chip so the still is 1.6em
+   of `--ui-font-moderator-opinion`, not of the wizard body. */
+.trialWizardModeratorOpinion {
+  font-size: calc(var(--ui-font-moderator-opinion) * var(--ui-trial-panel-font-scale, 1));
+  line-height: 1.2;
+}
+
 /* =========================================================================
    Trial panels — scroll area
    ========================================================================= */
@@ -733,9 +740,14 @@ $trial-touch-min: 44px;
     border-color 0.15s ease-in-out,
     background 0.15s ease-in-out;
 
-  &:hover {
+  &:hover:not(:disabled) {
     border-color: var(--ui-color-info-border-active);
     background: var(--ui-color-info-bg);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.35;
   }
 
   img {
@@ -746,7 +758,7 @@ $trial-touch-min: 44px;
     filter: invert(1);
   }
 
-  &:hover img {
+  &:hover:not(:disabled) img {
     opacity: 1;
   }
 

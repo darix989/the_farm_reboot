@@ -10,7 +10,7 @@ export class MainMenu extends Scene {
 
   create() {
     this.cameras.main.setBackgroundColor(0x1a2a1e);
-    addCoverBackground(this, 'background');
+    addCoverBackground(this, 'main-menu-background');
 
     EventBus.emit('current-scene-ready', this);
   }

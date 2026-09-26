@@ -356,6 +356,8 @@ export interface TutorialArtificialInteraction {
 }
 
 export type TutorialInteractionMode = 'modal_only' | 'target_only' | 'highlight';
+/** `normal` (default): static ring. `new`: pulse ring + NEW badge when introducing a feature. */
+export type TutorialFocusMode = 'normal' | 'new';
 export type TutorialStepOnFinish = 'exit';
 
 /** Field Notes sections. Mirrors `CodexSection` in `codexUiStore` so this file stays store-free. */
@@ -444,6 +446,12 @@ export interface DebateTutorialStep {
   /** Behavior used when `targetComponent` is present. Defaults to `modal_only`. */
   interactionMode?: TutorialInteractionMode;
   /**
+   * Visual treatment of the target ring. Defaults to `normal`. Use `new`
+   * when introducing a feature: the ring pulses and a yellow NEW badge sits
+   * on the target's top-right corner.
+   */
+  focusMode?: TutorialFocusMode;
+  /**
    * Optional custom class name applied to the highlighted target element.
    * When omitted, the tutorial default highlight class is used.
    */
@@ -484,6 +492,8 @@ export interface DebateScenarioTutorialEntry {
   id?: string;
   /** When true, this tutorial entry is ignored and never triggered. */
   disabled?: boolean;
+  /** Features granted when this tutorial opens, before its targets are resolved. */
+  unlocksFeatures?: readonly GameFeatureId[];
   trigger: DebateTutorialTrigger;
   tutorial: DebateTutorialJson;
 }

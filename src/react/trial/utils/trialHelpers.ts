@@ -252,12 +252,6 @@ export function activeRoundNumber(currentRoundIndex: number, totalRounds: number
 
 export const MODERATOR_OPINION_LABEL = getLabel('moderatorsOpinion');
 
-export function moderatorOpinionEmoji(score: number): string {
-  if (score > 0) return '😊';
-  if (score < 0) return '😠';
-  return '😐';
-}
-
 export type ModeratorOpinionFace = { emotion: AnimalEmotion; frame: number };
 
 export type ScoreBand = 'approval' | 'neutral' | 'disapproval';
@@ -312,8 +306,7 @@ function statusFacesFor(
  *
  * Three states off a character's portraits rather than three emoji, because the emoji were
  * the one place in the trial chrome where the art stopped — a yellow smiley next to a stage
- * of hand-drawn animals. `ModeratorStatusFace` renders these; `moderatorOpinionEmoji` stays
- * for the plain strings (a wizard body is text, and cannot hold a portrait).
+ * of hand-drawn animals. `ModeratorStatusFace` renders these, including the closing Dialog.
  *
  * Duchess (the default) uses three frames of `approving`. Cass uses three different fox
  * portraits. Unknown animals fall back to the owl table.
@@ -335,11 +328,6 @@ export function moderatorOpinionFacesForAnimal(
 ): readonly ModeratorOpinionFace[] {
   const table = statusFacesFor(animalId);
   return [table.disapproval, table.neutral, table.approval];
-}
-
-/** Plain text for wizard strings and similar (emoji is first for quick scanning). */
-export function moderatorOpinionPlainText(score: number): string {
-  return `${moderatorOpinionEmoji(score)} ${MODERATOR_OPINION_LABEL}`;
 }
 
 /** Symmetric bounds for one player round's impact (moderator gauge). */

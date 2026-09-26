@@ -46,7 +46,6 @@ import {
   emotionFromStatement,
   getSpeakerName,
   getStartingInsightPoints,
-  moderatorOpinionPlainText,
   revealChunks,
   statementText,
 } from '../trial/utils/trialHelpers';
@@ -76,6 +75,7 @@ import { GameManager } from '../../utils/gameManager';
 import { applyEncounterRewards, shouldQueueFollowUp } from '../../utils/encounterRewards';
 import { encounterFollowUpFor } from '../../data/encounterFollowUps';
 import { useFarmStore } from '../../store/farmStore';
+import { useTrialSessionStore } from '../../store/trialSessionStore';
 
 interface TrialUIProps {
   debate: DebateScenarioJson;
@@ -120,6 +120,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const wf = useTrialRoundWorkflow(debate, fallacyGuesses, revealedLockedOptionIds, conditions, {
     showRoundType: mechanics.showRoundType,
   });
+  const analysisAvailable = mechanics.analysisEnabled;
 
   // Opens scenario-defined tutorial overlays in response to bus events,
   // including the onboarding overlay wired to `introduction:start`.
@@ -130,6 +131,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   const isTutorialOpen = useTutorialStore((s) => s.isOpen);
 
   useEffect(() => {
+    useTrialSessionStore.getState().begin();
     setIntroSummaryOpen(false);
     introStartEmittedRef.current = false;
     moderatorStartEmittedRef.current = false;
@@ -204,6 +206,9 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
   // Modal + fallacy-guess state
   // -----------------------------------------------------------------------
   const [analysisTarget, setAnalysisTarget] = useState<AnalysisTarget | null>(null);
+  const openAnalysis = (target: AnalysisTarget) => {
+    if (analysisAvailable) setAnalysisTarget(target);
+  };
   /** The fallacy `FallacyInfoModal` is describing, or `null` when it is closed. */
   const [fallacyInfoTarget, setFallacyInfoTarget] = useState<LogicalFallacy | null>(null);
 
@@ -490,7 +495,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
    * analysed, which is the whole gameplay of those scenarios.
    */
   const analysisGatePending = useMemo(() => {
-    if (wf.gamePhase !== 'npc_speaking') return false;
+    if (!analysisAvailable || wf.gamePhase !== 'npc_speaking') return false;
     const round = wf.currentNpcRound;
     if (!round?.requiresAnalysis) return false;
     for (const session of fallacyGuesses.values()) {
@@ -498,7 +503,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       return !isSessionTerminal(session) && session.attempts.length < session.maxAttempts;
     }
     return true;
-  }, [wf.gamePhase, wf.currentNpcRound, fallacyGuesses]);
+  }, [analysisAvailable, wf.gamePhase, wf.currentNpcRound, fallacyGuesses]);
 
   /**
    * The opponent's current line, for the footer analyze button — current-round only, so it
@@ -761,6 +766,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
               ...followUp,
             });
           }
+          useTrialSessionStore.getState().complete();
           GameManager.switchScene(returnSceneKey);
         };
         break;
@@ -1020,7 +1026,10 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
       case 'debate_complete':
         return {
           title: getLabel(encounterLabels(debate).finished),
-          body: mechanics.showModeratorOpinion ? moderatorOpinionPlainText(wf.totalScore) : '',
+          body: '',
+          moderatorOpinion: mechanics.showModeratorOpinion
+            ? { score: wf.totalScore, characterId: debateModeratorId(debate) }
+            : undefined,
         };
       default:
         return null;
@@ -1167,7 +1176,7 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
               wf={wf}
               debate={debate}
               insightPoints={insightPoints}
-              onOpenAnalysis={setAnalysisTarget}
+              onOpenAnalysis={openAnalysis}
               getNpcGuessState={getNpcGuessState}
               getSpottedFallacies={getSpottedFallacies}
               onOpenFallacyInfo={setFallacyInfoTarget}
@@ -1204,19 +1213,17 @@ const TrialUI: React.FC<TrialUIProps> = ({ debate }) => {
             onRevealLockedOption={revealLockedOption}
             interactiveFooter={interactiveFooter}
             hideOptions={revealActive}
-            onOpenAnalysis={setAnalysisTarget}
+            onOpenAnalysis={openAnalysis}
             getNpcGuessState={getNpcGuessState}
             mechanics={mechanics}
-            // Disabled (not just gated by tutorial) until the last sentence of the line has
-            // landed in the Dialog — opening analysis on a statement the player hasn't fully
-            // read yet would let them skip the reveal.
-            analyzeTarget={revealActive ? null : currentAnalysisTarget}
+            // Hidden until learned; disabled while the current line is still being revealed.
+            analyzeTarget={!analysisAvailable || revealActive ? null : currentAnalysisTarget}
             hint={actionsHint}
             shortcutsEnabled={!analysisTarget && !introSummaryOpen}
           />
         }
       />
-      {analysisTarget && mechanics.analysisEnabled && (
+      {analysisTarget && analysisAvailable && (
         <RoundAnalysisModal
           target={analysisTarget}
           allFallacies={allFallacies}

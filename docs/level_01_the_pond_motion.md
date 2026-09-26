@@ -150,8 +150,10 @@ section never renders.
 
 ### 1.1 — "How a Conversation Works" (Bram teaches dialog and crossfire)
 
-*Flags: analysis off, insight hidden, moderator visible, recap off, intro summary off,
-`revealChoiceAssessment: true`, `encounterKind: 'lesson'`, `showRoundType: true`. Rewards:
+*Flags: analysis greyed once learned (`analysisEnabled: false` — absent until Cass teaches
+the feature, then visible but unusable here), insight hidden, moderator visible, recap off,
+intro summary off, `revealChoiceAssessment: true`, `encounterKind: 'lesson'`,
+`showRoundType: true`. Rewards:
 `setsDialogFlags: ['bram-taught-crossfire']`, `unlocksFeatures: ['round_types']`. Gated on
 `dot-welcomed`. Required for Cass.*
 
@@ -162,23 +164,30 @@ without apologising for the showing. The introduction — every talk and every d
 one — is Bram naming that, with emphasis on **introduction**. Then a conversation here
 goes in **rounds**: one animal says a thing, the other answers, and that pair is a round;
 the spoken line highlights **rounds**. Then some rounds are not speeches — somebody asks
-and you answer on your feet. They call that **crossfire**. Four beats. He explains (1),
+and you answer on your feet. They call that **crossfire**. Seven beats. He explains (1),
 you speak (2, three options, no wrong one, `preventOptionsShuffle`;
 A is impact 0, B and C are a light +8 so the face can move), he asks and you answer (3,
-NPC-raises), you ask and he has to answer (4, player-raises). No fallacy appears in this
-file at all. This is where the word **crossfire** first appears on the round label, and
-where every later `— crossfire` in the level is unlocked.
+NPC-raises), you ask and he has to answer (4, player-raises), he names a **closing** and
+the skipped **rebuttal** and the looser shape of a non-debate talk (5), you close (6, three
+options: A asks for more, B and C thank him), then he wraps it himself as **gossip** (7) —
+in a debate the moderator would end it; here he is just finishing a conversation. No
+fallacy appears in this file at all. This is where the word **crossfire** first appears on
+the round label, and where every later `— crossfire` in the level is unlocked.
 
-Five tutorials, all `medium`: this is the **introduction** (`introduction:start`, wizard);
+Eight tutorials, all `medium`: this is the **introduction** (`introduction:start`, wizard);
 what a round is (`round:start` / `round-1`, wizard); now you speak
 (`round:start` / `round-2`, interactive); then after confirm, the moderator emoji **on the
-collapsed recap chip** (`debate_log_recap_moderator_score`) and the expand arrow
-(`debate_log_panel_toggle`); then they call this **crossfire** (`round:start` / `round-3`,
-wizard, pointing at the round label). Field Notes **Next** is not in this file: Leave
+collapsed recap chip** (`debate_log_recap_moderator_score`), a forced press of the expand
+arrow (`debate_log_panel_toggle`, `target_only`), and a forced shrink of the same button
+once the log is open; then they call this **crossfire** (`round:start` / `round-3`,
+wizard, pointing at the round label); then the **closing** (`round:start` / `round-5`),
+now you close (`round:start` / `round-6`), and the wrap with no moderator
+(`round:start` / `round-7`). Field Notes **Next** is not in this file: Leave
 returns to the farm, Bram's follow-up pointer talks (the fox, west post),
 `bram-taught-crossfire` lands when that last beat settles, Next flips to Cass, and then
 `field-notes-intro` (`farmTutorials.ts`) points at the opening button and the Codex tabs.
-The log stays collapsed here, unlike 1.8.
+The expand/collapse pair never targets `panel: debate_log`, so `tutorialNeedsDebateLog`
+does not auto-open the panel and unmount the recap chip.
 
 Bram's farm talk offers a lettered **Lessons** menu for any lesson he has already taught.
 After this rung he has one; after the locked-line lesson he has two — under the Z / X / C
@@ -190,49 +199,53 @@ cap.
 `revealChoiceAssessment: true`, `encounterKind: 'sparring'`. Rewards:
 `teachesFallacies: ['ad-hominem']`, `setsDialogFlags: ['cass-named-ad-hominem']`.*
 
-Cass used to stand on the floor. They came at her tail before she had finished her first
-sentence; it took her a season to name that one, and some of the others took longer. She
-named those too, then left the floor by choice and keeps the west post.
+`teach-spot-it` grants the persistent `analysis` feature when its round-5 tutorial opens.
+Until then, footer and log analysis controls are hidden in every encounter. The unlock
+also enables earlier log entries and survives leaving the encounter or reloading.
+
+Cass introduces herself through Bram's referral and offers to prepare Rue for Tobias's
+personal attacks. She recalls being dismissed as a fox at the Public Farm; it took her a
+season to recognise how opponents made her defend herself without answering her argument.
+She eventually learned the name and the response, and now teaches at the sparring post.
 
 Seven rounds. She sets up her own history (1–2), makes Rue commit the fallacy (3), debriefs
 what he just did (4), does it back to him in Tobias's voice (5, `requiresAnalysis`), names it
 (6) and sends him off her post (7). Rounds 1, 2, 4, 5, 6 and 7 are `gossip` — monologues at
 the post, nobody asking anything. Round 3 is the genuine `crossfire`. Round types are live
 from 1.1, so the labels have to be honest. Round 2 states the deal plainly — the name comes at the
-end, once he has felt it, because a name you are handed is gone by Sunday — rather than
-teasing a name it will not say. Round 6 also points at Field Notes after Leave: **Fallacies
+end, after he has practised both making and hearing a personal attack. Round 6 also points at Field Notes after Leave: **Fallacies
 you know** is the name she just gave; **Fallacies you have spotted** is the line they tagged.
 She does not repeat **Next** — Bram already sent them there.
 
 The lines the lesson turns on carry inline
-[emphasis](./encounters.md#emphasis-inside-a-spoken-line): the season she named the trick in the
-introduction, *"You did not argue with me. You priced me."* and *"That is the trick."* in
+[emphasis](./encounters.md#emphasis-inside-a-spoken-line): recognising when an argument turns
+personal in the introduction, *"You gave a reason to dismiss me without examining my claim."* in
 round 4, the bins remark inside Tobias's line in round 5, and **Ad Hominem**, **Field Notes**
 and the two list names in round 6.
 
-**Round 3 is the load-bearing beat: all three options are personal attacks.** Cass asks for the
-first thing in his head — *about her, pointedly not about the pond* — and every available
+**Round 3 is the load-bearing beat: all three options are personal attacks.** Cass proposes
+inspecting the pond, then asks Rue to dismiss that claim based on his opinion of her. Every available
 answer is an Ad Hominem, `quality: 'logical_fallacy'`, `impact: 0`. There is no way to be
 polite, and that is the design:
 
 | | Angle | Line |
 |---|---|---|
-| **A** | species | "You are a fox. Foxes say whatever suits them…" |
-| **B** | record | "You are not even on the floor anymore…" |
-| **C** | motive | "You only care about any of this because you are bitter." |
+| **A** | species | "You are a fox. You must have something to gain from an inspection…" |
+| **B** | record | "You do not even speak at the Public Farm anymore…" |
+| **C** | motive | "You only want an inspection because you are bitter about the animals running the farm." |
 
 Nothing is punished — the moderator is hidden and every impact is zero — so the player
 commits the fallacy without being scored for obeying an instruction. Each option has its own
-reply from Cass, and round 4 collects all three: *"You did not argue with me. You priced me.
-My tail, my record, my mood — three ways of saying she does not count, and not one of them
-says why."*
+reply from Cass, and round 4 collects all three: *"You gave a reason to dismiss me without
+examining my claim. My species, my retirement, my temper. None of those tells us whether
+the pond needs checking."*
 
 > **The teaching here is carried by dialogue, on purpose.** 1.1 sets both
 > `revealChoiceAssessment: true` and `showRoundRecap: false`, and the recap modal is the only
 > surface that renders an option's `reason` — so in this rung the assessments never appear.
 > That is why round 4 exists as its own beat rather than being folded into round 5. The
 > `reason` strings are still authored and still correct (species / record / motive are three
-> different ways of pricing an animal); they would surface immediately if the recap were
+> different ways of dismissing an animal's claim); they would surface immediately if the recap were
 > switched on, which it is not, because five NPC rounds would each get a "Round complete."
 > modal for nothing.
 

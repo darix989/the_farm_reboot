@@ -64,6 +64,17 @@ describe('resolvePortal', () => {
     expect(resolvePortal({ id: 'gate', side: 'back', x: 3000 }, DESCRIPTOR).x).toBe(3000);
   });
 
+  it('defaults to mid-road y and honours an authored y, clamped onto the road', () => {
+    const mid = (ROAD.top + ROAD.bottom) / 2;
+    expect(resolvePortal({ id: 'gate', side: 'back', x: 3000 }, DESCRIPTOR).y).toBe(mid);
+    expect(resolvePortal({ id: 'gate', side: 'back', x: 3000, y: ROAD.top }, DESCRIPTOR).y).toBe(
+      ROAD.top,
+    );
+    expect(resolvePortal({ id: 'gate', side: 'back', x: 3000, y: 10 }, DESCRIPTOR).y).toBe(
+      ROAD.top,
+    );
+  });
+
   it('throws for a back/front portal missing x', () => {
     expect(() => resolvePortal({ id: 'gate', side: 'back' }, DESCRIPTOR)).toThrow();
   });

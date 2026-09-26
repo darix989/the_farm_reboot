@@ -36,7 +36,8 @@ export function resolvePortal(
   portal: SidePortalSpec,
   descriptor: Pick<SideSceneDescriptor, 'width' | 'road'>,
 ): PortalRect {
-  const y = (descriptor.road.top + descriptor.road.bottom) / 2;
+  const midY = (descriptor.road.top + descriptor.road.bottom) / 2;
+  const y = portal.y === undefined ? midY : clampToRoad(portal.y, descriptor.road);
   switch (portal.side) {
     case 'left':
       return { x: 0, y };

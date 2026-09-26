@@ -51,9 +51,10 @@ export interface InteractiveFooter {
   submitLabel: string;
   submitDisabled: boolean;
   /**
-   * `'reveal'` is the lesser, momentary step — pacing the wizard's typewriter forward a
-   * sentence at a time — rendered dashed with a single chevron. The other three are the
-   * real round/phase advance, rendered solid with their own icon.
+   * `'reveal'` paces the wizard's typewriter forward one sentence at a time and uses a
+   * single chevron. The other three advance the round or phase with their own icon.
+   * Every submit state remains a normal solid action so an available reveal is not
+   * mistaken for a disabled control.
    */
   submitIcon: 'reveal' | 'continue' | 'confirm' | 'leave';
   onSubmit?: () => void;
@@ -279,7 +280,6 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
     return (
       <div
         className={styles.trialChoices}
-        data-tutorial-panel="interactive"
         aria-hidden={hideOptions || undefined}
         style={hideOptions ? { visibility: 'hidden' } : undefined}
       >
@@ -321,7 +321,7 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
   };
 
   return (
-    <div className={styles.trialInteractiveBody}>
+    <div className={styles.trialInteractiveBody} data-tutorial-panel="interactive">
       <div className={styles.trialAreaTitle}>
         <h2 className={styles.trialPanelHeading}>{getLabel('interactive')}</h2>
       </div>
@@ -330,10 +330,12 @@ const InteractivePanel: React.FC<InteractivePanelProps> = ({
       <div className={styles.trialActionsCenter}>
         <TrialActionRow
           analyze={
-            mechanics.analysisEnabled
+            mechanics.analysisVisible
               ? {
                   disabled: !analyzeTarget,
-                  label: analyzeTitle,
+                  label: mechanics.analysisEnabled
+                    ? analyzeTitle
+                    : getLabel('analyzeNotInThisConversation'),
                   guessState: analyzeGuessState,
                   attentionPulse: analyzePulse,
                   onClick: () => {

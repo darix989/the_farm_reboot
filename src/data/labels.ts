@@ -41,15 +41,29 @@ const LABELS = {
   sideSceneOldPond: 'The old pond',
   /** Main-menu toggle for the farm-talk skip button. `{state}` is On / Off. */
   devFarmTalkSkipToggle: 'Dialog skip: {state}',
+  devModeToggle: 'Dev mode: {state}',
   devFarmTalkSkipOn: 'On',
   devFarmTalkSkipOff: 'Off',
+  mainMenuContinue: 'Continue',
+  mainMenuNewGame: 'New Game',
+  newGameConfirmTitle: 'Start a new game?',
+  newGameConfirmBody:
+    'This replaces your saved encounters, Field Notes, and tutorials with a fresh start.',
+  newGameConfirmAction: 'Start New Game',
   resetProgress: 'Reset Progress',
+  inGameMenuOpen: 'Menu',
+  inGameMenuTitle: 'Menu',
+  inGameMenuResume: 'Resume',
+  inGameMenuExit: 'Exit',
+  inGameMenuExitTitle: 'Exit to Main Menu?',
+  inGameMenuExitFarmBody: 'You can continue your progress from the main menu.',
+  inGameMenuExitTrialBody: 'This debate will be abandoned and its progress will be lost.',
   resetProgressConfirmTitle: 'Reset all progress?',
   resetProgressConfirmBody:
     'This clears your saved encounters, Field Notes, and tutorials from this browser. It cannot be undone.',
   resetProgressConfirmAction: 'Reset',
   mainMenuMainOptions: 'Main options',
-  mainMenuProgressSettings: 'Progress & Settings',
+  mainMenuProgressSettings: 'Settings',
   mainMenuDialogs: 'Dialogs',
   mainMenuOther: 'Other',
   mainMenuBack: 'Back',
@@ -80,7 +94,7 @@ const LABELS = {
   menuTalkDuchessDone: 'Done',
   menuTalkTobias1: 'Silly talk',
   menuTalkTobiasDone: 'Done',
-  menuTalkBella1: 'Silly talk',
+  menuTalkBella1: 'Pip and the pond',
   menuTalkBellaDone: 'Done',
   menuTalkPipDone: 'Ambient',
   menuTalkFollowUpBramRounds: 'Bram — after 1.1',
@@ -148,10 +162,10 @@ const LABELS = {
   // --- Trial layout panels ---
   // Log panel heading, one per `EncounterKind` (see `encounterLabels`).
   debateLog: 'Log',
-  gossipLog: 'Trough Talk',
-  sparringLog: 'Sparring Log',
-  labLog: 'Lab Notes',
-  lessonLog: 'Lesson Notes',
+  gossipLog: 'Log',
+  sparringLog: 'Log',
+  labLog: 'Log',
+  lessonLog: 'Log',
   interactive: 'Actions',
   wizard: 'Dialog',
   back: 'Back',
@@ -200,6 +214,7 @@ const LABELS = {
   analyzeThisQuestion: 'Analyze this question',
   analyzeThisResponse: 'Analyze this response',
   analyzeThisRound: 'Analyze this round',
+  analyzeNotInThisConversation: 'Nothing to analyze in this conversation',
   analyzeImageAlt: 'Analyze',
   /** Icon row of fallacies correctly spotted in a statement, under its text in the Debate Log. */
   spottedFallaciesAria: 'Fallacies spotted in this statement',
@@ -229,7 +244,7 @@ const LABELS = {
   gossipFinished: 'There is nothing more to overhear.',
   sparringFinished: 'That is the session done.',
   labFinished: 'That is the exercise done.',
-  lessonFinished: 'That is the lesson done.',
+  lessonFinished: 'That is the tutorial done.',
 
   // --- useTrialRoundWorkflow (wizard strip) ---
   // Opening guidance, one per `EncounterKind`.
@@ -263,6 +278,7 @@ const LABELS = {
   tutorialDialogTitleSingle: 'Tutorial',
   tutorialDialogTitle: 'Tutorial ({currentStep} of {totalSteps})',
   tutorialSpotlightHint: 'Click the button in the highlighted area to continue',
+  tutorialNewBadge: 'NEW',
 
   // --- Intro summary modal ---
   beforeTheDebate: 'Before the debate',
@@ -417,11 +433,11 @@ const LABELS = {
   farmDialogHettyMeetC:
     'You are very good about standing still. Come back when I have something friendly to say, which I will.',
   farmDialogCass1:
-    'You. Come here. They came at my tail until I put a name on it, and you do not even know it has a name. That changes this morning.',
-  farmDialogCass1a: 'You. Come here.',
-  farmDialogCass1b: 'You are the fox.',
+    'So you are the one taking on Tobias. I am Cass. Come here. Let us make your first mistakes somewhere they will cost you less.',
+  farmDialogCass1a: 'So you are the one taking on Tobias. I am Cass.',
+  farmDialogCass1b: 'Bram said you could help. He made it sound rather urgent.',
   farmDialogCass1c:
-    'Yes. I am the fox. Get it out of your system, because in about a minute I am going to make you say it properly.',
+    'Sensible of him. Come here. Let us make your first mistakes somewhere they will cost you less.',
   farmDialogCass2:
     'Back at the post. Somebody has been counting at you, and there is a name for that one as well.',
   farmDialogCass2a: 'Back already. And somebody has been counting at you.',
@@ -443,7 +459,7 @@ const LABELS = {
   farmDialogBram1b: 'You — against Tobias. On the floor. And you came down here. To the wolf.',
   farmDialogBram1c: 'You were the first name she gave me. I need help.',
   farmDialogBram1d:
-    'I walk the fence. Both ways. From the far side of a hedge you hear every conversation on this farm. I will show you how one works, before anyone else gets hold of you.',
+    'I walk the fence. Both ways. From the far side of a hedge I can hear every conversation and [accent]debate on this farm[/accent]. [accent]I will show you how one works[/accent], before anyone else gets hold of you.',
   farmDialogBram2:
     'There is another piece. I have to be unpleasant to you first, on purpose, so you can catch me at it.',
   farmDialogBram2a: 'There is another piece.',
@@ -494,19 +510,31 @@ const LABELS = {
   farmDialogTobiasDoneB:
     'I will say this once and not again: I have pulled a cart past that drain for eleven years and **[accent]never once looked into it[/accent]**. Good morning, Rue.',
   farmDialogBella1:
-    'I am not Hetty. I only look like this until the proper coat arrives. She is at the pond.',
+    'I keep thinking about this debate. How does the pond get dirtier just because a few new animals move here?',
   farmDialogBella1a:
-    'Before you ask: I am not Hetty. I only look like this until the proper coat arrives.',
-  farmDialogBella1b: 'You look exactly like Hetty.',
+    'I keep thinking about this debate. How does the pond get dirtier just because a few new animals move here?',
+  farmDialogBella1b: 'Like Pip? He thinks the motion is unfair. He works hard here.',
   farmDialogBella1c:
-    'That is the whole joke, and it is not even mine. **[accent]Hetty is at the pond[/accent]** — down the east road, walk up to the water. I am holding the barn. Someone has to.',
-  farmDialogBellaDone: 'Still not Hetty. Still holding the barn.',
-  farmDialogBellaDoneA: 'Still not Hetty.',
+    'Oh, I would not take Pip’s word for anything. He is probably stealing cheese, like every rat.',
+  farmDialogBella1d: 'He is a mouse. What would cheese have to do with the pond, anyway?',
+  farmDialogBella1e:
+    'Nothing. That is what bothers me. A missing bit of cheese I could understand. But how is a little fellow like Pip supposed to turn a whole pond brown? It makes no sense.',
+  farmDialogBellaDone:
+    'The debate is over, then. I still cannot see what anyone’s birthplace had to do with brown water.',
+  farmDialogBellaDoneA: 'The debate is over, then.',
   farmDialogBellaDoneB:
-    'The coat is late. I am still holding the barn. She is still at the pond, I expect.',
-  farmDialogPipDoneA: 'Careful. Freshly swept.',
-  farmDialogPipDoneB: 'This is a dirt floor.',
-  farmDialogPipDoneC: 'Exactly. It takes forever.',
+    'I still cannot see what anyone’s birthplace had to do with brown water. You could tell me where every animal was born and I would still want someone to explain the pond.',
+  farmDialogPipDoneA: 'You are new here too, aren’t you? I am Rue.',
+  farmDialogPipDoneB:
+    'Pip. Two weeks here. I work in the barn — sweeping, sorting grain, getting under the shelves. They call that last one a specialist skill.',
+  farmDialogPipDoneC:
+    'What do you think about the debate? Tobias wants to keep the pond for the animals born here.',
+  farmDialogPipDoneD:
+    'I do not think that is fair. But I just want to earn my place on the farm. I am in the barn before sunrise and still working when the others leave. I was hoping that would count for something.',
+  farmDialogPipDoneE:
+    'Six weeks for me. Hauling and repairs. I think it counts. It ought to count when we need a drink, too.',
+  farmDialogPipDoneF:
+    'I hope so. I even put the spilled grain back in the sacks. You understand the restraint that takes, for a mouse.',
   farmDialogDot1:
     'You are the new raccoon. Rue, is it? I am Dot, guardian of the farm — that is why I stand at the entrance. Tobias has put a motion to keep the Old Pond for the Meadow-Born and send the rest of you to the road trough — Sunday, in front of Duchess — and not one animal will speak against it. Bram first, through the gate. Then Cass on the road.',
   farmDialogDot1a:
@@ -713,6 +741,9 @@ const LABELS = {
     'You put it to him straight beyond the gate and he gave it up on the spot: the outflow grate has been bent since before the frost, and he has known the whole time. Bram is one of Tobias’s own forty-one, which makes him the best witness on this farm and the one it costs him most to be.',
 
   // Feature unlocks — titles read as directions, same contract as dialog flags.
+  featureAnalysisTitle: 'learn how to analyse an argument with Cass',
+  featureAnalysisBody:
+    'Cass showed you how to use the magnifying glass to examine a statement and identify its fallacies. You can also revisit earlier statements in the log.',
   featureInsightPointsTitle: 'learn what Insight is from Bram beyond the gate',
   featureInsightPointsBody:
     'Bram handed you the habit he uses to survive a room that has already decided about him: never answer the first time. Insight is the one thing in this game you can spend, and you are never forced to.',
@@ -726,7 +757,6 @@ const LABELS = {
   trialScenePlaceholder: 'Trial Scene\n\nThis is where the trial gameplay\nwould be implemented.',
 
   // --- Lateral farm scene ---
-  farmSideBackToMenu: 'Back to Main Menu',
   farmSideMoveHint: 'Arrows / WASD to walk the road, Shift to run',
   farmSideMoveHintTouch: 'Drag the bottom-left joypad to walk the road',
 

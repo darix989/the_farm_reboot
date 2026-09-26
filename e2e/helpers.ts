@@ -2,16 +2,23 @@ import { test as base, type Locator, type Page } from '@playwright/test';
 import getLabel from '../src/data/labels';
 
 export const GAME_TITLE = getLabel('gameTitle');
-export const ENTER_THE_FARM = getLabel('enterTheFarm');
+export const MAIN_MENU_CONTINUE = getLabel('mainMenuContinue');
+export const MAIN_MENU_NEW_GAME = getLabel('mainMenuNewGame');
+export const MAIN_MENU_NEW_GAME_CONFIRM = getLabel('newGameConfirmAction');
+export const MAIN_MENU_SETTINGS = getLabel('mainMenuProgressSettings');
+export const DEV_MODE_OFF = getLabel('devModeToggle', {
+  replacements: { state: getLabel('devFarmTalkSkipOff') },
+});
 export const ANIMATION_GALLERY = getLabel('animationGallery');
 export const SIDE_SCENES_HEADING = getLabel('sideScenesHeading');
 export const SIDE_SCENE_OLD_POND = getLabel('sideSceneOldPond');
 export const FIELD_NOTES = getLabel('codexOpen');
 export const LEVEL_1_HEADING = getLabel('level1Heading');
 export const LEVEL_1_FIRST = getLabel('level1BramDialog');
-export const MAIN_MENU_PROGRESS = getLabel('mainMenuProgressSettings');
 export const CONTINUE = getLabel('continue');
-export const FARM_SIDE_BACK_TO_MENU = getLabel('farmSideBackToMenu');
+export const IN_GAME_MENU = getLabel('inGameMenuOpen');
+export const IN_GAME_MENU_EXIT = getLabel('inGameMenuExit');
+export const FARM_SIDE_MOVE_HINT = getLabel('farmSideMoveHint');
 export const TALK_TO_DOT = getLabel('farmTalkPrompt', { replacements: { name: 'Dot' } });
 export const TALK_TO_CASS = getLabel('farmTalkPrompt', { replacements: { name: 'Cass' } });
 export const TALK_TO_BRAM = getLabel('farmTalkPrompt', { replacements: { name: 'Bram' } });
@@ -46,6 +53,24 @@ export async function waitForMainMenu(page: Page): Promise<void> {
   });
 }
 
+/** Turn on the hidden authoring launcher, then return to its menu root. */
+export async function enableDevMode(page: Page): Promise<void> {
+  await page.getByRole('button', { name: MAIN_MENU_SETTINGS }).click();
+  await page.getByRole('button', { name: DEV_MODE_OFF }).click();
+  await page.getByRole('button', { name: getLabel('mainMenuBack') }).click();
+}
+
+/** Continue a save when one exists; otherwise begin a fresh game and confirm the replacement. */
+export async function enterFarmFromMenu(page: Page): Promise<void> {
+  const continueButton = page.getByRole('button', { name: MAIN_MENU_CONTINUE });
+  if (await continueButton.isVisible()) {
+    await continueButton.click();
+    return;
+  }
+  await page.getByRole('button', { name: MAIN_MENU_NEW_GAME }).click();
+  await page.getByRole('button', { name: MAIN_MENU_NEW_GAME_CONFIRM }).click();
+}
+
 /**
  * Skip Dot's auto-open intro so walking smokes can reach the road. Must run before
  * `page.goto` — the suite fixture already wipes progress, and this writes the started
@@ -58,6 +83,29 @@ export async function seedLevel1Started(page: Page): Promise<void> {
       JSON.stringify({
         state: { completedScenarios: [], completedTutorials: [], level1Started: true },
         version: 8,
+      }),
+    );
+  });
+}
+
+/**
+ * Seed the `analysis` feature as unlocked, as if the player had already reached Cass's
+ * round 5 tutorial. Must run before `page.goto` — the suite fixture wipes `the-farm-codex`
+ * on every context, so this seed has to land on top of that wipe.
+ */
+export async function seedAnalysisUnlocked(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    window.localStorage.setItem(
+      'the-farm-codex',
+      JSON.stringify({
+        state: {
+          knownFallacies: [],
+          spottedFallacies: [],
+          dialogFlags: [],
+          unlockedFeatures: ['analysis'],
+          seenNoticeIds: null,
+        },
+        version: 4,
       }),
     );
   });

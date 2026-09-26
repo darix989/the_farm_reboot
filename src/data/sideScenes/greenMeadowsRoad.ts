@@ -23,7 +23,12 @@ export const STANDARD_FARM_LAYERS: readonly SideSceneLayer[] = [
 
 /** The near-grass / road seam — where a fence or a ground prop plants its feet. */
 const GROUND_SEAM_Y = 796;
+const ROAD = { top: 837, bottom: 999 } as const;
 const GATE_X = 3800;
+/** North edge of the walkable band — sit the gate interact sphere against the picket. */
+export const GATE_PORTAL_Y = ROAD.top;
+/** Cass stands this far west of the gate, clear of the combined talk/portal radii. */
+const CASS_WEST_OF_GATE = 760;
 /**
  * Dot on the west approach, well clear of the barn door (1260), so
  * talking to her never also offers "Enter the barn". Rue spawns this many px west of her,
@@ -44,7 +49,7 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
   width: 7680,
   scale: 0.8543,
   firstTop: 400,
-  road: { top: 837, bottom: 999 },
+  road: ROAD,
   layers: STANDARD_FARM_LAYERS,
 
   props: [
@@ -189,7 +194,7 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
   npcs: [
     {
       characterId: 'cass',
-      x: GATE_X - 660,
+      x: GATE_X - CASS_WEST_OF_GATE,
       y: 952,
       facing: 'left',
       interactionPromptLift: 200,
@@ -219,6 +224,8 @@ export const GREEN_MEADOWS_ROAD: SideSceneDescriptor = {
       id: 'gate',
       side: 'back',
       x: GATE_X,
+      // North side of the road, against the picket — mid-road reads as the south half.
+      y: GATE_PORTAL_Y,
       to: { scene: 'gateLane', portal: 'gate', label: 'farmSidePortalGate' },
     },
     {

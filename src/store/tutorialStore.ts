@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type {
   TutorialArtificialInteraction,
+  TutorialFocusMode,
   TutorialInteractionMode,
   TutorialStepOnFinish,
   TutorialTargetRef,
@@ -18,6 +19,7 @@ export interface TutorialStepResolved {
   onFinish?: TutorialStepOnFinish;
   targetComponent?: TutorialTargetRef;
   interactionMode?: TutorialInteractionMode;
+  focusMode?: TutorialFocusMode;
   targetClassName?: string;
   /**
    * Ordered sequence of synthetic UI interactions to fire while this step is
@@ -35,6 +37,7 @@ export type TutorialStepInput = {
   onFinish?: TutorialStepOnFinish;
   targetComponent?: TutorialTargetRef;
   interactionMode?: TutorialInteractionMode;
+  focusMode?: TutorialFocusMode;
   targetClassName?: string;
   artificialInteractions?: readonly TutorialArtificialInteraction[];
 };
@@ -98,6 +101,7 @@ export const useTutorialStore = create<TutorialStore>((set, get) => ({
         onFinish: step.onFinish,
         targetComponent: step.targetComponent,
         interactionMode: step.interactionMode ?? 'modal_only',
+        focusMode: step.focusMode ?? 'normal',
         targetClassName: step.targetClassName,
         artificialInteractions: step.artificialInteractions,
       }))

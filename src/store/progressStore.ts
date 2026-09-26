@@ -19,9 +19,14 @@ interface ProgressStore {
   completedTutorials: FarmTutorialId[];
   /** True once the farm has opened the intro (or the player already had progress). */
   level1Started: boolean;
+  /** Set after the player first tries to move in the side-scrolling farm world. */
+  farmSideMoveHintDismissed: boolean;
   markCompleted: (key: DebateScenarioKey) => void;
   markTutorialCompleted: (id: FarmTutorialId) => void;
   markLevel1Started: () => void;
+  dismissFarmSideMoveHint: () => void;
+  /** Used by New Game; Reset Progress deliberately preserves the player's learned controls. */
+  restoreFarmSideMoveHint: () => void;
   isCompleted: (key: DebateScenarioKey) => boolean;
   isTutorialCompleted: (id: FarmTutorialId) => boolean;
   /** First scenario in `keys` not yet completed, or null when the animal is done. */
@@ -35,6 +40,7 @@ export const useProgressStore = create<ProgressStore>()(
       completedScenarios: [],
       completedTutorials: [],
       level1Started: false,
+      farmSideMoveHintDismissed: false,
 
       markCompleted: (key) =>
         set((s) =>
@@ -51,6 +57,12 @@ export const useProgressStore = create<ProgressStore>()(
         ),
 
       markLevel1Started: () => set((s) => (s.level1Started ? s : { ...s, level1Started: true })),
+
+      dismissFarmSideMoveHint: () =>
+        set((s) => (s.farmSideMoveHintDismissed ? s : { ...s, farmSideMoveHintDismissed: true })),
+
+      restoreFarmSideMoveHint: () =>
+        set((s) => (s.farmSideMoveHintDismissed ? { ...s, farmSideMoveHintDismissed: false } : s)),
 
       isCompleted: (key) => get().completedScenarios.includes(key),
 
@@ -133,6 +145,7 @@ export const useProgressStore = create<ProgressStore>()(
           completedScenarios: clean,
           completedTutorials: tutorials,
           level1Started: saved?.level1Started === true,
+          farmSideMoveHintDismissed: saved?.farmSideMoveHintDismissed === true,
         };
       },
     },

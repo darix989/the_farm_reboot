@@ -10,6 +10,8 @@ import GameLoadingScreen from './screens/GameLoadingScreen';
 import ReactRoot from './ReactRoot';
 import TutorialOverlay from './tutorial/TutorialOverlay';
 import CodexOverlay from './codex/CodexOverlay';
+import InGameHud from './inGameMenu/InGameHud';
+import InGameMenuOverlay from './inGameMenu/InGameMenuOverlay';
 import ShortcutHintBanner from './shortcuts/ShortcutHintBanner';
 import { useShortcutRevealListener } from './shortcuts/useShortcutReveal';
 import { useGameStore } from '../store/gameStore';
@@ -56,10 +58,12 @@ const ReactApp: React.FC = () => {
   return (
     <ReactRoot>
       {renderSceneUI()}
+      <InGameHud />
       <TutorialOverlay />
       {/* Scene-independent, like the tutorial overlay: openable from the menu and the farm
           alike, and it renders nothing until `codexUiStore.isOpen`. */}
       <CodexOverlay />
+      <InGameMenuOverlay />
       <ShortcutHintBanner />
     </ReactRoot>
   );

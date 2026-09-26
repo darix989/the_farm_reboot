@@ -10,7 +10,7 @@ import {
   validateSideSceneDescriptor,
 } from '../../phaser/sideScene/sideSceneAssets';
 import { FARM_KIT_ASSETS } from '../../phaser/sideScene/farmKit.generated';
-import { resolveDefaultSpawn } from '../../phaser/sideScene/sideSceneRoad';
+import { resolveDefaultSpawn, resolvePortal } from '../../phaser/sideScene/sideSceneRoad';
 import {
   PORTAL_INTERACT_RADIUS,
   SIDE_NPC_INTERACT_RADIUS,
@@ -70,6 +70,23 @@ describe('SIDE_SCENES', () => {
     expect(byId.duchess).toEqual(['eastOrchard']);
     expect(byId.tobias).toEqual(['eastOrchard']);
     expect(byId.pip).toEqual(['hettysBarn']);
+  });
+
+  it('sits the gate interact sphere on the north side of the road, with Cass west of it', () => {
+    const road = SIDE_SCENES.greenMeadowsRoad;
+    const cass = road.npcs.find((npc) => npc.characterId === 'cass');
+    const gate = road.portals.find((portal) => portal.id === 'gate');
+    expect(cass).toBeDefined();
+    expect(gate?.x).toBeDefined();
+    const midY = (road.road.top + road.road.bottom) / 2;
+    const resolved = resolvePortal(gate!, road);
+    expect(resolved.y).toBe(road.road.top);
+    expect(resolved.y).toBeLessThan(midY);
+    expect(gate!.x! - cass!.x).toBeGreaterThan(SIDE_NPC_INTERACT_RADIUS + PORTAL_INTERACT_RADIUS);
+
+    const lane = SIDE_SCENES.gateLane;
+    const laneGate = lane.portals.find((portal) => portal.id === 'gate');
+    expect(resolvePortal(laneGate!, lane).y).toBe(lane.road.top);
   });
 
   it('stands Dot and the first-visit spawn west of the barn door, clear of its interact radius', () => {

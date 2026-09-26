@@ -33,11 +33,14 @@ import {
 } from '../sideScene/sideSceneCamera';
 import { createFarmKeys, type FarmKeys } from '../farm/farmInput';
 import { VirtualJoystick } from '../farm/VirtualJoystick';
+import { VirtualInteractButton } from '../farm/VirtualInteractButton';
 import { ensureFarmJoystickTextures } from '../farm/farmTextures';
 import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
 import { reportSceneLoadProgress } from '../bootProgress';
 import { useFarmStore } from '../../store/farmStore';
+import { useDevSettingsStore } from '../../store/devSettingsStore';
 import { useGameStore } from '../../store/gameStore';
+import { useProgressStore } from '../../store/progressStore';
 import { useTutorialStore } from '../../store/tutorialStore';
 import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reducedMotion';
 
@@ -48,8 +51,6 @@ import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reduced
  * neighbouring scenes are reached through walk-up portals with a fade-through-black
  * transition. See `docs/farm_side_scenes.md`.
  */
-const DEBUG_SIDE_SCENE = false;
-
 /**
  * How long after `create()` an interact key press is ignored. OS key auto-repeat fires a
  * fresh `down` transition on the new scene's brand-new `Key` objects if the player is
@@ -105,6 +106,7 @@ export class FarmSide extends Scene {
   private groundBottom = STAGE_DESIGN_HEIGHT;
   private keys: FarmKeys | null = null;
   private joystick: VirtualJoystick | null = null;
+  private interactButton: VirtualInteractButton | null = null;
   private player: SideScenePlayer | null = null;
   private npcs: SideSceneNpc[] = [];
   private scrollX = 0;
@@ -154,6 +156,7 @@ export class FarmSide extends Scene {
     this.groundBottom = STAGE_DESIGN_HEIGHT;
     this.keys = null;
     this.joystick = null;
+    this.interactButton = null;
     this.player = null;
     this.npcs = [];
     this.scrollX = 0;
@@ -199,13 +202,14 @@ export class FarmSide extends Scene {
 
     this.keys = createFarmKeys(this);
     this.joystick = new VirtualJoystick(this);
+    this.interactButton = new VirtualInteractButton(this, () => this.tryInteract());
     const spawn = this.resolveSpawn();
     this.player = new SideScenePlayer(this, this.descriptor, spawn, this.keys, this.joystick);
 
     this.interactArmedAt = this.time.now + INTERACT_ARM_DELAY_MS;
     this.keys?.interact.forEach((key) => key.on('down', () => this.tryInteract()));
 
-    if (DEBUG_SIDE_SCENE) drawDebugOverlay(this, this.descriptor);
+    if (useDevSettingsStore.getState().devMode) drawDebugOverlay(this, this.descriptor);
 
     // zustand v5's vanilla `subscribe` takes a single listener receiving (state,
     // previousState) — not a selector. Compare the field yourself; see `gameManager.ts`.
@@ -243,7 +247,9 @@ export class FarmSide extends Scene {
     const talking = useFarmStore.getState().talkingToNpcId;
     const tutorialOpen = useTutorialStore.getState().isOpen;
     const canAct = !(talking || this.travelling || tutorialOpen);
-    this.player?.update(delta, canAct);
+    if (this.player?.update(delta, canAct)) {
+      useProgressStore.getState().dismissFarmSideMoveHint();
+    }
     // Reduced motion parks every animal on its rest frame (see `AnimalAnimator`), so a
     // patrolling NPC stands at its authored spot rather than gliding along the fence on a
     // frozen pose — same contract the fades and the talk camera already honour.
@@ -507,6 +513,7 @@ export class FarmSide extends Scene {
       !useTutorialStore.getState().isOpen &&
       !useFarmStore.getState().talkingToNpcId;
     this.joystick?.setEnabled(enabled);
+    this.interactButton?.setEnabled(enabled);
   }
 
   private updateCamera(): void {
@@ -547,6 +554,8 @@ export class FarmSide extends Scene {
     this.player = null;
     this.joystick?.destroy();
     this.joystick = null;
+    this.interactButton?.destroy();
+    this.interactButton = null;
     this.npcs.forEach((npc) => npc.destroy());
     this.npcs = [];
     useFarmStore.getState().resetFarmUi();

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import cn from 'classnames';
 import { useTutorialStore } from '../../store/tutorialStore';
 import { useCodexUiStore } from '../../store/codexUiStore';
+import { useInGameMenuStore } from '../../store/inGameMenuStore';
 import { resolveStageSpotlightToViewport } from './spotlightRect';
 import { useStageRect } from './useStageRect';
 import { ariaKeyShortcutsFor, type ShortcutAction } from '../../data/keyBindings';
@@ -81,6 +82,8 @@ const TutorialOverlay: React.FC = () => {
 
   const { stageRect } = useStageRect();
   const codexIsOpen = useCodexUiStore((s) => s.isOpen);
+  const menuOpen = useInGameMenuStore((s) => s.view !== 'closed');
+  const [newBadgePos, setNewBadgePos] = useState<{ top: number; left: number } | null>(null);
 
   const [, setRenderTick] = useState(0);
   useEffect(() => {
@@ -143,7 +146,7 @@ const TutorialOverlay: React.FC = () => {
       event.stopImmediatePropagation();
       onPrimary();
     },
-    isOpen && !!step,
+    isOpen && !!step && !menuOpen,
     { capture: true },
   );
 
@@ -169,16 +172,38 @@ const TutorialOverlay: React.FC = () => {
     }
   }, [isOpen, step]);
 
-  useEffect(() => {
-    if (!isOpen || !step?.targetComponent) return;
+  // Stamp the ring before paint, then measure the NEW badge from that box so the
+  // thicker `!important` border does not leave the chip one frame behind.
+  useLayoutEffect(() => {
+    if (!isOpen || !step?.targetComponent) {
+      setNewBadgePos(null);
+      return;
+    }
     const targetEl = resolveTutorialTargetElement(step.targetComponent);
-    if (!targetEl) return;
-    const className = step.targetClassName ?? highlightStyles.tutorialTargetHighlight;
-    targetEl.classList.add(className);
+    if (!targetEl) {
+      setNewBadgePos(null);
+      return;
+    }
+    // `classList.add` throws on a name containing whitespace, so split the override.
+    const classNames = step.targetClassName
+      ? step.targetClassName.split(/\s+/).filter(Boolean)
+      : [
+          highlightStyles.tutorialTargetRing,
+          step.focusMode === 'new'
+            ? highlightStyles.tutorialTargetRingNew
+            : highlightStyles.tutorialTargetRingStatic,
+        ];
+    targetEl.classList.add(...classNames);
+    if (step.focusMode === 'new') {
+      const rect = targetEl.getBoundingClientRect();
+      setNewBadgePos({ top: rect.top, left: rect.right });
+    } else {
+      setNewBadgePos(null);
+    }
     return () => {
-      targetEl.classList.remove(className);
+      targetEl.classList.remove(...classNames);
     };
-  }, [isOpen, step, codexIsOpen]);
+  }, [isOpen, step, codexIsOpen, stageRect]);
 
   if (!isOpen || !step) {
     return null;
@@ -291,7 +316,22 @@ const TutorialOverlay: React.FC = () => {
   };
 
   const ui = (
-    <div className={styles.root} role="presentation">
+    <div
+      className={styles.root}
+      role="presentation"
+      // Pause menu portals above this overlay; keep the tutorial visible but inert.
+      inert={menuOpen ? true : undefined}
+      aria-hidden={menuOpen || undefined}
+    >
+      {newBadgePos && (
+        <span
+          className={styles.newFeatureBadge}
+          style={{ top: newBadgePos.top, left: newBadgePos.left }}
+          aria-hidden="true"
+        >
+          {getLabel('tutorialNewBadge')}
+        </span>
+      )}
       <div className={styles.dialogWrap}>
         <div
           className={cn(shared.trialModalFontScope, styles.dialog)}

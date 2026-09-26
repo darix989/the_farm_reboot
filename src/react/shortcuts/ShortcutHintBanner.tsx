@@ -1,7 +1,7 @@
 import React from 'react';
 import getLabel from '../../data/labels';
 import { keycapForCode } from '../../data/keyBindings';
-import { isSmartphone } from '../../utils/chromeAndroidFullscreen';
+import { supportsTouchInput } from '../../utils/touchInput';
 import { useCodexUiStore } from '../../store/codexUiStore';
 import { useFarmStore } from '../../store/farmStore';
 import { useGameStore } from '../../store/gameStore';
@@ -26,7 +26,7 @@ const ShortcutHintBanner: React.FC = () => {
   const isRevealed = useShortcutRevealStore((s) => s.isRevealed);
 
   const ctx = {
-    isTouch: isSmartphone(),
+    isTouch: supportsTouchInput(),
     currentScene,
     isTraveling,
     isCodexOpen,

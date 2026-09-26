@@ -268,7 +268,7 @@ export class SideScenePlayer extends SideSceneActor {
    * not a maze, and a clearance ring around each NPC was worse than what it prevented: it
    * reads as an invisible wall a step before the animal you are walking up to.
    */
-  update(deltaMs: number, canMove: boolean): void {
+  update(deltaMs: number, canMove: boolean): boolean {
     const dir = canMove
       ? movementVector(this.keys, this.joystick, this.moveVector)
       : this.moveVector.set(0);
@@ -288,5 +288,6 @@ export class SideScenePlayer extends SideSceneActor {
     // `dir` is <= 1 and keeps its magnitude, so it doubles as the fraction of top speed to
     // pace the walk cycle at — same contract as `Farm.update`.
     this.applyLocomotion(dir.length());
+    return dir.length() > 0;
   }
 }
