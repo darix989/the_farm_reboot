@@ -20,6 +20,22 @@ export const EMOTION_SHEETS: Partial<
   Record<AnimalSpriteId, Partial<Record<AnimalEmotion, EmotionSheet>>>
 > = {
   'brown-bull': {
+    angry: {
+      file: 'brown-bull-angry.png',
+      frameWidth: 512,
+      frameHeight: 512,
+      frameCount: 36,
+      frameRate: 12,
+      scale: 3.3529,
+      originX: 0.497,
+      originY: 0.6992,
+      quality: {
+        loopPop: 0.16,
+        heightSwing: 13.7,
+        driftX: 1,
+        warnings: [],
+      },
+    },
     sneaky: {
       file: 'brown-bull-sneaky.png',
       frameWidth: 512,
