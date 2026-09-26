@@ -22,22 +22,21 @@
       "file": "brown-bull-doubtful.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 3.1963,
-      "originX": 0.4852,
-      "originY": 0.6973,
-      "prompt": "Side view, facing left. The brown bull's head, horns, ears, muzzle, nose ring, barrel body, four planted hooves and tail stay exactly as in the reference image and do not move at all: the head holds its exact position and angle in every frame, and both horns keep the same shape, size and place. ONLY THE BROWS AND EYES MOVE. The brow above the near eye slowly lifts into a high sceptical arch while the brow above the far eye stays low, then it eases back down; the big white eyes stay open and round with their small black pupils, and glance once toward the listener. The muzzle stays closed, drawn exactly as in the reference. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 3.3204,
+      "originX": 0.5048,
+      "originY": 0.6992,
+      "prompt": "Side view, facing left. The brown bull's head, horns, ears, muzzle, nose ring, body, four planted hooves and tail stay exactly as in the reference image and do not move at all: the head holds its exact position and angle in every frame. ONLY THE FACE MOVES, on an even, symmetrical timeline. Using the heavy brow already drawn in the reference, the brow over the near eye slowly arches HIGH up in disbelief while the brow over the far eye presses down low and flat, the near eye narrows to a sceptical half-lidded squint with the pupil sliding sideways toward the listener, and the shut muzzle pulls down at one corner in a doubtful frown; it holds that look, then eases back just as slowly and comes to rest in the exact pose of the reference a few frames before the end. The eye never goes wide and round. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.18,
-        "heightSwing": 5.6,
-        "driftX": 4.8,
+        "loopPop": 0.12,
+        "heightSwing": 1.5,
+        "driftX": 3.3,
+        "edgeMargin": 120,
+        "flatCut": 6,
         "warnings": []
       },
-      "reviewNotes": [
-        "Accepted on human review after two failed attempts (Blitz, then Hydra, both reared the head far back) and two drifting image edits. This fresh attempt holds the head for most of the loop, but frames 11-14 still dip the head and swing the horns."
-      ],
-      "generatedAt": "2026-09-26T17:03:40.808Z"
+      "generatedAt": "2026-09-26T21:29:10.668Z"
     },
     "sneaky": {
       "file": "brown-bull-sneaky.png",
@@ -193,22 +192,21 @@
       "file": "cow-angry.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 1.7558,
-      "originX": 0.49,
-      "originY": 0.7012,
-      "prompt": "Side view, facing left. The black and white cow stands in place on all fours and is furious: its googly eyes narrow, its head drops until it is level with its shoulders and pushes forward at the target, its big pink snout is held open in one long hard bellow, and the golden bell on its teal collar jerks. The open mouth is always the same shape: one big clean smooth rounded patch of flat pink inside the snout, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and never move. Its head never drops below shoulder height, never lowers to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 1.7887,
+      "originX": 0.4855,
+      "originY": 0.6992,
+      "prompt": "Side view, facing left. The black-and-white cow is furious. Its body, four planted hooves, tail and golden cowbell stay exactly as in the reference image and do not move at all, and its head holds exactly the position and height it has in the reference — it never tips up, never lowers to graze. ONLY THE FACE MOVES, on an even, symmetrical timeline. During the first two fifths its brows slam down into a hard V and both googly eyes narrow to a fierce glare, staying OPEN with the pupils clearly visible and locked on the target, while its huge pink snout opens into a wide angry bellow. During the middle fifth it holds that furious face. During the last two fifths it eases back just as slowly along the same path and comes fully to rest in the exact pose of the reference a few frames before the end. The open mouth always shows the same shape: one clean smooth patch of flat dark pink inside, drawn identically in every frame it appears. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.37,
-        "heightSwing": 19,
-        "driftX": 6.8,
+        "loopPop": 0.36,
+        "heightSwing": 7.5,
+        "driftX": 2.3,
+        "edgeMargin": 120,
+        "flatCut": 0,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T00:26:35.180Z",
-      "reviewNotes": [
-        "First attempt read as sulking rather than angry despite clean numbers; this retry bellows convincingly but is still worth a second look in game."
-      ]
+      "generatedAt": "2026-09-26T21:27:47.182Z"
     },
     "approving": {
       "file": "cow-thinking.png",
