@@ -147,7 +147,7 @@ If you inherit clips at the wrong rate, fix `frameRate` in `promoted-clips.json`
 > and a bounding box are, exactly how each number is computed, what it can and cannot catch, and
 > where to find the numbers. Start there; this section is the short form.
 
-Generation prints three metrics per clip, and they are also stored in each clip's `meta.json`
+Generation prints three metrics per clip (the two edge checks print only when they fire), and they are also stored in each clip's `meta.json`
 and shown on the contact sheet. They exist because each caught a real failure that is hard to
 see in a single loop and obvious once the clip is in the game.
 
@@ -156,6 +156,8 @@ see in a single loop and obvious once the clip is in the game.
 | `loop seam` | 2% | Last frame differs from the first, so it jumps on every repeat | Confirm `closeLoop` is on; regenerate with `--force` |
 | `height swing` | 20% | Character's height wanders across frames | Check it is motion (a head dipping) and not a pose collapse (lying down). See the prompt rules |
 | `drift ±px` | 20px | Character slides horizontally | Add "in place, no travel" emphasis; regenerate |
+| `edgeMargin` | ≤ 2px | Character touches a cell edge and is cut off there | Reject; hold the part that reaches out (usually the head) still in the prompt |
+| `flatCut` | ≥ 16px | A straight opaque slice on the outline — the part left the generator's own canvas, which sits ~130px *inside* the cell, so `edgeMargin` stays clean | Reject; hold the neck/head still so it cannot swing past the reference framing. Drawn outlines score ≤ 9px |
 
 A clip can also be **rushed without tripping any of these** — the metrics measure the frames,
 not the tempo. If motion looks hurried or snaps between poses, check the frame rate maths above
