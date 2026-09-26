@@ -79,22 +79,21 @@
       "file": "brown-bull-thinking.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 3.3695,
-      "originX": 0.4999,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 3.2264,
+      "originX": 0.5076,
       "originY": 0.6973,
       "prompt": "Side view, facing left. Animate one complete closed thinking cycle of this exact brown bull, in place. Its barrel body, four planted hooves, tail, horn shape and camera remain fixed exactly as in the reference throughout. Its eyes stay open with the same white eye shapes and pupils, and its brow is eased and smooth rather than furrowed. During the first quarter its head tilts just slightly in consideration; during the middle half it slowly returns along the same path; during the final quarter it has fully returned to the starting pose and settles motionless. The final pose, head position, horns, ears, eyes, mouth, tail, silhouette, proportions and colors match the first frame and the reference exactly. Start and finish at rest in that identical pose. The mouth stays closed. One slow continuous out-and-back motion, seamless repeating loop, stationary camera, no travel.",
       "quality": {
-        "loopPop": 0.19,
-        "heightSwing": 1,
-        "driftX": 1.5,
+        "loopPop": 0.16,
+        "heightSwing": 4.7,
+        "driftX": 4,
+        "edgeMargin": 107,
+        "flatCut": 13,
         "warnings": []
       },
-      "generatedAt": "2026-09-26T16:35:23.414Z",
-      "reviewNotes": [
-        "Accepted on human review with a known defect: frames 9-13 draw the eye as a solid dark blob, which reads as a brief black eye patch at stage scale. Clean loop otherwise."
-      ]
+      "generatedAt": "2026-09-26T21:12:07.896Z"
     }
   },
   "brown-wolf": {
@@ -251,22 +250,21 @@
       "file": "cow-sneaky.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 1.6784,
-      "originX": 0.498,
-      "originY": 0.7012,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 1.8406,
+      "originX": 0.4703,
+      "originY": 0.6992,
       "prompt": "Side view, facing left. The black and white cow stands in place on all fours and speaks conspiratorially: its head cranes forward and dips a little toward the listener, its googly eyes narrow and flick sideways, and the golden bell on its collar stays still. Its big pink snout, including both dark nostrils, stays completely shut and unchanging in every frame, like a solid pink sticker glued to the front of its face — it never opens, never hinges, and no mouth or opening of any kind ever appears on or inside it. All four hooves stay planted exactly where they are in the reference image and never move. Its head stays UP at the height it is in the reference for the whole clip — it never lowers its head to the ground, never grazes, never eats, never lies down, never sits. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.32,
-        "heightSwing": 10.6,
-        "driftX": 7.8,
+        "loopPop": 0.36,
+        "heightSwing": 9.2,
+        "driftX": 5.5,
+        "edgeMargin": 114,
+        "flatCut": 0,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T00:44:01.545Z",
-      "reviewNotes": [
-        "One frame (of 25) shows a brief stray red mark on the fur under the chin, not present in neighboring frames — small and easy to miss, but worth a second look on loop."
-      ]
+      "generatedAt": "2026-09-26T21:14:48.826Z"
     },
     "talking": {
       "file": "cow-talking.png",
@@ -789,22 +787,21 @@
       "file": "pig-angry.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 1.5986,
-      "originX": 0.4939,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 1.6214,
+      "originX": 0.4949,
       "originY": 0.6348,
       "prompt": "Side view, facing left. The pink pig stands in place on all fours and is furious: its small ears pin back, its eyes narrow, its head drops level with its shoulders and pushes forward at the target, its round snout is held open, and its corkscrew tail twitches hard. The open snout is always the same shape: one clean smooth rounded patch of flat darker pink inside, drawn identically in every frame it appears. All four hooves stay planted exactly where they are in the reference image and never move. It stays standing on its four short legs the whole time and never lies down, never sits, never rolls. The movement is ONE slow continuous motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.23,
-        "heightSwing": 3.5,
-        "driftX": 2.5,
+        "loopPop": 0.31,
+        "heightSwing": 5.7,
+        "driftX": 1.5,
+        "edgeMargin": 124,
+        "flatCut": 0,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T01:05:59.113Z",
-      "reviewNotes": [
-        "Approved with a check label: expression reads as a subdued head-down huff rather than strong anger, despite passing quality metrics."
-      ]
+      "generatedAt": "2026-09-26T21:16:35.271Z"
     },
     "doubtful": {
       "file": "pig-doubtful.png",
@@ -1052,21 +1049,21 @@
       "file": "skunk-angry.png",
       "frameWidth": 512,
       "frameHeight": 512,
-      "frameCount": 25,
-      "frameRate": 13,
-      "scale": 2.1066,
-      "originX": 0.5248,
-      "originY": 0.5918,
+      "frameCount": 36,
+      "frameRate": 12,
+      "scale": 2.5446,
+      "originX": 0.5175,
+      "originY": 0.5938,
       "prompt": "Side view, facing left. The black and white skunk stays low in place and is furious: thick black brows slam down into a hard V over its big eyes, which narrow into a fierce glare; the white tuft of fur on its head bristles up into sharp spikes; its ears pin flat back; and it bares its teeth in a snarl, the open mouth showing one neat row of small white teeth on flat dark pink, drawn identically in every frame it appears. Its head pushes a little forward toward the target but stays low at the height it is in the reference. Its low crouched body, all four planted paws and its long striped tail stay exactly where they are in the reference image for the whole clip: the tail stays low and trailing at exactly the height and shape it has in the reference, and the skunk never stands up, never rears, never lifts its tail, never sprays and never scurries off. ONE slow continuous out-and-back motion from start to finish, with no sudden jumps and no fast beats. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
-        "loopPop": 0.15,
-        "heightSwing": 23,
-        "driftX": 3.5,
-        "warnings": [
-          "height swing 23% (over 20%) — check it is motion, not the character changing pose"
-        ]
+        "loopPop": 0.12,
+        "heightSwing": 7,
+        "driftX": 0.8,
+        "edgeMargin": 122,
+        "flatCut": 1,
+        "warnings": []
       },
-      "generatedAt": "2026-09-26T18:14:38.253Z"
+      "generatedAt": "2026-09-26T21:18:52.128Z"
     },
     "doubtful": {
       "file": "skunk-doubtful.png",
