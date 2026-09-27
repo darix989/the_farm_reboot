@@ -1469,147 +1469,191 @@
     }
   },
   "cow": {
-    "approving": {
-      "file": "cow-approving.png",
+    "angry": {
+      "file": "cow-angry.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 25,
-      "frameRate": 13,
-      "cols": 5,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
       "fit": {
         "x": 0,
-        "y": 0.0552,
+        "y": 0.1123,
         "width": 1,
-        "height": 0.8896
+        "height": 0.7754
       },
-      "sourceClip": "cow-thinking.png",
-      "sourceEmotion": "approving",
+      "sourceClip": "cow-angry.png",
+      "sourceEmotion": "angry",
       "headCrop": {
         "x": -0.08,
         "y": -0.08,
-        "w": 0.56,
+        "w": 0.64,
         "h": 0.7
       },
       "headRect": {
         "left": 103,
         "top": 135,
-        "width": 163,
+        "width": 187,
         "height": 145
       },
       "alignment": {
         "offsets": [
           {
             "dx": 0,
-            "dy": 1
-          },
-          {
-            "dx": 1,
             "dy": 0
           },
           {
-            "dx": 4,
-            "dy": -1
-          },
-          {
-            "dx": 6,
-            "dy": -3
-          },
-          {
-            "dx": 7,
-            "dy": -4
-          },
-          {
-            "dx": 5,
-            "dy": -16
-          },
-          {
-            "dx": 5,
-            "dy": -16
-          },
-          {
-            "dx": 9,
-            "dy": -17
-          },
-          {
-            "dx": 11,
-            "dy": -18
-          },
-          {
-            "dx": 12,
-            "dy": -18
-          },
-          {
-            "dx": 12,
-            "dy": -19
-          },
-          {
-            "dx": 12,
-            "dy": -19
-          },
-          {
-            "dx": 13,
-            "dy": -19
-          },
-          {
-            "dx": 13,
-            "dy": -19
-          },
-          {
-            "dx": 13,
-            "dy": -19
-          },
-          {
-            "dx": 13,
-            "dy": -19
-          },
-          {
-            "dx": 12,
-            "dy": -18
-          },
-          {
-            "dx": 9,
-            "dy": -16
-          },
-          {
-            "dx": 7,
-            "dy": -1
-          },
-          {
-            "dx": 3,
-            "dy": 2
-          },
-          {
-            "dx": 1,
-            "dy": 2
-          },
-          {
-            "dx": 1,
-            "dy": 2
+            "dx": 0,
+            "dy": 0
           },
           {
             "dx": 0,
-            "dy": 2
+            "dy": 0
           },
           {
             "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 4
+          },
+          {
+            "dx": -9,
+            "dy": 15
+          },
+          {
+            "dx": -12,
+            "dy": 20
+          },
+          {
+            "dx": -13,
+            "dy": 21
+          },
+          {
+            "dx": -13,
+            "dy": 20
+          },
+          {
+            "dx": -13,
+            "dy": 20
+          },
+          {
+            "dx": -13,
+            "dy": 20
+          },
+          {
+            "dx": -13,
+            "dy": 20
+          },
+          {
+            "dx": -13,
+            "dy": 19
+          },
+          {
+            "dx": -13,
+            "dy": 19
+          },
+          {
+            "dx": -13,
+            "dy": 19
+          },
+          {
+            "dx": -13,
+            "dy": 19
+          },
+          {
+            "dx": -13,
+            "dy": 19
+          },
+          {
+            "dx": -13,
+            "dy": 19
+          },
+          {
+            "dx": -13,
+            "dy": 19
+          },
+          {
+            "dx": -13,
+            "dy": 19
+          },
+          {
+            "dx": -12,
+            "dy": 18
+          },
+          {
+            "dx": -11,
+            "dy": 18
+          },
+          {
+            "dx": -9,
+            "dy": 14
+          },
+          {
+            "dx": -6,
+            "dy": 9
+          },
+          {
+            "dx": -3,
+            "dy": 5
+          },
+          {
+            "dx": -1,
             "dy": 2
           },
           {
             "dx": 0,
             "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
           }
         ],
-        "maxOffset": 19,
-        "maxJump": 15,
+        "maxOffset": 21,
+        "maxJump": 11,
         "warnings": []
       },
       "quality": {
-        "loopPop": 0.7,
-        "heightSwing": 7.9,
-        "driftX": 2.5,
+        "loopPop": 0.57,
+        "heightSwing": 3.4,
+        "driftX": 3,
         "warnings": []
       },
-      "generatedAt": "2026-09-27T02:37:38.044Z"
+      "generatedAt": "2026-09-27T02:58:42.889Z"
     },
     "sneaky": {
       "file": "cow-sneaky.png",
@@ -1620,22 +1664,22 @@
       "cols": 6,
       "fit": {
         "x": 0,
-        "y": 0.0552,
+        "y": 0.1123,
         "width": 1,
-        "height": 0.8896
+        "height": 0.7754
       },
       "sourceClip": "cow-sneaky.png",
       "sourceEmotion": "sneaky",
       "headCrop": {
         "x": -0.08,
         "y": -0.08,
-        "w": 0.56,
+        "w": 0.64,
         "h": 0.7
       },
       "headRect": {
         "left": 103,
         "top": 135,
-        "width": 163,
+        "width": 187,
         "height": 145
       },
       "alignment": {
@@ -1697,14 +1741,6 @@
             "dy": 18
           },
           {
-            "dx": -20,
-            "dy": 18
-          },
-          {
-            "dx": -20,
-            "dy": 18
-          },
-          {
             "dx": -19,
             "dy": 18
           },
@@ -1717,7 +1753,15 @@
             "dy": 18
           },
           {
-            "dx": -20,
+            "dx": -19,
+            "dy": 18
+          },
+          {
+            "dx": -19,
+            "dy": 18
+          },
+          {
+            "dx": -19,
             "dy": 18
           },
           {
@@ -1737,8 +1781,8 @@
             "dy": 16
           },
           {
-            "dx": -16,
-            "dy": 13
+            "dx": -15,
+            "dy": 14
           },
           {
             "dx": -12,
@@ -1785,17 +1829,17 @@
             "dy": 0
           }
         ],
-        "maxOffset": 20,
+        "maxOffset": 19,
         "maxJump": 4,
         "warnings": []
       },
       "quality": {
-        "loopPop": 0.66,
-        "heightSwing": 2,
-        "driftX": 4.5,
+        "loopPop": 0.55,
+        "heightSwing": 1.7,
+        "driftX": 3.5,
         "warnings": []
       },
-      "generatedAt": "2026-09-27T02:37:42.069Z"
+      "generatedAt": "2026-09-27T02:58:46.799Z"
     },
     "talking": {
       "file": "cow-talking.png",
@@ -1806,22 +1850,22 @@
       "cols": 6,
       "fit": {
         "x": 0,
-        "y": 0.0552,
+        "y": 0.1123,
         "width": 1,
-        "height": 0.8896
+        "height": 0.7754
       },
       "sourceClip": "cow-talking.png",
       "sourceEmotion": "talking",
       "headCrop": {
         "x": -0.08,
         "y": -0.08,
-        "w": 0.56,
+        "w": 0.64,
         "h": 0.7
       },
       "headRect": {
         "left": 103,
         "top": 135,
-        "width": 163,
+        "width": 187,
         "height": 145
       },
       "alignment": {
@@ -1899,7 +1943,7 @@
             "dy": -1
           },
           {
-            "dx": 1,
+            "dx": 0,
             "dy": 0
           },
           {
@@ -1976,12 +2020,198 @@
         "warnings": []
       },
       "quality": {
-        "loopPop": 0.62,
-        "heightSwing": 1.5,
-        "driftX": 2.5,
+        "loopPop": 0.5,
+        "heightSwing": 1.7,
+        "driftX": 2.3,
         "warnings": []
       },
-      "generatedAt": "2026-09-27T02:37:46.013Z"
+      "generatedAt": "2026-09-27T02:58:50.785Z"
+    },
+    "thinking": {
+      "file": "cow-thinking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0,
+        "y": 0.1123,
+        "width": 1,
+        "height": 0.7754
+      },
+      "sourceClip": "cow-thinking.png",
+      "sourceEmotion": "thinking",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.08,
+        "w": 0.64,
+        "h": 0.7
+      },
+      "headRect": {
+        "left": 103,
+        "top": 135,
+        "width": 187,
+        "height": 145
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 2,
+            "dy": 0
+          },
+          {
+            "dx": 4,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": -7
+          },
+          {
+            "dx": 3,
+            "dy": -8
+          },
+          {
+            "dx": 7,
+            "dy": -8
+          },
+          {
+            "dx": 5,
+            "dy": -12
+          },
+          {
+            "dx": 1,
+            "dy": -16
+          },
+          {
+            "dx": 8,
+            "dy": -13
+          },
+          {
+            "dx": 8,
+            "dy": -13
+          },
+          {
+            "dx": 8,
+            "dy": -14
+          },
+          {
+            "dx": 8,
+            "dy": -13
+          },
+          {
+            "dx": 8,
+            "dy": -14
+          },
+          {
+            "dx": 8,
+            "dy": -14
+          },
+          {
+            "dx": 8,
+            "dy": -14
+          },
+          {
+            "dx": 8,
+            "dy": -14
+          },
+          {
+            "dx": 7,
+            "dy": -13
+          },
+          {
+            "dx": 8,
+            "dy": -13
+          },
+          {
+            "dx": 8,
+            "dy": -13
+          },
+          {
+            "dx": 7,
+            "dy": -13
+          },
+          {
+            "dx": 6,
+            "dy": -13
+          },
+          {
+            "dx": 7,
+            "dy": -8
+          },
+          {
+            "dx": 4,
+            "dy": -9
+          },
+          {
+            "dx": 1,
+            "dy": -9
+          },
+          {
+            "dx": 5,
+            "dy": 0
+          },
+          {
+            "dx": 4,
+            "dy": 0
+          },
+          {
+            "dx": 3,
+            "dy": 0
+          },
+          {
+            "dx": 2,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 16,
+        "maxJump": 9,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.51,
+        "heightSwing": 12.4,
+        "driftX": 2.8,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-27T02:58:54.520Z"
     }
   },
   "dog": {
