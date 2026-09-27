@@ -45,7 +45,10 @@ $trial-touch-min: 44px;
      reserves the same space as a two-line one — the icons/letters below never shift. */
   height: 2.8em;
   overflow: hidden;
-  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  font-size: calc(
+    var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1) +
+      var(--ui-trial-conversation-font-boost, 0px)
+  );
   line-height: 1.4;
   color: var(--ui-color-text-body);
   text-align: center;
@@ -928,7 +931,10 @@ $trial-touch-min: 44px;
 }
 
 .trialChoiceWord {
-  font-size: calc(var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1));
+  font-size: calc(
+    var(--ui-font-subtitle) * var(--ui-trial-panel-font-scale, 1) +
+      var(--ui-trial-conversation-font-boost, 0px)
+  );
   font-weight: 700;
   line-height: 1;
   color: var(--ui-color-text-emphasis);

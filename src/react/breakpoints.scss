@@ -24,3 +24,14 @@ $ui-breakpoint-compact: 1080px;
     @content;
   }
 }
+
+/* Smartphones: a touch-first screen whose short side is phone-sized (either orientation).
+   Device targeting, not layout — use `compact` / `expanded` for width-driven layout. */
+$ui-smartphone-max-short-side: 600px;
+
+@mixin smartphone {
+  @media (pointer: coarse) and (max-width: $ui-smartphone-max-short-side),
+    (pointer: coarse) and (max-height: $ui-smartphone-max-short-side) {
+    @content;
+  }
+}

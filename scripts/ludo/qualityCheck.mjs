@@ -132,7 +132,7 @@ export const CROP_QUALITY_THRESHOLDS = {
  * other. Comparing all channels would change the absolute numbers but not the ordering, and
  * the thresholds above are calibrated to this measure.
  */
-function meanDifference(a, b) {
+export function meanDifference(a, b) {
   let total = 0;
   for (let i = 0; i < a.length; i += 4) {
     total += Math.abs(a[i] - b[i]) + Math.abs(a[i + 3] - b[i + 3]);
@@ -144,7 +144,9 @@ function meanDifference(a, b) {
  * Returns `{ loopPop, heightSwing, driftX, warnings }` for one generated clip, plus
  * `{ churnMean, churnPeak, churnPeakIndex }` when the threshold set asks for churn.
  *
- * `grid` is the `{ cols, frameWidth, frameHeight, frameCount }` the generator reported.
+ * `grid` is the `{ cols, frameWidth, frameHeight, frameCount }` the generator reported, plus
+ * an optional `startFrame` to measure a sub-range of the sheet (a phase cut out of a longer
+ * clip — see `phases.mjs`).
  * `thresholds` selects the gate set — `QUALITY_THRESHOLDS` for body clips (the default, so
  * every existing caller is unchanged) or `CROP_QUALITY_THRESHOLDS` for portraits. A set may
  * omit a gate to disable it.
@@ -165,7 +167,9 @@ export async function measureClipQuality(sheetBuffer, grid, thresholds = QUALITY
   // One pass over the grid. Each cell is decoded once and then used for every metric that
   // needs it — bounds for height/drift/edges, raw pixels for the loop seam and for churn
   // against the frame before it. Decoding a 512px cell twice was measurable on a 25-frame sheet.
-  for (let i = 0; i < grid.frameCount; i++) {
+  const start = grid.startFrame ?? 0;
+  const end = start + grid.frameCount - 1;
+  for (let i = start; i <= end; i++) {
     const png = await frameAt(sheetBuffer, i, grid);
     const { data, info } = await sharp(png).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
 
@@ -188,8 +192,8 @@ export async function measureClipQuality(sheetBuffer, grid, thresholds = QUALITY
       if (cut.run > flatCut.run) flatCut = { ...cut, frame: i };
     }
 
-    if (i === 0) first = data;
-    if (i === grid.frameCount - 1) last = data;
+    if (i === start) first = data;
+    if (i === end) last = data;
     if (wantsChurn && previous) churn.push(meanDifference(previous, data));
     previous = data;
   }

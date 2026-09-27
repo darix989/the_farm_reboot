@@ -46,62 +46,34 @@
   margin: 1.25rem 0 0.5rem;
 }
 
-/* A rung below `.heading`: the status stills sit inside the portraits section rather than
-   starting one of their own. */
-.subHeading {
-  font-size: var(--ui-font-caption);
-  font-weight: bold;
-  letter-spacing: 0.04em;
-  color: var(--ui-color-text-muted-2);
-  margin: 1rem 0 0.5rem;
-}
-
-.animalGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-}
-
-.animalButton {
+.animalPicker {
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  padding: 0.6rem 0.75rem;
-  text-align: left;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.animalSelect {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+  font-size: var(--ui-font-body);
+  font-weight: bold;
   background: var(--ui-color-bg-soft);
   color: var(--ui-color-text-emphasis);
   border: 2px solid var(--ui-color-border-default);
   border-radius: 6px;
   cursor: pointer;
-  transition:
-    border-color 0.15s ease,
-    color 0.15s ease;
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     border-color: var(--ui-color-accent);
   }
-}
 
-.animalButtonActive {
-  border-color: var(--ui-color-accent);
-  color: var(--ui-color-accent);
-}
-
-.animalHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.4rem;
-}
-
-.animalId {
-  font-size: var(--ui-font-body);
-  font-weight: bold;
-}
-
-.animalWornBy {
-  font-size: var(--ui-font-caption);
-  color: var(--ui-color-text-muted-2);
+  option {
+    background: var(--ui-color-bg);
+    color: var(--ui-color-text-emphasis);
+  }
 }
 
 .clipGrid {
@@ -133,6 +105,12 @@
 .clipButtonActive {
   border-color: var(--ui-color-accent);
   color: var(--ui-color-accent);
+}
+
+/* The clip the unfocused cycle is playing: pointed at, but quieter than a focus. */
+.clipButtonCycling {
+  border-color: var(--ui-color-accent);
+  border-style: dashed;
 }
 
 /* Dimmed, not disabled: the button still selects, it just has nothing generated to play. */
@@ -215,34 +193,59 @@
   color: var(--ui-color-text-muted-2);
 }
 
-.toggle {
+/* Segmented control for a phased emotion's parts. Sits directly under the emotions grid, so it
+   reads as a property of the emotion button that is lit above it. */
+.partSwitch {
   display: flex;
-  align-items: flex-start;
-  gap: 0.6rem;
-  margin-top: 1.5rem;
-  padding: 0.75rem;
-  background: var(--ui-color-bg-soft);
+  margin-top: 0.6rem;
   border: 2px solid var(--ui-color-border-default);
   border-radius: 6px;
-  cursor: pointer;
+  overflow: hidden;
+}
 
-  input {
-    margin-top: 0.15rem;
-    cursor: pointer;
+.partButton {
+  flex: 1 1 0;
+  padding: 0.45rem 0.3rem;
+  font: inherit;
+  font-size: var(--ui-font-caption);
+  font-weight: bold;
+  background: var(--ui-color-bg-soft);
+  color: var(--ui-color-text-emphasis);
+  border: none;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  & + & {
+    border-left: 1px solid var(--ui-color-border-default);
+  }
+
+  &:hover:not(:disabled) {
+    color: var(--ui-color-accent);
+  }
+
+  /* Shown rather than hidden, so the control keeps its place; this clip just has no phases. */
+  &:disabled {
+    color: var(--ui-color-text-muted-2);
+    cursor: default;
   }
 }
 
-.toggleLabel {
-  display: block;
-  font-size: var(--ui-font-body);
-  color: var(--ui-color-text-emphasis);
+.partButtonActive {
+  background: var(--ui-color-accent);
+  color: var(--ui-color-bg);
+
+  &:hover {
+    color: var(--ui-color-bg);
+  }
 }
 
-.toggleHint {
-  display: block;
-  margin-top: 0.15rem;
-  font-size: var(--ui-font-caption);
-  color: var(--ui-color-text-muted-2);
+.partDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 0.4rem;
 }
 
 .statusBar {
@@ -252,9 +255,10 @@
 }
 
 .backButton {
-  width: 100%;
-  margin-top: 0.75rem;
-  padding: 0.7rem;
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  padding: 0.7rem 1.2rem;
   font-size: var(--ui-font-body);
   font-weight: bold;
   background: linear-gradient(45deg, var(--ui-color-bg), var(--ui-color-bg-soft));
@@ -262,55 +266,12 @@
   border: 2px solid var(--ui-color-border-emphasis);
   border-radius: 8px;
   cursor: pointer;
+  pointer-events: auto;
 
   &:hover {
     border-color: var(--ui-color-accent);
     color: var(--ui-color-accent);
   }
-}
-
-/* =========================================================================
-   Dialogue portraits
-
-   The only art this panel draws itself. Face clips are DOM-played (see
-   `animalFaces.ts`), so there is no Phaser stage to hand them to — which is
-   also why the big preview is positioned over the scene rather than laid out
-   inside `.panel`: a portrait is judged at an exact pixel size, and a
-   scrolling column would clip it and move it as you scroll.
-   ========================================================================= */
-
-.faceGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.4rem;
-}
-
-/* Overrides only — the button is rendered with `.clipButton` alongside this one, so it
-   inherits every border, hover and transition token from there and differs just in laying the
-   thumbnail out beside the text. Must stay below `.clipButton` in the file. */
-.faceButton {
-  flex-direction: row;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-/* Sits behind the portrait so a missing crop reads as an empty well rather than as a
-   button that failed to render. */
-.faceThumb {
-  flex: none;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: var(--ui-color-glass-06);
-  border-radius: 6px;
-}
-
-.faceText {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  min-width: 0;
-  flex: 1 1 auto;
 }
 
 /* Stills, not clips, so they are laid out as a plain row rather than as selectable buttons:
@@ -355,10 +316,30 @@
   color: var(--ui-color-text-muted-2);
 }
 
+/* Centred on the stage — everything left of `.panel`, the same rect `ANIMAL_GALLERY_STAGE`
+   gives the scene. Display-only, so it stays pointer-events: none like its parent. */
+.stageLoading {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: calc(100% - 32.29%);
+  margin: 0;
+  text-align: center;
+  transform: translateY(-50%);
+  font-size: var(--ui-font-body);
+  color: var(--ui-color-text-muted-2);
+}
+
+/* The dialogue portrait of whichever emotion is playing. Face clips are DOM-played (see
+   `animalFaces.ts`), so this is the one piece of art the overlay draws itself — over the scene
+   rather than inside `.panel`, because a portrait is judged at an exact pixel size and a
+   scrolling column would clip it and move it as you scroll. */
 .facePreview {
   position: absolute;
   top: 2rem;
-  left: 2rem;
+
+  /* Top-right of the stage, i.e. just left of the panel (same 32.29% as `.panel`). */
+  right: calc(32.29% + 2rem);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -379,6 +360,12 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ui-color-accent);
+}
+
+.facePreviewHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .facePreviewBoxes {

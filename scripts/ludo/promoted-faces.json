@@ -1469,319 +1469,419 @@
     }
   },
   "cow": {
-    "approving": {
-      "file": "cow-approving.png",
+    "angry": {
+      "file": "cow-angry.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 25,
-      "frameRate": 13,
-      "cols": 5,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
       "fit": {
         "x": 0,
-        "y": 0.0276,
+        "y": 0.1123,
         "width": 1,
-        "height": 0.9448
+        "height": 0.7754
       },
-      "sourceClip": "cow-thinking.png",
-      "sourceEmotion": "approving",
+      "sourceClip": "cow-angry.png",
+      "sourceEmotion": "angry",
       "headCrop": {
         "x": -0.08,
         "y": -0.08,
-        "w": 0.56,
+        "w": 0.64,
         "h": 0.7
       },
       "headRect": {
-        "left": 106,
-        "top": 137,
-        "width": 145,
-        "height": 137
+        "left": 103,
+        "top": 135,
+        "width": 187,
+        "height": 145
       },
       "alignment": {
         "offsets": [
           {
-            "dx": 4,
-            "dy": -10
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 5,
-            "dy": -12
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 6,
-            "dy": -14
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 8,
-            "dy": -17
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 7,
-            "dy": -22
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 7,
-            "dy": -26
+            "dx": -2,
+            "dy": 4
           },
           {
-            "dx": 12,
-            "dy": -26
+            "dx": -9,
+            "dy": 15
           },
           {
-            "dx": 12,
-            "dy": -30
+            "dx": -12,
+            "dy": 20
           },
           {
-            "dx": 11,
-            "dy": -31
+            "dx": -13,
+            "dy": 21
           },
           {
-            "dx": 12,
-            "dy": -32
+            "dx": -13,
+            "dy": 20
           },
           {
-            "dx": 13,
-            "dy": -33
+            "dx": -13,
+            "dy": 20
           },
           {
-            "dx": 13,
-            "dy": -33
+            "dx": -13,
+            "dy": 20
           },
           {
-            "dx": 13,
-            "dy": -33
+            "dx": -13,
+            "dy": 20
           },
           {
-            "dx": 13,
-            "dy": -33
+            "dx": -13,
+            "dy": 19
           },
           {
-            "dx": 13,
-            "dy": -33
+            "dx": -13,
+            "dy": 19
           },
           {
-            "dx": 15,
-            "dy": -32
+            "dx": -13,
+            "dy": 19
           },
           {
-            "dx": 13,
-            "dy": -33
+            "dx": -13,
+            "dy": 19
           },
           {
-            "dx": 12,
-            "dy": -28
+            "dx": -13,
+            "dy": 19
           },
           {
-            "dx": 7,
-            "dy": -19
+            "dx": -13,
+            "dy": 19
           },
           {
-            "dx": 4,
-            "dy": -12
+            "dx": -13,
+            "dy": 19
           },
           {
-            "dx": 5,
-            "dy": -11
+            "dx": -13,
+            "dy": 19
           },
           {
-            "dx": 4,
-            "dy": -10
+            "dx": -12,
+            "dy": 18
           },
           {
-            "dx": 4,
-            "dy": -9
+            "dx": -11,
+            "dy": 18
           },
           {
-            "dx": 3,
-            "dy": -10
+            "dx": -9,
+            "dy": 14
           },
           {
-            "dx": 3,
-            "dy": -10
+            "dx": -6,
+            "dy": 9
+          },
+          {
+            "dx": -3,
+            "dy": 5
+          },
+          {
+            "dx": -1,
+            "dy": 2
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
           }
         ],
-        "maxOffset": 33,
-        "maxJump": 9,
+        "maxOffset": 21,
+        "maxJump": 11,
         "warnings": []
       },
       "quality": {
-        "loopPop": 1.84,
-        "heightSwing": 10.7,
-        "driftX": 2.3,
+        "loopPop": 0.57,
+        "heightSwing": 3.4,
+        "driftX": 3,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T13:55:18.825Z"
+      "generatedAt": "2026-09-27T02:58:42.889Z"
     },
     "sneaky": {
       "file": "cow-sneaky.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 25,
-      "frameRate": 13,
-      "cols": 5,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
       "fit": {
         "x": 0,
-        "y": 0.0276,
+        "y": 0.1123,
         "width": 1,
-        "height": 0.9448
+        "height": 0.7754
       },
       "sourceClip": "cow-sneaky.png",
       "sourceEmotion": "sneaky",
       "headCrop": {
         "x": -0.08,
         "y": -0.08,
-        "w": 0.56,
+        "w": 0.64,
         "h": 0.7
       },
       "headRect": {
-        "left": 106,
-        "top": 137,
-        "width": 145,
-        "height": 137
+        "left": 103,
+        "top": 135,
+        "width": 187,
+        "height": 145
       },
       "alignment": {
         "offsets": [
           {
-            "dx": 3,
-            "dy": -11
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 6,
-            "dy": -22
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 6,
-            "dy": -31
-          },
-          {
-            "dx": 10,
-            "dy": -37
-          },
-          {
-            "dx": 5,
-            "dy": -39
-          },
-          {
-            "dx": 14,
-            "dy": -41
-          },
-          {
-            "dx": 12,
-            "dy": -46
-          },
-          {
-            "dx": 9,
-            "dy": -43
-          },
-          {
-            "dx": 11,
-            "dy": -41
-          },
-          {
-            "dx": 7,
-            "dy": -32
-          },
-          {
-            "dx": 7,
-            "dy": -22
-          },
-          {
-            "dx": 3,
-            "dy": -12
+            "dx": 0,
+            "dy": 0
           },
           {
             "dx": 1,
-            "dy": -9
+            "dy": 0
+          },
+          {
+            "dx": 2,
+            "dy": 0
           },
           {
             "dx": 1,
-            "dy": -8
+            "dy": 0
           },
           {
-            "dx": 1,
-            "dy": -8
+            "dx": -1,
+            "dy": 2
           },
           {
-            "dx": 1,
-            "dy": -8
+            "dx": -4,
+            "dy": 4
           },
           {
-            "dx": 1,
-            "dy": -10
+            "dx": -8,
+            "dy": 7
           },
           {
-            "dx": 3,
-            "dy": -10
+            "dx": -11,
+            "dy": 10
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -15,
+            "dy": 14
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -17,
+            "dy": 16
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -19,
+            "dy": 17
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -19,
+            "dy": 18
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -19,
+            "dy": 18
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -19,
+            "dy": 18
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -19,
+            "dy": 18
+          },
+          {
+            "dx": -19,
+            "dy": 18
+          },
+          {
+            "dx": -19,
+            "dy": 18
+          },
+          {
+            "dx": -19,
+            "dy": 18
+          },
+          {
+            "dx": -19,
+            "dy": 18
+          },
+          {
+            "dx": -19,
+            "dy": 18
+          },
+          {
+            "dx": -19,
+            "dy": 18
+          },
+          {
+            "dx": -18,
+            "dy": 16
+          },
+          {
+            "dx": -15,
+            "dy": 14
+          },
+          {
+            "dx": -12,
+            "dy": 10
+          },
+          {
+            "dx": -8,
+            "dy": 7
+          },
+          {
+            "dx": -4,
+            "dy": 4
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
           }
         ],
-        "maxOffset": 46,
-        "maxJump": 11,
+        "maxOffset": 19,
+        "maxJump": 4,
         "warnings": []
       },
       "quality": {
-        "loopPop": 0.79,
-        "heightSwing": 13.8,
-        "driftX": 3.8,
+        "loopPop": 0.55,
+        "heightSwing": 1.7,
+        "driftX": 3.5,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T13:55:21.317Z"
+      "generatedAt": "2026-09-27T02:58:46.799Z"
     },
     "talking": {
       "file": "cow-talking.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 25,
-      "frameRate": 12.5,
-      "cols": 5,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
       "fit": {
         "x": 0,
-        "y": 0.0276,
+        "y": 0.1123,
         "width": 1,
-        "height": 0.9448
+        "height": 0.7754
       },
       "sourceClip": "cow-talking.png",
       "sourceEmotion": "talking",
       "headCrop": {
         "x": -0.08,
         "y": -0.08,
-        "w": 0.56,
+        "w": 0.64,
         "h": 0.7
       },
       "headRect": {
-        "left": 106,
-        "top": 137,
-        "width": 145,
-        "height": 137
+        "left": 103,
+        "top": 135,
+        "width": 187,
+        "height": 145
       },
       "alignment": {
         "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
           {
             "dx": 0,
             "dy": 0
@@ -1795,79 +1895,297 @@
             "dy": 2
           },
           {
+            "dx": -3,
+            "dy": 3
+          },
+          {
+            "dx": -5,
+            "dy": 5
+          },
+          {
             "dx": -6,
+            "dy": 6
+          },
+          {
+            "dx": -7,
+            "dy": 7
+          },
+          {
+            "dx": -6,
+            "dy": 6
+          },
+          {
+            "dx": -5,
+            "dy": 5
+          },
+          {
+            "dx": -4,
+            "dy": 4
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 1,
+            "dy": -1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 1
+          },
+          {
+            "dx": -2,
             "dy": 2
           },
           {
-            "dx": -9,
+            "dx": -3,
+            "dy": 2
+          },
+          {
+            "dx": -4,
             "dy": 3
           },
           {
-            "dx": -9,
+            "dx": -5,
+            "dy": 4
+          },
+          {
+            "dx": -6,
+            "dy": 4
+          },
+          {
+            "dx": -6,
+            "dy": 5
+          },
+          {
+            "dx": -6,
+            "dy": 5
+          },
+          {
+            "dx": -5,
+            "dy": 5
+          },
+          {
+            "dx": -5,
+            "dy": 4
+          },
+          {
+            "dx": -4,
             "dy": 3
           },
           {
-            "dx": -9,
-            "dy": 3
+            "dx": -3,
+            "dy": 2
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          }
+        ],
+        "maxOffset": 7,
+        "maxJump": 3,
+        "warnings": []
+      },
+      "quality": {
+        "loopPop": 0.5,
+        "heightSwing": 1.7,
+        "driftX": 2.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-27T02:58:50.785Z"
+    },
+    "thinking": {
+      "file": "cow-thinking.png",
+      "frameWidth": 256,
+      "frameHeight": 256,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
+      "fit": {
+        "x": 0,
+        "y": 0.1123,
+        "width": 1,
+        "height": 0.7754
+      },
+      "sourceClip": "cow-thinking.png",
+      "sourceEmotion": "thinking",
+      "headCrop": {
+        "x": -0.08,
+        "y": -0.08,
+        "w": 0.64,
+        "h": 0.7
+      },
+      "headRect": {
+        "left": 103,
+        "top": 135,
+        "width": 187,
+        "height": 145
+      },
+      "alignment": {
+        "offsets": [
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 2,
+            "dy": 0
+          },
+          {
+            "dx": 4,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": -7
           },
           {
             "dx": 3,
-            "dy": -1
+            "dy": -8
+          },
+          {
+            "dx": 7,
+            "dy": -8
+          },
+          {
+            "dx": 5,
+            "dy": -12
           },
           {
             "dx": 1,
             "dy": -16
           },
           {
+            "dx": 8,
+            "dy": -13
+          },
+          {
+            "dx": 8,
+            "dy": -13
+          },
+          {
+            "dx": 8,
+            "dy": -14
+          },
+          {
+            "dx": 8,
+            "dy": -13
+          },
+          {
+            "dx": 8,
+            "dy": -14
+          },
+          {
+            "dx": 8,
+            "dy": -14
+          },
+          {
+            "dx": 8,
+            "dy": -14
+          },
+          {
+            "dx": 8,
+            "dy": -14
+          },
+          {
+            "dx": 7,
+            "dy": -13
+          },
+          {
+            "dx": 8,
+            "dy": -13
+          },
+          {
+            "dx": 8,
+            "dy": -13
+          },
+          {
+            "dx": 7,
+            "dy": -13
+          },
+          {
+            "dx": 6,
+            "dy": -13
+          },
+          {
+            "dx": 7,
+            "dy": -8
+          },
+          {
             "dx": 4,
-            "dy": -22
+            "dy": -9
           },
           {
-            "dx": -4,
-            "dy": -26
-          },
-          {
-            "dx": -3,
-            "dy": -27
-          },
-          {
-            "dx": -4,
-            "dy": -27
-          },
-          {
-            "dx": 2,
-            "dy": -25
+            "dx": 1,
+            "dy": -9
           },
           {
             "dx": 5,
-            "dy": -20
-          },
-          {
-            "dx": 1,
-            "dy": -17
+            "dy": 0
           },
           {
             "dx": 4,
-            "dy": -5
+            "dy": 0
+          },
+          {
+            "dx": 3,
+            "dy": 0
           },
           {
             "dx": 2,
-            "dy": -1
+            "dy": 0
           },
           {
             "dx": 1,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": 0
-          },
-          {
-            "dx": 0,
-            "dy": 0
-          },
-          {
-            "dx": 0,
             "dy": 0
           },
           {
@@ -1883,17 +2201,17 @@
             "dy": 0
           }
         ],
-        "maxOffset": 27,
-        "maxJump": 15,
+        "maxOffset": 16,
+        "maxJump": 9,
         "warnings": []
       },
       "quality": {
         "loopPop": 0.51,
-        "heightSwing": 16.6,
-        "driftX": 9.3,
+        "heightSwing": 12.4,
+        "driftX": 2.8,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T13:55:22.393Z"
+      "generatedAt": "2026-09-27T02:58:54.520Z"
     }
   },
   "dog": {
@@ -2471,189 +2789,143 @@
       "file": "donkey-grey-angry.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 36,
-      "frameRate": 12,
-      "cols": 6,
+      "frameCount": 25,
+      "frameRate": 13,
+      "cols": 5,
       "fit": {
-        "x": 0.1148,
+        "x": 0.0437,
         "y": 0,
-        "width": 0.7705,
+        "width": 0.9126,
         "height": 1
       },
       "sourceClip": "donkey-grey-angry.png",
       "sourceEmotion": "angry",
       "headCrop": {
-        "x": -0.04,
+        "x": -0.14,
         "y": -0.04,
-        "w": 0.55,
+        "w": 0.65,
         "h": 0.74
       },
       "headRect": {
-        "left": 118,
+        "left": 92,
         "top": 121,
-        "width": 141,
+        "width": 167,
         "height": 183
       },
       "alignment": {
         "offsets": [
           {
             "dx": 0,
-            "dy": -1
+            "dy": 0
           },
           {
             "dx": 0,
-            "dy": -1
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 0
+          },
+          {
+            "dx": -5,
+            "dy": 11
+          },
+          {
+            "dx": -6,
+            "dy": 19
+          },
+          {
+            "dx": -10,
+            "dy": 24
+          },
+          {
+            "dx": -17,
+            "dy": 27
+          },
+          {
+            "dx": -20,
+            "dy": 26
+          },
+          {
+            "dx": -23,
+            "dy": 22
+          },
+          {
+            "dx": -23,
+            "dy": 19
+          },
+          {
+            "dx": -22,
+            "dy": 18
+          },
+          {
+            "dx": -22,
+            "dy": 15
+          },
+          {
+            "dx": -18,
+            "dy": 11
+          },
+          {
+            "dx": -10,
+            "dy": 5
+          },
+          {
+            "dx": -6,
+            "dy": 0
           },
           {
             "dx": 1,
-            "dy": 0
+            "dy": -4
           },
           {
             "dx": 5,
-            "dy": 1
+            "dy": -4
           },
           {
-            "dx": 8,
-            "dy": 0
+            "dx": 4,
+            "dy": -4
           },
           {
-            "dx": 12,
-            "dy": 2
+            "dx": 4,
+            "dy": -4
           },
           {
-            "dx": 17,
-            "dy": 4
+            "dx": 4,
+            "dy": -4
           },
           {
-            "dx": 21,
-            "dy": 4
+            "dx": 3,
+            "dy": -3
           },
           {
             "dx": 1,
-            "dy": 1
-          },
-          {
-            "dx": -2,
-            "dy": 0
-          },
-          {
-            "dx": -2,
-            "dy": 0
-          },
-          {
-            "dx": -2,
-            "dy": 0
-          },
-          {
-            "dx": -2,
-            "dy": 1
-          },
-          {
-            "dx": -2,
-            "dy": 1
-          },
-          {
-            "dx": -2,
-            "dy": 2
-          },
-          {
-            "dx": -2,
-            "dy": 2
-          },
-          {
-            "dx": -3,
-            "dy": 1
-          },
-          {
-            "dx": -3,
-            "dy": 1
-          },
-          {
-            "dx": -3,
-            "dy": 1
-          },
-          {
-            "dx": -2,
-            "dy": 2
-          },
-          {
-            "dx": -2,
-            "dy": 2
-          },
-          {
-            "dx": -3,
-            "dy": 0
-          },
-          {
-            "dx": -3,
-            "dy": 0
-          },
-          {
-            "dx": -3,
-            "dy": 0
-          },
-          {
-            "dx": -3,
-            "dy": 0
-          },
-          {
-            "dx": -2,
-            "dy": 0
-          },
-          {
-            "dx": -2,
-            "dy": 0
-          },
-          {
-            "dx": 17,
-            "dy": 2
-          },
-          {
-            "dx": 12,
-            "dy": 2
-          },
-          {
-            "dx": 8,
-            "dy": 2
-          },
-          {
-            "dx": 5,
-            "dy": 0
+            "dy": -2
           },
           {
             "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
+            "dy": 0
           }
         ],
-        "maxOffset": 21,
-        "maxJump": 20,
-        "warnings": [
-          "alignment hit its 20px per-frame limit — the head moves faster than the tracker follows, so it lags for a frame or two; check the clip before promoting"
-        ]
-      },
-      "quality": {
-        "loopPop": 0.47,
-        "heightSwing": 14.5,
-        "driftX": 3.5,
+        "maxOffset": 27,
+        "maxJump": 11,
         "warnings": []
       },
-      "generatedAt": "2026-09-26T22:04:45.655Z"
+      "quality": {
+        "loopPop": 0.55,
+        "heightSwing": 11,
+        "driftX": 5,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-27T01:44:03.814Z"
     },
     "doubtful": {
       "file": "donkey-grey-doubtful.png",
@@ -2663,31 +2935,27 @@
       "frameRate": 12,
       "cols": 6,
       "fit": {
-        "x": 0.1148,
+        "x": 0.0437,
         "y": 0,
-        "width": 0.7705,
+        "width": 0.9126,
         "height": 1
       },
       "sourceClip": "donkey-grey-doubtful.png",
       "sourceEmotion": "doubtful",
       "headCrop": {
-        "x": -0.04,
+        "x": -0.14,
         "y": -0.04,
-        "w": 0.55,
+        "w": 0.65,
         "h": 0.74
       },
       "headRect": {
-        "left": 118,
+        "left": 92,
         "top": 121,
-        "width": 141,
+        "width": 167,
         "height": 183
       },
       "alignment": {
         "offsets": [
-          {
-            "dx": 0,
-            "dy": 0
-          },
           {
             "dx": 0,
             "dy": 0
@@ -2713,108 +2981,112 @@
             "dy": 1
           },
           {
-            "dx": 8,
-            "dy": 2
-          },
-          {
-            "dx": 13,
+            "dx": 9,
             "dy": 1
           },
           {
-            "dx": 15,
+            "dx": 14,
+            "dy": 2
+          },
+          {
+            "dx": -6,
+            "dy": 0
+          },
+          {
+            "dx": -13,
+            "dy": -1
+          },
+          {
+            "dx": -10,
+            "dy": -2
+          },
+          {
+            "dx": -6,
+            "dy": -4
+          },
+          {
+            "dx": -2,
+            "dy": -8
+          },
+          {
+            "dx": -4,
             "dy": -6
           },
           {
             "dx": -5,
-            "dy": -6
+            "dy": -9
           },
           {
-            "dx": -14,
-            "dy": -10
+            "dx": -7,
+            "dy": -9
           },
           {
-            "dx": -16,
+            "dx": -7,
+            "dy": -9
+          },
+          {
+            "dx": -7,
+            "dy": -9
+          },
+          {
+            "dx": -8,
             "dy": -8
           },
           {
-            "dx": -16,
+            "dx": -8,
             "dy": -8
           },
           {
-            "dx": -16,
+            "dx": -8,
             "dy": -8
           },
           {
-            "dx": -16,
+            "dx": -7,
+            "dy": -9
+          },
+          {
+            "dx": -7,
             "dy": -10
           },
           {
-            "dx": -16,
-            "dy": -10
+            "dx": -7,
+            "dy": -9
           },
           {
-            "dx": -16,
-            "dy": -10
-          },
-          {
-            "dx": -16,
-            "dy": -10
-          },
-          {
-            "dx": -16,
-            "dy": -10
-          },
-          {
-            "dx": -16,
-            "dy": -10
-          },
-          {
-            "dx": -16,
-            "dy": -10
-          },
-          {
-            "dx": -17,
-            "dy": -13
-          },
-          {
-            "dx": -21,
-            "dy": -14
-          },
-          {
-            "dx": -23,
-            "dy": -15
-          },
-          {
-            "dx": -27,
-            "dy": -17
-          },
-          {
-            "dx": -30,
-            "dy": -17
+            "dx": -8,
+            "dy": -9
           },
           {
             "dx": -10,
-            "dy": -37
+            "dy": -2
           },
           {
-            "dx": 4,
-            "dy": -17
+            "dx": -15,
+            "dy": -2
+          },
+          {
+            "dx": -15,
+            "dy": -2
+          },
+          {
+            "dx": -19,
+            "dy": -6
           },
           {
             "dx": 1,
-            "dy": -1
+            "dy": 4
           },
           {
-            "dx": 1,
-            "dy": -1
+            "dx": 9,
+            "dy": 3
           },
           {
-            "dx": 0,
-            "dy": 0
+            "dx": 5,
+            "dy": 3
           },
           {
-            "dx": 0,
-            "dy": 0
+            "dx": 2,
+            "dy": 2
           },
           {
             "dx": 0,
@@ -2829,19 +3101,19 @@
             "dy": 0
           }
         ],
-        "maxOffset": 37,
+        "maxOffset": 19,
         "maxJump": 20,
         "warnings": [
           "alignment hit its 20px per-frame limit — the head moves faster than the tracker follows, so it lags for a frame or two; check the clip before promoting"
         ]
       },
       "quality": {
-        "loopPop": 0.32,
-        "heightSwing": 23.4,
-        "driftX": 12.3,
+        "loopPop": 0.41,
+        "heightSwing": 16.6,
+        "driftX": 11.3,
         "warnings": []
       },
-      "generatedAt": "2026-09-26T22:04:48.825Z"
+      "generatedAt": "2026-09-27T01:44:07.001Z"
     },
     "sneaky": {
       "file": "donkey-grey-sneaky.png",
@@ -2851,23 +3123,23 @@
       "frameRate": 12,
       "cols": 6,
       "fit": {
-        "x": 0.1148,
+        "x": 0.0437,
         "y": 0,
-        "width": 0.7705,
+        "width": 0.9126,
         "height": 1
       },
       "sourceClip": "donkey-grey-sneaky.png",
       "sourceEmotion": "sneaky",
       "headCrop": {
-        "x": -0.04,
+        "x": -0.14,
         "y": -0.04,
-        "w": 0.55,
+        "w": 0.65,
         "h": 0.74
       },
       "headRect": {
-        "left": 118,
+        "left": 92,
         "top": 121,
-        "width": 141,
+        "width": 167,
         "height": 183
       },
       "alignment": {
@@ -3026,10 +3298,10 @@
       "quality": {
         "loopPop": 0.34,
         "heightSwing": 7.8,
-        "driftX": 7.3,
+        "driftX": 12.3,
         "warnings": []
       },
-      "generatedAt": "2026-09-26T22:04:52.079Z"
+      "generatedAt": "2026-09-27T01:44:10.256Z"
     },
     "talking": {
       "file": "donkey-grey-talking.png",
@@ -3039,23 +3311,23 @@
       "frameRate": 13,
       "cols": 5,
       "fit": {
-        "x": 0.1148,
+        "x": 0.0437,
         "y": 0,
-        "width": 0.7705,
+        "width": 0.9126,
         "height": 1
       },
       "sourceClip": "donkey-grey-talking_still.png",
       "sourceEmotion": "talking_still",
       "headCrop": {
-        "x": -0.04,
+        "x": -0.14,
         "y": -0.04,
-        "w": 0.55,
+        "w": 0.65,
         "h": 0.74
       },
       "headRect": {
-        "left": 118,
+        "left": 92,
         "top": 121,
-        "width": 141,
+        "width": 167,
         "height": 183
       },
       "alignment": {
@@ -3171,7 +3443,7 @@
         "driftX": 4.8,
         "warnings": []
       },
-      "generatedAt": "2026-09-26T22:04:53.891Z"
+      "generatedAt": "2026-09-27T01:44:12.089Z"
     },
     "thinking": {
       "file": "donkey-grey-thinking.png",
@@ -3181,23 +3453,23 @@
       "frameRate": 12,
       "cols": 6,
       "fit": {
-        "x": 0.1148,
+        "x": 0.0437,
         "y": 0,
-        "width": 0.7705,
+        "width": 0.9126,
         "height": 1
       },
       "sourceClip": "donkey-grey-thinking.png",
       "sourceEmotion": "thinking",
       "headCrop": {
-        "x": -0.04,
+        "x": -0.14,
         "y": -0.04,
-        "w": 0.55,
+        "w": 0.65,
         "h": 0.74
       },
       "headRect": {
-        "left": 118,
+        "left": 92,
         "top": 121,
-        "width": 141,
+        "width": 167,
         "height": 183
       },
       "alignment": {
@@ -3352,12 +3624,12 @@
         "warnings": []
       },
       "quality": {
-        "loopPop": 0.96,
+        "loopPop": 0.97,
         "heightSwing": 3.8,
         "driftX": 1,
         "warnings": []
       },
-      "generatedAt": "2026-09-26T22:04:57.215Z"
+      "generatedAt": "2026-09-27T01:44:15.320Z"
     }
   },
   "fox": {
@@ -9894,16 +10166,17 @@
       "file": "white-sheep-1-angry.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 25,
-      "frameRate": 13,
-      "cols": 5,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
       "fit": {
         "x": 0,
         "y": 0.015,
         "width": 1,
         "height": 0.9699
       },
-      "sourceClip": "white-sheep-1-angry.png",
+      "sourceClip": "white-sheep-1-angry-loop.png",
+      "sourceEmotion": "angry@loop",
       "headCrop": {
         "x": 0,
         "y": 0,
@@ -9919,119 +10192,161 @@
       "alignment": {
         "offsets": [
           {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
-            "dx": -1,
-            "dy": 0
-          },
-          {
             "dx": -3,
-            "dy": 4
-          },
-          {
-            "dx": -8,
-            "dy": 11
-          },
-          {
-            "dx": -10,
-            "dy": 16
-          },
-          {
-            "dx": -13,
-            "dy": 19
-          },
-          {
-            "dx": -22,
-            "dy": 2
+            "dy": -2
           },
           {
             "dx": -2,
-            "dy": -18
+            "dy": -3
           },
           {
-            "dx": 13,
-            "dy": -29
+            "dx": -2,
+            "dy": -3
           },
           {
-            "dx": 11,
-            "dy": -25
+            "dx": -1,
+            "dy": -3
           },
           {
-            "dx": 9,
-            "dy": -23
+            "dx": -1,
+            "dy": -3
           },
           {
-            "dx": 11,
-            "dy": -16
+            "dx": -1,
+            "dy": -3
           },
           {
-            "dx": 2,
-            "dy": -4
+            "dx": -1,
+            "dy": -3
           },
           {
-            "dx": 0,
-            "dy": -1
+            "dx": -1,
+            "dy": -3
           },
           {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
-          },
-          {
-            "dx": 0,
-            "dy": -1
+            "dx": -1,
+            "dy": -2
           },
           {
             "dx": -1,
             "dy": -1
+          },
+          {
+            "dx": -1,
+            "dy": 0
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": -5,
+            "dy": 3
+          },
+          {
+            "dx": -10,
+            "dy": 3
+          },
+          {
+            "dx": -10,
+            "dy": 4
+          },
+          {
+            "dx": -11,
+            "dy": 4
+          },
+          {
+            "dx": -11,
+            "dy": 4
+          },
+          {
+            "dx": -10,
+            "dy": 3
+          },
+          {
+            "dx": -8,
+            "dy": 3
+          },
+          {
+            "dx": -8,
+            "dy": 1
+          },
+          {
+            "dx": -6,
+            "dy": 1
+          },
+          {
+            "dx": -6,
+            "dy": 0
+          },
+          {
+            "dx": -4,
+            "dy": -1
+          },
+          {
+            "dx": -4,
+            "dy": -1
+          },
+          {
+            "dx": -3,
+            "dy": -2
+          },
+          {
+            "dx": -2,
+            "dy": -3
+          },
+          {
+            "dx": -1,
+            "dy": -4
+          },
+          {
+            "dx": -1,
+            "dy": -5
+          },
+          {
+            "dx": 0,
+            "dy": -5
+          },
+          {
+            "dx": 0,
+            "dy": -5
+          },
+          {
+            "dx": -1,
+            "dy": -5
+          },
+          {
+            "dx": -1,
+            "dy": -5
+          },
+          {
+            "dx": -1,
+            "dy": -4
+          },
+          {
+            "dx": -2,
+            "dy": -4
+          },
+          {
+            "dx": -2,
+            "dy": -3
+          },
+          {
+            "dx": -3,
+            "dy": -2
           }
         ],
-        "maxOffset": 29,
-        "maxJump": 20,
-        "warnings": [
-          "alignment hit its 20px per-frame limit — the head moves faster than the tracker follows, so it lags for a frame or two; check the clip before promoting"
-        ]
-      },
-      "quality": {
-        "loopPop": 1.46,
-        "heightSwing": 11.7,
-        "driftX": 13.8,
+        "maxOffset": 11,
+        "maxJump": 5,
         "warnings": []
       },
-      "generatedAt": "2026-09-08T03:24:57.034Z"
+      "quality": {
+        "loopPop": 1.4,
+        "heightSwing": 5.6,
+        "driftX": 6.3,
+        "warnings": []
+      },
+      "generatedAt": "2026-09-26T22:39:49.918Z"
     },
     "doubtful": {
       "file": "white-sheep-1-doubtful.png",

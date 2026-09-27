@@ -7,103 +7,144 @@
  * event has no replay.
  */
 import { create } from 'zustand';
-import { animalClips, defaultClip } from '../phaser/animals/animalClipCatalogue';
+import {
+  animalClips,
+  clipEmotion,
+  emotionClipName,
+  type EmotionPart,
+} from '../phaser/animals/animalClipCatalogue';
+import { ANIMAL_EMOTIONS } from '../phaser/animals/animalEmotions';
 import { ANIMAL_SPRITE_IDS } from '../phaser/animals/animalDescriptors';
-import type { AnimalEmotion } from '../phaser/animals/animalEmotions';
 import type { AnimalSpriteId } from '../data/characters';
 
 const FIRST_ANIMAL = ANIMAL_SPRITE_IDS[0]!;
+const DEFAULT_PART: EmotionPart = 'sequence';
 
 interface AnimalGalleryStore {
   animalId: AnimalSpriteId;
-  /** Logical clip name from `animalClips()`, or null for the bare rest frame. */
+  /**
+   * The focused clip — a logical name from `animalClips()` — or null when nothing is focused,
+   * which is the gallery's opening state: the scene then plays every clip in turn, on a loop.
+   * The only field the scene reads besides `animalId`; the dialogue portrait on the stage
+   * follows it too, so a portrait always plays beside the body clip it was cut from.
+   */
   clipName: string | null;
   /**
-   * Which dialogue portrait to blow up on the stage, or null for none.
-   *
-   * A second, independent selection rather than another value of `clipName`, because the two
-   * registers are two answers to the same question: a portrait is cut from the body clip of
-   * the same name, so you review them side by side. Sharing one field would make looking at
-   * `fox/angry`'s portrait stop the body clip it was cut from.
-   *
-   * Null by default. The scene never reads this field, and it is not in the diff `AnimalGallery`
-   * acts on, so writing it cannot disturb the sprite.
+   * The clip the unfocused cycle is on right now, or null while a clip is focused. Written by
+   * the scene, like `loadingAnimalId`, so the panel can point at what is playing.
    */
-  faceEmotion: AnimalEmotion | null;
+  cyclingClipName: string | null;
   /**
-   * Crossfade through transparent when switching clip, instead of cutting.
-   *
-   * On by default because a cut between an atlas clip and a generated one also cuts between
-   * two different canvases — the sprite's scale and origin change on the same frame (see
-   * `EmotionSheet.scale`), which reads as a pop. The fade hides it. Turning this off is how
-   * you check whether a switch that looks fine actually *is* fine, so it has to be a toggle
-   * rather than a fixed choice.
+   * Which part of a phased emotion to play. A preference that outlives the clip: it is
+   * remembered while an unphased emotion or a base clip is showing, and applied again the
+   * next time a phased emotion is picked — on this animal or another.
    */
-  smoothTransitions: boolean;
+  part: EmotionPart;
+  /**
+   * The animal whose art the scene is fetching, or null once it is on stage. Written by the
+   * scene — the one field that flows Phaser → React — so the panel can say why the stage is
+   * empty rather than leaving it blank while a first pick downloads.
+   */
+  loadingAnimalId: AnimalSpriteId | null;
 
   /** Switching animal carries the current clip over where it exists — see `carryClipOver`. */
   setAnimal: (animalId: AnimalSpriteId) => void;
+  /** Base clips, and anything else addressed by exact name. */
   setClip: (clipName: string | null) => void;
-  /** Selecting the emotion already showing clears it — the preview is a toggle. */
-  setFaceEmotion: (emotion: AnimalEmotion | null) => void;
-  setSmoothTransitions: (smooth: boolean) => void;
+  /** A base clip's button: focuses it, or clears the focus when it is already focused. */
+  toggleClip: (clipName: string) => void;
+  /**
+   * An emotion button: focuses the emotion at the remembered part when it is phased, or
+   * clears the focus when any part of that emotion is already focused.
+   */
+  toggleEmotion: (emotion: string) => void;
+  /** The part switch: remembers the part and re-resolves the current emotion under it. */
+  setPart: (part: EmotionPart) => void;
+  setLoadingAnimal: (animalId: AnimalSpriteId | null) => void;
+  setCyclingClip: (clipName: string | null) => void;
   /** Leaves the gallery on its opening state, so re-entering never resumes mid-review. */
   resetGallery: () => void;
 }
 
-function openingClip(animalId: AnimalSpriteId): string | null {
-  return defaultClip(animalId)?.name ?? null;
+function isEmotionName(name: string): boolean {
+  return (ANIMAL_EMOTIONS as readonly string[]).includes(name);
 }
 
 /**
- * The clip to show after switching animal: the one already selected if the new animal has a
- * clip by that name, otherwise its rest pose.
+ * The clip to show after switching animal.
  *
  * Carrying the selection over is the whole point of putting the cast in one screen — the
  * question a reviewer actually has is "how does *this* emotion read on each animal", and
  * resetting to idle on every switch makes them re-click it six times to find out.
  *
- * Emotion names exist for every animal (`animalClips` lists the whole `ANIMAL_EMOTIONS`
- * vocabulary, flagging the ones with no art yet), so an emotion selection is sticky right
- * across the cast and lands on the "no art yet" state where the art is missing — the same
- * thing selecting it directly does. Base animations are per-animal, so carrying `buck` from
- * the donkey to the fox falls back to the fox's rest pose rather than showing nothing.
+ * Emotions are carried by emotion rather than by exact name, because phasing is per animal:
+ * `angry@loop` on the sheep lands on plain `angry` on the fox, and back on the sheep it lands
+ * on whichever part is remembered. Base animations are per-animal, so carrying `buck` from the
+ * donkey to the fox drops the focus and lets the fox cycle through its own clips. No focus
+ * stays no focus.
  */
-function carryClipOver(animalId: AnimalSpriteId, clipName: string | null): string | null {
-  if (!clipName) return openingClip(animalId);
-  const carried = animalClips(animalId).some((clip) => clip.name === clipName);
-  return carried ? clipName : openingClip(animalId);
+export function carryClipOver(
+  animalId: AnimalSpriteId,
+  clipName: string | null,
+  part: EmotionPart,
+): string | null {
+  if (!clipName) return null;
+  const clips = animalClips(animalId);
+  const emotion = clipEmotion(clipName);
+  if (isEmotionName(emotion)) return emotionClipName(clips, emotion, part);
+  return clips.some((clip) => clip.name === clipName) ? clipName : null;
 }
 
 export const useAnimalGalleryStore = create<AnimalGalleryStore>((set) => ({
   animalId: FIRST_ANIMAL,
-  clipName: openingClip(FIRST_ANIMAL),
-  faceEmotion: null,
-  smoothTransitions: true,
+  clipName: null,
+  cyclingClipName: null,
+  part: DEFAULT_PART,
+  loadingAnimalId: null,
 
-  // `faceEmotion` rides across untouched, for the reason `carryClipOver` gives: emotion names
-  // exist for every animal, so the selection stays put the whole way round the cast and lands
-  // on "no portrait yet" where none was cropped — which is the comparison you came for.
   setAnimal: (animalId) =>
     set((s) =>
       s.animalId === animalId
         ? s
-        : { ...s, animalId, clipName: carryClipOver(animalId, s.clipName) },
+        : { ...s, animalId, clipName: carryClipOver(animalId, s.clipName, s.part) },
     ),
 
   // No-op when unchanged, so a re-render never restarts a clip that is already playing.
   setClip: (clipName) => set((s) => (s.clipName === clipName ? s : { ...s, clipName })),
 
-  setFaceEmotion: (emotion) =>
-    set((s) => ({ ...s, faceEmotion: s.faceEmotion === emotion ? null : emotion })),
+  toggleClip: (clipName) =>
+    set((s) => ({ ...s, clipName: s.clipName === clipName ? null : clipName })),
 
-  setSmoothTransitions: (smoothTransitions) => set({ smoothTransitions }),
+  toggleEmotion: (emotion) =>
+    set((s) => {
+      const focused = s.clipName !== null && clipEmotion(s.clipName) === emotion;
+      return {
+        ...s,
+        clipName: focused ? null : emotionClipName(animalClips(s.animalId), emotion, s.part),
+      };
+    }),
+
+  setPart: (part) =>
+    set((s) => {
+      const emotion = s.clipName ? clipEmotion(s.clipName) : null;
+      const clipName =
+        emotion && isEmotionName(emotion)
+          ? emotionClipName(animalClips(s.animalId), emotion, part)
+          : s.clipName;
+      return s.part === part && s.clipName === clipName ? s : { ...s, part, clipName };
+    }),
+
+  setLoadingAnimal: (loadingAnimalId) => set({ loadingAnimalId }),
+
+  setCyclingClip: (cyclingClipName) =>
+    set((s) => (s.cyclingClipName === cyclingClipName ? s : { ...s, cyclingClipName })),
 
   resetGallery: () =>
     set({
       animalId: FIRST_ANIMAL,
-      clipName: openingClip(FIRST_ANIMAL),
-      faceEmotion: null,
-      smoothTransitions: true,
+      clipName: null,
+      cyclingClipName: null,
+      part: DEFAULT_PART,
+      loadingAnimalId: null,
     }),
 }));

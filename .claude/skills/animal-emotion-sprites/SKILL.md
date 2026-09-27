@@ -20,10 +20,10 @@ settings). **Never run a generating command without the user having asked for th
 generation, and confirm the scope first if they gave a budget or an ambiguous "do the rest".**
 `--dry-run` is free and needs no key — start there, always.
 
-State the projected cost before generating: `clips × 4 credits`. The nine imported animals
-that still have no emotion art (`cow`, `cow-female-001`, `mouse`, `pig`, `brown-bull`,
-`white-chicken`, `skunk`, `seagull`, `snake`) are 45 clips at the five core emotions,
-~180 credits. Do not generate them until asked.
+State the projected cost before generating: `clips × 4 credits`. The eight imported animals
+that still have no emotion art (`cow`, `mouse`, `pig`, `brown-bull`,
+`white-chicken`, `skunk`, `seagull`, `snake`) are 40 clips at the five core emotions,
+~160 credits. Do not generate them until asked.
 
 **A bare run is the whole manifest**, which is now nine animals × seven prompts = 63 clips,
 ~252 credits. `--animal` and `--emotion` are what keep a run to what was actually asked for;
@@ -167,9 +167,9 @@ no fast beats".
 These are thresholds for *attention*, not rejection. A clip can exceed one and still be the
 right clip — `sneaky` legitimately swings 28% because the donkey's head dips a long way.
 
-Height swing matters more than it looks: `normalize.mjs` derives one scale from the **union**
-bounding box, so a character whose height wanders renders smaller than the atlas art for most
-of the clip.
+Height swing no longer changes a clip's size on stage: `normalize.mjs` takes scale and pivot
+from the **rest frame** (see "One pivot per animal" below). It still matters as a symptom — a
+big swing is usually a pose collapse, not an expression.
 
 ## Writing prompts
 
@@ -192,7 +192,6 @@ here because ignoring them costs credits.
    | wolf | **ears + bushy tail + snarl + white neck ruff** | the fox's carriers plus a high-contrast ruff that bristles; produced the strongest `angry` in the project, first try, with textbook-stable fangs |
    | raccoon | **brows + big white eyes in a dark mask**, and **free forepaws** | staged sitting up, so it is the only character with hands — it can gesture, point and clench, which nothing else in the cast can |
    | cow | **huge pink snout + googly eyes + golden cowbell** | grazing prior (atlas ships `eat`); hold the head UP at the reference height |
-   | cow-female-001 | **two long black braids** (plus the bell and eyes) | same grazing prior, plus a speaking prior (`speak_angry` / `speak_worried` in the atlas) |
    | dog | **pointed ears + tail**, dark saddle | sitting prior (`sit` / `sit_idle`) and a bark; keep it standing |
    | mouse | **huge pink-lined ears + arched pink tail + buck teeth** | source art faces **right** (`isFlipped`); lying-down prior (`lie`) |
    | pig | **round snout + corkscrew tail** | low wide oval that wants to lie down; hold the four short legs planted |
@@ -310,7 +309,7 @@ and re-pick — a diffusion clip's frames are in no fixed order across generatio
 means nothing once the pixels change. `docs/characters-and-animations.md` §11 has the rest.
 
 **Seven animals are generated** (`donkey-grey`, `owl`, `raccoon`, `fox`, `white-sheep-1`,
-`brown-wolf`, `dog`). Nine more atlases are imported (`cow`, `cow-female-001`, `mouse`,
+`brown-wolf`, `dog`). Eight more atlases are imported (`cow`, `mouse`,
 `pig`, and the GameDeveloperStudio five — `brown-bull`, `white-chicken`, `skunk`, `seagull`,
 `snake`) and listed in the emotion manifest with prompts and a seeded `headCrop`, but they
 have no generated clips yet — do not generate them until asked. `dog` has all five body clips and four portraits (`talking`,
@@ -335,6 +334,35 @@ be written down.
 
 **If you ever see the generated module lose an animal, check this file first.**
 
+## STRICT RULE: one pivot per animal
+
+**Every animation of the same animal must share one pivot** — the same `originX`/`originY`
+and scale that put its rest pose in the same place at the same size. If one clip's pivot
+differs, the character visibly jumps every time the game switches into or out of that
+animation. This is not negotiable, and it has already shipped broken once:
+
+> The donkey's `doubtful` and `angry` were regenerated with a wider margin so the snout stopped
+> leaving the canvas. The old measurement anchored each clip on the union box of **all** its
+> frames, so a snout pushed further forward dragged `originX` with it (0.534 → 0.504) and the
+> whole donkey slid ~30 stage units sideways on every switch. The user caught it in game.
+
+The rules:
+
+1. **Never move one clip's pivot** — not to fit its motion in the cell, not to fix an edge
+   cut, not for any other reason. The pivot is measured from frame 0 (the rest pose, which is
+   the reference image by construction), never from how far the motion reaches.
+2. **If a motion does not fit its cell**, the fix applies to the whole animal: reposition
+   every spritesheet of that animal the same way, or enlarge every one of them.
+   **Enlarging is a decision for the user: ask before doing it.**
+3. **The promote enforces this.** `scripts/ludo/pivot.mjs` measures where every clip's rest
+   frame lands, and `--promote` / `--remeasure` fail (and restore `public/`) when an animal's
+   clips disagree by more than 1.5 stage units or 1% in height. Never loosen the tolerance to
+   get a clip through.
+4. **After changing anything that affects placement** (`normalize.mjs`, a sheet's framing),
+   `--remeasure` the whole animal, never a single `--emotion`.
+
+Phases (`--phase`) are already anchored to their main clip's normalization; they inherit it.
+
 ## Never hand-edit the generated art metadata
 
 `src/phaser/animals/emotionSheets.generated.ts` is written by `--promote`. Its `scale`,
@@ -346,8 +374,11 @@ output. Re-promote is only needed when the PNG itself changed.
 
 ## Reviewing in game
 
-**Main menu → Animation Gallery** (`AnimalGallery` scene). Pick an animal, hold any clip on a
-loop, compare generated clips against the atlas clips they sit beside. Emotions with no art are
+**Main menu → Animation Gallery** (`AnimalGallery` scene). Pick an animal from the dropdown,
+hold any clip on a loop, compare generated clips against the atlas clips they sit beside. A
+phased emotion is one button; the **Whole / Ease in / Loop / Ease out** switch under the grid
+picks the part (always shown, with only Whole enabled for clips with no phases).
+Ease in and ease out hold their last frame for a beat before replaying. Emotions with no art are
 listed dashed and marked "no art yet". Clip and animal badges are **OK** / **check** / **?**.
 A clip is **check** if metrics trip, the frame count is neither 25 (Blitz) nor 36 (a Hydra retry), or it has `reviewNotes`. The
 animal is **OK** only when all five emotions pass.
@@ -355,17 +386,14 @@ animal is **OK** only when all five emotions pass.
 When a clip looks wrong but the numbers are clean, add `reviewNotes` on that clip in
 `promoted-clips.json` and `--reindex`. Do not hand-edit the generated TS.
 
-Turn **off** the smooth-transition toggle to see the raw cut — switching between an atlas clip
-and a generated one changes texture, scale and origin on one frame, and the crossfade hides
-whether that switch is actually clean.
+Switching clip is a plain cut, so a texture/scale/origin jump between an atlas clip and a
+generated one shows as it is.
 
-The panel's **Dialogue portraits** section does the same job for the crop register: the five
-emotions again, each with a live thumbnail, and a large preview over the stage at 112px (as it
-ships) and 224px (a 2x display). It is the in-game counterpart to `boxes.html` and uses the
-game's own `FaceClip`, so what you approve there is framed exactly as it ships. Portrait
-selection is independent of clip selection — a portrait plays beside the body clip it was cut
-from, which is the comparison worth having. Badges use the crop thresholds, so **no height-swing
-gate**: a crop cannot zoom.
+Selecting an emotion also plays its **dialogue portrait** over the stage, at 112px (as it ships)
+and 224px (a 2x display), beside the body clip it was cut from. It is the in-game counterpart to
+`boxes.html` and uses the game's own `FaceClip`, so what you approve there is framed exactly as
+it ships. Portrait badges use the crop thresholds, so **no height-swing gate**: a crop cannot
+zoom.
 
 ## Dialogue portraits (`--faces`) — cropped, never generated
 
@@ -403,7 +431,7 @@ retired `face` rect used. Rules C1-C6 are in the manifest's `$faceComment`. The 
   portrait instead of a floating head.
 - **Judge at both sizes the review page shows.** 112px is what ships; 224px is a 2x display, and
   softness only shows at the second. Upscales run x1.23 (owl, best) to x2.21 (brown-wolf, worst).
-  The gallery's portraits section shows the same pair, so this check can also be done in game.
+  The gallery's stage preview shows the same pair, so this check can also be done in game.
 - **Read the alignment numbers, not the height swing.** The head bobs through a body clip — the
   fox's by 30px, its `thinking` by 40px — and the cropper tracks it per frame.
 
@@ -427,27 +455,25 @@ drift instead; sub-pixel refinement and a small rotation search would take the r
 structural answer is that head travel *is* part of a posture animation, so a portrait cut from
 one always inherits some.
 
-### `_still` variants: tried, and they do not do what their name says
+### `_still` variants: tried once, and it did not do what its name said
 
-There is a `talking_still` emotion in the vocabulary and the cropper prefers `<emotion>_still`
-as its source when one has been promoted. It asks for the body and head locked with only the
-face moving. **It does not deliver a stiller head.** Measured on `donkey-grey/talking_still`,
-change per frame in the skull-and-ears band of the finished portrait — a band with no speech
-animation in it, so anything moving there is pose change the aligner cannot remove:
-
-| portrait cut from | skull+ears change/frame | crop loop seam |
-|---|---|---|
-| `talking` (bobbing) | 1.07% | 4.15% — fails the gate |
-| `talking_still` | **2.54%** | **0.56%** — passes |
-
-Twice as unstable, plus a ~22px lateral slide the bobbing clip did not have: with the body
-pinned, the generator moved the head instead. The shipped cast runs 0.53% (owl) to 2.12%
-(white-sheep-1), so it is the wobbliest portrait in the game.
-
-It shipped for a different reason than intended — the fresh generation **fixed the loop seam**,
-which is what had kept `donkey-grey` out of the register entirely. **Do not generate the other
-four still variants expecting stillness.** Generate one only when an animal's body clip has a
-seam bad enough to disqualify its portrait.
+The cropper still prefers an `<emotion>_still` body clip as its portrait source when one has
+been promoted, falling back to the plain emotion otherwise — nothing in `ANIMAL_EMOTIONS` names
+one today. The one that existed, `donkey-grey/talking_still`, asked for the body and head locked
+with only the face moving, and **did not deliver a stiller head**: measured against the skull-
+and-ears band of the finished portrait (no speech animation in it, so anything moving there is
+pose change the aligner cannot remove), it ran 2.54% change/frame versus 1.07% for the bobbing
+`talking` clip it was meant to steady — twice as unstable, plus a ~22px lateral slide the bobbing
+clip did not have. It shipped anyway for a different reason: the fresh generation happened to
+**fix the loop seam** (0.56% vs. 4.15%, which had failed the gate and kept `donkey-grey` out of
+the register entirely). The body clip was later removed as dead weight — nothing plays it on
+stage and nothing derives it in `activeEmotionForWorkflow` — but the already-shipped
+`donkey-grey-talking.png` portrait was cropped from it and keeps its clean seam regardless.
+**Regenerating that portrait now will reintroduce the seam** unless a fresh `talking_still` (or
+another fix to the underlying `talking` body clip) is generated first. **Do not generate a
+`_still` variant expecting stillness** — if the goal is a steadier head, the lever is the cropper
+(narrow the alignment template to the facial region), not the prompt. Generate one only when an
+animal's body clip has a seam bad enough to disqualify its portrait.
 
 ### Cropping amplifies the source clip's loop seam
 

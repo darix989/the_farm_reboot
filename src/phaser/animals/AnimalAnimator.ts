@@ -22,17 +22,37 @@ import { applyAtlasFeetOrigin } from './animalStaging';
 import {
   applyEmotionStaging,
   captureStaging,
+  emotionClipForAnimKey,
+  emotionPhaseSequenceKey,
   emotionSequenceKey,
   emotionSheet,
   restoreStaging,
   type SpriteStaging,
 } from './animalEmotionAnimations';
 import { emotionFallback } from './emotionFallbacks';
+import {
+  planTransition,
+  type CurrentPhaseClip,
+  type PhasedTarget,
+  type PhaseSet,
+  type PhaseStep,
+} from './emotionTransitions';
 import type { AnimalEmotion } from './animalEmotions';
 import type { AnimalBehaviour } from './animalDescriptors';
 import { onReducedMotionChange, prefersReducedMotion } from '../../utils/reducedMotion';
 
 export type AnimalStatus = 'none' | 'idle' | 'alert' | 'emotion' | 'move';
+
+type PlayConfig = Phaser.Types.Animations.PlayAnimationConfig;
+
+/**
+ * When a new sequence takes over from the clip on the sprite:
+ * - `now` cuts to it;
+ * - `afterRepeat` is Phaser's `playAfterRepeat` default, the gentle hand-off idle has always used;
+ * - `afterCycle` waits only for the current cycle (or the rest of a one-shot clip) to end — how a
+ *   phased emotion reaches the pose its next clip starts from (see `emotionTransitions.ts`).
+ */
+type SequenceStart = 'now' | 'afterRepeat' | 'afterCycle';
 
 export interface AnimalAnimatorOptions {
   /** Use the `idleTrial` / `alertTrial` behaviour variants. Defaults to 'farm'. */
@@ -107,8 +127,9 @@ export class AnimalAnimator {
    * that just *stopped walking* is the exception: waiting out the rest of a looping stride
    * leaves it marching in place for up to a second after the player let go of the key.
    *
-   * Leaving a generated emotion always cuts: those clips loop (`repeat: -1`), so "after the
-   * current repeat" is up to two seconds of the previous pose after the debate has moved on.
+   * Leaving a plain generated emotion always cuts: those clips loop (`repeat: -1`), so "after
+   * the current repeat" is up to two seconds of the previous pose after the debate has moved on.
+   * Leaving a *phased* one plays its ease-out first (see `transitionTo`) unless `immediate`.
    */
   playIdle(immediate = false): void {
     if (this.status === 'idle' && this.sprite.anims.isPlaying && !immediate) return;
@@ -119,7 +140,11 @@ export class AnimalAnimator {
     const behaviour =
       (trial ? this.setup.descriptor.idleTrial : undefined) ?? this.setup.descriptor.idle;
     const sequence = behaviour ? this.pickSequence(behaviour) : [{ key: 'idle', repeat: -1 }];
-    this.playSequence(sequence, cutAway, /* desync */ !cutAway);
+    if (immediate) {
+      this.playSequence(sequence, 'now', /* desync */ false);
+      return;
+    }
+    this.transitionTo(null, sequence, cutAway ? 'now' : 'afterRepeat', /* desync */ !cutAway);
   }
 
   playAlert(): void {
@@ -131,11 +156,7 @@ export class AnimalAnimator {
     const fromEmotion = this.status === 'emotion';
     this.status = 'alert';
     this.emotion = null;
-    this.playSequence(
-      this.pickSequence(behaviour),
-      /* playImmediately */ true,
-      /* desync */ !fromEmotion,
-    );
+    this.transitionTo(null, this.pickSequence(behaviour), 'now', /* desync */ !fromEmotion);
   }
 
   /**
@@ -172,7 +193,7 @@ export class AnimalAnimator {
     this.emotion = null;
     // No desync delay: the character is already moving across the ground, so anything but an
     // instant start is a visible slide on its rest pose. Staging lands on ANIMATION_START.
-    this.playSequence(this.pickSequence(behaviour), /* playImmediately */ true, /* desync */ false);
+    this.playSequence(this.pickSequence(behaviour), 'now', /* desync */ false);
   }
 
   /**
@@ -184,6 +205,9 @@ export class AnimalAnimator {
    * generated art for the emotion, and to `playAlert()` when it has neither — so a partly
    * generated cast degrades gracefully at every stage instead of freezing on a missing key.
    * Callers therefore never need to check `hasEmotionClip`.
+   *
+   * A phased emotion (`EmotionSheet.phases`) holds its `loop` instead of the main clip, entering
+   * through `in` and leaving through `out` — `transitionTo` works out the joins.
    */
   playEmotion(emotion: AnimalEmotion): void {
     const sheet = emotionSheet(this.setup.textureKey, emotion);
@@ -201,9 +225,52 @@ export class AnimalAnimator {
     // sequence key. `syncStagingToCurrentAnimation` only recognises the latter, so a fallback
     // is staged as a plain atlas clip — correct, since it *is* one.
     const key = sheet ? emotionSequenceKey(emotion) : fallback!.baseAnimationName;
+    const phases = this.phaseSet(emotion);
     // No desync delay: scale/origin must land on the same frame as the texture swap, and a
     // debate reaction has to hit the beat of the line, not 0–200ms later.
-    this.playSequence([{ key, repeat: -1 }], /* playImmediately */ true, /* desync */ false);
+    this.transitionTo(
+      phases ? { emotion, phases } : null,
+      [{ key, repeat: -1 }],
+      'now',
+      /* desync */ false,
+    );
+  }
+
+  /**
+   * Plays `sequence` — or the phased target's own clips — with whatever ease-in/ease-out the
+   * change needs around it. With no phased clip on either side the plan is empty and this is
+   * exactly `playSequence(sequence, start, desync)`, i.e. the behaviour before phases existed.
+   */
+  private transitionTo(
+    target: PhasedTarget | null,
+    sequence: readonly PlayConfig[],
+    start: SequenceStart,
+    desync: boolean,
+  ): void {
+    const current = this.currentPhaseClip();
+    const plan = planTransition(current, current ? this.phaseSet(current.emotion) : null, target);
+    const steps = [
+      ...plan.exit.map(phaseConfig),
+      ...(plan.entry ? plan.entry.map(phaseConfig) : sequence),
+    ];
+    if (plan.waitForCurrent) {
+      // A desync delay here would freeze the end pose the next clip is meant to flow from.
+      this.playSequence(steps, 'afterCycle', /* desync */ false);
+    } else {
+      this.playSequence(steps, start, desync);
+    }
+  }
+
+  /** The phase clip on the sprite right now, or null for an atlas / plain emotion clip. */
+  private currentPhaseClip(): CurrentPhaseClip | null {
+    const key = this.sprite.anims.currentAnim?.key;
+    const clip = key ? emotionClipForAnimKey(key) : null;
+    return clip?.phase ? { emotion: clip.emotion, phase: clip.phase } : null;
+  }
+
+  private phaseSet(emotion: AnimalEmotion): PhaseSet | null {
+    const phases = emotionSheet(this.setup.textureKey, emotion)?.phases;
+    return phases ? { in: Boolean(phases.in), out: Boolean(phases.out) } : null;
   }
 
   /**
@@ -218,14 +285,13 @@ export class AnimalAnimator {
   }
 
   private syncStagingToCurrentAnimation(): void {
-    const emotion = this.emotion;
+    // Keyed off the clip on the sprite, not `this.emotion`: during an ease-out the animator has
+    // already moved on to idle while the emotion's cells are still showing.
     const key = this.sprite.anims.currentAnim?.key;
-    if (emotion && key === animalAnimKey(this.setup.textureKey, emotionSequenceKey(emotion))) {
-      const sheet = emotionSheet(this.setup.textureKey, emotion);
-      if (sheet) {
-        applyEmotionStaging(this.sprite, sheet, this.baseStaging);
-        return;
-      }
+    const clip = key ? emotionClipForAnimKey(key) : null;
+    if (clip) {
+      applyEmotionStaging(this.sprite, clip.sheet, this.baseStaging);
+      return;
     }
     restoreStaging(this.sprite, this.baseStaging);
     // Atlas clips do not all share a canvas (the dog's sit loop is a different size from
@@ -293,11 +359,7 @@ export class AnimalAnimator {
     this.sprite.anims.timeScale = this.status === 'move' ? moveRate(this.moveSpeed) : 1;
   }
 
-  private playSequence(
-    sequence: readonly Phaser.Types.Animations.PlayAnimationConfig[],
-    playImmediately: boolean,
-    desync = true,
-  ): void {
+  private playSequence(sequence: readonly PlayConfig[], start: SequenceStart, desync = true): void {
     this.applyPlaybackRate();
 
     if (prefersReducedMotion()) {
@@ -327,6 +389,7 @@ export class AnimalAnimator {
       return;
     }
 
+    const playImmediately = start === 'now';
     if (playImmediately) this.sprite.stop();
     this.sprite.chain();
     this.sprite.anims.nextAnim = null;
@@ -336,6 +399,10 @@ export class AnimalAnimator {
 
     if (playImmediately) {
       this.sprite.play(firstAnimation);
+    } else if (start === 'afterCycle') {
+      // Phaser's default repeat count of 1 means "finish this cycle, then one more"; 0 hands
+      // over at the end of the current one (or when a one-shot clip completes).
+      this.sprite.playAfterRepeat(firstAnimation, 0);
     } else {
       this.sprite.playAfterRepeat(firstAnimation);
     }
@@ -383,6 +450,10 @@ export class AnimalAnimator {
     else if (this.status === 'move') this.startMove();
     else if (this.status === 'emotion' && this.emotion) this.playEmotion(this.emotion);
   }
+}
+
+function phaseConfig(step: PhaseStep): PlayConfig {
+  return { key: emotionPhaseSequenceKey(step.emotion, step.phase), repeat: step.repeat };
 }
 
 /** Returns null when the character has no atlas loaded — caller should fall back to placeholder art. */

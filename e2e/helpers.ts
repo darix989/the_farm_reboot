@@ -152,7 +152,11 @@ const FARM_INTERACT_KEY = { key: ' ', code: 'Space', keyCode: 32 };
 
 type FarmKeyInit = { key: string; code: string; keyCode: number };
 
-async function dispatchFarmKey(page: Page, type: 'keydown' | 'keyup', key: FarmKeyInit): Promise<void> {
+async function dispatchFarmKey(
+  page: Page,
+  type: 'keydown' | 'keyup',
+  key: FarmKeyInit,
+): Promise<void> {
   await page.evaluate(
     ({ eventType, init }) => {
       const event = new KeyboardEvent(eventType, {

@@ -37,6 +37,11 @@ const config: Phaser.Types.Core.GameConfig = {
   // The Farm camera follows the player, so snap draws to whole pixels to stop
   // sub-pixel shimmer on the generated textures.
   render: { roundPixels: true },
+  // Phaser swaps any frame slower than `min` fps for a remembered delta seeded at 1/60s, and
+  // clamps the first `panicMax` frames to 1/60s too — so on a device (or software-WebGL CI)
+  // running under 5fps, movement is paced by frame count and the whole farm plays in slow
+  // motion. Real deltas up to 1s are safe: Arcade physics catches up in fixed 1/60s steps.
+  fps: { min: 1, panicMax: 0 },
   scene: [Boot, Preloader, MainMenu, Farm, FarmSide, MainGame, Trial, AnimalGallery, GameOver],
 };
 

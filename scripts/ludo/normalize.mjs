@@ -16,19 +16,30 @@
  *
  * ## The fix
  *
- * Measure both — the character's alpha bounding box in the reference frame, and its union
- * bounding box across every frame of the generated sheet — and derive:
+ * Measure both — the character's alpha bounding box in the reference frame, and its box in
+ * the generated sheet's **rest frame** (frame 0) — and derive:
  *
- *   - `scale`:   multiplier on the staging scale that makes the character the same height it
- *                is in the atlas art.
+ *   - `scale`:   multiplier on the staging scale that makes the resting character the same
+ *                height it is in the atlas art.
  *   - `originX`, `originY`: the origin that puts the sprite's anchor at the character's
  *                feet — the same place `applyAtlasFeetOrigin` pins it on an atlas frame.
  *                `originX` still matches the atlas canvas centre (walk cycles were authored
- *                around it); `originY` is the bottom of the generated union box.
+ *                around it); `originY` is the bottom of the rest-frame box.
  *
- * The union box (not per-frame) is deliberate: a per-frame origin would make the character
- * twitch as the box changed shape between frames. One box for the clip means the character
- * moves within a stable anchor, which is what an animation is.
+ * ## STRICT RULE: one pivot per animal
+ *
+ * Every animation of the same animal must put its rest pose in exactly the same place, at
+ * exactly the same size, or the character jumps when the animation changes. Frame 0 is the
+ * reference pose by construction (it is generated from `initial_image`), so anchoring on it
+ * lands every clip of an animal on the same pivot, and on the atlas idle too.
+ *
+ * This used to anchor on the **union** box across all frames, which made the pivot depend on
+ * how far that clip's motion reached: when the donkey's `doubtful` pushed its snout forward,
+ * the union grew left, `originX` moved with it, and the whole donkey slid ~30px sideways on
+ * every switch into or out of that clip. Never derive the pivot from how a clip moves, and
+ * never retune one clip's scale/origin to make its motion fit: if a motion leaves the cell,
+ * the whole animal's sheets are repositioned or enlarged together (ask before enlarging).
+ * `pivotSpread` in `scripts/ludo/pivot.mjs` fails the promote when an animal's clips disagree.
  *
  * Doing this at promote time keeps the runtime dumb — `AnimalAnimator` applies two numbers it
  * is handed and never measures anything — and keeps the shipped PNGs small, which asking the
@@ -115,20 +126,20 @@ export async function measureNormalization(sheetBuffer, referenceBuffer, grid) {
   const reference = await boundsOf(referenceBuffer);
   if (!reference) throw new Error('Reference frame is fully transparent');
 
-  const sheet = await sheetBounds(sheetBuffer, grid);
-  if (!sheet) throw new Error('Generated spritesheet is fully transparent');
+  // The rest frame, never the union: see "one pivot per animal" above.
+  const sheet = await boundsOf(await frameAt(sheetBuffer, 0, grid));
+  if (!sheet) throw new Error('Generated spritesheet rest frame is fully transparent');
 
   const referenceMeta = await sharp(referenceBuffer).metadata();
 
   // Match the character's height. Height rather than width because the cast is staged on a
-  // floor line and sized against each other vertically (see `animalStaging.ts`); a clip that
-  // gestures sideways would otherwise be shrunk by its own gesture.
+  // floor line and sized against each other vertically (see `animalStaging.ts`).
   const scale = reference.height / sheet.height;
 
   // Atlas staging pins originX at the canvas centre (walk cycles were authored around it)
   // and originY at the visible feet (`applyAtlasFeetOrigin`). Copy that onto the generated
   // cell: horizontally off the character's centre by the same canvas-centre offset,
-  // vertically at the bottom of the union box — no extra pad below the feet.
+  // vertically at the bottom of the rest-frame box — no extra pad below the feet.
   const anchorOffsetX = referenceMeta.width * 0.5 - (reference.x + reference.width / 2);
   const toSheetPixels = sheet.height / reference.height;
   const anchorX = sheet.x + sheet.width / 2 + anchorOffsetX * toSheetPixels;

@@ -1,6 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
 import { PhaserGame } from './phaser/PhaserGame';
-import { ChromeAndroidFullscreenButton } from './react/chromeAndroidFullscreen';
 import ReactApp from './react/ReactApp';
 import {
   STAGE_DESIGN_WIDTH,
@@ -45,7 +44,6 @@ function App() {
         <div className="react-ui-overlay">
           <ReactApp />
         </div>
-        <ChromeAndroidFullscreenButton />
       </div>
     </div>
   );

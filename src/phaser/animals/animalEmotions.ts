@@ -42,14 +42,6 @@ export const ANIMAL_EMOTIONS = [
    * Authored for the moderator status indicator rather than the stage — see the note below.
    */
   'approving',
-  /**
-   * `talking` again, but with the body and head **locked still** so only the face moves.
-   *
-   * A portrait source, not a stage posture — see the "still variants" note below. Playing it on
-   * the Trial stage is not wrong, just pointless: at 300px a motionless animal reads as an idle
-   * loop, which is exactly why every other entry here names a posture instead.
-   */
-  'talking_still',
 ] as const;
 
 /**
@@ -60,11 +52,10 @@ export const ANIMAL_EMOTIONS = [
  * *is* the moderator, so `approving` was generated to give her a pleased face: nothing in the
  * vocabulary was one, and her existing clips only covered a glare and a level neutral.
  *
- * It is therefore the second entry here (after `talking_still`) that names something other than
- * a stage posture, and for the opposite reason: `talking_still` takes motion *out* of a posture
- * for the portrait crop, while `approving` is a posture nobody plays at 300px. Nothing in
- * `activeEmotionForWorkflow` derives it — the status indicator picks its frames directly. Playing
- * it on stage is not wrong (a convinced listener nodding is a real beat), just currently unused.
+ * It is therefore the one entry here that names something other than a stage posture: a posture
+ * nobody plays at 300px. Nothing in `activeEmotionForWorkflow` derives it — the status indicator
+ * picks its frames directly. Playing it on stage is not wrong (a convinced listener nodding is a
+ * real beat), just currently unused.
  *
  * It ended up carrying **all three** of Duchess's status states rather than one, which is
  * the better design for her and was not the plan. Its 25 frames open the owl's eyes from
@@ -74,51 +65,6 @@ export const ANIMAL_EMOTIONS = [
  * stills do the opposite on purpose: three portraits (`sneaky` / `doubtful` / `angry`),
  * because no single fox clip opens along one axis that way. See `moderatorOpinionFace()` in
  * `src/react/trial/utils/trialHelpers.ts`.
- *
- * ## Still variants (`<emotion>_still`)
- *
- * These exist because the two registers want opposite things from the same clip, and until now
- * one clip served both.
- *
- * Every `talking` prompt in the manifest asks for "head bobbing gently in time with speech",
- * deliberately: at 300px a bobbing head is *what reads as talking*, and a motionless one reads
- * as idle. But `scripts/ludo/cropFace.mjs` cuts dialogue portraits out of these same clips, and
- * a portrait wants the opposite — the face held still in its box with only the mouth and eyes
- * moving. Human review of the first cropped portraits put it plainly: glitch-free, but obviously
- * not authored for a head-only crop, because the face translates. It was translating because the
- * prompt asked it to.
- *
- * A `_still` variant asks for the same emotion with the travel taken out. The cropper prefers
- * `<emotion>_still` as its source when one has been promoted and falls back to `<emotion>`
- * otherwise, so it is an *optional* per-animal upgrade rather than a migration: an animal
- * without one keeps the portrait it already had. The stage keeps using the bobbing original —
- * nothing derives a `_still` emotion in `activeEmotionForWorkflow`, and nothing should.
- *
- * ### It does not deliver the stillness it asks for
- *
- * Measured on the first one (`donkey-grey/talking_still`), and worth knowing before generating
- * more. Change per frame in the skull-and-ears band of the finished portrait — a band that
- * carries no speech animation, so anything moving in it is pose change the aligner cannot
- * remove:
- *
- * | portrait cut from | skull+ears change/frame | crop loop seam |
- * |---|---|---|
- * | `talking` (bobbing) | 1.07% | 4.15% — fails the 2% gate |
- * | `talking_still` | **2.54%** | **0.56%** — passes |
- *
- * So the prompt made the head *twice as unstable*, not stiller: with the body pinned the
- * generator moved the head instead, and added a ~22px lateral slide the bobbing clip did not
- * have. For context the shipped cast runs 0.53% (owl) to 2.12% (white-sheep-1), so the still
- * variant is the wobbliest portrait in the game.
- *
- * It shipped anyway, for a reason that has nothing to do with its name: the fresh generation
- * **fixed the loop seam**. `donkey-grey`'s body clips carry the cast's worst seams, cropping
- * amplifies them ~4x, and that — not the head bob — was what kept Rue text-only. A clean loop
- * with a wobbly head beats a visible jump every two seconds.
- *
- * Do not generate the remaining four still variants expecting a stiller head. If stillness is
- * the goal, the lever is the cropper (narrow the alignment template to the facial region), not
- * the prompt.
  */
 
 export type AnimalEmotion = (typeof ANIMAL_EMOTIONS)[number];
@@ -159,6 +105,8 @@ export function isCurrentEmotionFrameCount(frameCount: number): boolean {
 export const EMOTION_QUALITY_THRESHOLDS = {
   /** Below ~1% the seam is invisible; by 3% it reads as a stutter every loop. */
   loopPop: 2,
+  /** A join between two phase clips (`EmotionQuality.seamIn` / `seamOut`) — same eye, same gate. */
+  seam: 2,
   /** Beyond this the union-box scale noticeably under-sizes the character. */
   heightSwing: 20,
   /** In frame pixels, half the total wander. */
@@ -184,7 +132,50 @@ export interface EmotionQuality {
   churnMean?: number;
   churnPeak?: number;
   churnPeakIndex?: number;
+  /**
+   * Phase clips only (see `EmotionPhases`): difference between the frame the previous phase
+   * ends on and this clip's first frame, and between this clip's last frame and the frame the
+   * next phase starts on. Same scale and gate as `loopPop` — a phase join is a loop seam
+   * between two sheets instead of within one. `out`'s `seamOut` compares against the main
+   * clip's frame 0, the rest pose the animal returns to.
+   */
+  seamIn?: number;
+  seamOut?: number;
   warnings: readonly string[];
+}
+
+/**
+ * The optional three-part shape of a *state* emotion: ramp into it, hold it, ramp out of it.
+ *
+ * A plain clip starts at rest, peaks and returns to rest, then loops — fine for an emotion that
+ * breathes around rest (`talking`), wrong for one whose peak has to *stay* up while the
+ * character holds the floor (`angry`): every loop visibly drops the feeling. A phased emotion
+ * enters through `in`, holds on `loop` for as long as it lasts, and leaves through `out` — see
+ * `planTransition` in `emotionTransitions.ts` for the playback rules and
+ * `docs/characters-and-animations.md` for the authoring workflow.
+ */
+export const EMOTION_PHASES = ['in', 'loop', 'out'] as const;
+export type EmotionPhase = (typeof EMOTION_PHASES)[number];
+
+/**
+ * One phase clip. A full sheet in its own right (own normalization and quality) that may be a
+ * sub-range of its file: `in` is typically the leading frames of the main clip, cut by
+ * metadata rather than by re-packing the PNG.
+ */
+export interface EmotionPhaseSheet extends Omit<EmotionSheet, 'phases'> {
+  /** First frame index inside `file`. Defaults to 0. */
+  startFrame?: number;
+}
+
+/**
+ * `loop` is what makes an emotion phased; `in` and `out` are each optional. An emotion with
+ * `loop` but no `in` enters with a cut, one with no `out` leaves with a cut — each half
+ * degrades to today's behaviour on its own.
+ */
+export interface EmotionPhases {
+  in?: EmotionPhaseSheet;
+  loop: EmotionPhaseSheet;
+  out?: EmotionPhaseSheet;
 }
 
 /**
@@ -231,4 +222,10 @@ export interface EmotionSheet {
    * gallery badge to warn even when the numeric gates are clean.
    */
   reviewNotes?: readonly string[];
+  /**
+   * Ease-in / loop / ease-out clips for this emotion. When present the animator plays these
+   * instead of looping the sheet above, which stays the source of `in` and the fallback for
+   * every consumer that does not know about phases.
+   */
+  phases?: EmotionPhases;
 }

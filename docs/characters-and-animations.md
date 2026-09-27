@@ -19,16 +19,16 @@ Since the Level 1 rewrite, **every character is the animal their sprite draws**.
 way round, because Level 1 teaches Ad Hominem and needs a cast a farm already has opinions
 about.
 
-| Character | Species | Art (`AnimalSpriteId`)           | Role                      |
-| --------- | ------- | -------------------------------- | ------------------------- |
-| Rue       | raccoon | `raccoon`                        | player                    |
-| Hetty     | sheep   | `white-sheep-1`                  | farm NPC                  |
-| Cass      | fox     | `fox`                            | farm NPC, coach           |
-| Bram      | wolf    | `brown-wolf`                     | farm NPC                  |
-| Tobias    | donkey  | `donkey-grey`                    | farm NPC, Trial opponent  |
-| Duchess   | owl     | `owl`                            | farm NPC, Trial moderator |
-| Dot       | dog     | `dog`                            | farm guardian / greeter   |
-| Pip       | mouse   | `mouse`                          | barn NPC                  |
+| Character | Species | Art (`AnimalSpriteId`) | Role                      |
+| --------- | ------- | ---------------------- | ------------------------- |
+| Rue       | raccoon | `raccoon`              | player                    |
+| Hetty     | sheep   | `white-sheep-1`        | farm NPC                  |
+| Cass      | fox     | `fox`                  | farm NPC, coach           |
+| Bram      | wolf    | `brown-wolf`           | farm NPC                  |
+| Tobias    | donkey  | `donkey-grey`          | farm NPC, Trial opponent  |
+| Duchess   | owl     | `owl`                  | farm NPC, Trial moderator |
+| Dot       | dog     | `dog`                  | farm guardian / greeter   |
+| Pip       | mouse   | `mouse`                | barn NPC                  |
 
 The three outsiders (raccoon, fox, wolf) are the ones the level's fallacies point at; the
 in-group is the sheep and the donkey. See `level_01_the_pond_motion.md`.
@@ -51,7 +51,7 @@ doing anything sprite-related.
 
 ## 2. Assets on disk
 
-Sixteen multi-page atlases. Eleven were copied from the prototype, already packed with
+Fifteen multi-page atlases. Ten were copied from the prototype, already packed with
 TexturePacker; five were packed here from raw GameDeveloperStudio character packs by
 [`scripts/build-animal-atlas.mjs`](../scripts/build-animal-atlas.mjs) (see §2.1).
 
@@ -64,7 +64,6 @@ public/assets/characters/
   white-sheep-1.json + white-sheep-1/white-sheep-1-{0..2}.png
   brown-wolf.json  + brown-wolf/brown-wolf-{0..8}.png
   cow.json         + cow/cow-{0..4}.png
-  cow-female-001.json + cow_female_001/cow_female_001-{0..5}.png
   dog.json         + dog/dog-{0..11}.png
   mouse.json       + mouse/mouse-{0..7}.png
   pig.json         + pig/pig-{0..1}.png
@@ -78,24 +77,21 @@ public/assets/characters/
 Both the JSON descriptors and the PNG pages live under `public/assets/` (loaded by
 Phaser's `this.load.multiatlas` from the scene that needs them — see
 [`animalPacks.ts`](../src/phaser/animals/animalPacks.ts)), **not** imported as ES
-modules — eleven descriptors have no reason to sit in the main JS bundle and be parsed
+modules — ten descriptors have no reason to sit in the main JS bundle and be parsed
 on the main menu, even though `resolveJsonModule` is on.
 
-Two naming mismatches, both inherited from the prototype. The `textures[].image` field
+One naming mismatch, inherited from the prototype. The `textures[].image` field
 inside each descriptor is the ultimate authority:
 
 - `brown-wolf.json` was renamed from the source's `brown_wolf.json` (dashed id, dashed dir).
-- `cow-female-001` keeps the source's underscored image directory (`cow_female_001/`) and
-  PNG names; only the JSON file was renamed to match the dashed id, so
-  `load.multiatlas('cow-female-001', 'characters/cow-female-001.json')` finds it.
 
 **Frame naming — three shapes in this set:**
 
-| Shape                              | Example frame filename                                    | Animals                                                                 | Needs `framePrefix`?                     |
-| ---------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------- | ---------------------------------------- |
-| Flat, dash-separated               | `__red_fox_idle-3.png`                                    | donkey-grey, fox, white-sheep-1, brown-wolf, raccoon, dog, mouse, pig, cow-female-001 | no — matches the default `${frameStem}-` |
-| Foldered, dash-separated           | `__black_and_white_cow_die/__black_and_white_cow_die-0.png` | cow                                                                     | yes                                      |
-| Foldered, **underscore**-separated | `__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_4.png` | owl                                                                     | yes, on all five animations              |
+| Shape                              | Example frame filename                                      | Animals                                                                               | Needs `framePrefix`?                     |
+| ---------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------- |
+| Flat, dash-separated               | `__red_fox_idle-3.png`                                      | donkey-grey, fox, white-sheep-1, brown-wolf, raccoon, dog, mouse, pig | no — matches the default `${frameStem}-` |
+| Foldered, dash-separated           | `__black_and_white_cow_die/__black_and_white_cow_die-0.png` | cow                                                                                   | yes                                      |
+| Foldered, **underscore**-separated | `__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_4.png`   | owl                                                                                   | yes, on all five animations              |
 
 The owl is the trap: its frame folder ends in `_`, not `-`, so every one of its
 `baseAnimations` entries needs an explicit `framePrefix` copied character-for-character.
@@ -106,7 +102,7 @@ The five packed here are deliberately all in the first shape — see below.
 
 ### 2.1 Packing an atlas from a raw character pack
 
-The prototype's eleven arrived already packed. A pack bought from GameDeveloperStudio does
+The prototype's ten arrived already packed. A pack bought from GameDeveloperStudio does
 not: it ships either **loose keyframe PNGs** (one file per frame, every frame on the same
 export canvas, named `<stem>_<nnn>.png`) or **strip spritesheets** (one PNG per animation on
 a fixed grid). `scripts/build-animal-atlas.mjs` is the missing export step, so a new animal
@@ -145,13 +141,13 @@ frame only four of them fit on a 2048px page however they are arranged.
 
 ## 3. Five files carry the system
 
-| File                                                                                    | Role                                                                                                               |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [`src/phaser/animals/animalDescriptors.ts`](../src/phaser/animals/animalDescriptors.ts) | The data. One `AnimalDescriptor` per animal: frame ranges + idle/alert behaviour.                                  |
-| [`src/phaser/animals/animalAnimations.ts`](../src/phaser/animals/animalAnimations.ts)   | Turns descriptors into Phaser animations (`ensureAnimalAnimations`) and resolves per-animal setup (`animalSetup`). |
-| [`src/phaser/animals/AnimalAnimator.ts`](../src/phaser/animals/AnimalAnimator.ts)       | The playback engine: weighted sequence picking, chaining, self-looping. Drives any `Phaser.GameObjects.Sprite`.    |
-| [`src/phaser/animals/animalAtlases.ts`](../src/phaser/animals/animalAtlases.ts)         | Queues a given list of multiatlases (`loadAnimalAtlases(scene, ids)`).                                             |
-| [`src/phaser/animals/animalPacks.ts`](../src/phaser/animals/animalPacks.ts)             | Derives which ids a scene needs and queues them. Farm = Level 1 roster; Trial = debate cast; Gallery = every id.   |
+| File                                                                                    | Role                                                                                                                    |
+| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| [`src/phaser/animals/animalDescriptors.ts`](../src/phaser/animals/animalDescriptors.ts) | The data. One `AnimalDescriptor` per animal: frame ranges + idle/alert behaviour.                                       |
+| [`src/phaser/animals/animalAnimations.ts`](../src/phaser/animals/animalAnimations.ts)   | Turns descriptors into Phaser animations (`ensureAnimalAnimations`) and resolves per-animal setup (`animalSetup`).      |
+| [`src/phaser/animals/AnimalAnimator.ts`](../src/phaser/animals/AnimalAnimator.ts)       | The playback engine: weighted sequence picking, chaining, self-looping. Drives any `Phaser.GameObjects.Sprite`.         |
+| [`src/phaser/animals/animalAtlases.ts`](../src/phaser/animals/animalAtlases.ts)         | Queues a given list of multiatlases (`loadAnimalAtlases(scene, ids)`).                                                  |
+| [`src/phaser/animals/animalPacks.ts`](../src/phaser/animals/animalPacks.ts)             | Derives which ids a scene needs and queues them. Farm = Level 1 roster; Trial = debate cast; Gallery = the selected id. |
 
 Plus [`src/phaser/animals/animalStaging.ts`](../src/phaser/animals/animalStaging.ts) for
 per-surface scale, and the three scenes that use all of the above:
@@ -193,9 +189,8 @@ Registration is a plain `Record<AnimalSpriteId, AnimalDescriptor>`
 compiler enforces that every `AnimalSpriteId` has a descriptor, instead of a silently
 unregistered entry producing zero animations.
 
-Every animal has a `move` except two: Duchess (`owl`), whose atlas has none and who flies
-(`flap_wings`) rather than walks, and `cow-female-001`, whose atlas is idle plus two speak
-loops. Unlike `idle`, a `move` sequence should loop (`repeat: -1`) — movement ends when
+Every animal has a `move` except Duchess (`owl`), whose atlas has none and who flies
+(`flap_wings`) rather than walks. Unlike `idle`, a `move` sequence should loop (`repeat: -1`) — movement ends when
 the _character_ stops, not when the clip does. Only the player translates today; the field
 is on the descriptor rather than in `Farm.ts` so a wandering NPC or a cutscene tween gets
 the same cycle for free.
@@ -314,14 +309,14 @@ as the 56px placeholder NPC boxes it is meant to be the protagonist among. Match
 donkey's old 140px height is not the fix either: at 2.4:1 the crouch would come out
 336px wide. `MANUAL_ADJUST` therefore accepts either a bare number (both surfaces, as
 before) or `{ farm?, trial? }`. The raccoon is `{ farm: 1.5 }` (~202×85 on the farm);
-`trial` stays at 1 because there Rue *sits up*, a taller and much narrower pose, and that
+`trial` stays at 1 because there Rue _sits up_, a taller and much narrower pose, and that
 is the pose the existing trial multiplier was already staging Tobias in.
 
-The sheep is the other split adjustment, `{ farm: 1.68, trial: 0.8 }`. Her export canvas is
+The sheep is the other split adjustment, `{ farm: 1.344, trial: 0.8 }`. Her export canvas is
 the smallest in the table above, so the source ratio nets her out mid-sized on paper and
 small on screen — on the lateral farm road she read as a lamb at Rue's feet rather than an
-animal he is talking to. The farm figure is 2.1× the 0.8 she used to be: tripling it
-overshot, reading bigger than the donkey. `trial` keeps that 0.8: the podium is a fixed
+animal he is talking to. 2.1× the 0.8 she used to be (1.68) fixed that but still read a bit
+large, so the farm figure is that less 20%; tripling it overshot, reading bigger than the donkey. `trial` keeps that 0.8: the podium is a fixed
 540px hole a cast of three has to fit into, and that composition is already fit.
 
 Measured visible pixel bounds of each animal's idle rest frame (`spriteSourceSize` in the
@@ -330,19 +325,18 @@ can hugely overstate a crouching or narrow pose — the raccoon's idle crouch fi
 ~40% of its canvas height) — multiplying by the prototype's scale gives the "as designed"
 apparent size the two multipliers above were fit to:
 
-| Animal          | Source scale | Idle frame visible (w×h) | As-designed apparent (w×h)     |
-| --------------- | ------------ | ------------------------ | ------------------------------ |
-| `donkey-grey`   | 0.7          | 561×531                  | 393×372                        |
-| `owl`           | 0.4          | 448×587                  | 179×235                        |
-| `raccoon`       | 0.4          | 896×373                  | **358×149 — wide, low crouch** |
-| `fox`           | 0.6          | 598×391                  | 359×235                        |
-| `white-sheep-1` | 1.0          | 311×267                  | 311×267                        |
-| `brown-wolf`    | 0.7          | 589×468                  | 412×328                        |
-| `cow`           | 1.0          | 479×383                  | 479×383                        |
-| `cow-female-001`| 1.3          | 406×330                  | **528×429 — largest in the set** |
-| `dog`           | 0.6          | 700×568                  | 420×341                        |
-| `mouse`         | 0.35         | 735×469                  | 257×164                        |
-| `pig`           | 1.0          | 419×229                  | 419×229                        |
+| Animal           | Source scale | Idle frame visible (w×h) | As-designed apparent (w×h)       |
+| ---------------- | ------------ | ------------------------ | -------------------------------- |
+| `donkey-grey`    | 0.7          | 561×531                  | 393×372                          |
+| `owl`            | 0.4          | 448×587                  | 179×235                          |
+| `raccoon`        | 0.4          | 896×373                  | **358×149 — wide, low crouch**   |
+| `fox`            | 0.6          | 598×391                  | 359×235                          |
+| `white-sheep-1`  | 1.0          | 311×267                  | 311×267                          |
+| `brown-wolf`     | 0.7          | 589×468                  | 412×328                          |
+| `cow`            | 1.0          | 479×383                  | 479×383                          |
+| `dog`            | 0.6          | 700×568                  | 420×341                          |
+| `mouse`          | 0.35         | 735×469                  | 257×164                          |
+| `pig`            | 1.0          | 419×229                  | 419×229                          |
 
 Recomputing: pick a target donkey height for the surface, divide by 372 (its as-designed
 apparent height above) to get that surface's multiplier, then multiply every animal's
@@ -374,8 +368,7 @@ the visual centre (`{x:0.5,y:0.5}` on idle). Phaser copies that onto the sprite 
 every `setFrame`, which undoes the feet origin the moment a clip plays. The helper
 clears `customPivot` on the whole texture so those anchors are ignored.
 
-**Trial speaker depths.** Idle and non-speakers sit at depth 1, the active speaker at
-10. Formal debates (`encounterKind === 'debate'`, including the default when `mechanics`
+**Trial speaker depths.** Idle and non-speakers sit at depth 1, the active speaker at 10. Formal debates (`encounterKind === 'debate'`, including the default when `mechanics`
 is omitted) insert a stage dimmer at 5 and a spotlight cone at 9, from the top of the
 hole down onto the speaker. The cone is off during `debate_intro` (no speaker) and aims
 at the moderator during `moderator_speaking`. Lessons, gossip, sparring and lab skip that
@@ -467,8 +460,9 @@ underneath the animated follower sprite (see §3.3).
    this skin.
 7. **Loading.** `animalAtlases.ts` needs no change — it loads whatever ids it is given.
    [`animalPacks.ts`](../src/phaser/animals/animalPacks.ts) derives those ids:
-   - **Gallery** loads every `ANIMAL_SPRITE_IDS` entry on open, so a descriptor with no
-     character is still previewable.
+   - **Gallery** lists every `ANIMAL_SPRITE_IDS` entry in its dropdown, so a descriptor with
+     no character is still previewable. It loads only the animal it opens on, then fetches each
+     other one the first time it is picked, showing "Loading …" on the stage meanwhile.
    - **Farm** loads whoever `CHARACTERS` + `FARM_NPCS` (plus the player) name. Set
      `animal: '<id>'` on a farm character and the atlas is queued the next time the
      overworld starts.
@@ -492,9 +486,8 @@ from the source pack.
 ### 9.1 The vocabulary
 
 [`animalEmotions.ts`](../src/phaser/animals/animalEmotions.ts) owns `ANIMAL_EMOTIONS`:
-`talking`, `doubtful`, `angry`, `thinking`, `sneaky`, plus two entries that exist for the
-other two registers rather than for the stage — `talking_still` (a portrait source, §10.5) and
-`approving` (the moderator status face, §11). Each of the five stage entries names a
+`talking`, `doubtful`, `angry`, `thinking`, `sneaky`, plus `approving`, which exists for the
+moderator status face (§11) rather than for the stage. Each of the five stage entries names a
 **posture**, not a facial expression — a Trial sprite is ~300px tall, so its face is 50–80px and a raised eyebrow does
 not survive the downscale. Anything that has to read on the stage has to read in the
 silhouette.
@@ -558,17 +551,24 @@ off the floor the moment it reacts.
 
 So `scripts/ludo/normalize.mjs` measures, at promote time, the character's alpha bounding box
 in the clip against the same box in the atlas frame it was generated from, and stores a
-`scale` multiplier and an `originX`/`originY` on the sheet. `originY` is the bottom of the
-generated union box — the same place the atlas rest-frame trim puts the feet — so switching
-from idle to an emotion does not jump. `AnimalAnimator` applies them on `ANIMATION_START` of
+`scale` multiplier and an `originX`/`originY` on the sheet, measured from the clip's **rest
+frame** (frame 0, which is the reference pose by construction). `originY` is the bottom of
+that box — the same place the atlas rest-frame trim puts the feet — so switching from idle
+to an emotion does not jump. `AnimalAnimator` applies them on `ANIMATION_START` of
 the emotion clip and restores the staged values on `ANIMATION_START` of anything else —
 never in `playEmotion` / `playIdle` themselves. Phaser can delay the first frame (`delay`,
 `playAfterRepeat`), and putting emotion scale on an atlas texture (or atlas scale on a
 generated cell) is a ~2× size flash the moment a debate changes phase. The runtime measures
 nothing.
 
-The union box across all frames is used, not a per-frame box: a per-frame origin would make
-the character twitch as its box changed shape between frames.
+**Strict rule: one pivot per animal.** Every animation of an animal must share the same
+pivot, or the character jumps when one animation cuts to the next. The rest frame is used, not
+a per-frame box (the character would twitch) and not the union of all frames (the pivot would
+depend on how far each clip's motion reaches — this shipped once and slid the donkey ~30 stage
+units sideways on every switch into `doubtful`). Never move one clip's pivot to fit its
+motion; reposition every sheet of the animal together, or, after asking, enlarge them all.
+`scripts/ludo/pivot.mjs` makes `--promote` and `--remeasure` fail when an animal's clips
+disagree.
 
 If the origin/scale maths change, re-run `npm run sprites:emotions -- --remeasure` against
 the shipped PNGs — no API, no regeneration.
@@ -628,8 +628,8 @@ that generated them and the review directory holds bytes, never URLs.
 ### 9.6 The gallery scene
 
 `AnimalGallery` (main menu → **Animation Gallery**) is where you actually look at any of
-this. Pick an animal, hold any one of its clips on a loop, switch between them faster than a
-debate ever would.
+this. Pick an animal from the dropdown, hold any one of its clips on a loop, switch between
+them faster than a debate ever would.
 
 It deliberately does **not** use `AnimalAnimator`. That class plays animations the way the
 _game_ wants them — weighted, random, interrupted by whatever the debate is doing — which
@@ -639,32 +639,40 @@ What it does share is staging: it calls the same `applyEmotionStaging` / `restor
 (§9.4) that `AnimalAnimator` calls, so a clip previewed here is placed exactly as the Trial
 will place it. A gallery that staged clips its own way would be worse than no gallery.
 
-Three things worth knowing:
+Things worth knowing:
 
+- **One button per emotion, with a part switch for phased ones.** A phased emotion (ease-in,
+  loop, ease-out) is listed only as its parts, and the panel shows it as one button, and a **Whole /
+  Ease in / Loop / Ease out** switch under the grid picks the part. The switch is always shown;
+  for a clip with no phases, Whole is lit and the other parts are greyed out. Whole plays the chain the
+  game plays (in → loop ×2 → out → atlas rest) and restarts. Ease in and ease out each hold
+  their last frame for a beat before replaying, so you can read where the ease lands instead of
+  watching it pop back to frame 0. The raw generated clip the phases were cut from is not
+  offered: which cells of it survive depends on how the phases were last authored, so it is not
+  something the game plays.
 - **Switching animal keeps the clip you were looking at.** The question a reviewer actually has
   is "how does _this_ emotion read on each animal", so the selection carries across the cast
-  rather than resetting to idle every time. Emotion names exist for every animal, so an emotion
-  stays selected the whole way round and lands on the "no art yet" state where the art is
-  missing. Base animations are per-animal, so carrying `buck` from the donkey to the fox falls
-  back to the fox's rest pose.
+  rather than resetting to idle every time. Emotions carry by emotion, not by exact name:
+  `angry` · Loop on the sheep lands on plain `angry` on the fox, and back on the sheep it lands
+  on Loop again, because the chosen part is remembered. Where the art is missing, it lands on
+  the "no art yet" state. Base animations are per-animal, so carrying `buck` from the donkey to
+  the fox falls back to the fox's rest pose.
 - **Clips with no art are listed, not hidden.** `animalClipCatalogue.ts` returns every
   `ANIMAL_EMOTIONS` entry with an `available` flag, and the UI shows the missing ones dashed
   and labelled "no art yet". With the cast generated one animal at a time, the gap between the
   vocabulary and the art is the thing you most need to see.
-- **Both registers are in the panel.** Under the body emotions sits a **Dialogue portraits**
-  section listing the same five emotions again, each with a live thumbnail of the crop, and a
-  large preview over the stage at the two sizes `.ludo-review-faces/boxes.html` uses — 112px as
-  it ships and 224px for a 2× display, where softness actually shows (§10). Portrait selection
-  is independent of clip selection on purpose: a portrait is cut from the body clip of the same
-  name, so you want them playing side by side, not one replacing the other.
-- **The portraits section is the one place React draws its own art.** Face clips are DOM-played
+- **The dialogue portrait plays on the stage by itself.** Whenever an emotion is selected, its
+  portrait loops over the top-left of the stage, next to the body clip it was cut from, at the
+  two sizes `.ludo-review-faces/boxes.html` uses: 112px as it ships and 224px for a 2× display,
+  where softness actually shows (§10). There is no separate portrait list in the panel. Base
+  animations have no portrait, so the preview hides for them.
+- **The portrait is the one piece of art React draws itself.** Face clips are DOM-played
   (§10), so there is no scene to delegate to — it mounts the game's own `FaceClip` with the
   game's own `faceBoxTransform`, for the same reason the body clips share `applyEmotionStaging`.
   A gallery that framed a portrait its own way would be worse than no gallery.
-- **The smooth-transition toggle is a diagnostic, not decoration.** Switching from an atlas
-  clip to a generated one changes the sprite's texture, scale and origin on a single frame.
-  The crossfade hides that; turning it off is how you check whether a switch that looks fine
-  actually is fine.
+- **Switching is a plain cut.** Going from an atlas clip to a generated one changes the
+  sprite's texture, scale and origin on a single frame, and the gallery shows that as it is
+  rather than hiding it behind a fade.
 - **React never touches Phaser.** Every control is a write to `animalGalleryStore`, which the
   scene subscribes to — the same split, for the same reason, as `trialStageStore`.
 
@@ -701,10 +709,10 @@ cause is structural, not a prompt problem: a head submitted at a 485×363 boundi
 at 257×192, so the endpoint reframes its input and redraws the head from scratch every frame
 rather than animating the pixels it was given.
 
-`animalFaces.ts` also used to argue that a portrait *could not* be cropped from a body clip —
+`animalFaces.ts` also used to argue that a portrait _could not_ be cropped from a body clip —
 "the head is 90-110px of real pixels… blown up to a 112px portrait that is mush". That was
 measured against a 512px generator target rather than the **112px a portrait actually ships at**.
-Heads run ~100-150px, so a crop *downscales* into the box at 1× and upscales ~1.2-2.2× at 2× DPR.
+Heads run ~100-150px, so a crop _downscales_ into the box at 1× and upscales ~1.2-2.2× at 2× DPR.
 The body clips' faces also hold still, because the generator was animating posture and left the
 face alone — which is exactly the property a portrait needs.
 
@@ -716,7 +724,7 @@ face alone — which is exactly the property a portrait needs.
    across all frames of its `talking` clip. Never one per emotion: all five play in the same box
    in the same dialogue, so a per-emotion rect would make the head jump size between beats.
 2. **One alignment template per animal**, also from `talking` — the rect's rigid top 55% (skull,
-   ears, eye). The bottom is excluded because the mouth is the thing the clip is *for* and would
+   ears, eye). The bottom is excluded because the mouth is the thing the clip is _for_ and would
    fight the match.
 3. **Per-frame tracking.** The head bobs through a body clip (the fox's by 30px, its `thinking`
    by 40px), so a fixed rect drifts. Frame 0 searches the whole window; later frames search only
@@ -734,10 +742,10 @@ The record is `scripts/ludo/promoted-faces.json` and the generated index
 merged with them. `AnimalFace.tsx` renders nothing for an animal with no entry, so the register
 ships one animal at a time.
 
-To look at the result, the gallery (§9.6) now has a **Dialogue portraits** section beside the
-body clips — the in-game counterpart to `boxes.html`, and the only place the two registers can be
+To look at the result, the gallery (§9.6) plays each emotion's portrait on the stage beside its
+body clip — the in-game counterpart to `boxes.html`, and the only place the two registers can be
 compared without walking into a conversation and hoping the right beat comes up. It renders
-through `FaceClip`, the presentational half of `AnimalFace`: `AnimalFace` resolves a *character*
+through `FaceClip`, the presentational half of `AnimalFace`: `AnimalFace` resolves a _character_
 and asks for the game's forgiving behaviour (fall back to `talking`, render nothing at all when
 there is no art), which is exactly wrong for a review tool, so the gallery addresses sheets
 directly and shows "no portrait yet" where none was cropped.
@@ -748,14 +756,14 @@ directly and shows "no portrait yet" where none was cropped.
 portrait where it was a fraction of the body frame, so a seam invisible at body scale is loud at
 portrait scale. This decides which animals work:
 
-| animal | worst source seam | worst crop seam | upscale |
-|---|---|---|---|
-| owl | 0.43% | 0.77% | ×1.23 |
-| raccoon | 0.17% | 0.66% | ×1.72 |
-| fox | 0.20% | 0.93% | ×1.94 |
-| white-sheep-1 | 0.32% | 1.26% | ×1.92 |
-| brown-wolf | 0.33% | 1.83% | ×2.21 |
-| **donkey-grey** | **2.52%** | **11.22%** | ×1.86 |
+| animal          | worst source seam | worst crop seam | upscale |
+| --------------- | ----------------- | --------------- | ------- |
+| owl             | 0.43%             | 0.77%           | ×1.23   |
+| raccoon         | 0.17%             | 0.66%           | ×1.72   |
+| fox             | 0.20%             | 0.93%           | ×1.94   |
+| white-sheep-1   | 0.32%             | 1.26%           | ×1.92   |
+| brown-wolf      | 0.33%             | 1.83%           | ×2.21   |
+| **donkey-grey** | **2.52%**         | **11.22%**      | ×1.86   |
 
 Everything lands under the 2% gate except the donkey, whose body clips are the cast's weakest —
 the only ones that ever carried a loop-seam warning of their own. Its portraits are deliberately
@@ -785,42 +793,43 @@ reads as talking and a motionless one reads as idle (§9). The crop faithfully r
 that was requested.
 
 **Accepted rather than fixed.** If it needs improving, the lever is the cropper: the aligner
-matches the rect's rigid top 55%, so when the head *rotates* the best translation-only match is a
+matches the rect's rigid top 55%, so when the head _rotates_ the best translation-only match is a
 compromise that leaves the face offset. Narrowing the template to just the facial region would pin
 what the viewer actually looks at and let the ears drift instead; sub-pixel refinement and a small
-rotation search would take the rest. The structural answer is that head travel *is* part of a
+rotation search would take the rest. The structural answer is that head travel _is_ part of a
 posture animation, so a portrait cut from one always inherits some of it.
 
-### 10.5 `_still` variants — tried, and they do not do what their name says
+### 10.5 `_still` variants — tried once, and it did not do what its name said
 
-`ANIMAL_EMOTIONS` carries a `talking_still` entry and the cropper prefers `<emotion>_still` as
-its source when one has been promoted, falling back otherwise so it is an optional per-animal
-upgrade rather than a migration. It asks for the body and head locked with only the face moving,
-generated at body framing where the generator is reliable.
+The cropper still prefers an `<emotion>_still` body clip as its portrait source when one has been
+promoted, falling back to the plain emotion otherwise — an optional per-animal upgrade rather
+than a migration. Nothing in `ANIMAL_EMOTIONS` names one today; the one that existed,
+`donkey-grey/talking_still` (body and head locked, only the face moving), was removed.
 
-**It does not deliver a stiller head.** Measured on the one that exists,
-`donkey-grey/talking_still` — change per frame in the skull-and-ears band of the finished
-portrait, a band with no speech animation in it, so anything moving there is pose change the
+**It did not deliver a stiller head.** Measured against the skull-and-ears band of the finished
+portrait — a band with no speech animation in it, so anything moving there is pose change the
 aligner cannot remove:
 
-| portrait cut from | skull+ears change/frame | crop loop seam |
-|---|---|---|
-| `talking` (bobbing) | 1.07% | 4.15% — fails the 2% gate |
-| `talking_still` | **2.54%** | **0.56%** — passes |
+| portrait cut from   | skull+ears change/frame | crop loop seam            |
+| ------------------- | ----------------------- | ------------------------- |
+| `talking` (bobbing) | 1.07%                   | 4.15% — fails the 2% gate |
+| `talking_still`     | **2.54%**               | **0.56%** — passes        |
 
 Twice as unstable, plus a ~22px lateral slide the bobbing clip did not have: with the body pinned,
-the generator moved the head instead. Against the shipped cast — owl 0.53%, raccoon 0.94%,
-brown-wolf 1.37%, fox 1.40%, white-sheep-1 2.12% — it is the wobbliest portrait in the game.
+the generator moved the head instead. It shipped anyway, for a reason unrelated to its name: the
+fresh generation **fixed the loop seam**, and that was what had kept `donkey-grey` out of the
+register entirely. A clean loop with a wobbly head beats a visible jump every two seconds, so Rue
+has `talking`, `angry` and `sneaky` portraits; `doubtful` and `thinking` are still rejected on
+their source seams (11.73% and 5.76%) and fall back to `talking`.
 
-It shipped anyway, for a reason unrelated to its name: the fresh generation **fixed the loop
-seam**, and that was what had kept `donkey-grey` out of the register entirely. A clean loop with a
-wobbly head beats a visible jump every two seconds, so Rue now has `talking`, `angry` and
-`sneaky` portraits; `doubtful` and `thinking` are still rejected on their source seams (11.73% and
-5.76%) and fall back to `talking`.
+The body clip was later removed as dead weight — nothing plays it on stage, nothing derives it in
+`activeEmotionForWorkflow` — but `donkey-grey-talking.png` was already cropped from it and keeps
+its clean seam. **Regenerating that portrait will reintroduce the seam** unless a fresh
+`talking_still` (or another fix to the `talking` body clip) is generated first.
 
-**Do not generate the other four still variants expecting stillness.** Generate one only when an
-animal's body clip has a loop seam bad enough to disqualify its portrait — that is the problem
-these actually solve.
+**Do not generate a `_still` variant expecting stillness.** Generate one only when an animal's
+body clip has a loop seam bad enough to disqualify its portrait — that is the problem these
+actually solve.
 
 ## 11. The moderator status face — the third register
 
@@ -836,15 +845,15 @@ in [`trialHelpers.ts`](../src/react/trial/utils/trialHelpers.ts) maps a score to
 and **all three come from the same clip** — `approving` opens the owl's eyes from nearly shut to
 fully round over its 25 frames, so three of them are one head in one pose at three apertures:
 
-| score | frame | eyes |
-| --- | --- | --- |
-| `> 0` | 20 | fully open, big and round, bright yellow |
-| `= 0` | 6 | half open — yellow below, lid above |
-| `< 0` | 4 | nearly shut, only slivers of yellow left in the corners |
+| score | frame | eyes                                                    |
+| ----- | ----- | ------------------------------------------------------- |
+| `> 0` | 20    | fully open, big and round, bright yellow                |
+| `= 0` | 6     | half open — yellow below, lid above                     |
+| `< 0` | 4     | nearly shut, only slivers of yellow left in the corners |
 
 The axis a player reads is therefore **how much bright yellow is left in the eyes**: one
 continuous quantity, monotonic with the score, on a face that is otherwise identical between
-states. That is a change in *area and value*, so it survives the downscale — this icon renders at
+states. That is a change in _area and value_, so it survives the downscale — this icon renders at
 about 1.6em, roughly the size of the glyph it replaced, where an expression would not.
 
 The first arrangement took its three frames from three different emotion clips (`approving` /
@@ -863,7 +872,7 @@ nothing once the pixels change.
 
 ### 11.2 Duchess lends her face to debates she is not in
 
-Most *smaller-mode* encounters show a moderator's opinion with no moderator on stage: the
+Most _smaller-mode_ encounters show a moderator's opinion with no moderator on stage: the
 score is the room's judgement, not a character's, and Bram's first lesson has no owl in
 it. The indicator still needs a face, so it uses `debateModeratorId()` from
 [`debateCast.ts`](../src/data/debateCast.ts) — an authored `moderatorId` if present (Cass
