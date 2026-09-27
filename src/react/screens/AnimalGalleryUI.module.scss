@@ -255,9 +255,10 @@
 }
 
 .backButton {
-  width: 100%;
-  margin-top: 0.75rem;
-  padding: 0.7rem;
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  padding: 0.7rem 1.2rem;
   font-size: var(--ui-font-body);
   font-weight: bold;
   background: linear-gradient(45deg, var(--ui-color-bg), var(--ui-color-bg-soft));
@@ -265,6 +266,7 @@
   border: 2px solid var(--ui-color-border-emphasis);
   border-radius: 8px;
   cursor: pointer;
+  pointer-events: auto;
 
   &:hover {
     border-color: var(--ui-color-accent);

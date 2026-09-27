@@ -370,6 +370,14 @@ const AnimalGalleryUI: React.FC = () => {
 
   return (
     <div className={styles.galleryUi}>
+      {/* Over the stage's top-left corner, not in the panel, so it never scrolls out of reach. */}
+      <button
+        type="button"
+        className={styles.backButton}
+        onClick={() => GameManager.switchScene('MainMenu')}
+      >
+        {getLabel('galleryBackToMenu')}
+      </button>
       {/* The scene fetches an animal's art the first time it is picked, and leaves the stage
           empty meanwhile — say so, or a slow first pick reads as a broken clip. */}
       {loadingAnimalId && (
@@ -537,14 +545,6 @@ const AnimalGalleryUI: React.FC = () => {
               ? getLabel('galleryCycling', { replacements: { animal: animalId, clip: cycling } })
               : getLabel('galleryNothingSelected')}
         </div>
-
-        <button
-          type="button"
-          className={styles.backButton}
-          onClick={() => GameManager.switchScene('MainMenu')}
-        >
-          {getLabel('galleryBackToMenu')}
-        </button>
       </aside>
     </div>
   );
