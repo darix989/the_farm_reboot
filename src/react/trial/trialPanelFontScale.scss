@@ -1,10 +1,17 @@
 @use '../breakpoints' as bp;
 
-/* Shared with `TrialLayout` panels and `.trialModalFontScope` so typography stays in sync. */
+/* Shared with `TrialLayout` panels and `.trialModalFontScope` so typography stays in sync.
+   `--ui-trial-conversation-font-boost` is added on top of the scaled size for the spoken
+   dialog lines and the actions' hint / reply words only — panel headings keep the plain scale. */
 @mixin trial-panel-font-scale {
   --ui-trial-panel-font-scale: 1.3;
+  --ui-trial-conversation-font-boost: 0px;
 
   @include bp.compact {
     --ui-trial-panel-font-scale: 1.8;
+  }
+
+  @include bp.smartphone {
+    --ui-trial-conversation-font-boost: 2px;
   }
 }

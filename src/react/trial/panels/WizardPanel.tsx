@@ -133,7 +133,8 @@ const WizardPanel: React.FC<WizardPanelProps> = ({
               <div
                 className={shared.trialSectionBox}
                 style={{
-                  fontSize: 'calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1))',
+                  fontSize:
+                    'calc(var(--ui-font-body) * var(--ui-trial-panel-font-scale, 1) + var(--ui-trial-conversation-font-boost, 0px))',
                   lineHeight: 1.375,
                 }}
               >
