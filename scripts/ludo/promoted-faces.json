@@ -1478,9 +1478,9 @@
       "cols": 5,
       "fit": {
         "x": 0,
-        "y": 0.0276,
+        "y": 0,
         "width": 1,
-        "height": 0.9448
+        "height": 1
       },
       "sourceClip": "cow-thinking.png",
       "sourceEmotion": "approving",
@@ -1491,138 +1491,138 @@
         "h": 0.7
       },
       "headRect": {
-        "left": 106,
+        "left": 108,
         "top": 137,
-        "width": 145,
-        "height": 137
+        "width": 143,
+        "height": 143
       },
       "alignment": {
         "offsets": [
           {
-            "dx": 4,
-            "dy": -10
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 1,
+            "dy": 0
+          },
+          {
+            "dx": 3,
+            "dy": -1
           },
           {
             "dx": 5,
-            "dy": -12
+            "dy": -3
+          },
+          {
+            "dx": 7,
+            "dy": -6
+          },
+          {
+            "dx": 5,
+            "dy": -16
           },
           {
             "dx": 6,
-            "dy": -14
+            "dy": -16
           },
           {
             "dx": 8,
-            "dy": -17
+            "dy": -18
           },
           {
-            "dx": 7,
+            "dx": 8,
+            "dy": -20
+          },
+          {
+            "dx": 8,
+            "dy": -21
+          },
+          {
+            "dx": 9,
             "dy": -22
           },
           {
-            "dx": 7,
-            "dy": -26
+            "dx": 9,
+            "dy": -23
           },
           {
-            "dx": 12,
-            "dy": -26
+            "dx": 9,
+            "dy": -23
           },
           {
-            "dx": 12,
-            "dy": -30
+            "dx": 9,
+            "dy": -23
           },
           {
-            "dx": 11,
-            "dy": -31
+            "dx": 8,
+            "dy": -23
           },
           {
-            "dx": 12,
-            "dy": -32
+            "dx": 9,
+            "dy": -23
           },
           {
-            "dx": 13,
-            "dy": -33
-          },
-          {
-            "dx": 13,
-            "dy": -33
-          },
-          {
-            "dx": 13,
-            "dy": -33
-          },
-          {
-            "dx": 13,
-            "dy": -33
-          },
-          {
-            "dx": 13,
-            "dy": -33
-          },
-          {
-            "dx": 15,
-            "dy": -32
-          },
-          {
-            "dx": 13,
-            "dy": -33
-          },
-          {
-            "dx": 12,
-            "dy": -28
+            "dx": 9,
+            "dy": -23
           },
           {
             "dx": 7,
-            "dy": -19
+            "dy": -18
           },
           {
-            "dx": 4,
-            "dy": -12
-          },
-          {
-            "dx": 5,
-            "dy": -11
-          },
-          {
-            "dx": 4,
-            "dy": -10
-          },
-          {
-            "dx": 4,
-            "dy": -9
+            "dx": 6,
+            "dy": -2
           },
           {
             "dx": 3,
-            "dy": -10
+            "dy": 1
           },
           {
-            "dx": 3,
-            "dy": -10
+            "dx": 1,
+            "dy": 2
+          },
+          {
+            "dx": 0,
+            "dy": 2
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
           }
         ],
-        "maxOffset": 33,
-        "maxJump": 9,
+        "maxOffset": 23,
+        "maxJump": 16,
         "warnings": []
       },
       "quality": {
-        "loopPop": 1.84,
-        "heightSwing": 10.7,
-        "driftX": 2.3,
+        "loopPop": 0.71,
+        "heightSwing": 10,
+        "driftX": 2,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T13:55:18.825Z"
+      "generatedAt": "2026-09-27T02:31:55.540Z"
     },
     "sneaky": {
       "file": "cow-sneaky.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 25,
-      "frameRate": 13,
-      "cols": 5,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
       "fit": {
         "x": 0,
-        "y": 0.0276,
+        "y": 0,
         "width": 1,
-        "height": 0.9448
+        "height": 1
       },
       "sourceClip": "cow-sneaky.png",
       "sourceEmotion": "sneaky",
@@ -1633,138 +1633,182 @@
         "h": 0.7
       },
       "headRect": {
-        "left": 106,
+        "left": 108,
         "top": 137,
-        "width": 145,
-        "height": 137
+        "width": 143,
+        "height": 143
       },
       "alignment": {
         "offsets": [
           {
-            "dx": 3,
-            "dy": -11
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 6,
-            "dy": -22
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 6,
-            "dy": -31
-          },
-          {
-            "dx": 10,
-            "dy": -37
-          },
-          {
-            "dx": 5,
-            "dy": -39
-          },
-          {
-            "dx": 14,
-            "dy": -41
-          },
-          {
-            "dx": 12,
-            "dy": -46
-          },
-          {
-            "dx": 9,
-            "dy": -43
-          },
-          {
-            "dx": 11,
-            "dy": -41
-          },
-          {
-            "dx": 7,
-            "dy": -32
-          },
-          {
-            "dx": 7,
-            "dy": -22
-          },
-          {
-            "dx": 3,
-            "dy": -12
+            "dx": 0,
+            "dy": 0
           },
           {
             "dx": 1,
-            "dy": -9
+            "dy": 0
           },
           {
             "dx": 1,
-            "dy": -8
+            "dy": 0
           },
           {
             "dx": 1,
-            "dy": -8
+            "dy": 0
           },
           {
-            "dx": 1,
-            "dy": -8
+            "dx": -1,
+            "dy": 2
           },
           {
-            "dx": 1,
-            "dy": -10
+            "dx": -5,
+            "dy": 4
           },
           {
-            "dx": 3,
-            "dy": -10
+            "dx": -8,
+            "dy": 7
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -12,
+            "dy": 10
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -15,
+            "dy": 14
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -18,
+            "dy": 16
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -19,
+            "dy": 18
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -20,
+            "dy": 18
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -20,
+            "dy": 18
           },
           {
-            "dx": 3,
-            "dy": -11
+            "dx": -20,
+            "dy": 18
+          },
+          {
+            "dx": -20,
+            "dy": 18
+          },
+          {
+            "dx": -20,
+            "dy": 18
+          },
+          {
+            "dx": -20,
+            "dy": 18
+          },
+          {
+            "dx": -20,
+            "dy": 18
+          },
+          {
+            "dx": -20,
+            "dy": 18
+          },
+          {
+            "dx": -20,
+            "dy": 18
+          },
+          {
+            "dx": -20,
+            "dy": 18
+          },
+          {
+            "dx": -18,
+            "dy": 16
+          },
+          {
+            "dx": -15,
+            "dy": 14
+          },
+          {
+            "dx": -12,
+            "dy": 10
+          },
+          {
+            "dx": -8,
+            "dy": 7
+          },
+          {
+            "dx": -5,
+            "dy": 3
+          },
+          {
+            "dx": -2,
+            "dy": 1
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
           }
         ],
-        "maxOffset": 46,
-        "maxJump": 11,
+        "maxOffset": 20,
+        "maxJump": 4,
         "warnings": []
       },
       "quality": {
-        "loopPop": 0.79,
-        "heightSwing": 13.8,
-        "driftX": 3.8,
+        "loopPop": 0.68,
+        "heightSwing": 1.7,
+        "driftX": 5.3,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T13:55:21.317Z"
+      "generatedAt": "2026-09-27T02:32:01.746Z"
     },
     "talking": {
       "file": "cow-talking.png",
       "frameWidth": 256,
       "frameHeight": 256,
-      "frameCount": 25,
-      "frameRate": 12.5,
-      "cols": 5,
+      "frameCount": 36,
+      "frameRate": 12,
+      "cols": 6,
       "fit": {
         "x": 0,
-        "y": 0.0276,
+        "y": 0,
         "width": 1,
-        "height": 0.9448
+        "height": 1
       },
       "sourceClip": "cow-talking.png",
       "sourceEmotion": "talking",
@@ -1775,10 +1819,10 @@
         "h": 0.7
       },
       "headRect": {
-        "left": 106,
+        "left": 108,
         "top": 137,
-        "width": 145,
-        "height": 137
+        "width": 143,
+        "height": 143
       },
       "alignment": {
         "offsets": [
@@ -1787,76 +1831,120 @@
             "dy": 0
           },
           {
-            "dx": -1,
-            "dy": 1
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": -2,
-            "dy": 2
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": -6,
-            "dy": 2
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": -9,
-            "dy": 3
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": -9,
-            "dy": 3
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": -9,
-            "dy": 3
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 3,
-            "dy": -1
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 1,
-            "dy": -16
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 4,
-            "dy": -22
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": -4,
-            "dy": -26
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": -3,
-            "dy": -27
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": -4,
-            "dy": -27
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 2,
-            "dy": -25
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 5,
-            "dy": -20
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 1,
-            "dy": -17
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 4,
-            "dy": -5
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 2,
-            "dy": -1
+            "dx": 0,
+            "dy": 0
           },
           {
-            "dx": 1,
-            "dy": -1
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
+          },
+          {
+            "dx": 0,
+            "dy": 0
           },
           {
             "dx": 0,
@@ -1883,17 +1971,17 @@
             "dy": 0
           }
         ],
-        "maxOffset": 27,
-        "maxJump": 15,
+        "maxOffset": 0,
+        "maxJump": 0,
         "warnings": []
       },
       "quality": {
-        "loopPop": 0.51,
-        "heightSwing": 16.6,
-        "driftX": 9.3,
+        "loopPop": 0.9,
+        "heightSwing": 0,
+        "driftX": 0,
         "warnings": []
       },
-      "generatedAt": "2026-09-13T13:55:22.393Z"
+      "generatedAt": "2026-09-27T02:32:05.558Z"
     }
   },
   "dog": {
