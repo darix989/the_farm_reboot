@@ -591,7 +591,7 @@ function cropSource(emotions, emotion) {
  * their box yet.
  *
  * A `_still` clip is a *source*, never an output: it produces the portrait for the emotion it is
- * a variant of, so it must not also produce a `talking_still` portrait that nothing would ask
+ * a variant of, so it must not also produce an `<emotion>_still` portrait that nothing would ask
  * for. The runtime only ever looks up the five real emotions.
  */
 function planCropJobs(manifest, bodyRecord, args) {

@@ -42,14 +42,6 @@ export const ANIMAL_EMOTIONS = [
    * Authored for the moderator status indicator rather than the stage — see the note below.
    */
   'approving',
-  /**
-   * `talking` again, but with the body and head **locked still** so only the face moves.
-   *
-   * A portrait source, not a stage posture — see the "still variants" note below. Playing it on
-   * the Trial stage is not wrong, just pointless: at 300px a motionless animal reads as an idle
-   * loop, which is exactly why every other entry here names a posture instead.
-   */
-  'talking_still',
 ] as const;
 
 /**
@@ -60,11 +52,10 @@ export const ANIMAL_EMOTIONS = [
  * *is* the moderator, so `approving` was generated to give her a pleased face: nothing in the
  * vocabulary was one, and her existing clips only covered a glare and a level neutral.
  *
- * It is therefore the second entry here (after `talking_still`) that names something other than
- * a stage posture, and for the opposite reason: `talking_still` takes motion *out* of a posture
- * for the portrait crop, while `approving` is a posture nobody plays at 300px. Nothing in
- * `activeEmotionForWorkflow` derives it — the status indicator picks its frames directly. Playing
- * it on stage is not wrong (a convinced listener nodding is a real beat), just currently unused.
+ * It is therefore the one entry here that names something other than a stage posture: a posture
+ * nobody plays at 300px. Nothing in `activeEmotionForWorkflow` derives it — the status indicator
+ * picks its frames directly. Playing it on stage is not wrong (a convinced listener nodding is a
+ * real beat), just currently unused.
  *
  * It ended up carrying **all three** of Duchess's status states rather than one, which is
  * the better design for her and was not the plan. Its 25 frames open the owl's eyes from
@@ -74,51 +65,6 @@ export const ANIMAL_EMOTIONS = [
  * stills do the opposite on purpose: three portraits (`sneaky` / `doubtful` / `angry`),
  * because no single fox clip opens along one axis that way. See `moderatorOpinionFace()` in
  * `src/react/trial/utils/trialHelpers.ts`.
- *
- * ## Still variants (`<emotion>_still`)
- *
- * These exist because the two registers want opposite things from the same clip, and until now
- * one clip served both.
- *
- * Every `talking` prompt in the manifest asks for "head bobbing gently in time with speech",
- * deliberately: at 300px a bobbing head is *what reads as talking*, and a motionless one reads
- * as idle. But `scripts/ludo/cropFace.mjs` cuts dialogue portraits out of these same clips, and
- * a portrait wants the opposite — the face held still in its box with only the mouth and eyes
- * moving. Human review of the first cropped portraits put it plainly: glitch-free, but obviously
- * not authored for a head-only crop, because the face translates. It was translating because the
- * prompt asked it to.
- *
- * A `_still` variant asks for the same emotion with the travel taken out. The cropper prefers
- * `<emotion>_still` as its source when one has been promoted and falls back to `<emotion>`
- * otherwise, so it is an *optional* per-animal upgrade rather than a migration: an animal
- * without one keeps the portrait it already had. The stage keeps using the bobbing original —
- * nothing derives a `_still` emotion in `activeEmotionForWorkflow`, and nothing should.
- *
- * ### It does not deliver the stillness it asks for
- *
- * Measured on the first one (`donkey-grey/talking_still`), and worth knowing before generating
- * more. Change per frame in the skull-and-ears band of the finished portrait — a band that
- * carries no speech animation, so anything moving in it is pose change the aligner cannot
- * remove:
- *
- * | portrait cut from | skull+ears change/frame | crop loop seam |
- * |---|---|---|
- * | `talking` (bobbing) | 1.07% | 4.15% — fails the 2% gate |
- * | `talking_still` | **2.54%** | **0.56%** — passes |
- *
- * So the prompt made the head *twice as unstable*, not stiller: with the body pinned the
- * generator moved the head instead, and added a ~22px lateral slide the bobbing clip did not
- * have. For context the shipped cast runs 0.53% (owl) to 2.12% (white-sheep-1), so the still
- * variant is the wobbliest portrait in the game.
- *
- * It shipped anyway, for a reason that has nothing to do with its name: the fresh generation
- * **fixed the loop seam**. `donkey-grey`'s body clips carry the cast's worst seams, cropping
- * amplifies them ~4x, and that — not the head bob — was what kept Rue text-only. A clean loop
- * with a wobbly head beats a visible jump every two seconds.
- *
- * Do not generate the remaining four still variants expecting a stiller head. If stillness is
- * the goal, the lever is the cropper (narrow the alignment template to the facial region), not
- * the prompt.
  */
 
 export type AnimalEmotion = (typeof ANIMAL_EMOTIONS)[number];

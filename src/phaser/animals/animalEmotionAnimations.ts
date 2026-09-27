@@ -50,8 +50,9 @@ export function emotionAnimKey(animalId: AnimalSpriteId, emotion: AnimalEmotion)
 
 /**
  * Logical name of one phase clip (`emotion_angry@in`). `@` rather than `_` because emotion
- * names already contain underscores (`talking_still`), and a phase key must never be mistaken
- * for — or collide with — a plain emotion's.
+ * names can themselves contain underscores (a `<emotion>_still` portrait-crop source, see
+ * `generate-emotion-sprites.mjs`), and a phase key must never be mistaken for — or collide
+ * with — a plain emotion's.
  */
 export function emotionPhaseSequenceKey(emotion: AnimalEmotion, phase: EmotionPhase): string {
   return `${emotionSequenceKey(emotion)}@${phase}`;

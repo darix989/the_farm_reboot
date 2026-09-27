@@ -492,9 +492,8 @@ from the source pack.
 ### 9.1 The vocabulary
 
 [`animalEmotions.ts`](../src/phaser/animals/animalEmotions.ts) owns `ANIMAL_EMOTIONS`:
-`talking`, `doubtful`, `angry`, `thinking`, `sneaky`, plus two entries that exist for the
-other two registers rather than for the stage — `talking_still` (a portrait source, §10.5) and
-`approving` (the moderator status face, §11). Each of the five stage entries names a
+`talking`, `doubtful`, `angry`, `thinking`, `sneaky`, plus `approving`, which exists for the
+moderator status face (§11) rather than for the stage. Each of the five stage entries names a
 **posture**, not a facial expression — a Trial sprite is ~300px tall, so its face is 50–80px and a raised eyebrow does
 not survive the downscale. Anything that has to read on the stage has to read in the
 silhouette.
@@ -799,16 +798,15 @@ what the viewer actually looks at and let the ears drift instead; sub-pixel refi
 rotation search would take the rest. The structural answer is that head travel _is_ part of a
 posture animation, so a portrait cut from one always inherits some of it.
 
-### 10.5 `_still` variants — tried, and they do not do what their name says
+### 10.5 `_still` variants — tried once, and it did not do what its name said
 
-`ANIMAL_EMOTIONS` carries a `talking_still` entry and the cropper prefers `<emotion>_still` as
-its source when one has been promoted, falling back otherwise so it is an optional per-animal
-upgrade rather than a migration. It asks for the body and head locked with only the face moving,
-generated at body framing where the generator is reliable.
+The cropper still prefers an `<emotion>_still` body clip as its portrait source when one has been
+promoted, falling back to the plain emotion otherwise — an optional per-animal upgrade rather
+than a migration. Nothing in `ANIMAL_EMOTIONS` names one today; the one that existed,
+`donkey-grey/talking_still` (body and head locked, only the face moving), was removed.
 
-**It does not deliver a stiller head.** Measured on the one that exists,
-`donkey-grey/talking_still` — change per frame in the skull-and-ears band of the finished
-portrait, a band with no speech animation in it, so anything moving there is pose change the
+**It did not deliver a stiller head.** Measured against the skull-and-ears band of the finished
+portrait — a band with no speech animation in it, so anything moving there is pose change the
 aligner cannot remove:
 
 | portrait cut from   | skull+ears change/frame | crop loop seam            |
@@ -817,18 +815,20 @@ aligner cannot remove:
 | `talking_still`     | **2.54%**               | **0.56%** — passes        |
 
 Twice as unstable, plus a ~22px lateral slide the bobbing clip did not have: with the body pinned,
-the generator moved the head instead. Against the shipped cast — owl 0.53%, raccoon 0.94%,
-brown-wolf 1.37%, fox 1.40%, white-sheep-1 2.12% — it is the wobbliest portrait in the game.
+the generator moved the head instead. It shipped anyway, for a reason unrelated to its name: the
+fresh generation **fixed the loop seam**, and that was what had kept `donkey-grey` out of the
+register entirely. A clean loop with a wobbly head beats a visible jump every two seconds, so Rue
+has `talking`, `angry` and `sneaky` portraits; `doubtful` and `thinking` are still rejected on
+their source seams (11.73% and 5.76%) and fall back to `talking`.
 
-It shipped anyway, for a reason unrelated to its name: the fresh generation **fixed the loop
-seam**, and that was what had kept `donkey-grey` out of the register entirely. A clean loop with a
-wobbly head beats a visible jump every two seconds, so Rue now has `talking`, `angry` and
-`sneaky` portraits; `doubtful` and `thinking` are still rejected on their source seams (11.73% and
-5.76%) and fall back to `talking`.
+The body clip was later removed as dead weight — nothing plays it on stage, nothing derives it in
+`activeEmotionForWorkflow` — but `donkey-grey-talking.png` was already cropped from it and keeps
+its clean seam. **Regenerating that portrait will reintroduce the seam** unless a fresh
+`talking_still` (or another fix to the `talking` body clip) is generated first.
 
-**Do not generate the other four still variants expecting stillness.** Generate one only when an
-animal's body clip has a loop seam bad enough to disqualify its portrait — that is the problem
-these actually solve.
+**Do not generate a `_still` variant expecting stillness.** Generate one only when an animal's
+body clip has a loop seam bad enough to disqualify its portrait — that is the problem these
+actually solve.
 
 ## 11. The moderator status face — the third register
 

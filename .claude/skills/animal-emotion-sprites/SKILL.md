@@ -427,27 +427,25 @@ drift instead; sub-pixel refinement and a small rotation search would take the r
 structural answer is that head travel *is* part of a posture animation, so a portrait cut from
 one always inherits some.
 
-### `_still` variants: tried, and they do not do what their name says
+### `_still` variants: tried once, and it did not do what its name said
 
-There is a `talking_still` emotion in the vocabulary and the cropper prefers `<emotion>_still`
-as its source when one has been promoted. It asks for the body and head locked with only the
-face moving. **It does not deliver a stiller head.** Measured on `donkey-grey/talking_still`,
-change per frame in the skull-and-ears band of the finished portrait — a band with no speech
-animation in it, so anything moving there is pose change the aligner cannot remove:
-
-| portrait cut from | skull+ears change/frame | crop loop seam |
-|---|---|---|
-| `talking` (bobbing) | 1.07% | 4.15% — fails the gate |
-| `talking_still` | **2.54%** | **0.56%** — passes |
-
-Twice as unstable, plus a ~22px lateral slide the bobbing clip did not have: with the body
-pinned, the generator moved the head instead. The shipped cast runs 0.53% (owl) to 2.12%
-(white-sheep-1), so it is the wobbliest portrait in the game.
-
-It shipped for a different reason than intended — the fresh generation **fixed the loop seam**,
-which is what had kept `donkey-grey` out of the register entirely. **Do not generate the other
-four still variants expecting stillness.** Generate one only when an animal's body clip has a
-seam bad enough to disqualify its portrait.
+The cropper still prefers an `<emotion>_still` body clip as its portrait source when one has
+been promoted, falling back to the plain emotion otherwise — nothing in `ANIMAL_EMOTIONS` names
+one today. The one that existed, `donkey-grey/talking_still`, asked for the body and head locked
+with only the face moving, and **did not deliver a stiller head**: measured against the skull-
+and-ears band of the finished portrait (no speech animation in it, so anything moving there is
+pose change the aligner cannot remove), it ran 2.54% change/frame versus 1.07% for the bobbing
+`talking` clip it was meant to steady — twice as unstable, plus a ~22px lateral slide the bobbing
+clip did not have. It shipped anyway for a different reason: the fresh generation happened to
+**fix the loop seam** (0.56% vs. 4.15%, which had failed the gate and kept `donkey-grey` out of
+the register entirely). The body clip was later removed as dead weight — nothing plays it on
+stage and nothing derives it in `activeEmotionForWorkflow` — but the already-shipped
+`donkey-grey-talking.png` portrait was cropped from it and keeps its clean seam regardless.
+**Regenerating that portrait now will reintroduce the seam** unless a fresh `talking_still` (or
+another fix to the underlying `talking` body clip) is generated first. **Do not generate a
+`_still` variant expecting stillness** — if the goal is a steadier head, the lever is the cropper
+(narrow the alignment template to the facial region), not the prompt. Generate one only when an
+animal's body clip has a seam bad enough to disqualify its portrait.
 
 ### Cropping amplifies the source clip's loop seam
 
