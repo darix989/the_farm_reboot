@@ -38,7 +38,6 @@ export type AnimalSpriteId =
   | 'white-sheep-1'
   | 'brown-wolf'
   | 'cow'
-  | 'cow-female-001'
   | 'dog'
   | 'mouse'
   | 'pig'

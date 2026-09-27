@@ -76,7 +76,7 @@ export function trialAnimalIds(debateId: DebateScenarioKey): AnimalSpriteId[] {
 }
 
 /**
- * Just the animal the gallery is showing. Loading all sixteen up front made opening the
+ * Just the animal the gallery is showing. Loading all fifteen up front made opening the
  * gallery the slowest load in the game for a screen that shows one animal at a time; the
  * scene queues the rest one by one as they are picked (`AnimalGallery.showAnimal`).
  */

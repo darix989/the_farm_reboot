@@ -51,7 +51,7 @@ doing anything sprite-related.
 
 ## 2. Assets on disk
 
-Sixteen multi-page atlases. Eleven were copied from the prototype, already packed with
+Fifteen multi-page atlases. Ten were copied from the prototype, already packed with
 TexturePacker; five were packed here from raw GameDeveloperStudio character packs by
 [`scripts/build-animal-atlas.mjs`](../scripts/build-animal-atlas.mjs) (see §2.1).
 
@@ -64,7 +64,6 @@ public/assets/characters/
   white-sheep-1.json + white-sheep-1/white-sheep-1-{0..2}.png
   brown-wolf.json  + brown-wolf/brown-wolf-{0..8}.png
   cow.json         + cow/cow-{0..4}.png
-  cow-female-001.json + cow_female_001/cow_female_001-{0..5}.png
   dog.json         + dog/dog-{0..11}.png
   mouse.json       + mouse/mouse-{0..7}.png
   pig.json         + pig/pig-{0..1}.png
@@ -78,22 +77,19 @@ public/assets/characters/
 Both the JSON descriptors and the PNG pages live under `public/assets/` (loaded by
 Phaser's `this.load.multiatlas` from the scene that needs them — see
 [`animalPacks.ts`](../src/phaser/animals/animalPacks.ts)), **not** imported as ES
-modules — eleven descriptors have no reason to sit in the main JS bundle and be parsed
+modules — ten descriptors have no reason to sit in the main JS bundle and be parsed
 on the main menu, even though `resolveJsonModule` is on.
 
-Two naming mismatches, both inherited from the prototype. The `textures[].image` field
+One naming mismatch, inherited from the prototype. The `textures[].image` field
 inside each descriptor is the ultimate authority:
 
 - `brown-wolf.json` was renamed from the source's `brown_wolf.json` (dashed id, dashed dir).
-- `cow-female-001` keeps the source's underscored image directory (`cow_female_001/`) and
-  PNG names; only the JSON file was renamed to match the dashed id, so
-  `load.multiatlas('cow-female-001', 'characters/cow-female-001.json')` finds it.
 
 **Frame naming — three shapes in this set:**
 
 | Shape                              | Example frame filename                                      | Animals                                                                               | Needs `framePrefix`?                     |
 | ---------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------------------------- |
-| Flat, dash-separated               | `__red_fox_idle-3.png`                                      | donkey-grey, fox, white-sheep-1, brown-wolf, raccoon, dog, mouse, pig, cow-female-001 | no — matches the default `${frameStem}-` |
+| Flat, dash-separated               | `__red_fox_idle-3.png`                                      | donkey-grey, fox, white-sheep-1, brown-wolf, raccoon, dog, mouse, pig | no — matches the default `${frameStem}-` |
 | Foldered, dash-separated           | `__black_and_white_cow_die/__black_and_white_cow_die-0.png` | cow                                                                                   | yes                                      |
 | Foldered, **underscore**-separated | `__owl_no_tail_idle_awake/__owl_no_tail_idle_awake_4.png`   | owl                                                                                   | yes, on all five animations              |
 
@@ -106,7 +102,7 @@ The five packed here are deliberately all in the first shape — see below.
 
 ### 2.1 Packing an atlas from a raw character pack
 
-The prototype's eleven arrived already packed. A pack bought from GameDeveloperStudio does
+The prototype's ten arrived already packed. A pack bought from GameDeveloperStudio does
 not: it ships either **loose keyframe PNGs** (one file per frame, every frame on the same
 export canvas, named `<stem>_<nnn>.png`) or **strip spritesheets** (one PNG per animation on
 a fixed grid). `scripts/build-animal-atlas.mjs` is the missing export step, so a new animal
@@ -193,9 +189,8 @@ Registration is a plain `Record<AnimalSpriteId, AnimalDescriptor>`
 compiler enforces that every `AnimalSpriteId` has a descriptor, instead of a silently
 unregistered entry producing zero animations.
 
-Every animal has a `move` except two: Duchess (`owl`), whose atlas has none and who flies
-(`flap_wings`) rather than walks, and `cow-female-001`, whose atlas is idle plus two speak
-loops. Unlike `idle`, a `move` sequence should loop (`repeat: -1`) — movement ends when
+Every animal has a `move` except Duchess (`owl`), whose atlas has none and who flies
+(`flap_wings`) rather than walks. Unlike `idle`, a `move` sequence should loop (`repeat: -1`) — movement ends when
 the _character_ stops, not when the clip does. Only the player translates today; the field
 is on the descriptor rather than in `Farm.ts` so a wandering NPC or a cutscene tween gets
 the same cycle for free.
@@ -339,7 +334,6 @@ apparent size the two multipliers above were fit to:
 | `white-sheep-1`  | 1.0          | 311×267                  | 311×267                          |
 | `brown-wolf`     | 0.7          | 589×468                  | 412×328                          |
 | `cow`            | 1.0          | 479×383                  | 479×383                          |
-| `cow-female-001` | 1.3          | 406×330                  | **528×429 — largest in the set** |
 | `dog`            | 0.6          | 700×568                  | 420×341                          |
 | `mouse`          | 0.35         | 735×469                  | 257×164                          |
 | `pig`            | 1.0          | 419×229                  | 419×229                          |

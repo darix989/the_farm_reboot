@@ -20,10 +20,10 @@ settings). **Never run a generating command without the user having asked for th
 generation, and confirm the scope first if they gave a budget or an ambiguous "do the rest".**
 `--dry-run` is free and needs no key — start there, always.
 
-State the projected cost before generating: `clips × 4 credits`. The nine imported animals
-that still have no emotion art (`cow`, `cow-female-001`, `mouse`, `pig`, `brown-bull`,
-`white-chicken`, `skunk`, `seagull`, `snake`) are 45 clips at the five core emotions,
-~180 credits. Do not generate them until asked.
+State the projected cost before generating: `clips × 4 credits`. The eight imported animals
+that still have no emotion art (`cow`, `mouse`, `pig`, `brown-bull`,
+`white-chicken`, `skunk`, `seagull`, `snake`) are 40 clips at the five core emotions,
+~160 credits. Do not generate them until asked.
 
 **A bare run is the whole manifest**, which is now nine animals × seven prompts = 63 clips,
 ~252 credits. `--animal` and `--emotion` are what keep a run to what was actually asked for;
@@ -192,7 +192,6 @@ here because ignoring them costs credits.
    | wolf | **ears + bushy tail + snarl + white neck ruff** | the fox's carriers plus a high-contrast ruff that bristles; produced the strongest `angry` in the project, first try, with textbook-stable fangs |
    | raccoon | **brows + big white eyes in a dark mask**, and **free forepaws** | staged sitting up, so it is the only character with hands — it can gesture, point and clench, which nothing else in the cast can |
    | cow | **huge pink snout + googly eyes + golden cowbell** | grazing prior (atlas ships `eat`); hold the head UP at the reference height |
-   | cow-female-001 | **two long black braids** (plus the bell and eyes) | same grazing prior, plus a speaking prior (`speak_angry` / `speak_worried` in the atlas) |
    | dog | **pointed ears + tail**, dark saddle | sitting prior (`sit` / `sit_idle`) and a bark; keep it standing |
    | mouse | **huge pink-lined ears + arched pink tail + buck teeth** | source art faces **right** (`isFlipped`); lying-down prior (`lie`) |
    | pig | **round snout + corkscrew tail** | low wide oval that wants to lie down; hold the four short legs planted |
@@ -310,7 +309,7 @@ and re-pick — a diffusion clip's frames are in no fixed order across generatio
 means nothing once the pixels change. `docs/characters-and-animations.md` §11 has the rest.
 
 **Seven animals are generated** (`donkey-grey`, `owl`, `raccoon`, `fox`, `white-sheep-1`,
-`brown-wolf`, `dog`). Nine more atlases are imported (`cow`, `cow-female-001`, `mouse`,
+`brown-wolf`, `dog`). Eight more atlases are imported (`cow`, `mouse`,
 `pig`, and the GameDeveloperStudio five — `brown-bull`, `white-chicken`, `skunk`, `seagull`,
 `snake`) and listed in the emotion manifest with prompts and a seeded `headCrop`, but they
 have no generated clips yet — do not generate them until asked. `dog` has all five body clips and four portraits (`talking`,

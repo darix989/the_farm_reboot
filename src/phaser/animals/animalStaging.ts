@@ -48,7 +48,6 @@ const SOURCE_SCALE: Record<AnimalSpriteId, number> = {
   'white-sheep-1': 1.0,
   'brown-wolf': 0.7,
   cow: 1.0,
-  'cow-female-001': 1.3,
   dog: 0.6,
   mouse: 0.35,
   pig: 1.0,

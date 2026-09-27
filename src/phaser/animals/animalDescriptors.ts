@@ -313,17 +313,6 @@ const COW: AnimalDescriptor = {
   move: [[1, [{ key: 'walk', repeat: -1 }]]],
 };
 
-const COW_FEMALE_001: AnimalDescriptor = {
-  id: 'cow-female-001',
-  baseAnimations: [
-    { name: 'idle', frameStem: 'cow_idle_smile__loop__', endFrameIndex: 54 },
-    { name: 'speak_angry', frameStem: 'cow_speak_angry__loop__', endFrameIndex: 33 },
-    { name: 'speak_worried', frameStem: 'cow_speak_worried__loop__', endFrameIndex: 49 },
-  ],
-  idle: [[1, [{ key: 'idle', repeat: -1 }]]],
-  alert: [[1, [{ key: 'speak_worried' }]]],
-};
-
 // dot -> dog (exact match). Farm greeter; emotion clips feed her dialogue portraits.
 const DOG: AnimalDescriptor = {
   id: 'dog',
@@ -536,7 +525,6 @@ export const ANIMAL_DESCRIPTORS: Readonly<Record<AnimalSpriteId, AnimalDescripto
   'white-sheep-1': WHITE_SHEEP_1,
   'brown-wolf': BROWN_WOLF,
   cow: COW,
-  'cow-female-001': COW_FEMALE_001,
   dog: DOG,
   mouse: MOUSE,
   pig: PIG,

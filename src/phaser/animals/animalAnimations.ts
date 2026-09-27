@@ -46,7 +46,6 @@ const REST_POSE: Record<AnimalSpriteId, string> = {
   'white-sheep-1': 'idle',
   'brown-wolf': 'idle',
   cow: 'idle',
-  'cow-female-001': 'idle',
   dog: 'idle',
   mouse: 'idle',
   pig: 'idle',
