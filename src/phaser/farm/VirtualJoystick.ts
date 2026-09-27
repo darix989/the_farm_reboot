@@ -19,6 +19,10 @@ export class VirtualJoystick {
   private acceptingInput = true;
 
   constructor(private scene: Phaser.Scene) {
+    // Phaser caches the canvas rect and re-reads it only every 500ms of *game* time, which a
+    // slow device can take seconds to reach. A rect cached mid boot-layout (canvas briefly
+    // offset by half its width) maps a thumb on the stick far outside it, and the drag is lost.
+    scene.scale.updateBounds();
     this.base = scene.add
       .image(JOYSTICK_CENTER.x, JOYSTICK_CENTER.y, 'farm-stick-base')
       .setScrollFactor(0)
