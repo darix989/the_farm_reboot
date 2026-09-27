@@ -10,7 +10,6 @@ import { create } from 'zustand';
 import {
   animalClips,
   clipEmotion,
-  defaultClip,
   emotionClipName,
   type EmotionPart,
 } from '../phaser/animals/animalClipCatalogue';
@@ -24,11 +23,17 @@ const DEFAULT_PART: EmotionPart = 'sequence';
 interface AnimalGalleryStore {
   animalId: AnimalSpriteId;
   /**
-   * Logical clip name from `animalClips()`, or null for the bare rest frame. The only field
-   * the scene reads besides `animalId`; the dialogue portrait on the stage follows it too, so
-   * a portrait always plays beside the body clip it was cut from.
+   * The focused clip — a logical name from `animalClips()` — or null when nothing is focused,
+   * which is the gallery's opening state: the scene then plays every clip in turn, on a loop.
+   * The only field the scene reads besides `animalId`; the dialogue portrait on the stage
+   * follows it too, so a portrait always plays beside the body clip it was cut from.
    */
   clipName: string | null;
+  /**
+   * The clip the unfocused cycle is on right now, or null while a clip is focused. Written by
+   * the scene, like `loadingAnimalId`, so the panel can point at what is playing.
+   */
+  cyclingClipName: string | null;
   /**
    * Which part of a phased emotion to play. A preference that outlives the clip: it is
    * remembered while an unphased emotion or a base clip is showing, and applied again the
@@ -46,17 +51,19 @@ interface AnimalGalleryStore {
   setAnimal: (animalId: AnimalSpriteId) => void;
   /** Base clips, and anything else addressed by exact name. */
   setClip: (clipName: string | null) => void;
-  /** An emotion button: resolves to the remembered part when the emotion is phased. */
-  selectEmotion: (emotion: string) => void;
+  /** A base clip's button: focuses it, or clears the focus when it is already focused. */
+  toggleClip: (clipName: string) => void;
+  /**
+   * An emotion button: focuses the emotion at the remembered part when it is phased, or
+   * clears the focus when any part of that emotion is already focused.
+   */
+  toggleEmotion: (emotion: string) => void;
   /** The part switch: remembers the part and re-resolves the current emotion under it. */
   setPart: (part: EmotionPart) => void;
   setLoadingAnimal: (animalId: AnimalSpriteId | null) => void;
+  setCyclingClip: (clipName: string | null) => void;
   /** Leaves the gallery on its opening state, so re-entering never resumes mid-review. */
   resetGallery: () => void;
-}
-
-function openingClip(animalId: AnimalSpriteId): string | null {
-  return defaultClip(animalId)?.name ?? null;
 }
 
 function isEmotionName(name: string): boolean {
@@ -73,23 +80,25 @@ function isEmotionName(name: string): boolean {
  * Emotions are carried by emotion rather than by exact name, because phasing is per animal:
  * `angry@loop` on the sheep lands on plain `angry` on the fox, and back on the sheep it lands
  * on whichever part is remembered. Base animations are per-animal, so carrying `buck` from the
- * donkey to the fox falls back to the fox's rest pose rather than showing nothing.
+ * donkey to the fox drops the focus and lets the fox cycle through its own clips. No focus
+ * stays no focus.
  */
 export function carryClipOver(
   animalId: AnimalSpriteId,
   clipName: string | null,
   part: EmotionPart,
 ): string | null {
-  if (!clipName) return openingClip(animalId);
+  if (!clipName) return null;
   const clips = animalClips(animalId);
   const emotion = clipEmotion(clipName);
   if (isEmotionName(emotion)) return emotionClipName(clips, emotion, part);
-  return clips.some((clip) => clip.name === clipName) ? clipName : openingClip(animalId);
+  return clips.some((clip) => clip.name === clipName) ? clipName : null;
 }
 
 export const useAnimalGalleryStore = create<AnimalGalleryStore>((set) => ({
   animalId: FIRST_ANIMAL,
-  clipName: openingClip(FIRST_ANIMAL),
+  clipName: null,
+  cyclingClipName: null,
   part: DEFAULT_PART,
   loadingAnimalId: null,
 
@@ -103,10 +112,16 @@ export const useAnimalGalleryStore = create<AnimalGalleryStore>((set) => ({
   // No-op when unchanged, so a re-render never restarts a clip that is already playing.
   setClip: (clipName) => set((s) => (s.clipName === clipName ? s : { ...s, clipName })),
 
-  selectEmotion: (emotion) =>
+  toggleClip: (clipName) =>
+    set((s) => ({ ...s, clipName: s.clipName === clipName ? null : clipName })),
+
+  toggleEmotion: (emotion) =>
     set((s) => {
-      const clipName = emotionClipName(animalClips(s.animalId), emotion, s.part);
-      return s.clipName === clipName ? s : { ...s, clipName };
+      const focused = s.clipName !== null && clipEmotion(s.clipName) === emotion;
+      return {
+        ...s,
+        clipName: focused ? null : emotionClipName(animalClips(s.animalId), emotion, s.part),
+      };
     }),
 
   setPart: (part) =>
@@ -121,10 +136,14 @@ export const useAnimalGalleryStore = create<AnimalGalleryStore>((set) => ({
 
   setLoadingAnimal: (loadingAnimalId) => set({ loadingAnimalId }),
 
+  setCyclingClip: (cyclingClipName) =>
+    set((s) => (s.cyclingClipName === cyclingClipName ? s : { ...s, cyclingClipName })),
+
   resetGallery: () =>
     set({
       animalId: FIRST_ANIMAL,
-      clipName: openingClip(FIRST_ANIMAL),
+      clipName: null,
+      cyclingClipName: null,
       part: DEFAULT_PART,
       loadingAnimalId: null,
     }),

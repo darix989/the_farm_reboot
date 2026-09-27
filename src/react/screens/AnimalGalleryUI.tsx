@@ -5,6 +5,7 @@ import { useAnimalGalleryStore } from '../../store/animalGalleryStore';
 import {
   animalClips,
   animalFaceClips,
+  clipEmotion,
   EMOTION_PARTS,
   type AnimalClip,
   type EmotionPart,
@@ -28,6 +29,10 @@ import styles from './AnimalGalleryUI.module.scss';
  * Controls for the `AnimalGallery` scene: pick an animal from a dropdown, then hold any one of
  * its clips.
  *
+ * **Nothing is focused on open.** The scene then cycles through every clip, and the button of
+ * the one playing is outlined. Clicking a clip focuses it; clicking the focused clip again
+ * clears the focus and the cycle resumes.
+ *
  * Every body-clip button is a store write and nothing more — the scene owns the sprite and
  * reacts (see `animalGalleryStore`). That keeps this file free of Phaser entirely, which is why
  * it can render the clip list from `animalClips()` without caring which loader owns each clip.
@@ -38,7 +43,7 @@ import styles from './AnimalGalleryUI.module.scss';
  * there: a clip with no phases shows Whole lit and the rest greyed out.
  *
  * **The dialogue portrait plays on the stage, never in the panel.** Whenever an emotion is
- * selected, its portrait loops over the top-left of the scene beside the body clip it was cut
+ * focused, its portrait loops over the top-right of the scene beside the body clip it was cut
  * from, which is the comparison worth having. Face clips are played in the DOM by design
  * (`animalFaces.ts` explains at length why they are not Phaser textures), through the same
  * `FaceClip` the game uses, so a portrait approved here is framed exactly as it will ship.
@@ -242,12 +247,20 @@ function clipMeta(clip: AnimalClip): string {
 }
 
 const AnimalGalleryUI: React.FC = () => {
-  const { animalId, clipName, loadingAnimalId, setAnimal, setClip, selectEmotion, setPart } =
-    useAnimalGalleryStore();
+  const {
+    animalId,
+    clipName,
+    cyclingClipName,
+    loadingAnimalId,
+    setAnimal,
+    toggleClip,
+    toggleEmotion,
+    setPart,
+  } = useAnimalGalleryStore();
   const animalLabelId = useId();
 
   // Leaving the gallery should not strand the store mid-review: re-entering opens on the
-  // first animal's rest pose, the same state a cold start gives.
+  // first animal with nothing focused, the same state a cold start gives.
   useEffect(() => () => useAnimalGalleryStore.getState().resetGallery(), []);
 
   // A dialogue box warms these on open for the same reason: a 200KB sheet does not decode in
@@ -263,6 +276,8 @@ const AnimalGalleryUI: React.FC = () => {
   const base = clips.filter((clip) => clip.kind === 'base');
   const selected = clips.find((clip) => clip.name === clipName) ?? null;
   const selectedGroup = emotionGroups.find((group) => group.emotion === selected?.emotion) ?? null;
+  // Only meaningful while nothing is focused; the scene clears it as soon as a clip is.
+  const cycling = clipName === null ? cyclingClipName : null;
   // Follows the body clip: an emotion shows its portrait, a base animation shows none.
   const selectedFace = selected?.emotion
     ? (faces.find((face) => face.emotion === selected.emotion) ?? null)
@@ -295,6 +310,7 @@ const AnimalGalleryUI: React.FC = () => {
   const renderEmotion = (group: EmotionGroup) => {
     const { lead, parts } = group;
     const active = group === selectedGroup;
+    const playing = cycling !== null && clipEmotion(cycling) === group.emotion;
     const quality = groupQuality(group);
     return (
       <button
@@ -303,12 +319,13 @@ const AnimalGalleryUI: React.FC = () => {
         className={cn(
           styles.clipButton,
           active && styles.clipButtonActive,
+          playing && styles.clipButtonCycling,
           !lead.available && styles.clipButtonMissing,
         )}
         // A clip with no art stays clickable on purpose: selecting it shows the rest pose and
         // the "no art yet" note, which is the honest answer to "what does this emotion look
         // like" — quieter than a disabled button that explains nothing.
-        onClick={() => selectEmotion(group.emotion)}
+        onClick={() => toggleEmotion(group.emotion)}
         aria-pressed={active}
       >
         <span className={styles.clipHeader}>
@@ -333,8 +350,12 @@ const AnimalGalleryUI: React.FC = () => {
     <button
       key={`${clip.kind}-${clip.name}`}
       type="button"
-      className={cn(styles.clipButton, clip.name === clipName && styles.clipButtonActive)}
-      onClick={() => setClip(clip.name)}
+      className={cn(
+        styles.clipButton,
+        clip.name === clipName && styles.clipButtonActive,
+        clip.name === cycling && styles.clipButtonCycling,
+      )}
+      onClick={() => toggleClip(clip.name)}
       aria-pressed={clip.name === clipName}
     >
       <span className={styles.clipHeader}>
@@ -510,7 +531,11 @@ const AnimalGalleryUI: React.FC = () => {
         <div className={styles.clipGrid}>{base.map(renderBase)}</div>
 
         <div className={styles.statusBar}>
-          {selected ? `${animalId} · ${selected.name}` : getLabel('galleryNothingSelected')}
+          {selected
+            ? `${animalId} · ${selected.name}`
+            : cycling
+              ? getLabel('galleryCycling', { replacements: { animal: animalId, clip: cycling } })
+              : getLabel('galleryNothingSelected')}
         </div>
 
         <button

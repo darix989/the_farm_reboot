@@ -122,6 +122,7 @@ const LABELS = {
   galleryRestPose: 'rest pose',
   galleryClipMeta: '{frames} frames · {fps} fps',
   galleryNothingSelected: 'Nothing selected',
+  galleryCycling: 'Cycling every clip · {animal} · {clip}',
   galleryLoadingAnimal: 'Loading {animal}…',
   galleryMissingArtNote:
     '{count} of {total} emotions have no generated art for this animal yet — they fall back to the alert animation in game.',

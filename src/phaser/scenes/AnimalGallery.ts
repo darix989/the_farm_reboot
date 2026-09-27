@@ -1,5 +1,5 @@
 /**
- * Animation gallery — one animal, one clip, on demand.
+ * Animation gallery — one animal, one clip, on demand, or every clip in turn.
  *
  * Every other scene plays animations the way the *game* wants them: weighted, random,
  * interrupted by whatever the debate is doing (`AnimalAnimator`). That makes it a poor place
@@ -7,6 +7,10 @@
  * the atlas clips it has to sit beside, and switching between them faster than a debate ever
  * would. So this scene deliberately does **not** use `AnimalAnimator` — it plays a single key
  * and holds it.
+ *
+ * With nothing focused (the opening state) it plays every available clip once, in catalogue
+ * order, and starts over: a phased emotion as its whole chain, everything else stretched to at
+ * least `CYCLE_MIN_MS` so a two-frame clip still registers. Focusing a clip stops the cycle.
  *
  * What it does share is staging: `applyEmotionStaging` / `restoreStaging` are the same
  * functions `AnimalAnimator` calls, so a clip previewed here is placed exactly as the Trial
@@ -61,6 +65,12 @@ const FLOOR_RATIO = 0.82;
  */
 const PHASE_HOLD_MS = 700;
 
+/**
+ * The shortest a clip stays on stage during the unfocused cycle. A short clip is repeated whole
+ * until it reaches this, never cut off mid-play: a loop that pops at its seam should pop here.
+ */
+const CYCLE_MIN_MS = 1500;
+
 const BACKGROUND = 0x2f2f33;
 const FLOOR_LINE = 0x4a4a52;
 
@@ -71,6 +81,9 @@ export class AnimalGallery extends Scene {
   private baseStaging: SpriteStaging | null = null;
   /** The `@sequence` chain being played, restarted each time it runs out. */
   private sequence: AnimalClip['sequence'] | null = null;
+  /** The unfocused cycle's playlist, or null while a clip is focused. */
+  private cycle: AnimalClip[] | null = null;
+  private cycleIndex = 0;
   private unsubscribe: (() => void) | null = null;
 
   constructor() {
@@ -88,7 +101,7 @@ export class AnimalGallery extends Scene {
 
     const state = useAnimalGalleryStore.getState();
     this.buildSprite(state.animalId);
-    this.applyClip(this.findClip(state.animalId, state.clipName));
+    this.showSelection(state.animalId, state.clipName);
 
     // Vanilla zustand `subscribe` takes a single (state, prevState) listener, not a selector —
     // see `gameManager.ts` for the selector-style call that does NOT type-check here.
@@ -97,9 +110,7 @@ export class AnimalGallery extends Scene {
         this.showAnimal(next.animalId);
         return;
       }
-      if (next.clipName !== prev.clipName) {
-        this.applyClip(this.findClip(next.animalId, next.clipName));
-      }
+      if (next.clipName !== prev.clipName) this.showSelection(next.animalId, next.clipName);
     });
     this.load.on(Phaser.Loader.Events.COMPLETE, this.onAnimalLoaded, this);
 
@@ -129,6 +140,7 @@ export class AnimalGallery extends Scene {
     this.spriteAnimalId = null;
     this.baseStaging = null;
     this.sequence = null;
+    this.stopCycle();
     gallery.setLoadingAnimal(animalId);
     if (!this.load.isLoading()) this.load.start();
   }
@@ -144,7 +156,7 @@ export class AnimalGallery extends Scene {
     ensureAnimalAnimations(this, [animalId]);
     ensureAnimalEmotionAnimations(this, [animalId]);
     this.buildSprite(animalId);
-    this.applyClip(this.findClip(animalId, useAnimalGalleryStore.getState().clipName));
+    this.showSelection(animalId, useAnimalGalleryStore.getState().clipName);
   }
 
   /** A floor line and nothing else: anything more competes with the thing being judged. */
@@ -200,10 +212,63 @@ export class AnimalGallery extends Scene {
     }
   }
 
-  /** Replays the sequence from the top once its last step (the atlas rest) finishes. */
+  /**
+   * A focused sequence replays from the top once its last step (the atlas rest) finishes; the
+   * cycle moves on to its next clip. Focused non-sequence clips repeat forever and never land
+   * here.
+   */
   private onClipComplete(): void {
-    if (!this.sequence || this.sprite?.anims.nextAnim) return;
-    this.playSequence(this.sequence);
+    if (this.sprite?.anims.nextAnim) return;
+    if (this.cycle) {
+      this.cycleIndex = (this.cycleIndex + 1) % this.cycle.length;
+      this.playCycleStep();
+    } else if (this.sequence) {
+      this.playSequence(this.sequence);
+    }
+  }
+
+  /** A focused clip plays on its own; no focus starts the cycle. */
+  private showSelection(animalId: AnimalSpriteId, clipName: string | null): void {
+    if (clipName) this.applyClip(this.findClip(animalId, clipName));
+    else this.startCycle(animalId);
+  }
+
+  /**
+   * Every clip there is art for, once each: the whole chain stands in for a phased emotion's
+   * parts, which are what a focus is for. Reduced motion holds the rest frame instead — a
+   * cycle of stills would still be the stage changing on its own every second and a half.
+   */
+  private startCycle(animalId: AnimalSpriteId): void {
+    this.applyClip(null);
+    const playlist = animalClips(animalId).filter(
+      (clip) => clip.available && clip.animKey && (!clip.part || clip.part === 'sequence'),
+    );
+    if (playlist.length === 0 || prefersReducedMotion() || !this.sprite) return;
+    this.cycle = playlist;
+    this.cycleIndex = 0;
+    this.playCycleStep();
+  }
+
+  private playCycleStep(): void {
+    const sprite = this.sprite;
+    const clip = this.cycle?.[this.cycleIndex];
+    if (!sprite || !clip?.animKey) return;
+    useAnimalGalleryStore.getState().setCyclingClip(clip.name);
+    sprite.chain();
+    if (clip.sequence) {
+      this.playSequence(clip.sequence);
+    } else {
+      const duration = this.anims.get(clip.animKey).duration;
+      const repeat = duration > 0 ? Math.max(0, Math.ceil(CYCLE_MIN_MS / duration) - 1) : 0;
+      sprite.play({ key: clip.animKey, repeat });
+    }
+    this.restageToCurrentClip();
+  }
+
+  private stopCycle(): void {
+    this.cycle = null;
+    this.cycleIndex = 0;
+    useAnimalGalleryStore.getState().setCyclingClip(null);
   }
 
   private playSequence(steps: NonNullable<AnimalClip['sequence']>): void {
@@ -226,6 +291,7 @@ export class AnimalGallery extends Scene {
    * previous animal's animation under a new label is the one thing a review tool must not do.
    */
   private applyClip(clip: AnimalClip | null): void {
+    this.stopCycle();
     const sprite = this.sprite;
     const base = this.baseStaging;
     if (!sprite || !base) return;
@@ -276,6 +342,7 @@ export class AnimalGallery extends Scene {
     this.unsubscribe = null;
     this.load.off(Phaser.Loader.Events.COMPLETE, this.onAnimalLoaded, this);
     useAnimalGalleryStore.getState().setLoadingAnimal(null);
+    this.stopCycle();
     this.sprite?.destroy();
     this.spriteAnimalId = null;
     this.sprite = null;

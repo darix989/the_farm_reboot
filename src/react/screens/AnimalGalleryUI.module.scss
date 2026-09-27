@@ -107,6 +107,12 @@
   color: var(--ui-color-accent);
 }
 
+/* The clip the unfocused cycle is playing: pointed at, but quieter than a focus. */
+.clipButtonCycling {
+  border-color: var(--ui-color-accent);
+  border-style: dashed;
+}
+
 /* Dimmed, not disabled: the button still selects, it just has nothing generated to play. */
 .clipButtonMissing {
   border-style: dashed;
@@ -329,7 +335,9 @@
 .facePreview {
   position: absolute;
   top: 2rem;
-  left: 2rem;
+
+  /* Top-right of the stage, i.e. just left of the panel (same 32.29% as `.panel`). */
+  right: calc(32.29% + 2rem);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
