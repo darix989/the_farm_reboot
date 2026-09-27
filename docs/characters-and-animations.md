@@ -145,13 +145,13 @@ frame only four of them fit on a 2048px page however they are arranged.
 
 ## 3. Five files carry the system
 
-| File                                                                                    | Role                                                                                                               |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [`src/phaser/animals/animalDescriptors.ts`](../src/phaser/animals/animalDescriptors.ts) | The data. One `AnimalDescriptor` per animal: frame ranges + idle/alert behaviour.                                  |
-| [`src/phaser/animals/animalAnimations.ts`](../src/phaser/animals/animalAnimations.ts)   | Turns descriptors into Phaser animations (`ensureAnimalAnimations`) and resolves per-animal setup (`animalSetup`). |
-| [`src/phaser/animals/AnimalAnimator.ts`](../src/phaser/animals/AnimalAnimator.ts)       | The playback engine: weighted sequence picking, chaining, self-looping. Drives any `Phaser.GameObjects.Sprite`.    |
-| [`src/phaser/animals/animalAtlases.ts`](../src/phaser/animals/animalAtlases.ts)         | Queues a given list of multiatlases (`loadAnimalAtlases(scene, ids)`).                                             |
-| [`src/phaser/animals/animalPacks.ts`](../src/phaser/animals/animalPacks.ts)             | Derives which ids a scene needs and queues them. Farm = Level 1 roster; Trial = debate cast; Gallery = every id.   |
+| File                                                                                    | Role                                                                                                                    |
+| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| [`src/phaser/animals/animalDescriptors.ts`](../src/phaser/animals/animalDescriptors.ts) | The data. One `AnimalDescriptor` per animal: frame ranges + idle/alert behaviour.                                       |
+| [`src/phaser/animals/animalAnimations.ts`](../src/phaser/animals/animalAnimations.ts)   | Turns descriptors into Phaser animations (`ensureAnimalAnimations`) and resolves per-animal setup (`animalSetup`).      |
+| [`src/phaser/animals/AnimalAnimator.ts`](../src/phaser/animals/AnimalAnimator.ts)       | The playback engine: weighted sequence picking, chaining, self-looping. Drives any `Phaser.GameObjects.Sprite`.         |
+| [`src/phaser/animals/animalAtlases.ts`](../src/phaser/animals/animalAtlases.ts)         | Queues a given list of multiatlases (`loadAnimalAtlases(scene, ids)`).                                                  |
+| [`src/phaser/animals/animalPacks.ts`](../src/phaser/animals/animalPacks.ts)             | Derives which ids a scene needs and queues them. Farm = Level 1 roster; Trial = debate cast; Gallery = the selected id. |
 
 Plus [`src/phaser/animals/animalStaging.ts`](../src/phaser/animals/animalStaging.ts) for
 per-surface scale, and the three scenes that use all of the above:
@@ -466,8 +466,9 @@ underneath the animated follower sprite (see §3.3).
    this skin.
 7. **Loading.** `animalAtlases.ts` needs no change — it loads whatever ids it is given.
    [`animalPacks.ts`](../src/phaser/animals/animalPacks.ts) derives those ids:
-   - **Gallery** loads every `ANIMAL_SPRITE_IDS` entry on open, so a descriptor with no
-     character is still previewable.
+   - **Gallery** lists every `ANIMAL_SPRITE_IDS` entry in its dropdown, so a descriptor with
+     no character is still previewable. It loads only the animal it opens on, then fetches each
+     other one the first time it is picked, showing "Loading …" on the stage meanwhile.
    - **Farm** loads whoever `CHARACTERS` + `FARM_NPCS` (plus the player) name. Set
      `animal: '<id>'` on a farm character and the atlas is queued the next time the
      overworld starts.

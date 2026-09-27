@@ -22,13 +22,18 @@ import { Scene } from 'phaser';
 import { EventBus } from '../EventBus';
 import { ANIMAL_GALLERY_STAGE } from '../../utils/constants';
 import { useAnimalGalleryStore } from '../../store/animalGalleryStore';
-import { animalSetup } from '../animals/animalAnimations';
-import { ensureAnimalPackForScene, queueAnimalPackForScene } from '../animals/animalPacks';
+import { animalSetup, ensureAnimalAnimations } from '../animals/animalAnimations';
+import {
+  ensureAnimalPackForScene,
+  queueAnimalAssets,
+  queueAnimalPackForScene,
+} from '../animals/animalPacks';
 import { animalClips, type AnimalClip } from '../animals/animalClipCatalogue';
 import { animalArtFacesLeft, ANIMAL_STAGING, applyAtlasFeetOrigin } from '../animals/animalStaging';
 import {
   applyEmotionStaging,
   captureStaging,
+  ensureAnimalEmotionAnimations,
   emotionClipForAnimKey,
   restoreStaging,
   type SpriteStaging,
@@ -61,6 +66,8 @@ const FLOOR_LINE = 0x4a4a52;
 
 export class AnimalGallery extends Scene {
   private sprite: Phaser.GameObjects.Sprite | null = null;
+  /** Which animal `sprite` is, so a late load for an animal already on stage is a no-op. */
+  private spriteAnimalId: AnimalSpriteId | null = null;
   private baseStaging: SpriteStaging | null = null;
   /** The `@sequence` chain being played, restarted each time it runs out. */
   private sequence: AnimalClip['sequence'] | null = null;
@@ -87,17 +94,57 @@ export class AnimalGallery extends Scene {
     // see `gameManager.ts` for the selector-style call that does NOT type-check here.
     this.unsubscribe = useAnimalGalleryStore.subscribe((next, prev) => {
       if (next.animalId !== prev.animalId) {
-        this.buildSprite(next.animalId);
-        this.applyClip(this.findClip(next.animalId, next.clipName));
+        this.showAnimal(next.animalId);
         return;
       }
       if (next.clipName !== prev.clipName) {
         this.applyClip(this.findClip(next.animalId, next.clipName));
       }
     });
+    this.load.on(Phaser.Loader.Events.COMPLETE, this.onAnimalLoaded, this);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.teardown, this);
     EventBus.emit('current-scene-ready', this);
+  }
+
+  /**
+   * Puts `animalId` on stage, fetching its atlas and emotion sheets first if this is the
+   * first time it has been picked. Only the opening animal comes with the scene
+   * (`galleryAnimalIds`); every other one loads here, once, and stays in Phaser's cache.
+   *
+   * While it loads the stage is empty, never the previous animal: showing one animal under
+   * another's name is the one thing a review tool must not do. Files for an animal picked
+   * and abandoned mid-load simply finish in the background — the loader dedupes by key, so
+   * picking it again does not fetch twice.
+   */
+  private showAnimal(animalId: AnimalSpriteId): void {
+    const gallery = useAnimalGalleryStore.getState();
+    if (!queueAnimalAssets(this, [animalId], { emotions: true })) {
+      gallery.setLoadingAnimal(null);
+      this.putOnStage(animalId);
+      return;
+    }
+    this.sprite?.destroy();
+    this.sprite = null;
+    this.spriteAnimalId = null;
+    this.baseStaging = null;
+    this.sequence = null;
+    gallery.setLoadingAnimal(animalId);
+    if (!this.load.isLoading()) this.load.start();
+  }
+
+  /** The loader drained: stage whichever animal is selected *now*, not the one that asked. */
+  private onAnimalLoaded(): void {
+    const gallery = useAnimalGalleryStore.getState();
+    gallery.setLoadingAnimal(null);
+    if (this.spriteAnimalId !== gallery.animalId) this.putOnStage(gallery.animalId);
+  }
+
+  private putOnStage(animalId: AnimalSpriteId): void {
+    ensureAnimalAnimations(this, [animalId]);
+    ensureAnimalEmotionAnimations(this, [animalId]);
+    this.buildSprite(animalId);
+    this.applyClip(this.findClip(animalId, useAnimalGalleryStore.getState().clipName));
   }
 
   /** A floor line and nothing else: anything more competes with the thing being judged. */
@@ -110,6 +157,7 @@ export class AnimalGallery extends Scene {
 
   private buildSprite(animalId: AnimalSpriteId): void {
     this.sprite?.destroy();
+    this.spriteAnimalId = animalId;
 
     const setup = animalSetup(animalId);
     if (!this.textures.exists(setup.textureKey)) {
@@ -226,7 +274,10 @@ export class AnimalGallery extends Scene {
   private teardown(): void {
     this.unsubscribe?.();
     this.unsubscribe = null;
+    this.load.off(Phaser.Loader.Events.COMPLETE, this.onAnimalLoaded, this);
+    useAnimalGalleryStore.getState().setLoadingAnimal(null);
     this.sprite?.destroy();
+    this.spriteAnimalId = null;
     this.sprite = null;
     this.baseStaging = null;
   }

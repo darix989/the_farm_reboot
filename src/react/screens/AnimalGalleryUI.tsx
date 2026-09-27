@@ -242,7 +242,7 @@ function clipMeta(clip: AnimalClip): string {
 }
 
 const AnimalGalleryUI: React.FC = () => {
-  const { animalId, clipName, setAnimal, setClip, selectEmotion, setPart } =
+  const { animalId, clipName, loadingAnimalId, setAnimal, setClip, selectEmotion, setPart } =
     useAnimalGalleryStore();
   const animalLabelId = useId();
 
@@ -349,6 +349,13 @@ const AnimalGalleryUI: React.FC = () => {
 
   return (
     <div className={styles.galleryUi}>
+      {/* The scene fetches an animal's art the first time it is picked, and leaves the stage
+          empty meanwhile — say so, or a slow first pick reads as a broken clip. */}
+      {loadingAnimalId && (
+        <p className={styles.stageLoading} role="status">
+          {getLabel('galleryLoadingAnimal', { replacements: { animal: loadingAnimalId } })}
+        </p>
+      )}
       {/* Over the scene's stage, never inside the panel: a portrait is judged at a fixed pixel
           size, and the panel is a scrolling column that would clip and move it. */}
       {selectedFace && (

@@ -4,8 +4,9 @@
  *
  * Farm and Trial both load atlases *and* emotion sheets: the overworld does not play
  * emotions, but every farm NPC can be a Trial opponent, and prefetching here is what
- * makes Farm → Trial and FarmSide → Trial a cache hit. The gallery loads the whole
- * descriptor list on open. MainMenu loads none.
+ * makes Farm → Trial and FarmSide → Trial a cache hit. The gallery loads only the animal
+ * it opens on; `AnimalGallery` fetches each other one when it is picked from the dropdown.
+ * MainMenu loads none.
  *
  * Textures stay in Phaser's game-wide cache once fetched, so a second visit queues
  * nothing and `queueAnimalAssets` returns false.
@@ -17,7 +18,6 @@ import type { SideSceneDescriptor, SideSceneId } from '../../types/sideScene';
 import { PLAYER_CHARACTER_ID, resolveCharacter, type AnimalSpriteId } from '../../data/characters';
 import { DEBATES, type DebateScenarioKey } from '../../data/levels';
 import { debateParticipantIds } from '../../data/debateCast';
-import { ANIMAL_SPRITE_IDS } from './animalDescriptors';
 import { loadAnimalAtlases } from './animalAtlases';
 import { ensureAnimalAnimations } from './animalAnimations';
 import {
@@ -27,6 +27,7 @@ import {
   loadAnimalEmotionSheets,
 } from './animalEmotionAnimations';
 import { useGameStore } from '../../store/gameStore';
+import { useAnimalGalleryStore } from '../../store/animalGalleryStore';
 
 export interface AnimalAssetOptions {
   emotions?: boolean;
@@ -74,9 +75,13 @@ export function trialAnimalIds(debateId: DebateScenarioKey): AnimalSpriteId[] {
   return uniqueIds(debateParticipantIds(debate).map((id) => resolveCharacter(id).animal));
 }
 
-/** Every descriptor — the gallery is the place that needs the unused imports too. */
+/**
+ * Just the animal the gallery is showing. Loading all sixteen up front made opening the
+ * gallery the slowest load in the game for a screen that shows one animal at a time; the
+ * scene queues the rest one by one as they are picked (`AnimalGallery.showAnimal`).
+ */
 export function galleryAnimalIds(): AnimalSpriteId[] {
-  return [...ANIMAL_SPRITE_IDS];
+  return [useAnimalGalleryStore.getState().animalId];
 }
 
 /** Pack for a scene key, or null when that scene does not load animal art. */

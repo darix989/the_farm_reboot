@@ -308,6 +308,20 @@
   color: var(--ui-color-text-muted-2);
 }
 
+/* Centred on the stage — everything left of `.panel`, the same rect `ANIMAL_GALLERY_STAGE`
+   gives the scene. Display-only, so it stays pointer-events: none like its parent. */
+.stageLoading {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: calc(100% - 32.29%);
+  margin: 0;
+  text-align: center;
+  transform: translateY(-50%);
+  font-size: var(--ui-font-body);
+  color: var(--ui-color-text-muted-2);
+}
+
 /* The dialogue portrait of whichever emotion is playing. Face clips are DOM-played (see
    `animalFaces.ts`), so this is the one piece of art the overlay draws itself — over the scene
    rather than inside `.panel`, because a portrait is judged at an exact pixel size and a

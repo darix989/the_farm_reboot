@@ -35,6 +35,12 @@ interface AnimalGalleryStore {
    * next time a phased emotion is picked — on this animal or another.
    */
   part: EmotionPart;
+  /**
+   * The animal whose art the scene is fetching, or null once it is on stage. Written by the
+   * scene — the one field that flows Phaser → React — so the panel can say why the stage is
+   * empty rather than leaving it blank while a first pick downloads.
+   */
+  loadingAnimalId: AnimalSpriteId | null;
 
   /** Switching animal carries the current clip over where it exists — see `carryClipOver`. */
   setAnimal: (animalId: AnimalSpriteId) => void;
@@ -44,6 +50,7 @@ interface AnimalGalleryStore {
   selectEmotion: (emotion: string) => void;
   /** The part switch: remembers the part and re-resolves the current emotion under it. */
   setPart: (part: EmotionPart) => void;
+  setLoadingAnimal: (animalId: AnimalSpriteId | null) => void;
   /** Leaves the gallery on its opening state, so re-entering never resumes mid-review. */
   resetGallery: () => void;
 }
@@ -84,6 +91,7 @@ export const useAnimalGalleryStore = create<AnimalGalleryStore>((set) => ({
   animalId: FIRST_ANIMAL,
   clipName: openingClip(FIRST_ANIMAL),
   part: DEFAULT_PART,
+  loadingAnimalId: null,
 
   setAnimal: (animalId) =>
     set((s) =>
@@ -111,10 +119,13 @@ export const useAnimalGalleryStore = create<AnimalGalleryStore>((set) => ({
       return s.part === part && s.clipName === clipName ? s : { ...s, part, clipName };
     }),
 
+  setLoadingAnimal: (loadingAnimalId) => set({ loadingAnimalId }),
+
   resetGallery: () =>
     set({
       animalId: FIRST_ANIMAL,
       clipName: openingClip(FIRST_ANIMAL),
       part: DEFAULT_PART,
+      loadingAnimalId: null,
     }),
 }));
