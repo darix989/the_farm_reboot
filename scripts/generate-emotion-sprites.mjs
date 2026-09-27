@@ -377,7 +377,20 @@ function buildPayload(job, referenceDataUri, force) {
       : job.settings.closeLoop
         ? { final_image: referenceDataUri }
         : {}),
-    margin_ratio_mode: job.settings.marginRatioMode,
+    // `auto` trims the side margin to nothing, so a head that pushes forward leaves the
+    // generator's canvas and is sliced flat (the donkey's muzzle, `flatCut` 20-36px). A clip
+    // that needs the room sets `marginRatioHorizontal`/`Vertical`, which switches to `manual`.
+    ...(job.settings.marginRatioHorizontal != null || job.settings.marginRatioVertical != null
+      ? {
+          margin_ratio_mode: 'manual',
+          ...(job.settings.marginRatioHorizontal != null && {
+            margin_ratio_horizontal: job.settings.marginRatioHorizontal,
+          }),
+          ...(job.settings.marginRatioVertical != null && {
+            margin_ratio_vertical: job.settings.marginRatioVertical,
+          }),
+        }
+      : { margin_ratio_mode: job.settings.marginRatioMode }),
     // Off deliberately: `crop` gives per-frame sizes, and a uniform grid is the entire
     // reason `load.spritesheet` can read these without an atlas.
     crop: false,
