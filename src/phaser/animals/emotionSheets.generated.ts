@@ -354,8 +354,8 @@ export const EMOTION_SHEETS: Partial<
       frameHeight: 512,
       frameCount: 25,
       frameRate: 13,
-      scale: 2.168,
-      originX: 0.515,
+      scale: 2.186,
+      originX: 0.5352,
       originY: 0.7363,
       quality: {
         loopPop: 0.27,
@@ -371,7 +371,7 @@ export const EMOTION_SHEETS: Partial<
       frameCount: 36,
       frameRate: 12,
       scale: 2.177,
-      originX: 0.5041,
+      originX: 0.5354,
       originY: 0.7363,
       quality: {
         loopPop: 0.18,
@@ -386,8 +386,8 @@ export const EMOTION_SHEETS: Partial<
       frameHeight: 512,
       frameCount: 36,
       frameRate: 12,
-      scale: 2.1245,
-      originX: 0.5324,
+      scale: 2.177,
+      originX: 0.5363,
       originY: 0.7363,
       quality: {
         loopPop: 0.17,
@@ -402,8 +402,8 @@ export const EMOTION_SHEETS: Partial<
       frameHeight: 512,
       frameCount: 36,
       frameRate: 12,
-      scale: 2.1331,
-      originX: 0.5342,
+      scale: 2.177,
+      originX: 0.5363,
       originY: 0.7363,
       quality: {
         loopPop: 0.21,
@@ -418,8 +418,8 @@ export const EMOTION_SHEETS: Partial<
       frameHeight: 512,
       frameCount: 36,
       frameRate: 12,
-      scale: 2.168,
-      originX: 0.5345,
+      scale: 2.177,
+      originX: 0.5363,
       originY: 0.7363,
       quality: {
         loopPop: 0.27,

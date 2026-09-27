@@ -66,13 +66,14 @@
  * `--promote` ships what is left. Deleting a directory is the whole approval mechanism —
  * there is no approval state to get out of sync with the files.
  */
-import { mkdir, readdir, readFile, writeFile, copyFile, access } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile, copyFile, access, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 import { validateApiKey, submitGeneration, awaitJob, downloadAsset } from './ludo/ludoClient.mjs';
 import { extractReferenceFrame, strokeRectPreview, toDataUri } from './ludo/referenceFrame.mjs';
 import { measureNormalization, faceBoxTransform, FACE_BOX_FILL } from './ludo/normalize.mjs';
+import { assertOnePivot } from './ludo/pivot.mjs';
 import {
   buildHeadTemplate,
   alignFrames,
@@ -1219,6 +1220,8 @@ async function promote(args) {
   // review directories are long gone.
   const byAnimal = await readPromotedRecord();
   const phaseClips = clips.filter((clip) => clip.phase);
+  // What `public/` held before this promote, so a pivot failure can put it back untouched.
+  const shippedBackups = new Map();
   for (const clip of clips.filter((c) => !c.phase).sort((a, b) =>
     `${a.animalId}${a.emotion}`.localeCompare(`${b.animalId}${b.emotion}`),
   )) {
@@ -1244,6 +1247,9 @@ async function promote(args) {
     const shippedPath = join(MODE.publicDir, file);
     const unchanged =
       (await exists(shippedPath)) && (await readFile(shippedPath)).equals(sheetBuffer);
+    if (!shippedBackups.has(shippedPath)) {
+      shippedBackups.set(shippedPath, (await exists(shippedPath)) ? await readFile(shippedPath) : null);
+    }
     await copyFile(join(dir, 'spritesheet.png'), shippedPath);
     const previous = byAnimal[clip.animalId]?.[clip.emotion];
     // Re-promoting the very same sheet (its review dir simply still exists) keeps its phases.
@@ -1303,6 +1309,19 @@ async function promote(args) {
   }
 
   if (phaseClips.length > 0) await promotePhases(phaseClips, byAnimal);
+
+  if (MODE.kind === 'body') {
+    try {
+      await assertPivots(byAnimal, new Set(clips.map((clip) => clip.animalId)));
+    } catch (error) {
+      for (const [path, bytes] of shippedBackups) {
+        if (bytes) await writeFile(path, bytes);
+        else await rm(path, { force: true });
+      }
+      console.error(`\n${error.message}\n\nNothing was promoted.`);
+      process.exit(1);
+    }
+  }
 
   await writeFile(MODE.record, `${JSON.stringify(sortRecord(byAnimal), null, 2)}\n`);
   await writeGeneratedModule(sortRecord(byAnimal));
@@ -1589,6 +1608,18 @@ ${entries}
 
 // ---------------------------------------------------------------------------
 
+/**
+ * The strict one-pivot-per-animal rule (see `scripts/ludo/pivot.mjs`), checked for every
+ * animal a promote or remeasure touched, against the shipped sheets.
+ */
+async function assertPivots(record, animalIds) {
+  for (const animalId of [...animalIds].sort()) {
+    await assertOnePivot(animalId, record[animalId] ?? {}, (file) =>
+      readFile(join(MODE.publicDir, file)),
+    );
+  }
+}
+
 async function reindex() {
   const record = await readPromotedRecord();
   const total = Object.values(record).reduce((n, e) => n + Object.keys(e).length, 0);
@@ -1707,6 +1738,15 @@ async function remeasure(args) {
         });
         logPhases(`${animalId}/${emotion}`, sheet.phases);
       }
+    }
+  }
+
+  if (MODE.kind === 'body') {
+    try {
+      await assertPivots(record, new Set(scopedAnimals));
+    } catch (error) {
+      console.error(`\n${error.message}\n\nNothing was rewritten.`);
+      process.exit(1);
     }
   }
 

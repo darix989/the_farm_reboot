@@ -167,9 +167,9 @@ no fast beats".
 These are thresholds for *attention*, not rejection. A clip can exceed one and still be the
 right clip — `sneaky` legitimately swings 28% because the donkey's head dips a long way.
 
-Height swing matters more than it looks: `normalize.mjs` derives one scale from the **union**
-bounding box, so a character whose height wanders renders smaller than the atlas art for most
-of the clip.
+Height swing no longer changes a clip's size on stage: `normalize.mjs` takes scale and pivot
+from the **rest frame** (see "One pivot per animal" below). It still matters as a symptom — a
+big swing is usually a pose collapse, not an expression.
 
 ## Writing prompts
 
@@ -334,6 +334,35 @@ a promoted PNG alone (grid shape and frame rate are not derivable from the image
 be written down.
 
 **If you ever see the generated module lose an animal, check this file first.**
+
+## STRICT RULE: one pivot per animal
+
+**Every animation of the same animal must share one pivot** — the same `originX`/`originY`
+and scale that put its rest pose in the same place at the same size. If one clip's pivot
+differs, the character visibly jumps every time the game switches into or out of that
+animation. This is not negotiable, and it has already shipped broken once:
+
+> The donkey's `doubtful` and `angry` were regenerated with a wider margin so the snout stopped
+> leaving the canvas. The old measurement anchored each clip on the union box of **all** its
+> frames, so a snout pushed further forward dragged `originX` with it (0.534 → 0.504) and the
+> whole donkey slid ~30 stage units sideways on every switch. The user caught it in game.
+
+The rules:
+
+1. **Never move one clip's pivot** — not to fit its motion in the cell, not to fix an edge
+   cut, not for any other reason. The pivot is measured from frame 0 (the rest pose, which is
+   the reference image by construction), never from how far the motion reaches.
+2. **If a motion does not fit its cell**, the fix applies to the whole animal: reposition
+   every spritesheet of that animal the same way, or enlarge every one of them.
+   **Enlarging is a decision for the user: ask before doing it.**
+3. **The promote enforces this.** `scripts/ludo/pivot.mjs` measures where every clip's rest
+   frame lands, and `--promote` / `--remeasure` fail (and restore `public/`) when an animal's
+   clips disagree by more than 1.5 stage units or 1% in height. Never loosen the tolerance to
+   get a clip through.
+4. **After changing anything that affects placement** (`normalize.mjs`, a sheet's framing),
+   `--remeasure` the whole animal, never a single `--emotion`.
+
+Phases (`--phase`) are already anchored to their main clip's normalization; they inherit it.
 
 ## Never hand-edit the generated art metadata
 

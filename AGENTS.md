@@ -56,6 +56,8 @@
 
 4. **Scene registration** — Adding a Phaser scene requires a matching `case` in `ReactApp.tsx`, or `BoilerPlateUI` paints over it.
 
+5. **One pivot per animal (strict)** — every animation of the same animal must share one pivot (`originX`/`originY` + scale on its rest pose), or the character jumps when animations switch. Never move a single clip's pivot to make its motion fit; reposition every sheet of that animal together, or ask before enlarging them. `scripts/ludo/pivot.mjs` fails `--promote`/`--remeasure` on a mismatch. See `.claude/skills/animal-emotion-sprites/SKILL.md`.
+
 ## Source layout
 
 ```

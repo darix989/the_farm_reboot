@@ -25,9 +25,9 @@
  *
  * ## Why phase normalization is anchored, not measured
  *
- * A main clip's scale/origin come from its union box against the atlas (`measureNormalization`).
- * Measuring each phase that way would give each its own union box — the loop's is the angry
- * pose only — and so a slightly different scale, which is a visible size pop at every join.
+ * A main clip's scale/origin come from its rest frame against the atlas (`measureNormalization`).
+ * Measuring each phase that way would anchor it on its own first frame — the loop's is the
+ * angry pose, not the rest pose — and so a different scale and pivot, which is a visible size pop at every join.
  * Instead a phase inherits the main clip's normalization, corrected so its first frame lands
  * exactly where the main frame it was generated from lands on stage. Ludo's
  * `margin_ratio_mode: auto` is free to reframe its input, and this absorbs that too.

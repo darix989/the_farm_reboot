@@ -154,12 +154,10 @@ So if the character is 300px tall at its tallest and 240px at its shortest, that
 (300−240)/300 = **20%**.
 
 **Why it matters — this is the non-obvious one.** When a clip is shipped, the pipeline works out
-one single size multiplier for it, based on the **union** bounding box (Part 3). One number, for
-the whole clip. That number is driven by the *tallest* extent the character ever reaches.
-
-So if the character is only that tall in two frames out of 25, the multiplier is set by those
-two frames, and the character renders slightly **too small for the other 23**. The bigger the
-swing, the more of the clip is under-sized.
+one single size multiplier for it, based on the **rest frame** (frame 0, Part 3). So a swing no
+longer resizes the clip — it used to, when the multiplier came from the union box of every
+frame, and the tallest two frames out of 25 shrank the other 23. A big swing still matters as
+a symptom: it usually means the pose collapsed rather than the face moved.
 
 **Threshold: warns above 20%.**
 
@@ -225,8 +223,8 @@ line**. These two numbers correct for that.
 
 ### `scale` — a multiplier
 
-The character's bounding-box **height in the original atlas frame**, divided by the **height of
-the union bounding box across the whole generated clip**.
+The character's bounding-box **height in the original atlas frame**, divided by its **height
+in the generated clip's rest frame** (frame 0).
 
 Multiply the staged size by this and the generated character comes out the same height as the
 hand-drawn one. Typical values here are around 2.1–2.5, meaning the generated character was
@@ -248,11 +246,15 @@ canvas, so `setOrigin(0.5, 1)` planted Farm shadows and the Trial floor line in 
 Atlas staging now uses `applyAtlasFeetOrigin`, which pins `originY` at the rest-frame's
 visible bottom. These two generated numbers do the same for a cell: `originX` still matches
 the atlas canvas centre (walk cycles were authored around it); `originY` is the bottom of the
-union bounding box, i.e. the feet. Typical values here are around `0.51 / 0.70`.
+rest-frame box, i.e. the feet. Typical values here are around `0.51 / 0.70`.
 
-**Both come from the union box, not per-frame boxes** — deliberately. A per-frame origin would
-re-anchor the sprite every frame and make the character twitch. One anchor for the clip means
-the character moves *within* a stable frame of reference, which is what an animation is.
+**Both come from the rest frame (frame 0) — never from per-frame boxes and never from the union
+of all frames.** A per-frame origin would re-anchor the sprite every frame and make the
+character twitch. A union-box origin is stable within a clip but depends on how far that clip's
+motion reaches, so two clips of the same animal get different pivots and the character jumps
+when the game switches between them. Frame 0 is the reference pose in every clip, so anchoring
+on it gives **one pivot per animal** — a strict rule, enforced at promote by
+`scripts/ludo/pivot.mjs`. See "One pivot per animal" in `SKILL.md`.
 
 **Never hand-edit these.** They are measured. If they look wrong, the measurement is wrong —
 fix `normalize.mjs` and run `npm run sprites:emotions -- --remeasure` against the shipped

@@ -386,8 +386,8 @@
       "frameHeight": 512,
       "frameCount": 25,
       "frameRate": 13,
-      "scale": 2.168,
-      "originX": 0.515,
+      "scale": 2.186,
+      "originX": 0.5352,
       "originY": 0.7363,
       "prompt": "Side view, facing left. The grey donkey is furious. The grey donkey's body, all four planted hooves, its mane and its tail stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference, and the tail stays still at exactly the length and position it has in the reference, so the whole donkey stays inside the same framing as the reference in every frame. It never walks, never lowers its head, never sits or lies down. ONLY THE FACE AND EARS MOVE, on an even, symmetrical timeline. Its muzzle tip stays exactly where it is in the reference image in every frame and never pushes forward. During the first two fifths of the clip thick dark brows slam down into a hard V over its big eyes; both eyes stay OPEN in every frame, narrowed to a fierce glare with the black pupils clearly visible and locked on the target; both huge ears pin flat back along its head; its nostrils flare; and its pale muzzle opens into a braying snarl. During the middle fifth it holds that look. During the last two fifths it eases back just as slowly along the same path and comes fully to rest in the exact pose of the reference image a few frames before the end. The open mouth always shows the same shape: one clean smooth patch of flat pink inside, drawn identically in every frame it appears. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
@@ -407,7 +407,7 @@
       "frameCount": 36,
       "frameRate": 12,
       "scale": 2.177,
-      "originX": 0.5041,
+      "originX": 0.5354,
       "originY": 0.7363,
       "prompt": "Side view, facing left. The grey donkey is deeply unconvinced and does not believe a word. The grey donkey's body, all four planted hooves, its mane and its tail stay exactly as in the reference image and do not move at all, so the whole donkey stays inside the same framing as the reference in every frame. It never walks, never lowers its head, never sits or lies down. Its muzzle tip never pushes forward past where it is in the reference image. On an even, symmetrical timeline: during the first two fifths of the clip its head draws slowly BACK and slightly UP, away from the listener, with the chin tucked in, the way someone recoils from a claim they doubt. At the same time the brow over its near eye shoots HIGH up in a big arched eyebrow of disbelief, while both eyes sink to heavy half-lidded sceptical slits with the pupils sliding sideways to stare at the listener out of the corner of the eye; its closed pale muzzle squeezes into a tight lopsided pout pulled hard to one side; and both long ears swivel back and splay apart. During the middle fifth it holds that exaggerated, unmistakably sceptical look completely still. During the last two fifths it eases back just as slowly along the same path and comes fully to rest in the exact pose of the reference image a few frames before the end. The muzzle stays closed in every frame. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
@@ -426,8 +426,8 @@
       "frameHeight": 512,
       "frameCount": 36,
       "frameRate": 12,
-      "scale": 2.1245,
-      "originX": 0.5324,
+      "scale": 2.177,
+      "originX": 0.5363,
       "originY": 0.7363,
       "prompt": "Side view, facing left. The grey donkey schemes. The grey donkey's body, all four planted hooves, its mane and its tail stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference, and the tail stays still at exactly the length and position it has in the reference, so the whole donkey stays inside the same framing as the reference in every frame. It never walks, never lowers its head, never sits or lies down. ONLY THE FACE AND EARS MOVE, on an even, symmetrical timeline. During the first two fifths of the clip its brows curve down into a sly, smug arch, both eyes sink to heavy half-lidded slits and the pupils slide sideways toward the listener, one corner of its closed pale muzzle curls up into a knowing smirk, and both long ears tilt back. During the middle fifth it holds that look. During the last two fifths it eases back just as slowly along the same path and comes fully to rest in the exact pose of the reference image a few frames before the end. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
@@ -446,8 +446,8 @@
       "frameHeight": 512,
       "frameCount": 36,
       "frameRate": 12,
-      "scale": 2.1331,
-      "originX": 0.5342,
+      "scale": 2.177,
+      "originX": 0.5363,
       "originY": 0.7363,
       "prompt": "Side view, facing left. The grey donkey chats in a friendly, conversational way. The grey donkey's body, all four planted hooves, its mane and its tail stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference, and the tail stays still at exactly the length and position it has in the reference, so the whole donkey stays inside the same framing as the reference in every frame. It never walks, never lowers its head, never sits or lies down. Its pale muzzle opens to a clear medium gap and closes again with each phrase, four even open-and-shut beats across the clip, never gaping wide; its head gives only a small nod in time, one long ear flicks once, and its big round eyes stay open, bright and friendly. The open mouth always shows the same shape: one clean smooth patch of flat pink inside, drawn identically in every frame it appears. Steady, easy speaking rhythm with no sudden jumps. Starts and ends in the exact pose of the reference image. Seamless loop, no travel, same silhouette throughout.",
       "quality": {
@@ -466,8 +466,8 @@
       "frameHeight": 512,
       "frameCount": 36,
       "frameRate": 12,
-      "scale": 2.168,
-      "originX": 0.5345,
+      "scale": 2.177,
+      "originX": 0.5363,
       "originY": 0.7363,
       "prompt": "Side view, facing left. The grey donkey stands quietly, pondering. The grey donkey's body, all four planted hooves, its mane and its tail stay exactly as in the reference image and do not move at all: its head holds exactly the position and angle it has in the reference, and the tail stays still at exactly the length and position it has in the reference, so the whole donkey stays inside the same framing as the reference in every frame. It never walks, never lowers its head, never sits or lies down. Its brows are eased and level. Its eyelids stay fully open and completely still for the whole clip, so both big round eyes keep their full shape in every frame. ONLY THE PUPILS AND ONE EAR MOVE, very slowly: the pupils drift up and to one side as if searching for an answer, taking the whole first half of the clip to get there, rest there, then drift just as slowly back, while one long ear slowly rotates back and forward again. One smooth gliding path, the same slow speed throughout. Its muzzle stays closed, drawn exactly as in the reference. Seamless loop, no travel, same silhouette throughout.",
       "quality": {

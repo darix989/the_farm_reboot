@@ -557,17 +557,24 @@ off the floor the moment it reacts.
 
 So `scripts/ludo/normalize.mjs` measures, at promote time, the character's alpha bounding box
 in the clip against the same box in the atlas frame it was generated from, and stores a
-`scale` multiplier and an `originX`/`originY` on the sheet. `originY` is the bottom of the
-generated union box — the same place the atlas rest-frame trim puts the feet — so switching
-from idle to an emotion does not jump. `AnimalAnimator` applies them on `ANIMATION_START` of
+`scale` multiplier and an `originX`/`originY` on the sheet, measured from the clip's **rest
+frame** (frame 0, which is the reference pose by construction). `originY` is the bottom of
+that box — the same place the atlas rest-frame trim puts the feet — so switching from idle
+to an emotion does not jump. `AnimalAnimator` applies them on `ANIMATION_START` of
 the emotion clip and restores the staged values on `ANIMATION_START` of anything else —
 never in `playEmotion` / `playIdle` themselves. Phaser can delay the first frame (`delay`,
 `playAfterRepeat`), and putting emotion scale on an atlas texture (or atlas scale on a
 generated cell) is a ~2× size flash the moment a debate changes phase. The runtime measures
 nothing.
 
-The union box across all frames is used, not a per-frame box: a per-frame origin would make
-the character twitch as its box changed shape between frames.
+**Strict rule: one pivot per animal.** Every animation of an animal must share the same
+pivot, or the character jumps when one animation cuts to the next. The rest frame is used, not
+a per-frame box (the character would twitch) and not the union of all frames (the pivot would
+depend on how far each clip's motion reaches — this shipped once and slid the donkey ~30 stage
+units sideways on every switch into `doubtful`). Never move one clip's pivot to fit its
+motion; reposition every sheet of the animal together, or, after asking, enlarge them all.
+`scripts/ludo/pivot.mjs` makes `--promote` and `--remeasure` fail when an animal's clips
+disagree.
 
 If the origin/scale maths change, re-run `npm run sprites:emotions -- --remeasure` against
 the shipped PNGs — no API, no regeneration.
